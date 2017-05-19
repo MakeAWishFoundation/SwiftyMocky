@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'Mocky_Example' do
+  pod 'Mocky', :path => '../'
+
+  target 'Mocky_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end

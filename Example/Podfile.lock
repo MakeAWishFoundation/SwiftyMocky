@@ -1,0 +1,16 @@
+PODS:
+  - Mocky (0.1.0)
+
+DEPENDENCIES:
+  - Mocky (from `../`)
+
+EXTERNAL SOURCES:
+  Mocky:
+    :path: ../
+
+SPEC CHECKSUMS:
+  Mocky: f569ae1ff78165498c7681321bc2ae4e04957f8c
+
+PODFILE CHECKSUM: fa99d060b210e8b56f48f27c06414013acc8ab11
+
+COCOAPODS: 1.2.1

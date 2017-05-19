@@ -94,3 +94,4 @@ Carthage/Build
 /*.gcno
 
 # End of https://www.gitignore.io/api/swift,xcode
+contents.xcworkspacedata
