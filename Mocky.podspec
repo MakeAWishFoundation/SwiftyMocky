@@ -31,12 +31,8 @@ TODO: Add long description of the pod here.
   s.ios.deployment_target = '8.0'
 
   s.source_files = 'Mocky/Classes/**/*'
-  
-  # s.resource_bundles = {
-  #   'Mocky' => ['Mocky/Assets/*.png']
-  # }
-
+  s.preserve_paths = '*'
   # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.frameworks = 'XCTest'
+  s.dependency 'Sourcery'
 end

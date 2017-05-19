@@ -1,0 +1,99 @@
+<%# Constructs enumerated method name -%>
+<%
+func methodDeclaration(_ method: Method) -> String {
+    return "case \(method.shortName)"
+}
+-%>
+<%# Constructs enumerated method name and parameters -%>
+<%
+func methodDeclarationWithParameters(_ method: Method) -> String {
+
+    if method.parameters.isEmpty {
+        return method.shortName
+    }
+    let parameters = method.parameters
+    .map {  return "\($0.name) : Parameter<\($0.typeName.name)>" }
+    .joined(separator: ",")
+    .replacingOccurrences(of: "@escaping", with: "")
+    return "\(method.shortName)(\(parameters))"
+}
+-%>
+<%# Constructs default method implementation -%>
+<%# Example: addInvocation(.simpleCall(parameter: .value(parameter))) -%>
+<% 
+func methodImplementation(_ method: Method) -> String {
+    var array: [String] = []
+    if method.returnTypeName.isVoid {
+        array.append("func \(method.name) {")
+    } else {
+        array.append("func \(method.name) -> \(method.returnTypeName.name) {")
+    }
+    
+    if method.parameters.isEmpty {
+        array.append("addInvocation(.\(method.shortName))")
+    } else {
+        let parameters = method.parameters.map { "\($0.name): .value(\($0.name)" }.joined(separator: ", ")
+        let methodInvocation = "addInvocation(.\(method.shortName)(\(parameters))))"
+        array.append(methodInvocation)
+    }
+    
+    if !method.returnTypeName.isVoid {
+        array.append("; return returnValue(.\(method.shortName) )")    
+    }
+    array.append("}")
+    return array.joined(separator: "  ")
+}
+-%>
+<%# case equality check generation for given method -%>
+<%
+func caseEqualityForMethod(_ method: Method) -> String {
+    if method.parameters.isEmpty {
+        return "(.\(method.shortName), .\(method.shortName)): return true"
+    } else {
+        return "(let .\(method.shortName)(lhsParams), let .\(method.shortName)(rhsParams)): return lhsParams == rhsParams"
+    }
+}
+-%>
+<% for type in types.all {  
+    guard let protocolToDecorate = type.annotations["mock"] as? String else { continue } 
+    if let aProtocol = types.protocols.first(where: { $0.name == protocolToDecorate }) { -%>
+    // sourcery:inline:auto:<%= type.name %>.autoMocked
+
+    typealias MethodType = <%= type.name -%>Methods
+    typealias CallType = <%= type.name -%>Calls
+
+    var invocations = [CallType]()
+    var returnValues = [(<%= type.name -%>Methods, Any?)]()
+
+    <%_ for method in aProtocol.methods { %>
+    <%= methodImplementation(method) -%>
+    <%  } %> 
+    <%_ -%>
+}
+enum <%= type.name -%>Methods : Equatable {
+    <%_ for method in aProtocol.methods { %>
+    <%= methodDeclaration(method) -%>
+    <%  } %> 
+
+    static func ==(lhs: <%=type.name-%>Methods, rhs: <%=type.name-%>Methods) -> Bool {
+        return String(caseName: lhs) == String(caseName: rhs)
+    }
+}
+
+enum <%= type.name -%>Calls : Equatable {
+    <%_ for method in aProtocol.methods { %>
+    case <%= methodDeclarationWithParameters(method) -%>
+    <%  } %> 
+    
+    static func ==(lhs: <%=type.name-%>Calls, rhs: <%=type.name-%>Calls) -> Bool {
+        switch (lhs, rhs) {
+        <%_ for method in aProtocol.methods { _%>
+            case <%= caseEqualityForMethod(method) -%>
+        <%  } %> 
+            default: return true    
+        }
+    }
+
+// sourcery:end
+<% }
+} -%>

@@ -1,16 +1,25 @@
 PODS:
-  - Mocky (0.1.0)
+  - Mocky (0.1.0):
+    - Sourcery
+  - Nimble (5.1.1)
+  - Quick (1.0.0)
+  - Sourcery (0.6.0)
 
 DEPENDENCIES:
   - Mocky (from `../`)
+  - Nimble (~> 5.1.1)
+  - Quick (~> 1.0.0)
 
 EXTERNAL SOURCES:
   Mocky:
     :path: ../
 
 SPEC CHECKSUMS:
-  Mocky: f569ae1ff78165498c7681321bc2ae4e04957f8c
+  Mocky: 3e8cac6c113b1cd7dea3fddbdbdb22ea30808b6e
+  Nimble: 415e3aa3267e7bc2c96b05fa814ddea7bb686a29
+  Quick: 8024e4a47e6cc03a9d5245ef0948264fc6d27cff
+  Sourcery: b3a93fcdf9c256feeb16e85f4d1bbf46baa42464
 
-PODFILE CHECKSUM: fa99d060b210e8b56f48f27c06414013acc8ab11
+PODFILE CHECKSUM: 1bf8da3b0fc6e2a1e4882c28c1234266ebc83d5a
 
 COCOAPODS: 1.2.1
