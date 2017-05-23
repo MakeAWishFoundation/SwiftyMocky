@@ -34,7 +34,8 @@ class ItemsModelTests: XCTestCase {
     
     func test_getExampleItems_whenItemsStored_shouldReturnStoredItems() {
         let item = Item(name: "itemName", id: 0)
-        itemsRepositoryMock.given(.storedItems(returns: [item]))
+
+        itemsRepositoryMock.given(.storedItems(willReturn: [item]))
         
         let receivedItems = try! sut.getExampleItems().toBlocking().single()!
     
@@ -44,8 +45,8 @@ class ItemsModelTests: XCTestCase {
     
     func test_getItemDetails_should_whenNoItemsStored_shouldFetchItemsAndSave() {
         let item = Item(name: "itemName", id: 0)
-        itemsRepositoryMock.given(.storedItems(returns: nil))
-        itemsClientMock.given(.getExampleItems(returns: Observable.just([item])))
+        itemsRepositoryMock.given(.storedItems(willReturn: nil))
+        itemsClientMock.given(.getExampleItems(willReturn: Observable.just([item])))
         
         let receivedItems = try! sut.getExampleItems().toBlocking().single()!
         
@@ -55,23 +56,30 @@ class ItemsModelTests: XCTestCase {
     }
     
     func test_getItemDetails_whenNoDetailsStored_shouldFetchItemsAnsSave() {
-        let item = Item(name: "itemName", id: 0)
+        let item = Item(name: "itemName1", id: 1)
+        let item2 = Item(name: "itemName2", id: 2)
         let details = ItemDetails(item: item, price: 0, description: ["desc": "value"])
-        itemsRepositoryMock.given(.storedDetails(returns: nil))
-        itemsClientMock.given(.getItemDetails(returns: Observable.just(details)))
-        
+
+        itemsRepositoryMock.given(.storedDetails(item: .any, willReturn: nil))
+        itemsRepositoryMock.given(.storedDetails(item: .value(item), willReturn: details))
+
+        XCTAssertEqual(itemsRepositoryMock.storedDetails(item: item), details)
+        XCTAssertEqual(itemsRepositoryMock.storedDetails(item: item2), nil)
+
+        itemsClientMock.given(.getItemDetails(item: .any, willReturn: Observable.just(details)))
+
         let reveivedDetails = try! sut.getItemDetails(item: item).toBlocking().single()!
         
         XCTAssertEqual(reveivedDetails, details)
-        Verify(itemsRepositoryMock, .storedDetails(item: .value(item)))
-        Verify(itemsClientMock, .getItemDetails(item: .value(item)))
-        Verify(itemsRepositoryMock, .storeDetails(details: .value(details)))
+        Verify(itemsRepositoryMock, .storedDetails(item: .value(item)), count: 2)
+        Verify(itemsClientMock, .getItemDetails(item: .value(item)), count: 0)
+        Verify(itemsRepositoryMock, .storeDetails(details: .value(details)), count: 0)
     }
     
     func test_getItemDetails_whenDetailsAlreadyStored_shouldReturnSavedDetails() {
         let item = Item(name: "itemName", id: 0)
         let details = ItemDetails(item: item, price: 0, description: ["desc": "value"])
-        itemsRepositoryMock.given(.storedDetails(returns: details))
+        itemsRepositoryMock.given(.storedDetails(item: .any, willReturn: details))
         
         let reveivedDetails = try! sut.getItemDetails(item: item).toBlocking().single()!
         XCTAssertEqual(reveivedDetails, details)

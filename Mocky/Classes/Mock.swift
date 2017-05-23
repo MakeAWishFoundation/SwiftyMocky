@@ -46,49 +46,19 @@ public extension EnumCasesComparable {
 }
 
 public protocol Mock: class {
-    
-    associatedtype SignatureType: Equatable
     associatedtype ParameterType: Equatable
-    associatedtype ReturnType: AutoValue
     
     var invocations: [ParameterType] { get set }
-    var returnValues: [ReturnType] { get set }
 }
 
 public extension Mock {
-    
     func addInvocation(_ call: ParameterType) {
         invocations.append(call)
     }
-    
-    func returnValue<T>(_ methodType: SignatureType) -> T {
-        return returnValues.filter({ (returnType) -> Bool in
-            return String(caseName: returnType) == String(caseName: methodType)
-        }).last!.returnValue as! T
-    }
-    
-    func returnValue<T>(_ method: SignatureType, returnValue: T) -> T {
-        return returnValue
-    }
-    
-    func given(_ method: ReturnType) {
-        returnValues.append(method)
-    }
-    
+
     func matchingCalls(_ method: ParameterType) -> [ParameterType] {
-        print("inovcations: \(method)")
-        invocations.forEach { print($0) }
-        print("invocations end")
         let matchingInvocations = invocations.filter({ (call) -> Bool in
             return method == call
-        })
-        return matchingInvocations
-    }
-    
-    
-    func matchingCalls(_ method: SignatureType) -> [ParameterType] {
-        let matchingInvocations = invocations.filter({ (call) -> Bool in
-            return String(caseName: method) == String(caseName: call)
         })
         return matchingInvocations
     }
