@@ -8,47 +8,12 @@
 
 import Foundation
 
-public protocol AutoValue {}
-
-public extension AutoValue {
-    
-    public var returnValue: Any? {
-        get {
-            let mirror = Mirror(reflecting: self)
-            if let associated = mirror.children.first {
-                return associated.value
-            }
-            assertionFailure("This case: \(self) has no value associated!")
-            return nil
-        }
-    }
-}
-
-public protocol EnumCasesNameEquatable: Equatable {}
-
-public extension EnumCasesNameEquatable {
-    
-    static func ==(_ lhs: Self,_ rhs: Self) -> Bool {
-        return String(caseName: lhs) == String(caseName: rhs)
-    }
-}
-
-public protocol ReturnTypeProtocol {
-    func returnValue() -> Any?
-}
-
-public protocol EnumCasesComparable {}
-public extension EnumCasesComparable {
-    
-    static func ==(_ lhs: EnumCasesComparable, _ rhs: EnumCasesComparable) -> Bool {
-        return String(caseName: lhs) == String(caseName: rhs)
-    }
-}
-
 public protocol Mock: class {
     associatedtype ParameterType: Equatable
+    associatedtype MethodProxy
     
     var invocations: [ParameterType] { get set }
+    var methodReturnValues: [MethodProxy] { get set }
 }
 
 public extension Mock {
@@ -61,5 +26,9 @@ public extension Mock {
             return method == call
         })
         return matchingInvocations
+    }
+    
+    func given(_ method: MethodProxy) {
+        methodReturnValues.append(method)
     }
 }

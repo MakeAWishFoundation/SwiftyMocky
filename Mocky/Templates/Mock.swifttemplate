@@ -1,16 +1,24 @@
-<%# Constructs enumerated method name -%>
+<%# Constructs proxy for given paraeteters and return type -%>
 <%
-func methodDeclaration(_ method: Method) -> String {
-    return "case \(method.shortName)"
-}
--%>
-<%# Constructs enumerated method name and parameters -%>
-<%
-func enumReturnType(_ method: Method) -> String {
+func proxyConstructor(_ method: Method) -> String {
+    var array: [String] = []
     if method.returnTypeName.isVoid {
         return ""
     }
-    return "case \(method.shortName)(returns: \(method.returnTypeName))"
+    
+    if method.parameters.isEmpty {
+        array.append("static func \(method.shortName)(willReturn: \(method.returnTypeName)) -> MethodProxy {")
+        array.append("return MethodProxy(method: .\(method.shortName), returns: willReturn)")
+        array.append("}")
+    } else {
+        let functionParameters = method.parameters.map { "\($0.name): Parameter<\($0.typeName)>" }.joined(separator: ", ")
+        array.append("static func \(method.shortName)(\(functionParameters), willReturn: \(method.returnTypeName)) -> MethodProxy {")
+
+        let parameters = method.parameters.map { "\($0.name): \($0.name)" }.joined(separator: ", ")
+        array.append("return MethodProxy(method: .\(method.shortName)(\(parameters)), returns: willReturn)")
+        array.append("}")
+    }
+    return array.joined(separator: "  ")
 }
 -%>
 <%# Constructs enumerated method name and parameters -%>
@@ -47,7 +55,14 @@ func methodImplementation(_ method: Method) -> String {
     }
     
     if !method.returnTypeName.isVoid {
-        array.append("; return returnValue(.\(method.shortName) )")    
+        if method.parameters.isEmpty {
+            array.append("; return methodReturnValue(.\(method.shortName)) as! \(method.returnTypeName) ")
+        } else {
+            let parameters = method.parameters.map { "\($0.name): .value(\($0.name)" }.joined(separator: ", ")
+            array.append("; return methodReturnValue(.\(method.shortName)(\(parameters)))) as! \(method.returnTypeName) ")        
+        }
+        
+        
     }
     array.append("}")
     return array.joined(separator: "  ")
@@ -68,40 +83,47 @@ func caseEqualityForMethod(_ method: Method) -> String {
     if let aProtocol = types.protocols.first(where: { $0.name == protocolToDecorate }) { -%>
     // sourcery:inline:auto:<%= type.name %>.autoMocked
 
-    var returnValues: [ReturnType] = []
     var invocations = [ParameterType]()
+    var methodReturnValues: [MethodProxy] = []
 
     <%_ for method in aProtocol.methods { %>
     <%= methodImplementation(method) -%>
     <%  } %> 
     <%_ -%>
 
-enum SignatureType {
-    <%_ for method in aProtocol.methods { %>
-    <%= methodDeclaration(method) -%>
-    <%  } %>
-}
 
-enum ParameterType : Equatable {
-    <%_ for method in aProtocol.methods { %>
-    case <%= methodDeclarationWithParameters(method) -%>
-    <%  } %> 
-    
-    static func ==(lhs: ParameterType, rhs: ParameterType) -> Bool {
-        switch (lhs, rhs) {
-        <%_ for method in aProtocol.methods { _%>
-            case <%= caseEqualityForMethod(method) -%>
+    enum ParameterType : Equatable {
+        <%_ for method in aProtocol.methods { %>
+        case <%= methodDeclarationWithParameters(method) -%>
         <%  } %> 
-            default: return false    
+    
+        static func ==(lhs: ParameterType, rhs: ParameterType) -> Bool {
+            switch (lhs, rhs) {
+            <%_ for method in aProtocol.methods { _%>
+                case <%= caseEqualityForMethod(method) -%>
+            <%  } %> 
+                default: return false    
+            }
         }
     }
-}
 
-enum ReturnType: AutoValue {
-    <%_ for method in aProtocol.methods { %>
-    <%= enumReturnType(method) -%>
-    <%  } %>
-}
+    struct MethodProxy {
+        var method: ParameterType
+        var returns: Any?
+        <%_ for method in aProtocol.methods { %>
+        <%= proxyConstructor(method) -%>
+        <%  } %> 
+    }
+
+
+    private func methodReturnValue(_ method: ParameterType) -> Any? {
+        let all = methodReturnValues.filter({ proxy -> Bool in
+            return proxy.method == method
+        })
+
+        return all.last?.returns
+    }
+
 // sourcery:end
 <% }
 } -%>
