@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension String {
+public extension String {
     
     init<Subject>(caseName subject: Subject){
         var raw = String(reflecting: subject)

@@ -1,4 +1,4 @@
-//
+    //
 //  Mock.swift
 //  Pods
 //
@@ -8,71 +8,88 @@
 
 import Foundation
 
-enum Parameter<ValueType> {
-    case any
-    case value(ValueType)
+public protocol AutoValue {}
+
+public extension AutoValue {
     
-    static func ==(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>) -> Bool {
-        switch (lhs, rhs) {
-        default: return true
+    public var returnValue: Any? {
+        get {
+            let mirror = Mirror(reflecting: self)
+            if let associated = mirror.children.first {
+                return associated.value
+            }
+            assertionFailure("This case: \(self) has no value associated!")
+            return nil
         }
     }
 }
 
-extension Parameter where ValueType: Equatable {
+public protocol EnumCasesNameEquatable: Equatable {}
+
+public extension EnumCasesNameEquatable {
     
-    static func ==(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>) -> Bool {
-        switch (lhs, rhs) {
-        case (.any, _): return true
-        case (_, .any): return true
-        case (.value(let value1), .value(let value2)):
-            return value1 == value2
-        default: return false
-        }
+    static func ==(_ lhs: Self,_ rhs: Self) -> Bool {
+        return String(caseName: lhs) == String(caseName: rhs)
     }
-    
 }
 
-protocol Mock: class {
-    
-    associatedtype MethodType: Equatable
-    associatedtype CallType: Equatable
-    
-    typealias ReturnRecord = (MethodType, Any?)
-    
-    var invocations: [CallType] { get set }
-    var returnValues: [ReturnRecord] { get set }
+public protocol ReturnTypeProtocol {
+    func returnValue() -> Any?
 }
 
-extension Mock {
+public protocol EnumCasesComparable {}
+public extension EnumCasesComparable {
     
-    func addInvocation(_ call: CallType) {
+    static func ==(_ lhs: EnumCasesComparable, _ rhs: EnumCasesComparable) -> Bool {
+        return String(caseName: lhs) == String(caseName: rhs)
+    }
+}
+
+public protocol Mock: class {
+    
+    associatedtype SignatureType: Equatable
+    associatedtype ParameterType: Equatable
+    associatedtype ReturnType: AutoValue
+    
+    var invocations: [ParameterType] { get set }
+    var returnValues: [ReturnType] { get set }
+}
+
+public extension Mock {
+    
+    func addInvocation(_ call: ParameterType) {
         invocations.append(call)
     }
     
-    func returnValue<T>(_ methodType: MethodType) -> T {
-        return returnValues.filter { (tuple: ReturnRecord) -> Bool in
-            return tuple.0 == methodType
-            }.last?.1 as! T
+    func returnValue<T>(_ methodType: SignatureType) -> T {
+        return returnValues.filter({ (returnType) -> Bool in
+            return String(caseName: returnType) == String(caseName: methodType)
+        }).last!.returnValue as! T
     }
     
-    func returnValue<T>(_ method: MethodType, returnValue: T) -> T {
+    func returnValue<T>(_ method: SignatureType, returnValue: T) -> T {
         return returnValue
     }
     
-    func given(_ method: MethodType, willReturn value: Any?) {
-        returnValues.append((method, value))
+    func given(_ method: ReturnType) {
+        returnValues.append(method)
     }
     
-    func matchingCalls(_ method: CallType) -> [CallType] {
-        return invocations.filter({ (call) -> Bool in
+    func matchingCalls(_ method: ParameterType) -> [ParameterType] {
+        print("inovcations: \(method)")
+        invocations.forEach { print($0) }
+        print("invocations end")
+        let matchingInvocations = invocations.filter({ (call) -> Bool in
             return method == call
         })
+        return matchingInvocations
     }
     
-    func matchingCalls(_ method: MethodType) -> [CallType] {
-        return invocations.filter({ (call) -> Bool in
+    
+    func matchingCalls(_ method: SignatureType) -> [ParameterType] {
+        let matchingInvocations = invocations.filter({ (call) -> Bool in
             return String(caseName: method) == String(caseName: call)
         })
+        return matchingInvocations
     }
 }

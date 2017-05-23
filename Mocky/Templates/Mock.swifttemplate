@@ -6,6 +6,15 @@ func methodDeclaration(_ method: Method) -> String {
 -%>
 <%# Constructs enumerated method name and parameters -%>
 <%
+func enumReturnType(_ method: Method) -> String {
+    if method.returnTypeName.isVoid {
+        return ""
+    }
+    return "case \(method.shortName)(returns: \(method.returnTypeName))"
+}
+-%>
+<%# Constructs enumerated method name and parameters -%>
+<%
 func methodDeclarationWithParameters(_ method: Method) -> String {
 
     if method.parameters.isEmpty {
@@ -59,41 +68,40 @@ func caseEqualityForMethod(_ method: Method) -> String {
     if let aProtocol = types.protocols.first(where: { $0.name == protocolToDecorate }) { -%>
     // sourcery:inline:auto:<%= type.name %>.autoMocked
 
-    typealias MethodType = <%= type.name -%>Methods
-    typealias CallType = <%= type.name -%>Calls
-
-    var invocations = [CallType]()
-    var returnValues = [(<%= type.name -%>Methods, Any?)]()
+    var returnValues: [ReturnType] = []
+    var invocations = [ParameterType]()
 
     <%_ for method in aProtocol.methods { %>
     <%= methodImplementation(method) -%>
     <%  } %> 
     <%_ -%>
-}
-enum <%= type.name -%>Methods : Equatable {
+
+enum SignatureType {
     <%_ for method in aProtocol.methods { %>
     <%= methodDeclaration(method) -%>
-    <%  } %> 
-
-    static func ==(lhs: <%=type.name-%>Methods, rhs: <%=type.name-%>Methods) -> Bool {
-        return String(caseName: lhs) == String(caseName: rhs)
-    }
+    <%  } %>
 }
 
-enum <%= type.name -%>Calls : Equatable {
+enum ParameterType : Equatable {
     <%_ for method in aProtocol.methods { %>
     case <%= methodDeclarationWithParameters(method) -%>
     <%  } %> 
     
-    static func ==(lhs: <%=type.name-%>Calls, rhs: <%=type.name-%>Calls) -> Bool {
+    static func ==(lhs: ParameterType, rhs: ParameterType) -> Bool {
         switch (lhs, rhs) {
         <%_ for method in aProtocol.methods { _%>
             case <%= caseEqualityForMethod(method) -%>
         <%  } %> 
-            default: return true    
+            default: return false    
         }
     }
+}
 
+enum ReturnType: AutoValue {
+    <%_ for method in aProtocol.methods { %>
+    <%= enumReturnType(method) -%>
+    <%  } %>
+}
 // sourcery:end
 <% }
 } -%>

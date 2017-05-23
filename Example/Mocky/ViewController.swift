@@ -9,6 +9,8 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    var viewModel: ItemsViewModel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
