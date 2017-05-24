@@ -9,43 +9,26 @@
 import Foundation
 
 public protocol Mock: class {
+    associatedtype MethodType: Equatable
+    associatedtype MethodProxy
     
-    associatedtype SignatureType: Equatable
-    associatedtype ParameterType: Equatable
-    associatedtype ReturnType: AutoValue
-    
-    var invocations: [ParameterType] { get set }
-    var returnValues: [ReturnType] { get set }
+    var invocations: [MethodType] { get set }
+    var methodReturnValues: [MethodProxy] { get set }
 }
 
 public extension Mock {
-    
-    func addInvocation(_ call: ParameterType) {
+    func addInvocation(_ call: MethodType) {
         invocations.append(call)
     }
-    
-    func returnValue<T>(_ methodType: SignatureType) -> T {
-        return returnValues.filter({ (returnType) -> Bool in
-            return String(caseName: returnType) == String(caseName: methodType)
-        }).last!.returnValue as! T
-    }
 
-    func given(_ method: ReturnType) {
-        returnValues.append(method)
-    }
-    
-    func matchingCalls(_ method: ParameterType) -> [ParameterType] {
+    func matchingCalls(_ method: MethodType) -> [MethodType] {
         let matchingInvocations = invocations.filter({ (call) -> Bool in
             return method == call
         })
         return matchingInvocations
     }
     
-    
-    func matchingCalls(_ method: SignatureType) -> [ParameterType] {
-        let matchingInvocations = invocations.filter({ (call) -> Bool in
-            return String(caseName: method) == String(caseName: call)
-        })
-        return matchingInvocations
+    func given(_ method: MethodProxy) {
+        methodReturnValues.append(method)
     }
 }

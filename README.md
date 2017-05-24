@@ -20,7 +20,7 @@ will be interpreted as:
 ```ExampleProtocolMock.swift
 class ExampleProtocolMock: ExampleProtocol, Mock {
 var returnValues: [ReturnType] = []
-var invocations = [ParameterType]()
+var invocations = [MethodType]()
 
 func simpleMethod(param: String) -> String? {
 addInvocation(.simpleMethod(param: .value(param)))
@@ -31,11 +31,11 @@ enum SignatureType {
 case simpleMethod
 }
 
-enum ParameterType : Equatable {
+enum MethodType : Equatable {
 
 case simpleMethod(items : Prameter<String>)      
 
-static func ==(lhs: ParameterType, rhs: ParameterType) -> Bool {
+static func ==(lhs: MethodType, rhs: MethodType) -> Bool {
 switch (lhs, rhs) {
 case (let .simpleMethod(lhsParams), let .simpleMethod(rhsParams)): return lhsParams == rhsParams              
 default: return false    

@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 public enum Parameter<ValueType> {
     case any
     case value(ValueType)

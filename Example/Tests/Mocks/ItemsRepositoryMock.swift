@@ -16,48 +16,56 @@ import RxSwift
 class ItemsRepositoryMock: ItemsRepository, Mock {
 // sourcery:inline:auto:ItemsRepositoryMock.autoMocked
 
-    var returnValues: [ReturnType] = []
-    var invocations = [ParameterType]()
+    var invocations = [MethodType]()
+    var methodReturnValues: [MethodProxy] = []
 
 
     func storeItems(items: [Item]) {  addInvocation(.storeItems(items: .value(items)))  }    
     func storeDetails(details: ItemDetails) {  addInvocation(.storeDetails(details: .value(details)))  }    
-    func storedItems() -> [Item]? {  addInvocation(.storedItems)  ; return returnValue(.storedItems )  }    
-    func storedDetails(item: Item) -> ItemDetails? {  addInvocation(.storedDetails(item: .value(item)))  ; return returnValue(.storedDetails )  }     
+    func storedItems() -> [Item]? {  addInvocation(.storedItems)  ; return methodReturnValue(.storedItems) as! [Item]?   }    
+    func storedDetails(item: Item) -> ItemDetails? {  addInvocation(.storedDetails(item: .value(item)))  ; return methodReturnValue(.storedDetails(item: .value(item))) as! ItemDetails?   }     
 
-enum SignatureType {
 
-    case storeItems    
-    case storeDetails    
-    case storedItems    
-    case storedDetails    
-}
+    enum MethodType : Equatable {
 
-enum ParameterType : Equatable {
-
-    case storeItems(items : Parameter<[Item]>)    
-    case storeDetails(details : Parameter<ItemDetails>)    
-    case storedItems    
-    case storedDetails(item : Parameter<Item>)     
+        case storeItems(items : Parameter<[Item]>)        
+        case storeDetails(details : Parameter<ItemDetails>)        
+        case storedItems        
+        case storedDetails(item : Parameter<Item>)         
     
-    static func ==(lhs: ParameterType, rhs: ParameterType) -> Bool {
-        switch (lhs, rhs) {
+        static func ==(lhs: MethodType, rhs: MethodType) -> Bool {
+            switch (lhs, rhs) {
 
-            case (let .storeItems(lhsParams), let .storeItems(rhsParams)): return lhsParams == rhsParams        
-            case (let .storeDetails(lhsParams), let .storeDetails(rhsParams)): return lhsParams == rhsParams        
-            case (.storedItems, .storedItems): return true        
-            case (let .storedDetails(lhsParams), let .storedDetails(rhsParams)): return lhsParams == rhsParams         
-            default: return false    
+                case (let .storeItems(lhsParams), let .storeItems(rhsParams)): return lhsParams == rhsParams            
+                case (let .storeDetails(lhsParams), let .storeDetails(rhsParams)): return lhsParams == rhsParams            
+                case (.storedItems, .storedItems): return true            
+                case (let .storedDetails(lhsParams), let .storedDetails(rhsParams)): return lhsParams == rhsParams             
+                default: return false    
+            }
         }
     }
-}
 
-enum ReturnType: AutoValue {
+    struct MethodProxy {
+        var method: MethodType
+        var returns: Any?
 
+        static func storedItems(willReturn: [Item]?) -> MethodProxy {
+            return MethodProxy(method: .storedItems, returns: willReturn)
+        }
         
-        
-    case storedItems(returns: [Item]?)    
-    case storedDetails(returns: ItemDetails?)    
-}
+        static func storedDetails(item: Parameter<Item>, willReturn: ItemDetails?) -> MethodProxy {
+            return MethodProxy(method: .storedDetails(item: item), returns: willReturn)
+        }
+         
+    }
+
+
+    private func methodReturnValue(_ method: MethodType) -> Any? {
+        let all = methodReturnValues.filter({ proxy -> Bool in
+            return proxy.method == method
+        })
+
+        return all.last?.returns
+    }
 // sourcery:end
 }
