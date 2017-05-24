@@ -1,0 +1,26 @@
+PODS:
+  - Mocky (0.1.0):
+    - Sourcery
+  - RxBlocking (3.4.1):
+    - RxSwift (~> 3.4)
+  - RxSwift (3.4.1)
+  - Sourcery (0.6.0)
+
+DEPENDENCIES:
+  - Mocky (from `../`)
+  - RxBlocking
+  - RxSwift (~> 3.4.1)
+
+EXTERNAL SOURCES:
+  Mocky:
+    :path: ../
+
+SPEC CHECKSUMS:
+  Mocky: 3e8cac6c113b1cd7dea3fddbdbdb22ea30808b6e
+  RxBlocking: 1e8c41cfe7ca2fc0e19d0e616c553845c63cbbd3
+  RxSwift: 656f8fbeca5bc372121a72d9ebdd3cd3bc0ffade
+  Sourcery: b3a93fcdf9c256feeb16e85f4d1bbf46baa42464
+
+PODFILE CHECKSUM: ebcea85b71401acb5de258bc8cebe49758cd3964
+
+COCOAPODS: 1.2.1
