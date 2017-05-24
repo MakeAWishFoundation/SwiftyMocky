@@ -43,8 +43,14 @@ class ItemsClientMock: ItemsClient, Mock {
         var method: ParameterType
         var returns: Any?
 
-        static func getExampleItems(willReturn: Observable<[Item]>) -> MethodProxy {  return MethodProxy(method: .getExampleItems, returns: willReturn)  }        
-        static func getItemDetails(item: Parameter<Item>, willReturn: Observable<ItemDetails>) -> MethodProxy {  return MethodProxy(method: .getItemDetails(item: item), returns: willReturn)  }         
+        static func getExampleItems(willReturn: Observable<[Item]>) -> MethodProxy {
+            return MethodProxy(method: .getExampleItems, returns: willReturn)
+        }
+        
+        static func getItemDetails(item: Parameter<Item>, willReturn: Observable<ItemDetails>) -> MethodProxy {
+            return MethodProxy(method: .getItemDetails(item: item), returns: willReturn)
+        }
+         
     }
 
 

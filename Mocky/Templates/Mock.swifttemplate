@@ -1,25 +1,24 @@
 <%# Constructs proxy for given paraeteters and return type -%>
 <%
-func proxyConstructor(_ method: Method) -> String {
-    var array: [String] = []
-    if method.returnTypeName.isVoid {
-        return ""
-    }
-    
+func proxyConstructor(_ method: Method) -> String {    
     if method.parameters.isEmpty {
-        array.append("static func \(method.shortName)(willReturn: \(method.returnTypeName)) -> MethodProxy {")
-        array.append("return MethodProxy(method: .\(method.shortName), returns: willReturn)")
-        array.append("}")
+        return "return MethodProxy(method: .\(method.shortName), returns: willReturn)"
+    } else {
+        let parameters = method.parameters.map { "\($0.name): \($0.name)" }.joined(separator: ", ")
+        return "return MethodProxy(method: .\(method.shortName)(\(parameters)), returns: willReturn)"
+    }
+}
+-%>
+<%# Constructs profy method name for given method -%>
+<% 
+func proxyConstructorName(_ method: Method) -> String {
+    if method.parameters.isEmpty {
+        return "static func \(method.shortName)(willReturn: \(method.returnTypeName)) -> MethodProxy {"
     } else {
         let functionParameters = method.parameters.map { "\($0.name): Parameter<\($0.typeName)>" }.joined(separator: ", ")
-        array.append("static func \(method.shortName)(\(functionParameters), willReturn: \(method.returnTypeName)) -> MethodProxy {")
-
-        let parameters = method.parameters.map { "\($0.name): \($0.name)" }.joined(separator: ", ")
-        array.append("return MethodProxy(method: .\(method.shortName)(\(parameters)), returns: willReturn)")
-        array.append("}")
+        return "static func \(method.shortName)(\(functionParameters), willReturn: \(method.returnTypeName)) -> MethodProxy {"
     }
-    return array.joined(separator: "  ")
-}
+}   
 -%>
 <%# Constructs enumerated method name and parameters -%>
 <%
@@ -110,8 +109,10 @@ func caseEqualityForMethod(_ method: Method) -> String {
     struct MethodProxy {
         var method: ParameterType
         var returns: Any?
-        <%_ for method in aProtocol.methods { %>
-        <%= proxyConstructor(method) -%>
+        <%_ let returnMethods = aProtocol.methods.filter { !$0.returnTypeName.isVoid }; for method in returnMethods { %>
+        <%= proxyConstructorName(method) _%>
+            <%= proxyConstructor(method) _%>
+        }
         <%  } %> 
     }
 
