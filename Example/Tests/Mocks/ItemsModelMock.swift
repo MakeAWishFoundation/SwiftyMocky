@@ -16,7 +16,7 @@ import RxSwift
 class ItemsModelMock: ItemsModel, Mock {
 // sourcery:inline:auto:ItemsModelMock.autoMocked
 
-    var invocations = [ParameterType]()
+    var invocations = [MethodType]()
     var methodReturnValues: [MethodProxy] = []
 
 
@@ -24,12 +24,12 @@ class ItemsModelMock: ItemsModel, Mock {
     func getItemDetails(item: Item) -> Observable<ItemDetails> {  addInvocation(.getItemDetails(item: .value(item)))  ; return methodReturnValue(.getItemDetails(item: .value(item))) as! Observable<ItemDetails>   }     
 
 
-    enum ParameterType : Equatable {
+    enum MethodType : Equatable {
 
         case getExampleItems        
         case getItemDetails(item : Parameter<Item>)         
     
-        static func ==(lhs: ParameterType, rhs: ParameterType) -> Bool {
+        static func ==(lhs: MethodType, rhs: MethodType) -> Bool {
             switch (lhs, rhs) {
 
                 case (.getExampleItems, .getExampleItems): return true            
@@ -40,7 +40,7 @@ class ItemsModelMock: ItemsModel, Mock {
     }
 
     struct MethodProxy {
-        var method: ParameterType
+        var method: MethodType
         var returns: Any?
 
         static func getExampleItems(willReturn: Observable<[Item]>) -> MethodProxy {
@@ -54,7 +54,7 @@ class ItemsModelMock: ItemsModel, Mock {
     }
 
 
-    private func methodReturnValue(_ method: ParameterType) -> Any? {
+    private func methodReturnValue(_ method: MethodType) -> Any? {
         let all = methodReturnValues.filter({ proxy -> Bool in
             return proxy.method == method
         })

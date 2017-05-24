@@ -16,7 +16,7 @@ import RxSwift
 class ItemsRepositoryMock: ItemsRepository, Mock {
 // sourcery:inline:auto:ItemsRepositoryMock.autoMocked
 
-    var invocations = [ParameterType]()
+    var invocations = [MethodType]()
     var methodReturnValues: [MethodProxy] = []
 
 
@@ -26,14 +26,14 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
     func storedDetails(item: Item) -> ItemDetails? {  addInvocation(.storedDetails(item: .value(item)))  ; return methodReturnValue(.storedDetails(item: .value(item))) as! ItemDetails?   }     
 
 
-    enum ParameterType : Equatable {
+    enum MethodType : Equatable {
 
         case storeItems(items : Parameter<[Item]>)        
         case storeDetails(details : Parameter<ItemDetails>)        
         case storedItems        
         case storedDetails(item : Parameter<Item>)         
     
-        static func ==(lhs: ParameterType, rhs: ParameterType) -> Bool {
+        static func ==(lhs: MethodType, rhs: MethodType) -> Bool {
             switch (lhs, rhs) {
 
                 case (let .storeItems(lhsParams), let .storeItems(rhsParams)): return lhsParams == rhsParams            
@@ -46,7 +46,7 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
     }
 
     struct MethodProxy {
-        var method: ParameterType
+        var method: MethodType
         var returns: Any?
 
         static func storedItems(willReturn: [Item]?) -> MethodProxy {
@@ -60,7 +60,7 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
     }
 
 
-    private func methodReturnValue(_ method: ParameterType) -> Any? {
+    private func methodReturnValue(_ method: MethodType) -> Any? {
         let all = methodReturnValues.filter({ proxy -> Bool in
             return proxy.method == method
         })
