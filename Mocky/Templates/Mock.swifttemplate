@@ -65,8 +65,6 @@ func methodImplementation(_ method: SourceryRuntime.Method) -> String {
             let parameters = method.parameters.map { "\($0.name): .value(\($0.name)" }.joined(separator: ", ")
             array.append("; return methodReturnValue(.\(method.shortName)(\(parameters)))) as! \(method.returnTypeName) ")        
         }
-        
-        
     }
     array.append("}")
     return array.joined(separator: "  ")
@@ -113,7 +111,17 @@ func retrunIfNeeded(_ method: SourceryRuntime.Method) -> String {
 }
 -%>
 
-
+<%# implement variable for Optional types and IUO, for other add marker that you need to implement those yourself in non-genreated code scope-%>
+<%# TODO: make examples for all types of properties with different kinds of accesors-%>
+<% 
+func stubProperty(_ variable: SourceryRuntime.Variable) -> String {
+    if variable.isOptional || variable.isImplicitlyUnwrappedOptional {
+        return "var \(variable.name): \(variable.typeName)"
+    } else {
+        return "// var \(variable.name): \(variable.typeName) - not supported"
+    }
+}
+-%>
 
 <% for type in types.all {  
     guard let protocolToDecorate = type.annotations["mock"] as? String else { continue } 
@@ -125,6 +133,9 @@ func retrunIfNeeded(_ method: SourceryRuntime.Method) -> String {
     var methodReturnValues: [MethodProxy] = []
 
     //MARK : <%= aProtocol.name %>
+    <%_ for variable in aProtocol.allVariables { %> 
+    <%= stubProperty(variable) -%>
+    <% } %> <%_ -%>
 
     <%_ for method in aProtocol.allMethods { %>
     <%= stubPrototype(method) _%> {

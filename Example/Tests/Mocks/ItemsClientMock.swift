@@ -69,5 +69,5 @@ class ItemsClientMock: ItemsClient, Mock {
 
         return all.last?.returns
     }
-/ sourcery:end
+// sourcery:end
 }

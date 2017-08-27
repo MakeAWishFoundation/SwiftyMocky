@@ -91,5 +91,5 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
 
         return all.last?.returns
     }
-/ sourcery:end
+// sourcery:end
 }

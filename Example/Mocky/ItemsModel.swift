@@ -10,12 +10,22 @@ import Foundation
 import RxSwift
 
 protocol ItemsModel {
+    var context: Any? { get set }
+    var storage: Any! { get set }
+    var some: Any { get set }
+    var storedProperty: Any { get }
+
     func getExampleItems() -> Observable<[Item]>
     func getItemDetails(item: Item) -> Observable<ItemDetails>
 }
 
 
 class ConcreteItemsModel: ItemsModel {
+    var some: Any
+
+    var context: Any?
+    var storage: Any!
+    var storedProperty: Any = ""
     
     let itemsClient: ItemsClient
     let itemsRepository: ItemsRepository
@@ -23,6 +33,7 @@ class ConcreteItemsModel: ItemsModel {
     init(itemsClient: ItemsClient, itemsRepository: ItemsRepository) {
         self.itemsClient = itemsClient
         self.itemsRepository = itemsRepository
+        some = ""
     }
     
     func getExampleItems() -> Observable<[Item]> {

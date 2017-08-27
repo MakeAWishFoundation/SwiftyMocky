@@ -14,6 +14,10 @@ import RxSwift
 
 // sourcery: mock = "ItemsModel"
 class ItemsModelMock: ItemsModel, Mock {
+
+    var some: Any = "manually supported property"
+    var storedProperty: Any = ""
+
 // sourcery:inline:auto:ItemsModelMock.autoMocked
     //swiftlint:disable force_cast
 
@@ -21,8 +25,11 @@ class ItemsModelMock: ItemsModel, Mock {
     var methodReturnValues: [MethodProxy] = []
 
     //MARK : ItemsModel
-
-
+ 
+    var context: Any?     
+    var storage: Any!     
+    // var some: Any - not supported     
+    // var storedProperty: Any - not supported    
 
     func getExampleItems() -> Observable<[Item]> {
         addInvocation(.getExampleItems)
