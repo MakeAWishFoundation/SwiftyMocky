@@ -1,6 +1,7 @@
 <%# Constructs equal case for method -%>
 <%
 func equalCase(_ method: SourceryRuntime.Method) -> String {    
+    return "case (.\(method.shortName), .\(method.shortName)): return true" //FIXME: now always return true for the same signature, add matching in future releases
     if method.parameters.isEmpty {
         return "case (.\(method.shortName), .\(method.shortName)): return true"
     } else {
@@ -62,7 +63,7 @@ func methodImplementation(_ method: SourceryRuntime.Method) -> String {
         if method.parameters.isEmpty {
             array.append("; return methodReturnValue(.\(method.shortName)) as! \(method.returnTypeName) ")
         } else {
-            let parameters = method.parameters.map { "\($0.name): .value(\($0.name)" }.joined(separator: ", ")
+            let parameters = method.parameters.map { "\($0.name): .value(\($0.name))" }.joined(separator: ", ")
             array.append("; return methodReturnValue(.\(method.shortName)(\(parameters)))) as! \(method.returnTypeName) ")        
         }
     }
@@ -91,8 +92,8 @@ func addInvocation(_ method: SourceryRuntime.Method) -> String {
     if method.parameters.isEmpty {
         return "addInvocation(.\(method.shortName))"
     } else {
-        let parameters = method.parameters.map { "\($0.name): .value(\($0.name)" }.joined(separator: ", ")
-        return "addInvocation(.\(method.shortName)(\(parameters))))"
+        let parameters = method.parameters.map { "\($0.name): .value(\($0.name))" }.joined(separator: ", ")
+        return "addInvocation(.\(method.shortName)(\(parameters)))"
     }
 }
 -%>
@@ -105,8 +106,8 @@ func retrunIfNeeded(_ method: SourceryRuntime.Method) -> String {
     if method.parameters.isEmpty {
         return "return methodReturnValue(.\(method.shortName)) as! \(method.returnTypeName) "
     } else {
-        let parameters = method.parameters.map { "\($0.name): .value(\($0.name)" }.joined(separator: ", ")
-        return "return methodReturnValue(.\(method.shortName)(\(parameters)))) as! \(method.returnTypeName) "        
+        let parameters = method.parameters.map { "\($0.name): .value(\($0.name))" }.joined(separator: ", ")
+        return "return methodReturnValue(.\(method.shortName)(\(parameters))) as! \(method.returnTypeName) "        
     } 
 }
 -%>

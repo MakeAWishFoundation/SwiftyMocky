@@ -53,10 +53,10 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         static func ==(lhs: MethodType, rhs: MethodType) -> Bool {
             switch (lhs, rhs) {
 
-                case (let .storeItems(lhsParams), let .storeItems(rhsParams)): return lhsParams == rhsParams                
-                case (let .storeDetails(lhsParams), let .storeDetails(rhsParams)): return lhsParams == rhsParams                
+                case (.storeItems, .storeItems): return true                
+                case (.storeDetails, .storeDetails): return true                
                 case (.storedItems, .storedItems): return true                
-                case (let .storedDetails(lhsParams), let .storedDetails(rhsParams)): return lhsParams == rhsParams                 
+                case (.storedDetails, .storedDetails): return true                 
                 default: return false   
             }
         }

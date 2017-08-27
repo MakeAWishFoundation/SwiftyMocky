@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Mocky'
-  s.version          = '0.0.1'
+  s.version          = '0.0.2'
   s.summary          = 'Unit testing library for Swift'
   s.description      = <<-DESC
 Library that uses metaprogramming technique, to generate mocks based on sources, that makes testing for Swift Mockito-like.

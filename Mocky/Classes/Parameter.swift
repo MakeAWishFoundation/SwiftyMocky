@@ -12,7 +12,7 @@ public enum Parameter<ValueType> {
     case any
     case value(ValueType)
     
-    static func ==(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>) -> Bool {
+    public static func ==(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>) -> Bool {
         switch (lhs, rhs) {
         default: return true
         }
@@ -21,7 +21,7 @@ public enum Parameter<ValueType> {
 
 public extension Parameter where ValueType : Sequence {
     
-    static func ==<ValueType: Equatable>(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>) -> Bool {
+    public static func ==<ValueType: Equatable>(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>) -> Bool {
         switch (lhs, rhs) {
         case (.any, _): return true
         case (_, .any): return true
@@ -31,14 +31,14 @@ public extension Parameter where ValueType : Sequence {
         }
     }
     
-    static func ==(lhs:Parameter<ValueType>, rhs: Parameter<ValueType>) -> Bool {
+    public static func ==(lhs:Parameter<ValueType>, rhs: Parameter<ValueType>) -> Bool {
         return true
     }
 }
 
 public extension Parameter where ValueType: Equatable {
     
-    static func ==(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>) -> Bool {
+    public static func ==(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>) -> Bool {
         switch (lhs, rhs) {
         case (.any, _): return true
         case (_, .any): return true

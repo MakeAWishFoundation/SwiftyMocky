@@ -50,7 +50,7 @@ class ItemsModelMock: ItemsModel, Mock {
             switch (lhs, rhs) {
 
                 case (.getExampleItems, .getExampleItems): return true                
-                case (let .getItemDetails(lhsParams), let .getItemDetails(rhsParams)): return lhsParams == rhsParams                 
+                case (.getItemDetails, .getItemDetails): return true                 
                 default: return false   
             }
         }

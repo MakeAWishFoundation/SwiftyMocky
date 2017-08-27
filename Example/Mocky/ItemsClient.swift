@@ -12,6 +12,7 @@ import RxSwift
 protocol ItemsClient {
     func getExampleItems() -> Observable<[Item]>
     func getItemDetails(item: Item) -> Observable<ItemDetails>
+    func update(item: Item, withLimit limit: Decimal, expirationDate date: Date?) -> Single<Void>
 }
 
 class ConcreteItemsClient: ItemsClient {
@@ -23,6 +24,10 @@ class ConcreteItemsClient: ItemsClient {
     func getItemDetails(item: Item) -> Observable<ItemDetails> {
         let itemDetails = ItemDetails(item: item, price: 90, description: [:])
         return Observable.just(itemDetails)
+    }
+
+    func update(item: Item, withLimit limit: Decimal, expirationDate date: Date?) -> Single<Void> {
+        return Single.just()
     }
     
 }

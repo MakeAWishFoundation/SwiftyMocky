@@ -10,7 +10,7 @@ import Foundation
 
 public extension String {
     
-    init<Subject>(caseName subject: Subject){
+    public init<Subject>(caseName subject: Subject){
         var raw = String(reflecting: subject)
         if let dotRange = raw.range(of: "(") {
             raw.removeSubrange(dotRange.lowerBound ..< raw.endIndex)

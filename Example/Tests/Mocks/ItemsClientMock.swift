@@ -33,16 +33,23 @@ class ItemsClientMock: ItemsClient, Mock {
         return methodReturnValue(.getItemDetails(item: .value(item))) as! Observable<ItemDetails> 
     }
     
+    func update(item: Item, withLimit limit: Decimal, expirationDate date: Date?) -> Single<Void> {
+        addInvocation(.update(item: .value(item), limit: .value(limit), date: .value(date)))
+        return methodReturnValue(.update(item: .value(item), limit: .value(limit), date: .value(date))) as! Single<Void> 
+    }
+    
     enum MethodType: Equatable {
 
         case getExampleItems    
-        case getItemDetails(item : Parameter<Item>)     
+        case getItemDetails(item : Parameter<Item>)    
+        case update(item : Parameter<Item>,limit : Parameter<Decimal>,date : Parameter<Date?>)     
     
         static func ==(lhs: MethodType, rhs: MethodType) -> Bool {
             switch (lhs, rhs) {
 
                 case (.getExampleItems, .getExampleItems): return true                
-                case (let .getItemDetails(lhsParams), let .getItemDetails(rhsParams)): return lhsParams == rhsParams                 
+                case (.getItemDetails, .getItemDetails): return true                
+                case (.update, .update): return true                 
                 default: return false   
             }
         }
@@ -58,6 +65,10 @@ class ItemsClientMock: ItemsClient, Mock {
         
         static func getItemDetails(item: Parameter<Item>, willReturn: Observable<ItemDetails>) -> MethodProxy {
             return MethodProxy(method: .getItemDetails(item: item), returns: willReturn)
+        }
+        
+        static func update(item: Parameter<Item>, limit: Parameter<Decimal>, date: Parameter<Date?>, willReturn: Single<Void>) -> MethodProxy {
+            return MethodProxy(method: .update(item: item, limit: limit, date: date), returns: willReturn)
         }
          
     }
