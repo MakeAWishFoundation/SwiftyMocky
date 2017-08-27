@@ -123,17 +123,17 @@ For now there is a way to autogenerate mocks, you just need to create mock file,
 
 ## Roadmap 
 
-[x] stubbibg protocols in elegant way
-[x] template for generating mocks 
-[x] example project
-[ ] method signature generation without name conflicts 
-[x] stubbing protocols with variables ( for now, IUO and Optional types are supported) 
-[ ] refactor .swifttemplate to .stencil template, to improve performance of generation
-[ ] cover 95% of framework codebase with unit tests 
-[ ] add unit tests for template
-[ ] support for tvOS, Linux and MacOS
-[ ] Swift Package Manager support 
-[ ] Carthage support 
+- [x] stubbibg protocols in elegant way
+- [x] template for generating mocks 
+- [x] example project
+- [x] stubbing protocols with variables ( for now, IUO and Optional types are supported) 
+- [ ] method signature generation without name conflicts 
+- [ ] cover 95% of framework codebase with unit tests 
+- [ ] refactor .swifttemplate to .stencil template, to improve performance of generation
+- [ ] add unit tests for template
+- [ ] support for tvOS, Linux and MacOS
+- [ ] Swift Package Manager support 
+- [ ] Carthage support 
 
 ## Example
 
