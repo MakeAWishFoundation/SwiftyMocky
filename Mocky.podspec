@@ -9,16 +9,9 @@
 Pod::Spec.new do |s|
   s.name             = 'Mocky'
   s.version          = '0.1.0'
-  s.summary          = 'A short description of Mocky.'
-
-# This description is used to generate tags and improve search results.
-#   * Think: What does it do? Why did you write it? What is the focus?
-#   * Try to keep it short, snappy and to the point.
-#   * Write the description between the DESC delimiters below.
-#   * Finally, don't worry about the indent, CocoaPods strips it!
-
+  s.summary          = 'Unit testing library for Swift'
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
+Library that uses metaprogramming technique, to generate mocks based on sources, that makes testing for Swift Mockito-like.
                        DESC
 
   s.homepage         = 'https://github.com/Przemysław Wośko/Mocky'
@@ -26,7 +19,6 @@ TODO: Add long description of the pod here.
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Przemysław Wośko' => 'przemyslaw.wosko@intive.com' }
   s.source           = { :git => 'https://github.com/Przemysław Wośko/Mocky.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '8.0'
 

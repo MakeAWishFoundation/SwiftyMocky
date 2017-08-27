@@ -1,0 +1,3 @@
+task :mock do 
+	sh "Pods/Sourcery/bin/sourcery --sources ./Mocky --sources ./Tests --templates ../Mocky/Templates --output Tests --disableCache --verbose --watch"
+end  

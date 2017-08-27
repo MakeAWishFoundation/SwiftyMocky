@@ -15,40 +15,65 @@ import RxSwift
 // sourcery: mock = "ItemsRepository"
 class ItemsRepositoryMock: ItemsRepository, Mock {
 // sourcery:inline:auto:ItemsRepositoryMock.autoMocked
+    //swiftlint:disable force_cast
 
     var invocations = [MethodType]()
     var methodReturnValues: [MethodProxy] = []
 
-
-    func storeItems(items: [Item]) {  addInvocation(.storeItems(items: .value(items)))  }    
-    func storeDetails(details: ItemDetails) {  addInvocation(.storeDetails(details: .value(details)))  }    
-    func storedItems() -> [Item]? {  addInvocation(.storedItems)  ; return methodReturnValue(.storedItems) as! [Item]?   }    
-    func storedDetails(item: Item) -> ItemDetails? {  addInvocation(.storedDetails(item: .value(item)))  ; return methodReturnValue(.storedDetails(item: .value(item))) as! ItemDetails?   }     
+    //MARK : ItemsRepository
 
 
-    enum MethodType : Equatable {
+    func storeItems(items: [Item]) {
+        addInvocation(.storeItems(items: .value(items)))
+        
+    }
+    
+    func storeDetails(details: ItemDetails) {
+        addInvocation(.storeDetails(details: .value(details)))
+        
+    }
+    
+    func storedItems() -> [Item]? {
+        addInvocation(.storedItems)
+        return methodReturnValue(.storedItems) as! [Item]? 
+    }
+    
+    func storedDetails(item: Item) -> ItemDetails? {
+        addInvocation(.storedDetails(item: .value(item)))
+        return methodReturnValue(.storedDetails(item: .value(item))) as! ItemDetails? 
+    }
+    
+    enum MethodType: Equatable {
 
-        case storeItems(items : Parameter<[Item]>)        
-        case storeDetails(details : Parameter<ItemDetails>)        
-        case storedItems        
-        case storedDetails(item : Parameter<Item>)         
+        case storeItems(items : Parameter<[Item]>)    
+        case storeDetails(details : Parameter<ItemDetails>)    
+        case storedItems    
+        case storedDetails(item : Parameter<Item>)     
     
         static func ==(lhs: MethodType, rhs: MethodType) -> Bool {
             switch (lhs, rhs) {
 
-                case (let .storeItems(lhsParams), let .storeItems(rhsParams)): return lhsParams == rhsParams            
-                case (let .storeDetails(lhsParams), let .storeDetails(rhsParams)): return lhsParams == rhsParams            
-                case (.storedItems, .storedItems): return true            
-                case (let .storedDetails(lhsParams), let .storedDetails(rhsParams)): return lhsParams == rhsParams             
-                default: return false    
+                case (let .storeItems(lhsParams), let .storeItems(rhsParams)): return lhsParams == rhsParams                
+                case (let .storeDetails(lhsParams), let .storeDetails(rhsParams)): return lhsParams == rhsParams                
+                case (.storedItems, .storedItems): return true                
+                case (let .storedDetails(lhsParams), let .storedDetails(rhsParams)): return lhsParams == rhsParams                 
+                default: return false   
             }
         }
     }
 
     struct MethodProxy {
-        var method: MethodType
-        var returns: Any?
+        var method: MethodType 
+        var returns: Any? 
 
+        static func storeItems(items: Parameter<[Item]>, willReturn: Void) -> MethodProxy {
+            return MethodProxy(method: .storeItems(items: items), returns: willReturn)
+        }
+        
+        static func storeDetails(details: Parameter<ItemDetails>, willReturn: Void) -> MethodProxy {
+            return MethodProxy(method: .storeDetails(details: details), returns: willReturn)
+        }
+        
         static func storedItems(willReturn: [Item]?) -> MethodProxy {
             return MethodProxy(method: .storedItems, returns: willReturn)
         }
@@ -59,7 +84,6 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
          
     }
 
-
     private func methodReturnValue(_ method: MethodType) -> Any? {
         let all = methodReturnValues.filter({ proxy -> Bool in
             return proxy.method == method
@@ -67,5 +91,5 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
 
         return all.last?.returns
     }
-// sourcery:end
+/ sourcery:end
 }

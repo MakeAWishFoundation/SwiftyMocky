@@ -15,33 +15,43 @@ import RxSwift
 // sourcery: mock = "ItemsModel"
 class ItemsModelMock: ItemsModel, Mock {
 // sourcery:inline:auto:ItemsModelMock.autoMocked
+    //swiftlint:disable force_cast
 
     var invocations = [MethodType]()
     var methodReturnValues: [MethodProxy] = []
 
-
-    func getExampleItems() -> Observable<[Item]> {  addInvocation(.getExampleItems)  ; return methodReturnValue(.getExampleItems) as! Observable<[Item]>   }    
-    func getItemDetails(item: Item) -> Observable<ItemDetails> {  addInvocation(.getItemDetails(item: .value(item)))  ; return methodReturnValue(.getItemDetails(item: .value(item))) as! Observable<ItemDetails>   }     
+    //MARK : ItemsModel
 
 
-    enum MethodType : Equatable {
 
-        case getExampleItems        
-        case getItemDetails(item : Parameter<Item>)         
+    func getExampleItems() -> Observable<[Item]> {
+        addInvocation(.getExampleItems)
+        return methodReturnValue(.getExampleItems) as! Observable<[Item]> 
+    }
+    
+    func getItemDetails(item: Item) -> Observable<ItemDetails> {
+        addInvocation(.getItemDetails(item: .value(item)))
+        return methodReturnValue(.getItemDetails(item: .value(item))) as! Observable<ItemDetails> 
+    }
+    
+    enum MethodType: Equatable {
+
+        case getExampleItems    
+        case getItemDetails(item : Parameter<Item>)     
     
         static func ==(lhs: MethodType, rhs: MethodType) -> Bool {
             switch (lhs, rhs) {
 
-                case (.getExampleItems, .getExampleItems): return true            
-                case (let .getItemDetails(lhsParams), let .getItemDetails(rhsParams)): return lhsParams == rhsParams             
-                default: return false    
+                case (.getExampleItems, .getExampleItems): return true                
+                case (let .getItemDetails(lhsParams), let .getItemDetails(rhsParams)): return lhsParams == rhsParams                 
+                default: return false   
             }
         }
     }
 
     struct MethodProxy {
-        var method: MethodType
-        var returns: Any?
+        var method: MethodType 
+        var returns: Any? 
 
         static func getExampleItems(willReturn: Observable<[Item]>) -> MethodProxy {
             return MethodProxy(method: .getExampleItems, returns: willReturn)
@@ -52,7 +62,6 @@ class ItemsModelMock: ItemsModel, Mock {
         }
          
     }
-
 
     private func methodReturnValue(_ method: MethodType) -> Any? {
         let all = methodReturnValues.filter({ proxy -> Bool in

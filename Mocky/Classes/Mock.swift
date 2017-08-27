@@ -7,8 +7,9 @@
 //
 
 import Foundation
+import XCTest
 
-public protocol Mock: class {
+public protocol Mock: class, Veryfiable {
     associatedtype MethodType: Equatable
     associatedtype MethodProxy
     
@@ -30,5 +31,12 @@ public extension Mock {
     
     func given(_ method: MethodProxy) {
         methodReturnValues.append(method)
+    }
+}
+
+public extension Mock {
+    func verify(_ method: MethodType, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method)
+        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
     }
 }

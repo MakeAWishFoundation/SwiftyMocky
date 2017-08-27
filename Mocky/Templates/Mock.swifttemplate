@@ -1,6 +1,17 @@
+<%# Constructs equal case for method -%>
+<%
+func equalCase(_ method: SourceryRuntime.Method) -> String {    
+    if method.parameters.isEmpty {
+        return "case (.\(method.shortName), .\(method.shortName)): return true"
+    } else {
+        return "case (let .\(method.shortName)(lhsParams), let .\(method.shortName)(rhsParams)): return lhsParams == rhsParams"
+    }
+}
+-%>
+
 <%# Constructs proxy for given paraeteters and return type -%>
 <%
-func proxyConstructor(_ method: Method) -> String {    
+func proxyConstructor(_ method: SourceryRuntime.Method) -> String {    
     if method.parameters.isEmpty {
         return "return MethodProxy(method: .\(method.shortName), returns: willReturn)"
     } else {
@@ -9,20 +20,20 @@ func proxyConstructor(_ method: Method) -> String {
     }
 }
 -%>
-<%# Constructs profy method name for given method -%>
+<%# Constructs proxy method name for given method -%>
 <% 
-func proxyConstructorName(_ method: Method) -> String {
+func proxyConstructorName(_ method: SourceryRuntime.Method) -> String {
     if method.parameters.isEmpty {
-        return "static func \(method.shortName)(willReturn: \(method.returnTypeName)) -> MethodProxy {"
+        return "static func \(method.shortName)(willReturn: \(method.returnTypeName)) -> MethodProxy"
     } else {
         let functionParameters = method.parameters.map { "\($0.name): Parameter<\($0.typeName)>" }.joined(separator: ", ")
-        return "static func \(method.shortName)(\(functionParameters), willReturn: \(method.returnTypeName)) -> MethodProxy {"
+        return "static func \(method.shortName)(\(functionParameters), willReturn: \(method.returnTypeName)) -> MethodProxy"
     }
 }   
 -%>
 <%# Constructs enumerated method name and parameters -%>
 <%
-func methodDeclarationWithParameters(_ method: Method) -> String {
+func methodDeclarationWithParameters(_ method: SourceryRuntime.Method) -> String {
 
     if method.parameters.isEmpty {
         return method.shortName
@@ -34,23 +45,17 @@ func methodDeclarationWithParameters(_ method: Method) -> String {
     return "\(method.shortName)(\(parameters))"
 }
 -%>
+
+
 <%# Constructs default method implementation -%>
 <%# Example: addInvocation(.simpleCall(parameter: .value(parameter))) -%>
 <% 
-func methodImplementation(_ method: Method) -> String {
+func methodImplementation(_ method: SourceryRuntime.Method) -> String {
     var array: [String] = []
     if method.returnTypeName.isVoid {
         array.append("func \(method.name) {")
     } else {
         array.append("func \(method.name) -> \(method.returnTypeName.name) {")
-    }
-    
-    if method.parameters.isEmpty {
-        array.append("addInvocation(.\(method.shortName))")
-    } else {
-        let parameters = method.parameters.map { "\($0.name): .value(\($0.name)" }.joined(separator: ", ")
-        let methodInvocation = "addInvocation(.\(method.shortName)(\(parameters))))"
-        array.append(methodInvocation)
     }
     
     if !method.returnTypeName.isVoid {
@@ -67,57 +72,94 @@ func methodImplementation(_ method: Method) -> String {
     return array.joined(separator: "  ")
 }
 -%>
-<%# case equality check generation for given method -%>
-<%
-func caseEqualityForMethod(_ method: Method) -> String {
-    if method.parameters.isEmpty {
-        return "(.\(method.shortName), .\(method.shortName)): return true"
+
+<%# Constructs default method implementation prototype -%>
+<%# Example: func getExampleItem(some: Parameter) -> Item -%>
+<% 
+func stubPrototype(_ method: SourceryRuntime.Method) -> String {
+    var array: [String] = []
+    if method.returnTypeName.isVoid {
+        return "func \(method.name) "
     } else {
-        return "(let .\(method.shortName)(lhsParams), let .\(method.shortName)(rhsParams)): return lhsParams == rhsParams"
+        return "func \(method.name) -> \(method.returnTypeName.name) "
     }
 }
 -%>
+
+<%# Constructs adding invocation to invocations list -%>
+<%# Example: func getExampleItem(some: Parameter) -> Item -%>
+<% 
+func addInvocation(_ method: SourceryRuntime.Method) -> String {
+    if method.parameters.isEmpty {
+        return "addInvocation(.\(method.shortName))"
+    } else {
+        let parameters = method.parameters.map { "\($0.name): .value(\($0.name)" }.joined(separator: ", ")
+        return "addInvocation(.\(method.shortName)(\(parameters))))"
+    }
+}
+-%>
+
+<%# Constructs default method implementation prototype -%>
+<%# Example: func getExampleItem(some: Parameter) -> Item -%>
+<% 
+func retrunIfNeeded(_ method: SourceryRuntime.Method) -> String {
+    guard !method.returnTypeName.isVoid else { return "" }
+    if method.parameters.isEmpty {
+        return "return methodReturnValue(.\(method.shortName)) as! \(method.returnTypeName) "
+    } else {
+        let parameters = method.parameters.map { "\($0.name): .value(\($0.name)" }.joined(separator: ", ")
+        return "return methodReturnValue(.\(method.shortName)(\(parameters)))) as! \(method.returnTypeName) "        
+    } 
+}
+-%>
+
+
+
 <% for type in types.all {  
     guard let protocolToDecorate = type.annotations["mock"] as? String else { continue } 
     if let aProtocol = types.protocols.first(where: { $0.name == protocolToDecorate }) { -%>
     // sourcery:inline:auto:<%= type.name %>.autoMocked
+    //swiftlint:disable force_cast
 
-    var invocations = [ParameterType]()
+    var invocations = [MethodType]()
     var methodReturnValues: [MethodProxy] = []
 
-    <%_ for method in aProtocol.methods { %>
-    <%= methodImplementation(method) -%>
-    <%  } %> 
-    <%_ -%>
+    //MARK : <%= aProtocol.name %>
 
+    <%_ for method in aProtocol.allMethods { %>
+    <%= stubPrototype(method) _%> {
+        <%= addInvocation(method) _%> 
+        <%= retrunIfNeeded(method) _%> 
+    }
+    <%  } %> <%_ -%>
 
-    enum ParameterType : Equatable {
-        <%_ for method in aProtocol.methods { %>
+    enum MethodType: Equatable {
+    <%_ for method in aProtocol.allMethods { _%>
         case <%= methodDeclarationWithParameters(method) -%>
-        <%  } %> 
-    
-        static func ==(lhs: ParameterType, rhs: ParameterType) -> Bool {
+    <%  } %> 
+    <%_ -%>    
+        static func ==(lhs: MethodType, rhs: MethodType) -> Bool {
             switch (lhs, rhs) {
-            <%_ for method in aProtocol.methods { _%>
-                case <%= caseEqualityForMethod(method) -%>
-            <%  } %> 
-                default: return false    
+                <%_ for method in aProtocol.allMethods { %>
+                <%= equalCase(method) -%>
+                <%  } %> 
+                <%_ -%>
+                default: return false   
             }
         }
     }
 
     struct MethodProxy {
-        var method: ParameterType
-        var returns: Any?
-        <%_ let returnMethods = aProtocol.methods.filter { !$0.returnTypeName.isVoid }; for method in returnMethods { %>
-        <%= proxyConstructorName(method) _%>
+        var method: MethodType 
+        var returns: Any? 
+        <%_ for method in aProtocol.methods { %>
+        <%= proxyConstructorName(method) -%> {
             <%= proxyConstructor(method) _%>
         }
-        <%  } %> 
+        <%  } %> <%_ -%> 
     }
 
-
-    private func methodReturnValue(_ method: ParameterType) -> Any? {
+    private func methodReturnValue(_ method: MethodType) -> Any? {
         let all = methodReturnValues.filter({ proxy -> Bool in
             return proxy.method == method
         })
