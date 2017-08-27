@@ -1,88 +1,124 @@
 # Mocky
 
-Lightweight, strongly typed framework for Mockito-like unit testing experience. Becaue Swift doesn't support reflection as weel as we could build mocks in runtime, library depends on Sourcery, that scans your source code, applies your personal templates and generates Swift code for you, allowing you to use meta-programming techniques to save time.
+Lightweight, strongly typed framework for Mockito-like unit testing experience. Becaue Swift doesn't support reflection as well as we could build mocks in runtime, library depends on Sourcery, that scans your source code and generates Swift code for you.
 
 ## Current version
-Master branch is still in beta, breaking changes are possible, but contecpt of wrapping method, return types and parameters in enums stays in place ;) 
+Master branch is still in beta, breaking changes are possible.
 
 ## Idea
 
 Mokcy is designed to mock protocols. For example: 
 
-```ExampleProtocol.swift
-
-protocol ExampleProtocol {
-simpleMehtod(param: String) -> String? 
+``` 
+protocol ItemsModel: class {
+    func getExampleItems() -> Observable<[Item]>
+    func getItemDetails(item: Item) -> Observable<ItemDetails>
 }
 ```
-will be interpreted as: 
-
-```ExampleProtocolMock.swift
-class ExampleProtocolMock: ExampleProtocol, Mock {
-var returnValues: [ReturnType] = []
-var invocations = [MethodType]()
-
-func simpleMethod(param: String) -> String? {
-addInvocation(.simpleMethod(param: .value(param)))
-reutrn returnValue(.simpleMethod)
-}
-
-enum SignatureType {
-case simpleMethod
-}
-
-enum MethodType : Equatable {
-
-case simpleMethod(items : Prameter<String>)      
-
-static func ==(lhs: MethodType, rhs: MethodType) -> Bool {
-switch (lhs, rhs) {
-case (let .simpleMethod(lhsParams), let .simpleMethod(rhsParams)): return lhsParams == rhsParams              
-default: return false    
-}
-}
-}
-
-enum ReturnType: AutoValue {  
-case simpleMethod(returns: String?)    
-}
+for this protocol, generated mock looks like: 
 
 ```
+// sourcery: mock = "ItemsModel"
+class ItemsModelMock: ItemsModel, Mock {
+// sourcery:inline:auto:ItemsModelMock.autoMocked
+    //swiftlint:disable force_cast
 
+    var invocations = [MethodType]()
+    var methodReturnValues: [MethodProxy] = []
+
+    //MARK : ItemsModel  
+
+    func getExampleItems() -> Observable<[Item]> {
+        addInvocation(.getExampleItems)
+        return methodReturnValue(.getExampleItems) as! Observable<[Item]> 
+    }
+    
+    func getItemDetails(item: Item) -> Observable<ItemDetails> {
+        addInvocation(.getItemDetails(item: .value(item)))
+        return methodReturnValue(.getItemDetails(item: .value(item))) as! Observable<ItemDetails> 
+    }
+    
+    enum MethodType: Equatable {
+
+        case getExampleItems    
+        case getItemDetails(item : Parameter<Item>)     
+    
+        static func ==(lhs: MethodType, rhs: MethodType) -> Bool {
+            switch (lhs, rhs) {
+
+                case (.getExampleItems, .getExampleItems): return true                
+                case (let .getItemDetails(lhsParams), let .getItemDetails(rhsParams)): return lhsParams == rhsParams                 
+                default: return false   
+            }
+        }
+    }
+
+    struct MethodProxy {
+        var method: MethodType 
+        var returns: Any? 
+
+        static func getExampleItems(willReturn: Observable<[Item]>) -> MethodProxy {
+            return MethodProxy(method: .getExampleItems, returns: willReturn)
+        }
+        
+        static func getItemDetails(item: Parameter<Item>, willReturn: Observable<ItemDetails>) -> MethodProxy {
+            return MethodProxy(method: .getItemDetails(item: item), returns: willReturn)
+        }
+         
+    }
+
+    private func methodReturnValue(_ method: MethodType) -> Any? {
+        let all = methodReturnValues.filter({ proxy -> Bool in
+            return proxy.method == method
+        })
+
+        return all.last?.returns
+    }
+// sourcery:end
+}
+```
 
 ## Usage 
 
-ExampleProtocolMock can be used for stubbibg return value and veryfying invocations of methods
+ItemsModelMock can be used for stubbibg return value and veryfying invocations of methods
 
-example test: 
+example test that uses generated mock: 
 ```
-func test_someTest() {
-exampleProtocolMock.given(.simpleMethod(returns: nil))
-
-sut.magicCall()
-
-Verify(exampleProtocolMock, .simpleMethod(param: .value("passed parameter")))
-Verify(exampleProtocolMock, .simpleMethod(param: .any))
-Verify(exampleProtocolMock, .simpleMethod)
+class ItemsViewModelTests: XCTestCase {
+    
+    var sut: ItemsViewModel!
+    var itemsModelMock: ItemsModelMock!
+    
+    override func setUp() {
+        super.setUp()
+        itemsModelMock = ItemsModelMock()
+        sut = ItemsViewModel(itemsModel: itemsModelMock)
+    }
+    
+    override func tearDown() {
+        itemsModelMock = nil
+        sut = nil
+        super.tearDown()
+    }
+    
+    func test_fetchItems() {
+        itemsModelMock.given(.getExampleItems(willReturn: Observable.just([]) ))
+        sut.fetchData()
+        Verify(itemsModelMock, .getExampleItems)
+    }
 }
-
 ```
 
-Verifying can be done for: 
-- method invocation  
-- method with parameters with skipped parameters by passing .any for non comparable params
-- method invocation with parameters that are comparable 
+For more examples, check out our example project. 
 
-## Auto generation of mocks 
+## Mocks generation 
+
+There are some ways to generate mocks: 
+1) in `watch` mode 
+Changed methods will be reflected in mocks, after generation of mock, 
 For now there is a way to autogenerate mocks, you just need to create mock file, and add sourcert annotation
-```
-// sourcery: mock = "ExampleProtocol"
-class ExampleProtocolMock: ExampleProtocol, Mock {}
-```
-
-after generation this code will be replaced with code as for example above, and for changed ExampleProtocol, any changes will be applied to generated code after new generation
-
-Due to generation time that takes 8 - 21 seconds, it's reccomended to manually run generating script. For futher versions and .stencil template it can be automatically runned as pre build phrase
+2) mocks generated manually 
+3) build script
 
 
 ## Roadmap 
@@ -90,15 +126,14 @@ Due to generation time that takes 8 - 21 seconds, it's reccomended to manually r
 [x] stubbibg protocols in elegant way
 [x] template for generating mocks 
 [x] example project
-[ ] think of method signature generation without name conflicts 
-[ ] stubbing protocols with variables 
-[ ] refactor .swifttemplate to .stencil template, to improve speed of generating (it will take less than 1 second for even projects with 1M LOC )
-[ ] cover 90% of framework code with unit tests 
-
-[![CI Status](http://img.shields.io/travis/Przemysław Wośko/Mocky.svg?style=flat)](https://travis-ci.org/Przemysław Wośko/Mocky)
-[![Version](https://img.shields.io/cocoapods/v/Mocky.svg?style=flat)](http://cocoapods.org/pods/Mocky)
-[![License](https://img.shields.io/cocoapods/l/Mocky.svg?style=flat)](http://cocoapods.org/pods/Mocky)
-[![Platform](https://img.shields.io/cocoapods/p/Mocky.svg?style=flat)](http://cocoapods.org/pods/Mocky)
+[ ] method signature generation without name conflicts 
+[x] stubbing protocols with variables ( for now, IUO and Optional types are supported) 
+[ ] refactor .swifttemplate to .stencil template, to improve performance of generation
+[ ] cover 95% of framework codebase with unit tests 
+[ ] add unit tests for template
+[ ] support for tvOS, Linux and MacOS
+[ ] Swift Package Manager support 
+[ ] Carthage support 
 
 ## Example
 
@@ -120,6 +155,10 @@ pod "Mocky"
 ## Author
 
 Przemysław Wośko, przemyslaw.wosko@intive.com
+
+## Contributors 
+
+Andrzej Michnia, andrzej.michnia@intive.com
 
 ## License
 
