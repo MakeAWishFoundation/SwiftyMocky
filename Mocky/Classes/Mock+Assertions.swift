@@ -9,12 +9,6 @@
 import Foundation
 import XCTest
 
-public protocol Veryfiable: class {
-    associatedtype MethodType
-    func verify(_ method: MethodType, count: UInt, file: StaticString, line: UInt)
-    func matchingCalls(_ method: MethodType) -> [MethodType]
-}
-
 // This solution works, and looks better, but autocomplete messing with types
 public func Verify<T: Mock>(_ object: T, _ method: T.MethodType, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
     let invocations = object.matchingCalls(method)

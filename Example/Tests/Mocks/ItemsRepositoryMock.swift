@@ -91,5 +91,10 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
 
         return all.last?.returns
     }
+    
+    public func verify(_ method: MethodType, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method)
+        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    }
 // sourcery:end
 }

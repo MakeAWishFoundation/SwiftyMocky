@@ -9,12 +9,16 @@
 import Foundation
 import XCTest
 
-public protocol Mock: class, Veryfiable {
+public protocol Mock: class {
     associatedtype MethodType: Equatable
     associatedtype MethodProxy
     
     var invocations: [MethodType] { get set }
     var methodReturnValues: [MethodProxy] { get set }
+
+    func addInvocation(_ call: MethodType)
+    func matchingCalls(_ method: MethodType) -> [MethodType]
+    func given(_ method: MethodProxy)
 }
 
 public extension Mock {
@@ -31,12 +35,5 @@ public extension Mock {
     
     public func given(_ method: MethodProxy) {
         methodReturnValues.append(method)
-    }
-}
-
-public extension Mock {
-    public func verify(_ method: MethodType, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
-        let invocations = matchingCalls(method)
-        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
     }
 }
