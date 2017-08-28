@@ -20,20 +20,3 @@ public protocol Mock: class {
     func matchingCalls(_ method: MethodType) -> [MethodType]
     func given(_ method: MethodProxy)
 }
-
-public extension Mock {
-    public func addInvocation(_ call: MethodType) {
-        invocations.append(call)
-    }
-
-    public func matchingCalls(_ method: MethodType) -> [MethodType] {
-        let matchingInvocations = invocations.filter({ (call) -> Bool in
-            return method == call
-        })
-        return matchingInvocations
-    }
-    
-    public func given(_ method: MethodProxy) {
-        methodReturnValues.append(method)
-    }
-}
