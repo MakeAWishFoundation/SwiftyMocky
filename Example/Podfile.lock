@@ -1,5 +1,5 @@
 PODS:
-  - Mocky (0.0.4):
+  - Mocky (0.1.0):
     - Sourcery
   - RxBlocking (3.5.0):
     - RxSwift (~> 3.4)
@@ -13,10 +13,10 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   Mocky:
-    :path: "../"
+    :path: ../
 
 SPEC CHECKSUMS:
-  Mocky: 6fcea561c57a45db391d538c072281b710da1957
+  Mocky: 2bf0d14d14ee5618641bada6bf34d8fb9f48788b
   RxBlocking: 471315e18b87c5ed4b9d0c69a57dfdbca5c01af1
   RxSwift: 656f8fbeca5bc372121a72d9ebdd3cd3bc0ffade
   Sourcery: c5c099c4786fed4c24febd5edb25a8ea1b45b40d

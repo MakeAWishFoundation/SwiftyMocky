@@ -8,12 +8,12 @@
 
 import Foundation
 
-struct Item {
+struct Item: AutoEquatable {
     let name: String
     let id: Int
 }
 
-struct ItemDetails {
+struct ItemDetails: AutoEquatable {
     let item: Item
     let price: Decimal
     let description: [String: String]
