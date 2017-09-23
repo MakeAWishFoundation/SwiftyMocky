@@ -17,6 +17,7 @@ protocol ItemsModel {
 
     func getExampleItems() -> Observable<[Item]>
     func getItemDetails(item: Item) -> Observable<ItemDetails>
+    func getPrice(for item: Item) -> Decimal
 }
 
 
@@ -60,5 +61,8 @@ class ConcreteItemsModel: ItemsModel {
                 })
         }
     }
-    
+
+    func getPrice(for item: Item) -> Decimal {
+        fatalError()
+    }
 }
