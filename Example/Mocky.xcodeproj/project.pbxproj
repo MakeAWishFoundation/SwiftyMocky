@@ -120,19 +120,10 @@
 		607FACD21AFB9204008FA782 /* Example for Mocky */ = {
 			isa = PBXGroup;
 			children = (
-				E46714961ECF222B00C7DAB3 /* AutoEquatable.generated.swift */,
-				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
-				607FACD71AFB9204008FA782 /* ViewController.swift */,
-				607FACD91AFB9204008FA782 /* Main.storyboard */,
-				607FACDC1AFB9204008FA782 /* Images.xcassets */,
-				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
+				CC0C8C701F76AF1100032C5E /* Mocked */,
+				CC0C8C711F76AF1800032C5E /* Other */,
+				CC0C8C6F1F76AF0200032C5E /* Resources */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
-				E46714801ECF112000C7DAB3 /* ItemsViewModel.swift */,
-				E46714821ECF116D00C7DAB3 /* ItemsModel.swift */,
-				E46714841ECF11D100C7DAB3 /* Item.swift */,
-				E46714861ECF13DE00C7DAB3 /* ItemsClient.swift */,
-				E46714881ECF140C00C7DAB3 /* ItemsRepository.swift */,
-				E46714941ECF21A600C7DAB3 /* AutoEquatable.swift */,
 			);
 			name = "Example for Mocky";
 			path = Mocky;
@@ -141,6 +132,7 @@
 		607FACD31AFB9204008FA782 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				607FACD41AFB9204008FA782 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -149,7 +141,6 @@
 		607FACE81AFB9204008FA782 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				E4B5CE721ED4618A00BCA94D /* MockyUnitTests */,
 				E467149E1ED021B200C7DAB3 /* XCTests */,
 				E467148A1ECF172500C7DAB3 /* Mocks */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
@@ -196,6 +187,38 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		CC0C8C6F1F76AF0200032C5E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				607FACD91AFB9204008FA782 /* Main.storyboard */,
+				607FACDC1AFB9204008FA782 /* Images.xcassets */,
+				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		CC0C8C701F76AF1100032C5E /* Mocked */ = {
+			isa = PBXGroup;
+			children = (
+				E46714821ECF116D00C7DAB3 /* ItemsModel.swift */,
+				E46714861ECF13DE00C7DAB3 /* ItemsClient.swift */,
+				E46714881ECF140C00C7DAB3 /* ItemsRepository.swift */,
+			);
+			name = Mocked;
+			sourceTree = "<group>";
+		};
+		CC0C8C711F76AF1800032C5E /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				E46714961ECF222B00C7DAB3 /* AutoEquatable.generated.swift */,
+				E46714941ECF21A600C7DAB3 /* AutoEquatable.swift */,
+				607FACD71AFB9204008FA782 /* ViewController.swift */,
+				E46714801ECF112000C7DAB3 /* ItemsViewModel.swift */,
+				E46714841ECF11D100C7DAB3 /* Item.swift */,
+			);
+			name = Other;
+			sourceTree = "<group>";
+		};
 		E467148A1ECF172500C7DAB3 /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
@@ -215,13 +238,6 @@
 				E46714A71ED025E400C7DAB3 /* ItemsModelTests.swift */,
 			);
 			path = XCTests;
-			sourceTree = "<group>";
-		};
-		E4B5CE721ED4618A00BCA94D /* MockyUnitTests */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = MockyUnitTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

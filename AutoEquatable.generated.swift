@@ -24,20 +24,20 @@ fileprivate func compareArrays<T>(lhs: [T], rhs: [T], compare: (_ lhs: T, _ rhs:
 
 // MARK: - AutoEquatable for classes, protocols, structs
 // MARK: - Item AutoEquatable
-extension Item: Equatable {} 
-internal func == (lhs: Item, rhs: Item) -> Bool {
-    guard lhs.name == rhs.name else { return false }
-    guard lhs.id == rhs.id else { return false }
-    return true
-}
+//extension Item: Equatable {} 
+//internal func == (lhs: Item, rhs: Item) -> Bool {
+//    guard lhs.name == rhs.name else { return false }
+//    guard lhs.id == rhs.id else { return false }
+//    return true
+//}
 // MARK: - ItemDetails AutoEquatable
-extension ItemDetails: Equatable {} 
-internal func == (lhs: ItemDetails, rhs: ItemDetails) -> Bool {
-    guard lhs.item == rhs.item else { return false }
-    guard lhs.price == rhs.price else { return false }
-    guard lhs.description == rhs.description else { return false }
-    return true
-}
+//extension ItemDetails: Equatable {} 
+//internal func == (lhs: ItemDetails, rhs: ItemDetails) -> Bool {
+//    guard lhs.item == rhs.item else { return false }
+//    guard lhs.price == rhs.price else { return false }
+//    guard lhs.description == rhs.description else { return false }
+//    return true
+//}
 
 // MARK: - AutoEquatable for Enums
 
