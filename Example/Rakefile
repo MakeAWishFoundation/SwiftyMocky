@@ -2,6 +2,7 @@ task :mock do
 	sh "Pods/Sourcery/bin/sourcery --sources ./Mocky --sources ./Tests --templates ../Mocky/Templates --output Tests --disableCache --verbose --watch"
 end  
 
-task :debug_mock do 
+task :debug do 
 	sh "Pods/Sourcery/bin/sourcery --sources ./Mocky --sources ./Tests --templates ../Mocky/Templates --output Tests --disableCache --verbose"
 end  
+
