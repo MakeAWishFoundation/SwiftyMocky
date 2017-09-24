@@ -90,7 +90,7 @@ class MethodWrapper {
     var equalCase: String {    
         get {
             if method.parameters.isEmpty {
-                return "case (.\(prototype), .\(prototype)): return true"
+                return "case (.\(prototype), .\(prototype)):"
             } else {
                 let lhsParams = method.parameters.map { "let lhs\($0.name.capitalized)" }.joined(separator: ", ")
                 let rhsParams = method.parameters.map { "let rhs\($0.name.capitalized)" }.joined(separator: ", ")
@@ -146,8 +146,9 @@ func stubProperty(_ variable: SourceryRuntime.Variable) -> String {
     if let aProtocol = types.protocols.first(where: { $0.name == protocolToDecorate }) { -%>
     // sourcery:inline:auto:<%= type.name %>.autoMocked
 
-    var invocations = [MethodType]()
+    var invocations: [MethodType] = []
     var methodReturnValues: [MethodProxy] = []
+    var matcher: Matcher = Matcher.default
 
     //MARK : <%= aProtocol.name %>
     <%_ for variable in aProtocol.allVariables { %> 
@@ -170,8 +171,8 @@ func stubProperty(_ variable: SourceryRuntime.Variable) -> String {
             switch (lhs, rhs) {
              <%_ for method in aProtocol.allMethods.map(wrapMethod) { %>
                 <%= method.equalCase -%> <% for parameter in method.parameters { %> 
-                    <%= parameter.comparator -%> <%  } %> <% } %>
-                    return true
+                    <%= parameter.comparator -%> <%  } %> 
+                    return true <% } %>
                 <%_ -%>
                 default: return false   
             }
@@ -188,12 +189,32 @@ func stubProperty(_ variable: SourceryRuntime.Variable) -> String {
         <%  } %> <%_ -%> 
     }
 
-    private func methodReturnValue(_ method: MethodType) -> Any? {
-        let all = methodReturnValues.filter({ proxy -> Bool in
-            return proxy.method == method
+    public func methodReturnValue(_ method: MethodType) -> Any? {
+        let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
+            return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
         })
 
-        return all.last?.returns
+        return matched?.returns
+    }
+
+    public func verify(_ method: MethodType, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method)
+        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    public func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+
+    public func matchingCalls(_ method: MethodType) -> [MethodType] {
+        let matchingInvocations = invocations.filter({ (call) -> Bool in
+            return MethodType.compareParameters(lhs: call, rhs: method, matcher: matcher)
+        })
+        return matchingInvocations
+    }
+    
+    public func given(_ method: MethodProxy) {
+        methodReturnValues.append(method)
     }
 
 // sourcery:end

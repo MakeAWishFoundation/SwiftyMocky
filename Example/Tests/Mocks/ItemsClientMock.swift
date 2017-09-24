@@ -15,10 +15,10 @@ import RxSwift
 // sourcery: mock = "ItemsClient"
 class ItemsClientMock: ItemsClient, Mock {
 // sourcery:inline:auto:ItemsClientMock.autoMocked
-    //swiftlint:disable force_cast
 
-    var invocations = [MethodType]()
+    var invocations: [MethodType] = []
     var methodReturnValues: [MethodProxy] = []
+    var matcher: Matcher = Matcher.default
 
     //MARK : ItemsClient
 
@@ -29,27 +29,34 @@ class ItemsClientMock: ItemsClient, Mock {
     }
     
     func getItemDetails(item: Item) -> Observable<ItemDetails> {
-        addInvocation(.getItemDetails(item: .value(item)))
-        return methodReturnValue(.getItemDetails(item: .value(item))) as! Observable<ItemDetails> 
+        addInvocation(.getItemDetails__item(.value(item)))
+        return methodReturnValue(.getItemDetails__item(.value(item))) as! Observable<ItemDetails> 
     }
     
     func update(item: Item, withLimit limit: Decimal, expirationDate date: Date?) -> Single<Void> {
-        addInvocation(.update(item: .value(item), limit: .value(limit), date: .value(date)))
-        return methodReturnValue(.update(item: .value(item), limit: .value(limit), date: .value(date))) as! Single<Void> 
+        addInvocation(.update__item_withLimit_expirationDate(.value(item), .value(limit), .value(date)))
+        return methodReturnValue(.update__item_withLimit_expirationDate(.value(item), .value(limit), .value(date))) as! Single<Void> 
     }
     
-    enum MethodType: Equatable {
+    enum MethodType {
 
         case getExampleItems    
-        case getItemDetails(item : Parameter<Item>)    
-        case update(item : Parameter<Item>,limit : Parameter<Decimal>,date : Parameter<Date?>)     
+        case getItemDetails__item(Parameter<Item>)    
+        case update__item_withLimit_expirationDate(Parameter<Item>, Parameter<Decimal>, Parameter<Date?>)     
     
-        static func ==(lhs: MethodType, rhs: MethodType) -> Bool {
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
 
-                case (.getExampleItems, .getExampleItems): return true                
-                case (.getItemDetails, .getItemDetails): return true                
-                case (.update, .update): return true                 
+                case (.getExampleItems, .getExampleItems):  
+                    return true 
+                case (.getItemDetails__item(let lhsItem), .getItemDetails__item(let rhsItem)):  
+                    guard Parameter.compare(lhs: lhsItem, rhs: rhsItem, with: matcher) else { return false }  
+                    return true 
+                case (.update__item_withLimit_expirationDate(let lhsItem, let lhsLimit, let lhsDate), .update__item_withLimit_expirationDate(let rhsItem, let rhsLimit, let rhsDate)):  
+                    guard Parameter.compare(lhs: lhsItem, rhs: rhsItem, with: matcher) else { return false }  
+                    guard Parameter.compare(lhs: lhsLimit, rhs: rhsLimit, with: matcher) else { return false }  
+                    guard Parameter.compare(lhs: lhsDate, rhs: rhsDate, with: matcher) else { return false }  
+                    return true 
                 default: return false   
             }
         }
@@ -64,21 +71,21 @@ class ItemsClientMock: ItemsClient, Mock {
         }
         
         static func getItemDetails(item: Parameter<Item>, willReturn: Observable<ItemDetails>) -> MethodProxy {
-            return MethodProxy(method: .getItemDetails(item: item), returns: willReturn)
+            return MethodProxy(method: .getItemDetails__item(item), returns: willReturn)
         }
         
         static func update(item: Parameter<Item>, limit: Parameter<Decimal>, date: Parameter<Date?>, willReturn: Single<Void>) -> MethodProxy {
-            return MethodProxy(method: .update(item: item, limit: limit, date: date), returns: willReturn)
+            return MethodProxy(method: .update__item_withLimit_expirationDate(item, limit, date), returns: willReturn)
         }
          
     }
 
-    private func methodReturnValue(_ method: MethodType) -> Any? {
-        let all = methodReturnValues.filter({ proxy -> Bool in
-            return proxy.method == method
+    public func methodReturnValue(_ method: MethodType) -> Any? {
+        let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
+            return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
         })
 
-        return all.last?.returns
+        return matched?.returns
     }
 
     public func verify(_ method: MethodType, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
@@ -92,7 +99,7 @@ class ItemsClientMock: ItemsClient, Mock {
 
     public func matchingCalls(_ method: MethodType) -> [MethodType] {
         let matchingInvocations = invocations.filter({ (call) -> Bool in
-            return method == call
+            return MethodType.compareParameters(lhs: call, rhs: method, matcher: matcher)
         })
         return matchingInvocations
     }
