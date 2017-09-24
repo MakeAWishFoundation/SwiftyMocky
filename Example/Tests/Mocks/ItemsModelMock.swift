@@ -24,11 +24,16 @@ class ItemsModelMock: ItemsModel, Mock {
     var matcher: Matcher = Matcher.default
 
     //MARK : ItemsModel
- 
-    var context: Any?     
-    var storage: Any!     
-    // var some: Any - not supported     
+
+    var context: Any?    
+    var storage: Any!    
+    // var some: Any - not supported    
     // var storedProperty: Any - not supported    
+
+            
+            
+            
+
 
     func getExampleItems() -> Observable<[Item]> {
         addInvocation(.getExampleItems)
@@ -36,54 +41,52 @@ class ItemsModelMock: ItemsModel, Mock {
     }
     
     func getItemDetails(item: Item) -> Observable<ItemDetails> {
-        addInvocation(.getItemDetails__item(.value(item)))
-        return methodReturnValue(.getItemDetails__item(.value(item))) as! Observable<ItemDetails> 
+        addInvocation(.getItemDetails__item_item_Item(.value(item)))
+        return methodReturnValue(.getItemDetails__item_item_Item(.value(item))) as! Observable<ItemDetails> 
     }
     
     func getPrice(for item: Item) -> Decimal {
-        addInvocation(.getPrice__for(.value(item)))
-        return methodReturnValue(.getPrice__for(.value(item))) as! Decimal 
+        addInvocation(.getPrice__for_item(.value(item)))
+        return methodReturnValue(.getPrice__for_item(.value(item))) as! Decimal 
     }
     
     enum MethodType {
 
         case getExampleItems    
-        case getItemDetails__item(Parameter<Item>)    
-        case getPrice__for(Parameter<Item>)     
-    
+        case getItemDetails__item_item_Item(Parameter<Item>)    
+        case getPrice__for_item(Parameter<Item>)    
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
 
-                case (.getExampleItems, .getExampleItems):  
+                case (.getExampleItems, .getExampleItems): 
                     return true 
-                case (.getItemDetails__item(let lhsItem), .getItemDetails__item(let rhsItem)):  
-                    guard Parameter.compare(lhs: lhsItem, rhs: rhsItem, with: matcher) else { return false }  
+                case (.getItemDetails__item_item_Item(let lhsItem), .getItemDetails__item_item_Item(let rhsItem)): 
+                    guard Parameter.compare(lhs: lhsItem, rhs: rhsItem, with: matcher) else { return false } 
                     return true 
-                case (.getPrice__for(let lhsItem), .getPrice__for(let rhsItem)):  
-                    guard Parameter.compare(lhs: lhsItem, rhs: rhsItem, with: matcher) else { return false }  
+                case (.getPrice__for_item(let lhsItem), .getPrice__for_item(let rhsItem)): 
+                    guard Parameter.compare(lhs: lhsItem, rhs: rhsItem, with: matcher) else { return false } 
                     return true 
-                default: return false   
+                default: return false
             }
         }
     }
 
     struct MethodProxy {
-        var method: MethodType 
-        var returns: Any? 
+        var method: MethodType
+        var returns: Any?
 
         static func getExampleItems(willReturn: Observable<[Item]>) -> MethodProxy {
             return MethodProxy(method: .getExampleItems, returns: willReturn)
         }
         
-        static func getItemDetails(item: Parameter<Item>, willReturn: Observable<ItemDetails>) -> MethodProxy {
-            return MethodProxy(method: .getItemDetails__item(item), returns: willReturn)
+        static func getItemDetails(item item: Parameter<Item>, willReturn: Observable<ItemDetails>) -> MethodProxy {
+            return MethodProxy(method: .getItemDetails__item_item_Item(item), returns: willReturn)
         }
         
-        static func getPrice(item: Parameter<Item>, willReturn: Decimal) -> MethodProxy {
-            return MethodProxy(method: .getPrice__for(item), returns: willReturn)
+        static func getPrice(for item: Parameter<Item>, willReturn: Decimal) -> MethodProxy {
+            return MethodProxy(method: .getPrice__for_item(item), returns: willReturn)
         }
-         
-    }
+            }
 
     public func methodReturnValue(_ method: MethodType) -> Any? {
         let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
@@ -108,7 +111,7 @@ class ItemsModelMock: ItemsModel, Mock {
         })
         return matchingInvocations
     }
-    
+
     public func given(_ method: MethodProxy) {
         methodReturnValues.append(method)
     }

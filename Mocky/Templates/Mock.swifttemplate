@@ -6,13 +6,13 @@ import SourceryRuntime
 <%
 
 class ParameterWrapper {
-    let parameter: MethodParameter 
+    let parameter: MethodParameter
     init(_ parameter: SourceryRuntime.MethodParameter) {
         self.parameter = parameter
     }
 
-    var wrappedType: String { 
-        get { 
+    var wrappedType: String {
+        get {
             return "Parameter<\(parameter.typeName.name)>"
         }
     }
@@ -25,20 +25,77 @@ class ParameterWrapper {
 }
 
 class MethodWrapper {
-    let method: SourceryRuntime.Method 
+    private static var registered: [String: Int] = [:]
+    let method: SourceryRuntime.Method
 
     init(_ method: SourceryRuntime.Method) {
-        self.method = method 
+        self.method = method
+    }
+
+    func register() -> String {
+        let name = registrationName
+        if let count = MethodWrapper.registered[name] {
+            MethodWrapper.registered[name] = count + 1
+        } else {
+            MethodWrapper.registered[name] = 1
+        }
+
+        return ""
+    }
+
+    private var registrationName: String {
+        get {
+            var rawName = method.selectorName
+                .replacingOccurrences(of: "_", with: "")
+                .replacingOccurrences(of: "(", with: "__")
+                .replacingOccurrences(of: ")", with: "")
+
+            var parametersNames = method.parameters.map { "\($0.name)" }
+
+            while let range = rawName.range(of: ":"), let name = parametersNames.first {
+                parametersNames.removeFirst()
+                rawName.replaceSubrange(range, with: "_\(name)")
+            }
+
+            return rawName
+                .replacingOccurrences(of: "___", with: "__")
+                .trimmingCharacters(in: CharacterSet(charactersIn: "_"))
+        }
+    }
+
+    private var typedName: String {
+        get {
+            var rawName = method.selectorName
+                .replacingOccurrences(of: "_", with: "")
+                .replacingOccurrences(of: "(", with: "__")
+                .replacingOccurrences(of: ")", with: "")
+
+            var parametersNames = method.parameters.map { "\($0.name)_\($0.typeName.name)" }
+
+            while let range = rawName.range(of: ":"), let name = parametersNames.first {
+                parametersNames.removeFirst()
+                rawName.replaceSubrange(range, with: "_\(name)")
+            }
+
+            return rawName
+                .replacingOccurrences(of: "___", with: "__")
+                .trimmingCharacters(in: CharacterSet(charactersIn: "_"))
+        }
+    }
+
+    private var shouldUseTypeName: Bool {
+        guard let count = MethodWrapper.registered[registrationName] else { return false }
+        return count > 1
     }
 
     var prototype: String {
         get {
-            if method.parameters.isEmpty {
-                return method.shortName
+            if shouldUseTypeName {
+                return typedName
+            } else {
+                return registrationName
             }
-            let params = method.parameters.flatMap { $0.argumentLabel }.joined(separator: "_")
-            return "\(method.shortName)__\(params)"
-        }   
+        }
     }
 
     var parameters: [ParameterWrapper] {
@@ -72,8 +129,8 @@ class MethodWrapper {
             return "return methodReturnValue(.\(prototype)) as! \(method.returnTypeName) "
         } else {
             let parameters = method.parameters.map { ".value(\($0.name))" }.joined(separator: ", ")
-            return "return methodReturnValue(.\(prototype)(\(parameters))) as! \(method.returnTypeName) "        
-        } 
+            return "return methodReturnValue(.\(prototype)(\(parameters))) as! \(method.returnTypeName) "
+        }
     }
 
     func methodDeclarationWithParameters() -> String {
@@ -87,7 +144,7 @@ class MethodWrapper {
         return "\(prototype)(\(parameters))"
     }
 
-    var equalCase: String {    
+    var equalCase: String {
         get {
             if method.parameters.isEmpty {
                 return "case (.\(prototype), .\(prototype)):"
@@ -99,7 +156,7 @@ class MethodWrapper {
         }
     }
 
-    func proxyConstructor() -> String {    
+    func proxyConstructor() -> String {
         if method.parameters.isEmpty {
             return "return MethodProxy(method: .\(prototype), returns: willReturn)"
         } else {
@@ -112,26 +169,27 @@ class MethodWrapper {
         if method.parameters.isEmpty {
             return "static func \(method.shortName)(willReturn: \(method.returnTypeName)) -> MethodProxy"
         } else {
-            let functionParameters = method.parameters.map { "\($0.name): Parameter<\($0.typeName)>" }.joined(separator: ", ")
+            let functionParameters = method.parameters.map {
+                guard let argumentLabel = $0.argumentLabel else {
+                    return "\($0.name): Parameter<\($0.typeName)>"
+                }
+
+                return "\(argumentLabel) \($0.name): Parameter<\($0.typeName)>"
+            }.joined(separator: ", ")
             return "static func \(method.shortName)(\(functionParameters), willReturn: \(method.returnTypeName)) -> MethodProxy"
         }
-    }  
+    }
 }
-    
+
 func wrapMethod(_ method: SourceryRuntime.Method) -> MethodWrapper {
     return MethodWrapper(method)
 }
 
-func prototype(_ method: SourceryRuntime.Method) -> String {
-    let params = method.parameters.flatMap { $0.argumentLabel }.joined(separator: "_")
-    return "\(method.shortName)__\(params)"
-}
- 
 -%>
 
 <%# implement variable for Optional types and IUO, for other add marker that you need to implement those yourself in non-genreated code scope-%>
 <%# TODO: make examples for all types of properties with different kinds of accesors-%>
-<% 
+<%
 func stubProperty(_ variable: SourceryRuntime.Variable) -> String {
     if variable.isOptional || variable.isImplicitlyUnwrappedOptional {
         return "var \(variable.name): \(variable.typeName)"
@@ -141,8 +199,8 @@ func stubProperty(_ variable: SourceryRuntime.Variable) -> String {
 }
 -%>
 
-<% for type in types.all {  
-    guard let protocolToDecorate = type.annotations["mock"] as? String else { continue } 
+<% for type in types.all {
+    guard let protocolToDecorate = type.annotations["mock"] as? String else { continue }
     if let aProtocol = types.protocols.first(where: { $0.name == protocolToDecorate }) { -%>
     // sourcery:inline:auto:<%= type.name %>.autoMocked
 
@@ -151,42 +209,46 @@ func stubProperty(_ variable: SourceryRuntime.Variable) -> String {
     var matcher: Matcher = Matcher.default
 
     //MARK : <%= aProtocol.name %>
-    <%_ for variable in aProtocol.allVariables { %> 
+    <%_ for variable in aProtocol.allVariables { %>
     <%= stubProperty(variable) -%>
     <% } %> <%_ -%>
 
+    <%_ for method in aProtocol.allMethods.map(wrapMethod) { _%>
+        <%= method.register() -%>
+    <%  } %>
+
     <%_ for method in aProtocol.allMethods.map(wrapMethod) { %>
     <%= method.functionPrototype _%> {
-        <%= method.invocation _%> 
-        <%= method.returnValue _%> 
+        <%= method.invocation _%>
+        <%= method.returnValue _%>
     }
     <%  } %> <%_ -%>
 
     enum MethodType {
     <%_ for method in aProtocol.allMethods.map(wrapMethod) { _%>
         case <%= method.methodDeclarationWithParameters() -%>
-    <%  } %> 
-    <%_ -%>    
+    <%  } %>
+    <%_ -%>
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
              <%_ for method in aProtocol.allMethods.map(wrapMethod) { %>
-                <%= method.equalCase -%> <% for parameter in method.parameters { %> 
-                    <%= parameter.comparator -%> <%  } %> 
+                <%= method.equalCase -%> <% for parameter in method.parameters { %>
+                    <%= parameter.comparator -%> <%  } %>
                     return true <% } %>
                 <%_ -%>
-                default: return false   
+                default: return false
             }
         }
     }
 
     struct MethodProxy {
-        var method: MethodType 
-        var returns: Any? 
+        var method: MethodType
+        var returns: Any?
         <%_ for method in aProtocol.methods.map(wrapMethod) { %>
         <%= method.proxyConstructorName() -%> {
             <%= method.proxyConstructor() _%>
         }
-        <%  } %> <%_ -%> 
+        <%  } %> <%_ -%>
     }
 
     public func methodReturnValue(_ method: MethodType) -> Any? {
@@ -212,7 +274,7 @@ func stubProperty(_ variable: SourceryRuntime.Variable) -> String {
         })
         return matchingInvocations
     }
-    
+
     public func given(_ method: MethodProxy) {
         methodReturnValues.append(method)
     }

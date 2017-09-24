@@ -23,13 +23,19 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
     //MARK : ItemsRepository
 
 
+            
+            
+            
+            
+
+
     func storeItems(items: [Item]) {
-        addInvocation(.storeItems__items(.value(items)))
+        addInvocation(.storeItems__items_items(.value(items)))
         
     }
     
     func storeDetails(details: ItemDetails) {
-        addInvocation(.storeDetails__details(.value(details)))
+        addInvocation(.storeDetails__details_details(.value(details)))
         
     }
     
@@ -39,57 +45,55 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
     }
     
     func storedDetails(item: Item) -> ItemDetails? {
-        addInvocation(.storedDetails__item(.value(item)))
-        return methodReturnValue(.storedDetails__item(.value(item))) as! ItemDetails? 
+        addInvocation(.storedDetails__item_item(.value(item)))
+        return methodReturnValue(.storedDetails__item_item(.value(item))) as! ItemDetails? 
     }
     
     enum MethodType {
 
-        case storeItems__items(Parameter<[Item]>)    
-        case storeDetails__details(Parameter<ItemDetails>)    
+        case storeItems__items_items(Parameter<[Item]>)    
+        case storeDetails__details_details(Parameter<ItemDetails>)    
         case storedItems    
-        case storedDetails__item(Parameter<Item>)     
-    
+        case storedDetails__item_item(Parameter<Item>)    
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
 
-                case (.storeItems__items(let lhsItems), .storeItems__items(let rhsItems)):  
-                    guard Parameter.compare(lhs: lhsItems, rhs: rhsItems, with: matcher) else { return false }  
+                case (.storeItems__items_items(let lhsItems), .storeItems__items_items(let rhsItems)): 
+                    guard Parameter.compare(lhs: lhsItems, rhs: rhsItems, with: matcher) else { return false } 
                     return true 
-                case (.storeDetails__details(let lhsDetails), .storeDetails__details(let rhsDetails)):  
-                    guard Parameter.compare(lhs: lhsDetails, rhs: rhsDetails, with: matcher) else { return false }  
+                case (.storeDetails__details_details(let lhsDetails), .storeDetails__details_details(let rhsDetails)): 
+                    guard Parameter.compare(lhs: lhsDetails, rhs: rhsDetails, with: matcher) else { return false } 
                     return true 
-                case (.storedItems, .storedItems):  
+                case (.storedItems, .storedItems): 
                     return true 
-                case (.storedDetails__item(let lhsItem), .storedDetails__item(let rhsItem)):  
-                    guard Parameter.compare(lhs: lhsItem, rhs: rhsItem, with: matcher) else { return false }  
+                case (.storedDetails__item_item(let lhsItem), .storedDetails__item_item(let rhsItem)): 
+                    guard Parameter.compare(lhs: lhsItem, rhs: rhsItem, with: matcher) else { return false } 
                     return true 
-                default: return false   
+                default: return false
             }
         }
     }
 
     struct MethodProxy {
-        var method: MethodType 
-        var returns: Any? 
+        var method: MethodType
+        var returns: Any?
 
-        static func storeItems(items: Parameter<[Item]>, willReturn: Void) -> MethodProxy {
-            return MethodProxy(method: .storeItems__items(items), returns: willReturn)
+        static func storeItems(items items: Parameter<[Item]>, willReturn: Void) -> MethodProxy {
+            return MethodProxy(method: .storeItems__items_items(items), returns: willReturn)
         }
         
-        static func storeDetails(details: Parameter<ItemDetails>, willReturn: Void) -> MethodProxy {
-            return MethodProxy(method: .storeDetails__details(details), returns: willReturn)
+        static func storeDetails(details details: Parameter<ItemDetails>, willReturn: Void) -> MethodProxy {
+            return MethodProxy(method: .storeDetails__details_details(details), returns: willReturn)
         }
         
         static func storedItems(willReturn: [Item]?) -> MethodProxy {
             return MethodProxy(method: .storedItems, returns: willReturn)
         }
         
-        static func storedDetails(item: Parameter<Item>, willReturn: ItemDetails?) -> MethodProxy {
-            return MethodProxy(method: .storedDetails__item(item), returns: willReturn)
+        static func storedDetails(item item: Parameter<Item>, willReturn: ItemDetails?) -> MethodProxy {
+            return MethodProxy(method: .storedDetails__item_item(item), returns: willReturn)
         }
-         
-    }
+            }
 
     public func methodReturnValue(_ method: MethodType) -> Any? {
         let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
@@ -114,7 +118,7 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         })
         return matchingInvocations
     }
-    
+
     public func given(_ method: MethodProxy) {
         methodReturnValues.append(method)
     }

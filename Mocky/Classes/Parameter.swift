@@ -35,7 +35,7 @@ public class Matcher {
 }
 
 public enum Parameter<ValueType> {
-    case any
+    case any(ValueType.Type)
     case value(ValueType)
     
     public static func ==(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>) -> Bool {
