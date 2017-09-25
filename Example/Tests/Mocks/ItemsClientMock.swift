@@ -83,6 +83,23 @@ class ItemsClientMock: ItemsClient, Mock {
         }
             }
 
+    struct VerificationProxy {
+        var method: MethodType
+
+
+        static func getExampleItems() -> VerificationProxy {
+            return VerificationProxy(method: .getExampleItems)
+        }
+        
+        static func getItemDetails(item item: Parameter<Item>) -> VerificationProxy {
+            return VerificationProxy(method: .getItemDetails__item_item(item))
+        }
+        
+        static func update(item item: Parameter<Item>, withLimit limit: Parameter<Decimal>, expirationDate date: Parameter<Date?>) -> VerificationProxy {
+            return VerificationProxy(method: .update__item_itemwithLimit_limitexpirationDate_date(item, limit, date))
+        }
+            }
+
     public func methodReturnValue(_ method: MethodType) -> Any? {
         let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
             return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
@@ -91,7 +108,8 @@ class ItemsClientMock: ItemsClient, Mock {
         return matched?.returns
     }
 
-    public func verify(_ method: MethodType, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+    public func verify(_ method: VerificationProxy, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+        let method = method.method
         let invocations = matchingCalls(method)
         XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
     }

@@ -44,7 +44,7 @@ class ConcreteItemsModel: ItemsModel {
         } else {
             return itemsClient.getExampleItems()
                 .flatMap({ [weak self] (newItems) -> Observable<[Item]> in
-                self?.itemsRepository.storeItems(items: [])
+                self?.itemsRepository.storeItems(items: newItems)
                 return Observable.just(newItems)
             })
         }

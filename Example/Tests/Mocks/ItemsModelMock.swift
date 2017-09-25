@@ -88,6 +88,23 @@ class ItemsModelMock: ItemsModel, Mock {
         }
             }
 
+    struct VerificationProxy {
+        var method: MethodType
+
+
+        static func getExampleItems() -> VerificationProxy {
+            return VerificationProxy(method: .getExampleItems)
+        }
+        
+        static func getItemDetails(item item: Parameter<Item>) -> VerificationProxy {
+            return VerificationProxy(method: .getItemDetails__item_item_Item(item))
+        }
+        
+        static func getPrice(for item: Parameter<Item>) -> VerificationProxy {
+            return VerificationProxy(method: .getPrice__for_item(item))
+        }
+            }
+
     public func methodReturnValue(_ method: MethodType) -> Any? {
         let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
             return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
@@ -96,7 +113,8 @@ class ItemsModelMock: ItemsModel, Mock {
         return matched?.returns
     }
 
-    public func verify(_ method: MethodType, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+    public func verify(_ method: VerificationProxy, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+        let method = method.method
         let invocations = matchingCalls(method)
         XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
     }

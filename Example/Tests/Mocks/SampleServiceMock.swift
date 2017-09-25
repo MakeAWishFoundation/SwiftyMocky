@@ -110,6 +110,31 @@ class SampleServiceMock: SampleServiceType, Mock {
         }
             }
 
+    struct VerificationProxy {
+        var method: MethodType
+
+
+        static func serviceName() -> VerificationProxy {
+            return VerificationProxy(method: .serviceName)
+        }
+        
+        static func getPoint(from point: Parameter<Point>) -> VerificationProxy {
+            return VerificationProxy(method: .getPoint__from_point(point))
+        }
+        
+        static func getPoint(from tuple: Parameter<(Float,Float)>) -> VerificationProxy {
+            return VerificationProxy(method: .getPoint__from_tuple(tuple))
+        }
+        
+        static func similarMethodThatDiffersOnType(value: Parameter<Float>) -> VerificationProxy {
+            return VerificationProxy(method: .similarMethodThatDiffersOnType__value_Float(value))
+        }
+        
+        static func similarMethodThatDiffersOnType(value: Parameter<Point>) -> VerificationProxy {
+            return VerificationProxy(method: .similarMethodThatDiffersOnType__value_Point(value))
+        }
+            }
+
     public func methodReturnValue(_ method: MethodType) -> Any? {
         let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
             return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
@@ -118,7 +143,8 @@ class SampleServiceMock: SampleServiceType, Mock {
         return matched?.returns
     }
 
-    public func verify(_ method: MethodType, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+    public func verify(_ method: VerificationProxy, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+        let method = method.method
         let invocations = matchingCalls(method)
         XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
     }

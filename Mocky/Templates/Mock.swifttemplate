@@ -26,22 +26,8 @@ class ParameterWrapper {
 
 class MethodWrapper {
     private static var registered: [String: Int] = [:]
+
     let method: SourceryRuntime.Method
-
-    init(_ method: SourceryRuntime.Method) {
-        self.method = method
-    }
-
-    func register() -> String {
-        let name = registrationName
-        if let count = MethodWrapper.registered[name] {
-            MethodWrapper.registered[name] = count + 1
-        } else {
-            MethodWrapper.registered[name] = 1
-        }
-
-        return ""
-    }
 
     private var registrationName: String {
         get {
@@ -62,7 +48,6 @@ class MethodWrapper {
                 .trimmingCharacters(in: CharacterSet(charactersIn: "_"))
         }
     }
-
     private var typedName: String {
         get {
             var rawName = method.selectorName
@@ -82,7 +67,6 @@ class MethodWrapper {
                 .trimmingCharacters(in: CharacterSet(charactersIn: "_"))
         }
     }
-
     private var shouldUseTypeName: Bool {
         guard let count = MethodWrapper.registered[registrationName] else { return false }
         return count > 1
@@ -97,13 +81,11 @@ class MethodWrapper {
             }
         }
     }
-
     var parameters: [ParameterWrapper] {
         get {
             return method.parameters.map { ParameterWrapper($0) }
         }
     }
-
     var functionPrototype: String {
         get {
             if method.returnTypeName.isVoid {
@@ -113,7 +95,6 @@ class MethodWrapper {
             }
         }
     }
-
     var invocation: String {
         if method.parameters.isEmpty {
             return "addInvocation(.\(prototype))"
@@ -122,7 +103,6 @@ class MethodWrapper {
             return "addInvocation(.\(prototype)(\(parameters)))"
         }
     }
-
     var returnValue: String {
         guard !method.returnTypeName.isVoid else { return "" }
         if method.parameters.isEmpty {
@@ -131,6 +111,32 @@ class MethodWrapper {
             let parameters = method.parameters.map { ".value(\($0.name))" }.joined(separator: ", ")
             return "return methodReturnValue(.\(prototype)(\(parameters))) as! \(method.returnTypeName) "
         }
+    }
+    var equalCase: String {
+        get {
+            if method.parameters.isEmpty {
+                return "case (.\(prototype), .\(prototype)):"
+            } else {
+                let lhsParams = method.parameters.map { "let lhs\($0.name.capitalized)" }.joined(separator: ", ")
+                let rhsParams = method.parameters.map { "let rhs\($0.name.capitalized)" }.joined(separator: ", ")
+                return "case (.\(prototype)(\(lhsParams)), .\(prototype)(\(rhsParams))):"
+            }
+        }
+    }
+
+    init(_ method: SourceryRuntime.Method) {
+        self.method = method
+    }
+
+    func register() -> String {
+        let name = registrationName
+        if let count = MethodWrapper.registered[name] {
+            MethodWrapper.registered[name] = count + 1
+        } else {
+            MethodWrapper.registered[name] = 1
+        }
+
+        return ""
     }
 
     func methodDeclarationWithParameters() -> String {
@@ -142,18 +148,6 @@ class MethodWrapper {
         .joined(separator: ", ")
         .replacingOccurrences(of: "@escaping", with: "")
         return "\(prototype)(\(parameters))"
-    }
-
-    var equalCase: String {
-        get {
-            if method.parameters.isEmpty {
-                return "case (.\(prototype), .\(prototype)):"
-            } else {
-                let lhsParams = method.parameters.map { "let lhs\($0.name.capitalized)" }.joined(separator: ", ")
-                let rhsParams = method.parameters.map { "let rhs\($0.name.capitalized)" }.joined(separator: ", ")
-                return "case (.\(prototype)(\(lhsParams)), .\(prototype)(\(rhsParams))):"
-            }
-        }
     }
 
     func proxyConstructor() -> String {
@@ -177,6 +171,30 @@ class MethodWrapper {
                 return "\(argumentLabel) \($0.name): Parameter<\($0.typeName)>"
             }.joined(separator: ", ")
             return "static func \(method.shortName)(\(functionParameters), willReturn: \(method.returnTypeName)) -> MethodProxy"
+        }
+    }
+
+    func verificationProxyConstructorName() -> String {
+        if method.parameters.isEmpty {
+            return "static func \(method.shortName)() -> VerificationProxy"
+        } else {
+            let functionParameters = method.parameters.map {
+                guard let argumentLabel = $0.argumentLabel else {
+                    return "\($0.name): Parameter<\($0.typeName)>"
+                }
+
+                return "\(argumentLabel) \($0.name): Parameter<\($0.typeName)>"
+            }.joined(separator: ", ")
+            return "static func \(method.shortName)(\(functionParameters)) -> VerificationProxy"
+        }
+    }
+
+    func verificationProxyConstructor() -> String {
+        if method.parameters.isEmpty {
+            return "return VerificationProxy(method: .\(prototype))"
+        } else {
+            let parameters = method.parameters.map { "\($0.name)" }.joined(separator: ", ")
+            return "return VerificationProxy(method: .\(prototype)(\(parameters)))"
         }
     }
 }
@@ -251,6 +269,16 @@ func stubProperty(_ variable: SourceryRuntime.Variable) -> String {
         <%  } %> <%_ -%>
     }
 
+    struct VerificationProxy {
+        var method: MethodType
+
+        <%_ for method in aProtocol.methods.map(wrapMethod) { %>
+        <%= method.verificationProxyConstructorName() -%> {
+            <%= method.verificationProxyConstructor() _%>
+        }
+        <%  } %> <%_ -%>
+    }
+
     public func methodReturnValue(_ method: MethodType) -> Any? {
         let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
             return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
@@ -259,7 +287,8 @@ func stubProperty(_ variable: SourceryRuntime.Variable) -> String {
         return matched?.returns
     }
 
-    public func verify(_ method: MethodType, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+    public func verify(_ method: VerificationProxy, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+        let method = method.method
         let invocations = matchingCalls(method)
         XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
     }
