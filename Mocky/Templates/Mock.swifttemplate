@@ -26,6 +26,7 @@ class ParameterWrapper {
 
 class MethodWrapper {
     private static var registered: [String: Int] = [:]
+    private static var suffixes: [String: Int] = [:]
 
     let method: SourceryRuntime.Method
 
@@ -48,14 +49,10 @@ class MethodWrapper {
                 .trimmingCharacters(in: CharacterSet(charactersIn: "_"))
         }
     }
-    private var typedName: String {
+    private var uniqueName: String {
         get {
             var rawName = method.selectorName
-                .replacingOccurrences(of: "_", with: "")
-                .replacingOccurrences(of: "(", with: "__")
-                .replacingOccurrences(of: ")", with: "")
-
-            var parametersNames = method.parameters.map { "\($0.name)_\($0.typeName.name)" }
+            var parametersNames = method.parameters.map { "\($0.name)_of_\($0.typeName.name)" }
 
             while let range = rawName.range(of: ":"), let name = parametersNames.first {
                 parametersNames.removeFirst()
@@ -63,22 +60,20 @@ class MethodWrapper {
             }
 
             return rawName
-                .replacingOccurrences(of: "___", with: "__")
                 .trimmingCharacters(in: CharacterSet(charactersIn: "_"))
         }
     }
-    private var shouldUseTypeName: Bool {
-        guard let count = MethodWrapper.registered[registrationName] else { return false }
-        return count > 1
+    private var nameSuffix: String {
+        guard let count = MethodWrapper.registered[registrationName] else { return "" }
+        guard count > 1 else { return "" }
+
+        guard let index = MethodWrapper.suffixes[uniqueName] else { return "" }
+        return "_\(index)"
     }
 
     var prototype: String {
         get {
-            if shouldUseTypeName {
-                return typedName
-            } else {
-                return registrationName
-            }
+          return "\(registrationName)\(nameSuffix)"
         }
     }
     var parameters: [ParameterWrapper] {
@@ -128,12 +123,22 @@ class MethodWrapper {
         self.method = method
     }
 
+    static func clear() -> String {
+        MethodWrapper.registered = [:]
+        MethodWrapper.suffixes = [:]
+        return ""
+    }
+
     func register() -> String {
         let name = registrationName
         if let count = MethodWrapper.registered[name] {
             MethodWrapper.registered[name] = count + 1
+            MethodWrapper.suffixes[uniqueName] = count + 1
+            // print("registered \(name) with \(count + 1)")
         } else {
             MethodWrapper.registered[name] = 1
+            MethodWrapper.suffixes[uniqueName] = 1
+            // print("registered \(name) with \(1)")
         }
 
         return ""
@@ -231,9 +236,10 @@ func stubProperty(_ variable: SourceryRuntime.Variable) -> String {
     <%= stubProperty(variable) -%>
     <% } %> <%_ -%>
 
-    <%_ for method in aProtocol.allMethods.map(wrapMethod) { _%>
-        <%= method.register() -%>
-    <%  } %>
+    <% MethodWrapper.clear() -%>
+    <% for method in aProtocol.allMethods.map(wrapMethod) { -%>
+        <% method.register() -%>
+    <%  } -%>
 
     <%_ for method in aProtocol.allMethods.map(wrapMethod) { %>
     <%= method.functionPrototype _%> {
@@ -266,7 +272,7 @@ func stubProperty(_ variable: SourceryRuntime.Variable) -> String {
         <%= method.proxyConstructorName() -%> {
             <%= method.proxyConstructor() _%>
         }
-        <%  } %> <%_ -%>
+<%  } %> <%_ -%>
     }
 
     struct VerificationProxy {
@@ -276,7 +282,7 @@ func stubProperty(_ variable: SourceryRuntime.Variable) -> String {
         <%= method.verificationProxyConstructorName() -%> {
             <%= method.verificationProxyConstructor() _%>
         }
-        <%  } %> <%_ -%>
+<%  } %> <%_ -%>
     }
 
     public func methodReturnValue(_ method: MethodType) -> Any? {

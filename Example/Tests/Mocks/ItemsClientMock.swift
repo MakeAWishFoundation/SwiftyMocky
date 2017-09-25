@@ -22,11 +22,7 @@ class ItemsClientMock: ItemsClient, Mock {
 
     //MARK : ItemsClient
 
-
-            
-            
-            
-
+                                            
 
     func getExampleItems() -> Observable<[Item]> {
         addInvocation(.getExampleItems)
@@ -73,15 +69,15 @@ class ItemsClientMock: ItemsClient, Mock {
         static func getExampleItems(willReturn: Observable<[Item]>) -> MethodProxy {
             return MethodProxy(method: .getExampleItems, returns: willReturn)
         }
-        
+
         static func getItemDetails(item item: Parameter<Item>, willReturn: Observable<ItemDetails>) -> MethodProxy {
             return MethodProxy(method: .getItemDetails__item_item(item), returns: willReturn)
         }
-        
+
         static func update(item item: Parameter<Item>, withLimit limit: Parameter<Decimal>, expirationDate date: Parameter<Date?>, willReturn: Single<Void>) -> MethodProxy {
             return MethodProxy(method: .update__item_itemwithLimit_limitexpirationDate_date(item, limit, date), returns: willReturn)
         }
-            }
+    }
 
     struct VerificationProxy {
         var method: MethodType
@@ -90,15 +86,15 @@ class ItemsClientMock: ItemsClient, Mock {
         static func getExampleItems() -> VerificationProxy {
             return VerificationProxy(method: .getExampleItems)
         }
-        
+
         static func getItemDetails(item item: Parameter<Item>) -> VerificationProxy {
             return VerificationProxy(method: .getItemDetails__item_item(item))
         }
-        
+
         static func update(item item: Parameter<Item>, withLimit limit: Parameter<Decimal>, expirationDate date: Parameter<Date?>) -> VerificationProxy {
             return VerificationProxy(method: .update__item_itemwithLimit_limitexpirationDate_date(item, limit, date))
         }
-            }
+    }
 
     public func methodReturnValue(_ method: MethodType) -> Any? {
         let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in

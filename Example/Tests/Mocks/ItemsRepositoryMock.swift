@@ -22,12 +22,7 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
 
     //MARK : ItemsRepository
 
-
-            
-            
-            
-            
-
+                                                        
 
     func storeItems(items: [Item]) {
         addInvocation(.storeItems__items_items(.value(items)))
@@ -81,19 +76,19 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         static func storeItems(items items: Parameter<[Item]>, willReturn: Void) -> MethodProxy {
             return MethodProxy(method: .storeItems__items_items(items), returns: willReturn)
         }
-        
+
         static func storeDetails(details details: Parameter<ItemDetails>, willReturn: Void) -> MethodProxy {
             return MethodProxy(method: .storeDetails__details_details(details), returns: willReturn)
         }
-        
+
         static func storedItems(willReturn: [Item]?) -> MethodProxy {
             return MethodProxy(method: .storedItems, returns: willReturn)
         }
-        
+
         static func storedDetails(item item: Parameter<Item>, willReturn: ItemDetails?) -> MethodProxy {
             return MethodProxy(method: .storedDetails__item_item(item), returns: willReturn)
         }
-            }
+    }
 
     struct VerificationProxy {
         var method: MethodType
@@ -102,19 +97,19 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         static func storeItems(items items: Parameter<[Item]>) -> VerificationProxy {
             return VerificationProxy(method: .storeItems__items_items(items))
         }
-        
+
         static func storeDetails(details details: Parameter<ItemDetails>) -> VerificationProxy {
             return VerificationProxy(method: .storeDetails__details_details(details))
         }
-        
+
         static func storedItems() -> VerificationProxy {
             return VerificationProxy(method: .storedItems)
         }
-        
+
         static func storedDetails(item item: Parameter<Item>) -> VerificationProxy {
             return VerificationProxy(method: .storedDetails__item_item(item))
         }
-            }
+    }
 
     public func methodReturnValue(_ method: MethodType) -> Any? {
         let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
