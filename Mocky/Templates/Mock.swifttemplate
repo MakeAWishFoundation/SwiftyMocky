@@ -24,6 +24,46 @@ class ParameterWrapper {
     }
 }
 
+class VariableWrapper {
+    let variable: SourceryRuntime.Variable
+    let scope: String
+
+    var privatePrototypeName: String { return "__\(variable.name)" }
+
+    var getter: String {
+        return "get { return \(variable.isStatic ? "\(scope)." : "")\(privatePrototypeName) }"
+    }
+    var setter: String {
+        return "set { \(variable.isStatic ? "\(scope)." : "")\(privatePrototypeName) = newValue }"
+    }
+    var prototype: String {
+        let staticModifier = variable.isStatic ? "static " : ""
+
+        return "\(staticModifier)var \(variable.name): \(variable.typeName.name) { \n" +
+        "\t\t\(getter)\n" +
+        "\t\t\(setter)\n" +
+        "\t}"
+    }
+
+    var privatePrototype: String {
+        let staticModifier = variable.isStatic ? "static " : ""
+        let type: String = {
+          if variable.isOptional || variable.isImplicitlyUnwrappedOptional {
+              return "\(variable.typeName.name)"
+          } else {
+              return "\(variable.typeName.unwrappedTypeName)!"
+          }
+        }()
+        return "private \(staticModifier)var \(privatePrototypeName): \(type)"
+    }
+
+    init(_ variable: SourceryRuntime.Variable, scope: String) {
+        self.variable = variable
+        self.scope = scope
+    }
+
+}
+
 class MethodWrapper {
     private static var registered: [String: Int] = [:]
     private static var suffixes: [String: Int] = [:]
@@ -213,12 +253,9 @@ func wrapMethod(_ method: SourceryRuntime.Method) -> MethodWrapper {
 <%# implement variable for Optional types and IUO, for other add marker that you need to implement those yourself in non-genreated code scope-%>
 <%# TODO: make examples for all types of properties with different kinds of accesors-%>
 <%
-func stubProperty(_ variable: SourceryRuntime.Variable) -> String {
-    if variable.isOptional || variable.isImplicitlyUnwrappedOptional {
-        return "var \(variable.name): \(variable.typeName)"
-    } else {
-        return "// var \(variable.name): \(variable.typeName) - not supported"
-    }
+func stubProperty(_ variable: SourceryRuntime.Variable, _ scope: String) -> String {
+    let wrapper = VariableWrapper(variable, scope: scope)
+    return "\(wrapper.prototype)\n\t\(wrapper.privatePrototype)"
 }
 -%>
 
@@ -233,7 +270,7 @@ func stubProperty(_ variable: SourceryRuntime.Variable) -> String {
 
     //MARK : <%= aProtocol.name %>
     <%_ for variable in aProtocol.allVariables { %>
-    <%= stubProperty(variable) -%>
+    <%= stubProperty(variable,type.name) -%>
     <% } %> <%_ -%>
 
     <% MethodWrapper.clear() -%>

@@ -14,9 +14,6 @@ import RxSwift
 
 // sourcery: mock = "ItemsModel"
 class ItemsModelMock: ItemsModel, Mock {
-    var some: Any = "manually supported property"
-    var storedProperty: Any = ""
-
 // sourcery:inline:auto:ItemsModelMock.autoMocked
 
     var invocations: [MethodType] = []
@@ -25,10 +22,36 @@ class ItemsModelMock: ItemsModel, Mock {
 
     //MARK : ItemsModel
 
-    var context: Any?    
-    var storage: Any!    
-    // var some: Any - not supported    
-    // var storedProperty: Any - not supported    
+    static var defaultIdentifier: Int { 
+		get { return ItemsModelMock.__defaultIdentifier }
+		set { ItemsModelMock.__defaultIdentifier = newValue }
+	}
+	private static var __defaultIdentifier: Int!    
+    static var optionalIdentifier: String? { 
+		get { return ItemsModelMock.__optionalIdentifier }
+		set { ItemsModelMock.__optionalIdentifier = newValue }
+	}
+	private static var __optionalIdentifier: String?    
+    var context: Any? { 
+		get { return __context }
+		set { __context = newValue }
+	}
+	private var __context: Any?    
+    var storage: Any! { 
+		get { return __storage }
+		set { __storage = newValue }
+	}
+	private var __storage: Any!    
+    var some: Any { 
+		get { return __some }
+		set { __some = newValue }
+	}
+	private var __some: Any!    
+    var storedProperty: Any { 
+		get { return __storedProperty }
+		set { __storedProperty = newValue }
+	}
+	private var __storedProperty: Any!    
                                             
 
     func getExampleItems() -> Observable<[Item]> {
