@@ -49,20 +49,8 @@ install:
     fi
 
 script: 
-  - if [[ `uname` == "Linux" ]] ; then
-        . ~/.swiftenv/init;
-        swiftenv install 3.1 || true;
-    fi
-  - if [[ "${DANGER}" -eq 1 ]] ; then
-       bundle install --path vendor/bundle;
-       bundle exec danger --verbose;
-    else
-      if [[ `uname` == "Darwin" ]] ; then
-          xcodebuild -version;
-          xcodebuild -showsdks;
-      fi;
-      TRAVIS=1 ./scripts/all-tests.sh "${TEST}";
-    fi
+  - cd Example 
+  - fastlane scan
 
 after_success:
   - sleep 5 # workaround https://github.com/travis-ci/travis-ci/issues/4725
