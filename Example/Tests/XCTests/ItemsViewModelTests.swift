@@ -55,8 +55,8 @@ class ItemsViewModelTests: XCTestCase {
             XCTFail()
         }
 
-        itemsModelMock.given(.getPrice(item: .value(item1), willReturn: 10))
-        itemsModelMock.given(.getPrice(item: .value(item2), willReturn: 100))
+        itemsModelMock.given(.getPrice(for: .value(item1), willReturn: 10))
+        itemsModelMock.given(.getPrice(for: .value(item2), willReturn: 100))
 
         let price1 = itemsModelMock.getPrice(for: item1)
         let price2 = itemsModelMock.getPrice(for: item2)

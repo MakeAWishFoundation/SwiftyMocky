@@ -10,7 +10,7 @@ import Foundation
 import XCTest
 
 public protocol Mock: class {
-    associatedtype MethodType: Equatable
+    associatedtype MethodType
     associatedtype MethodProxy
     
     var invocations: [MethodType] { get set }

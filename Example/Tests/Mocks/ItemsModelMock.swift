@@ -14,23 +14,45 @@ import RxSwift
 
 // sourcery: mock = "ItemsModel"
 class ItemsModelMock: ItemsModel, Mock {
-    var some: Any = "manually supported property"
-    var storedProperty: Any = ""
+// sourcery:inline:auto:ItemsModelMock.autoMocked
+
+    var invocations: [MethodType] = []
+    var methodReturnValues: [MethodProxy] = []
     var matcher: Matcher = Matcher.default
 
-// sourcery:inline:auto:ItemsModelMock.autoMocked
-    //swiftlint:disable force_cast
-
-
-    var invocations = [MethodType]()
-    var methodReturnValues: [MethodProxy] = []
-
     //MARK : ItemsModel
- 
-    var context: Any?     
-    var storage: Any!     
-    // var some: Any - not supported     
-    // var storedProperty: Any - not supported    
+
+    static var defaultIdentifier: Int { 
+		get { return ItemsModelMock.__defaultIdentifier }
+		set { ItemsModelMock.__defaultIdentifier = newValue }
+	}
+	private static var __defaultIdentifier: Int!    
+    static var optionalIdentifier: String? { 
+		get { return ItemsModelMock.__optionalIdentifier }
+		set { ItemsModelMock.__optionalIdentifier = newValue }
+	}
+	private static var __optionalIdentifier: String?    
+    var context: Any? { 
+		get { return __context }
+		set { __context = newValue }
+	}
+	private var __context: Any?    
+    var storage: Any! { 
+		get { return __storage }
+		set { __storage = newValue }
+	}
+	private var __storage: Any!    
+    var some: Any { 
+		get { return __some }
+		set { __some = newValue }
+	}
+	private var __some: Any!    
+    var storedProperty: Any { 
+		get { return __storedProperty }
+		set { __storedProperty = newValue }
+	}
+	private var __storedProperty: Any!    
+                                            
 
     func getExampleItems() -> Observable<[Item]> {
         addInvocation(.getExampleItems)
@@ -38,76 +60,71 @@ class ItemsModelMock: ItemsModel, Mock {
     }
     
     func getItemDetails(item: Item) -> Observable<ItemDetails> {
-        addInvocation(.getItemDetails(item: .value(item)))
-        return methodReturnValue(.getItemDetails(item: .value(item))) as! Observable<ItemDetails> 
+        addInvocation(.getItemDetails__item_item(.value(item)))
+        return methodReturnValue(.getItemDetails__item_item(.value(item))) as! Observable<ItemDetails> 
     }
     
     func getPrice(for item: Item) -> Decimal {
-        addInvocation(.getPrice(item: .value(item)))
-        return methodReturnValue(.getPrice(item: .value(item))) as! Decimal 
+        addInvocation(.getPrice__for_item(.value(item)))
+        return methodReturnValue(.getPrice__for_item(.value(item))) as! Decimal 
     }
     
-    enum MethodType: Equatable {
+    enum MethodType {
 
         case getExampleItems    
-        case getItemDetails(item : Parameter<Item>)    
-        case getPrice(item : Parameter<Item>)
-    
-        static func ==(lhs: MethodType, rhs: MethodType) -> Bool {
-            switch (lhs, rhs) {
-
-                case (.getExampleItems, .getExampleItems): return true                
-                case (.getItemDetails, .getItemDetails): return true                
-                case (.getPrice, .getPrice): return true                 
-                default: return false   
-            }
-        }
-
+        case getItemDetails__item_item(Parameter<Item>)    
+        case getPrice__for_item(Parameter<Item>)    
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-            case (.getPrice(item: let lhsItem), .getPrice(item: let rhsItem)):
-                guard Parameter.compare(lhs: lhsItem, rhs: rhsItem, with: matcher) else {
-                    return false
-                }
-                guard Parameter.compare(lhs: lhsItem, rhs: rhsItem, with: matcher) else {
-                    return false
-                }
-                guard Parameter.compare(lhs: lhsItem, rhs: rhsItem, with: matcher) else {
-                    return false
-                }
-                guard Parameter.compare(lhs: lhsItem, rhs: rhsItem, with: matcher) else {
-                    return false
-                }
-                guard Parameter.compare(lhs: lhsItem, rhs: rhsItem, with: matcher) else {
-                    return false
-                }
-                return true
-            case (.getExampleItems, .getExampleItems): return true
-            case (.getItemDetails, .getItemDetails): return true
-            case (.getPrice, .getPrice): return true
-            default: return false
+
+                case (.getExampleItems, .getExampleItems): 
+                    return true 
+                case (.getItemDetails__item_item(let lhsItem), .getItemDetails__item_item(let rhsItem)): 
+                    guard Parameter.compare(lhs: lhsItem, rhs: rhsItem, with: matcher) else { return false } 
+                    return true 
+                case (.getPrice__for_item(let lhsItem), .getPrice__for_item(let rhsItem)): 
+                    guard Parameter.compare(lhs: lhsItem, rhs: rhsItem, with: matcher) else { return false } 
+                    return true 
+                default: return false
             }
         }
     }
 
     struct MethodProxy {
-        var method: MethodType 
-        var returns: Any? 
+        var method: MethodType
+        var returns: Any?
 
         static func getExampleItems(willReturn: Observable<[Item]>) -> MethodProxy {
             return MethodProxy(method: .getExampleItems, returns: willReturn)
         }
-        
-        static func getItemDetails(item: Parameter<Item>, willReturn: Observable<ItemDetails>) -> MethodProxy {
-            return MethodProxy(method: .getItemDetails(item: item), returns: willReturn)
+
+        static func getItemDetails(item item: Parameter<Item>, willReturn: Observable<ItemDetails>) -> MethodProxy {
+            return MethodProxy(method: .getItemDetails__item_item(item), returns: willReturn)
         }
-        
-        static func getPrice(item: Parameter<Item>, willReturn: Decimal) -> MethodProxy {
-            return MethodProxy(method: .getPrice(item: item), returns: willReturn)
+
+        static func getPrice(for item: Parameter<Item>, willReturn: Decimal) -> MethodProxy {
+            return MethodProxy(method: .getPrice__for_item(item), returns: willReturn)
         }
     }
 
-    private func methodReturnValue(_ method: MethodType) -> Any? {
+    struct VerificationProxy {
+        var method: MethodType
+
+
+        static func getExampleItems() -> VerificationProxy {
+            return VerificationProxy(method: .getExampleItems)
+        }
+
+        static func getItemDetails(item item: Parameter<Item>) -> VerificationProxy {
+            return VerificationProxy(method: .getItemDetails__item_item(item))
+        }
+
+        static func getPrice(for item: Parameter<Item>) -> VerificationProxy {
+            return VerificationProxy(method: .getPrice__for_item(item))
+        }
+    }
+
+    public func methodReturnValue(_ method: MethodType) -> Any? {
         let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
             return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
         })
@@ -115,7 +132,8 @@ class ItemsModelMock: ItemsModel, Mock {
         return matched?.returns
     }
 
-    public func verify(_ method: MethodType, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+    public func verify(_ method: VerificationProxy, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+        let method = method.method
         let invocations = matchingCalls(method)
         XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
     }
@@ -126,11 +144,11 @@ class ItemsModelMock: ItemsModel, Mock {
 
     public func matchingCalls(_ method: MethodType) -> [MethodType] {
         let matchingInvocations = invocations.filter({ (call) -> Bool in
-            return method == call
+            return MethodType.compareParameters(lhs: call, rhs: method, matcher: matcher)
         })
         return matchingInvocations
     }
-    
+
     public func given(_ method: MethodProxy) {
         methodReturnValues.append(method)
     }
