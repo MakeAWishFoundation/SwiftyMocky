@@ -19,6 +19,7 @@ before_script: cd Example
 
 script: 
   - rake pod_install
+  - rake mock
   - fastlane scan
 
 after_success:
