@@ -1,43 +1,10 @@
 language: objective-c
 
-os:
-    - linux
-    - osx
+os: osx
 language: generic
 sudo: required
 dist: trusty
 osx_image: xcode8.3
-env:
-  - DANGER=1
-  - TEST=iOS
-  - TEST=Unix
-  - TEST=watchOS
-  - TEST=tvOS
-  - TEST=iOS-Example
-  - TEST=SPM
-matrix:
-    exclude:
-      - os: osx
-        env: DANGER=1
-        
-      - os: linux
-        env: TEST=iOS
-
-      - os: linux
-        env: TEST=watchOS
-
-      - os: linux
-        env: TEST=tvOS
-
-      - os: linux
-        env: TEST=iOS-Example
-    include:
-      - os: osx
-        osx_image: xcode8.2
-        env: TEST=iOS
-      - os: osx
-        osx_image: xcode9
-        env: TEST=iOS
 
 notifications:
   #slack: // TODO: 
@@ -48,8 +15,9 @@ install:
         curl -sL https://gist.github.com/kylef/5c0475ff02b7c7671d2a/raw/621ef9b29bbb852fdfd2e10ed147b321d792c1e4/swiftenv-install.sh | bash ;
     fi
 
+before_script: cd Example
+
 script: 
-  - cd Example 
   - fastlane scan
 
 after_success:
