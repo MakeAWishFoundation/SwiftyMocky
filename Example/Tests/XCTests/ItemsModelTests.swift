@@ -32,29 +32,35 @@ class ItemsModelTests: XCTestCase {
         super.tearDown()
     }
     
-//    func test_getExampleItems_whenItemsStored_shouldReturnStoredItems() {
-//        let item = Item(name: "itemName", id: 0)
+    func test_getExampleItems_whenItemsStored_shouldReturnStoredItems() {
+        let item = Item(name: "itemName", id: 0)
+
+        itemsRepositoryMock.given(.storedItems(willReturn: [item]))
+        
+        let receivedItem = try! sut.getExampleItems().toBlocking().single()!.first
+    
+        XCTAssertEqual(item.name, receivedItem?.name)
+        Verify(itemsRepositoryMock, .storedItems)
+    }
+
+    func test_getItemDetails_should_whenNoItemsStored_shouldFetchItemsAndSave() {
+        itemsClientMock.matcher.register(Item.self) { (left, right) -> Bool in
+            return left.id == right.id
+        }
+
+        let item = Item(name: "itemName", id: 0)
+        itemsRepositoryMock.given(.storedItems(willReturn: nil))
+        itemsClientMock.given(.getExampleItems(willReturn: Observable.just([item])))
+
+        let receivedItem = try! sut.getExampleItems().toBlocking().single()!.first
+        
+        XCTAssertEqual(item.name, receivedItem?.name)
+        itemsRepositoryMock.verify(.storeItems(items: .value([item])))
+
+//        itemsRepositoryMock.verify(.storeItems__items(.value([item]))) // TODO: Update verification methods with same manner as MethodProxy
+        Verify(itemsClientMock, .getExampleItems)
+    }
 //
-//        itemsRepositoryMock.given(.storedItems(willReturn: [item]))
-//        
-//        let receivedItems = try! sut.getExampleItems().toBlocking().single()!
-//    
-//        XCTAssertEqual([item], receivedItems)
-//        Verify(itemsRepositoryMock, .storedItems)
-//    }
-//    
-//    func test_getItemDetails_should_whenNoItemsStored_shouldFetchItemsAndSave() {
-//        let item = Item(name: "itemName", id: 0)
-//        itemsRepositoryMock.given(.storedItems(willReturn: nil))
-//        itemsClientMock.given(.getExampleItems(willReturn: Observable.just([item])))
-//        
-//        let receivedItems = try! sut.getExampleItems().toBlocking().single()!
-//        
-//        XCTAssertEqual([item], receivedItems)
-//        Verify(itemsRepositoryMock, .storeItems(items: .value(receivedItems)))
-//        Verify(itemsClientMock, .getExampleItems)
-//    }
-//    
 //    func test_getItemDetails_whenNoDetailsStored_shouldFetchItemsAnsSave() {
 //        let item = Item(name: "itemName1", id: 1)
 //        let details = ItemDetails(item: item, price: 0, description: ["desc": "value"])

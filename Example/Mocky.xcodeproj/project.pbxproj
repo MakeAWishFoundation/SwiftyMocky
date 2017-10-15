@@ -14,6 +14,9 @@
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		6EC400C8EB1B2481BA1DBE68 /* Pods_Mocky_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8D4517B8929314707F09BFB /* Pods_Mocky_Tests.framework */; };
+		CC0B1D8A1F785623006CB46D /* SampleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0B1D891F785623006CB46D /* SampleService.swift */; };
+		CC0B1D8D1F785753006CB46D /* SampleServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0B1D8B1F7856B2006CB46D /* SampleServiceMock.swift */; };
+		CC0B1D901F786851006CB46D /* SampleServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0B1D8E1F7867EE006CB46D /* SampleServiceTests.swift */; };
 		E46714811ECF112000C7DAB3 /* ItemsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46714801ECF112000C7DAB3 /* ItemsViewModel.swift */; };
 		E46714831ECF116D00C7DAB3 /* ItemsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46714821ECF116D00C7DAB3 /* ItemsModel.swift */; };
 		E46714851ECF11D100C7DAB3 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46714841ECF11D100C7DAB3 /* Item.swift */; };
@@ -55,6 +58,9 @@
 		889986BBBEA5703D41B84DF7 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		A3820FC13D5525AD5E403CE8 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		BAB8A0106A1FB60FE260C370 /* Pods-Mocky_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Tests/Pods-Mocky_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		CC0B1D891F785623006CB46D /* SampleService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SampleService.swift; sourceTree = "<group>"; };
+		CC0B1D8B1F7856B2006CB46D /* SampleServiceMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SampleServiceMock.swift; sourceTree = "<group>"; };
+		CC0B1D8E1F7867EE006CB46D /* SampleServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SampleServiceTests.swift; sourceTree = "<group>"; };
 		CDED9236080BEF85919D11C3 /* Mocky.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Mocky.podspec; path = ../Mocky.podspec; sourceTree = "<group>"; };
 		D8A601F4B387200EB86F8F29 /* Pods-Mocky_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Tests/Pods-Mocky_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		E3DA37FF21553DC6F1A8218E /* Pods-Mocky_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Example/Pods-Mocky_Example.release.xcconfig"; sourceTree = "<group>"; };
@@ -200,6 +206,7 @@
 		CC0C8C701F76AF1100032C5E /* Mocked */ = {
 			isa = PBXGroup;
 			children = (
+				CC0B1D891F785623006CB46D /* SampleService.swift */,
 				E46714821ECF116D00C7DAB3 /* ItemsModel.swift */,
 				E46714861ECF13DE00C7DAB3 /* ItemsClient.swift */,
 				E46714881ECF140C00C7DAB3 /* ItemsRepository.swift */,
@@ -222,6 +229,7 @@
 		E467148A1ECF172500C7DAB3 /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
+				CC0B1D8B1F7856B2006CB46D /* SampleServiceMock.swift */,
 				E467148B1ECF173700C7DAB3 /* ItemsModelMock.swift */,
 				E467148D1ECF174500C7DAB3 /* ItemsClientMock.swift */,
 				E467148F1ECF175300C7DAB3 /* ItemsRepositoryMock.swift */,
@@ -232,6 +240,7 @@
 		E467149E1ED021B200C7DAB3 /* XCTests */ = {
 			isa = PBXGroup;
 			children = (
+				CC0B1D8E1F7867EE006CB46D /* SampleServiceTests.swift */,
 				E46714A11ED0244900C7DAB3 /* ItemsClientTests.swift */,
 				E46714A31ED0245900C7DAB3 /* ItemsRepositoryTests.swift */,
 				E46714A51ED025D400C7DAB3 /* ItemsViewModelTests.swift */,
@@ -368,9 +377,12 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Mocky_Example/Pods-Mocky_Example-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -398,13 +410,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Mocky_Example-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C997E46242F16576BEC7CA0C /* [CP] Check Pods Manifest.lock */ = {
@@ -413,13 +428,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Mocky_Tests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F4C13D570F6A61D7C253783E /* [CP] Embed Pods Frameworks */ = {
@@ -428,9 +446,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Mocky_Tests/Pods-Mocky_Tests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/Mocky/Mocky.framework",
+				"${BUILT_PRODUCTS_DIR}/RxBlocking/RxBlocking.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mocky.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxBlocking.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -453,6 +478,7 @@
 				E46714811ECF112000C7DAB3 /* ItemsViewModel.swift in Sources */,
 				E46714831ECF116D00C7DAB3 /* ItemsModel.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
+				CC0B1D8A1F785623006CB46D /* SampleService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -467,6 +493,8 @@
 				E46714921ECF1A8600C7DAB3 /* ItemsClientMock.swift in Sources */,
 				E46714931ECF1A8600C7DAB3 /* ItemsRepositoryMock.swift in Sources */,
 				E46714A81ED025E400C7DAB3 /* ItemsModelTests.swift in Sources */,
+				CC0B1D8D1F785753006CB46D /* SampleServiceMock.swift in Sources */,
+				CC0B1D901F786851006CB46D /* SampleServiceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

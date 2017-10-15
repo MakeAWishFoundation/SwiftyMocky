@@ -10,6 +10,8 @@ import Foundation
 import RxSwift
 
 protocol ItemsModel {
+    static var defaultIdentifier: Int { get }
+    static var optionalIdentifier: String? { get }
     var context: Any? { get set }
     var storage: Any! { get set }
     var some: Any { get set }
@@ -22,6 +24,9 @@ protocol ItemsModel {
 
 
 class ConcreteItemsModel: ItemsModel {
+    static var defaultIdentifier: Int = 0
+    static var optionalIdentifier: String?
+    
     var some: Any
 
     var context: Any?
@@ -44,7 +49,7 @@ class ConcreteItemsModel: ItemsModel {
         } else {
             return itemsClient.getExampleItems()
                 .flatMap({ [weak self] (newItems) -> Observable<[Item]> in
-                self?.itemsRepository.storeItems(items: [])
+                self?.itemsRepository.storeItems(items: newItems)
                 return Observable.just(newItems)
             })
         }
