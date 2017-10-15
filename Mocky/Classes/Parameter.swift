@@ -28,9 +28,7 @@ public class Matcher {
             return current.subjectType == mirror.subjectType
         }?.1
 
-        print(comparator)
-
-        return comparator as! (T,T) -> Bool
+        return comparator as? (T,T) -> Bool
     }
 }
 
