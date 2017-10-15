@@ -18,6 +18,7 @@ install:
 before_script: cd Example
 
 script: 
+  - rake pod_install
   - fastlane scan
 
 after_success:
