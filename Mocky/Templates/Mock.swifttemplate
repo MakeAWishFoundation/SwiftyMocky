@@ -295,7 +295,7 @@ class <%= type.name %>Mock: <%= type.name %> {
       var matcher: Matcher = Matcher.default
 
       <%_ for variable in aProtocol.allVariables { %>
-      <%= stubProperty(variable,type.name) -%>
+      <%= stubProperty(variable,"\(type.name)Mock") -%>
       <% } %> <%_ -%>
 
       <% MethodWrapper.clear() -%>

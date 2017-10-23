@@ -32,7 +32,7 @@ class ItemsViewModelTests: XCTestCase {
     func test_fetchItems() {
         itemsModelMock.given(.getExampleItems(willReturn: Observable.just([]) ))
         sut.fetchData()
-        Verify(itemsModelMock, .getExampleItems)
+        itemsModelMock.verify(.getExampleItems())
     }
 
     func test_getItemsPrice() {

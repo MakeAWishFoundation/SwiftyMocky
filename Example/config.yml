@@ -1,10 +1,10 @@
 sources:
-  - "./Mocky"
-  - "./Tests"
+  - ./Mocky
+  - ./Tests
 templates:
-  - "./Mocky-Templates"
+  - ./Mocky-Templates
 output:
-  "./Tests/Mocks"
+  ./Tests/Mocks
 args:
   testable:
     - Mocky_Example

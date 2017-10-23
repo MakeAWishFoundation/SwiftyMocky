@@ -9,7 +9,7 @@
 import Foundation
 import RxSwift
 
-protocol ItemsModel {
+protocol ItemsModel: AutoMockable {
     static var defaultIdentifier: Int { get }
     static var optionalIdentifier: String? { get }
     var context: Any? { get set }

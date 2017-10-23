@@ -1,13 +1,13 @@
 task :mock do
+	sh "cp -r ../Mocky/Templates ./Mocky-Templates"
 	sh "Pods/Sourcery/bin/sourcery --config config.yml --disableCache"
-end
-
-task :mock_watcher do
-	sh "Pods/Sourcery/bin/sourcery --config config.yml --disableCache --verbose --watch"
+	sh "rm -r -f ./Mocky-Templates"
 end
 
 task :debug do
+	sh "cp -r ../Mocky/Templates ./Mocky-Templates"
 	sh "Pods/Sourcery/bin/sourcery --config config.yml --disableCache --verbose"
+	sh "rm -r -f ./Mocky-Templates"
 end
 
 desc "Install project dependencies"

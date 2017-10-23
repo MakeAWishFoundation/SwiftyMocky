@@ -30,8 +30,4 @@ Library that uses metaprogramming technique, to generate mocks based on sources,
       core.dependency 'Sourcery'
       core.xcconfig = { 'OTHER_SWIFT_FLAGS' => '-DMocky' }
   end
-
-  s.subspec 'AutoMockable' do |automockable|
-      automockable.source_files = 'Mocky/Classes/AutoMockable.swift'
-  end
 end

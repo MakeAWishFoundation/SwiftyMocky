@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import Mocky
 
 struct Point {
     let x: Float
