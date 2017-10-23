@@ -1,0 +1,12 @@
+sources:
+  - ./Mocky
+  - ./Tests
+templates:
+  - ./Mocky-Templates
+output:
+  ./Tests/Mocks
+args:
+  testable:
+    - Mocky_Example
+  import:
+    - RxSwift

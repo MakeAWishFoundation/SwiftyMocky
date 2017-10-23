@@ -20,6 +20,15 @@ class ItemsModelTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
+
+        Matcher.default.register(ItemDetails.self) { (lhs, rhs) -> Bool in
+            return lhs.item.id == rhs.item.id
+        }
+
+        Matcher.default.register(Item.self) { (lhs, rhs) -> Bool in
+            return lhs.id == rhs.id
+        }
+
         itemsClientMock = ItemsClientMock()
         itemsRepositoryMock = ItemsRepositoryMock()
         sut = ConcreteItemsModel(itemsClient: itemsClientMock, itemsRepository: itemsRepositoryMock)
@@ -55,34 +64,35 @@ class ItemsModelTests: XCTestCase {
         let receivedItem = try! sut.getExampleItems().toBlocking().single()!.first
         
         XCTAssertEqual(item.name, receivedItem?.name)
-        itemsRepositoryMock.verify(.storeItems(items: .value([item])))
 
-//        itemsRepositoryMock.verify(.storeItems__items(.value([item]))) // TODO: Update verification methods with same manner as MethodProxy
-        Verify(itemsClientMock, .getExampleItems)
+        itemsRepositoryMock.verify(.storeItems(items: .value([item])))
+        itemsClientMock.verify(.getExampleItems())
     }
-//
-//    func test_getItemDetails_whenNoDetailsStored_shouldFetchItemsAnsSave() {
-//        let item = Item(name: "itemName1", id: 1)
-//        let details = ItemDetails(item: item, price: 0, description: ["desc": "value"])
-//
-//        itemsRepositoryMock.given(.storedDetails(item: .value(item), willReturn: nil))
-//        itemsClientMock.given(.getItemDetails(item: .any, willReturn: Observable.just(details)))
-//
-//        let reveivedDetails = try! sut.getItemDetails(item: item).toBlocking().single()!
-//        
-//        XCTAssertEqual(reveivedDetails, details)
-//        Verify(itemsRepositoryMock, .storedDetails(item: .value(item)))
-//        Verify(itemsClientMock, .getItemDetails(item: .value(item)))
-//        Verify(itemsRepositoryMock, .storeDetails(details: .value(details)))
-//    }
-//    
-//    func test_getItemDetails_whenDetailsAlreadyStored_shouldReturnSavedDetails() {
-//        let item = Item(name: "itemName", id: 0)
-//        let details = ItemDetails(item: item, price: 0, description: ["desc": "value"])
-//        itemsRepositoryMock.given(.storedDetails(item: .any, willReturn: details))
-//        
-//        let reveivedDetails = try! sut.getItemDetails(item: item).toBlocking().single()!
-//        XCTAssertEqual(reveivedDetails, details)
-//        Verify(itemsRepositoryMock, .storedDetails(item: .value(item)))
-//    }
+
+    func test_getItemDetails_whenNoDetailsStored_shouldFetchItemsAnsSave() {
+        let item = Item(name: "itemName1", id: 1)
+        let details = ItemDetails(item: item, price: 0, description: ["desc": "value"])
+
+        itemsRepositoryMock.given(.storedDetails(item: .value(item), willReturn: nil))
+        itemsClientMock.given(.getItemDetails(item: .any(Item.self), willReturn: Observable.just(details)))
+
+        let reveivedDetails = try! sut.getItemDetails(item: item).toBlocking().single()!
+
+        XCTAssertEqual(reveivedDetails.item.id, details.item.id)
+        itemsRepositoryMock.verify(.storedDetails(item: .value(item)))
+        itemsClientMock.verify(.getItemDetails(item: .value(item)))
+        itemsRepositoryMock.verify(.storeDetails(details: .value(details)))
+    }
+
+    func test_getItemDetails_whenDetailsAlreadyStored_shouldReturnSavedDetails() {
+        let item = Item(name: "itemName", id: 0)
+        let details = ItemDetails(item: item, price: 0, description: ["desc": "value"])
+
+        itemsRepositoryMock.given(.storedDetails(item: .any(Item.self), willReturn: details))
+
+        let reveivedDetails = try! sut.getItemDetails(item: item).toBlocking().single()!
+
+        XCTAssertEqual(reveivedDetails.item.id, details.item.id)
+        itemsRepositoryMock.verify(.storedDetails(item: .value(item)))
+    }
 }

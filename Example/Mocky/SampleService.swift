@@ -17,7 +17,7 @@ typealias Scalar = Double
 typealias LinearFunction = ((Scalar) -> Scalar)?
 typealias ClosureFabric = () -> ((Int) -> Void)
 
-protocol SampleServiceType {
+protocol SampleServiceType: AutoMockable {
     func serviceName() -> String
     func getPoint(from point: Point) -> Point
     func getPoint(from tuple: (Float,Float)) -> Point

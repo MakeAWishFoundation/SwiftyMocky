@@ -21,10 +21,13 @@ Library that uses metaprogramming technique, to generate mocks based on sources,
   s.source           = { :git => 'https://github.com/CurlyHeir/Mocky.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '8.0'
-
-  s.source_files = 'Mocky/Classes/**/*'
+  s.default_subspec  = "Core"
   s.preserve_paths = '*'
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  s.frameworks = 'XCTest'
-  s.dependency 'Sourcery'
+
+  s.subspec 'Core' do |core|
+      core.source_files = 'Mocky/Classes/**/*'
+      core.frameworks = 'XCTest'
+      core.dependency 'Sourcery'
+      core.xcconfig = { 'OTHER_SWIFT_FLAGS' => '-DMocky' }
+  end
 end

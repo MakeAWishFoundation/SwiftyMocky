@@ -9,7 +9,7 @@
 import Foundation
 import RxSwift
 
-protocol ItemsClient {
+protocol ItemsClient: AutoMockable {
     func getExampleItems() -> Observable<[Item]>
     func getItemDetails(item: Item) -> Observable<ItemDetails>
     func update(item: Item, withLimit limit: Decimal, expirationDate date: Date?) -> Single<Void>
@@ -27,7 +27,7 @@ class ConcreteItemsClient: ItemsClient {
     }
 
     func update(item: Item, withLimit limit: Decimal, expirationDate date: Date?) -> Single<Void> {
-        return Single.just()
+        return Single<Void>.just(())
     }
     
 }
