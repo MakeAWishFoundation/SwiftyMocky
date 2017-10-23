@@ -14,12 +14,12 @@ import RxSwift
 
 class SampleServiceTests: XCTestCase {
 //    var sut: // somthing depending on service - add later
-    var service: SampleServiceMock!
+    var service: SampleServiceTypeMock!
 
     override func setUp() {
         super.setUp()
 
-        service = SampleServiceMock()
+        service = SampleServiceTypeMock()
     }
 
     override func tearDown() {

@@ -27,7 +27,7 @@ class ConcreteItemsClient: ItemsClient {
     }
 
     func update(item: Item, withLimit limit: Decimal, expirationDate date: Date?) -> Single<Void> {
-        return Single.just()
+        return Single<Void>.just(())
     }
     
 }
