@@ -1,7 +1,7 @@
 use_frameworks!
 
 target 'Mocky_Example' do
-    pod 'RxSwift', '~> 3.4.1'
+    pod 'RxSwift'
   target 'Mocky_Tests' do
     inherit! :search_paths
   	pod 'Mocky', :path => '../'

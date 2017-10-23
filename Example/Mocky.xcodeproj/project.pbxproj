@@ -25,8 +25,6 @@
 		E46714911ECF1A8600C7DAB3 /* ItemsModelMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E467148B1ECF173700C7DAB3 /* ItemsModelMock.swift */; };
 		E46714921ECF1A8600C7DAB3 /* ItemsClientMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E467148D1ECF174500C7DAB3 /* ItemsClientMock.swift */; };
 		E46714931ECF1A8600C7DAB3 /* ItemsRepositoryMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E467148F1ECF175300C7DAB3 /* ItemsRepositoryMock.swift */; };
-		E46714951ECF21A600C7DAB3 /* AutoEquatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46714941ECF21A600C7DAB3 /* AutoEquatable.swift */; };
-		E46714971ECF222B00C7DAB3 /* AutoEquatable.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46714961ECF222B00C7DAB3 /* AutoEquatable.generated.swift */; };
 		E46714A21ED0244900C7DAB3 /* ItemsClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46714A11ED0244900C7DAB3 /* ItemsClientTests.swift */; };
 		E46714A41ED0245900C7DAB3 /* ItemsRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46714A31ED0245900C7DAB3 /* ItemsRepositoryTests.swift */; };
 		E46714A61ED025D400C7DAB3 /* ItemsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46714A51ED025D400C7DAB3 /* ItemsViewModelTests.swift */; };
@@ -73,8 +71,6 @@
 		E467148B1ECF173700C7DAB3 /* ItemsModelMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemsModelMock.swift; sourceTree = "<group>"; };
 		E467148D1ECF174500C7DAB3 /* ItemsClientMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemsClientMock.swift; sourceTree = "<group>"; };
 		E467148F1ECF175300C7DAB3 /* ItemsRepositoryMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemsRepositoryMock.swift; sourceTree = "<group>"; };
-		E46714941ECF21A600C7DAB3 /* AutoEquatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoEquatable.swift; sourceTree = "<group>"; };
-		E46714961ECF222B00C7DAB3 /* AutoEquatable.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AutoEquatable.generated.swift; path = ../../AutoEquatable.generated.swift; sourceTree = "<group>"; };
 		E46714A11ED0244900C7DAB3 /* ItemsClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemsClientTests.swift; sourceTree = "<group>"; };
 		E46714A31ED0245900C7DAB3 /* ItemsRepositoryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemsRepositoryTests.swift; sourceTree = "<group>"; };
 		E46714A51ED025D400C7DAB3 /* ItemsViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemsViewModelTests.swift; sourceTree = "<group>"; };
@@ -217,8 +213,6 @@
 		CC0C8C711F76AF1800032C5E /* Other */ = {
 			isa = PBXGroup;
 			children = (
-				E46714961ECF222B00C7DAB3 /* AutoEquatable.generated.swift */,
-				E46714941ECF21A600C7DAB3 /* AutoEquatable.swift */,
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
 				E46714801ECF112000C7DAB3 /* ItemsViewModel.swift */,
 				E46714841ECF11D100C7DAB3 /* Item.swift */,
@@ -300,18 +294,18 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = CocoaPods;
 				TargetAttributes = {
 					607FACCF1AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
 						DevelopmentTeam = R6JBLAQ685;
-						LastSwiftMigration = 0820;
+						LastSwiftMigration = 0900;
 					};
 					607FACE41AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
 						DevelopmentTeam = LB8D9V889H;
-						LastSwiftMigration = 0820;
+						LastSwiftMigration = 0900;
 						TestTargetID = 607FACCF1AFB9204008FA782;
 					};
 				};
@@ -419,7 +413,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		C997E46242F16576BEC7CA0C /* [CP] Check Pods Manifest.lock */ = {
@@ -437,7 +431,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		F4C13D570F6A61D7C253783E /* [CP] Embed Pods Frameworks */ = {
@@ -469,11 +463,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E46714971ECF222B00C7DAB3 /* AutoEquatable.generated.swift in Sources */,
 				E46714851ECF11D100C7DAB3 /* Item.swift in Sources */,
 				E46714891ECF140C00C7DAB3 /* ItemsRepository.swift in Sources */,
 				E46714871ECF13DE00C7DAB3 /* ItemsClient.swift in Sources */,
-				E46714951ECF21A600C7DAB3 /* AutoEquatable.swift in Sources */,
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				E46714811ECF112000C7DAB3 /* ItemsViewModel.swift in Sources */,
 				E46714831ECF116D00C7DAB3 /* ItemsModel.swift in Sources */,
@@ -536,14 +528,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -583,14 +581,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -626,7 +630,8 @@
 				MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -641,7 +646,8 @@
 				MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -663,7 +669,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mocky_Example.app/Mocky_Example";
 			};
 			name = Debug;
@@ -682,7 +689,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mocky_Example.app/Mocky_Example";
 			};
 			name = Release;
