@@ -136,6 +136,10 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         return matchingInvocations
     }
 
+    public func matchingCalls(_ method: VerificationProxy) -> [MethodType] {
+        return matchingCalls(method.method)
+    }
+
     public func given(_ method: MethodProxy) {
         methodReturnValues.append(method)
     }

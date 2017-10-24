@@ -121,6 +121,10 @@ class ItemsClientMock: ItemsClient {
           return matchingInvocations
       }
 
+      public func matchingCalls(_ method: VerificationProxy) -> [MethodType] {
+          return matchingCalls(method.method)
+      }
+
       public func given(_ method: MethodProxy) {
           methodReturnValues.append(method)
       }
@@ -259,6 +263,10 @@ class ItemsModelMock: ItemsModel {
               return MethodType.compareParameters(lhs: call, rhs: method, matcher: matcher)
           })
           return matchingInvocations
+      }
+
+      public func matchingCalls(_ method: VerificationProxy) -> [MethodType] {
+          return matchingCalls(method.method)
       }
 
       public func given(_ method: MethodProxy) {
@@ -454,6 +462,10 @@ class SampleServiceTypeMock: SampleServiceType {
               return MethodType.compareParameters(lhs: call, rhs: method, matcher: matcher)
           })
           return matchingInvocations
+      }
+
+      public func matchingCalls(_ method: VerificationProxy) -> [MethodType] {
+          return matchingCalls(method.method)
       }
 
       public func given(_ method: MethodProxy) {
