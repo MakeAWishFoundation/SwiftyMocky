@@ -372,6 +372,10 @@ class <%= type.name %>Mock: <%= type.name %> {
           return matchingInvocations
       }
 
+      public func matchingCalls(_ method: VerificationProxy) -> [MethodType] {
+          return matchingCalls(method.method)
+      }
+
       public func given(_ method: MethodProxy) {
           methodReturnValues.append(method)
       }
@@ -466,6 +470,10 @@ class <%= type.name %>Mock: <%= type.name %> {
             return MethodType.compareParameters(lhs: call, rhs: method, matcher: matcher)
         })
         return matchingInvocations
+    }
+
+    public func matchingCalls(_ method: VerificationProxy) -> [MethodType] {
+        return matchingCalls(method.method)
     }
 
     public func given(_ method: MethodProxy) {

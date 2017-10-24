@@ -49,7 +49,7 @@ class ItemsModelTests: XCTestCase {
         let receivedItem = try! sut.getExampleItems().toBlocking().single()!.first
     
         XCTAssertEqual(item.name, receivedItem?.name)
-        Verify(itemsRepositoryMock, .storedItems)
+        Verify(itemsRepositoryMock, .storedItems())
     }
 
     func test_getItemDetails_should_whenNoItemsStored_shouldFetchItemsAndSave() {

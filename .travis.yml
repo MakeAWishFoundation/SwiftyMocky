@@ -4,20 +4,20 @@ os: osx
 language: generic
 sudo: required
 dist: trusty
-osx_image: xcode8.3
+osx_image: xcode9.1
 
 notifications:
-  #slack: // TODO: 
+  #slack: // TODO:
   email: false
 
 install:
-  - if [ `uname` == "Linux" ] ; then 
+  - if [ `uname` == "Linux" ] ; then
         curl -sL https://gist.github.com/kylef/5c0475ff02b7c7671d2a/raw/621ef9b29bbb852fdfd2e10ed147b321d792c1e4/swiftenv-install.sh | bash ;
     fi
 
 before_script: cd Example
 
-script: 
+script:
   - rake pod_install
   - rake mock
   - fastlane scan
