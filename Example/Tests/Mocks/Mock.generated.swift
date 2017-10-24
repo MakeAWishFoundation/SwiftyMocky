@@ -15,7 +15,7 @@ import SourceryRuntime
 
 
 // MARK: - ItemsClient
-class ItemsClientMock: ItemsClient {
+class ItemsClientMock: ItemsClient, Mock {
 
       var invocations: [MethodType] = []
       var methodReturnValues: [MethodProxy] = []
@@ -131,7 +131,7 @@ class ItemsClientMock: ItemsClient {
 }
 
 // MARK: - ItemsModel
-class ItemsModelMock: ItemsModel {
+class ItemsModelMock: ItemsModel, Mock {
 
       var invocations: [MethodType] = []
       var methodReturnValues: [MethodProxy] = []
@@ -275,7 +275,7 @@ class ItemsModelMock: ItemsModel {
 }
 
 // MARK: - SampleServiceType
-class SampleServiceTypeMock: SampleServiceType {
+class SampleServiceTypeMock: SampleServiceType, Mock {
 
       var invocations: [MethodType] = []
       var methodReturnValues: [MethodProxy] = []

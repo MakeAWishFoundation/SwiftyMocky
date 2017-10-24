@@ -44,8 +44,7 @@ class ItemsModelTests: XCTestCase {
     func test_getExampleItems_whenItemsStored_shouldReturnStoredItems() {
         let item = Item(name: "itemName", id: 0)
 
-        itemsRepositoryMock.given(.storedItems(willReturn: [item]))
-        
+        Given(itemsRepositoryMock, .storedItems(willReturn: [item]))
         let receivedItem = try! sut.getExampleItems().toBlocking().single()!.first
     
         XCTAssertEqual(item.name, receivedItem?.name)
