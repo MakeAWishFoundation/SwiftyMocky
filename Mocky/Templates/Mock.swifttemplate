@@ -27,6 +27,19 @@ import SourceryRuntime
 
 <%# Helper methods -%>
 <%
+func uniques(methods: [SourceryRuntime.Method]) -> [SourceryRuntime.Method] {
+    return methods.reduce([], { (result, element) -> [SourceryRuntime.Method] in
+        guard !result.contains(where: { $0.name == element.name }) else { return result }
+        return result + [element]
+    })
+}
+
+func uniques(variables: [SourceryRuntime.Variable]) -> [SourceryRuntime.Variable] {
+    return variables.reduce([], { (result, element) -> [SourceryRuntime.Variable] in
+        guard !result.contains(where: { $0.name == element.name }) else { return result }
+        return result + [element]
+    })
+}
 
 class ParameterWrapper {
     let parameter: MethodParameter
@@ -284,7 +297,7 @@ func stubProperty(_ variable: SourceryRuntime.Variable, _ scope: String) -> Stri
 
 <%# Mock.generated -%>
 <% for type in types.protocols {
-    guard type.inheritedTypes.contains("AutoMockable") else { continue }
+    guard type.inheritedTypes.contains("AutoMockable") || type.annotations["AutoMockable"] != nil else { continue }
     let aProtocol = type
      -%>
 <%_ %>// MARK: - <%= type.name %>
@@ -294,16 +307,19 @@ class <%= type.name %>Mock: <%= type.name %>, Mock {
       var methodReturnValues: [MethodProxy] = []
       var matcher: Matcher = Matcher.default
 
-      <%_ for variable in aProtocol.allVariables { %>
+      <% let allVariables = uniques(variables: aProtocol.allVariables) %>
+      <% let allMethods = uniques(methods: aProtocol.allMethods) %>
+
+      <%_ for variable in allVariables { %>
       <%= stubProperty(variable,"\(type.name)Mock") -%>
       <% } %> <%_ -%>
 
       <% MethodWrapper.clear() -%>
-      <% for method in aProtocol.allMethods.map(wrapMethod) { -%>
+      <%_ for method in allMethods.map(wrapMethod) { -%>
           <% method.register() -%>
       <%  } -%>
 
-      <%_ for method in aProtocol.allMethods.map(wrapMethod) { %>
+      <%_ for method in allMethods.map(wrapMethod) { %>
       <%= method.functionPrototype _%> {
           <%= method.invocation _%>
           <%= method.returnValue _%>
@@ -311,13 +327,13 @@ class <%= type.name %>Mock: <%= type.name %>, Mock {
       <%  } %> <%_ -%>
 
       enum MethodType {
-      <%_ for method in aProtocol.allMethods.map(wrapMethod) { _%>
+      <%_ for method in allMethods.map(wrapMethod) { _%>
           case <%= method.methodDeclarationWithParameters() -%>
       <%  } %>
       <%_ -%>
           static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
               switch (lhs, rhs) {
-               <%_ for method in aProtocol.allMethods.map(wrapMethod) { %>
+               <%_ for method in allMethods.map(wrapMethod) { %>
                   <%= method.equalCase -%> <% for parameter in method.parameters { %>
                       <%= parameter.comparator -%> <%  } %>
                       return true <% } %>
@@ -330,7 +346,7 @@ class <%= type.name %>Mock: <%= type.name %>, Mock {
       struct MethodProxy {
           var method: MethodType
           var returns: Any?
-          <%_ for method in aProtocol.methods.map(wrapMethod) { %>
+          <%_ for method in allMethods.map(wrapMethod) { %>
           <%= method.proxyConstructorName() -%> {
               <%= method.proxyConstructor() _%>
           }
@@ -340,7 +356,7 @@ class <%= type.name %>Mock: <%= type.name %>, Mock {
       struct VerificationProxy {
           var method: MethodType
 
-          <%_ for method in aProtocol.methods.map(wrapMethod) { %>
+          <%_ for method in allMethods.map(wrapMethod) { %>
           <%= method.verificationProxyConstructorName() -%> {
               <%= method.verificationProxyConstructor() _%>
           }
@@ -393,17 +409,20 @@ class <%= type.name %>Mock: <%= type.name %>, Mock {
     var methodReturnValues: [MethodProxy] = []
     var matcher: Matcher = Matcher.default
 
+    <% let allVariables = uniques(variables: aProtocol.allVariables) %>
+    <% let allMethods = uniques(methods: aProtocol.allMethods) %>
+
     //MARK : <%= aProtocol.name %>
-    <%_ for variable in aProtocol.allVariables { %>
+    <%_ for variable in allVariables { %>
     <%= stubProperty(variable,type.name) -%>
     <% } %> <%_ -%>
 
     <% MethodWrapper.clear() -%>
-    <% for method in aProtocol.allMethods.map(wrapMethod) { -%>
+    <% for method in allMethods.map(wrapMethod) { -%>
         <% method.register() -%>
     <%  } -%>
 
-    <%_ for method in aProtocol.allMethods.map(wrapMethod) { %>
+    <%_ for method in allMethods.map(wrapMethod) { %>
     <%= method.functionPrototype _%> {
         <%= method.invocation _%>
         <%= method.returnValue _%>
@@ -411,13 +430,13 @@ class <%= type.name %>Mock: <%= type.name %>, Mock {
     <%  } %> <%_ -%>
 
     enum MethodType {
-    <%_ for method in aProtocol.allMethods.map(wrapMethod) { _%>
+    <%_ for method in allMethods.map(wrapMethod) { _%>
         case <%= method.methodDeclarationWithParameters() -%>
     <%  } %>
     <%_ -%>
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-             <%_ for method in aProtocol.allMethods.map(wrapMethod) { %>
+             <%_ for method in allMethods.map(wrapMethod) { %>
                 <%= method.equalCase -%> <% for parameter in method.parameters { %>
                     <%= parameter.comparator -%> <%  } %>
                     return true <% } %>
@@ -430,7 +449,7 @@ class <%= type.name %>Mock: <%= type.name %>, Mock {
     struct MethodProxy {
         var method: MethodType
         var returns: Any?
-        <%_ for method in aProtocol.methods.map(wrapMethod) { %>
+        <%_ for method in allMethods.map(wrapMethod) { %>
         <%= method.proxyConstructorName() -%> {
             <%= method.proxyConstructor() _%>
         }
@@ -440,7 +459,7 @@ class <%= type.name %>Mock: <%= type.name %>, Mock {
     struct VerificationProxy {
         var method: MethodType
 
-        <%_ for method in aProtocol.methods.map(wrapMethod) { %>
+        <%_ for method in allMethods.map(wrapMethod) { %>
         <%= method.verificationProxyConstructorName() -%> {
             <%= method.verificationProxyConstructor() _%>
         }
