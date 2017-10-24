@@ -14,3 +14,7 @@ public func Verify<T: Mock>(_ object: T, _ method: T.VerificationProxy, count: U
     let invocations = object.matchingCalls(method)
     XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
 }
+
+public func Given<T: Mock>(_ object: T, _ method: T.MethodProxy) {
+    object.given(method)
+}
