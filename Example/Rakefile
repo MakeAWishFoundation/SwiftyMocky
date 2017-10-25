@@ -1,12 +1,12 @@
 task :mock do
 	sh "cp -r ../Mocky/Templates ./Mocky-Templates"
-	sh "Pods/Sourcery/bin/sourcery --config config.yml --disableCache"
+	sh "Pods/Sourcery/bin/sourcery --config mocky.yml --disableCache"
 	sh "rm -r -f ./Mocky-Templates"
 end
 
 task :debug do
 	sh "cp -r ../Mocky/Templates ./Mocky-Templates"
-	sh "Pods/Sourcery/bin/sourcery --config config.yml --disableCache --verbose"
+	sh "Pods/Sourcery/bin/sourcery --config mocky.yml --disableCache --verbose"
 	sh "rm -r -f ./Mocky-Templates"
 end
 

@@ -1,12 +1,8 @@
 # Mocky
 
-**Mocky** is Lightweight, strongly typed framework for Mockito-like unit testing experience. As Swift doesn't support reflections well enough to allow building mocks in runtime, library depends on Sourcery, that scans your source code and generates Swift code for you.
-
-## Current version
-
-Master branch is still in beta, breaking changes are possible.
-
 ## Overview
+
+**Mocky** is Lightweight, strongly typed framework for Mockito-like unit testing experience. As Swift doesn't support reflections well enough to allow building mocks in runtime, library depends on Sourcery, that scans your source code and generates Swift code for you.
 
 The idea of **SwiftyMokcy** is to mock Swift protocols. The main features are:
 
@@ -63,46 +59,25 @@ sut.saveUser(name: "Johny", surname: "Bravo")
 sut.saveUser(name: "Johny", surname: "Cage")
 sut.saveUser(name: "Jon", surname: "Snow")
 
-// check is Jon Snow was stored at least one time
+// check if Jon Snow was stored at least one time
 Verify(mockStorage, .storeUser(name: .value("Jon"), surname: .value("Snow")))
-// total storeUser should be triggered 3 times, regardless of attributes values
+// storeUser method should be triggered 3 times in total, regardless of attributes values
 Verify(mockStorage, 3, .storeUser(name: .any(String.self), surname: .any(String.self)))
-// two times it should be triggered with name Johny
+// storeUser method should be triggered 2 times with name Johny
 Verify(mockStorage, 2, .storeUser(name: .value("Johny"), surname: .any(String.self)))
 ```
 
 ### 4. Example of usage
 
-ItemsModelMock can be used for stubbibg return value and veryfying invocations of methods. Following example shows test that uses generated mock:
-
-```
-class ItemsViewModelTests: XCTestCase {
-    var sut: ItemsViewModel!
-    var itemsModelMock: ItemsModelMock!
-
-    override func setUp() {
-        // ...
-    }
-
-    override func tearDown() {
-        // ...
-    }
-
-    func test_fetchItems() {
-        // specify stub return values
-        Given(itemsModelMock, .getExampleItems(willReturn: [1,2,3,4]))
-        sut.fetchData()
-        // verify sut triggered method in mock
-        Verify(itemsModelMock, .getExampleItems())
-    }
-}
-```
-
 For more examples, check out our example project.
 
-## Mocks generation - How to start using mocky
+To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
-Mocks generation is based on `config.yml` file.
+To trigger mocks generation, run `rake mock` from the Example directory. For watcher mode, when mocks are generated every time you change your file projects, use `rake mock_watcher` instead.
+
+# How to start using Mocky
+
+Mocks generation is based on `mocky.yml` file.
 
 First, create file in your project root directory with following structure:
 
@@ -128,28 +103,29 @@ args:
 + **testable**: specify imports for Mock.generated, that should be marked as `@testable` (usually tested app module)
 + **import**: all additional imports, external libraries etc. to be placed in Mock.generated
 
-Generate mocks:
+## Generate mocks:
+
 1. **manually**: by triggering:
 
-  `Pods/Sourcery/bin/sourcery --config <your config yml path> --disableCache`
+  `Pods/Sourcery/bin/sourcery --config mocky.yml`
 1. **in `watch` mode**: changed methods will be reflected in mocks, after generation of mock, by triggering:
 
-  `Pods/Sourcery/bin/sourcery --config <your config yml path> --disableCache --watch`
+  `Pods/Sourcery/bin/sourcery --config mocky.yml --watch`
 
 
 **Don't forget** to add `Mock.generated.swift` to your test target :)
 
 > **Please Note!**
-> Most convenient way is to put generating script in some kind of script - liek Rakefile below.
-> Mock generation is triggered by `rake mock`
+> Most convenient way is to put generation in some kind of script - like Rakefile below.
+> Just create file named Rakefile - generation is triggered by `rake mock`
 > ```ruby
 > # Rakefile
 > task :mock do
->   sh "Pods/Sourcery/bin/sourcery --config config.yml --disableCache"
+>   sh "Pods/Sourcery/bin/sourcery --config mocky.yml"
 > end
 >
 > task :mock_watcher do
->   sh "Pods/Sourcery/bin/sourcery --config config.yml --disableCache --watch"
+>   sh "Pods/Sourcery/bin/sourcery --config mocky.yml --watch"
 > end
 > ```
 
@@ -179,14 +155,14 @@ protocol AutoMockable { }
 Every protocol in source directories, inheriting (directly!) from AutoMockable, will be added to `Mock.generated.swift`, like:
 
 ```swift
-protocol ToBeMocked, AutoMockable {
+protocol ToBeMocked: AutoMockable {
   // ...
 }
 ```
 
 ### 3. Manual annotation
 
-In some rare cases, when you don't want to use `Mock.generated.swift`, or needs to add additional code to generated mock, you can create base for mock implementation yourself. It will look something like following:
+In some rare cases, when you don't want to use `Mock.generated.swift`, or need to add some additional code to generated mock, you can create base for mock implementation yourself. It will look something like following:
 
 ```swift
 import Foundation
@@ -200,9 +176,48 @@ class SomeCustomMock: ToBeMocked, Mock {
 
   // sourcery:inline:auto:ToBeMocked.autoMocked
 
-  Generated code goes here
+  Generated code goes here...
 
   // sourcery:end
+}
+```
+
+## Matcher - handling parameters that are not Equatable
+
+In some cases there is a need to specify return value (by Given) for a method, which parameters are not __*Equatable*__, or check (by Verify), whether a method was called with specific attribute which is not __*Equatable*__.
+
+If you try to perform Given or Verify for explicit parameter, whereas its type is not Equatable, **fatalError** will occur. There are two options to handle attributes types, that are not __*Equatable*__:
+
+**1) Use only wildcard .any parameters, or adopt Equatable**
+
+Sometimes .any is enough, or you can provide Equatable implementation.
+
+**2) Register comparator for that type in Matcher**
+
+Every Mock has `matcher` variable, which is `Matcher.default` singleton instance by default.
+
+Usage of **Matcher**:
+
+```swift
+struct User {
+  let id: String
+  let name: String
+}
+
+// ...
+
+override func setUp() {
+  // register all comparators for custom, non equatable attributes
+  Matcher.default.register(User.self) { lhs,rhs -> Bool in
+      return lhs.id == rhs.id
+  }
+}
+
+func testFetchUserDetails() {
+  //...
+  let john = User(id: "Johny123", name: "Johny")
+  // now we can safely verify explicit parameter
+  Verify(mockNetwork, .fetchUserDetails(for: .value(john)))
 }
 ```
 
@@ -211,18 +226,12 @@ class SomeCustomMock: ToBeMocked, Mock {
 - [x] stubbibg protocols in elegant way
 - [x] template for generating mocks
 - [x] example project
-- [x] stubbing protocols with variables ( for now, IUO and Optional types are supported)
+- [x] stubbing protocols with variables
 - [x] method signature generation without name conflicts
 - [ ] cover 95% of framework codebase with unit tests
 - [ ] add unit tests for template
 - [ ] support for tvOS, Linux and MacOS
 - [ ] Carthage support
-
-## Example
-
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
-
-To trigger mocks generation, run `rake mock` from the Example directory. For watcher mode, when mocks are generated every time you change your file projects, use `rake mock_watcher` instead.
 
 ## Installation
 
@@ -231,6 +240,12 @@ Mocky is available through [CocoaPods](http://cocoapods.org). To install it, sim
 ```ruby
 pod "Mocky"
 ```
+
+Then add **mocky.yml** and **Rakefile** (or build script phase) to your project root directory, as described above.
+
+## Current version
+
+Master branch is still in beta, breaking changes are possible.
 
 ## Author
 
