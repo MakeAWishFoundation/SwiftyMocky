@@ -1,3 +1,4 @@
+[![Travis CI](https://travis-ci.org/CurlyHeir/Mocky.svg?branch=master)](https://travis-ci.org/CurlyHeir/Mocky) ![platforms](https://img.shields.io/badge/platforms-iOS%20%7C%20-333333.svg)
 # Mocky
 
 ## Overview
