@@ -3,20 +3,20 @@
 import Mocky
 import XCTest
 <%_ if let imported = arguments["import"] as? String { -%>
-<%_ %>import <%= imported -%>
+<%_ %>import <%= imported %>
 <%_ } -%>
 <%_ if let allimported = arguments["import"] as? [String] { -%>
-<%_ for imported in allimported { -%>
+<%_ for imported in allimported { %>
 <%_ %>import <%= imported -%>
 <%_ } -%>
 <%_ } -%>
 <% %>
 <%_ if let tested = arguments["testable"] as? String { -%>
-<%_ %>@testable import <%= tested -%>
+<%_ %>@testable import <%= tested %>
 <%_ } -%>
 <%_ if let alltested = arguments["testable"] as? [String] { -%>
 <%_ for tested in alltested { -%>
-<%_ %>@testable import <%= tested -%>
+<%_ %>@testable import <%= tested %>
 <%_ } -%>
 <%_ } -%>
 <% %>
