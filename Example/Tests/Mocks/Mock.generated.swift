@@ -5,8 +5,10 @@
 #if Mocky
 import Mocky
 import XCTest
+
 import RxSwift
 @testable import Mocky_Example
+
 #else
 import Sourcery
 import SourceryRuntime
@@ -20,17 +22,13 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
       var invocations: [MethodType] = []
       var methodReturnValues: [MethodProxy] = []
       var matcher: Matcher = Matcher.default
-
-      
-      
-
+            
 
       var youCouldOnlyGetThis: String { 
 		get { return __youCouldOnlyGetThis }
 		set { __youCouldOnlyGetThis = newValue }
 	}
-	private var __youCouldOnlyGetThis: String!      
-                                                                                                                                                      
+	private var __youCouldOnlyGetThis: String!                  
 
       func serviceName() -> String {
           addInvocation(.serviceName)
@@ -88,9 +86,9 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
           case methodWithTypedef__scalar(Parameter<Scalar>)      
           case methodWithClosures__success_function_1(Parameter<LinearFunction>)      
           case methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>)      
+
           static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
               switch (lhs, rhs) {
-
                   case (.serviceName, .serviceName): 
                       return true 
                   case (.aNewWayToSayHooray, .aNewWayToSayHooray): 
@@ -117,6 +115,20 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
                       guard Parameter.compare(lhs: lhsFunction, rhs: rhsFunction, with: matcher) else { return false } 
                       return true 
                   default: return false
+              }
+          }
+
+          func intValue() -> Int {
+              switch self {
+                  case .serviceName: return 0
+                  case .aNewWayToSayHooray: return 0
+                  case let .getPoint__from_point(p0): return p0.intValue
+                  case let .getPoint__from_tuple(p0): return p0.intValue
+                  case let .similarMethodThatDiffersOnType__value_1(p0): return p0.intValue
+                  case let .similarMethodThatDiffersOnType__value_2(p0): return p0.intValue
+                  case let .methodWithTypedef__scalar(p0): return p0.intValue
+                  case let .methodWithClosures__success_function_1(p0): return p0.intValue
+                  case let .methodWithClosures__success_function_2(p0): return p0.intValue
               }
           }
       }
@@ -234,6 +246,7 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
 
       public func given(_ method: MethodProxy) {
           methodReturnValues.append(method)
+          methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
       }
 }
 
@@ -243,12 +256,8 @@ class ItemsClientMock: ItemsClient, Mock {
       var invocations: [MethodType] = []
       var methodReturnValues: [MethodProxy] = []
       var matcher: Matcher = Matcher.default
-
-      
-      
-
-
-                                                      
+            
+            
 
       func getExampleItems() -> Observable<[Item]> {
           addInvocation(.getExampleItems)
@@ -270,9 +279,9 @@ class ItemsClientMock: ItemsClient, Mock {
           case getExampleItems      
           case getItemDetails__item_item(Parameter<Item>)      
           case update__item_itemwithLimit_limitexpirationDate_date(Parameter<Item>, Parameter<Decimal>, Parameter<Date?>)      
+
           static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
               switch (lhs, rhs) {
-
                   case (.getExampleItems, .getExampleItems): 
                       return true 
                   case (.getItemDetails__item_item(let lhsItem), .getItemDetails__item_item(let rhsItem)): 
@@ -284,6 +293,14 @@ class ItemsClientMock: ItemsClient, Mock {
                       guard Parameter.compare(lhs: lhsDate, rhs: rhsDate, with: matcher) else { return false } 
                       return true 
                   default: return false
+              }
+          }
+
+          func intValue() -> Int {
+              switch self {
+                  case .getExampleItems: return 0
+                  case let .getItemDetails__item_item(p0): return p0.intValue
+                  case let .update__item_itemwithLimit_limitexpirationDate_date(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
               }
           }
       }
@@ -353,6 +370,7 @@ class ItemsClientMock: ItemsClient, Mock {
 
       public func given(_ method: MethodProxy) {
           methodReturnValues.append(method)
+          methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
       }
 }
 
@@ -362,10 +380,7 @@ class ItemsModelMock: ItemsModel, Mock {
       var invocations: [MethodType] = []
       var methodReturnValues: [MethodProxy] = []
       var matcher: Matcher = Matcher.default
-
-      
-      
-
+            
 
       static var defaultIdentifier: Int { 
 		get { return ItemsModelMock.__defaultIdentifier }
@@ -396,8 +411,7 @@ class ItemsModelMock: ItemsModel, Mock {
 		get { return __storedProperty }
 		set { __storedProperty = newValue }
 	}
-	private var __storedProperty: Any!      
-                                                      
+	private var __storedProperty: Any!                  
 
       func getExampleItems() -> Observable<[Item]> {
           addInvocation(.getExampleItems)
@@ -419,9 +433,9 @@ class ItemsModelMock: ItemsModel, Mock {
           case getExampleItems      
           case getItemDetails__item_item(Parameter<Item>)      
           case getPrice__for_item(Parameter<Item>)      
+
           static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
               switch (lhs, rhs) {
-
                   case (.getExampleItems, .getExampleItems): 
                       return true 
                   case (.getItemDetails__item_item(let lhsItem), .getItemDetails__item_item(let rhsItem)): 
@@ -431,6 +445,14 @@ class ItemsModelMock: ItemsModel, Mock {
                       guard Parameter.compare(lhs: lhsItem, rhs: rhsItem, with: matcher) else { return false } 
                       return true 
                   default: return false
+              }
+          }
+
+          func intValue() -> Int {
+              switch self {
+                  case .getExampleItems: return 0
+                  case let .getItemDetails__item_item(p0): return p0.intValue
+                  case let .getPrice__for_item(p0): return p0.intValue
               }
           }
       }
@@ -500,6 +522,7 @@ class ItemsModelMock: ItemsModel, Mock {
 
       public func given(_ method: MethodProxy) {
           methodReturnValues.append(method)
+          methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
       }
 }
 
@@ -509,12 +532,8 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
       var invocations: [MethodType] = []
       var methodReturnValues: [MethodProxy] = []
       var matcher: Matcher = Matcher.default
-
-      
-      
-
-
-                                                                                                                                      
+            
+            
 
       func serviceName() -> String {
           addInvocation(.serviceName)
@@ -566,9 +585,9 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
           case methodWithTypedef__scalar(Parameter<Scalar>)      
           case methodWithClosures__success_function_1(Parameter<LinearFunction>)      
           case methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>)      
+
           static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
               switch (lhs, rhs) {
-
                   case (.serviceName, .serviceName): 
                       return true 
                   case (.getPoint__from_point(let lhsPoint), .getPoint__from_point(let rhsPoint)): 
@@ -593,6 +612,19 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
                       guard Parameter.compare(lhs: lhsFunction, rhs: rhsFunction, with: matcher) else { return false } 
                       return true 
                   default: return false
+              }
+          }
+
+          func intValue() -> Int {
+              switch self {
+                  case .serviceName: return 0
+                  case let .getPoint__from_point(p0): return p0.intValue
+                  case let .getPoint__from_tuple(p0): return p0.intValue
+                  case let .similarMethodThatDiffersOnType__value_1(p0): return p0.intValue
+                  case let .similarMethodThatDiffersOnType__value_2(p0): return p0.intValue
+                  case let .methodWithTypedef__scalar(p0): return p0.intValue
+                  case let .methodWithClosures__success_function_1(p0): return p0.intValue
+                  case let .methodWithClosures__success_function_2(p0): return p0.intValue
               }
           }
       }
@@ -702,6 +734,7 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
 
       public func given(_ method: MethodProxy) {
           methodReturnValues.append(method)
+          methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
       }
 }
 
@@ -711,17 +744,13 @@ class SimpleServiceTypeMock: SimpleServiceType, Mock {
       var invocations: [MethodType] = []
       var methodReturnValues: [MethodProxy] = []
       var matcher: Matcher = Matcher.default
-
-      
-      
-
+            
 
       var youCouldOnlyGetThis: String { 
 		get { return __youCouldOnlyGetThis }
 		set { __youCouldOnlyGetThis = newValue }
 	}
-	private var __youCouldOnlyGetThis: String!      
-                      
+	private var __youCouldOnlyGetThis: String!                  
 
       func serviceName() -> String {
           addInvocation(.serviceName)
@@ -731,12 +760,18 @@ class SimpleServiceTypeMock: SimpleServiceType, Mock {
       enum MethodType {
 
           case serviceName      
+
           static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
               switch (lhs, rhs) {
-
                   case (.serviceName, .serviceName): 
                       return true 
                   default: return false
+              }
+          }
+
+          func intValue() -> Int {
+              switch self {
+                  case .serviceName: return 0
               }
           }
       }
@@ -790,6 +825,113 @@ class SimpleServiceTypeMock: SimpleServiceType, Mock {
 
       public func given(_ method: MethodProxy) {
           methodReturnValues.append(method)
+          methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+      }
+}
+
+// MARK: - UserStorageType
+class UserStorageTypeMock: UserStorageType, Mock {
+
+      var invocations: [MethodType] = []
+      var methodReturnValues: [MethodProxy] = []
+      var matcher: Matcher = Matcher.default
+            
+            
+
+      func surname(for name: String) -> String {
+          addInvocation(.surname__for_name(.value(name)))
+          return methodReturnValue(.surname__for_name(.value(name))) as! String 
+      }
+      
+      func storeUser(name: String, surname: String) {
+          addInvocation(.storeUser__name_namesurname_surname(.value(name), .value(surname)))
+          
+      }
+      
+      enum MethodType {
+
+          case surname__for_name(Parameter<String>)      
+          case storeUser__name_namesurname_surname(Parameter<String>, Parameter<String>)      
+
+          static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+              switch (lhs, rhs) {
+                  case (.surname__for_name(let lhsName), .surname__for_name(let rhsName)): 
+                      guard Parameter.compare(lhs: lhsName, rhs: rhsName, with: matcher) else { return false } 
+                      return true 
+                  case (.storeUser__name_namesurname_surname(let lhsName, let lhsSurname), .storeUser__name_namesurname_surname(let rhsName, let rhsSurname)): 
+                      guard Parameter.compare(lhs: lhsName, rhs: rhsName, with: matcher) else { return false } 
+                      guard Parameter.compare(lhs: lhsSurname, rhs: rhsSurname, with: matcher) else { return false } 
+                      return true 
+                  default: return false
+              }
+          }
+
+          func intValue() -> Int {
+              switch self {
+                  case let .surname__for_name(p0): return p0.intValue
+                  case let .storeUser__name_namesurname_surname(p0, p1): return p0.intValue + p1.intValue
+              }
+          }
+      }
+
+      struct MethodProxy {
+          var method: MethodType
+          var returns: Any?
+
+          static func surname(for name: Parameter<String>, willReturn: String) -> MethodProxy {
+              return MethodProxy(method: .surname__for_name(name), returns: willReturn)
+          }
+  
+          static func storeUser(name name: Parameter<String>, surname surname: Parameter<String>, willReturn: Void) -> MethodProxy {
+              return MethodProxy(method: .storeUser__name_namesurname_surname(name, surname), returns: willReturn)
+          }
+        }
+
+      struct VerificationProxy {
+          var method: MethodType
+
+
+          static func surname(for name: Parameter<String>) -> VerificationProxy {
+              return VerificationProxy(method: .surname__for_name(name))
+          }
+  
+          static func storeUser(name name: Parameter<String>, surname surname: Parameter<String>) -> VerificationProxy {
+              return VerificationProxy(method: .storeUser__name_namesurname_surname(name, surname))
+          }
+        }
+
+      public func methodReturnValue(_ method: MethodType) -> Any? {
+          let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
+              return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
+          })
+
+          return matched?.returns
+      }
+
+      public func verify(_ method: VerificationProxy, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+          let method = method.method
+          let invocations = matchingCalls(method)
+          XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+      }
+
+      public func addInvocation(_ call: MethodType) {
+          invocations.append(call)
+      }
+
+      public func matchingCalls(_ method: MethodType) -> [MethodType] {
+          let matchingInvocations = invocations.filter({ (call) -> Bool in
+              return MethodType.compareParameters(lhs: call, rhs: method, matcher: matcher)
+          })
+          return matchingInvocations
+      }
+
+      public func matchingCalls(_ method: VerificationProxy) -> [MethodType] {
+          return matchingCalls(method.method)
+      }
+
+      public func given(_ method: MethodProxy) {
+          methodReturnValues.append(method)
+          methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
       }
 }
 
