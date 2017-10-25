@@ -30,9 +30,11 @@ class ItemsViewModelTests: XCTestCase {
     }
     
     func test_fetchItems() {
-        itemsModelMock.given(.getExampleItems(willReturn: Observable.just([]) ))
+        Given(itemsModelMock, .getExampleItems(willReturn: Observable.just([])))
+
         sut.fetchData()
-        itemsModelMock.verify(.getExampleItems())
+        Verify(itemsModelMock, .getExampleItems())
+        Verify(itemsModelMock, 1, .getExampleItems())
     }
 
     func test_getItemsPrice() {

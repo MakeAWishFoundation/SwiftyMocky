@@ -1,23 +1,27 @@
-# SwiftyMocky
+# Mocky
 
-**SwiftyMocky** is Lightweight, strongly typed framework for Mockito-like unit testing experience. As Swift doesn't support reflections well enough to allow building mocks in runtime, library depends on Sourcery, that scans your source code and generates mocks Swift code for you.
+**Mocky** is Lightweight, strongly typed framework for Mockito-like unit testing experience. As Swift doesn't support reflections well enough to allow building mocks in runtime, library depends on Sourcery, that scans your source code and generates Swift code for you.
+
+## Current version
+
+Master branch is still in beta, breaking changes are possible.
 
 ## Overview
 
 The idea of **SwiftyMokcy** is to mock Swift protocols. The main features are:
 
- - easy syntax, utilizing full power of auto-complete, which makes writing test easier
+ - easy syntax, utilizing full power of auto-complete, which makes writing test easier and faster
  - mock implementations generation
  - a way to specify what mock will return (given)
  - possibility to specify different return values for different attributes
- - way to check, whether a method was called on mock or not
- - check if method was called with specified attributes
+ - verify, whether a method was called on mock or not
+ - check method invocations with specified attributes
 
 ### 1. Generating mocks implementations:
 
-One of the boilerplate part of testing and development is writing and updating **mocks** accordingly to newest changes. Mocky is capable of generating (working!) mock implementations, based on protocol definition.
+One of the boilerplate part of testing and development is writing and updating **mocks** accordingly to newest changes. Mocky is capable of generating mock implementations (with configurable behavior), based on protocol definition.
 
-During development process it is possible to use SwiftyMocky in *watcher* mode, which will observe changes in you project files, and regenerate files on the fly.
+During development process it is possible to use Mocky in a *watcher* mode, which will observe changes in you project files, and regenerate files on the fly.
 
 ![Generating mock][example-watcher]
 
@@ -25,7 +29,7 @@ By default, all protocols marked as AutoMockable (inheriting from dummy protocol
 
 ### 2. Stubbing return values for mock metods - Given
 
-All mocks has **given** method (accessible both as instance method or global function), with easy to use syntax, allowing to specify, what should be return values for given methods (based on specified attributes).
+All mocks has **given** method (accessible both as instance method or global function), with easy to use syntax, allowing to specify what should be return values for given methods (based on specified attributes).
 
 ![Generating mock][example-given]
 
@@ -59,50 +63,44 @@ sut.saveUser(name: "Johny", surname: "Bravo")
 sut.saveUser(name: "Johny", surname: "Cage")
 sut.saveUser(name: "Jon", surname: "Snow")
 
-// total storeUser should be triggered 3 times
-Verify(mockStorage, .storeUser(name: .any(String.self), surname: .any(String.self)), count: 3)
-// two times it should be triggered with name Johny
-Verify(mockStorage, .storeUser(name: .value("Johny"), surname: .any(String.self)), count: 2)
-// check is Jon Snow was stored, regardless of how many times
+// check is Jon Snow was stored at least one time
 Verify(mockStorage, .storeUser(name: .value("Jon"), surname: .value("Snow")))
+// total storeUser should be triggered 3 times, regardless of attributes values
+Verify(mockStorage, 3, .storeUser(name: .any(String.self), surname: .any(String.self)))
+// two times it should be triggered with name Johny
+Verify(mockStorage, 2, .storeUser(name: .value("Johny"), surname: .any(String.self)))
 ```
 
-## Current version
-Master branch is still in beta, breaking changes are possible.
-
-## Usage
+### 4. Example of usage
 
 ItemsModelMock can be used for stubbibg return value and veryfying invocations of methods. Following example shows test that uses generated mock:
 
 ```
 class ItemsViewModelTests: XCTestCase {
-
     var sut: ItemsViewModel!
     var itemsModelMock: ItemsModelMock!
 
     override func setUp() {
-        super.setUp()
-        itemsModelMock = ItemsModelMock()
-        sut = ItemsViewModel(itemsModel: itemsModelMock)
+        // ...
     }
 
     override func tearDown() {
-        itemsModelMock = nil
-        sut = nil
-        super.tearDown()
+        // ...
     }
 
     func test_fetchItems() {
-        itemsModelMock.given(.getExampleItems(willReturn: Observable.just([])))
+        // specify stub return values
+        Given(itemsModelMock, .getExampleItems(willReturn: [1,2,3,4]))
         sut.fetchData()
-        Verify(itemsModelMock, .getExampleItems)
+        // verify sut triggered method in mock
+        Verify(itemsModelMock, .getExampleItems())
     }
 }
 ```
 
 For more examples, check out our example project.
 
-## Mocks generation - HowTo start using mocky
+## Mocks generation - How to start using mocky
 
 Mocks generation is based on `config.yml` file.
 
@@ -124,8 +122,8 @@ args:
     - RxBlocking
 ```
 
-+ **sources**: all directories you want to scan for protocols/files marked to be auto mocked
-+ **templates**: path to mock sourcery templates, in Pods directory
++ **sources**: all directories you want to scan for protocols/files marked to be auto mocked, or inline mocked
++ **templates**: path to Mocky sourcery templates, in Pods directory
 + **output**: place where `Mock.generated.swift` will be placed
 + **testable**: specify imports for Mock.generated, that should be marked as `@testable` (usually tested app module)
 + **import**: all additional imports, external libraries etc. to be placed in Mock.generated
@@ -209,8 +207,7 @@ To trigger mocks generation, run `rake mock` from the Example directory. For wat
 
 ## Installation
 
-SwiftyMocky is available through [CocoaPods](http://cocoapods.org). To install
-it, simply add the following line to your Podfile:
+Mocky is available through [CocoaPods](http://cocoapods.org). To install it, simply add the following line to your Podfile:
 
 ```ruby
 pod "Mocky"
