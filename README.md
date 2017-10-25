@@ -250,11 +250,12 @@ Master branch is still in beta, breaking changes are possible.
 
 ## Author
 
-Przemysław Wośko, przemyslaw.wosko@intive.com
+Przemysław Wośko, wosko.przemyslaw@gmail.com
+Andrzej Michnia, amichnia@gmail.com
 
 ## Contributors
 
-Andrzej Michnia, amichnia@gmail.com
+
 
 ## License
 
