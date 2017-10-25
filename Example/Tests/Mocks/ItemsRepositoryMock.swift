@@ -19,13 +19,9 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
     var invocations: [MethodType] = []
     var methodReturnValues: [MethodProxy] = []
     var matcher: Matcher = Matcher.default
-
-    
-    
-
+        
     //MARK : ItemsRepository
-
-                                                        
+        
 
     func storeItems(items: [Item]) {
         addInvocation(.storeItems__items_items(.value(items)))
@@ -68,6 +64,15 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
                     guard Parameter.compare(lhs: lhsItem, rhs: rhsItem, with: matcher) else { return false } 
                     return true 
                 default: return false
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+                case let .storeItems__items_items(p0): return p0.intValue
+                case let .storeDetails__details_details(p0): return p0.intValue
+                case .storedItems: return 0
+                case let .storedDetails__item_item(p0): return p0.intValue
             }
         }
     }
@@ -145,6 +150,7 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
 
     public func given(_ method: MethodProxy) {
         methodReturnValues.append(method)
+        methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
     
 // sourcery:end

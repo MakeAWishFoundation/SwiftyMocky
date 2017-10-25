@@ -8,34 +8,35 @@
 
 import Foundation
 
-public class Matcher {
-    public static var `default` = Matcher()
-
-    var matchers: [(Mirror,Any)] = []
-
-    public init() {
-    }
-
-    public func register<T>(_ valueType: T.Type, match: @escaping (T,T) -> Bool) {
-        let mirror = Mirror(reflecting: valueType)
-        matchers.append((mirror, match as Any))
-    }
-
-    public func comparator<T>(for valueType: T.Type) -> ((T,T) -> Bool)? {
-        let mirror = Mirror(reflecting: valueType)
-
-        let comparator = matchers.reversed().first { (current, _) -> Bool in
-            return current.subjectType == mirror.subjectType
-            }?.1
-
-        return comparator as? (T,T) -> Bool
-    }
-}
-
+/// Parameter wraps method attribute, allowing to make a difference between explicit value,
+/// expressed by .value case and wildcard value, expressed by .any case.
+///
+/// That allows pattern like matching between two Parameter values:
+/// - **.any** is equal to every other parameter
+/// - **.value(p1)** is equal to **.value(p2)** only, when p1 == p2
+///
+/// **Important!** Comparing parameters, where ValueType is not Equatable will result in fatalError,
+/// unless you register comparator for its *ValueType* in **Matcher** instance used (typically Matcher.default)
+///
+/// - any: represents and matches any parameter value
+/// - value: represents explicit parameter value
 public enum Parameter<ValueType> {
     case any(ValueType.Type)
     case value(ValueType)
+}
 
+// MARK: - Order
+public extension Parameter {
+    public var intValue: Int {
+        switch self {
+            case .any: return 0
+            case .value: return 1
+        }
+    }
+}
+
+// MARK: - Equality
+public extension Parameter {
     public static func ==(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>) -> Bool {
         debugPrint("Parameter not equatable \(ValueType.self)")
         return true
@@ -134,7 +135,7 @@ public extension Parameter where ValueType: Sequence, ValueType.Element: Equatab
     }
 }
 
-public extension Parameter where ValueType: Sequence, ValueType: Equatable, ValueType.Element: Equatable {
+public extension Parameter where ValueType: Sequence, ValueType.Element: Equatable, ValueType: Equatable {
     public static func ==(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>) -> Bool {
         debugPrint("Parameter is equatable sequence")
         switch (lhs, rhs) {

@@ -20,6 +20,8 @@
 		CC2A8DBE1F9F3D9400FBF8DC /* ComplicatedServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2A8DBC1F9F3D5D00FBF8DC /* ComplicatedServiceTests.swift */; };
 		CC51DF731F9E6548006FB57E /* AutoMockable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC51DF721F9E6548006FB57E /* AutoMockable.swift */; };
 		CC51DF751F9F30D0006FB57E /* ComplicatedService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC51DF741F9F30D0006FB57E /* ComplicatedService.swift */; };
+		CCFE3B7D1FA123B700D04185 /* ExampleProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFE3B7C1FA123B600D04185 /* ExampleProtocols.swift */; };
+		CCFE3B7F1FA123D500D04185 /* ExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFE3B7E1FA123D500D04185 /* ExampleTests.swift */; };
 		E46714811ECF112000C7DAB3 /* ItemsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46714801ECF112000C7DAB3 /* ItemsViewModel.swift */; };
 		E46714831ECF116D00C7DAB3 /* ItemsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46714821ECF116D00C7DAB3 /* ItemsModel.swift */; };
 		E46714851ECF11D100C7DAB3 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46714841ECF11D100C7DAB3 /* Item.swift */; };
@@ -63,6 +65,8 @@
 		CC2A8DBC1F9F3D5D00FBF8DC /* ComplicatedServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicatedServiceTests.swift; sourceTree = "<group>"; };
 		CC51DF721F9E6548006FB57E /* AutoMockable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoMockable.swift; sourceTree = "<group>"; };
 		CC51DF741F9F30D0006FB57E /* ComplicatedService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicatedService.swift; sourceTree = "<group>"; };
+		CCFE3B7C1FA123B600D04185 /* ExampleProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleProtocols.swift; sourceTree = "<group>"; };
+		CCFE3B7E1FA123D500D04185 /* ExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleTests.swift; sourceTree = "<group>"; };
 		CDED9236080BEF85919D11C3 /* Mocky.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Mocky.podspec; path = ../Mocky.podspec; sourceTree = "<group>"; };
 		D8A601F4B387200EB86F8F29 /* Pods-Mocky_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Tests/Pods-Mocky_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		E3DA37FF21553DC6F1A8218E /* Pods-Mocky_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Example/Pods-Mocky_Example.release.xcconfig"; sourceTree = "<group>"; };
@@ -205,6 +209,7 @@
 			isa = PBXGroup;
 			children = (
 				CC51DF721F9E6548006FB57E /* AutoMockable.swift */,
+				CCFE3B7C1FA123B600D04185 /* ExampleProtocols.swift */,
 				CC0B1D891F785623006CB46D /* SampleService.swift */,
 				CC51DF741F9F30D0006FB57E /* ComplicatedService.swift */,
 				E46714821ECF116D00C7DAB3 /* ItemsModel.swift */,
@@ -236,6 +241,7 @@
 		E467149E1ED021B200C7DAB3 /* XCTests */ = {
 			isa = PBXGroup;
 			children = (
+				CCFE3B7E1FA123D500D04185 /* ExampleTests.swift */,
 				CC0B1D8E1F7867EE006CB46D /* SampleServiceTests.swift */,
 				CC2A8DBC1F9F3D5D00FBF8DC /* ComplicatedServiceTests.swift */,
 				E46714A11ED0244900C7DAB3 /* ItemsClientTests.swift */,
@@ -476,6 +482,7 @@
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				CC0B1D8A1F785623006CB46D /* SampleService.swift in Sources */,
 				CC51DF751F9F30D0006FB57E /* ComplicatedService.swift in Sources */,
+				CCFE3B7D1FA123B700D04185 /* ExampleProtocols.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -491,6 +498,7 @@
 				CC0F23DE1F9E19AE00F94D35 /* Mock.generated.swift in Sources */,
 				E46714A81ED025E400C7DAB3 /* ItemsModelTests.swift in Sources */,
 				CC0B1D901F786851006CB46D /* SampleServiceTests.swift in Sources */,
+				CCFE3B7F1FA123D500D04185 /* ExampleTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

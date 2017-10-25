@@ -194,6 +194,20 @@ class MethodWrapper {
             }
         }
     }
+    var intValueCase: String {
+        get {
+            if method.parameters.isEmpty {
+                return "case .\(prototype): return 0"
+            } else {
+                let params = method.parameters.enumerated().map { offset, _ in
+                    return "p\(offset)"
+                }
+                let definitions = params.joined(separator: ", ")
+                let paramsSum = params.map({ "\($0).intValue" }).joined(separator: " + ")
+                return "case let .\(prototype)(\(definitions)): return \(paramsSum)"
+            }
+        }
+    }
 
     init(_ method: SourceryRuntime.Method) {
         self.method = method
@@ -306,18 +320,16 @@ class <%= type.name %>Mock: <%= type.name %>, Mock {
       var invocations: [MethodType] = []
       var methodReturnValues: [MethodProxy] = []
       var matcher: Matcher = Matcher.default
-
-      <% let allVariables = uniques(variables: aProtocol.allVariables) %>
-      <% let allMethods = uniques(methods: aProtocol.allMethods) %>
+      <%_ -%>
+      <% let allVariables = uniques(variables: aProtocol.allVariables) %><%_ -%>
+      <% let allMethods = uniques(methods: aProtocol.allMethods) %><%_ -%>
 
       <%_ for variable in allVariables { %>
       <%= stubProperty(variable,"\(type.name)Mock") -%>
       <% } %> <%_ -%>
-
+      <%_ -%>
       <% MethodWrapper.clear() -%>
-      <%_ for method in allMethods.map(wrapMethod) { -%>
-          <% method.register() -%>
-      <%  } -%>
+      <% for method in allMethods.map(wrapMethod) { method.register() } -%>
 
       <%_ for method in allMethods.map(wrapMethod) { %>
       <%= method.functionPrototype _%> {
@@ -330,15 +342,20 @@ class <%= type.name %>Mock: <%= type.name %>, Mock {
       <%_ for method in allMethods.map(wrapMethod) { _%>
           case <%= method.methodDeclarationWithParameters() -%>
       <%  } %>
-      <%_ -%>
+      <%_ %>
           static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
-              switch (lhs, rhs) {
-               <%_ for method in allMethods.map(wrapMethod) { %>
+              switch (lhs, rhs) { <%_ for method in allMethods.map(wrapMethod) { %>
                   <%= method.equalCase -%> <% for parameter in method.parameters { %>
                       <%= parameter.comparator -%> <%  } %>
                       return true <% } %>
                   <%_ -%>
                   default: return false
+              }
+          }
+      <%_ %>
+          func intValue() -> Int {
+              switch self { <%_ for method in allMethods.map(wrapMethod) { %>
+                  <%= method.intValueCase -%><% } %>
               }
           }
       }
@@ -394,6 +411,7 @@ class <%= type.name %>Mock: <%= type.name %>, Mock {
 
       public func given(_ method: MethodProxy) {
           methodReturnValues.append(method)
+          methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
       }
 }
 
@@ -408,19 +426,17 @@ class <%= type.name %>Mock: <%= type.name %>, Mock {
     var invocations: [MethodType] = []
     var methodReturnValues: [MethodProxy] = []
     var matcher: Matcher = Matcher.default
-
-    <% let allVariables = uniques(variables: aProtocol.allVariables) %>
-    <% let allMethods = uniques(methods: aProtocol.allMethods) %>
+    <%_ -%>
+    <% let allVariables = uniques(variables: aProtocol.allVariables) %><%_ -%>
+    <% let allMethods = uniques(methods: aProtocol.allMethods) %><%_ -%>
 
     //MARK : <%= aProtocol.name %>
     <%_ for variable in allVariables { %>
     <%= stubProperty(variable,type.name) -%>
     <% } %> <%_ -%>
-
+    <%_ -%>
     <% MethodWrapper.clear() -%>
-    <% for method in allMethods.map(wrapMethod) { -%>
-        <% method.register() -%>
-    <%  } -%>
+    <% for method in allMethods.map(wrapMethod) { method.register() } -%>
 
     <%_ for method in allMethods.map(wrapMethod) { %>
     <%= method.functionPrototype _%> {
@@ -442,6 +458,12 @@ class <%= type.name %>Mock: <%= type.name %>, Mock {
                     return true <% } %>
                 <%_ -%>
                 default: return false
+            }
+        }
+    <%_ %>
+        func intValue() -> Int {
+            switch self { <%_ for method in allMethods.map(wrapMethod) { %>
+                <%= method.intValueCase -%><% } %>
             }
         }
     }
@@ -497,6 +519,7 @@ class <%= type.name %>Mock: <%= type.name %>, Mock {
 
     public func given(_ method: MethodProxy) {
         methodReturnValues.append(method)
+        methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
 // sourcery:end
