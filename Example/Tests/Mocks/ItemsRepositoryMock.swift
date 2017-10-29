@@ -81,14 +81,6 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         var method: MethodType
         var returns: Any?
 
-        static func storeItems(items items: Parameter<[Item]>, willReturn: Void) -> MethodProxy {
-            return MethodProxy(method: .storeItems__items_items(items), returns: willReturn)
-        }
-
-        static func storeDetails(details details: Parameter<ItemDetails>, willReturn: Void) -> MethodProxy {
-            return MethodProxy(method: .storeDetails__details_details(details), returns: willReturn)
-        }
-
         static func storedItems(willReturn: [Item]?) -> MethodProxy {
             return MethodProxy(method: .storedItems, returns: willReturn)
         }

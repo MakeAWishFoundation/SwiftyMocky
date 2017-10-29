@@ -141,10 +141,6 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
               return MethodProxy(method: .serviceName, returns: willReturn)
           }
   
-          static func aNewWayToSayHooray(willReturn: Void) -> MethodProxy {
-              return MethodProxy(method: .aNewWayToSayHooray, returns: willReturn)
-          }
-  
           static func getPoint(from point: Parameter<Point>, willReturn: Point) -> MethodProxy {
               return MethodProxy(method: .getPoint__from_point(point), returns: willReturn)
           }
@@ -159,10 +155,6 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
   
           static func similarMethodThatDiffersOnType(value: Parameter<Point>, willReturn: Bool) -> MethodProxy {
               return MethodProxy(method: .similarMethodThatDiffersOnType__value_2(value), returns: willReturn)
-          }
-  
-          static func methodWithTypedef(scalar: Parameter<Scalar>, willReturn: Void) -> MethodProxy {
-              return MethodProxy(method: .methodWithTypedef__scalar(scalar), returns: willReturn)
           }
   
           static func methodWithClosures(success function: Parameter<LinearFunction>, willReturn: ClosureFabric) -> MethodProxy {
@@ -653,10 +645,6 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
               return MethodProxy(method: .similarMethodThatDiffersOnType__value_2(value), returns: willReturn)
           }
   
-          static func methodWithTypedef(scalar: Parameter<Scalar>, willReturn: Void) -> MethodProxy {
-              return MethodProxy(method: .methodWithTypedef__scalar(scalar), returns: willReturn)
-          }
-  
           static func methodWithClosures(success function: Parameter<LinearFunction>, willReturn: ClosureFabric) -> MethodProxy {
               return MethodProxy(method: .methodWithClosures__success_function_1(function), returns: willReturn)
           }
@@ -880,10 +868,6 @@ class UserStorageTypeMock: UserStorageType, Mock {
 
           static func surname(for name: Parameter<String>, willReturn: String) -> MethodProxy {
               return MethodProxy(method: .surname__for_name(name), returns: willReturn)
-          }
-  
-          static func storeUser(name name: Parameter<String>, surname surname: Parameter<String>, willReturn: Void) -> MethodProxy {
-              return MethodProxy(method: .storeUser__name_namesurname_surname(name, surname), returns: willReturn)
           }
         }
 
