@@ -25,6 +25,12 @@ import Sourcery
 import SourceryRuntime
 #endif
 
+<%_ if let rules = arguments["excludedSwiftLintRules"] as? [String] { -%>
+<%_ for rule in rules { -%>
+<%_ %>//swiftlint:disable <%= rule %> 
+<%_ } -%>
+<%_ } -%>
+
 <%# Helper methods -%>
 <%
 func uniques(methods: [SourceryRuntime.Method]) -> [SourceryRuntime.Method] {
@@ -422,6 +428,11 @@ class <%= type.name %>Mock: <%= type.name %>, Mock {
     guard let protocolToDecorate = type.annotations["mock"] as? String else { continue }
     if let aProtocol = types.protocols.first(where: { $0.name == protocolToDecorate }) { -%>
     // sourcery:inline:auto:<%= type.name %>.autoMocked
+    <%_ if let rules = arguments["excludedSwiftLintRules"] as? [String] { -%>
+    <%_ for rule in rules { -%>
+    <%_ %>//swiftlint:disable <%= rule %> 
+    <%_ } -%>
+    <%_ } -%>
 
     var invocations: [MethodType] = []
     var methodReturnValues: [MethodProxy] = []

@@ -15,6 +15,10 @@ import RxSwift
 // sourcery: mock = "ItemsRepository"
 class ItemsRepositoryMock: ItemsRepository, Mock {
 // sourcery:inline:auto:ItemsRepositoryMock.autoMocked
+//swiftlint:disable force_cast 
+//swiftlint:disable function_body_length 
+//swiftlint:disable line_length 
+//swiftlint:disable vertical_whitespace 
 
     var invocations: [MethodType] = []
     var methodReturnValues: [MethodProxy] = []
