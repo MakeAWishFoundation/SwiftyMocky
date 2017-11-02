@@ -145,6 +145,16 @@ protocol ToBeMocked {
 
 Every protocol in source directories, having this annotation, will be added to `Mock.generated.swift`
 
+@objc protocols are also supported, but needs to be explicity marked with ObjcProtocol annotation:
+
+```swift
+//sourcery: AutoMockable
+//sourcery: ObjcProtocol
+@objc protocol NonSwiftProtocol {
+  // ...
+}
+```
+
 ### 2. AutoMockable protocol
 
 Create dummy protocol for you project:

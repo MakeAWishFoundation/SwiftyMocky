@@ -523,6 +523,109 @@ class ItemsModelMock: ItemsModel, Mock {
       }
 }
 
+// MARK: - NonSwiftProtocol
+class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
+
+      var invocations: [MethodType] = []
+      var methodReturnValues: [MethodProxy] = []
+      var matcher: Matcher = Matcher.default
+            
+            
+
+      func returnNoting() {
+          addInvocation(.returnNoting)
+          
+      }
+      
+      func someMethod() {
+          addInvocation(.someMethod)
+          
+      }
+      
+      enum MethodType {
+
+          case returnNoting      
+          case someMethod      
+
+          static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+              switch (lhs, rhs) {
+                  case (.returnNoting, .returnNoting): 
+                      return true 
+                  case (.someMethod, .someMethod): 
+                      return true 
+                  default: return false
+              }
+          }
+
+          func intValue() -> Int {
+              switch self {
+                  case .returnNoting: return 0
+                  case .someMethod: return 0
+              }
+          }
+      }
+
+      struct MethodProxy {
+          var method: MethodType
+          var returns: Any?
+
+          static func returnNoting(willReturn: Void) -> MethodProxy {
+              return MethodProxy(method: .returnNoting, returns: willReturn)
+          }
+  
+          static func someMethod(willReturn: Void) -> MethodProxy {
+              return MethodProxy(method: .someMethod, returns: willReturn)
+          }
+        }
+
+      struct VerificationProxy {
+          var method: MethodType
+
+
+          static func returnNoting() -> VerificationProxy {
+              return VerificationProxy(method: .returnNoting)
+          }
+  
+          static func someMethod() -> VerificationProxy {
+              return VerificationProxy(method: .someMethod)
+          }
+        }
+
+      public func methodReturnValue(_ method: MethodType) -> Any? {
+          let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
+              return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
+          })
+
+          return matched?.returns
+      }
+
+      public func verify(_ method: VerificationProxy, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+          let method = method.method
+          let invocations = matchingCalls(method)
+          XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+      }
+
+      public func addInvocation(_ call: MethodType) {
+          invocations.append(call)
+      }
+
+      public func matchingCalls(_ method: MethodType) -> [MethodType] {
+          let matchingInvocations = invocations.filter({ (call) -> Bool in
+              return MethodType.compareParameters(lhs: call, rhs: method, matcher: matcher)
+          })
+          return matchingInvocations
+      }
+
+      public func matchingCalls(_ method: VerificationProxy) -> [MethodType] {
+          return matchingCalls(method.method)
+      }
+
+      public func given(_ method: MethodProxy) {
+          methodReturnValues.append(method)
+          methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+      }
+}
+
 // MARK: - SampleServiceType
 class SampleServiceTypeMock: SampleServiceType, Mock {
 
