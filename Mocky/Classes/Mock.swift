@@ -10,15 +10,10 @@ import Foundation
 import XCTest
 
 public protocol Mock: class {
-    associatedtype MethodType
     associatedtype MethodProxy
     associatedtype VerificationProxy
-    
-    var invocations: [MethodType] { get set }
-    var methodReturnValues: [MethodProxy] { get set }
 
-    func addInvocation(_ call: MethodType)
-    func matchingCalls(_ method: MethodType) -> [MethodType]
-    func matchingCalls(_ method: VerificationProxy) -> [MethodType]
+    func matchingCalls(_ method: VerificationProxy) -> Int
     func given(_ method: MethodProxy)
+    func verify(_ method: VerificationProxy, count: UInt, file: StaticString, line: UInt)
 }

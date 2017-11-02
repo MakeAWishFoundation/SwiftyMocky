@@ -18,7 +18,7 @@ import XCTest
 ///   - line: -
 public func Verify<T: Mock>(_ object: T, _ method: T.VerificationProxy, file: StaticString = #file, line: UInt = #line) {
     let invocations = object.matchingCalls(method)
-    XCTAssert(invocations.count > 0, "Expeced: any invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    XCTAssert(invocations > 0, "Expeced: any invocations of `\(method)`, but was: \(invocations)", file: file, line: line)
 }
 
 /// Verify that given method was called on mock object exact number of times
@@ -31,7 +31,7 @@ public func Verify<T: Mock>(_ object: T, _ method: T.VerificationProxy, file: St
 ///   - line: -
 public func Verify<T: Mock>(_ object: T, _ count: UInt, _ method: T.VerificationProxy, file: StaticString = #file, line: UInt = #line) {
     let invocations = object.matchingCalls(method)
-    XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    XCTAssert(invocations == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations)", file: file, line: line)
 }
 
 /// Setup return value for method stubs in mock instance. When this method will be called on mock, it

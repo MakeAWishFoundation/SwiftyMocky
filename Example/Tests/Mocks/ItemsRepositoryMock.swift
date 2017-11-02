@@ -15,12 +15,12 @@ import RxSwift
 // sourcery: mock = "ItemsRepository"
 class ItemsRepositoryMock: ItemsRepository, Mock {
 // sourcery:inline:auto:ItemsRepositoryMock.autoMocked
-//swiftlint:disable force_cast 
-//swiftlint:disable function_body_length 
-//swiftlint:disable line_length 
-//swiftlint:disable vertical_whitespace 
+//swiftlint:disable force_cast
+//swiftlint:disable function_body_length
+//swiftlint:disable line_length
+//swiftlint:disable vertical_whitespace
 
-    var invocations: [MethodType] = []
+    fileprivate var invocations: [MethodType] = []
     var methodReturnValues: [MethodProxy] = []
     var matcher: Matcher = Matcher.default
         
@@ -47,7 +47,7 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         return methodReturnValue(.storedDetails__item_item(.value(item))) as! ItemDetails? 
     }
     
-    enum MethodType {
+    fileprivate enum MethodType {
 
         case storeItems__items_items(Parameter<[Item]>)    
         case storeDetails__details_details(Parameter<ItemDetails>)    
@@ -82,27 +82,27 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
     }
 
     struct MethodProxy {
-        var method: MethodType
+        fileprivate var method: MethodType
         var returns: Any?
 
         static func storedItems(willReturn: [Item]?) -> MethodProxy {
             return MethodProxy(method: .storedItems, returns: willReturn)
         }
 
-        static func storedDetails(item item: Parameter<Item>, willReturn: ItemDetails?) -> MethodProxy {
+        static func storedDetails(item: Parameter<Item>, willReturn: ItemDetails?) -> MethodProxy {
             return MethodProxy(method: .storedDetails__item_item(item), returns: willReturn)
         }
     }
 
     struct VerificationProxy {
-        var method: MethodType
+        fileprivate var method: MethodType
 
 
-        static func storeItems(items items: Parameter<[Item]>) -> VerificationProxy {
+        static func storeItems(items: Parameter<[Item]>) -> VerificationProxy {
             return VerificationProxy(method: .storeItems__items_items(items))
         }
 
-        static func storeDetails(details details: Parameter<ItemDetails>) -> VerificationProxy {
+        static func storeDetails(details: Parameter<ItemDetails>) -> VerificationProxy {
             return VerificationProxy(method: .storeDetails__details_details(details))
         }
 
@@ -110,17 +110,18 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
             return VerificationProxy(method: .storedItems)
         }
 
-        static func storedDetails(item item: Parameter<Item>) -> VerificationProxy {
+        static func storedDetails(item: Parameter<Item>) -> VerificationProxy {
             return VerificationProxy(method: .storedDetails__item_item(item))
         }
     }
 
-    public func methodReturnValue(_ method: MethodType) -> Any? {
-        let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
-            return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
-        })
+    public func matchingCalls(_ method: VerificationProxy) -> Int {
+        return matchingCalls(method.method).count
+    }
 
-        return matched?.returns
+    public func given(_ method: MethodProxy) {
+        methodReturnValues.append(method)
+        methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
     public func verify(_ method: VerificationProxy, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
@@ -129,24 +130,23 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
-    public func addInvocation(_ call: MethodType) {
+    private func addInvocation(_ call: MethodType) {
         invocations.append(call)
     }
 
-    public func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func methodReturnValue(_ method: MethodType) -> Any? {
+        let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
+            return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
+        })
+
+        return matched?.returns
+    }
+
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
         let matchingInvocations = invocations.filter({ (call) -> Bool in
             return MethodType.compareParameters(lhs: call, rhs: method, matcher: matcher)
         })
         return matchingInvocations
-    }
-
-    public func matchingCalls(_ method: VerificationProxy) -> [MethodType] {
-        return matchingCalls(method.method)
-    }
-
-    public func given(_ method: MethodProxy) {
-        methodReturnValues.append(method)
-        methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
     
 // sourcery:end
