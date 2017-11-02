@@ -14,6 +14,11 @@ import Sourcery
 import SourceryRuntime
 #endif
 
+//swiftlint:disable force_cast
+//swiftlint:disable function_body_length
+//swiftlint:disable line_length
+//swiftlint:disable vertical_whitespace
+
 
 
 // MARK: - ComplicatedServiceType
