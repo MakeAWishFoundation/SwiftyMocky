@@ -369,7 +369,7 @@ class <%= type.name %>Mock: <%= type.name %>, Mock {
       struct MethodProxy {
           var method: MethodType
           var returns: Any?
-          <%_ for method in allMethods.map(wrapMethod) { %>
+          <%_ for method in allMethods.filter({ !$0.returnTypeName.isVoid }).map(wrapMethod) { %>
           <%= method.proxyConstructorName() -%> {
               <%= method.proxyConstructor() _%>
           }
@@ -482,7 +482,7 @@ class <%= type.name %>Mock: <%= type.name %>, Mock {
     struct MethodProxy {
         var method: MethodType
         var returns: Any?
-        <%_ for method in allMethods.map(wrapMethod) { %>
+        <%_ for method in allMethods.filter({ !$0.returnTypeName.isVoid }).map(wrapMethod) { %>
         <%= method.proxyConstructorName() -%> {
             <%= method.proxyConstructor() _%>
         }
