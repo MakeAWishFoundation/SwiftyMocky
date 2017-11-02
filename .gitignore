@@ -165,3 +165,6 @@ fabric.properties
 Example/fastlane/report.xml
 Example/fastlane/test_output/report.html
 Example/fastlane/test_output/report.junit
+
+# Sourcery genreated file
+Example/default.profraw
