@@ -30,6 +30,10 @@ public enum Parameter<ValueType> {
     }
 }
 
+public func any<T>() -> Parameter<T> {
+    return Parameter<T>.any(T.self)
+}
+
 // MARK: - Order
 public extension Parameter {
     public var intValue: Int {
@@ -40,112 +44,193 @@ public extension Parameter {
     }
 }
 
-// MARK: - Equality
-public extension Parameter {
-    public static func ==(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>) -> Bool {
-        return true
-    }
-
-    public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
-        switch (lhs, rhs) {
-        case (._, _): return true
-        case (_, ._): return true
-        case (.value(let lhsValue), .value(let rhsValue)):
-            guard let compare = matcher.comparator(for: ValueType.self) else {
-                fatalError("No registered comparators for \(String(describing: ValueType.self))")
-            }
-            return compare(lhsValue,rhsValue)
-        default: return true
+//// MARK: - Equality
+#if swift(>=4)
+    public extension Parameter {
+        public static func ==(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>) -> Bool {
+            return true
         }
-    }
-}
 
-public extension Parameter where ValueType: Equatable {
-    public static func ==(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>) -> Bool {
-        switch (lhs, rhs) {
-        case (._, _): return true
-        case (_, ._): return true
-        case (.value(let value1), .value(let value2)):
-            return value1 == value2
-        default: return false
-        }
-    }
-
-    public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
-        return lhs == rhs
-    }
-}
-
-public extension Parameter where ValueType: Sequence {
-    public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
-        switch (lhs, rhs) {
-        case (._, _): return true
-        case (_, ._): return true
-        case (.value(let lhsSequence), .value(let rhsSequence)):
-            let leftArray = lhsSequence.map { $0 }
-            let rightArray = rhsSequence.map { $0 }
-
-            guard leftArray.count == rightArray.count else { return false }
-
-            let values = (0..<leftArray.count)
-                .map { i -> (ValueType.Element, ValueType.Element) in
-                    return ((leftArray[i]),(rightArray[i]))
-            }
-
-            guard let comparator = matcher.comparator(for: ValueType.Element.self) else {
-                fatalError("Not registered comparator for \(ValueType.Element.self)")
-            }
-
-            for (left,right) in values {
-                guard comparator(left, right) else {
-                    return false
+        public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+            case (._, _): return true
+            case (_, ._): return true
+            case (.value(let lhsValue), .value(let rhsValue)):
+                guard let compare = matcher.comparator(for: ValueType.self) else {
+                    fatalError("No registered comparators for \(String(describing: ValueType.self))")
                 }
+                return compare(lhsValue,rhsValue)
+            default: return true
             }
+        }
+    }
 
+    public extension Parameter where ValueType: Equatable {
+        public static func ==(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>) -> Bool {
+            switch (lhs, rhs) {
+            case (._, _): return true
+            case (_, ._): return true
+            case (.value(let value1), .value(let value2)):
+                return value1 == value2
+            default: return false
+            }
+        }
+
+        public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
+            return lhs == rhs
+        }
+    }
+
+    public extension Parameter where ValueType: Sequence {
+        public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+            case (._, _): return true
+            case (_, ._): return true
+            case (.value(let lhsSequence), .value(let rhsSequence)):
+                let leftArray = lhsSequence.map { $0 }
+                let rightArray = rhsSequence.map { $0 }
+
+                guard leftArray.count == rightArray.count else { return false }
+
+                let values = (0..<leftArray.count)
+                    .map { i -> (ValueType.Element, ValueType.Element) in
+                        return ((leftArray[i]),(rightArray[i]))
+                }
+
+                guard let comparator = matcher.comparator(for: ValueType.Element.self) else {
+                    fatalError("Not registered comparator for \(ValueType.Element.self)")
+                }
+
+                for (left,right) in values {
+                    guard comparator(left, right) else {
+                        return false
+                    }
+                }
+
+                return true
+            default: return false
+            }
+        }
+    }
+
+    public extension Parameter where ValueType: Sequence, ValueType.Element: Equatable {
+        public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+            case (._, _): return true
+            case (_, ._): return true
+            case (.value(let lhsSequence), .value(let rhsSequence)):
+                let leftArray = lhsSequence.map { $0 }
+                let rightArray = rhsSequence.map { $0 }
+
+                guard leftArray.count == rightArray.count else { return false }
+
+                let values = (0..<leftArray.count)
+                    .map { i -> (ValueType.Element, ValueType.Element) in
+                        return ((leftArray[i]),(rightArray[i]))
+                }
+
+                for (left,right) in values {
+                    guard left == right else { return false }
+                }
+
+                return true
+            default: return false
+            }
+        }
+    }
+
+    public extension Parameter where ValueType: Sequence, ValueType.Element: Equatable, ValueType: Equatable {
+        public static func ==(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>) -> Bool {
+            switch (lhs, rhs) {
+            case (._, _): return true
+            case (_, ._): return true
+            case (.value(let lhsSequence), .value(let rhsSequence)):
+                return lhsSequence == rhsSequence
+            default: return false
+            }
+        }
+
+        public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
+            return lhs == rhs
+        }
+    }
+#else
+    public extension Parameter {
+        public static func ==(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>) -> Bool {
             return true
-        default: return false
         }
-    }
-}
 
-public extension Parameter where ValueType: Sequence, ValueType.Element: Equatable {
-    public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
-        switch (lhs, rhs) {
-        case (._, _): return true
-        case (_, ._): return true
-        case (.value(let lhsSequence), .value(let rhsSequence)):
-            let leftArray = lhsSequence.map { $0 }
-            let rightArray = rhsSequence.map { $0 }
-
-            guard leftArray.count == rightArray.count else { return false }
-
-            let values = (0..<leftArray.count)
-                .map { i -> (ValueType.Element, ValueType.Element) in
-                    return ((leftArray[i]),(rightArray[i]))
+        public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+            case (._, _): return true
+            case (_, ._): return true
+            case (.value(let lhsValue), .value(let rhsValue)):
+                guard let compare = matcher.comparator(for: ValueType.self) else {
+                    fatalError("No registered comparators for \(String(describing: ValueType.self))")
+                }
+                return compare(lhsValue,rhsValue)
+            default: return true
             }
+        }
+    }
 
-            for (left,right) in values {
-                guard left == right else { return false }
+    public extension Parameter where ValueType : Sequence {
+
+        public static func ==<ValueType: Equatable>(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>) -> Bool {
+            switch (lhs, rhs) {
+            case (._, _): return true
+            case (_, ._): return true
+            case (.value(let lhsSequence), .value(let rhsSequence)):
+                return lhsSequence == rhsSequence
+            default: return false
             }
+        }
 
-            return true
-        default: return false
+        public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+            case (._, _): return true
+            case (_, ._): return true
+            case (.value(let lhsSequence), .value(let rhsSequence)):
+                let leftArray = lhsSequence.map { $0 }
+                let rightArray = rhsSequence.map { $0 }
+
+                guard leftArray.count == rightArray.count else { return false }
+
+                let values = (0..<leftArray.count).map { i -> (ValueType.Iterator.Element, ValueType.Iterator.Element) in
+                    return (leftArray[i],rightArray[i])
+                }
+
+                guard let comparator = matcher.comparator(for: ValueType.Iterator.Element.self) else {
+                    fatalError("No registered comparators for \(String(describing: ValueType.self))")
+                }
+
+                for (left,right) in values {
+                    guard comparator(left, right) else {
+                        return false
+                    }
+                }
+
+                return true
+            default: return false
+            }
         }
     }
-}
 
-public extension Parameter where ValueType: Sequence, ValueType.Element: Equatable, ValueType: Equatable {
-    public static func ==(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>) -> Bool {
-        switch (lhs, rhs) {
-        case (._, _): return true
-        case (_, ._): return true
-        case (.value(let lhsSequence), .value(let rhsSequence)):
-            return lhsSequence == rhsSequence
-        default: return false
+    public extension Parameter where ValueType: Equatable {
+
+        public static func ==(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>) -> Bool {
+            switch (lhs, rhs) {
+            case (._, _): return true
+            case (_, ._): return true
+            case (.value(let value1), .value(let value2)):
+                return value1 == value2
+            default: return false
+            }
+        }
+
+        public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
+            return lhs == rhs
         }
     }
+#endif
 
-    public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
-        return lhs == rhs
-    }
-}
