@@ -38,12 +38,10 @@ public extension Parameter {
 // MARK: - Equality
 public extension Parameter {
     public static func ==(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>) -> Bool {
-        debugPrint("Parameter not equatable \(ValueType.self)")
         return true
     }
 
     public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
-        debugPrint("Parameter not equatable \(ValueType.self)")
         switch (lhs, rhs) {
         case (.any, _): return true
         case (_, .any): return true
@@ -59,7 +57,6 @@ public extension Parameter {
 
 public extension Parameter where ValueType: Equatable {
     public static func ==(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>) -> Bool {
-        debugPrint("Parameter is equatable \(ValueType.self)")
         switch (lhs, rhs) {
         case (.any, _): return true
         case (_, .any): return true
@@ -70,14 +67,12 @@ public extension Parameter where ValueType: Equatable {
     }
 
     public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
-        debugPrint("Parameter is equatable \(ValueType.self)")
         return lhs == rhs
     }
 }
 
 public extension Parameter where ValueType: Sequence {
     public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
-        debugPrint("Parameter is sequence \(ValueType.self) where \(ValueType.Element.self) is not Equatable")
         switch (lhs, rhs) {
         case (.any, _): return true
         case (_, .any): return true
@@ -110,7 +105,6 @@ public extension Parameter where ValueType: Sequence {
 
 public extension Parameter where ValueType: Sequence, ValueType.Element: Equatable {
     public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
-        debugPrint("Parameter is sequence \(ValueType.self) where \(ValueType.Element.self) is Equatable")
         switch (lhs, rhs) {
         case (.any, _): return true
         case (_, .any): return true
@@ -137,7 +131,6 @@ public extension Parameter where ValueType: Sequence, ValueType.Element: Equatab
 
 public extension Parameter where ValueType: Sequence, ValueType.Element: Equatable, ValueType: Equatable {
     public static func ==(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>) -> Bool {
-        debugPrint("Parameter is equatable sequence")
         switch (lhs, rhs) {
         case (.any, _): return true
         case (_, .any): return true
