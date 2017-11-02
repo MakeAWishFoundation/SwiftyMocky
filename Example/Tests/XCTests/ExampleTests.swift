@@ -17,9 +17,23 @@ class ExampleTests: XCTestCase {
         Given(mock, .surname(for: .value("Johny"), willReturn: "Bravo"))
         Given(mock, .surname(for: .any(String.self), willReturn: "Kowalsky"))
 
+        var joannas = 0
+        Perform(mock, .surname(for: Parameter<String>.value("Joanna"), perform: { (value) in
+            print("\(value) should be Joanna")
+            joannas += 1
+        }))
+
+        var others = 0
+        Perform(mock, .surname(for: Parameter<String>.any(String.self), perform: { (value) in
+            print("\(value) should be different to Joanna")
+            others += 1
+        }))
+
         XCTAssertEqual(mock.surname(for: "Johny"), "Bravo")
         XCTAssertEqual(mock.surname(for: "Mathew"), "Kowalsky")
         XCTAssertEqual(mock.surname(for: "Joanna"), "Kowalsky")
+        XCTAssertEqual(joannas, 1)
+        XCTAssertEqual(others, 2)
     }
 
     func testVerifyExample() {

@@ -24,8 +24,9 @@ import SourceryRuntime
 // MARK: - ComplicatedServiceType
 class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
 
-      var invocations: [MethodType] = []
+      fileprivate var invocations: [MethodType] = []
       var methodReturnValues: [MethodProxy] = []
+      var methodPerformValues: [PerformProxy] = []
       var matcher: Matcher = Matcher.default
             
 
@@ -37,50 +38,68 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
 
       func serviceName() -> String {
           addInvocation(.serviceName)
+          	let perform = methodPerformValue(.serviceName) as? () -> Void
+			perform?()
           return methodReturnValue(.serviceName) as! String 
       }
       
       func aNewWayToSayHooray() {
           addInvocation(.aNewWayToSayHooray)
+          	let perform = methodPerformValue(.aNewWayToSayHooray) as? () -> Void
+			perform?()
           
       }
       
       func getPoint(from point: Point) -> Point {
           addInvocation(.getPoint__from_point(.value(point)))
+          	let perform = methodPerformValue(.getPoint__from_point(.value(point))) as? (Point) -> Void
+			perform?(point)
           return methodReturnValue(.getPoint__from_point(.value(point))) as! Point 
       }
       
       func getPoint(from tuple: (Float,Float)) -> Point {
           addInvocation(.getPoint__from_tuple(.value(tuple)))
+          	let perform = methodPerformValue(.getPoint__from_tuple(.value(tuple))) as? ((Float,Float)) -> Void
+			perform?(tuple)
           return methodReturnValue(.getPoint__from_tuple(.value(tuple))) as! Point 
       }
       
       func similarMethodThatDiffersOnType(_ value: Float) -> Bool {
           addInvocation(.similarMethodThatDiffersOnType__value_1(.value(value)))
+          	let perform = methodPerformValue(.similarMethodThatDiffersOnType__value_1(.value(value))) as? (Float) -> Void
+			perform?(value)
           return methodReturnValue(.similarMethodThatDiffersOnType__value_1(.value(value))) as! Bool 
       }
       
       func similarMethodThatDiffersOnType(_ value: Point) -> Bool {
           addInvocation(.similarMethodThatDiffersOnType__value_2(.value(value)))
+          	let perform = methodPerformValue(.similarMethodThatDiffersOnType__value_2(.value(value))) as? (Point) -> Void
+			perform?(value)
           return methodReturnValue(.similarMethodThatDiffersOnType__value_2(.value(value))) as! Bool 
       }
       
       func methodWithTypedef(_ scalar: Scalar) {
           addInvocation(.methodWithTypedef__scalar(.value(scalar)))
+          	let perform = methodPerformValue(.methodWithTypedef__scalar(.value(scalar))) as? (Scalar) -> Void
+			perform?(scalar)
           
       }
       
       func methodWithClosures(success function: LinearFunction) -> ClosureFabric {
           addInvocation(.methodWithClosures__success_function_1(.value(function)))
+          	let perform = methodPerformValue(.methodWithClosures__success_function_1(.value(function))) as? (LinearFunction) -> Void
+			perform?(function)
           return methodReturnValue(.methodWithClosures__success_function_1(.value(function))) as! ClosureFabric 
       }
       
       func methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?) -> ((Int) -> Void) {
           addInvocation(.methodWithClosures__success_function_2(.value(function)))
+          	let perform = methodPerformValue(.methodWithClosures__success_function_2(.value(function))) as? (((Scalar,Scalar) -> Scalar)?) -> Void
+			perform?(function)
           return methodReturnValue(.methodWithClosures__success_function_2(.value(function))) as! ((Int) -> Void) 
       }
       
-      enum MethodType {
+      fileprivate enum MethodType {
 
           case serviceName      
           case aNewWayToSayHooray      
@@ -91,6 +110,7 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
           case methodWithTypedef__scalar(Parameter<Scalar>)      
           case methodWithClosures__success_function_1(Parameter<LinearFunction>)      
           case methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>)      
+
 
           static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
               switch (lhs, rhs) {
@@ -139,15 +159,11 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
       }
 
       struct MethodProxy {
-          var method: MethodType
+          fileprivate var method: MethodType
           var returns: Any?
 
           static func serviceName(willReturn: String) -> MethodProxy {
               return MethodProxy(method: .serviceName, returns: willReturn)
-          }
-  
-          static func aNewWayToSayHooray(willReturn: Void) -> MethodProxy {
-              return MethodProxy(method: .aNewWayToSayHooray, returns: willReturn)
           }
   
           static func getPoint(from point: Parameter<Point>, willReturn: Point) -> MethodProxy {
@@ -166,10 +182,6 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
               return MethodProxy(method: .similarMethodThatDiffersOnType__value_2(value), returns: willReturn)
           }
   
-          static func methodWithTypedef(scalar: Parameter<Scalar>, willReturn: Void) -> MethodProxy {
-              return MethodProxy(method: .methodWithTypedef__scalar(scalar), returns: willReturn)
-          }
-  
           static func methodWithClosures(success function: Parameter<LinearFunction>, willReturn: ClosureFabric) -> MethodProxy {
               return MethodProxy(method: .methodWithClosures__success_function_1(function), returns: willReturn)
           }
@@ -180,7 +192,7 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
         }
 
       struct VerificationProxy {
-          var method: MethodType
+          fileprivate var method: MethodType
 
 
           static func serviceName() -> VerificationProxy {
@@ -220,12 +232,59 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
           }
         }
 
-      public func methodReturnValue(_ method: MethodType) -> Any? {
-          let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
-              return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
-          })
+      struct PerformProxy {
+          fileprivate var method: MethodType
+          var performs: Any
 
-          return matched?.returns
+          static func serviceName(perform: () -> Void) -> PerformProxy {
+              return PerformProxy(method: .serviceName, performs: perform)
+          }
+  
+          static func aNewWayToSayHooray(perform: () -> Void) -> PerformProxy {
+              return PerformProxy(method: .aNewWayToSayHooray, performs: perform)
+          }
+  
+          static func getPoint(from point: Parameter<Point>, perform: (Point) -> Void) -> PerformProxy {
+              return PerformProxy(method: .getPoint__from_point(point), performs: perform)
+          }
+  
+          static func getPoint(from tuple: Parameter<(Float,Float)>, perform: ((Float,Float)) -> Void) -> PerformProxy {
+              return PerformProxy(method: .getPoint__from_tuple(tuple), performs: perform)
+          }
+  
+          static func similarMethodThatDiffersOnType(value: Parameter<Float>, perform: (Float) -> Void) -> PerformProxy {
+              return PerformProxy(method: .similarMethodThatDiffersOnType__value_1(value), performs: perform)
+          }
+  
+          static func similarMethodThatDiffersOnType(value: Parameter<Point>, perform: (Point) -> Void) -> PerformProxy {
+              return PerformProxy(method: .similarMethodThatDiffersOnType__value_2(value), performs: perform)
+          }
+  
+          static func methodWithTypedef(scalar: Parameter<Scalar>, perform: (Scalar) -> Void) -> PerformProxy {
+              return PerformProxy(method: .methodWithTypedef__scalar(scalar), performs: perform)
+          }
+  
+          static func methodWithClosures(success function: Parameter<LinearFunction>, perform: (LinearFunction) -> Void) -> PerformProxy {
+              return PerformProxy(method: .methodWithClosures__success_function_1(function), performs: perform)
+          }
+  
+          static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>, perform: (((Scalar,Scalar) -> Scalar)?) -> Void) -> PerformProxy {
+              return PerformProxy(method: .methodWithClosures__success_function_2(function), performs: perform)
+          }
+        }
+
+      public func matchingCalls(_ method: VerificationProxy) -> Int {
+          return matchingCalls(method.method).count
+      }
+
+      public func given(_ method: MethodProxy) {
+          methodReturnValues.append(method)
+          methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+      }
+
+      public func perform(_ method: PerformProxy) {
+          methodPerformValues.append(method)
+          methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
       }
 
       public func verify(_ method: VerificationProxy, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
@@ -234,56 +293,71 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
           XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
       }
 
-      public func addInvocation(_ call: MethodType) {
+      private func addInvocation(_ call: MethodType) {
           invocations.append(call)
       }
 
-      public func matchingCalls(_ method: MethodType) -> [MethodType] {
+      private func methodReturnValue(_ method: MethodType) -> Any? {
+          let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
+              return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
+          })
+
+          return matched?.returns
+      }
+
+      private func methodPerformValue(_ method: MethodType) -> Any? {
+          let matched = methodPerformValues.reversed().first(where: { proxy -> Bool in
+              return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
+          })
+
+          return matched?.performs
+      }
+
+      private func matchingCalls(_ method: MethodType) -> [MethodType] {
           let matchingInvocations = invocations.filter({ (call) -> Bool in
               return MethodType.compareParameters(lhs: call, rhs: method, matcher: matcher)
           })
           return matchingInvocations
-      }
-
-      public func matchingCalls(_ method: VerificationProxy) -> [MethodType] {
-          return matchingCalls(method.method)
-      }
-
-      public func given(_ method: MethodProxy) {
-          methodReturnValues.append(method)
-          methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
       }
 }
 
 // MARK: - ItemsClient
 class ItemsClientMock: ItemsClient, Mock {
 
-      var invocations: [MethodType] = []
+      fileprivate var invocations: [MethodType] = []
       var methodReturnValues: [MethodProxy] = []
+      var methodPerformValues: [PerformProxy] = []
       var matcher: Matcher = Matcher.default
             
             
 
       func getExampleItems() -> Observable<[Item]> {
           addInvocation(.getExampleItems)
+          	let perform = methodPerformValue(.getExampleItems) as? () -> Void
+			perform?()
           return methodReturnValue(.getExampleItems) as! Observable<[Item]> 
       }
       
       func getItemDetails(item: Item) -> Observable<ItemDetails> {
           addInvocation(.getItemDetails__item_item(.value(item)))
+          	let perform = methodPerformValue(.getItemDetails__item_item(.value(item))) as? (Item) -> Void
+			perform?(item)
           return methodReturnValue(.getItemDetails__item_item(.value(item))) as! Observable<ItemDetails> 
       }
       
       func update(item: Item, withLimit limit: Decimal, expirationDate date: Date?) -> Single<Void> {
           addInvocation(.update__item_itemwithLimit_limitexpirationDate_date(.value(item), .value(limit), .value(date)))
+          	let perform = methodPerformValue(.update__item_itemwithLimit_limitexpirationDate_date(.value(item), .value(limit), .value(date))) as? (Item, Decimal, Date?) -> Void
+			perform?(item, limit, date)
           return methodReturnValue(.update__item_itemwithLimit_limitexpirationDate_date(.value(item), .value(limit), .value(date))) as! Single<Void> 
       }
       
-      enum MethodType {
+      fileprivate enum MethodType {
 
           case getExampleItems      
           case getItemDetails__item_item(Parameter<Item>)      
           case update__item_itemwithLimit_limitexpirationDate_date(Parameter<Item>, Parameter<Decimal>, Parameter<Date?>)      
+
 
           static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
               switch (lhs, rhs) {
@@ -311,45 +385,68 @@ class ItemsClientMock: ItemsClient, Mock {
       }
 
       struct MethodProxy {
-          var method: MethodType
+          fileprivate var method: MethodType
           var returns: Any?
 
           static func getExampleItems(willReturn: Observable<[Item]>) -> MethodProxy {
               return MethodProxy(method: .getExampleItems, returns: willReturn)
           }
   
-          static func getItemDetails(item item: Parameter<Item>, willReturn: Observable<ItemDetails>) -> MethodProxy {
+          static func getItemDetails(item: Parameter<Item>, willReturn: Observable<ItemDetails>) -> MethodProxy {
               return MethodProxy(method: .getItemDetails__item_item(item), returns: willReturn)
           }
   
-          static func update(item item: Parameter<Item>, withLimit limit: Parameter<Decimal>, expirationDate date: Parameter<Date?>, willReturn: Single<Void>) -> MethodProxy {
+          static func update(item: Parameter<Item>, withLimit limit: Parameter<Decimal>, expirationDate date: Parameter<Date?>, willReturn: Single<Void>) -> MethodProxy {
               return MethodProxy(method: .update__item_itemwithLimit_limitexpirationDate_date(item, limit, date), returns: willReturn)
           }
         }
 
       struct VerificationProxy {
-          var method: MethodType
+          fileprivate var method: MethodType
 
 
           static func getExampleItems() -> VerificationProxy {
               return VerificationProxy(method: .getExampleItems)
           }
   
-          static func getItemDetails(item item: Parameter<Item>) -> VerificationProxy {
+          static func getItemDetails(item: Parameter<Item>) -> VerificationProxy {
               return VerificationProxy(method: .getItemDetails__item_item(item))
           }
   
-          static func update(item item: Parameter<Item>, withLimit limit: Parameter<Decimal>, expirationDate date: Parameter<Date?>) -> VerificationProxy {
+          static func update(item: Parameter<Item>, withLimit limit: Parameter<Decimal>, expirationDate date: Parameter<Date?>) -> VerificationProxy {
               return VerificationProxy(method: .update__item_itemwithLimit_limitexpirationDate_date(item, limit, date))
           }
         }
 
-      public func methodReturnValue(_ method: MethodType) -> Any? {
-          let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
-              return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
-          })
+      struct PerformProxy {
+          fileprivate var method: MethodType
+          var performs: Any
 
-          return matched?.returns
+          static func getExampleItems(perform: () -> Void) -> PerformProxy {
+              return PerformProxy(method: .getExampleItems, performs: perform)
+          }
+  
+          static func getItemDetails(item: Parameter<Item>, perform: (Item) -> Void) -> PerformProxy {
+              return PerformProxy(method: .getItemDetails__item_item(item), performs: perform)
+          }
+  
+          static func update(item: Parameter<Item>, withLimit limit: Parameter<Decimal>, expirationDate date: Parameter<Date?>, perform: (Item, Decimal, Date?) -> Void) -> PerformProxy {
+              return PerformProxy(method: .update__item_itemwithLimit_limitexpirationDate_date(item, limit, date), performs: perform)
+          }
+        }
+
+      public func matchingCalls(_ method: VerificationProxy) -> Int {
+          return matchingCalls(method.method).count
+      }
+
+      public func given(_ method: MethodProxy) {
+          methodReturnValues.append(method)
+          methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+      }
+
+      public func perform(_ method: PerformProxy) {
+          methodPerformValues.append(method)
+          methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
       }
 
       public func verify(_ method: VerificationProxy, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
@@ -358,32 +455,40 @@ class ItemsClientMock: ItemsClient, Mock {
           XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
       }
 
-      public func addInvocation(_ call: MethodType) {
+      private func addInvocation(_ call: MethodType) {
           invocations.append(call)
       }
 
-      public func matchingCalls(_ method: MethodType) -> [MethodType] {
+      private func methodReturnValue(_ method: MethodType) -> Any? {
+          let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
+              return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
+          })
+
+          return matched?.returns
+      }
+
+      private func methodPerformValue(_ method: MethodType) -> Any? {
+          let matched = methodPerformValues.reversed().first(where: { proxy -> Bool in
+              return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
+          })
+
+          return matched?.performs
+      }
+
+      private func matchingCalls(_ method: MethodType) -> [MethodType] {
           let matchingInvocations = invocations.filter({ (call) -> Bool in
               return MethodType.compareParameters(lhs: call, rhs: method, matcher: matcher)
           })
           return matchingInvocations
-      }
-
-      public func matchingCalls(_ method: VerificationProxy) -> [MethodType] {
-          return matchingCalls(method.method)
-      }
-
-      public func given(_ method: MethodProxy) {
-          methodReturnValues.append(method)
-          methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
       }
 }
 
 // MARK: - ItemsModel
 class ItemsModelMock: ItemsModel, Mock {
 
-      var invocations: [MethodType] = []
+      fileprivate var invocations: [MethodType] = []
       var methodReturnValues: [MethodProxy] = []
+      var methodPerformValues: [PerformProxy] = []
       var matcher: Matcher = Matcher.default
             
 
@@ -420,24 +525,31 @@ class ItemsModelMock: ItemsModel, Mock {
 
       func getExampleItems() -> Observable<[Item]> {
           addInvocation(.getExampleItems)
+          	let perform = methodPerformValue(.getExampleItems) as? () -> Void
+			perform?()
           return methodReturnValue(.getExampleItems) as! Observable<[Item]> 
       }
       
       func getItemDetails(item: Item) -> Observable<ItemDetails> {
           addInvocation(.getItemDetails__item_item(.value(item)))
+          	let perform = methodPerformValue(.getItemDetails__item_item(.value(item))) as? (Item) -> Void
+			perform?(item)
           return methodReturnValue(.getItemDetails__item_item(.value(item))) as! Observable<ItemDetails> 
       }
       
       func getPrice(for item: Item) -> Decimal {
           addInvocation(.getPrice__for_item(.value(item)))
+          	let perform = methodPerformValue(.getPrice__for_item(.value(item))) as? (Item) -> Void
+			perform?(item)
           return methodReturnValue(.getPrice__for_item(.value(item))) as! Decimal 
       }
       
-      enum MethodType {
+      fileprivate enum MethodType {
 
           case getExampleItems      
           case getItemDetails__item_item(Parameter<Item>)      
           case getPrice__for_item(Parameter<Item>)      
+
 
           static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
               switch (lhs, rhs) {
@@ -463,14 +575,14 @@ class ItemsModelMock: ItemsModel, Mock {
       }
 
       struct MethodProxy {
-          var method: MethodType
+          fileprivate var method: MethodType
           var returns: Any?
 
           static func getExampleItems(willReturn: Observable<[Item]>) -> MethodProxy {
               return MethodProxy(method: .getExampleItems, returns: willReturn)
           }
   
-          static func getItemDetails(item item: Parameter<Item>, willReturn: Observable<ItemDetails>) -> MethodProxy {
+          static func getItemDetails(item: Parameter<Item>, willReturn: Observable<ItemDetails>) -> MethodProxy {
               return MethodProxy(method: .getItemDetails__item_item(item), returns: willReturn)
           }
   
@@ -480,14 +592,14 @@ class ItemsModelMock: ItemsModel, Mock {
         }
 
       struct VerificationProxy {
-          var method: MethodType
+          fileprivate var method: MethodType
 
 
           static func getExampleItems() -> VerificationProxy {
               return VerificationProxy(method: .getExampleItems)
           }
   
-          static func getItemDetails(item item: Parameter<Item>) -> VerificationProxy {
+          static func getItemDetails(item: Parameter<Item>) -> VerificationProxy {
               return VerificationProxy(method: .getItemDetails__item_item(item))
           }
   
@@ -496,12 +608,35 @@ class ItemsModelMock: ItemsModel, Mock {
           }
         }
 
-      public func methodReturnValue(_ method: MethodType) -> Any? {
-          let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
-              return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
-          })
+      struct PerformProxy {
+          fileprivate var method: MethodType
+          var performs: Any
 
-          return matched?.returns
+          static func getExampleItems(perform: () -> Void) -> PerformProxy {
+              return PerformProxy(method: .getExampleItems, performs: perform)
+          }
+  
+          static func getItemDetails(item: Parameter<Item>, perform: (Item) -> Void) -> PerformProxy {
+              return PerformProxy(method: .getItemDetails__item_item(item), performs: perform)
+          }
+  
+          static func getPrice(for item: Parameter<Item>, perform: (Item) -> Void) -> PerformProxy {
+              return PerformProxy(method: .getPrice__for_item(item), performs: perform)
+          }
+        }
+
+      public func matchingCalls(_ method: VerificationProxy) -> Int {
+          return matchingCalls(method.method).count
+      }
+
+      public func given(_ method: MethodProxy) {
+          methodReturnValues.append(method)
+          methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+      }
+
+      public func perform(_ method: PerformProxy) {
+          methodPerformValues.append(method)
+          methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
       }
 
       public func verify(_ method: VerificationProxy, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
@@ -510,77 +645,228 @@ class ItemsModelMock: ItemsModel, Mock {
           XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
       }
 
-      public func addInvocation(_ call: MethodType) {
+      private func addInvocation(_ call: MethodType) {
           invocations.append(call)
       }
 
-      public func matchingCalls(_ method: MethodType) -> [MethodType] {
+      private func methodReturnValue(_ method: MethodType) -> Any? {
+          let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
+              return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
+          })
+
+          return matched?.returns
+      }
+
+      private func methodPerformValue(_ method: MethodType) -> Any? {
+          let matched = methodPerformValues.reversed().first(where: { proxy -> Bool in
+              return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
+          })
+
+          return matched?.performs
+      }
+
+      private func matchingCalls(_ method: MethodType) -> [MethodType] {
           let matchingInvocations = invocations.filter({ (call) -> Bool in
               return MethodType.compareParameters(lhs: call, rhs: method, matcher: matcher)
           })
           return matchingInvocations
       }
+}
 
-      public func matchingCalls(_ method: VerificationProxy) -> [MethodType] {
-          return matchingCalls(method.method)
+// MARK: - NonSwiftProtocol
+class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
+
+      fileprivate var invocations: [MethodType] = []
+      var methodReturnValues: [MethodProxy] = []
+      var methodPerformValues: [PerformProxy] = []
+      var matcher: Matcher = Matcher.default
+            
+            
+
+      func returnNoting() {
+          addInvocation(.returnNoting)
+          	let perform = methodPerformValue(.returnNoting) as? () -> Void
+			perform?()
+          
+      }
+      
+      func someMethod() {
+          addInvocation(.someMethod)
+          	let perform = methodPerformValue(.someMethod) as? () -> Void
+			perform?()
+          
+      }
+      
+      fileprivate enum MethodType {
+
+          case returnNoting      
+          case someMethod      
+
+
+          static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+              switch (lhs, rhs) {
+                  case (.returnNoting, .returnNoting): 
+                      return true 
+                  case (.someMethod, .someMethod): 
+                      return true 
+                  default: return false
+              }
+          }
+
+          func intValue() -> Int {
+              switch self {
+                  case .returnNoting: return 0
+                  case .someMethod: return 0
+              }
+          }
+      }
+
+      struct MethodProxy {
+          fileprivate var method: MethodType
+          var returns: Any?
+      }
+
+      struct VerificationProxy {
+          fileprivate var method: MethodType
+
+
+          static func returnNoting() -> VerificationProxy {
+              return VerificationProxy(method: .returnNoting)
+          }
+  
+          static func someMethod() -> VerificationProxy {
+              return VerificationProxy(method: .someMethod)
+          }
+        }
+
+      struct PerformProxy {
+          fileprivate var method: MethodType
+          var performs: Any
+
+          static func returnNoting(perform: () -> Void) -> PerformProxy {
+              return PerformProxy(method: .returnNoting, performs: perform)
+          }
+  
+          static func someMethod(perform: () -> Void) -> PerformProxy {
+              return PerformProxy(method: .someMethod, performs: perform)
+          }
+        }
+
+      public func matchingCalls(_ method: VerificationProxy) -> Int {
+          return matchingCalls(method.method).count
       }
 
       public func given(_ method: MethodProxy) {
           methodReturnValues.append(method)
           methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
       }
+
+      public func perform(_ method: PerformProxy) {
+          methodPerformValues.append(method)
+          methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+      }
+
+      public func verify(_ method: VerificationProxy, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+          let method = method.method
+          let invocations = matchingCalls(method)
+          XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+      }
+
+      private func addInvocation(_ call: MethodType) {
+          invocations.append(call)
+      }
+
+      private func methodReturnValue(_ method: MethodType) -> Any? {
+          let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
+              return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
+          })
+
+          return matched?.returns
+      }
+
+      private func methodPerformValue(_ method: MethodType) -> Any? {
+          let matched = methodPerformValues.reversed().first(where: { proxy -> Bool in
+              return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
+          })
+
+          return matched?.performs
+      }
+
+      private func matchingCalls(_ method: MethodType) -> [MethodType] {
+          let matchingInvocations = invocations.filter({ (call) -> Bool in
+              return MethodType.compareParameters(lhs: call, rhs: method, matcher: matcher)
+          })
+          return matchingInvocations
+      }
 }
 
 // MARK: - SampleServiceType
 class SampleServiceTypeMock: SampleServiceType, Mock {
 
-      var invocations: [MethodType] = []
+      fileprivate var invocations: [MethodType] = []
       var methodReturnValues: [MethodProxy] = []
+      var methodPerformValues: [PerformProxy] = []
       var matcher: Matcher = Matcher.default
             
             
 
       func serviceName() -> String {
           addInvocation(.serviceName)
+          	let perform = methodPerformValue(.serviceName) as? () -> Void
+			perform?()
           return methodReturnValue(.serviceName) as! String 
       }
       
       func getPoint(from point: Point) -> Point {
           addInvocation(.getPoint__from_point(.value(point)))
+          	let perform = methodPerformValue(.getPoint__from_point(.value(point))) as? (Point) -> Void
+			perform?(point)
           return methodReturnValue(.getPoint__from_point(.value(point))) as! Point 
       }
       
       func getPoint(from tuple: (Float,Float)) -> Point {
           addInvocation(.getPoint__from_tuple(.value(tuple)))
+          	let perform = methodPerformValue(.getPoint__from_tuple(.value(tuple))) as? ((Float,Float)) -> Void
+			perform?(tuple)
           return methodReturnValue(.getPoint__from_tuple(.value(tuple))) as! Point 
       }
       
       func similarMethodThatDiffersOnType(_ value: Float) -> Bool {
           addInvocation(.similarMethodThatDiffersOnType__value_1(.value(value)))
+          	let perform = methodPerformValue(.similarMethodThatDiffersOnType__value_1(.value(value))) as? (Float) -> Void
+			perform?(value)
           return methodReturnValue(.similarMethodThatDiffersOnType__value_1(.value(value))) as! Bool 
       }
       
       func similarMethodThatDiffersOnType(_ value: Point) -> Bool {
           addInvocation(.similarMethodThatDiffersOnType__value_2(.value(value)))
+          	let perform = methodPerformValue(.similarMethodThatDiffersOnType__value_2(.value(value))) as? (Point) -> Void
+			perform?(value)
           return methodReturnValue(.similarMethodThatDiffersOnType__value_2(.value(value))) as! Bool 
       }
       
       func methodWithTypedef(_ scalar: Scalar) {
           addInvocation(.methodWithTypedef__scalar(.value(scalar)))
+          	let perform = methodPerformValue(.methodWithTypedef__scalar(.value(scalar))) as? (Scalar) -> Void
+			perform?(scalar)
           
       }
       
       func methodWithClosures(success function: LinearFunction) -> ClosureFabric {
           addInvocation(.methodWithClosures__success_function_1(.value(function)))
+          	let perform = methodPerformValue(.methodWithClosures__success_function_1(.value(function))) as? (LinearFunction) -> Void
+			perform?(function)
           return methodReturnValue(.methodWithClosures__success_function_1(.value(function))) as! ClosureFabric 
       }
       
       func methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?) -> ((Int) -> Void) {
           addInvocation(.methodWithClosures__success_function_2(.value(function)))
+          	let perform = methodPerformValue(.methodWithClosures__success_function_2(.value(function))) as? (((Scalar,Scalar) -> Scalar)?) -> Void
+			perform?(function)
           return methodReturnValue(.methodWithClosures__success_function_2(.value(function))) as! ((Int) -> Void) 
       }
       
-      enum MethodType {
+      fileprivate enum MethodType {
 
           case serviceName      
           case getPoint__from_point(Parameter<Point>)      
@@ -590,6 +876,7 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
           case methodWithTypedef__scalar(Parameter<Scalar>)      
           case methodWithClosures__success_function_1(Parameter<LinearFunction>)      
           case methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>)      
+
 
           static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
               switch (lhs, rhs) {
@@ -635,7 +922,7 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
       }
 
       struct MethodProxy {
-          var method: MethodType
+          fileprivate var method: MethodType
           var returns: Any?
 
           static func serviceName(willReturn: String) -> MethodProxy {
@@ -658,10 +945,6 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
               return MethodProxy(method: .similarMethodThatDiffersOnType__value_2(value), returns: willReturn)
           }
   
-          static func methodWithTypedef(scalar: Parameter<Scalar>, willReturn: Void) -> MethodProxy {
-              return MethodProxy(method: .methodWithTypedef__scalar(scalar), returns: willReturn)
-          }
-  
           static func methodWithClosures(success function: Parameter<LinearFunction>, willReturn: ClosureFabric) -> MethodProxy {
               return MethodProxy(method: .methodWithClosures__success_function_1(function), returns: willReturn)
           }
@@ -672,7 +955,7 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
         }
 
       struct VerificationProxy {
-          var method: MethodType
+          fileprivate var method: MethodType
 
 
           static func serviceName() -> VerificationProxy {
@@ -708,12 +991,55 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
           }
         }
 
-      public func methodReturnValue(_ method: MethodType) -> Any? {
-          let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
-              return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
-          })
+      struct PerformProxy {
+          fileprivate var method: MethodType
+          var performs: Any
 
-          return matched?.returns
+          static func serviceName(perform: () -> Void) -> PerformProxy {
+              return PerformProxy(method: .serviceName, performs: perform)
+          }
+  
+          static func getPoint(from point: Parameter<Point>, perform: (Point) -> Void) -> PerformProxy {
+              return PerformProxy(method: .getPoint__from_point(point), performs: perform)
+          }
+  
+          static func getPoint(from tuple: Parameter<(Float,Float)>, perform: ((Float,Float)) -> Void) -> PerformProxy {
+              return PerformProxy(method: .getPoint__from_tuple(tuple), performs: perform)
+          }
+  
+          static func similarMethodThatDiffersOnType(value: Parameter<Float>, perform: (Float) -> Void) -> PerformProxy {
+              return PerformProxy(method: .similarMethodThatDiffersOnType__value_1(value), performs: perform)
+          }
+  
+          static func similarMethodThatDiffersOnType(value: Parameter<Point>, perform: (Point) -> Void) -> PerformProxy {
+              return PerformProxy(method: .similarMethodThatDiffersOnType__value_2(value), performs: perform)
+          }
+  
+          static func methodWithTypedef(scalar: Parameter<Scalar>, perform: (Scalar) -> Void) -> PerformProxy {
+              return PerformProxy(method: .methodWithTypedef__scalar(scalar), performs: perform)
+          }
+  
+          static func methodWithClosures(success function: Parameter<LinearFunction>, perform: (LinearFunction) -> Void) -> PerformProxy {
+              return PerformProxy(method: .methodWithClosures__success_function_1(function), performs: perform)
+          }
+  
+          static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>, perform: (((Scalar,Scalar) -> Scalar)?) -> Void) -> PerformProxy {
+              return PerformProxy(method: .methodWithClosures__success_function_2(function), performs: perform)
+          }
+        }
+
+      public func matchingCalls(_ method: VerificationProxy) -> Int {
+          return matchingCalls(method.method).count
+      }
+
+      public func given(_ method: MethodProxy) {
+          methodReturnValues.append(method)
+          methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+      }
+
+      public func perform(_ method: PerformProxy) {
+          methodPerformValues.append(method)
+          methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
       }
 
       public func verify(_ method: VerificationProxy, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
@@ -722,32 +1048,40 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
           XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
       }
 
-      public func addInvocation(_ call: MethodType) {
+      private func addInvocation(_ call: MethodType) {
           invocations.append(call)
       }
 
-      public func matchingCalls(_ method: MethodType) -> [MethodType] {
+      private func methodReturnValue(_ method: MethodType) -> Any? {
+          let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
+              return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
+          })
+
+          return matched?.returns
+      }
+
+      private func methodPerformValue(_ method: MethodType) -> Any? {
+          let matched = methodPerformValues.reversed().first(where: { proxy -> Bool in
+              return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
+          })
+
+          return matched?.performs
+      }
+
+      private func matchingCalls(_ method: MethodType) -> [MethodType] {
           let matchingInvocations = invocations.filter({ (call) -> Bool in
               return MethodType.compareParameters(lhs: call, rhs: method, matcher: matcher)
           })
           return matchingInvocations
-      }
-
-      public func matchingCalls(_ method: VerificationProxy) -> [MethodType] {
-          return matchingCalls(method.method)
-      }
-
-      public func given(_ method: MethodProxy) {
-          methodReturnValues.append(method)
-          methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
       }
 }
 
 // MARK: - SimpleServiceType
 class SimpleServiceTypeMock: SimpleServiceType, Mock {
 
-      var invocations: [MethodType] = []
+      fileprivate var invocations: [MethodType] = []
       var methodReturnValues: [MethodProxy] = []
+      var methodPerformValues: [PerformProxy] = []
       var matcher: Matcher = Matcher.default
             
 
@@ -759,12 +1093,15 @@ class SimpleServiceTypeMock: SimpleServiceType, Mock {
 
       func serviceName() -> String {
           addInvocation(.serviceName)
+          	let perform = methodPerformValue(.serviceName) as? () -> Void
+			perform?()
           return methodReturnValue(.serviceName) as! String 
       }
       
-      enum MethodType {
+      fileprivate enum MethodType {
 
           case serviceName      
+
 
           static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
               switch (lhs, rhs) {
@@ -782,7 +1119,7 @@ class SimpleServiceTypeMock: SimpleServiceType, Mock {
       }
 
       struct MethodProxy {
-          var method: MethodType
+          fileprivate var method: MethodType
           var returns: Any?
 
           static func serviceName(willReturn: String) -> MethodProxy {
@@ -791,7 +1128,7 @@ class SimpleServiceTypeMock: SimpleServiceType, Mock {
         }
 
       struct VerificationProxy {
-          var method: MethodType
+          fileprivate var method: MethodType
 
 
           static func serviceName() -> VerificationProxy {
@@ -799,12 +1136,27 @@ class SimpleServiceTypeMock: SimpleServiceType, Mock {
           }
         }
 
-      public func methodReturnValue(_ method: MethodType) -> Any? {
-          let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
-              return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
-          })
+      struct PerformProxy {
+          fileprivate var method: MethodType
+          var performs: Any
 
-          return matched?.returns
+          static func serviceName(perform: () -> Void) -> PerformProxy {
+              return PerformProxy(method: .serviceName, performs: perform)
+          }
+        }
+
+      public func matchingCalls(_ method: VerificationProxy) -> Int {
+          return matchingCalls(method.method).count
+      }
+
+      public func given(_ method: MethodProxy) {
+          methodReturnValues.append(method)
+          methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+      }
+
+      public func perform(_ method: PerformProxy) {
+          methodPerformValues.append(method)
+          methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
       }
 
       public func verify(_ method: VerificationProxy, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
@@ -813,50 +1165,63 @@ class SimpleServiceTypeMock: SimpleServiceType, Mock {
           XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
       }
 
-      public func addInvocation(_ call: MethodType) {
+      private func addInvocation(_ call: MethodType) {
           invocations.append(call)
       }
 
-      public func matchingCalls(_ method: MethodType) -> [MethodType] {
+      private func methodReturnValue(_ method: MethodType) -> Any? {
+          let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
+              return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
+          })
+
+          return matched?.returns
+      }
+
+      private func methodPerformValue(_ method: MethodType) -> Any? {
+          let matched = methodPerformValues.reversed().first(where: { proxy -> Bool in
+              return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
+          })
+
+          return matched?.performs
+      }
+
+      private func matchingCalls(_ method: MethodType) -> [MethodType] {
           let matchingInvocations = invocations.filter({ (call) -> Bool in
               return MethodType.compareParameters(lhs: call, rhs: method, matcher: matcher)
           })
           return matchingInvocations
-      }
-
-      public func matchingCalls(_ method: VerificationProxy) -> [MethodType] {
-          return matchingCalls(method.method)
-      }
-
-      public func given(_ method: MethodProxy) {
-          methodReturnValues.append(method)
-          methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
       }
 }
 
 // MARK: - UserStorageType
 class UserStorageTypeMock: UserStorageType, Mock {
 
-      var invocations: [MethodType] = []
+      fileprivate var invocations: [MethodType] = []
       var methodReturnValues: [MethodProxy] = []
+      var methodPerformValues: [PerformProxy] = []
       var matcher: Matcher = Matcher.default
             
             
 
       func surname(for name: String) -> String {
           addInvocation(.surname__for_name(.value(name)))
+          	let perform = methodPerformValue(.surname__for_name(.value(name))) as? (String) -> Void
+			perform?(name)
           return methodReturnValue(.surname__for_name(.value(name))) as! String 
       }
       
       func storeUser(name: String, surname: String) {
           addInvocation(.storeUser__name_namesurname_surname(.value(name), .value(surname)))
+          	let perform = methodPerformValue(.storeUser__name_namesurname_surname(.value(name), .value(surname))) as? (String, String) -> Void
+			perform?(name, surname)
           
       }
       
-      enum MethodType {
+      fileprivate enum MethodType {
 
           case surname__for_name(Parameter<String>)      
           case storeUser__name_namesurname_surname(Parameter<String>, Parameter<String>)      
+
 
           static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
               switch (lhs, rhs) {
@@ -880,37 +1245,52 @@ class UserStorageTypeMock: UserStorageType, Mock {
       }
 
       struct MethodProxy {
-          var method: MethodType
+          fileprivate var method: MethodType
           var returns: Any?
 
           static func surname(for name: Parameter<String>, willReturn: String) -> MethodProxy {
               return MethodProxy(method: .surname__for_name(name), returns: willReturn)
           }
-  
-          static func storeUser(name name: Parameter<String>, surname surname: Parameter<String>, willReturn: Void) -> MethodProxy {
-              return MethodProxy(method: .storeUser__name_namesurname_surname(name, surname), returns: willReturn)
-          }
         }
 
       struct VerificationProxy {
-          var method: MethodType
+          fileprivate var method: MethodType
 
 
           static func surname(for name: Parameter<String>) -> VerificationProxy {
               return VerificationProxy(method: .surname__for_name(name))
           }
   
-          static func storeUser(name name: Parameter<String>, surname surname: Parameter<String>) -> VerificationProxy {
+          static func storeUser(name: Parameter<String>, surname: Parameter<String>) -> VerificationProxy {
               return VerificationProxy(method: .storeUser__name_namesurname_surname(name, surname))
           }
         }
 
-      public func methodReturnValue(_ method: MethodType) -> Any? {
-          let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
-              return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
-          })
+      struct PerformProxy {
+          fileprivate var method: MethodType
+          var performs: Any
 
-          return matched?.returns
+          static func surname(for name: Parameter<String>, perform: (String) -> Void) -> PerformProxy {
+              return PerformProxy(method: .surname__for_name(name), performs: perform)
+          }
+  
+          static func storeUser(name: Parameter<String>, surname: Parameter<String>, perform: (String, String) -> Void) -> PerformProxy {
+              return PerformProxy(method: .storeUser__name_namesurname_surname(name, surname), performs: perform)
+          }
+        }
+
+      public func matchingCalls(_ method: VerificationProxy) -> Int {
+          return matchingCalls(method.method).count
+      }
+
+      public func given(_ method: MethodProxy) {
+          methodReturnValues.append(method)
+          methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+      }
+
+      public func perform(_ method: PerformProxy) {
+          methodPerformValues.append(method)
+          methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
       }
 
       public func verify(_ method: VerificationProxy, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
@@ -919,24 +1299,31 @@ class UserStorageTypeMock: UserStorageType, Mock {
           XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
       }
 
-      public func addInvocation(_ call: MethodType) {
+      private func addInvocation(_ call: MethodType) {
           invocations.append(call)
       }
 
-      public func matchingCalls(_ method: MethodType) -> [MethodType] {
+      private func methodReturnValue(_ method: MethodType) -> Any? {
+          let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
+              return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
+          })
+
+          return matched?.returns
+      }
+
+      private func methodPerformValue(_ method: MethodType) -> Any? {
+          let matched = methodPerformValues.reversed().first(where: { proxy -> Bool in
+              return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
+          })
+
+          return matched?.performs
+      }
+
+      private func matchingCalls(_ method: MethodType) -> [MethodType] {
           let matchingInvocations = invocations.filter({ (call) -> Bool in
               return MethodType.compareParameters(lhs: call, rhs: method, matcher: matcher)
           })
           return matchingInvocations
-      }
-
-      public func matchingCalls(_ method: VerificationProxy) -> [MethodType] {
-          return matchingCalls(method.method)
-      }
-
-      public func given(_ method: MethodProxy) {
-          methodReturnValues.append(method)
-          methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
       }
 }
 
