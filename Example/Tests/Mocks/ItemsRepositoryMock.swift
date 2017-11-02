@@ -22,6 +22,7 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
 
     fileprivate var invocations: [MethodType] = []
     var methodReturnValues: [MethodProxy] = []
+    var methodPerformValues: [PerformProxy] = []
     var matcher: Matcher = Matcher.default
         
     //MARK : ItemsRepository
@@ -29,21 +30,29 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
 
     func storeItems(items: [Item]) {
         addInvocation(.storeItems__items_items(.value(items)))
+        	let perform = methodPerformValue(.storeItems__items_items(.value(items))) as? ([Item]) -> Void
+			perform?(items)
         
     }
     
     func storeDetails(details: ItemDetails) {
         addInvocation(.storeDetails__details_details(.value(details)))
+        	let perform = methodPerformValue(.storeDetails__details_details(.value(details))) as? (ItemDetails) -> Void
+			perform?(details)
         
     }
     
     func storedItems() -> [Item]? {
         addInvocation(.storedItems)
+        	let perform = methodPerformValue(.storedItems) as? () -> Void
+			perform?()
         return methodReturnValue(.storedItems) as! [Item]? 
     }
     
     func storedDetails(item: Item) -> ItemDetails? {
         addInvocation(.storedDetails__item_item(.value(item)))
+        	let perform = methodPerformValue(.storedDetails__item_item(.value(item))) as? (Item) -> Void
+			perform?(item)
         return methodReturnValue(.storedDetails__item_item(.value(item))) as! ItemDetails? 
     }
     
@@ -115,6 +124,27 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         }
     }
 
+    struct PerformProxy {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        static func storeItems(items: Parameter<[Item]>, perform: ([Item]) -> Void) -> PerformProxy {
+            return PerformProxy(method: .storeItems__items_items(items), performs: perform)
+        }
+
+        static func storeDetails(details: Parameter<ItemDetails>, perform: (ItemDetails) -> Void) -> PerformProxy {
+            return PerformProxy(method: .storeDetails__details_details(details), performs: perform)
+        }
+
+        static func storedItems(perform: () -> Void) -> PerformProxy {
+            return PerformProxy(method: .storedItems, performs: perform)
+        }
+
+        static func storedDetails(item: Parameter<Item>, perform: (Item) -> Void) -> PerformProxy {
+            return PerformProxy(method: .storedDetails__item_item(item), performs: perform)
+        }
+    }
+
     public func matchingCalls(_ method: VerificationProxy) -> Int {
         return matchingCalls(method.method).count
     }
@@ -122,6 +152,11 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
     public func given(_ method: MethodProxy) {
         methodReturnValues.append(method)
         methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func perform(_ method: PerformProxy) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
     public func verify(_ method: VerificationProxy, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
@@ -140,6 +175,14 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         })
 
         return matched?.returns
+    }
+
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first(where: { proxy -> Bool in
+            return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
+        })
+
+        return matched?.performs
     }
 
     private func matchingCalls(_ method: MethodType) -> [MethodType] {

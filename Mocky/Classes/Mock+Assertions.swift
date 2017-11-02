@@ -51,3 +51,21 @@ public func Verify<T: Mock>(_ object: T, _ count: UInt, _ method: T.Verification
 public func Given<T: Mock>(_ object: T, _ method: T.MethodProxy) {
     object.given(method)
 }
+
+/// Setup perform closure for method stubs in mock instance. When this method will be called on mock, it
+/// will check for first matching closure and execute it with parameters passed. Have in mind following rules:
+/// 1. First check most specific performs (with explicit parameters - .value), then for wildcard parameters (.any)
+/// 2. More recent performs have higher priority than older ones
+/// 3. When two performs have same level of explicity, like:
+///     ```
+///     Perform(mock, .do(with: .value(1), and: .any(Int.self), perform: { ... }))
+///     Perform(mock, .do(with: .any(Int.self), and: .value(1), perform: { ... }))
+///     ```
+///     Method stub will return most recent one.
+///
+/// - Parameters:
+///   - object: Mock instance
+///   - method: Method signature with wrapped parameters (Parameter<ValueType>) and perform closure
+public func Perform<T: Mock>(_ object: T, _ method: T.PerformProxy) {
+    object.perform(method)
+}

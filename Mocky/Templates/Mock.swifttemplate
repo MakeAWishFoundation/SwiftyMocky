@@ -251,15 +251,6 @@ class MethodWrapper {
         return "\(prototype)(\(parameters))"
     }
 
-    func proxyConstructor() -> String {
-        if method.parameters.isEmpty {
-            return "return MethodProxy(method: .\(prototype), returns: willReturn)"
-        } else {
-            let parameters = method.parameters.map { "\($0.name)" }.joined(separator: ", ")
-            return "return MethodProxy(method: .\(prototype)(\(parameters)), returns: willReturn)"
-        }
-    }
-
     func proxyConstructorName() -> String {
         if method.parameters.isEmpty {
             return "static func \(method.shortName)(willReturn: \(method.returnTypeName)) -> MethodProxy"
@@ -276,6 +267,15 @@ class MethodWrapper {
                 return "\(argumentLabel) \($0.name): Parameter<\($0.typeName)>"
             }.joined(separator: ", ")
             return "static func \(method.shortName)(\(functionParameters), willReturn: \(method.returnTypeName)) -> MethodProxy"
+        }
+    }
+
+    func proxyConstructor() -> String {
+        if method.parameters.isEmpty {
+            return "return MethodProxy(method: .\(prototype), returns: willReturn)"
+        } else {
+            let parameters = method.parameters.map { "\($0.name)" }.joined(separator: ", ")
+            return "return MethodProxy(method: .\(prototype)(\(parameters)), returns: willReturn)"
         }
     }
 
@@ -307,13 +307,67 @@ class MethodWrapper {
         }
     }
 
-    func performClosureType() -> String {
+    func performProxyConstructorName() -> String {
+        if method.parameters.isEmpty {
+            return "static func \(method.shortName)(perform: \(performProxyClosureType())) -> PerformProxy"
+        } else {
+            let functionParameters = method.parameters.map {
+                guard let argumentLabel = $0.argumentLabel else {
+                    return "\($0.name): Parameter<\($0.typeName)>"
+                }
+
+                guard argumentLabel != $0.name else {
+                    return "\($0.name): Parameter<\($0.typeName)>"
+                }
+
+                return "\(argumentLabel) \($0.name): Parameter<\($0.typeName)>"
+            }.joined(separator: ", ")
+            return "static func \(method.shortName)(\(functionParameters), perform: \(performProxyClosureType())) -> PerformProxy"
+        }
+    }
+
+    func performProxyConstructor() -> String {
+        if method.parameters.isEmpty {
+            return "return PerformProxy(method: .\(prototype), performs: perform)"
+        } else {
+            let parameters = method.parameters.map { "\($0.name)" }.joined(separator: ", ")
+            return "return PerformProxy(method: .\(prototype)(\(parameters)), performs: perform)"
+        }
+    }
+
+    func performProxyClosureType() -> String {
         if method.parameters.isEmpty {
             return "() -> Void"
         } else {
             let parameters = method.parameters.map { "\($0.typeName)" }.joined(separator: ", ")
             return "(\(parameters)) -> Void"
         }
+    }
+
+    func performProxyClosureCall() -> String {
+        if method.parameters.isEmpty {
+            return "perform?()"
+        } else {
+            let parameters = method.parameters.map { "\($0.name)" }.joined(separator: ", ")
+            return "perform?(\(parameters))"
+        }
+    }
+
+    func performCall() -> String {
+        let type = performProxyClosureType()
+        var proxy = ""
+
+        if method.parameters.isEmpty {
+            proxy = "\(prototype)"
+        } else {
+            let parameters = method.parameters.map { ".value(\($0.name))" }.joined(separator: ", ")
+            proxy = "\(prototype)(\(parameters))"
+        }
+
+        let cast = "let perform = methodPerformValue(.\(proxy)) as? \(type)"
+        let call = performProxyClosureCall()
+
+        return "\t\(cast)\n\t\t\t\(call)"
     }
 }
 
@@ -342,6 +396,7 @@ class <%= type.name %>Mock:<%= type.annotations["ObjcProtocol"] != nil ? " NSObj
 
       fileprivate var invocations: [MethodType] = []
       var methodReturnValues: [MethodProxy] = []
+      var methodPerformValues: [PerformProxy] = []
       var matcher: Matcher = Matcher.default
       <%_ -%>
       <% let allVariables = uniques(variables: aProtocol.allVariables) %><%_ -%>
@@ -357,6 +412,7 @@ class <%= type.name %>Mock:<%= type.annotations["ObjcProtocol"] != nil ? " NSObj
       <%_ for method in allMethods.map(wrapMethod) { %>
       <%= method.functionPrototype _%> {
           <%= method.invocation _%>
+          <%= method.performCall() _%>
           <%= method.returnValue _%>
       }
       <%  } %> <%_ -%>
@@ -404,6 +460,16 @@ class <%= type.name %>Mock:<%= type.annotations["ObjcProtocol"] != nil ? " NSObj
   <%  } %> <%_ -%>
       }
 
+      struct PerformProxy {
+          fileprivate var method: MethodType
+          var performs: Any
+          <%_ for method in allMethods.map(wrapMethod) { %>
+          <%= method.performProxyConstructorName() -%> {
+              <%= method.performProxyConstructor() _%>
+          }
+  <%  } %> <%_ -%>
+      }
+
       public func matchingCalls(_ method: VerificationProxy) -> Int {
           return matchingCalls(method.method).count
       }
@@ -411,6 +477,11 @@ class <%= type.name %>Mock:<%= type.annotations["ObjcProtocol"] != nil ? " NSObj
       public func given(_ method: MethodProxy) {
           methodReturnValues.append(method)
           methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+      }
+
+      public func perform(_ method: PerformProxy) {
+          methodPerformValues.append(method)
+          methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
       }
 
       public func verify(_ method: VerificationProxy, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
@@ -429,6 +500,14 @@ class <%= type.name %>Mock:<%= type.annotations["ObjcProtocol"] != nil ? " NSObj
           })
 
           return matched?.returns
+      }
+
+      private func methodPerformValue(_ method: MethodType) -> Any? {
+          let matched = methodPerformValues.reversed().first(where: { proxy -> Bool in
+              return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
+          })
+
+          return matched?.performs
       }
 
       private func matchingCalls(_ method: MethodType) -> [MethodType] {
@@ -454,6 +533,7 @@ class <%= type.name %>Mock:<%= type.annotations["ObjcProtocol"] != nil ? " NSObj
 
     fileprivate var invocations: [MethodType] = []
     var methodReturnValues: [MethodProxy] = []
+    var methodPerformValues: [PerformProxy] = []
     var matcher: Matcher = Matcher.default
     <%_ -%>
     <% let allVariables = uniques(variables: aProtocol.allVariables) %><%_ -%>
@@ -470,6 +550,7 @@ class <%= type.name %>Mock:<%= type.annotations["ObjcProtocol"] != nil ? " NSObj
     <%_ for method in allMethods.map(wrapMethod) { %>
     <%= method.functionPrototype _%> {
         <%= method.invocation _%>
+        <%= method.performCall() _%>
         <%= method.returnValue _%>
     }
     <%  } %> <%_ -%>
@@ -517,6 +598,16 @@ class <%= type.name %>Mock:<%= type.annotations["ObjcProtocol"] != nil ? " NSObj
 <%  } %> <%_ -%>
     }
 
+    struct PerformProxy {
+        fileprivate var method: MethodType
+        var performs: Any
+        <%_ for method in allMethods.map(wrapMethod) { %>
+        <%= method.performProxyConstructorName() -%> {
+            <%= method.performProxyConstructor() _%>
+        }
+<%  } %> <%_ -%>
+    }
+
     public func matchingCalls(_ method: VerificationProxy) -> Int {
         return matchingCalls(method.method).count
     }
@@ -524,6 +615,11 @@ class <%= type.name %>Mock:<%= type.annotations["ObjcProtocol"] != nil ? " NSObj
     public func given(_ method: MethodProxy) {
         methodReturnValues.append(method)
         methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func perform(_ method: PerformProxy) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
     public func verify(_ method: VerificationProxy, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
@@ -542,6 +638,14 @@ class <%= type.name %>Mock:<%= type.annotations["ObjcProtocol"] != nil ? " NSObj
         })
 
         return matched?.returns
+    }
+
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first(where: { proxy -> Bool in
+            return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
+        })
+
+        return matched?.performs
     }
 
     private func matchingCalls(_ method: MethodType) -> [MethodType] {
