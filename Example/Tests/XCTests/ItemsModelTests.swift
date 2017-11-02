@@ -73,7 +73,7 @@ class ItemsModelTests: XCTestCase {
         let details = ItemDetails(item: item, price: 0, description: ["desc": "value"])
 
         itemsRepositoryMock.given(.storedDetails(item: .value(item), willReturn: nil))
-        itemsClientMock.given(.getItemDetails(item: .any(Item.self), willReturn: Observable.just(details)))
+        itemsClientMock.given(.getItemDetails(item: .any, willReturn: Observable.just(details)))
 
         let reveivedDetails = try! sut.getItemDetails(item: item).toBlocking().single()!
 
@@ -87,7 +87,7 @@ class ItemsModelTests: XCTestCase {
         let item = Item(name: "itemName", id: 0)
         let details = ItemDetails(item: item, price: 0, description: ["desc": "value"])
 
-        itemsRepositoryMock.given(.storedDetails(item: .any(Item.self), willReturn: details))
+        itemsRepositoryMock.given(.storedDetails(item: .any, willReturn: details))
 
         let reveivedDetails = try! sut.getItemDetails(item: item).toBlocking().single()!
 

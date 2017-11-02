@@ -86,8 +86,8 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
       }
       
       func methodWithClosures(success function: LinearFunction) -> ClosureFabric {
-          addInvocation(.methodWithClosures__success_function_1(.value(function)))
-          	let perform = methodPerformValue(.methodWithClosures__success_function_1(.value(function))) as? (LinearFunction) -> Void
+          addInvocation(.methodWithClosures__success_function_1(Parameter<LinearFunction>.any))
+          	let perform = methodPerformValue(.methodWithClosures__success_function_1(Parameter<LinearFunction>.any)) as? (LinearFunction) -> Void
 			perform?(function)
           return methodReturnValue(.methodWithClosures__success_function_1(.value(function))) as! ClosureFabric 
       }
@@ -853,8 +853,8 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
       }
       
       func methodWithClosures(success function: LinearFunction) -> ClosureFabric {
-          addInvocation(.methodWithClosures__success_function_1(.value(function)))
-          	let perform = methodPerformValue(.methodWithClosures__success_function_1(.value(function))) as? (LinearFunction) -> Void
+          addInvocation(.methodWithClosures__success_function_1(Parameter<LinearFunction>.any))
+          	let perform = methodPerformValue(.methodWithClosures__success_function_1(Parameter<LinearFunction>.any)) as? (LinearFunction) -> Void
 			perform?(function)
           return methodReturnValue(.methodWithClosures__success_function_1(.value(function))) as! ClosureFabric 
       }
@@ -1142,6 +1142,157 @@ class SimpleServiceTypeMock: SimpleServiceType, Mock {
 
           static func serviceName(perform: () -> Void) -> PerformProxy {
               return PerformProxy(method: .serviceName, performs: perform)
+          }
+        }
+
+      public func matchingCalls(_ method: VerificationProxy) -> Int {
+          return matchingCalls(method.method).count
+      }
+
+      public func given(_ method: MethodProxy) {
+          methodReturnValues.append(method)
+          methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+      }
+
+      public func perform(_ method: PerformProxy) {
+          methodPerformValues.append(method)
+          methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+      }
+
+      public func verify(_ method: VerificationProxy, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+          let method = method.method
+          let invocations = matchingCalls(method)
+          XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+      }
+
+      private func addInvocation(_ call: MethodType) {
+          invocations.append(call)
+      }
+
+      private func methodReturnValue(_ method: MethodType) -> Any? {
+          let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
+              return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
+          })
+
+          return matched?.returns
+      }
+
+      private func methodPerformValue(_ method: MethodType) -> Any? {
+          let matched = methodPerformValues.reversed().first(where: { proxy -> Bool in
+              return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
+          })
+
+          return matched?.performs
+      }
+
+      private func matchingCalls(_ method: MethodType) -> [MethodType] {
+          let matchingInvocations = invocations.filter({ (call) -> Bool in
+              return MethodType.compareParameters(lhs: call, rhs: method, matcher: matcher)
+          })
+          return matchingInvocations
+      }
+}
+
+// MARK: - UserNetworkType
+class UserNetworkTypeMock: UserNetworkType, Mock {
+
+      fileprivate var invocations: [MethodType] = []
+      var methodReturnValues: [MethodProxy] = []
+      var methodPerformValues: [PerformProxy] = []
+      var matcher: Matcher = Matcher.default
+            
+            
+
+      func getUser(for id: String, completion: (User?) -> Void) {
+          addInvocation(.getUser__for_idcompletion_completion(.value(id), Parameter<(User?) -> Void>.any))
+          	let perform = methodPerformValue(.getUser__for_idcompletion_completion(.value(id), Parameter<(User?) -> Void>.any)) as? (String, (User?) -> Void) -> Void
+			perform?(id, completion)
+          
+      }
+      
+      func getUserEscaping(for id: String, completion: @escaping (User?,Error?) -> Void) {
+          addInvocation(.getUserEscaping__for_idcompletion_completion(.value(id), .value(completion)))
+          	let perform = methodPerformValue(.getUserEscaping__for_idcompletion_completion(.value(id), .value(completion))) as? (String, @escaping (User?,Error?) -> Void) -> Void
+			perform?(id, completion)
+          
+      }
+      
+      func doSomething(prop: @autoclosure () -> String) {
+          addInvocation(.doSomething__prop_prop(Parameter< () -> String>.any))
+          	let perform = methodPerformValue(.doSomething__prop_prop(Parameter< () -> String>.any)) as? (@autoclosure () -> String) -> Void
+			perform?(prop)
+          
+      }
+      
+      fileprivate enum MethodType {
+
+          case getUser__for_idcompletion_completion(Parameter<String>, Parameter<(User?) -> Void>)      
+          case getUserEscaping__for_idcompletion_completion(Parameter<String>, Parameter< (User?,Error?) -> Void>)      
+          case doSomething__prop_prop(Parameter< () -> String>)      
+
+
+          static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+              switch (lhs, rhs) {
+                  case (.getUser__for_idcompletion_completion(let lhsId, let lhsCompletion), .getUser__for_idcompletion_completion(let rhsId, let rhsCompletion)): 
+                      guard Parameter.compare(lhs: lhsId, rhs: rhsId, with: matcher) else { return false } 
+                      guard Parameter.compare(lhs: lhsCompletion, rhs: rhsCompletion, with: matcher) else { return false } 
+                      return true 
+                  case (.getUserEscaping__for_idcompletion_completion(let lhsId, let lhsCompletion), .getUserEscaping__for_idcompletion_completion(let rhsId, let rhsCompletion)): 
+                      guard Parameter.compare(lhs: lhsId, rhs: rhsId, with: matcher) else { return false } 
+                      guard Parameter.compare(lhs: lhsCompletion, rhs: rhsCompletion, with: matcher) else { return false } 
+                      return true 
+                  case (.doSomething__prop_prop(let lhsProp), .doSomething__prop_prop(let rhsProp)): 
+                      guard Parameter.compare(lhs: lhsProp, rhs: rhsProp, with: matcher) else { return false } 
+                      return true 
+                  default: return false
+              }
+          }
+
+          func intValue() -> Int {
+              switch self {
+                  case let .getUser__for_idcompletion_completion(p0, p1): return p0.intValue + p1.intValue
+                  case let .getUserEscaping__for_idcompletion_completion(p0, p1): return p0.intValue + p1.intValue
+                  case let .doSomething__prop_prop(p0): return p0.intValue
+              }
+          }
+      }
+
+      struct MethodProxy {
+          fileprivate var method: MethodType
+          var returns: Any?
+      }
+
+      struct VerificationProxy {
+          fileprivate var method: MethodType
+
+
+          static func getUser(for id: Parameter<String>, completion: Parameter<(User?) -> Void>) -> VerificationProxy {
+              return VerificationProxy(method: .getUser__for_idcompletion_completion(id, completion))
+          }
+  
+          static func getUserEscaping(for id: Parameter<String>, completion: Parameter< (User?,Error?) -> Void>) -> VerificationProxy {
+              return VerificationProxy(method: .getUserEscaping__for_idcompletion_completion(id, completion))
+          }
+  
+          static func doSomething(prop: Parameter< () -> String>) -> VerificationProxy {
+              return VerificationProxy(method: .doSomething__prop_prop(prop))
+          }
+        }
+
+      struct PerformProxy {
+          fileprivate var method: MethodType
+          var performs: Any
+
+          static func getUser(for id: Parameter<String>, completion: Parameter<(User?) -> Void>, perform: (String, (User?) -> Void) -> Void) -> PerformProxy {
+              return PerformProxy(method: .getUser__for_idcompletion_completion(id, completion), performs: perform)
+          }
+  
+          static func getUserEscaping(for id: Parameter<String>, completion: Parameter< (User?,Error?) -> Void>, perform: (String, @escaping (User?,Error?) -> Void) -> Void) -> PerformProxy {
+              return PerformProxy(method: .getUserEscaping__for_idcompletion_completion(id, completion), performs: perform)
+          }
+  
+          static func doSomething(prop: Parameter< () -> String>, perform: (@autoclosure () -> String) -> Void) -> PerformProxy {
+              return PerformProxy(method: .doSomething__prop_prop(prop), performs: perform)
           }
         }
 

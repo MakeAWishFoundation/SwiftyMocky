@@ -15,7 +15,7 @@ class ExampleTests: XCTestCase {
         let mock = UserStorageTypeMock()
 
         Given(mock, .surname(for: .value("Johny"), willReturn: "Bravo"))
-        Given(mock, .surname(for: .any(String.self), willReturn: "Kowalsky"))
+        Given(mock, .surname(for: .any, willReturn: "Kowalsky"))
 
         var joannas = 0
         Perform(mock, .surname(for: Parameter<String>.value("Joanna"), perform: { (value) in
@@ -24,7 +24,7 @@ class ExampleTests: XCTestCase {
         }))
 
         var others = 0
-        Perform(mock, .surname(for: Parameter<String>.any(String.self), perform: { (value) in
+        Perform(mock, .surname(for: .any, perform: { (value) in
             print("\(value) should be different to Joanna")
             others += 1
         }))
@@ -49,8 +49,18 @@ class ExampleTests: XCTestCase {
         // check is Jon Snow was stored at least one time
         Verify(mockStorage, .storeUser(name: .value("Jon"), surname: .value("Snow")))
         // total storeUser should be triggered 3 times, regardless of attributes values
-        Verify(mockStorage, 3, .storeUser(name: .any(String.self), surname: .any(String.self)))
+        Verify(mockStorage, 3, .storeUser(name: .any, surname: .any))
         // two times it should be triggered with name Johny
-        Verify(mockStorage, 2, .storeUser(name: .value("Johny"), surname: .any(String.self)))
+        Verify(mockStorage, 2, .storeUser(name: .value("Johny"), surname: .any))
+    }
+
+    func test_completionBlocksBasedApproach() {
+        let sut = UsersViewModel()
+        let mock = UserNetworkTypeMock()
+        sut.userNetwork = mock
+
+        Perform(mock, .getUser(for: .any, completion: .any, perform: { id, completion in
+            
+        }))
     }
 }

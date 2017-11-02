@@ -176,7 +176,17 @@ class MethodWrapper {
         if method.parameters.isEmpty {
             return "addInvocation(.\(prototype))"
         } else {
-            let parameters = method.parameters.map { ".value(\($0.name))" }.joined(separator: ", ")
+            let parameters = method.parameters.map { param in
+              let typeString = "\(param.actualTypeName ?? param.typeName)"
+              let isEscaping = typeString.contains("@escaping")
+              let isOptional = (param.actualTypeName ?? param.typeName).isOptional
+              if param.isClosure, !isEscaping, !isOptional {
+                let type = strip("\(param.typeName)")
+                return "Parameter<\(type)>.any"
+              } else {
+                return ".value(\(param.name))"
+              }
+            }.joined(separator: ", ")
             return "addInvocation(.\(prototype)(\(parameters)))"
         }
     }
@@ -230,11 +240,9 @@ class MethodWrapper {
         if let count = MethodWrapper.registered[name] {
             MethodWrapper.registered[name] = count + 1
             MethodWrapper.suffixes[uniqueName] = count + 1
-            // print("registered \(name) with \(count + 1)")
         } else {
             MethodWrapper.registered[name] = 1
             MethodWrapper.suffixes[uniqueName] = 1
-            // print("registered \(name) with \(1)")
         }
 
         return ""
@@ -245,7 +253,7 @@ class MethodWrapper {
             return method.shortName
         }
         let parameters = method.parameters
-        .map {  return "Parameter<\($0.typeName.name)>" }
+        .map {  return "Parameter<\(strip($0.typeName.name))>" }
         .joined(separator: ", ")
         .replacingOccurrences(of: "@escaping", with: "")
         return "\(prototype)(\(parameters))"
@@ -256,15 +264,16 @@ class MethodWrapper {
             return "static func \(method.shortName)(willReturn: \(method.returnTypeName)) -> MethodProxy"
         } else {
             let functionParameters = method.parameters.map {
+                let paramType = strip("\($0.typeName)")
                 guard let argumentLabel = $0.argumentLabel else {
-                    return "\($0.name): Parameter<\($0.typeName)>"
+                    return "\($0.name): Parameter<\(paramType)>"
                 }
 
                 guard argumentLabel != $0.name else {
-                    return "\($0.name): Parameter<\($0.typeName)>"
+                    return "\($0.name): Parameter<\(paramType)>"
                 }
 
-                return "\(argumentLabel) \($0.name): Parameter<\($0.typeName)>"
+                return "\(argumentLabel) \($0.name): Parameter<\(paramType)>"
             }.joined(separator: ", ")
             return "static func \(method.shortName)(\(functionParameters), willReturn: \(method.returnTypeName)) -> MethodProxy"
         }
@@ -284,15 +293,16 @@ class MethodWrapper {
             return "static func \(method.shortName)() -> VerificationProxy"
         } else {
             let functionParameters = method.parameters.map {
+                let paramType = strip("\($0.typeName)")
                 guard let argumentLabel = $0.argumentLabel else {
-                    return "\($0.name): Parameter<\($0.typeName)>"
+                    return "\($0.name): Parameter<\(paramType)>"
                 }
 
                 guard argumentLabel != $0.name else {
-                    return "\($0.name): Parameter<\($0.typeName)>"
+                    return "\($0.name): Parameter<\(paramType)>"
                 }
 
-                return "\(argumentLabel) \($0.name): Parameter<\($0.typeName)>"
+                return "\(argumentLabel) \($0.name): Parameter<\(paramType)>"
             }.joined(separator: ", ")
             return "static func \(method.shortName)(\(functionParameters)) -> VerificationProxy"
         }
@@ -312,15 +322,16 @@ class MethodWrapper {
             return "static func \(method.shortName)(perform: \(performProxyClosureType())) -> PerformProxy"
         } else {
             let functionParameters = method.parameters.map {
+                let paramType = strip("\($0.typeName)")
                 guard let argumentLabel = $0.argumentLabel else {
-                    return "\($0.name): Parameter<\($0.typeName)>"
+                    return "\($0.name): Parameter<\(paramType)>"
                 }
 
                 guard argumentLabel != $0.name else {
-                    return "\($0.name): Parameter<\($0.typeName)>"
+                    return "\($0.name): Parameter<\(paramType)>"
                 }
 
-                return "\(argumentLabel) \($0.name): Parameter<\($0.typeName)>"
+                return "\(argumentLabel) \($0.name): Parameter<\(paramType)>"
             }.joined(separator: ", ")
             return "static func \(method.shortName)(\(functionParameters), perform: \(performProxyClosureType())) -> PerformProxy"
         }
@@ -339,7 +350,9 @@ class MethodWrapper {
         if method.parameters.isEmpty {
             return "() -> Void"
         } else {
-            let parameters = method.parameters.map { "\($0.typeName)" }.joined(separator: ", ")
+            let parameters = method.parameters
+            .map { "\($0.typeName)" }
+            .joined(separator: ", ")
             return "(\(parameters)) -> Void"
         }
     }
@@ -360,7 +373,17 @@ class MethodWrapper {
         if method.parameters.isEmpty {
             proxy = "\(prototype)"
         } else {
-            let parameters = method.parameters.map { ".value(\($0.name))" }.joined(separator: ", ")
+            let parameters = method.parameters.map { param in
+              let typeString = "\(param.actualTypeName ?? param.typeName)"
+              let isEscaping = typeString.contains("@escaping")
+              let isOptional = (param.actualTypeName ?? param.typeName).isOptional
+              if param.isClosure, !isEscaping, !isOptional {
+                let type = strip("\(param.typeName)")
+                return "Parameter<\(type)>.any"
+              } else {
+                return ".value(\(param.name))"
+              }
+            }.joined(separator: ", ")
             proxy = "\(prototype)(\(parameters))"
         }
 
@@ -368,6 +391,10 @@ class MethodWrapper {
         let call = performProxyClosureCall()
 
         return "\t\(cast)\n\t\t\t\(call)"
+    }
+
+    private func strip(_ type: String) -> String {
+        return type.replacingOccurrences(of: "@escaping", with: "").replacingOccurrences(of: "@autoclosure", with: "")
     }
 }
 
