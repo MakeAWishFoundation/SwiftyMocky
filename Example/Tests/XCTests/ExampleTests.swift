@@ -18,7 +18,7 @@ class ExampleTests: XCTestCase {
         Given(mock, .surname(for: .any, willReturn: "Kowalsky"))
 
         var joannas = 0
-        Perform(mock, .surname(for: Parameter<String>.value("Joanna"), perform: { (value) in
+        Perform(mock, .surname(for: .value("Joanna"), perform: { (value) in
             print("\(value) should be Joanna")
             joannas += 1
         }))
@@ -55,12 +55,26 @@ class ExampleTests: XCTestCase {
     }
 
     func test_completionBlocksBasedApproach() {
+        let user = User(name: "Barabasz")
         let sut = UsersViewModel()
         let mock = UserNetworkTypeMock()
         sut.userNetwork = mock
 
         Perform(mock, .getUser(for: .any, completion: .any, perform: { id, completion in
-            
+            completion(user)
         }))
+
+        let fetchExpectation = expectation(description: "Should call completion block after done")
+
+        sut.fetchUser() {
+            fetchExpectation.fulfill()
+            XCTAssertNotNil(sut.user)
+        }
+
+        waitForExpectations(timeout: 1) { (error) in
+            if let error = error {
+                XCTFail("Fetch user failed woth error: \(error)")
+            }
+        }
     }
 }

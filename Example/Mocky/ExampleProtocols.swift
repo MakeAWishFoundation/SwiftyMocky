@@ -26,9 +26,10 @@ class UsersViewModel {
         usersStorage.storeUser(name: name, surname: surname)
     }
 
-    func fetchUser() {
+    func fetchUser(completion: @escaping () -> Void) {
         userNetwork.getUser(for: id) { user in
             self.user = user
+            completion()
         }
     }
 }

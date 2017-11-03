@@ -30,10 +30,6 @@ public enum Parameter<ValueType> {
     }
 }
 
-public func any<T>() -> Parameter<T> {
-    return Parameter<T>.any(T.self)
-}
-
 // MARK: - Order
 public extension Parameter {
     public var intValue: Int {
