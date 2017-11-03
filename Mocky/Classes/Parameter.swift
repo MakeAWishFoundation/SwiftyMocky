@@ -24,7 +24,13 @@ public enum Parameter<ValueType> {
     case `_`
     case value(ValueType)
 
+    /// Represents and matches any parameter value
     public static var any: Parameter<ValueType> { return Parameter<ValueType>._ }
+
+    /// Represents and matches any parameter value
+    ///
+    /// - Parameter type: Explicitly specify parameter type
+    /// - Returns: any parameter
     public static func any<T>(_ type: T.Type) -> Parameter<T> {
         return Parameter<T>._
     }
@@ -32,6 +38,7 @@ public enum Parameter<ValueType> {
 
 // MARK: - Order
 public extension Parameter {
+    /// Used for invocations sorting purpose.
     public var intValue: Int {
         switch self {
             case ._: return 0
@@ -53,6 +60,7 @@ public extension Parameter {
             case (_, ._): return true
             case (.value(let lhsValue), .value(let rhsValue)):
                 guard let compare = matcher.comparator(for: ValueType.self) else {
+                    print("[FATAL] No registered matcher comparator for \(String(describing: ValueType.self))")
                     fatalError("No registered comparators for \(String(describing: ValueType.self))")
                 }
                 return compare(lhsValue,rhsValue)
@@ -94,6 +102,7 @@ public extension Parameter {
                 }
 
                 guard let comparator = matcher.comparator(for: ValueType.Element.self) else {
+                    print("[FATAL] No registered matcher comparator for \(ValueType.Element.self)")
                     fatalError("Not registered comparator for \(ValueType.Element.self)")
                 }
 
@@ -162,6 +171,7 @@ public extension Parameter {
             case (_, ._): return true
             case (.value(let lhsValue), .value(let rhsValue)):
                 guard let compare = matcher.comparator(for: ValueType.self) else {
+                    print("[FATAL] No registered matcher comparator for \(String(describing: ValueType.self))")
                     fatalError("No registered comparators for \(String(describing: ValueType.self))")
                 }
                 return compare(lhsValue,rhsValue)
@@ -197,6 +207,7 @@ public extension Parameter {
                 }
 
                 guard let comparator = matcher.comparator(for: ValueType.Iterator.Element.self) else {
+                    print("[FATAL] No registered matcher comparator for \(String(describing: ValueType.self))")
                     fatalError("No registered comparators for \(String(describing: ValueType.self))")
                 }
 

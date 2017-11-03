@@ -21,14 +21,14 @@ public func Verify<T: Mock>(_ object: T, _ method: T.VerificationProxy, file: St
     XCTAssert(invocations > 0, "Expeced: any invocations of `\(method)`, but was: \(invocations)", file: file, line: line)
 }
 
-/// Verify that given method was called on mock object exact number of times
+/// Verify that given method was called on mock object exact number of times.
 ///
 /// - Parameters:
 ///   - object: Mock instance
 ///   - count: Number of invocations
 ///   - method: Method signature with wrapped parameters (Parameter<ValueType>)
-///   - file: -
-///   - line: -
+///   - file: for XCTest print purposes
+///   - line: for XCTest print purposes
 public func Verify<T: Mock>(_ object: T, _ count: UInt, _ method: T.VerificationProxy, file: StaticString = #file, line: UInt = #line) {
     let invocations = object.matchingCalls(method)
     XCTAssert(invocations == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations)", file: file, line: line)
@@ -40,8 +40,8 @@ public func Verify<T: Mock>(_ object: T, _ count: UInt, _ method: T.Verification
 /// 2. More recent givens have higher priority than older ones
 /// 3. When two given's have same level of explicity, like:
 ///     ```
-///     Given(mock, .do(with: .value(1), and: .any(Int.self))
-///     Given(mock, .do(with: .any(Int.self), and: .value(1))
+///     Given(mock, .do(with: .value(1), and: .any)
+///     Given(mock, .do(with: .any, and: .value(1))
 ///     ```
 ///     Method stub will return most recent one.
 ///
@@ -58,8 +58,8 @@ public func Given<T: Mock>(_ object: T, _ method: T.MethodProxy) {
 /// 2. More recent performs have higher priority than older ones
 /// 3. When two performs have same level of explicity, like:
 ///     ```
-///     Perform(mock, .do(with: .value(1), and: .any(Int.self), perform: { ... }))
-///     Perform(mock, .do(with: .any(Int.self), and: .value(1), perform: { ... }))
+///     Perform(mock, .do(with: .value(1), and: .any, perform: { ... }))
+///     Perform(mock, .do(with: .any, and: .value(1), perform: { ... }))
 ///     ```
 ///     Method stub will return most recent one.
 ///
