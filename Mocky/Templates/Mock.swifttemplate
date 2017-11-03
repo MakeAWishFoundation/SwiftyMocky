@@ -34,8 +34,32 @@ import SourceryRuntime
 <%# Helper methods -%>
 <%
 func uniques(methods: [SourceryRuntime.Method]) -> [SourceryRuntime.Method] {
+    func areSameParams(_ p1: SourceryRuntime.MethodParameter, _ p2: SourceryRuntime.MethodParameter) -> Bool {
+        guard p1.argumentLabel == p2.argumentLabel else { return false }
+        guard p1.name == p2.name else { return false }
+        guard p1.argumentLabel == p2.argumentLabel else { return false }
+        guard p1.typeName.name == p2.typeName.name else { return false }
+        guard p1.actualTypeName?.name == p2.actualTypeName?.name else { return false }
+        return true
+    }
+
+    func areSameMethods(_ m1: SourceryRuntime.Method, _ m2: SourceryRuntime.Method) -> Bool {
+        guard m1.name != m2.name else { return true }
+        guard m1.selectorName == m2.selectorName else { return false }
+        guard m1.parameters.count == m2.parameters.count else { return false }
+
+        let p1 = m1.parameters
+        let p2 = m2.parameters
+
+        for i in 0..<p1.count {
+            if !areSameParams(p1[i],p2[i]) { return false }
+        }
+
+        return true
+    }
+
     return methods.reduce([], { (result, element) -> [SourceryRuntime.Method] in
-        guard !result.contains(where: { $0.name == element.name }) else { return result }
+        guard !result.contains(where: { areSameMethods($0,element) }) else { return result }
         return result + [element]
     })
 }

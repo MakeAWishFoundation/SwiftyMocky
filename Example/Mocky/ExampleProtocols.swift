@@ -50,4 +50,11 @@ protocol UserNetworkType {
     func getUser(for id: String, completion: (User?) -> Void)
     func getUserEscaping(for id: String, completion: @escaping (User?,Error?) -> Void)
     func doSomething(prop: @autoclosure () -> String)
+    func testDefaultValues(value: String)
+}
+
+extension UserNetworkType {
+    func testDefaultValues(value: String = "asd") {
+
+    }
 }
