@@ -46,14 +46,22 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         addInvocation(.storedItems)
         	let perform = methodPerformValue(.storedItems) as? () -> Void
 			perform?()
-        return methodReturnValue(.storedItems) as! [Item]? 
+        guard let value = methodReturnValue(.storedItems) as? [Item]? else {
+			print("[FATAL] stub return value not specified for storedItems(). Use given.")
+			fatalError("[FATAL] stub return value not specified for storedItems(). Use given.")
+		}
+		return value
     }
     
     func storedDetails(item: Item) -> ItemDetails? {
         addInvocation(.storedDetails__item_item(.value(item)))
         	let perform = methodPerformValue(.storedDetails__item_item(.value(item))) as? (Item) -> Void
 			perform?(item)
-        return methodReturnValue(.storedDetails__item_item(.value(item))) as! ItemDetails? 
+        guard let value = methodReturnValue(.storedDetails__item_item(.value(item))) as? ItemDetails? else {
+			print("[FATAL] stub return value not specified for storedDetails(item: Item). Use given.")
+			fatalError("[FATAL] stub return value not specified for storedDetails(item: Item). Use given.")
+		}
+		return value
     }
     
     fileprivate enum MethodType {

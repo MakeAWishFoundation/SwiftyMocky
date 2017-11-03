@@ -97,7 +97,13 @@ class VariableWrapper {
     var privatePrototypeName: String { return "__\(variable.name)" }
 
     var getter: String {
-        return "get { return \(variable.isStatic ? "\(scope)." : "")\(privatePrototypeName) }"
+        return "get { \n" +
+        "\t\t\tguard let value = \(variable.isStatic ? "\(scope)." : "")\(privatePrototypeName) else { " +
+        "\t\t\t\tprint(\"[FATAL] \(scope) - value for \(privatePrototypeName) is not set!\")\n" +
+        "\t\t\t\tfatalError(\"[FATAL] \(scope) - value for \(privatePrototypeName) is not set!\")\n" +
+        "\t\t\t}\n" +
+        "\t\t\treturn value \n" +
+        "\t\t}"
     }
     var setter: String {
         return "set { \(variable.isStatic ? "\(scope)." : "")\(privatePrototypeName) = newValue }"
@@ -216,10 +222,18 @@ class MethodWrapper {
         guard !method.isInitializer else { return "" }
         guard !method.returnTypeName.isVoid else { return "" }
         if method.parameters.isEmpty {
-            return "return methodReturnValue(.\(prototype)) as! \(method.returnTypeName) "
+            return "guard let value = methodReturnValue(.\(prototype)) as? \(method.returnTypeName) else {\n" +
+            "\t\t\tprint(\"[FATAL] stub return value not specified for \(method.name). Use given.\")\n" +
+            "\t\t\tfatalError(\"[FATAL] stub return value not specified for \(method.name). Use given.\")\n" +
+            "\t\t}\n" +
+            "\t\treturn value"
         } else {
             let parameters = method.parameters.map { ".value(\($0.name))" }.joined(separator: ", ")
-            return "return methodReturnValue(.\(prototype)(\(parameters))) as! \(method.returnTypeName) "
+            return "guard let value = methodReturnValue(.\(prototype)(\(parameters))) as? \(method.returnTypeName) else {\n" +
+            "\t\t\tprint(\"[FATAL] stub return value not specified for \(method.name). Use given.\")\n" +
+            "\t\t\tfatalError(\"[FATAL] stub return value not specified for \(method.name). Use given.\")\n" +
+            "\t\t}\n" +
+            "\t\treturn value"
         }
     }
     var equalCase: String {
