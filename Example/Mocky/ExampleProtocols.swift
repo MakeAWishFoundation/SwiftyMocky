@@ -38,8 +38,15 @@ struct User {
     let name: String
 }
 
+struct NetworkConfig {
+    let baseUrl: String
+}
+
 //sourcery: AutoMockable
 protocol UserNetworkType {
+    init(config: NetworkConfig)
+    init(baseUrl: String)
+
     func getUser(for id: String, completion: (User?) -> Void)
     func getUserEscaping(for id: String, completion: @escaping (User?,Error?) -> Void)
     func doSomething(prop: @autoclosure () -> String)

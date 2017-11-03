@@ -57,7 +57,7 @@ class ExampleTests: XCTestCase {
     func test_completionBlocksBasedApproach() {
         let user = User(name: "Barabasz")
         let sut = UsersViewModel()
-        let mock = UserNetworkTypeMock()
+        let mock = UserNetworkTypeMock(baseUrl: "http://someurl")
         sut.userNetwork = mock
 
         Perform(mock, .getUser(for: .any, completion: .any, perform: { id, completion in
