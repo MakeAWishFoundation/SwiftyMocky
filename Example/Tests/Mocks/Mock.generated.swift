@@ -1203,6 +1203,18 @@ class UserNetworkTypeMock: UserNetworkType, Mock {
             
             
 
+      required init(config: NetworkConfig) {
+          
+          
+          
+      }
+      
+      required init(baseUrl: String) {
+          
+          
+          
+      }
+      
       func getUser(for id: String, completion: (User?) -> Void) {
           addInvocation(.getUser__for_idcompletion_completion(.value(id), Parameter<(User?) -> Void>.any))
           	let perform = methodPerformValue(.getUser__for_idcompletion_completion(.value(id), Parameter<(User?) -> Void>.any)) as? (String, (User?) -> Void) -> Void
