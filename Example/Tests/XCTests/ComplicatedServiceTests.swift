@@ -48,4 +48,22 @@ class ComplicatedServiceTests: XCTestCase {
         XCTAssertEqual(second.x, 1)
         XCTAssertEqual(second.y, 1)
     }
+
+    func test_closures() {
+        var calls = 0
+
+        service.given(.methodWithClosures(success: Parameter<((Scalar, Scalar) -> Scalar)?>.any, willReturn: { _ in }))
+
+        service.perform(.methodWithClosures(success: Parameter<((Scalar, Scalar) -> Scalar)?>.any,
+                                            perform: { function in
+            _ = function?(Scalar(1),Scalar(2))
+        }))
+
+        _ = service.methodWithClosures { (a, b) -> Scalar in
+            calls += 1
+            return a + b
+        }
+
+        XCTAssertEqual(calls, 1)
+    }
 }
