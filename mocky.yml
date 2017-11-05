@@ -1,0 +1,17 @@
+sources:
+  - ./SwiftyMocky-Example/Mocky
+  - ./SwiftyMocky-Example/Tests
+templates:
+  - ./Sources/Templates
+output:
+  ./SwiftyMocky-Example/Tests/Mocks
+args:
+  testable:
+    - Mocky_Example
+  import:
+    - RxSwift
+  excludedSwiftLintRules:
+    - force_cast
+    - function_body_length
+    - line_length
+    - vertical_whitespace

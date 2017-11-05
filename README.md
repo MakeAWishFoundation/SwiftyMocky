@@ -273,6 +273,6 @@ Mocky is available under the MIT license. See the LICENSE file for more info.
 
 <!-- Assets -->
 
-[example-watcher]: Docs/example-watcher.gif "Example - generation"
-[example-given]: Docs/example-given.gif "Example - given"
-[example-verify]: Docs/example-verify.gif "Example - verify"
+[example-watcher]: docs/example-watcher.gif "Example - generation"
+[example-given]: docs/example-given.gif "Example - given"
+[example-verify]: docs/example-verify.gif "Example - verify"
