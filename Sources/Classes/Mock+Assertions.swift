@@ -9,24 +9,24 @@
 import Foundation
 import XCTest
 
-/// Verify that given method was called on mock object at least once
+/// Verify that given method was called on mock object **at least once**.
 ///
 /// - Parameters:
 ///   - object: Mock instance
-///   - method: Method signature with wrapped parameters (Parameter<ValueType>)
-///   - file: -
-///   - line: -
+///   - method: Method signature with wrapped parameters (`Parameter`)
+///   - file: for XCTest print purposes
+///   - line: for XCTest print purposes
 public func Verify<T: Mock>(_ object: T, _ method: T.VerificationProxy, file: StaticString = #file, line: UInt = #line) {
     let invocations = object.matchingCalls(method)
     XCTAssert(invocations > 0, "Expeced: any invocations of `\(method)`, but was: \(invocations)", file: file, line: line)
 }
 
-/// Verify that given method was called on mock object exact number of times.
+/// Verify that given method was called on mock object **exact number of times**.
 ///
 /// - Parameters:
 ///   - object: Mock instance
 ///   - count: Number of invocations
-///   - method: Method signature with wrapped parameters (Parameter<ValueType>)
+///   - method: Method signature with wrapped parameters (`Parameter`)
 ///   - file: for XCTest print purposes
 ///   - line: for XCTest print purposes
 public func Verify<T: Mock>(_ object: T, _ count: UInt, _ method: T.VerificationProxy, file: StaticString = #file, line: UInt = #line) {

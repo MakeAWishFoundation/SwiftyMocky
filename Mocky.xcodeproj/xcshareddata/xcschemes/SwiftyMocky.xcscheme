@@ -30,6 +30,15 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "CCAFC9EE1FAF244D003F776A"
+            BuildableName = "SwiftyMocky.framework"
+            BlueprintName = "SwiftyMocky"
+            ReferencedContainer = "container:Mocky.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>

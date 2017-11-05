@@ -9,27 +9,32 @@
 import Foundation
 
 /// Parameter wraps method attribute, allowing to make a difference between explicit value,
-/// expressed by .value case and wildcard value, expressed by ._ case.
+/// expressed by `.value` case and wildcard value, expressed by `.any` case.
+///
+/// Whole idea is to be able to test and specify behaviours, in both generic and explicit way
+/// (and any mix of these two). Every test method matches mock methods in signature, but changes attributes types
+/// to Parameter.
 ///
 /// That allows pattern like matching between two Parameter values:
-/// - **._** is equal to every other parameter
+/// - **.any** is equal to every other parameter. (**!!!** actual case name is `._`, but it is advised to use `.any`)
 /// - **.value(p1)** is equal to **.value(p2)** only, when p1 == p2
 ///
 /// **Important!** Comparing parameters, where ValueType is not Equatable will result in fatalError,
 /// unless you register comparator for its *ValueType* in **Matcher** instance used (typically Matcher.default)
 ///
-/// - _: represents and matches any parameter value
+/// - any: represents and matches any parameter value
 /// - value: represents explicit parameter value
 public enum Parameter<ValueType> {
     case `_`
     case value(ValueType)
 
-    /// Represents and matches any parameter value
+    /// Represents and matches any parameter value - syntactic sugar for `._` case.
     public static var any: Parameter<ValueType> { return Parameter<ValueType>._ }
 
-    /// Represents and matches any parameter value
+    /// Represents and matches any parameter value - syntactic sugar for `._` case. Used, when needs to explicitely specify
+    /// wrapped *ValueType* type, to resolve ambiguity between methods with same signatures, but different attribute types.
     ///
-    /// - Parameter type: Explicitly specify parameter type
+    /// - Parameter type: Explicitly specify ValueType type
     /// - Returns: any parameter
     public static func any<T>(_ type: T.Type) -> Parameter<T> {
         return Parameter<T>._
