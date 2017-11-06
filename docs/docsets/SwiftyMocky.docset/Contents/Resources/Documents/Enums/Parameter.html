@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Parameter Enum Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Enum/Parameter" class="dashAnchor"></a>
+    <a title="Parameter Enum Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">SwiftyMocky Docs</a> (69% documented)</p>
+        <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="../img/gh.png"/>View on GitHub</a></p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">SwiftyMocky Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        Parameter Enum Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Guides.html">Guides</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../overview.html">Overview</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../installation.html">Installation</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../setup-in-project.html">Setup in project</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../comparing-with-matcher.html">Comparing with Matcher</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../examples.html">Examples</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Types.html">Types</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/Mock.html">Mock</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/Parameter.html">Parameter</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Matcher.html">Matcher</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Global methods.html">Global methods</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Global methods.html#/s:11SwiftyMocky5Givenyx_11MethodProxyQztAA4MockRzlF">Given(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Global methods.html#/s:11SwiftyMocky7Performyx_0C5ProxyQztAA4MockRzlF">Perform(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Global methods.html#/s:11SwiftyMocky6Verifyyx_17VerificationProxyQzs12StaticStringV4fileSu4linetAA4MockRzlF">Verify(_:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Global methods.html#/s:11SwiftyMocky6Verifyyx_Su17VerificationProxyQzs12StaticStringV4fileSu4linetAA4MockRzlF">Verify(_:_:_:file:line:)</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>Parameter</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt">ValueType</span><span class="o">&gt;</span></code></pre>
+
+                </div>
+              </div>
+            <p>Parameter wraps method attribute, allowing to make a difference between explicit value,
+expressed by <code>.value</code> case and wildcard value, expressed by <code>.any</code> case.</p>
+
+<p>Whole idea is to be able to test and specify behaviours, in both generic and explicit way
+(and any mix of these two). Every test method matches mock methods in signature, but changes attributes types
+to Parameter.</p>
+
+<p>That allows pattern like matching between two Parameter values:</p>
+
+<ul>
+<li><strong>.any</strong> is equal to every other parameter. (<strong>!!!</strong> actual case name is <code>._</code>, but it is advised to use <code>.any</code>)</li>
+<li><strong>.value(p1)</strong> is equal to <strong>.value(p2)</strong> only, when p1 == p2</li>
+</ul>
+
+<p><strong>Important!</strong> Comparing parameters, where ValueType is not Equatable will result in fatalError,
+unless you register comparator for its <em>ValueType</em> in <strong>Matcher</strong> instance used (typically Matcher.default)</p>
+
+<ul>
+<li>any: represents and matches any parameter value</li>
+<li>value: represents explicit parameter value</li>
+</ul>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky9ParameterO3anyACyxGvZ"></a>
+                    <a name="//apple_ref/swift/Variable/any" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky9ParameterO3anyACyxGvZ">any</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Represents and matches any parameter value - syntactic sugar for <code>._</code> case.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">any</span><span class="p">:</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt">ValueType</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky9ParameterO3anyACyqd__Gqd__mlFZ"></a>
+                    <a name="//apple_ref/swift/Method/any(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky9ParameterO3anyACyqd__Gqd__mlFZ">any(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Represents and matches any parameter value - syntactic sugar for <code>._</code> case. Used, when needs to explicitely specify
+wrapped <em>ValueType</em> type, to resolve ambiguity between methods with same signatures, but different attribute types.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="n"><a href="../Enums/Parameter.html#/s:11SwiftyMocky9ParameterO3anyACyxGvZ">any</a></span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">type</span><span class="p">:</span> <span class="kt">T</span><span class="o">.</span><span class="k">Type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>type</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Explicitly specify ValueType type</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>any parameter</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky9ParameterO8intValueSiv"></a>
+                    <a name="//apple_ref/swift/Property/intValue" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky9ParameterO8intValueSiv">intValue</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Used for invocations sorting purpose.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">intValue</span><span class="p">:</span> <span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>Copyright © 2017 MakeAWishFoundation. All rights reserved.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.8.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

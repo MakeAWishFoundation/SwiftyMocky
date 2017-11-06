@@ -1,9 +1,9 @@
-[![Travis CI](https://travis-ci.org/CurlyHeir/Mocky.svg?branch=master)](https://travis-ci.org/CurlyHeir/Mocky) ![platforms](https://img.shields.io/badge/platforms-iOS%20%7C%20-333333.svg)
-# Mocky
+[![Travis CI](https://travis-ci.org/MakeAWishFoundation/Swifty.svg?branch=master)](https://travis-ci.org/MakeAWishFoundation/SwiftyMocky) ![platforms](https://img.shields.io/badge/platforms-iOS%20%7C%20-333333.svg) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+# SwiftyMocky
 
 ## Overview
 
-**Mocky** is Lightweight, strongly typed framework for Mockito-like unit testing experience. As Swift doesn't support reflections well enough to allow building mocks in runtime, library depends on Sourcery, that scans your source code and generates Swift code for you.
+**SwiftyMocky** is Lightweight, strongly typed framework for Mockito-like unit testing experience. As Swift doesn't support reflections well enough to allow building mocks in runtime, library depends on Sourcery, that scans your source code and generates Swift code for you.
 
 The idea of **SwiftyMokcy** is to mock Swift protocols. The main features are:
 
@@ -16,9 +16,9 @@ The idea of **SwiftyMokcy** is to mock Swift protocols. The main features are:
 
 ### 1. Generating mocks implementations:
 
-One of the boilerplate part of testing and development is writing and updating **mocks** accordingly to newest changes. Mocky is capable of generating mock implementations (with configurable behavior), based on protocol definition.
+One of the boilerplate part of testing and development is writing and updating **mocks** accordingly to newest changes. SwiftyMocky is capable of generating mock implementations (with configurable behavior), based on protocol definition.
 
-During development process it is possible to use Mocky in a *watcher* mode, which will observe changes in you project files, and regenerate files on the fly.
+During development process it is possible to use SwiftyMocky in a *watcher* mode, which will observe changes in you project files, and regenerate files on the fly.
 
 ![Generating mock][example-watcher]
 
@@ -63,9 +63,9 @@ sut.saveUser(name: "Jon", surname: "Snow")
 // check if Jon Snow was stored at least one time
 Verify(mockStorage, .storeUser(name: .value("Jon"), surname: .value("Snow")))
 // storeUser method should be triggered 3 times in total, regardless of attributes values
-Verify(mockStorage, 3, .storeUser(name: .any(String.self), surname: .any(String.self)))
+Verify(mockStorage, 3, .storeUser(name: .any, surname: .any))
 // storeUser method should be triggered 2 times with name Johny
-Verify(mockStorage, 2, .storeUser(name: .value("Johny"), surname: .any(String.self)))
+Verify(mockStorage, 2, .storeUser(name: .value("Johny"), surname: .any))
 ```
 
 ### 4. Example of usage
@@ -74,9 +74,13 @@ For more examples, check out our example project.
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
-To trigger mocks generation, run `rake mock` from the Example directory. For watcher mode, when mocks are generated every time you change your file projects, use `rake mock_watcher` instead.
+To trigger mocks generation, run `rake mock` from root directory. For watcher mode, when mocks are generated every time you change your file projects, use `rake mock_watcher` instead.
 
-# How to start using Mocky
+### 5. Documentation
+
+Full documentation is available [here](https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/1f4e3c29/docs/index.html), as well as through *docs* directory.
+
+# How to start using SwiftyMocky
 
 Mocks generation is based on `mocky.yml` file.
 
@@ -87,7 +91,7 @@ sources:
   - ./ExampleApp
   - ./ExampleAppTests
 templates:
-  - ./Pods/Mocky/Mocky/Templates
+  - ./Pods/SwiftyMocky/Sources/Templates
 output:
   ./ExampleApp
 args:
@@ -96,13 +100,19 @@ args:
   import:
     - RxSwift
     - RxBlocking
+  excludedSwiftLintRules:
+    - force_cast
+    - function_body_length
+    - line_length
+    - vertical_whitespace
 ```
 
 + **sources**: all directories you want to scan for protocols/files marked to be auto mocked, or inline mocked
-+ **templates**: path to Mocky sourcery templates, in Pods directory
++ **templates**: path to SwiftyMocky sourcery templates, in Pods directory
 + **output**: place where `Mock.generated.swift` will be placed
 + **testable**: specify imports for Mock.generated, that should be marked as `@testable` (usually tested app module)
 + **import**: all additional imports, external libraries etc. to be placed in Mock.generated
++ **excludedSwiftLintRules**: if using swift SwiftLint.
 
 ## Generate mocks:
 
@@ -132,8 +142,6 @@ args:
 
 ## Marking protocols to be mocked
 
-### 1. AutoMockable annotation
-
 Mark protocols that are meant to be mocked with sourcery annotation as following:
 
 ```swift
@@ -155,83 +163,6 @@ Every protocol in source directories, having this annotation, will be added to `
 }
 ```
 
-### 2. AutoMockable protocol
-
-Create dummy protocol for you project:
-
-```swift
-protocol AutoMockable { }
-```
-
-Every protocol in source directories, inheriting (directly!) from AutoMockable, will be added to `Mock.generated.swift`, like:
-
-```swift
-protocol ToBeMocked: AutoMockable {
-  // ...
-}
-```
-
-### 3. Manual annotation
-
-In some rare cases, when you don't want to use `Mock.generated.swift`, or need to add some additional code to generated mock, you can create base for mock implementation yourself. It will look something like following:
-
-```swift
-import Foundation
-import Mocky
-import XCTest
-@testable import TestedApp
-
-// sourcery: mock = "ToBeMocked"
-class SomeCustomMock: ToBeMocked, Mock {
-  Your custom code can go here
-
-  // sourcery:inline:auto:ToBeMocked.autoMocked
-
-  Generated code goes here...
-
-  // sourcery:end
-}
-```
-
-## Matcher - handling parameters that are not Equatable
-
-In some cases there is a need to specify return value (by Given) for a method, which parameters are not __*Equatable*__, or check (by Verify), whether a method was called with specific attribute which is not __*Equatable*__.
-
-If you try to perform Given or Verify for explicit parameter, whereas its type is not Equatable, **fatalError** will occur. There are two options to handle attributes types, that are not __*Equatable*__:
-
-**1) Use only wildcard .any parameters, or adopt Equatable**
-
-Sometimes .any is enough, or you can provide Equatable implementation.
-
-**2) Register comparator for that type in Matcher**
-
-Every Mock has `matcher` variable, which is `Matcher.default` singleton instance by default.
-
-Usage of **Matcher**:
-
-```swift
-struct User {
-  let id: String
-  let name: String
-}
-
-// ...
-
-override func setUp() {
-  // register all comparators for custom, non equatable attributes
-  Matcher.default.register(User.self) { lhs,rhs -> Bool in
-      return lhs.id == rhs.id
-  }
-}
-
-func testFetchUserDetails() {
-  //...
-  let john = User(id: "Johny123", name: "Johny")
-  // now we can safely verify explicit parameter
-  Verify(mockNetwork, .fetchUserDetails(for: .value(john)))
-}
-```
-
 ## Roadmap
 
 - [x] stubbibg protocols in elegant way
@@ -246,13 +177,15 @@ func testFetchUserDetails() {
 
 ## Installation
 
-Mocky is available through [CocoaPods](http://cocoapods.org). To install it, simply add the following line to your Podfile:
+SwiftyMocky is available through [CocoaPods](http://cocoapods.org). To install it, simply add the following line to your Podfile:
 
 ```ruby
-pod "Mocky"
+pod "SwiftyMocky"
 ```
 
 Then add **mocky.yml** and **Rakefile** (or build script phase) to your project root directory, as described above.
+
+For [Carthage](https://github.com/Carthage/Carthage) install instructions, see full [documentation](https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/1f4e3c29/docs/installation.html).
 
 ## Current version
 
@@ -263,16 +196,12 @@ Master branch is still in beta, breaking changes are possible.
 Przemysław Wośko, wosko.przemyslaw@gmail.com
 Andrzej Michnia, amichnia@gmail.com
 
-## Contributors
-
-
-
 ## License
 
-Mocky is available under the MIT license. See the LICENSE file for more info.
+SwiftyMocky is available under the MIT license. See the LICENSE file for more info.
 
 <!-- Assets -->
 
-[example-watcher]: Docs/example-watcher.gif "Example - generation"
-[example-given]: Docs/example-given.gif "Example - given"
-[example-verify]: Docs/example-verify.gif "Example - verify"
+[example-watcher]: ./guides/assets/example-watcher.gif "Example - generation"
+[example-given]: ./guides/assets/example-given.gif "Example - given"
+[example-verify]: ./guides/assets/example-verify.gif "Example - verify"
