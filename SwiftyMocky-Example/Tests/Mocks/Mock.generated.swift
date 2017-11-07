@@ -32,7 +32,8 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
 
       var youCouldOnlyGetThis: String { 
 		get { 
-			guard let value = __youCouldOnlyGetThis else { 				print("[FATAL] ComplicatedServiceTypeMock - value for __youCouldOnlyGetThis is not set!")
+			guard let value = __youCouldOnlyGetThis else { 
+				print("[FATAL] ComplicatedServiceTypeMock - value for __youCouldOnlyGetThis is not set!")
 				fatalError("[FATAL] ComplicatedServiceTypeMock - value for __youCouldOnlyGetThis is not set!")
 			}
 			return value 
@@ -132,7 +133,7 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
 		return value
       }
       
-      fileprivate enum MethodType {
+            fileprivate enum MethodType {
 
           case serviceName      
           case aNewWayToSayHooray      
@@ -190,6 +191,7 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
               }
           }
       }
+
 
       struct MethodProxy {
           fileprivate var method: MethodType
@@ -397,7 +399,7 @@ class ItemsClientMock: ItemsClient, Mock {
 		return value
       }
       
-      fileprivate enum MethodType {
+            fileprivate enum MethodType {
 
           case getExampleItems      
           case getItemDetails__item_item(Parameter<Item>)      
@@ -428,6 +430,7 @@ class ItemsClientMock: ItemsClient, Mock {
               }
           }
       }
+
 
       struct MethodProxy {
           fileprivate var method: MethodType
@@ -539,7 +542,8 @@ class ItemsModelMock: ItemsModel, Mock {
 
       static var defaultIdentifier: Int { 
 		get { 
-			guard let value = ItemsModelMock.__defaultIdentifier else { 				print("[FATAL] ItemsModelMock - value for __defaultIdentifier is not set!")
+			guard let value = ItemsModelMock.__defaultIdentifier else { 
+				print("[FATAL] ItemsModelMock - value for __defaultIdentifier is not set!")
 				fatalError("[FATAL] ItemsModelMock - value for __defaultIdentifier is not set!")
 			}
 			return value 
@@ -549,7 +553,8 @@ class ItemsModelMock: ItemsModel, Mock {
 	private static var __defaultIdentifier: Int!      
       static var optionalIdentifier: String? { 
 		get { 
-			guard let value = ItemsModelMock.__optionalIdentifier else { 				print("[FATAL] ItemsModelMock - value for __optionalIdentifier is not set!")
+			guard let value = ItemsModelMock.__optionalIdentifier else { 
+				print("[FATAL] ItemsModelMock - value for __optionalIdentifier is not set!")
 				fatalError("[FATAL] ItemsModelMock - value for __optionalIdentifier is not set!")
 			}
 			return value 
@@ -559,7 +564,8 @@ class ItemsModelMock: ItemsModel, Mock {
 	private static var __optionalIdentifier: String?      
       var context: Any? { 
 		get { 
-			guard let value = __context else { 				print("[FATAL] ItemsModelMock - value for __context is not set!")
+			guard let value = __context else { 
+				print("[FATAL] ItemsModelMock - value for __context is not set!")
 				fatalError("[FATAL] ItemsModelMock - value for __context is not set!")
 			}
 			return value 
@@ -569,7 +575,8 @@ class ItemsModelMock: ItemsModel, Mock {
 	private var __context: Any?      
       var storage: Any! { 
 		get { 
-			guard let value = __storage else { 				print("[FATAL] ItemsModelMock - value for __storage is not set!")
+			guard let value = __storage else { 
+				print("[FATAL] ItemsModelMock - value for __storage is not set!")
 				fatalError("[FATAL] ItemsModelMock - value for __storage is not set!")
 			}
 			return value 
@@ -579,7 +586,8 @@ class ItemsModelMock: ItemsModel, Mock {
 	private var __storage: Any!      
       var some: Any { 
 		get { 
-			guard let value = __some else { 				print("[FATAL] ItemsModelMock - value for __some is not set!")
+			guard let value = __some else { 
+				print("[FATAL] ItemsModelMock - value for __some is not set!")
 				fatalError("[FATAL] ItemsModelMock - value for __some is not set!")
 			}
 			return value 
@@ -589,7 +597,8 @@ class ItemsModelMock: ItemsModel, Mock {
 	private var __some: Any!      
       var storedProperty: Any { 
 		get { 
-			guard let value = __storedProperty else { 				print("[FATAL] ItemsModelMock - value for __storedProperty is not set!")
+			guard let value = __storedProperty else { 
+				print("[FATAL] ItemsModelMock - value for __storedProperty is not set!")
 				fatalError("[FATAL] ItemsModelMock - value for __storedProperty is not set!")
 			}
 			return value 
@@ -631,7 +640,7 @@ class ItemsModelMock: ItemsModel, Mock {
 		return value
       }
       
-      fileprivate enum MethodType {
+            fileprivate enum MethodType {
 
           case getExampleItems      
           case getItemDetails__item_item(Parameter<Item>)      
@@ -660,6 +669,7 @@ class ItemsModelMock: ItemsModel, Mock {
               }
           }
       }
+
 
       struct MethodProxy {
           fileprivate var method: MethodType
@@ -784,7 +794,7 @@ class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
           
       }
       
-      fileprivate enum MethodType {
+            fileprivate enum MethodType {
 
           case returnNoting      
           case someMethod      
@@ -807,6 +817,7 @@ class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
               }
           }
       }
+
 
       struct MethodProxy {
           fileprivate var method: MethodType
@@ -838,6 +849,119 @@ class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
               return PerformProxy(method: .someMethod, performs: perform)
           }
         }
+
+      public func matchingCalls(_ method: VerificationProxy) -> Int {
+          return matchingCalls(method.method).count
+      }
+
+      public func given(_ method: MethodProxy) {
+          methodReturnValues.append(method)
+          methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+      }
+
+      public func perform(_ method: PerformProxy) {
+          methodPerformValues.append(method)
+          methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+      }
+
+      public func verify(_ method: VerificationProxy, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+          let method = method.method
+          let invocations = matchingCalls(method)
+          XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+      }
+
+      private func addInvocation(_ call: MethodType) {
+          invocations.append(call)
+      }
+
+      private func methodReturnValue(_ method: MethodType) -> Any? {
+          let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
+              return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
+          })
+
+          return matched?.returns
+      }
+
+      private func methodPerformValue(_ method: MethodType) -> Any? {
+          let matched = methodPerformValues.reversed().first(where: { proxy -> Bool in
+              return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
+          })
+
+          return matched?.performs
+      }
+
+      private func matchingCalls(_ method: MethodType) -> [MethodType] {
+          let matchingInvocations = invocations.filter({ (call) -> Bool in
+              return MethodType.compareParameters(lhs: call, rhs: method, matcher: matcher)
+          })
+          return matchingInvocations
+      }
+}
+
+// MARK: - ProtocolWithOptionalClosures
+class ProtocolWithOptionalClosuresMock: ProtocolWithOptionalClosures, Mock {
+
+      fileprivate var invocations: [MethodType] = []
+      var methodReturnValues: [MethodProxy] = []
+      var methodPerformValues: [PerformProxy] = []
+      var matcher: Matcher = Matcher.default
+            
+
+      var nonOptionalClosure: () -> Void { 
+		get { 
+			guard let value = __nonOptionalClosure else { 
+				print("[FATAL] ProtocolWithOptionalClosuresMock - value for __nonOptionalClosure is not set!")
+				fatalError("[FATAL] ProtocolWithOptionalClosuresMock - value for __nonOptionalClosure is not set!")
+			}
+			return value 
+		}
+		set { __nonOptionalClosure = newValue }
+	}
+	private var __nonOptionalClosure: (() -> Void)!      
+      var optionalClosure: (() -> Int)? { 
+		get { 
+			guard let value = __optionalClosure else { 
+				print("[FATAL] ProtocolWithOptionalClosuresMock - value for __optionalClosure is not set!")
+				fatalError("[FATAL] ProtocolWithOptionalClosuresMock - value for __optionalClosure is not set!")
+			}
+			return value 
+		}
+		set { __optionalClosure = newValue }
+	}
+	private var __optionalClosure: (() -> Int)?      
+      var implicitelyUnwrappedClosure: (() -> Void)! { 
+		get { 
+			guard let value = __implicitelyUnwrappedClosure else { 
+				print("[FATAL] ProtocolWithOptionalClosuresMock - value for __implicitelyUnwrappedClosure is not set!")
+				fatalError("[FATAL] ProtocolWithOptionalClosuresMock - value for __implicitelyUnwrappedClosure is not set!")
+			}
+			return value 
+		}
+		set { __implicitelyUnwrappedClosure = newValue }
+	}
+	private var __implicitelyUnwrappedClosure: (() -> Void)!                  
+
+      
+      fileprivate struct MethodType {
+          static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool { return true }
+          func intValue() -> Int { return 0 }
+      }
+      
+
+      struct MethodProxy {
+          fileprivate var method: MethodType
+          var returns: Any?
+      }
+
+      struct VerificationProxy {
+          fileprivate var method: MethodType
+
+      }
+
+      struct PerformProxy {
+          fileprivate var method: MethodType
+          var performs: Any
+      }
 
       public func matchingCalls(_ method: VerificationProxy) -> Int {
           return matchingCalls(method.method).count
@@ -981,7 +1105,7 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
 		return value
       }
       
-      fileprivate enum MethodType {
+            fileprivate enum MethodType {
 
           case serviceName      
           case getPoint__from_point(Parameter<Point>)      
@@ -1035,6 +1159,7 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
               }
           }
       }
+
 
       struct MethodProxy {
           fileprivate var method: MethodType
@@ -1202,7 +1327,8 @@ class SimpleServiceTypeMock: SimpleServiceType, Mock {
 
       var youCouldOnlyGetThis: String { 
 		get { 
-			guard let value = __youCouldOnlyGetThis else { 				print("[FATAL] SimpleServiceTypeMock - value for __youCouldOnlyGetThis is not set!")
+			guard let value = __youCouldOnlyGetThis else { 
+				print("[FATAL] SimpleServiceTypeMock - value for __youCouldOnlyGetThis is not set!")
 				fatalError("[FATAL] SimpleServiceTypeMock - value for __youCouldOnlyGetThis is not set!")
 			}
 			return value 
@@ -1222,7 +1348,7 @@ class SimpleServiceTypeMock: SimpleServiceType, Mock {
 		return value
       }
       
-      fileprivate enum MethodType {
+            fileprivate enum MethodType {
 
           case serviceName      
 
@@ -1241,6 +1367,7 @@ class SimpleServiceTypeMock: SimpleServiceType, Mock {
               }
           }
       }
+
 
       struct MethodProxy {
           fileprivate var method: MethodType
@@ -1367,7 +1494,7 @@ class UserNetworkTypeMock: UserNetworkType, Mock {
           
       }
       
-      fileprivate enum MethodType {
+            fileprivate enum MethodType {
 
           case getUser__for_idcompletion_completion(Parameter<String>, Parameter<(User?) -> Void>)      
           case getUserEscaping__for_idcompletion_completion(Parameter<String>, Parameter< (User?,Error?) -> Void>)      
@@ -1404,6 +1531,7 @@ class UserNetworkTypeMock: UserNetworkType, Mock {
               }
           }
       }
+
 
       struct MethodProxy {
           fileprivate var method: MethodType
@@ -1528,7 +1656,7 @@ class UserStorageTypeMock: UserStorageType, Mock {
           
       }
       
-      fileprivate enum MethodType {
+            fileprivate enum MethodType {
 
           case surname__for_name(Parameter<String>)      
           case storeUser__name_namesurname_surname(Parameter<String>, Parameter<String>)      
@@ -1554,6 +1682,7 @@ class UserStorageTypeMock: UserStorageType, Mock {
               }
           }
       }
+
 
       struct MethodProxy {
           fileprivate var method: MethodType

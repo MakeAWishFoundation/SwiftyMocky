@@ -98,7 +98,7 @@ class VariableWrapper {
 
     var getter: String {
         return "get { \n" +
-        "\t\t\tguard let value = \(variable.isStatic ? "\(scope)." : "")\(privatePrototypeName) else { " +
+        "\t\t\tguard let value = \(variable.isStatic ? "\(scope)." : "")\(privatePrototypeName) else { \n" +
         "\t\t\t\tprint(\"[FATAL] \(scope) - value for \(privatePrototypeName) is not set!\")\n" +
         "\t\t\t\tfatalError(\"[FATAL] \(scope) - value for \(privatePrototypeName) is not set!\")\n" +
         "\t\t\t}\n" +
@@ -122,6 +122,8 @@ class VariableWrapper {
         let type: String = {
           if variable.isOptional || variable.isImplicitlyUnwrappedOptional {
               return "\(variable.typeName.name)"
+          } else if variable.isClosure {
+              return "(\(variable.typeName.unwrappedTypeName))!"
           } else {
               return "\(variable.typeName.unwrappedTypeName)!"
           }
@@ -483,6 +485,7 @@ class <%= type.name %>Mock:<%= type.annotations["ObjcProtocol"] != nil ? " NSObj
       }
       <%  } %> <%_ -%>
 
+      <% if !allMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }).isEmpty { -%>
       fileprivate enum MethodType {
       <%_ for method in allMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) { _%>
           case <%= method.methodDeclarationWithParameters() -%>
@@ -505,6 +508,12 @@ class <%= type.name %>Mock:<%= type.annotations["ObjcProtocol"] != nil ? " NSObj
               }
           }
       }
+      <%_ } else { %>
+      fileprivate struct MethodType {
+          static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool { return true }
+          func intValue() -> Int { return 0 }
+      }
+      <% } %>
 
       struct MethodProxy {
           fileprivate var method: MethodType
@@ -621,6 +630,7 @@ class <%= type.name %>Mock:<%= type.annotations["ObjcProtocol"] != nil ? " NSObj
     }
     <%  } %> <%_ -%>
 
+    <% if !allMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }).isEmpty { -%>
     fileprivate enum MethodType {
     <%_ for method in allMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) { _%>
         case <%= method.methodDeclarationWithParameters() -%>
@@ -643,6 +653,12 @@ class <%= type.name %>Mock:<%= type.annotations["ObjcProtocol"] != nil ? " NSObj
             }
         }
     }
+    <%_ } else { %>
+    fileprivate struct MethodType {
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool { return true }
+        func intValue() -> Int { return 0 }
+    }
+    <% } %>
 
     struct MethodProxy {
         fileprivate var method: MethodType
