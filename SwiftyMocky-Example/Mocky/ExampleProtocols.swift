@@ -58,3 +58,10 @@ extension UserNetworkType {
 
     }
 }
+
+//sourcery: AutoMockable
+protocol ProtocolWithOptionalClosures {
+    var nonOptionalClosure: () -> Void { get set }
+    var optionalClosure: (() -> Int)? { get set }
+    var implicitelyUnwrappedClosure: (() -> Void)! { get set }
+}
