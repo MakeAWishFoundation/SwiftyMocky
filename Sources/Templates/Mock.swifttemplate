@@ -201,17 +201,7 @@ class MethodWrapper {
         if method.parameters.isEmpty {
             return "addInvocation(.\(prototype))"
         } else {
-            let parameters = method.parameters.map { param in
-              let typeString = "\(param.actualTypeName ?? param.typeName)"
-              let isEscaping = typeString.contains("@escaping")
-              let isOptional = (param.actualTypeName ?? param.typeName).isOptional
-              if param.isClosure, !isEscaping, !isOptional {
-                let type = strip("\(param.typeName)")
-                return "Parameter<\(type)>.any"
-              } else {
-                return ".value(\(param.name))"
-              }
-            }.joined(separator: ", ")
+            let parameters = parametersForMethodCall()
             return "addInvocation(.\(prototype)(\(parameters)))"
         }
     }
@@ -221,7 +211,7 @@ class MethodWrapper {
         if method.parameters.isEmpty {
             return "\n\t\tif let error = methodThrowValue(.\(prototype)) { throw error }"
         } else {
-            let parameters = method.parameters.map { ".value(\($0.name))" }.joined(separator: ", ")
+            let parameters = parametersForMethodCall()
             return "\n\t\tif let error = methodThrowValue(.\(prototype)(\(parameters))) { throw error }"
         }
     }
@@ -235,7 +225,7 @@ class MethodWrapper {
             return "\n\t\tlet value = methodReturnValue(.\(prototype)) as? \(method.returnTypeName)\n" +
             "\t\treturn value.orFail(\"\(message)\")"
         } else {
-            let parameters = method.parameters.map { ".value(\($0.name))" }.joined(separator: ", ")
+            let parameters = parametersForMethodCall()
             return "\n\t\tlet value = methodReturnValue(.\(prototype)(\(parameters))) as? \(method.returnTypeName)\n" +
             "\t\treturn value.orFail(\"\(message)\")"
         }
@@ -468,6 +458,20 @@ class MethodWrapper {
     private func strip(_ type: String) -> String {
         return type.replacingOccurrences(of: "@escaping", with: "").replacingOccurrences(of: "@autoclosure", with: "")
     }
+
+    private func parametersForMethodCall() -> String {
+        return method.parameters.map { param in
+            let typeString = "\(param.actualTypeName ?? param.typeName)"
+            let isEscaping = typeString.contains("@escaping")
+            let isOptional = (param.actualTypeName ?? param.typeName).isOptional
+            if param.isClosure, !isEscaping, !isOptional {
+                let type = strip("\(param.typeName)")
+                return "Parameter<\(type)>.any"
+            } else {
+                return ".value(\(param.name))"
+            }
+        }.joined(separator: ", ")
+    }
 }
 
 func wrapMethod(_ method: SourceryRuntime.Method) -> MethodWrapper {
@@ -560,7 +564,7 @@ class <%= type.name %>Mock:<%= type.annotations["ObjcProtocol"] != nil ? " NSObj
             <%= method.givenConstructor() _%>
         }
         <%_ } -%>
-        <%_ for method in wrappedMethods.filter({ $0.method.throws && !$0.method.isInitializer }) { -%>
+        <%_ for method in wrappedMethods.filter({ ($0.method.throws || $0.method.rethrows) && !$0.method.isInitializer }) { -%>
         <%= method.givenConstructorNameThrows() -%> {
             <%= method.givenConstructorThrows() _%>
         }
@@ -713,7 +717,7 @@ class <%= type.name %>Mock:<%= type.annotations["ObjcProtocol"] != nil ? " NSObj
             <%= method.givenConstructor() _%>
         }
         <%_ } -%>
-        <%_ for method in wrappedMethods.filter({ $0.method.throws && !$0.method.isInitializer }) { -%>
+        <%_ for method in wrappedMethods.filter({ ($0.method.throws || $0.method.rethrows) && !$0.method.isInitializer }) { -%>
         <%= method.givenConstructorNameThrows() -%> {
             <%= method.givenConstructorThrows() _%>
         }

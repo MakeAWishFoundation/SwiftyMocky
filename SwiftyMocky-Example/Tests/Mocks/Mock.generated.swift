@@ -90,7 +90,7 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
         addInvocation(.methodWithClosures__success_function_1(Parameter<LinearFunction>.any))
 		let perform = methodPerformValue(.methodWithClosures__success_function_1(Parameter<LinearFunction>.any)) as? (LinearFunction) -> Void
 		perform?(function)
-		let value = methodReturnValue(.methodWithClosures__success_function_1(.value(function))) as? ClosureFabric
+		let value = methodReturnValue(.methodWithClosures__success_function_1(Parameter<LinearFunction>.any)) as? ClosureFabric
 		return value.orFail("stub return value not specified for methodWithClosures(success function: LinearFunction). Use given")
     }
 
@@ -882,15 +882,27 @@ class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
 		return value.orFail("stub return value not specified for methodThatReturnsAndThrows(param: String). Use given")
     }
 
+    func methodThatRethrows(param: (String) throws -> Int) rethrows -> Int {
+        addInvocation(.methodThatRethrows__param_param(Parameter<(String) throws -> Int>.any))
+		let perform = methodPerformValue(.methodThatRethrows__param_param(Parameter<(String) throws -> Int>.any)) as? ((String) throws -> Int) -> Void
+		perform?(param)
+		let value = methodReturnValue(.methodThatRethrows__param_param(Parameter<(String) throws -> Int>.any)) as? Int
+		return value.orFail("stub return value not specified for methodThatRethrows(param: (String) throws -> Int). Use given")
+    }
+
     fileprivate enum MethodType {
         case methodThatThrows
         case methodThatReturnsAndThrows__param_param(Parameter<String>)
+        case methodThatRethrows__param_param(Parameter<(String) throws -> Int>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
                 case (.methodThatThrows, .methodThatThrows): 
                     return true 
                 case (.methodThatReturnsAndThrows__param_param(let lhsParam), .methodThatReturnsAndThrows__param_param(let rhsParam)): 
+                    guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
+                    return true 
+                case (.methodThatRethrows__param_param(let lhsParam), .methodThatRethrows__param_param(let rhsParam)): 
                     guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
                     return true 
                 default: return false
@@ -901,6 +913,7 @@ class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
             switch self {
                 case .methodThatThrows: return 0
                 case let .methodThatReturnsAndThrows__param_param(p0): return p0.intValue
+                case let .methodThatRethrows__param_param(p0): return p0.intValue
             }
         }
     }
@@ -919,11 +932,17 @@ class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
         static func methodThatReturnsAndThrows(param: Parameter<String>, willReturn: Int) -> Given {
             return Given(method: .methodThatReturnsAndThrows__param_param(param), returns: willReturn, throws: nil)
         }
+        static func methodThatRethrows(param: Parameter<(String) throws -> Int>, willReturn: Int) -> Given {
+            return Given(method: .methodThatRethrows__param_param(param), returns: willReturn, throws: nil)
+        }
         static func methodThatThrows(willThrow: Error) -> Given {
             return Given(method: .methodThatThrows, returns: nil, throws: willThrow)
         }
         static func methodThatReturnsAndThrows(param: Parameter<String>, willThrow: Error) -> Given {
             return Given(method: .methodThatReturnsAndThrows__param_param(param), returns: nil, throws: willThrow)
+        }
+        static func methodThatRethrows(param: Parameter<(String) throws -> Int>, willThrow: Error) -> Given {
+            return Given(method: .methodThatRethrows__param_param(param), returns: nil, throws: willThrow)
         }
     }
 
@@ -936,6 +955,9 @@ class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
         static func methodThatReturnsAndThrows(param: Parameter<String>) -> Verify {
             return Verify(method: .methodThatReturnsAndThrows__param_param(param))
         }
+        static func methodThatRethrows(param: Parameter<(String) throws -> Int>) -> Verify {
+            return Verify(method: .methodThatRethrows__param_param(param))
+        }
     }
 
     struct Perform {
@@ -947,6 +969,9 @@ class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
         }
         static func methodThatReturnsAndThrows(param: Parameter<String>, perform: (String) -> Void) -> Perform {
             return Perform(method: .methodThatReturnsAndThrows__param_param(param), performs: perform)
+        }
+        static func methodThatRethrows(param: Parameter<(String) throws -> Int>, perform: ((String) throws -> Int) -> Void) -> Perform {
+            return Perform(method: .methodThatRethrows__param_param(param), performs: perform)
         }
     }
 
@@ -1051,7 +1076,7 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
         addInvocation(.methodWithClosures__success_function_1(Parameter<LinearFunction>.any))
 		let perform = methodPerformValue(.methodWithClosures__success_function_1(Parameter<LinearFunction>.any)) as? (LinearFunction) -> Void
 		perform?(function)
-		let value = methodReturnValue(.methodWithClosures__success_function_1(.value(function))) as? ClosureFabric
+		let value = methodReturnValue(.methodWithClosures__success_function_1(Parameter<LinearFunction>.any)) as? ClosureFabric
 		return value.orFail("stub return value not specified for methodWithClosures(success function: LinearFunction). Use given")
     }
 
