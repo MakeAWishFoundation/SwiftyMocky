@@ -10,6 +10,12 @@ import XCTest
 import SwiftyMocky
 @testable import Mocky_Example
 
+enum TestError: Error {
+    case first
+    case second
+    case third
+}
+
 class ExampleTests: XCTestCase {
     func testGivenExample() {
         let mock = UserStorageTypeMock()
@@ -75,6 +81,66 @@ class ExampleTests: XCTestCase {
             if let error = error {
                 XCTFail("Fetch user failed woth error: \(error)")
             }
+        }
+    }
+
+    func testGiven_with_throwing() {
+        let mock = ProtocolWithThrowingMethodsMock()
+
+        Given(mock, .methodThatThrows(willThrow: TestError.first))
+
+        do {
+            try mock.methodThatThrows()
+            XCTFail("Should not be here - mock should have thrown error")
+        } catch {
+            XCTAssertTrue(error is TestError)
+        }
+
+        Given(mock, .methodThatReturnsAndThrows(param: .any, willReturn: 0))
+        Given(mock, .methodThatReturnsAndThrows(param: .value("first"), willThrow: TestError.first))
+        Given(mock, .methodThatReturnsAndThrows(param: .value("second"), willThrow: TestError.second))
+        Given(mock, .methodThatReturnsAndThrows(param: .value("third"), willThrow: TestError.third))
+        Given(mock, .methodThatReturnsAndThrows(param: .value("danny"), willReturn: 1))
+
+        do {
+            let value = try mock.methodThatReturnsAndThrows(param: "aaa")
+            XCTAssertEqual(value, 0)
+        } catch {
+            XCTFail("Should not fail")
+        }
+
+        do {
+            _ = try mock.methodThatReturnsAndThrows(param: "first")
+            XCTFail("Should not be here - mock should have thrown error")
+        } catch where error is TestError {
+            XCTAssertEqual(error as! TestError, TestError.first)
+        } catch {
+            XCTFail("Should not fail")
+        }
+
+        do {
+            _ = try mock.methodThatReturnsAndThrows(param: "second")
+            XCTFail("Should not be here - mock should have thrown error")
+        } catch where error is TestError {
+            XCTAssertEqual(error as! TestError, TestError.second)
+        } catch {
+            XCTFail("Should not fail")
+        }
+
+        do {
+            _ = try mock.methodThatReturnsAndThrows(param: "third")
+            XCTFail("Should not be here - mock should have thrown error")
+        } catch where error is TestError {
+            XCTAssertEqual(error as! TestError, TestError.third)
+        } catch {
+            XCTFail("Should not fail")
+        }
+
+        do {
+            let value = try mock.methodThatReturnsAndThrows(param: "danny")
+            XCTAssertEqual(value, 1)
+        } catch {
+            XCTFail("Should not fail")
         }
     }
 }

@@ -162,9 +162,9 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
     struct Given {
         fileprivate var method: MethodType
         var returns: Any?
-        var `throws`: Any?
+        var `throws`: Error?
 
-        private init(method: MethodType, returns: Any?, throws: Any?) {
+        private init(method: MethodType, returns: Any?, throws: Error?) {
             self.method = method
             self.returns = returns
             self.`throws` = `throws`
@@ -283,26 +283,22 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
     }
 
     private func methodReturnValue(_ method: MethodType) -> Any? {
-        let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
-            return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
-        })
-
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
         return matched?.returns
     }
 
-    private func methodPerformValue(_ method: MethodType) -> Any? {
-        let matched = methodPerformValues.reversed().first(where: { proxy -> Bool in
-            return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
-        })
+    private func methodThrowValue(_ method: MethodType) -> Error? {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
+        return matched?.`throws`
+    }
 
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
         return matched?.performs
     }
 
     private func matchingCalls(_ method: MethodType) -> [MethodType] {
-        let matchingInvocations = invocations.filter({ (call) -> Bool in
-            return MethodType.compareParameters(lhs: call, rhs: method, matcher: matcher)
-        })
-        return matchingInvocations
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
     }
 }
 // MARK: - ItemsClient
@@ -370,9 +366,9 @@ class ItemsClientMock: ItemsClient, Mock {
     struct Given {
         fileprivate var method: MethodType
         var returns: Any?
-        var `throws`: Any?
+        var `throws`: Error?
 
-        private init(method: MethodType, returns: Any?, throws: Any?) {
+        private init(method: MethodType, returns: Any?, throws: Error?) {
             self.method = method
             self.returns = returns
             self.`throws` = `throws`
@@ -443,26 +439,22 @@ class ItemsClientMock: ItemsClient, Mock {
     }
 
     private func methodReturnValue(_ method: MethodType) -> Any? {
-        let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
-            return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
-        })
-
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
         return matched?.returns
     }
 
-    private func methodPerformValue(_ method: MethodType) -> Any? {
-        let matched = methodPerformValues.reversed().first(where: { proxy -> Bool in
-            return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
-        })
+    private func methodThrowValue(_ method: MethodType) -> Error? {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
+        return matched?.`throws`
+    }
 
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
         return matched?.performs
     }
 
     private func matchingCalls(_ method: MethodType) -> [MethodType] {
-        let matchingInvocations = invocations.filter({ (call) -> Bool in
-            return MethodType.compareParameters(lhs: call, rhs: method, matcher: matcher)
-        })
-        return matchingInvocations
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
     }
 }
 // MARK: - ItemsModel
@@ -558,9 +550,9 @@ class ItemsModelMock: ItemsModel, Mock {
     struct Given {
         fileprivate var method: MethodType
         var returns: Any?
-        var `throws`: Any?
+        var `throws`: Error?
 
-        private init(method: MethodType, returns: Any?, throws: Any?) {
+        private init(method: MethodType, returns: Any?, throws: Error?) {
             self.method = method
             self.returns = returns
             self.`throws` = `throws`
@@ -631,26 +623,22 @@ class ItemsModelMock: ItemsModel, Mock {
     }
 
     private func methodReturnValue(_ method: MethodType) -> Any? {
-        let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
-            return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
-        })
-
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
         return matched?.returns
     }
 
-    private func methodPerformValue(_ method: MethodType) -> Any? {
-        let matched = methodPerformValues.reversed().first(where: { proxy -> Bool in
-            return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
-        })
+    private func methodThrowValue(_ method: MethodType) -> Error? {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
+        return matched?.`throws`
+    }
 
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
         return matched?.performs
     }
 
     private func matchingCalls(_ method: MethodType) -> [MethodType] {
-        let matchingInvocations = invocations.filter({ (call) -> Bool in
-            return MethodType.compareParameters(lhs: call, rhs: method, matcher: matcher)
-        })
-        return matchingInvocations
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
     }
 }
 // MARK: - NonSwiftProtocol
@@ -698,9 +686,9 @@ class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
     struct Given {
         fileprivate var method: MethodType
         var returns: Any?
-        var `throws`: Any?
+        var `throws`: Error?
 
-        private init(method: MethodType, returns: Any?, throws: Any?) {
+        private init(method: MethodType, returns: Any?, throws: Error?) {
             self.method = method
             self.returns = returns
             self.`throws` = `throws`
@@ -756,26 +744,22 @@ class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
     }
 
     private func methodReturnValue(_ method: MethodType) -> Any? {
-        let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
-            return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
-        })
-
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
         return matched?.returns
     }
 
-    private func methodPerformValue(_ method: MethodType) -> Any? {
-        let matched = methodPerformValues.reversed().first(where: { proxy -> Bool in
-            return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
-        })
+    private func methodThrowValue(_ method: MethodType) -> Error? {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
+        return matched?.`throws`
+    }
 
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
         return matched?.performs
     }
 
     private func matchingCalls(_ method: MethodType) -> [MethodType] {
-        let matchingInvocations = invocations.filter({ (call) -> Bool in
-            return MethodType.compareParameters(lhs: call, rhs: method, matcher: matcher)
-        })
-        return matchingInvocations
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
     }
 }
 // MARK: - ProtocolWithOptionalClosures
@@ -810,9 +794,9 @@ class ProtocolWithOptionalClosuresMock: ProtocolWithOptionalClosures, Mock {
     struct Given {
         fileprivate var method: MethodType
         var returns: Any?
-        var `throws`: Any?
+        var `throws`: Error?
 
-        private init(method: MethodType, returns: Any?, throws: Any?) {
+        private init(method: MethodType, returns: Any?, throws: Error?) {
             self.method = method
             self.returns = returns
             self.`throws` = `throws`
@@ -856,26 +840,22 @@ class ProtocolWithOptionalClosuresMock: ProtocolWithOptionalClosures, Mock {
     }
 
     private func methodReturnValue(_ method: MethodType) -> Any? {
-        let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
-            return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
-        })
-
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
         return matched?.returns
     }
 
-    private func methodPerformValue(_ method: MethodType) -> Any? {
-        let matched = methodPerformValues.reversed().first(where: { proxy -> Bool in
-            return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
-        })
+    private func methodThrowValue(_ method: MethodType) -> Error? {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
+        return matched?.`throws`
+    }
 
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
         return matched?.performs
     }
 
     private func matchingCalls(_ method: MethodType) -> [MethodType] {
-        let matchingInvocations = invocations.filter({ (call) -> Bool in
-            return MethodType.compareParameters(lhs: call, rhs: method, matcher: matcher)
-        })
-        return matchingInvocations
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
     }
 }
 // MARK: - ProtocolWithThrowingMethods
@@ -890,12 +870,14 @@ class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
         addInvocation(.methodThatThrows)
 		let perform = methodPerformValue(.methodThatThrows) as? () -> Void
 		perform?()
+		if let error = methodThrowValue(.methodThatThrows) { throw error }
     }
 
     func methodThatReturnsAndThrows(param: String) throws -> Int {
         addInvocation(.methodThatReturnsAndThrows__param_param(.value(param)))
 		let perform = methodPerformValue(.methodThatReturnsAndThrows__param_param(.value(param))) as? (String) -> Void
 		perform?(param)
+		if let error = methodThrowValue(.methodThatReturnsAndThrows__param_param(.value(param))) { throw error }
 		let value = methodReturnValue(.methodThatReturnsAndThrows__param_param(.value(param))) as? Int
 		return value.orFail("stub return value not specified for methodThatReturnsAndThrows(param: String). Use given")
     }
@@ -926,9 +908,9 @@ class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
     struct Given {
         fileprivate var method: MethodType
         var returns: Any?
-        var `throws`: Any?
+        var `throws`: Error?
 
-        private init(method: MethodType, returns: Any?, throws: Any?) {
+        private init(method: MethodType, returns: Any?, throws: Error?) {
             self.method = method
             self.returns = returns
             self.`throws` = `throws`
@@ -993,26 +975,22 @@ class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
     }
 
     private func methodReturnValue(_ method: MethodType) -> Any? {
-        let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
-            return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
-        })
-
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
         return matched?.returns
     }
 
-    private func methodPerformValue(_ method: MethodType) -> Any? {
-        let matched = methodPerformValues.reversed().first(where: { proxy -> Bool in
-            return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
-        })
+    private func methodThrowValue(_ method: MethodType) -> Error? {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
+        return matched?.`throws`
+    }
 
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
         return matched?.performs
     }
 
     private func matchingCalls(_ method: MethodType) -> [MethodType] {
-        let matchingInvocations = invocations.filter({ (call) -> Bool in
-            return MethodType.compareParameters(lhs: call, rhs: method, matcher: matcher)
-        })
-        return matchingInvocations
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
     }
 }
 // MARK: - SampleServiceType
@@ -1141,9 +1119,9 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
     struct Given {
         fileprivate var method: MethodType
         var returns: Any?
-        var `throws`: Any?
+        var `throws`: Error?
 
-        private init(method: MethodType, returns: Any?, throws: Any?) {
+        private init(method: MethodType, returns: Any?, throws: Error?) {
             self.method = method
             self.returns = returns
             self.`throws` = `throws`
@@ -1256,26 +1234,22 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
     }
 
     private func methodReturnValue(_ method: MethodType) -> Any? {
-        let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
-            return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
-        })
-
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
         return matched?.returns
     }
 
-    private func methodPerformValue(_ method: MethodType) -> Any? {
-        let matched = methodPerformValues.reversed().first(where: { proxy -> Bool in
-            return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
-        })
+    private func methodThrowValue(_ method: MethodType) -> Error? {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
+        return matched?.`throws`
+    }
 
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
         return matched?.performs
     }
 
     private func matchingCalls(_ method: MethodType) -> [MethodType] {
-        let matchingInvocations = invocations.filter({ (call) -> Bool in
-            return MethodType.compareParameters(lhs: call, rhs: method, matcher: matcher)
-        })
-        return matchingInvocations
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
     }
 }
 // MARK: - SimpleServiceType
@@ -1319,9 +1293,9 @@ class SimpleServiceTypeMock: SimpleServiceType, Mock {
     struct Given {
         fileprivate var method: MethodType
         var returns: Any?
-        var `throws`: Any?
+        var `throws`: Error?
 
-        private init(method: MethodType, returns: Any?, throws: Any?) {
+        private init(method: MethodType, returns: Any?, throws: Error?) {
             self.method = method
             self.returns = returns
             self.`throws` = `throws`
@@ -1374,26 +1348,22 @@ class SimpleServiceTypeMock: SimpleServiceType, Mock {
     }
 
     private func methodReturnValue(_ method: MethodType) -> Any? {
-        let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
-            return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
-        })
-
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
         return matched?.returns
     }
 
-    private func methodPerformValue(_ method: MethodType) -> Any? {
-        let matched = methodPerformValues.reversed().first(where: { proxy -> Bool in
-            return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
-        })
+    private func methodThrowValue(_ method: MethodType) -> Error? {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
+        return matched?.`throws`
+    }
 
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
         return matched?.performs
     }
 
     private func matchingCalls(_ method: MethodType) -> [MethodType] {
-        let matchingInvocations = invocations.filter({ (call) -> Bool in
-            return MethodType.compareParameters(lhs: call, rhs: method, matcher: matcher)
-        })
-        return matchingInvocations
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
     }
 }
 // MARK: - UserNetworkType
@@ -1475,9 +1445,9 @@ class UserNetworkTypeMock: UserNetworkType, Mock {
     struct Given {
         fileprivate var method: MethodType
         var returns: Any?
-        var `throws`: Any?
+        var `throws`: Error?
 
-        private init(method: MethodType, returns: Any?, throws: Any?) {
+        private init(method: MethodType, returns: Any?, throws: Error?) {
             self.method = method
             self.returns = returns
             self.`throws` = `throws`
@@ -1545,26 +1515,22 @@ class UserNetworkTypeMock: UserNetworkType, Mock {
     }
 
     private func methodReturnValue(_ method: MethodType) -> Any? {
-        let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
-            return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
-        })
-
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
         return matched?.returns
     }
 
-    private func methodPerformValue(_ method: MethodType) -> Any? {
-        let matched = methodPerformValues.reversed().first(where: { proxy -> Bool in
-            return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
-        })
+    private func methodThrowValue(_ method: MethodType) -> Error? {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
+        return matched?.`throws`
+    }
 
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
         return matched?.performs
     }
 
     private func matchingCalls(_ method: MethodType) -> [MethodType] {
-        let matchingInvocations = invocations.filter({ (call) -> Bool in
-            return MethodType.compareParameters(lhs: call, rhs: method, matcher: matcher)
-        })
-        return matchingInvocations
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
     }
 }
 // MARK: - UserStorageType
@@ -1617,9 +1583,9 @@ class UserStorageTypeMock: UserStorageType, Mock {
     struct Given {
         fileprivate var method: MethodType
         var returns: Any?
-        var `throws`: Any?
+        var `throws`: Error?
 
-        private init(method: MethodType, returns: Any?, throws: Any?) {
+        private init(method: MethodType, returns: Any?, throws: Error?) {
             self.method = method
             self.returns = returns
             self.`throws` = `throws`
@@ -1678,26 +1644,22 @@ class UserStorageTypeMock: UserStorageType, Mock {
     }
 
     private func methodReturnValue(_ method: MethodType) -> Any? {
-        let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
-            return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
-        })
-
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
         return matched?.returns
     }
 
-    private func methodPerformValue(_ method: MethodType) -> Any? {
-        let matched = methodPerformValues.reversed().first(where: { proxy -> Bool in
-            return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
-        })
+    private func methodThrowValue(_ method: MethodType) -> Error? {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
+        return matched?.`throws`
+    }
 
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
         return matched?.performs
     }
 
     private func matchingCalls(_ method: MethodType) -> [MethodType] {
-        let matchingInvocations = invocations.filter({ (call) -> Bool in
-            return MethodType.compareParameters(lhs: call, rhs: method, matcher: matcher)
-        })
-        return matchingInvocations
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
     }
 }
 

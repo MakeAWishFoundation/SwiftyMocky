@@ -91,9 +91,9 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
     struct Given {
         fileprivate var method: MethodType
         var returns: Any?
-        var `throws`: Any?
+        var `throws`: Error?
 
-        private init(method: MethodType, returns: Any?, throws: Any?) {
+        private init(method: MethodType, returns: Any?, throws: Error?) {
             self.method = method
             self.returns = returns
             self.`throws` = `throws`
@@ -167,26 +167,22 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
     }
 
     private func methodReturnValue(_ method: MethodType) -> Any? {
-        let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
-            return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
-        })
-
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
         return matched?.returns
     }
 
-    private func methodPerformValue(_ method: MethodType) -> Any? {
-        let matched = methodPerformValues.reversed().first(where: { proxy -> Bool in
-            return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
-        })
+    private func methodThrowValue(_ method: MethodType) -> Error? {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
+        return matched?.`throws`
+    }
 
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
         return matched?.performs
     }
 
     private func matchingCalls(_ method: MethodType) -> [MethodType] {
-        let matchingInvocations = invocations.filter({ (call) -> Bool in
-            return MethodType.compareParameters(lhs: call, rhs: method, matcher: matcher)
-        })
-        return matchingInvocations
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
     }
     
 // sourcery:end
