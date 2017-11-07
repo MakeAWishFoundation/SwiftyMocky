@@ -24,8 +24,8 @@ import SourceryRuntime
 // MARK: - ComplicatedServiceType
 class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
     fileprivate var invocations: [MethodType] = []
-    var methodReturnValues: [MethodProxy] = []
-    var methodPerformValues: [PerformProxy] = []
+    var methodReturnValues: [Given] = []
+    var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
         
     var youCouldOnlyGetThis: String { 
@@ -161,127 +161,127 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
         }
     }
 
-    struct MethodProxy {
+    struct Given {
         fileprivate var method: MethodType
         var returns: Any?
 
-        static func serviceName(willReturn: String) -> MethodProxy {
-            return MethodProxy(method: .serviceName, returns: willReturn)
+        static func serviceName(willReturn: String) -> Given {
+            return Given(method: .serviceName, returns: willReturn)
         }
 
-        static func getPoint(from point: Parameter<Point>, willReturn: Point) -> MethodProxy {
-            return MethodProxy(method: .getPoint__from_point(point), returns: willReturn)
+        static func getPoint(from point: Parameter<Point>, willReturn: Point) -> Given {
+            return Given(method: .getPoint__from_point(point), returns: willReturn)
         }
 
-        static func getPoint(from tuple: Parameter<(Float,Float)>, willReturn: Point) -> MethodProxy {
-            return MethodProxy(method: .getPoint__from_tuple(tuple), returns: willReturn)
+        static func getPoint(from tuple: Parameter<(Float,Float)>, willReturn: Point) -> Given {
+            return Given(method: .getPoint__from_tuple(tuple), returns: willReturn)
         }
 
-        static func similarMethodThatDiffersOnType(value: Parameter<Float>, willReturn: Bool) -> MethodProxy {
-            return MethodProxy(method: .similarMethodThatDiffersOnType__value_1(value), returns: willReturn)
+        static func similarMethodThatDiffersOnType(value: Parameter<Float>, willReturn: Bool) -> Given {
+            return Given(method: .similarMethodThatDiffersOnType__value_1(value), returns: willReturn)
         }
 
-        static func similarMethodThatDiffersOnType(value: Parameter<Point>, willReturn: Bool) -> MethodProxy {
-            return MethodProxy(method: .similarMethodThatDiffersOnType__value_2(value), returns: willReturn)
+        static func similarMethodThatDiffersOnType(value: Parameter<Point>, willReturn: Bool) -> Given {
+            return Given(method: .similarMethodThatDiffersOnType__value_2(value), returns: willReturn)
         }
 
-        static func methodWithClosures(success function: Parameter<LinearFunction>, willReturn: ClosureFabric) -> MethodProxy {
-            return MethodProxy(method: .methodWithClosures__success_function_1(function), returns: willReturn)
+        static func methodWithClosures(success function: Parameter<LinearFunction>, willReturn: ClosureFabric) -> Given {
+            return Given(method: .methodWithClosures__success_function_1(function), returns: willReturn)
         }
 
-        static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>, willReturn: ((Int) -> Void)) -> MethodProxy {
-            return MethodProxy(method: .methodWithClosures__success_function_2(function), returns: willReturn)
+        static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>, willReturn: ((Int) -> Void)) -> Given {
+            return Given(method: .methodWithClosures__success_function_2(function), returns: willReturn)
         }
     }
 
-    struct VerificationProxy {
+    struct Verify {
         fileprivate var method: MethodType
 
-        static func serviceName() -> VerificationProxy {
-            return VerificationProxy(method: .serviceName)
+        static func serviceName() -> Verify {
+            return Verify(method: .serviceName)
         }
-        static func aNewWayToSayHooray() -> VerificationProxy {
-            return VerificationProxy(method: .aNewWayToSayHooray)
+        static func aNewWayToSayHooray() -> Verify {
+            return Verify(method: .aNewWayToSayHooray)
         }
-        static func getPoint(from point: Parameter<Point>) -> VerificationProxy {
-            return VerificationProxy(method: .getPoint__from_point(point))
+        static func getPoint(from point: Parameter<Point>) -> Verify {
+            return Verify(method: .getPoint__from_point(point))
         }
-        static func getPoint(from tuple: Parameter<(Float,Float)>) -> VerificationProxy {
-            return VerificationProxy(method: .getPoint__from_tuple(tuple))
+        static func getPoint(from tuple: Parameter<(Float,Float)>) -> Verify {
+            return Verify(method: .getPoint__from_tuple(tuple))
         }
-        static func similarMethodThatDiffersOnType(value: Parameter<Float>) -> VerificationProxy {
-            return VerificationProxy(method: .similarMethodThatDiffersOnType__value_1(value))
+        static func similarMethodThatDiffersOnType(value: Parameter<Float>) -> Verify {
+            return Verify(method: .similarMethodThatDiffersOnType__value_1(value))
         }
-        static func similarMethodThatDiffersOnType(value: Parameter<Point>) -> VerificationProxy {
-            return VerificationProxy(method: .similarMethodThatDiffersOnType__value_2(value))
+        static func similarMethodThatDiffersOnType(value: Parameter<Point>) -> Verify {
+            return Verify(method: .similarMethodThatDiffersOnType__value_2(value))
         }
-        static func methodWithTypedef(scalar: Parameter<Scalar>) -> VerificationProxy {
-            return VerificationProxy(method: .methodWithTypedef__scalar(scalar))
+        static func methodWithTypedef(scalar: Parameter<Scalar>) -> Verify {
+            return Verify(method: .methodWithTypedef__scalar(scalar))
         }
-        static func methodWithClosures(success function: Parameter<LinearFunction>) -> VerificationProxy {
-            return VerificationProxy(method: .methodWithClosures__success_function_1(function))
+        static func methodWithClosures(success function: Parameter<LinearFunction>) -> Verify {
+            return Verify(method: .methodWithClosures__success_function_1(function))
         }
-        static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>) -> VerificationProxy {
-            return VerificationProxy(method: .methodWithClosures__success_function_2(function))
+        static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>) -> Verify {
+            return Verify(method: .methodWithClosures__success_function_2(function))
         }
     }
 
-    struct PerformProxy {
+    struct Perform {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func serviceName(perform: () -> Void) -> PerformProxy {
-            return PerformProxy(method: .serviceName, performs: perform)
+        static func serviceName(perform: () -> Void) -> Perform {
+            return Perform(method: .serviceName, performs: perform)
         }
 
-        static func aNewWayToSayHooray(perform: () -> Void) -> PerformProxy {
-            return PerformProxy(method: .aNewWayToSayHooray, performs: perform)
+        static func aNewWayToSayHooray(perform: () -> Void) -> Perform {
+            return Perform(method: .aNewWayToSayHooray, performs: perform)
         }
 
-        static func getPoint(from point: Parameter<Point>, perform: (Point) -> Void) -> PerformProxy {
-            return PerformProxy(method: .getPoint__from_point(point), performs: perform)
+        static func getPoint(from point: Parameter<Point>, perform: (Point) -> Void) -> Perform {
+            return Perform(method: .getPoint__from_point(point), performs: perform)
         }
 
-        static func getPoint(from tuple: Parameter<(Float,Float)>, perform: ((Float,Float)) -> Void) -> PerformProxy {
-            return PerformProxy(method: .getPoint__from_tuple(tuple), performs: perform)
+        static func getPoint(from tuple: Parameter<(Float,Float)>, perform: ((Float,Float)) -> Void) -> Perform {
+            return Perform(method: .getPoint__from_tuple(tuple), performs: perform)
         }
 
-        static func similarMethodThatDiffersOnType(value: Parameter<Float>, perform: (Float) -> Void) -> PerformProxy {
-            return PerformProxy(method: .similarMethodThatDiffersOnType__value_1(value), performs: perform)
+        static func similarMethodThatDiffersOnType(value: Parameter<Float>, perform: (Float) -> Void) -> Perform {
+            return Perform(method: .similarMethodThatDiffersOnType__value_1(value), performs: perform)
         }
 
-        static func similarMethodThatDiffersOnType(value: Parameter<Point>, perform: (Point) -> Void) -> PerformProxy {
-            return PerformProxy(method: .similarMethodThatDiffersOnType__value_2(value), performs: perform)
+        static func similarMethodThatDiffersOnType(value: Parameter<Point>, perform: (Point) -> Void) -> Perform {
+            return Perform(method: .similarMethodThatDiffersOnType__value_2(value), performs: perform)
         }
 
-        static func methodWithTypedef(scalar: Parameter<Scalar>, perform: (Scalar) -> Void) -> PerformProxy {
-            return PerformProxy(method: .methodWithTypedef__scalar(scalar), performs: perform)
+        static func methodWithTypedef(scalar: Parameter<Scalar>, perform: (Scalar) -> Void) -> Perform {
+            return Perform(method: .methodWithTypedef__scalar(scalar), performs: perform)
         }
 
-        static func methodWithClosures(success function: Parameter<LinearFunction>, perform: (LinearFunction) -> Void) -> PerformProxy {
-            return PerformProxy(method: .methodWithClosures__success_function_1(function), performs: perform)
+        static func methodWithClosures(success function: Parameter<LinearFunction>, perform: (LinearFunction) -> Void) -> Perform {
+            return Perform(method: .methodWithClosures__success_function_1(function), performs: perform)
         }
 
-        static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>, perform: (((Scalar,Scalar) -> Scalar)?) -> Void) -> PerformProxy {
-            return PerformProxy(method: .methodWithClosures__success_function_2(function), performs: perform)
+        static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>, perform: (((Scalar,Scalar) -> Scalar)?) -> Void) -> Perform {
+            return Perform(method: .methodWithClosures__success_function_2(function), performs: perform)
         }
     }
 
-    public func matchingCalls(_ method: VerificationProxy) -> Int {
+    public func matchingCalls(_ method: Verify) -> Int {
         return matchingCalls(method.method).count
     }
 
-    public func given(_ method: MethodProxy) {
+    public func given(_ method: Given) {
         methodReturnValues.append(method)
         methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func perform(_ method: PerformProxy) {
+    public func perform(_ method: Perform) {
         methodPerformValues.append(method)
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: VerificationProxy, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
         let method = method.method
         let invocations = matchingCalls(method)
         XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
@@ -317,8 +317,8 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
 // MARK: - ItemsClient
 class ItemsClientMock: ItemsClient, Mock {
     fileprivate var invocations: [MethodType] = []
-    var methodReturnValues: [MethodProxy] = []
-    var methodPerformValues: [PerformProxy] = []
+    var methodReturnValues: [Given] = []
+    var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
                     
 
@@ -376,69 +376,69 @@ class ItemsClientMock: ItemsClient, Mock {
         }
     }
 
-    struct MethodProxy {
+    struct Given {
         fileprivate var method: MethodType
         var returns: Any?
 
-        static func getExampleItems(willReturn: Observable<[Item]>) -> MethodProxy {
-            return MethodProxy(method: .getExampleItems, returns: willReturn)
+        static func getExampleItems(willReturn: Observable<[Item]>) -> Given {
+            return Given(method: .getExampleItems, returns: willReturn)
         }
 
-        static func getItemDetails(item: Parameter<Item>, willReturn: Observable<ItemDetails>) -> MethodProxy {
-            return MethodProxy(method: .getItemDetails__item_item(item), returns: willReturn)
+        static func getItemDetails(item: Parameter<Item>, willReturn: Observable<ItemDetails>) -> Given {
+            return Given(method: .getItemDetails__item_item(item), returns: willReturn)
         }
 
-        static func update(item: Parameter<Item>, withLimit limit: Parameter<Decimal>, expirationDate date: Parameter<Date?>, willReturn: Single<Void>) -> MethodProxy {
-            return MethodProxy(method: .update__item_itemwithLimit_limitexpirationDate_date(item, limit, date), returns: willReturn)
+        static func update(item: Parameter<Item>, withLimit limit: Parameter<Decimal>, expirationDate date: Parameter<Date?>, willReturn: Single<Void>) -> Given {
+            return Given(method: .update__item_itemwithLimit_limitexpirationDate_date(item, limit, date), returns: willReturn)
         }
     }
 
-    struct VerificationProxy {
+    struct Verify {
         fileprivate var method: MethodType
 
-        static func getExampleItems() -> VerificationProxy {
-            return VerificationProxy(method: .getExampleItems)
+        static func getExampleItems() -> Verify {
+            return Verify(method: .getExampleItems)
         }
-        static func getItemDetails(item: Parameter<Item>) -> VerificationProxy {
-            return VerificationProxy(method: .getItemDetails__item_item(item))
+        static func getItemDetails(item: Parameter<Item>) -> Verify {
+            return Verify(method: .getItemDetails__item_item(item))
         }
-        static func update(item: Parameter<Item>, withLimit limit: Parameter<Decimal>, expirationDate date: Parameter<Date?>) -> VerificationProxy {
-            return VerificationProxy(method: .update__item_itemwithLimit_limitexpirationDate_date(item, limit, date))
+        static func update(item: Parameter<Item>, withLimit limit: Parameter<Decimal>, expirationDate date: Parameter<Date?>) -> Verify {
+            return Verify(method: .update__item_itemwithLimit_limitexpirationDate_date(item, limit, date))
         }
     }
 
-    struct PerformProxy {
+    struct Perform {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func getExampleItems(perform: () -> Void) -> PerformProxy {
-            return PerformProxy(method: .getExampleItems, performs: perform)
+        static func getExampleItems(perform: () -> Void) -> Perform {
+            return Perform(method: .getExampleItems, performs: perform)
         }
 
-        static func getItemDetails(item: Parameter<Item>, perform: (Item) -> Void) -> PerformProxy {
-            return PerformProxy(method: .getItemDetails__item_item(item), performs: perform)
+        static func getItemDetails(item: Parameter<Item>, perform: (Item) -> Void) -> Perform {
+            return Perform(method: .getItemDetails__item_item(item), performs: perform)
         }
 
-        static func update(item: Parameter<Item>, withLimit limit: Parameter<Decimal>, expirationDate date: Parameter<Date?>, perform: (Item, Decimal, Date?) -> Void) -> PerformProxy {
-            return PerformProxy(method: .update__item_itemwithLimit_limitexpirationDate_date(item, limit, date), performs: perform)
+        static func update(item: Parameter<Item>, withLimit limit: Parameter<Decimal>, expirationDate date: Parameter<Date?>, perform: (Item, Decimal, Date?) -> Void) -> Perform {
+            return Perform(method: .update__item_itemwithLimit_limitexpirationDate_date(item, limit, date), performs: perform)
         }
     }
 
-    public func matchingCalls(_ method: VerificationProxy) -> Int {
+    public func matchingCalls(_ method: Verify) -> Int {
         return matchingCalls(method.method).count
     }
 
-    public func given(_ method: MethodProxy) {
+    public func given(_ method: Given) {
         methodReturnValues.append(method)
         methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func perform(_ method: PerformProxy) {
+    public func perform(_ method: Perform) {
         methodPerformValues.append(method)
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: VerificationProxy, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
         let method = method.method
         let invocations = matchingCalls(method)
         XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
@@ -474,8 +474,8 @@ class ItemsClientMock: ItemsClient, Mock {
 // MARK: - ItemsModel
 class ItemsModelMock: ItemsModel, Mock {
     fileprivate var invocations: [MethodType] = []
-    var methodReturnValues: [MethodProxy] = []
-    var methodPerformValues: [PerformProxy] = []
+    var methodReturnValues: [Given] = []
+    var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
         
     static var defaultIdentifier: Int { 
@@ -561,69 +561,69 @@ class ItemsModelMock: ItemsModel, Mock {
         }
     }
 
-    struct MethodProxy {
+    struct Given {
         fileprivate var method: MethodType
         var returns: Any?
 
-        static func getExampleItems(willReturn: Observable<[Item]>) -> MethodProxy {
-            return MethodProxy(method: .getExampleItems, returns: willReturn)
+        static func getExampleItems(willReturn: Observable<[Item]>) -> Given {
+            return Given(method: .getExampleItems, returns: willReturn)
         }
 
-        static func getItemDetails(item: Parameter<Item>, willReturn: Observable<ItemDetails>) -> MethodProxy {
-            return MethodProxy(method: .getItemDetails__item_item(item), returns: willReturn)
+        static func getItemDetails(item: Parameter<Item>, willReturn: Observable<ItemDetails>) -> Given {
+            return Given(method: .getItemDetails__item_item(item), returns: willReturn)
         }
 
-        static func getPrice(for item: Parameter<Item>, willReturn: Decimal) -> MethodProxy {
-            return MethodProxy(method: .getPrice__for_item(item), returns: willReturn)
+        static func getPrice(for item: Parameter<Item>, willReturn: Decimal) -> Given {
+            return Given(method: .getPrice__for_item(item), returns: willReturn)
         }
     }
 
-    struct VerificationProxy {
+    struct Verify {
         fileprivate var method: MethodType
 
-        static func getExampleItems() -> VerificationProxy {
-            return VerificationProxy(method: .getExampleItems)
+        static func getExampleItems() -> Verify {
+            return Verify(method: .getExampleItems)
         }
-        static func getItemDetails(item: Parameter<Item>) -> VerificationProxy {
-            return VerificationProxy(method: .getItemDetails__item_item(item))
+        static func getItemDetails(item: Parameter<Item>) -> Verify {
+            return Verify(method: .getItemDetails__item_item(item))
         }
-        static func getPrice(for item: Parameter<Item>) -> VerificationProxy {
-            return VerificationProxy(method: .getPrice__for_item(item))
+        static func getPrice(for item: Parameter<Item>) -> Verify {
+            return Verify(method: .getPrice__for_item(item))
         }
     }
 
-    struct PerformProxy {
+    struct Perform {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func getExampleItems(perform: () -> Void) -> PerformProxy {
-            return PerformProxy(method: .getExampleItems, performs: perform)
+        static func getExampleItems(perform: () -> Void) -> Perform {
+            return Perform(method: .getExampleItems, performs: perform)
         }
 
-        static func getItemDetails(item: Parameter<Item>, perform: (Item) -> Void) -> PerformProxy {
-            return PerformProxy(method: .getItemDetails__item_item(item), performs: perform)
+        static func getItemDetails(item: Parameter<Item>, perform: (Item) -> Void) -> Perform {
+            return Perform(method: .getItemDetails__item_item(item), performs: perform)
         }
 
-        static func getPrice(for item: Parameter<Item>, perform: (Item) -> Void) -> PerformProxy {
-            return PerformProxy(method: .getPrice__for_item(item), performs: perform)
+        static func getPrice(for item: Parameter<Item>, perform: (Item) -> Void) -> Perform {
+            return Perform(method: .getPrice__for_item(item), performs: perform)
         }
     }
 
-    public func matchingCalls(_ method: VerificationProxy) -> Int {
+    public func matchingCalls(_ method: Verify) -> Int {
         return matchingCalls(method.method).count
     }
 
-    public func given(_ method: MethodProxy) {
+    public func given(_ method: Given) {
         methodReturnValues.append(method)
         methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func perform(_ method: PerformProxy) {
+    public func perform(_ method: Perform) {
         methodPerformValues.append(method)
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: VerificationProxy, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
         let method = method.method
         let invocations = matchingCalls(method)
         XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
@@ -659,8 +659,8 @@ class ItemsModelMock: ItemsModel, Mock {
 // MARK: - NonSwiftProtocol
 class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
     fileprivate var invocations: [MethodType] = []
-    var methodReturnValues: [MethodProxy] = []
-    var methodPerformValues: [PerformProxy] = []
+    var methodReturnValues: [Given] = []
+    var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
                     
 
@@ -700,50 +700,50 @@ class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
         }
     }
 
-    struct MethodProxy {
+    struct Given {
         fileprivate var method: MethodType
         var returns: Any?
     }
 
-    struct VerificationProxy {
+    struct Verify {
         fileprivate var method: MethodType
 
-        static func returnNoting() -> VerificationProxy {
-            return VerificationProxy(method: .returnNoting)
+        static func returnNoting() -> Verify {
+            return Verify(method: .returnNoting)
         }
-        static func someMethod() -> VerificationProxy {
-            return VerificationProxy(method: .someMethod)
+        static func someMethod() -> Verify {
+            return Verify(method: .someMethod)
         }
     }
 
-    struct PerformProxy {
+    struct Perform {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func returnNoting(perform: () -> Void) -> PerformProxy {
-            return PerformProxy(method: .returnNoting, performs: perform)
+        static func returnNoting(perform: () -> Void) -> Perform {
+            return Perform(method: .returnNoting, performs: perform)
         }
 
-        static func someMethod(perform: () -> Void) -> PerformProxy {
-            return PerformProxy(method: .someMethod, performs: perform)
+        static func someMethod(perform: () -> Void) -> Perform {
+            return Perform(method: .someMethod, performs: perform)
         }
     }
 
-    public func matchingCalls(_ method: VerificationProxy) -> Int {
+    public func matchingCalls(_ method: Verify) -> Int {
         return matchingCalls(method.method).count
     }
 
-    public func given(_ method: MethodProxy) {
+    public func given(_ method: Given) {
         methodReturnValues.append(method)
         methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func perform(_ method: PerformProxy) {
+    public func perform(_ method: Perform) {
         methodPerformValues.append(method)
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: VerificationProxy, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
         let method = method.method
         let invocations = matchingCalls(method)
         XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
@@ -779,8 +779,8 @@ class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
 // MARK: - ProtocolWithOptionalClosures
 class ProtocolWithOptionalClosuresMock: ProtocolWithOptionalClosures, Mock {
     fileprivate var invocations: [MethodType] = []
-    var methodReturnValues: [MethodProxy] = []
-    var methodPerformValues: [PerformProxy] = []
+    var methodReturnValues: [Given] = []
+    var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
         
     var nonOptionalClosure: () -> Void { 
@@ -805,36 +805,36 @@ class ProtocolWithOptionalClosuresMock: ProtocolWithOptionalClosures, Mock {
         func intValue() -> Int { return 0 }
     }
     
-    struct MethodProxy {
+    struct Given {
         fileprivate var method: MethodType
         var returns: Any?
     }
 
-    struct VerificationProxy {
+    struct Verify {
         fileprivate var method: MethodType
 
     }
 
-    struct PerformProxy {
+    struct Perform {
         fileprivate var method: MethodType
         var performs: Any
     }
 
-    public func matchingCalls(_ method: VerificationProxy) -> Int {
+    public func matchingCalls(_ method: Verify) -> Int {
         return matchingCalls(method.method).count
     }
 
-    public func given(_ method: MethodProxy) {
+    public func given(_ method: Given) {
         methodReturnValues.append(method)
         methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func perform(_ method: PerformProxy) {
+    public func perform(_ method: Perform) {
         methodPerformValues.append(method)
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: VerificationProxy, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
         let method = method.method
         let invocations = matchingCalls(method)
         XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
@@ -870,8 +870,8 @@ class ProtocolWithOptionalClosuresMock: ProtocolWithOptionalClosures, Mock {
 // MARK: - ProtocolWithThrowingMethods
 class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
     fileprivate var invocations: [MethodType] = []
-    var methodReturnValues: [MethodProxy] = []
-    var methodPerformValues: [PerformProxy] = []
+    var methodReturnValues: [Given] = []
+    var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
                     
 
@@ -913,54 +913,54 @@ class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
         }
     }
 
-    struct MethodProxy {
+    struct Given {
         fileprivate var method: MethodType
         var returns: Any?
 
-        static func methodThatReturnsAndThrows(param: Parameter<String>, willReturn: Int) -> MethodProxy {
-            return MethodProxy(method: .methodThatReturnsAndThrows__param_param(param), returns: willReturn)
+        static func methodThatReturnsAndThrows(param: Parameter<String>, willReturn: Int) -> Given {
+            return Given(method: .methodThatReturnsAndThrows__param_param(param), returns: willReturn)
         }
     }
 
-    struct VerificationProxy {
+    struct Verify {
         fileprivate var method: MethodType
 
-        static func methodThatThrows() -> VerificationProxy {
-            return VerificationProxy(method: .methodThatThrows)
+        static func methodThatThrows() -> Verify {
+            return Verify(method: .methodThatThrows)
         }
-        static func methodThatReturnsAndThrows(param: Parameter<String>) -> VerificationProxy {
-            return VerificationProxy(method: .methodThatReturnsAndThrows__param_param(param))
+        static func methodThatReturnsAndThrows(param: Parameter<String>) -> Verify {
+            return Verify(method: .methodThatReturnsAndThrows__param_param(param))
         }
     }
 
-    struct PerformProxy {
+    struct Perform {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func methodThatThrows(perform: () -> Void) -> PerformProxy {
-            return PerformProxy(method: .methodThatThrows, performs: perform)
+        static func methodThatThrows(perform: () -> Void) -> Perform {
+            return Perform(method: .methodThatThrows, performs: perform)
         }
 
-        static func methodThatReturnsAndThrows(param: Parameter<String>, perform: (String) -> Void) -> PerformProxy {
-            return PerformProxy(method: .methodThatReturnsAndThrows__param_param(param), performs: perform)
+        static func methodThatReturnsAndThrows(param: Parameter<String>, perform: (String) -> Void) -> Perform {
+            return Perform(method: .methodThatReturnsAndThrows__param_param(param), performs: perform)
         }
     }
 
-    public func matchingCalls(_ method: VerificationProxy) -> Int {
+    public func matchingCalls(_ method: Verify) -> Int {
         return matchingCalls(method.method).count
     }
 
-    public func given(_ method: MethodProxy) {
+    public func given(_ method: Given) {
         methodReturnValues.append(method)
         methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func perform(_ method: PerformProxy) {
+    public func perform(_ method: Perform) {
         methodPerformValues.append(method)
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: VerificationProxy, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
         let method = method.method
         let invocations = matchingCalls(method)
         XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
@@ -996,8 +996,8 @@ class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
 // MARK: - SampleServiceType
 class SampleServiceTypeMock: SampleServiceType, Mock {
     fileprivate var invocations: [MethodType] = []
-    var methodReturnValues: [MethodProxy] = []
-    var methodPerformValues: [PerformProxy] = []
+    var methodReturnValues: [Given] = []
+    var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
                     
 
@@ -1117,120 +1117,120 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
         }
     }
 
-    struct MethodProxy {
+    struct Given {
         fileprivate var method: MethodType
         var returns: Any?
 
-        static func serviceName(willReturn: String) -> MethodProxy {
-            return MethodProxy(method: .serviceName, returns: willReturn)
+        static func serviceName(willReturn: String) -> Given {
+            return Given(method: .serviceName, returns: willReturn)
         }
 
-        static func getPoint(from point: Parameter<Point>, willReturn: Point) -> MethodProxy {
-            return MethodProxy(method: .getPoint__from_point(point), returns: willReturn)
+        static func getPoint(from point: Parameter<Point>, willReturn: Point) -> Given {
+            return Given(method: .getPoint__from_point(point), returns: willReturn)
         }
 
-        static func getPoint(from tuple: Parameter<(Float,Float)>, willReturn: Point) -> MethodProxy {
-            return MethodProxy(method: .getPoint__from_tuple(tuple), returns: willReturn)
+        static func getPoint(from tuple: Parameter<(Float,Float)>, willReturn: Point) -> Given {
+            return Given(method: .getPoint__from_tuple(tuple), returns: willReturn)
         }
 
-        static func similarMethodThatDiffersOnType(value: Parameter<Float>, willReturn: Bool) -> MethodProxy {
-            return MethodProxy(method: .similarMethodThatDiffersOnType__value_1(value), returns: willReturn)
+        static func similarMethodThatDiffersOnType(value: Parameter<Float>, willReturn: Bool) -> Given {
+            return Given(method: .similarMethodThatDiffersOnType__value_1(value), returns: willReturn)
         }
 
-        static func similarMethodThatDiffersOnType(value: Parameter<Point>, willReturn: Bool) -> MethodProxy {
-            return MethodProxy(method: .similarMethodThatDiffersOnType__value_2(value), returns: willReturn)
+        static func similarMethodThatDiffersOnType(value: Parameter<Point>, willReturn: Bool) -> Given {
+            return Given(method: .similarMethodThatDiffersOnType__value_2(value), returns: willReturn)
         }
 
-        static func methodWithClosures(success function: Parameter<LinearFunction>, willReturn: ClosureFabric) -> MethodProxy {
-            return MethodProxy(method: .methodWithClosures__success_function_1(function), returns: willReturn)
+        static func methodWithClosures(success function: Parameter<LinearFunction>, willReturn: ClosureFabric) -> Given {
+            return Given(method: .methodWithClosures__success_function_1(function), returns: willReturn)
         }
 
-        static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>, willReturn: ((Int) -> Void)) -> MethodProxy {
-            return MethodProxy(method: .methodWithClosures__success_function_2(function), returns: willReturn)
+        static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>, willReturn: ((Int) -> Void)) -> Given {
+            return Given(method: .methodWithClosures__success_function_2(function), returns: willReturn)
         }
     }
 
-    struct VerificationProxy {
+    struct Verify {
         fileprivate var method: MethodType
 
-        static func serviceName() -> VerificationProxy {
-            return VerificationProxy(method: .serviceName)
+        static func serviceName() -> Verify {
+            return Verify(method: .serviceName)
         }
-        static func getPoint(from point: Parameter<Point>) -> VerificationProxy {
-            return VerificationProxy(method: .getPoint__from_point(point))
+        static func getPoint(from point: Parameter<Point>) -> Verify {
+            return Verify(method: .getPoint__from_point(point))
         }
-        static func getPoint(from tuple: Parameter<(Float,Float)>) -> VerificationProxy {
-            return VerificationProxy(method: .getPoint__from_tuple(tuple))
+        static func getPoint(from tuple: Parameter<(Float,Float)>) -> Verify {
+            return Verify(method: .getPoint__from_tuple(tuple))
         }
-        static func similarMethodThatDiffersOnType(value: Parameter<Float>) -> VerificationProxy {
-            return VerificationProxy(method: .similarMethodThatDiffersOnType__value_1(value))
+        static func similarMethodThatDiffersOnType(value: Parameter<Float>) -> Verify {
+            return Verify(method: .similarMethodThatDiffersOnType__value_1(value))
         }
-        static func similarMethodThatDiffersOnType(value: Parameter<Point>) -> VerificationProxy {
-            return VerificationProxy(method: .similarMethodThatDiffersOnType__value_2(value))
+        static func similarMethodThatDiffersOnType(value: Parameter<Point>) -> Verify {
+            return Verify(method: .similarMethodThatDiffersOnType__value_2(value))
         }
-        static func methodWithTypedef(scalar: Parameter<Scalar>) -> VerificationProxy {
-            return VerificationProxy(method: .methodWithTypedef__scalar(scalar))
+        static func methodWithTypedef(scalar: Parameter<Scalar>) -> Verify {
+            return Verify(method: .methodWithTypedef__scalar(scalar))
         }
-        static func methodWithClosures(success function: Parameter<LinearFunction>) -> VerificationProxy {
-            return VerificationProxy(method: .methodWithClosures__success_function_1(function))
+        static func methodWithClosures(success function: Parameter<LinearFunction>) -> Verify {
+            return Verify(method: .methodWithClosures__success_function_1(function))
         }
-        static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>) -> VerificationProxy {
-            return VerificationProxy(method: .methodWithClosures__success_function_2(function))
+        static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>) -> Verify {
+            return Verify(method: .methodWithClosures__success_function_2(function))
         }
     }
 
-    struct PerformProxy {
+    struct Perform {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func serviceName(perform: () -> Void) -> PerformProxy {
-            return PerformProxy(method: .serviceName, performs: perform)
+        static func serviceName(perform: () -> Void) -> Perform {
+            return Perform(method: .serviceName, performs: perform)
         }
 
-        static func getPoint(from point: Parameter<Point>, perform: (Point) -> Void) -> PerformProxy {
-            return PerformProxy(method: .getPoint__from_point(point), performs: perform)
+        static func getPoint(from point: Parameter<Point>, perform: (Point) -> Void) -> Perform {
+            return Perform(method: .getPoint__from_point(point), performs: perform)
         }
 
-        static func getPoint(from tuple: Parameter<(Float,Float)>, perform: ((Float,Float)) -> Void) -> PerformProxy {
-            return PerformProxy(method: .getPoint__from_tuple(tuple), performs: perform)
+        static func getPoint(from tuple: Parameter<(Float,Float)>, perform: ((Float,Float)) -> Void) -> Perform {
+            return Perform(method: .getPoint__from_tuple(tuple), performs: perform)
         }
 
-        static func similarMethodThatDiffersOnType(value: Parameter<Float>, perform: (Float) -> Void) -> PerformProxy {
-            return PerformProxy(method: .similarMethodThatDiffersOnType__value_1(value), performs: perform)
+        static func similarMethodThatDiffersOnType(value: Parameter<Float>, perform: (Float) -> Void) -> Perform {
+            return Perform(method: .similarMethodThatDiffersOnType__value_1(value), performs: perform)
         }
 
-        static func similarMethodThatDiffersOnType(value: Parameter<Point>, perform: (Point) -> Void) -> PerformProxy {
-            return PerformProxy(method: .similarMethodThatDiffersOnType__value_2(value), performs: perform)
+        static func similarMethodThatDiffersOnType(value: Parameter<Point>, perform: (Point) -> Void) -> Perform {
+            return Perform(method: .similarMethodThatDiffersOnType__value_2(value), performs: perform)
         }
 
-        static func methodWithTypedef(scalar: Parameter<Scalar>, perform: (Scalar) -> Void) -> PerformProxy {
-            return PerformProxy(method: .methodWithTypedef__scalar(scalar), performs: perform)
+        static func methodWithTypedef(scalar: Parameter<Scalar>, perform: (Scalar) -> Void) -> Perform {
+            return Perform(method: .methodWithTypedef__scalar(scalar), performs: perform)
         }
 
-        static func methodWithClosures(success function: Parameter<LinearFunction>, perform: (LinearFunction) -> Void) -> PerformProxy {
-            return PerformProxy(method: .methodWithClosures__success_function_1(function), performs: perform)
+        static func methodWithClosures(success function: Parameter<LinearFunction>, perform: (LinearFunction) -> Void) -> Perform {
+            return Perform(method: .methodWithClosures__success_function_1(function), performs: perform)
         }
 
-        static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>, perform: (((Scalar,Scalar) -> Scalar)?) -> Void) -> PerformProxy {
-            return PerformProxy(method: .methodWithClosures__success_function_2(function), performs: perform)
+        static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>, perform: (((Scalar,Scalar) -> Scalar)?) -> Void) -> Perform {
+            return Perform(method: .methodWithClosures__success_function_2(function), performs: perform)
         }
     }
 
-    public func matchingCalls(_ method: VerificationProxy) -> Int {
+    public func matchingCalls(_ method: Verify) -> Int {
         return matchingCalls(method.method).count
     }
 
-    public func given(_ method: MethodProxy) {
+    public func given(_ method: Given) {
         methodReturnValues.append(method)
         methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func perform(_ method: PerformProxy) {
+    public func perform(_ method: Perform) {
         methodPerformValues.append(method)
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: VerificationProxy, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
         let method = method.method
         let invocations = matchingCalls(method)
         XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
@@ -1266,8 +1266,8 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
 // MARK: - SimpleServiceType
 class SimpleServiceTypeMock: SimpleServiceType, Mock {
     fileprivate var invocations: [MethodType] = []
-    var methodReturnValues: [MethodProxy] = []
-    var methodPerformValues: [PerformProxy] = []
+    var methodReturnValues: [Given] = []
+    var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
         
     var youCouldOnlyGetThis: String { 
@@ -1301,47 +1301,47 @@ class SimpleServiceTypeMock: SimpleServiceType, Mock {
         }
     }
 
-    struct MethodProxy {
+    struct Given {
         fileprivate var method: MethodType
         var returns: Any?
 
-        static func serviceName(willReturn: String) -> MethodProxy {
-            return MethodProxy(method: .serviceName, returns: willReturn)
+        static func serviceName(willReturn: String) -> Given {
+            return Given(method: .serviceName, returns: willReturn)
         }
     }
 
-    struct VerificationProxy {
+    struct Verify {
         fileprivate var method: MethodType
 
-        static func serviceName() -> VerificationProxy {
-            return VerificationProxy(method: .serviceName)
+        static func serviceName() -> Verify {
+            return Verify(method: .serviceName)
         }
     }
 
-    struct PerformProxy {
+    struct Perform {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func serviceName(perform: () -> Void) -> PerformProxy {
-            return PerformProxy(method: .serviceName, performs: perform)
+        static func serviceName(perform: () -> Void) -> Perform {
+            return Perform(method: .serviceName, performs: perform)
         }
     }
 
-    public func matchingCalls(_ method: VerificationProxy) -> Int {
+    public func matchingCalls(_ method: Verify) -> Int {
         return matchingCalls(method.method).count
     }
 
-    public func given(_ method: MethodProxy) {
+    public func given(_ method: Given) {
         methodReturnValues.append(method)
         methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func perform(_ method: PerformProxy) {
+    public func perform(_ method: Perform) {
         methodPerformValues.append(method)
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: VerificationProxy, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
         let method = method.method
         let invocations = matchingCalls(method)
         XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
@@ -1377,8 +1377,8 @@ class SimpleServiceTypeMock: SimpleServiceType, Mock {
 // MARK: - UserNetworkType
 class UserNetworkTypeMock: UserNetworkType, Mock {
     fileprivate var invocations: [MethodType] = []
-    var methodReturnValues: [MethodProxy] = []
-    var methodPerformValues: [PerformProxy] = []
+    var methodReturnValues: [Given] = []
+    var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
                     
 
@@ -1458,64 +1458,64 @@ class UserNetworkTypeMock: UserNetworkType, Mock {
         }
     }
 
-    struct MethodProxy {
+    struct Given {
         fileprivate var method: MethodType
         var returns: Any?
     }
 
-    struct VerificationProxy {
+    struct Verify {
         fileprivate var method: MethodType
 
-        static func getUser(for id: Parameter<String>, completion: Parameter<(User?) -> Void>) -> VerificationProxy {
-            return VerificationProxy(method: .getUser__for_idcompletion_completion(id, completion))
+        static func getUser(for id: Parameter<String>, completion: Parameter<(User?) -> Void>) -> Verify {
+            return Verify(method: .getUser__for_idcompletion_completion(id, completion))
         }
-        static func getUserEscaping(for id: Parameter<String>, completion: Parameter< (User?,Error?) -> Void>) -> VerificationProxy {
-            return VerificationProxy(method: .getUserEscaping__for_idcompletion_completion(id, completion))
+        static func getUserEscaping(for id: Parameter<String>, completion: Parameter< (User?,Error?) -> Void>) -> Verify {
+            return Verify(method: .getUserEscaping__for_idcompletion_completion(id, completion))
         }
-        static func doSomething(prop: Parameter< () -> String>) -> VerificationProxy {
-            return VerificationProxy(method: .doSomething__prop_prop(prop))
+        static func doSomething(prop: Parameter< () -> String>) -> Verify {
+            return Verify(method: .doSomething__prop_prop(prop))
         }
-        static func testDefaultValues(value: Parameter<String>) -> VerificationProxy {
-            return VerificationProxy(method: .testDefaultValues__value_value(value))
+        static func testDefaultValues(value: Parameter<String>) -> Verify {
+            return Verify(method: .testDefaultValues__value_value(value))
         }
     }
 
-    struct PerformProxy {
+    struct Perform {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func getUser(for id: Parameter<String>, completion: Parameter<(User?) -> Void>, perform: (String, (User?) -> Void) -> Void) -> PerformProxy {
-            return PerformProxy(method: .getUser__for_idcompletion_completion(id, completion), performs: perform)
+        static func getUser(for id: Parameter<String>, completion: Parameter<(User?) -> Void>, perform: (String, (User?) -> Void) -> Void) -> Perform {
+            return Perform(method: .getUser__for_idcompletion_completion(id, completion), performs: perform)
         }
 
-        static func getUserEscaping(for id: Parameter<String>, completion: Parameter< (User?,Error?) -> Void>, perform: (String, @escaping (User?,Error?) -> Void) -> Void) -> PerformProxy {
-            return PerformProxy(method: .getUserEscaping__for_idcompletion_completion(id, completion), performs: perform)
+        static func getUserEscaping(for id: Parameter<String>, completion: Parameter< (User?,Error?) -> Void>, perform: (String, @escaping (User?,Error?) -> Void) -> Void) -> Perform {
+            return Perform(method: .getUserEscaping__for_idcompletion_completion(id, completion), performs: perform)
         }
 
-        static func doSomething(prop: Parameter< () -> String>, perform: (@autoclosure () -> String) -> Void) -> PerformProxy {
-            return PerformProxy(method: .doSomething__prop_prop(prop), performs: perform)
+        static func doSomething(prop: Parameter< () -> String>, perform: (@autoclosure () -> String) -> Void) -> Perform {
+            return Perform(method: .doSomething__prop_prop(prop), performs: perform)
         }
 
-        static func testDefaultValues(value: Parameter<String>, perform: (String) -> Void) -> PerformProxy {
-            return PerformProxy(method: .testDefaultValues__value_value(value), performs: perform)
+        static func testDefaultValues(value: Parameter<String>, perform: (String) -> Void) -> Perform {
+            return Perform(method: .testDefaultValues__value_value(value), performs: perform)
         }
     }
 
-    public func matchingCalls(_ method: VerificationProxy) -> Int {
+    public func matchingCalls(_ method: Verify) -> Int {
         return matchingCalls(method.method).count
     }
 
-    public func given(_ method: MethodProxy) {
+    public func given(_ method: Given) {
         methodReturnValues.append(method)
         methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func perform(_ method: PerformProxy) {
+    public func perform(_ method: Perform) {
         methodPerformValues.append(method)
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: VerificationProxy, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
         let method = method.method
         let invocations = matchingCalls(method)
         XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
@@ -1551,8 +1551,8 @@ class UserNetworkTypeMock: UserNetworkType, Mock {
 // MARK: - UserStorageType
 class UserStorageTypeMock: UserStorageType, Mock {
     fileprivate var invocations: [MethodType] = []
-    var methodReturnValues: [MethodProxy] = []
-    var methodPerformValues: [PerformProxy] = []
+    var methodReturnValues: [Given] = []
+    var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
                     
 
@@ -1596,54 +1596,54 @@ class UserStorageTypeMock: UserStorageType, Mock {
         }
     }
 
-    struct MethodProxy {
+    struct Given {
         fileprivate var method: MethodType
         var returns: Any?
 
-        static func surname(for name: Parameter<String>, willReturn: String) -> MethodProxy {
-            return MethodProxy(method: .surname__for_name(name), returns: willReturn)
+        static func surname(for name: Parameter<String>, willReturn: String) -> Given {
+            return Given(method: .surname__for_name(name), returns: willReturn)
         }
     }
 
-    struct VerificationProxy {
+    struct Verify {
         fileprivate var method: MethodType
 
-        static func surname(for name: Parameter<String>) -> VerificationProxy {
-            return VerificationProxy(method: .surname__for_name(name))
+        static func surname(for name: Parameter<String>) -> Verify {
+            return Verify(method: .surname__for_name(name))
         }
-        static func storeUser(name: Parameter<String>, surname: Parameter<String>) -> VerificationProxy {
-            return VerificationProxy(method: .storeUser__name_namesurname_surname(name, surname))
+        static func storeUser(name: Parameter<String>, surname: Parameter<String>) -> Verify {
+            return Verify(method: .storeUser__name_namesurname_surname(name, surname))
         }
     }
 
-    struct PerformProxy {
+    struct Perform {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func surname(for name: Parameter<String>, perform: (String) -> Void) -> PerformProxy {
-            return PerformProxy(method: .surname__for_name(name), performs: perform)
+        static func surname(for name: Parameter<String>, perform: (String) -> Void) -> Perform {
+            return Perform(method: .surname__for_name(name), performs: perform)
         }
 
-        static func storeUser(name: Parameter<String>, surname: Parameter<String>, perform: (String, String) -> Void) -> PerformProxy {
-            return PerformProxy(method: .storeUser__name_namesurname_surname(name, surname), performs: perform)
+        static func storeUser(name: Parameter<String>, surname: Parameter<String>, perform: (String, String) -> Void) -> Perform {
+            return Perform(method: .storeUser__name_namesurname_surname(name, surname), performs: perform)
         }
     }
 
-    public func matchingCalls(_ method: VerificationProxy) -> Int {
+    public func matchingCalls(_ method: Verify) -> Int {
         return matchingCalls(method.method).count
     }
 
-    public func given(_ method: MethodProxy) {
+    public func given(_ method: Given) {
         methodReturnValues.append(method)
         methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func perform(_ method: PerformProxy) {
+    public func perform(_ method: Perform) {
         methodPerformValues.append(method)
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: VerificationProxy, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
         let method = method.method
         let invocations = matchingCalls(method)
         XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)

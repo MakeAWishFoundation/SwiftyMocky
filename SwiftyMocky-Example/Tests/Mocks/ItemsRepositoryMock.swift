@@ -21,8 +21,8 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
 //swiftlint:disable vertical_whitespace
 
     fileprivate var invocations: [MethodType] = []
-    var methodReturnValues: [MethodProxy] = []
-    var methodPerformValues: [PerformProxy] = []
+    var methodReturnValues: [Given] = []
+    var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
         
     //MARK : ItemsRepository
@@ -91,72 +91,72 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         }
     }
 
-    struct MethodProxy {
+    struct Given {
         fileprivate var method: MethodType
         var returns: Any?
 
-        static func storedItems(willReturn: [Item]?) -> MethodProxy {
-            return MethodProxy(method: .storedItems, returns: willReturn)
+        static func storedItems(willReturn: [Item]?) -> Given {
+            return Given(method: .storedItems, returns: willReturn)
         }
 
-        static func storedDetails(item: Parameter<Item>, willReturn: ItemDetails?) -> MethodProxy {
-            return MethodProxy(method: .storedDetails__item_item(item), returns: willReturn)
+        static func storedDetails(item: Parameter<Item>, willReturn: ItemDetails?) -> Given {
+            return Given(method: .storedDetails__item_item(item), returns: willReturn)
         }
     }
 
-    struct VerificationProxy {
+    struct Verify {
         fileprivate var method: MethodType
 
-        static func storeItems(items: Parameter<[Item]>) -> VerificationProxy {
-            return VerificationProxy(method: .storeItems__items_items(items))
+        static func storeItems(items: Parameter<[Item]>) -> Verify {
+            return Verify(method: .storeItems__items_items(items))
         }
-        static func storeDetails(details: Parameter<ItemDetails>) -> VerificationProxy {
-            return VerificationProxy(method: .storeDetails__details_details(details))
+        static func storeDetails(details: Parameter<ItemDetails>) -> Verify {
+            return Verify(method: .storeDetails__details_details(details))
         }
-        static func storedItems() -> VerificationProxy {
-            return VerificationProxy(method: .storedItems)
+        static func storedItems() -> Verify {
+            return Verify(method: .storedItems)
         }
-        static func storedDetails(item: Parameter<Item>) -> VerificationProxy {
-            return VerificationProxy(method: .storedDetails__item_item(item))
+        static func storedDetails(item: Parameter<Item>) -> Verify {
+            return Verify(method: .storedDetails__item_item(item))
         }
     }
 
-    struct PerformProxy {
+    struct Perform {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func storeItems(items: Parameter<[Item]>, perform: ([Item]) -> Void) -> PerformProxy {
-            return PerformProxy(method: .storeItems__items_items(items), performs: perform)
+        static func storeItems(items: Parameter<[Item]>, perform: ([Item]) -> Void) -> Perform {
+            return Perform(method: .storeItems__items_items(items), performs: perform)
         }
 
-        static func storeDetails(details: Parameter<ItemDetails>, perform: (ItemDetails) -> Void) -> PerformProxy {
-            return PerformProxy(method: .storeDetails__details_details(details), performs: perform)
+        static func storeDetails(details: Parameter<ItemDetails>, perform: (ItemDetails) -> Void) -> Perform {
+            return Perform(method: .storeDetails__details_details(details), performs: perform)
         }
 
-        static func storedItems(perform: () -> Void) -> PerformProxy {
-            return PerformProxy(method: .storedItems, performs: perform)
+        static func storedItems(perform: () -> Void) -> Perform {
+            return Perform(method: .storedItems, performs: perform)
         }
 
-        static func storedDetails(item: Parameter<Item>, perform: (Item) -> Void) -> PerformProxy {
-            return PerformProxy(method: .storedDetails__item_item(item), performs: perform)
+        static func storedDetails(item: Parameter<Item>, perform: (Item) -> Void) -> Perform {
+            return Perform(method: .storedDetails__item_item(item), performs: perform)
         }
     }
 
-    public func matchingCalls(_ method: VerificationProxy) -> Int {
+    public func matchingCalls(_ method: Verify) -> Int {
         return matchingCalls(method.method).count
     }
 
-    public func given(_ method: MethodProxy) {
+    public func given(_ method: Given) {
         methodReturnValues.append(method)
         methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func perform(_ method: PerformProxy) {
+    public func perform(_ method: Perform) {
         methodPerformValues.append(method)
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: VerificationProxy, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
         let method = method.method
         let invocations = matchingCalls(method)
         XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
