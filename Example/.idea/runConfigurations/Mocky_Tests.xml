@@ -1,6 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Mocky_Tests" type="OCUnitRunConfiguration" factoryName="XCTest/Kiwi" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Mocky" TARGET_NAME="Mocky_Tests" CONFIG_NAME="Debug" SCHEME_NAME="Mocky_Tests" TEST_MODE="SUITE_TEST" XCODE_SKIPPED_TESTS_HASH_CODE="0">
-    <envs />
-    <method />
-  </configuration>
-</component>

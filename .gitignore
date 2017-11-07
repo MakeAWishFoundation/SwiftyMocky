@@ -162,3 +162,9 @@ fabric.properties
 .idea/sonarlint
 
 # End of https://www.gitignore.io/api/appcode
+Example/fastlane/report.xml
+Example/fastlane/test_output/report.html
+Example/fastlane/test_output/report.junit
+
+# Sourcery genreated file
+default.profraw

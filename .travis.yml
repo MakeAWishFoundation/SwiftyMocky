@@ -1,0 +1,24 @@
+language: objective-c
+
+os: osx
+language: generic
+sudo: required
+dist: trusty
+osx_image: xcode9.1
+
+notifications:
+  #slack: // TODO:
+  email: false
+
+install:
+  - if [ `uname` == "Linux" ] ; then
+        curl -sL https://gist.github.com/kylef/5c0475ff02b7c7671d2a/raw/621ef9b29bbb852fdfd2e10ed147b321d792c1e4/swiftenv-install.sh | bash ;
+    fi
+
+script:
+  - rake pod_install
+  - rake mock
+  - fastlane scan
+
+after_success:
+  - sleep 5 # workaround https://github.com/travis-ci/travis-ci/issues/4725

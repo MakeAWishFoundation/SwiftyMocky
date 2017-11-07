@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Setup in project  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a title="Setup in project  Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="index.html">SwiftyMocky Docs</a> (69% documented)</p>
+        <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="img/gh.png"/>View on GitHub</a></p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="index.html">SwiftyMocky Reference</a>
+        <img id="carat" src="img/carat.png" />
+        Setup in project  Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="Guides.html">Guides</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="overview.html">Overview</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="installation.html">Installation</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="setup-in-project.html">Setup in project</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="comparing-with-matcher.html">Comparing with Matcher</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="examples.html">Examples</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Types.html">Types</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Protocols/Mock.html">Mock</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/Parameter.html">Parameter</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/Matcher.html">Matcher</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Global methods.html">Global methods</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Global methods.html#/s:11SwiftyMocky5Givenyx_11MethodProxyQztAA4MockRzlF">Given(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global methods.html#/s:11SwiftyMocky7Performyx_0C5ProxyQztAA4MockRzlF">Perform(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global methods.html#/s:11SwiftyMocky6Verifyyx_17VerificationProxyQzs12StaticStringV4fileSu4linetAA4MockRzlF">Verify(_:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global methods.html#/s:11SwiftyMocky6Verifyyx_Su17VerificationProxyQzs12StaticStringV4fileSu4linetAA4MockRzlF">Verify(_:_:_:file:line:)</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            
+            <h1 id='how-to-setup-swiftymocky' class='heading'>How to setup SwiftyMocky</h1>
+
+<p>Mocks generation is based on <code>mocky.yml</code> file.</p>
+
+<p>First, create file in your project root directory with following structure:</p>
+<pre class="highlight yaml"><code><span class="s">sources</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">./ExampleApp</span>
+  <span class="pi">-</span> <span class="s">./ExampleAppTests</span>
+<span class="s">templates</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">./Pods/SwiftyMocky/Sources/Templates</span>
+<span class="s">output</span><span class="pi">:</span>
+  <span class="s">./ExampleApp</span>
+<span class="s">args</span><span class="pi">:</span>
+  <span class="s">testable</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">ExampleApp</span>
+  <span class="s">import</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">RxSwift</span>
+    <span class="pi">-</span> <span class="s">RxBlocking</span>
+  <span class="s">excludedSwiftLintRules</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">force_cast</span>
+    <span class="pi">-</span> <span class="s">function_body_length</span>
+    <span class="pi">-</span> <span class="s">line_length</span>
+    <span class="pi">-</span> <span class="s">vertical_whitespace</span>
+</code></pre>
+
+<ul>
+<li><strong>sources</strong>: all directories you want to scan for protocols/files marked to be auto mocked, or inline mocked</li>
+<li><strong>templates</strong>: path to SwiftyMocky sourcery templates, in Pods directory</li>
+<li><strong>output</strong>: place where <code>Mock.generated.swift</code> will be placed</li>
+<li><strong>testable</strong>: specify imports for Mock.generated, that should be marked as <code>@testable</code> (usually tested app module)</li>
+<li><strong>import</strong>: all additional imports, external libraries etc. to be placed in Mock.generated</li>
+<li><strong>excludedSwiftLintRules</strong>: if using swift SwiftLint.</li>
+</ul>
+<h2 id='generate-mocks' class='heading'>Generate mocks:</h2>
+
+<ol>
+<li><strong>manually</strong>: by triggering:</li>
+</ol>
+
+<p><code>Pods/Sourcery/bin/sourcery --config mocky.yml</code></p>
+
+<ol>
+<li><strong>in <code>watch</code> mode</strong>: changed methods will be reflected in mocks, after generation of mock, by triggering:</li>
+</ol>
+
+<p><code>Pods/Sourcery/bin/sourcery --config mocky.yml --watch</code></p>
+
+<p><strong>Don&rsquo;t forget</strong> to add <code>Mock.generated.swift</code> to your test target :)</p>
+
+<blockquote>
+<p><strong>Please Note!</strong>
+Most convenient way is to put generation in some kind of script - like Rakefile below.
+Just create file named Rakefile - generation is triggered by <code>rake mock</code></p>
+<pre class="highlight ruby"><code><span class="c1"># Rakefile</span>
+<span class="n">task</span> <span class="ss">:mock</span> <span class="k">do</span>
+  <span class="n">sh</span> <span class="s2">"Pods/Sourcery/bin/sourcery --config mocky.yml"</span>
+<span class="k">end</span>
+
+<span class="n">task</span> <span class="ss">:mock_watcher</span> <span class="k">do</span>
+  <span class="n">sh</span> <span class="s2">"Pods/Sourcery/bin/sourcery --config mocky.yml --watch"</span>
+<span class="k">end</span>
+</code></pre>
+</blockquote>
+<h2 id='marking-protocols-to-be-mocked' class='heading'>Marking protocols to be mocked</h2>
+<h3 id='strong-1-automockable-annotation-strong' class='heading'><strong>1. AutoMockable annotation</strong></h3>
+
+<p>Mark protocols that are meant to be mocked with sourcery annotation as following:</p>
+<pre class="highlight swift"><code><span class="c1">//sourcery: AutoMockable</span>
+<span class="kd">protocol</span> <span class="kt">ToBeMocked</span> <span class="p">{</span>
+  <span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>Every protocol in source directories, having this annotation, will be added to <code>Mock.generated.swift</code></p>
+
+<p>@objc protocols are also supported, but needs to be explicity marked with ObjcProtocol annotation:</p>
+<pre class="highlight swift"><code><span class="c1">//sourcery: AutoMockable</span>
+<span class="c1">//sourcery: ObjcProtocol</span>
+<span class="kd">@objc</span> <span class="kd">protocol</span> <span class="kt">NonSwiftProtocol</span> <span class="p">{</span>
+  <span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre>
+<h3 id='strong-2-automockable-protocol-strong' class='heading'><strong>2. AutoMockable protocol</strong></h3>
+
+<p>Create dummy protocol for you project:</p>
+<pre class="highlight swift"><code><span class="kd">protocol</span> <span class="kt">AutoMockable</span> <span class="p">{</span> <span class="p">}</span>
+</code></pre>
+
+<p>Every protocol in source directories, inheriting (directly!) from AutoMockable, will be added to <code>Mock.generated.swift</code>, like:</p>
+<pre class="highlight swift"><code><span class="kd">protocol</span> <span class="kt">ToBeMocked</span><span class="p">:</span> <span class="kt">AutoMockable</span> <span class="p">{</span>
+  <span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre>
+<h3 id='strong-3-manual-annotation-strong' class='heading'><strong>3. Manual annotation</strong></h3>
+
+<p>In some rare cases, when you don&rsquo;t want to use <code>Mock.generated.swift</code>, or need to add some additional code to generated mock, you can create base for mock implementation yourself. It will look something like following:</p>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">Foundation</span>
+<span class="kd">import</span> <span class="kt">SwiftyMocky</span>
+<span class="kd">import</span> <span class="kt">XCTest</span>
+<span class="kd">@testable</span> <span class="kd">import</span> <span class="kt">TestedApp</span>
+
+<span class="c1">// sourcery: mock = "ToBeMocked"</span>
+<span class="kd">class</span> <span class="kt">SomeCustomMock</span><span class="p">:</span> <span class="kt">ToBeMocked</span><span class="p">,</span> <span class="kt">Mock</span> <span class="p">{</span>
+  <span class="kt">Your</span> <span class="n">custom</span> <span class="n">code</span> <span class="n">can</span> <span class="n">go</span> <span class="n">here</span>
+
+  <span class="c1">// sourcery:inline:auto:ToBeMocked.autoMocked</span>
+
+  <span class="kt">Generated</span> <span class="n">code</span> <span class="n">goes</span> <span class="n">here</span><span class="o">...</span>
+
+  <span class="c1">// sourcery:end</span>
+<span class="p">}</span>
+</code></pre>
+
+          </section>
+        </section>
+        <section id="footer">
+          <p>Copyright © 2017 MakeAWishFoundation. All rights reserved.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.8.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>
