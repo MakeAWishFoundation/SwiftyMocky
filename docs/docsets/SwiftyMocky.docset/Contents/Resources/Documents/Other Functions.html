@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Installation  Reference</title>
+    <title>Other Functions  Reference</title>
     <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,7 +10,7 @@
     
   </head>
   <body>
-    <a title="Installation  Reference"></a>
+    <a title="Other Functions  Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="index.html">SwiftyMocky Docs</a> (73% documented)</p>
@@ -21,7 +21,7 @@
       <p id="breadcrumbs">
         <a href="index.html">SwiftyMocky Reference</a>
         <img id="carat" src="img/carat.png" />
-        Installation  Reference
+        Other Functions  Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -99,47 +99,65 @@
       <article class="main-content">
         <section>
           <section class="section">
-            
-            <h1 id='installation' class='heading'>Installation</h1>
+            <h1>Other Functions</h1>
+            <p>The following functions are available globally.</p>
 
-<p>SwiftyMocky is available through:</p>
-<h2 id='1-a-href-http-cocoapods-org-cocoapods-a' class='heading'>1. <a href="http://cocoapods.org">CocoaPods</a>.</h2>
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky7Failures5NeverOSSF"></a>
+                    <a name="//apple_ref/swift/Function/Failure(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky7Failures5NeverOSSF">Failure(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Fails flow with given message</p>
 
-<p>To install it, simply add the following line to your Podfile:</p>
-<pre class="highlight ruby"><code><span class="n">pod</span> <span class="s2">"SwiftyMocky"</span>
-</code></pre>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="kt">Failure</span><span class="p">(</span><span class="n">_</span> <span class="nv">message</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Never</span></code></pre>
 
-<p>Then execute <code>pod install</code></p>
-<h2 id='2-a-href-https-github-com-carthage-carthage-carthage-a' class='heading'>2. <a href="https://github.com/Carthage/Carthage">Carthage</a>.</h2>
-
-<p>To install, add following to you Cartfile:</p>
-<pre class="highlight ruby"><code><span class="n">github</span> <span class="s2">"MakeAWishFoundation/SwiftyMocky"</span>
-</code></pre>
-
-<p>Then execute <code>carthage update</code></p>
-
-<p>For Carthage, few additional steps are required:</p>
-
-<ol>
-<li>Obtain <a href="https://github.com/krzysztofzablocki/Sourcery">Sourcery</a> - used to generate mocks (specify valid path in generate mock)</li>
-<li>Change templates path to <code>Carthage/Build/iOS/SwiftyMocky.framework/</code></li>
-<li>In your test framework <strong>add</strong> to:
-
-<ul>
-<li><strong>Other Swift Flags</strong>: <code>-DMocky</code></li>
-<li><strong>Framework Search Paths</strong>: <code>$(SRCROOT)/Carthage/Build/iOS</code></li>
-</ul></li>
-</ol>
-<h2 id='3-manually' class='heading'>3. Manually.</h2>
-
-<p>Include Sources in your project, and setup <a href="https://github.com/krzysztofzablocki/Sourcery">Sourcery</a></p>
-
-<blockquote>
-<p><strong>Important!!!</strong></p>
-
-<p>Main difference between how SwiftyMocky is installed, is location of sourcery binary and templates, used to generate Mocks. Whatever you choose, make sure that correct paths are setup for mocky.yml, and sourcery call.</p>
-</blockquote>
-
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>message</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Failure message</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Never</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </section>
         </section>
         <section id="footer">

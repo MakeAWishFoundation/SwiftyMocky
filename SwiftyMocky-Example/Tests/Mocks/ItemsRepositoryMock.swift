@@ -21,68 +21,58 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
 //swiftlint:disable vertical_whitespace
 
     fileprivate var invocations: [MethodType] = []
-    var methodReturnValues: [MethodProxy] = []
-    var methodPerformValues: [PerformProxy] = []
+    var methodReturnValues: [Given] = []
+    var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
-        
+
     //MARK : ItemsRepository
-        
 
     func storeItems(items: [Item]) {
         addInvocation(.storeItems__items_items(.value(items)))
-        	let perform = methodPerformValue(.storeItems__items_items(.value(items))) as? ([Item]) -> Void
-			perform?(items)
-        
+		let perform = methodPerformValue(.storeItems__items_items(.value(items))) as? ([Item]) -> Void
+		perform?(items)
     }
-    
+
     func storeDetails(details: ItemDetails) {
         addInvocation(.storeDetails__details_details(.value(details)))
-        	let perform = methodPerformValue(.storeDetails__details_details(.value(details))) as? (ItemDetails) -> Void
-			perform?(details)
-        
+		let perform = methodPerformValue(.storeDetails__details_details(.value(details))) as? (ItemDetails) -> Void
+		perform?(details)
     }
-    
+
     func storedItems() -> [Item]? {
         addInvocation(.storedItems)
-        	let perform = methodPerformValue(.storedItems) as? () -> Void
-			perform?()
-        guard let value = methodReturnValue(.storedItems) as? [Item]? else {
-			print("[FATAL] stub return value not specified for storedItems(). Use given.")
-			fatalError("[FATAL] stub return value not specified for storedItems(). Use given.")
-		}
-		return value
+		let perform = methodPerformValue(.storedItems) as? () -> Void
+		perform?()
+		let value = methodReturnValue(.storedItems) as? [Item]?
+		return value.orFail("stub return value not specified for storedItems(). Use given")
     }
-    
+
     func storedDetails(item: Item) -> ItemDetails? {
         addInvocation(.storedDetails__item_item(.value(item)))
-        	let perform = methodPerformValue(.storedDetails__item_item(.value(item))) as? (Item) -> Void
-			perform?(item)
-        guard let value = methodReturnValue(.storedDetails__item_item(.value(item))) as? ItemDetails? else {
-			print("[FATAL] stub return value not specified for storedDetails(item: Item). Use given.")
-			fatalError("[FATAL] stub return value not specified for storedDetails(item: Item). Use given.")
-		}
-		return value
+		let perform = methodPerformValue(.storedDetails__item_item(.value(item))) as? (Item) -> Void
+		perform?(item)
+		let value = methodReturnValue(.storedDetails__item_item(.value(item))) as? ItemDetails?
+		return value.orFail("stub return value not specified for storedDetails(item: Item). Use given")
     }
-    
-    fileprivate enum MethodType {
 
-        case storeItems__items_items(Parameter<[Item]>)    
-        case storeDetails__details_details(Parameter<ItemDetails>)    
-        case storedItems    
-        case storedDetails__item_item(Parameter<Item>)    
+    fileprivate enum MethodType {
+        case storeItems__items_items(Parameter<[Item]>)
+        case storeDetails__details_details(Parameter<ItemDetails>)
+        case storedItems
+        case storedDetails__item_item(Parameter<Item>)
+
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-
                 case (.storeItems__items_items(let lhsItems), .storeItems__items_items(let rhsItems)): 
-                    guard Parameter.compare(lhs: lhsItems, rhs: rhsItems, with: matcher) else { return false } 
+                guard Parameter.compare(lhs: lhsItems, rhs: rhsItems, with: matcher) else { return false } 
                     return true 
                 case (.storeDetails__details_details(let lhsDetails), .storeDetails__details_details(let rhsDetails)): 
-                    guard Parameter.compare(lhs: lhsDetails, rhs: rhsDetails, with: matcher) else { return false } 
+                guard Parameter.compare(lhs: lhsDetails, rhs: rhsDetails, with: matcher) else { return false } 
                     return true 
                 case (.storedItems, .storedItems): 
                     return true 
                 case (.storedDetails__item_item(let lhsItem), .storedDetails__item_item(let rhsItem)): 
-                    guard Parameter.compare(lhs: lhsItem, rhs: rhsItem, with: matcher) else { return false } 
+                guard Parameter.compare(lhs: lhsItem, rhs: rhsItem, with: matcher) else { return false } 
                     return true 
                 default: return false
             }
@@ -98,76 +88,75 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         }
     }
 
-    struct MethodProxy {
+    struct Given {
         fileprivate var method: MethodType
         var returns: Any?
+        var `throws`: Error?
 
-        static func storedItems(willReturn: [Item]?) -> MethodProxy {
-            return MethodProxy(method: .storedItems, returns: willReturn)
+        private init(method: MethodType, returns: Any?, throws: Error?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
         }
 
-        static func storedDetails(item: Parameter<Item>, willReturn: ItemDetails?) -> MethodProxy {
-            return MethodProxy(method: .storedDetails__item_item(item), returns: willReturn)
+        static func storedItems(willReturn: [Item]?) -> Given {
+            return Given(method: .storedItems, returns: willReturn, throws: nil)
+        }
+        static func storedDetails(item: Parameter<Item>, willReturn: ItemDetails?) -> Given {
+            return Given(method: .storedDetails__item_item(item), returns: willReturn, throws: nil)
         }
     }
 
-    struct VerificationProxy {
+    struct Verify {
         fileprivate var method: MethodType
 
-
-        static func storeItems(items: Parameter<[Item]>) -> VerificationProxy {
-            return VerificationProxy(method: .storeItems__items_items(items))
+        static func storeItems(items: Parameter<[Item]>) -> Verify {
+            return Verify(method: .storeItems__items_items(items))
         }
-
-        static func storeDetails(details: Parameter<ItemDetails>) -> VerificationProxy {
-            return VerificationProxy(method: .storeDetails__details_details(details))
+        static func storeDetails(details: Parameter<ItemDetails>) -> Verify {
+            return Verify(method: .storeDetails__details_details(details))
         }
-
-        static func storedItems() -> VerificationProxy {
-            return VerificationProxy(method: .storedItems)
+        static func storedItems() -> Verify {
+            return Verify(method: .storedItems)
         }
-
-        static func storedDetails(item: Parameter<Item>) -> VerificationProxy {
-            return VerificationProxy(method: .storedDetails__item_item(item))
+        static func storedDetails(item: Parameter<Item>) -> Verify {
+            return Verify(method: .storedDetails__item_item(item))
         }
     }
 
-    struct PerformProxy {
+    struct Perform {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func storeItems(items: Parameter<[Item]>, perform: ([Item]) -> Void) -> PerformProxy {
-            return PerformProxy(method: .storeItems__items_items(items), performs: perform)
+        static func storeItems(items: Parameter<[Item]>, perform: ([Item]) -> Void) -> Perform {
+            return Perform(method: .storeItems__items_items(items), performs: perform)
         }
-
-        static func storeDetails(details: Parameter<ItemDetails>, perform: (ItemDetails) -> Void) -> PerformProxy {
-            return PerformProxy(method: .storeDetails__details_details(details), performs: perform)
+        static func storeDetails(details: Parameter<ItemDetails>, perform: (ItemDetails) -> Void) -> Perform {
+            return Perform(method: .storeDetails__details_details(details), performs: perform)
         }
-
-        static func storedItems(perform: () -> Void) -> PerformProxy {
-            return PerformProxy(method: .storedItems, performs: perform)
+        static func storedItems(perform: () -> Void) -> Perform {
+            return Perform(method: .storedItems, performs: perform)
         }
-
-        static func storedDetails(item: Parameter<Item>, perform: (Item) -> Void) -> PerformProxy {
-            return PerformProxy(method: .storedDetails__item_item(item), performs: perform)
+        static func storedDetails(item: Parameter<Item>, perform: (Item) -> Void) -> Perform {
+            return Perform(method: .storedDetails__item_item(item), performs: perform)
         }
     }
 
-    public func matchingCalls(_ method: VerificationProxy) -> Int {
+    public func matchingCalls(_ method: Verify) -> Int {
         return matchingCalls(method.method).count
     }
 
-    public func given(_ method: MethodProxy) {
+    public func given(_ method: Given) {
         methodReturnValues.append(method)
         methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func perform(_ method: PerformProxy) {
+    public func perform(_ method: Perform) {
         methodPerformValues.append(method)
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: VerificationProxy, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
         let method = method.method
         let invocations = matchingCalls(method)
         XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
@@ -178,26 +167,22 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
     }
 
     private func methodReturnValue(_ method: MethodType) -> Any? {
-        let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
-            return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
-        })
-
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
         return matched?.returns
     }
 
-    private func methodPerformValue(_ method: MethodType) -> Any? {
-        let matched = methodPerformValues.reversed().first(where: { proxy -> Bool in
-            return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
-        })
+    private func methodThrowValue(_ method: MethodType) -> Error? {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
+        return matched?.`throws`
+    }
 
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
         return matched?.performs
     }
 
     private func matchingCalls(_ method: MethodType) -> [MethodType] {
-        let matchingInvocations = invocations.filter({ (call) -> Bool in
-            return MethodType.compareParameters(lhs: call, rhs: method, matcher: matcher)
-        })
-        return matchingInvocations
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
     }
     
 // sourcery:end

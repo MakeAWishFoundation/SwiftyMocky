@@ -65,3 +65,10 @@ protocol ProtocolWithOptionalClosures {
     var optionalClosure: (() -> Int)? { get set }
     var implicitelyUnwrappedClosure: (() -> Void)! { get set }
 }
+
+//sourcery: AutoMockable
+protocol ProtocolWithThrowingMethods {
+    func methodThatThrows() throws
+    func methodThatReturnsAndThrows(param: String) throws -> Int
+    func methodThatRethrows(param: (String) throws -> Int) rethrows -> Int
+}

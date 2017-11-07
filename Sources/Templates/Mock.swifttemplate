@@ -97,13 +97,8 @@ class VariableWrapper {
     var privatePrototypeName: String { return "__\(variable.name)" }
 
     var getter: String {
-        return "get { \n" +
-        "\t\t\tguard let value = \(variable.isStatic ? "\(scope)." : "")\(privatePrototypeName) else { \n" +
-        "\t\t\t\tprint(\"[FATAL] \(scope) - value for \(privatePrototypeName) is not set!\")\n" +
-        "\t\t\t\tfatalError(\"[FATAL] \(scope) - value for \(privatePrototypeName) is not set!\")\n" +
-        "\t\t\t}\n" +
-        "\t\t\treturn value \n" +
-        "\t\t}"
+        let message = "\(scope) - value for \(variable.name) was not defined"
+        return "get { return \(variable.isStatic ? "\(scope)." : "")\(privatePrototypeName).orFail(\"\(message)\") }"
     }
     var setter: String {
         return "set { \(variable.isStatic ? "\(scope)." : "")\(privatePrototypeName) = newValue }"
@@ -119,23 +114,13 @@ class VariableWrapper {
 
     var privatePrototype: String {
         let staticModifier = variable.isStatic ? "static " : ""
-        let type: String = {
-          if variable.isOptional || variable.isImplicitlyUnwrappedOptional {
-              return "\(variable.typeName.name)"
-          } else if variable.isClosure {
-              return "(\(variable.typeName.unwrappedTypeName))!"
-          } else {
-              return "\(variable.typeName.unwrappedTypeName)!"
-          }
-        }()
-        return "private \(staticModifier)var \(privatePrototypeName): \(type)"
+        return "private \(staticModifier)var \(privatePrototypeName): (\(variable.typeName.unwrappedTypeName))?"
     }
 
     init(_ variable: SourceryRuntime.Variable, scope: String) {
         self.variable = variable
         self.scope = scope
     }
-
 }
 
 class MethodWrapper {
@@ -192,13 +177,23 @@ class MethodWrapper {
         return method.parameters.map { ParameterWrapper($0) }
     }
     var functionPrototype: String {
+        let throwing: String = {
+            if method.throws {
+                return "throws "
+            } else if method.rethrows {
+                return "rethrows "
+            } else {
+                return ""
+            }
+        }()
+
         if method.isInitializer {
-            return "required \(method.name) "
+            return "required \(method.name) \(throwing)"
         }
         else if method.returnTypeName.isVoid {
-            return "func \(method.name) "
+            return "func \(method.name) \(throwing)"
         } else {
-            return "func \(method.name) -> \(method.returnTypeName.name) "
+            return "func \(method.name) \(throwing)-> \(method.returnTypeName.name) "
         }
     }
     var invocation: String {
@@ -206,36 +201,33 @@ class MethodWrapper {
         if method.parameters.isEmpty {
             return "addInvocation(.\(prototype))"
         } else {
-            let parameters = method.parameters.map { param in
-              let typeString = "\(param.actualTypeName ?? param.typeName)"
-              let isEscaping = typeString.contains("@escaping")
-              let isOptional = (param.actualTypeName ?? param.typeName).isOptional
-              if param.isClosure, !isEscaping, !isOptional {
-                let type = strip("\(param.typeName)")
-                return "Parameter<\(type)>.any"
-              } else {
-                return ".value(\(param.name))"
-              }
-            }.joined(separator: ", ")
+            let parameters = parametersForMethodCall()
             return "addInvocation(.\(prototype)(\(parameters)))"
+        }
+    }
+    var throwValue: String {
+        guard !method.isInitializer, method.throws else { return "" }
+
+        if method.parameters.isEmpty {
+            return "\n\t\tif let error = methodThrowValue(.\(prototype)) { throw error }"
+        } else {
+            let parameters = parametersForMethodCall()
+            return "\n\t\tif let error = methodThrowValue(.\(prototype)(\(parameters))) { throw error }"
         }
     }
     var returnValue: String {
         guard !method.isInitializer else { return "" }
         guard !method.returnTypeName.isVoid else { return "" }
+
+        let message = "stub return value not specified for \(method.name). Use given"
+
         if method.parameters.isEmpty {
-            return "guard let value = methodReturnValue(.\(prototype)) as? \(method.returnTypeName) else {\n" +
-            "\t\t\tprint(\"[FATAL] stub return value not specified for \(method.name). Use given.\")\n" +
-            "\t\t\tfatalError(\"[FATAL] stub return value not specified for \(method.name). Use given.\")\n" +
-            "\t\t}\n" +
-            "\t\treturn value"
+            return "\n\t\tlet value = methodReturnValue(.\(prototype)) as? \(method.returnTypeName)\n" +
+            "\t\treturn value.orFail(\"\(message)\")"
         } else {
-            let parameters = method.parameters.map { ".value(\($0.name))" }.joined(separator: ", ")
-            return "guard let value = methodReturnValue(.\(prototype)(\(parameters))) as? \(method.returnTypeName) else {\n" +
-            "\t\t\tprint(\"[FATAL] stub return value not specified for \(method.name). Use given.\")\n" +
-            "\t\t\tfatalError(\"[FATAL] stub return value not specified for \(method.name). Use given.\")\n" +
-            "\t\t}\n" +
-            "\t\treturn value"
+            let parameters = parametersForMethodCall()
+            return "\n\t\tlet value = methodReturnValue(.\(prototype)(\(parameters))) as? \(method.returnTypeName)\n" +
+            "\t\treturn value.orFail(\"\(message)\")"
         }
     }
     var equalCase: String {
@@ -299,9 +291,9 @@ class MethodWrapper {
         return !method.isInitializer
     }
 
-    func proxyConstructorName() -> String {
+    func givenConstructorName() -> String {
         if method.parameters.isEmpty {
-            return "static func \(method.shortName)(willReturn: \(method.returnTypeName)) -> MethodProxy"
+            return "static func \(method.shortName)(willReturn: \(method.returnTypeName)) -> Given"
         } else {
             let functionParameters = method.parameters.map {
                 let paramType = strip("\($0.typeName)")
@@ -315,22 +307,51 @@ class MethodWrapper {
 
                 return "\(argumentLabel) \($0.name): Parameter<\(paramType)>"
             }.joined(separator: ", ")
-            return "static func \(method.shortName)(\(functionParameters), willReturn: \(method.returnTypeName)) -> MethodProxy"
+            return "static func \(method.shortName)(\(functionParameters), willReturn: \(method.returnTypeName)) -> Given"
         }
     }
 
-    func proxyConstructor() -> String {
+    func givenConstructorNameThrows() -> String {
         if method.parameters.isEmpty {
-            return "return MethodProxy(method: .\(prototype), returns: willReturn)"
+            return "static func \(method.shortName)(willThrow: Error) -> Given"
+        } else {
+            let functionParameters = method.parameters.map {
+                let paramType = strip("\($0.typeName)")
+                guard let argumentLabel = $0.argumentLabel else {
+                    return "\($0.name): Parameter<\(paramType)>"
+                }
+
+                guard argumentLabel != $0.name else {
+                    return "\($0.name): Parameter<\(paramType)>"
+                }
+
+                return "\(argumentLabel) \($0.name): Parameter<\(paramType)>"
+            }.joined(separator: ", ")
+            return "static func \(method.shortName)(\(functionParameters), willThrow: Error) -> Given"
+        }
+    }
+
+    func givenConstructor() -> String {
+        if method.parameters.isEmpty {
+            return "return Given(method: .\(prototype), returns: willReturn, throws: nil)"
         } else {
             let parameters = method.parameters.map { "\($0.name)" }.joined(separator: ", ")
-            return "return MethodProxy(method: .\(prototype)(\(parameters)), returns: willReturn)"
+            return "return Given(method: .\(prototype)(\(parameters)), returns: willReturn, throws: nil)"
+        }
+    }
+
+    func givenConstructorThrows() -> String {
+        if method.parameters.isEmpty {
+            return "return Given(method: .\(prototype), returns: nil, throws: willThrow)"
+        } else {
+            let parameters = method.parameters.map { "\($0.name)" }.joined(separator: ", ")
+            return "return Given(method: .\(prototype)(\(parameters)), returns: nil, throws: willThrow)"
         }
     }
 
     func verificationProxyConstructorName() -> String {
         if method.parameters.isEmpty {
-            return "static func \(method.shortName)() -> VerificationProxy"
+            return "static func \(method.shortName)() -> Verify"
         } else {
             let functionParameters = method.parameters.map {
                 let paramType = strip("\($0.typeName)")
@@ -344,22 +365,22 @@ class MethodWrapper {
 
                 return "\(argumentLabel) \($0.name): Parameter<\(paramType)>"
             }.joined(separator: ", ")
-            return "static func \(method.shortName)(\(functionParameters)) -> VerificationProxy"
+            return "static func \(method.shortName)(\(functionParameters)) -> Verify"
         }
     }
 
     func verificationProxyConstructor() -> String {
         if method.parameters.isEmpty {
-            return "return VerificationProxy(method: .\(prototype))"
+            return "return Verify(method: .\(prototype))"
         } else {
             let parameters = method.parameters.map { "\($0.name)" }.joined(separator: ", ")
-            return "return VerificationProxy(method: .\(prototype)(\(parameters)))"
+            return "return Verify(method: .\(prototype)(\(parameters)))"
         }
     }
 
     func performProxyConstructorName() -> String {
         if method.parameters.isEmpty {
-            return "static func \(method.shortName)(perform: \(performProxyClosureType())) -> PerformProxy"
+            return "static func \(method.shortName)(perform: \(performProxyClosureType())) -> Perform"
         } else {
             let functionParameters = method.parameters.map {
                 let paramType = strip("\($0.typeName)")
@@ -373,16 +394,16 @@ class MethodWrapper {
 
                 return "\(argumentLabel) \($0.name): Parameter<\(paramType)>"
             }.joined(separator: ", ")
-            return "static func \(method.shortName)(\(functionParameters), perform: \(performProxyClosureType())) -> PerformProxy"
+            return "static func \(method.shortName)(\(functionParameters), perform: \(performProxyClosureType())) -> Perform"
         }
     }
 
     func performProxyConstructor() -> String {
         if method.parameters.isEmpty {
-            return "return PerformProxy(method: .\(prototype), performs: perform)"
+            return "return Perform(method: .\(prototype), performs: perform)"
         } else {
             let parameters = method.parameters.map { "\($0.name)" }.joined(separator: ", ")
-            return "return PerformProxy(method: .\(prototype)(\(parameters)), performs: perform)"
+            return "return Perform(method: .\(prototype)(\(parameters)), performs: perform)"
         }
     }
 
@@ -431,11 +452,25 @@ class MethodWrapper {
         let cast = "let perform = methodPerformValue(.\(proxy)) as? \(type)"
         let call = performProxyClosureCall()
 
-        return "\t\(cast)\n\t\t\t\(call)"
+        return "\n\t\t\(cast)\n\t\t\(call)"
     }
 
     private func strip(_ type: String) -> String {
         return type.replacingOccurrences(of: "@escaping", with: "").replacingOccurrences(of: "@autoclosure", with: "")
+    }
+
+    private func parametersForMethodCall() -> String {
+        return method.parameters.map { param in
+            let typeString = "\(param.actualTypeName ?? param.typeName)"
+            let isEscaping = typeString.contains("@escaping")
+            let isOptional = (param.actualTypeName ?? param.typeName).isOptional
+            if param.isClosure, !isEscaping, !isOptional {
+                let type = strip("\(param.typeName)")
+                return "Parameter<\(type)>.any"
+            } else {
+                return ".value(\(param.name))"
+            }
+        }.joined(separator: ", ")
     }
 }
 
@@ -461,138 +496,145 @@ func stubProperty(_ variable: SourceryRuntime.Variable, _ scope: String) -> Stri
      -%>
 <%_ %>// MARK: - <%= type.name %>
 class <%= type.name %>Mock:<%= type.annotations["ObjcProtocol"] != nil ? " NSObject," : "" %> <%= type.name %>, Mock {
+    fileprivate var invocations: [MethodType] = []
+    var methodReturnValues: [Given] = []
+    var methodPerformValues: [Perform] = []
+    var matcher: Matcher = Matcher.default
+    <%_ -%>
+    <%_ let allVariables = uniques(variables: aProtocol.allVariables) %><%_ -%>
+    <%_ let allMethods = uniques(methods: aProtocol.allMethods) %><%_ -%>
 
-      fileprivate var invocations: [MethodType] = []
-      var methodReturnValues: [MethodProxy] = []
-      var methodPerformValues: [PerformProxy] = []
-      var matcher: Matcher = Matcher.default
-      <%_ -%>
-      <% let allVariables = uniques(variables: aProtocol.allVariables) %><%_ -%>
-      <% let allMethods = uniques(methods: aProtocol.allMethods) %><%_ -%>
+    <%_ for variable in allVariables { -%>
+    <%= stubProperty(variable,"\(type.name)Mock") %>
+    <%_ } %> <%_ -%>
+    <%_ -%>
+    <%_ MethodWrapper.clear() -%>
+    <%_ let wrappedMethods = allMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) -%>
+    <%_ for method in wrappedMethods { method.register() } -%>
 
-      <%_ for variable in allVariables { %>
-      <%= stubProperty(variable,"\(type.name)Mock") -%>
-      <% } %> <%_ -%>
-      <%_ -%>
-      <% MethodWrapper.clear() -%>
-      <% for method in allMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) { method.register() } -%>
+    <%_ for method in allMethods.map(wrapMethod) { -%>
+    <%= method.functionPrototype _%> {
+        <%= method.invocation _%><%= method.performCall() _%><%= method.throwValue _%><%= method.returnValue _%>
+    }
 
-      <%_ for method in allMethods.map(wrapMethod) { %>
-      <%= method.functionPrototype _%> {
-          <%= method.invocation _%>
-          <%= method.performCall() _%>
-          <%= method.returnValue _%>
-      }
-      <%  } %> <%_ -%>
+    <%_ } %> <%_ -%>
+    <%_ if !wrappedMethods.isEmpty { -%>
+    fileprivate enum MethodType {
+    <%_ for method in wrappedMethods { -%>
+        case <%= method.methodDeclarationWithParameters() _%>
+    <%_  } %>
+    <%_ -%>
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) { <%_ for method in wrappedMethods { %>
+                <%= method.equalCase -%> <% for parameter in method.parameters { %>
+                    <%= parameter.comparator -%> <%  } %>
+                    return true <% } %>
+                <%_ if wrappedMethods.count > 1 { -%>
+                default: return false
+                <%_ } -%>
+            }
+        }
+    <%_ %>
+        func intValue() -> Int {
+            switch self { <%_ for method in wrappedMethods { %>
+                <%= method.intValueCase -%><% } %>
+            }
+        }
+    }
+    <%_ } else { %>
+    fileprivate struct MethodType {
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool { return true }
+        func intValue() -> Int { return 0 }
+    }
+    <% } -%>
 
-      <% if !allMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }).isEmpty { -%>
-      fileprivate enum MethodType {
-      <%_ for method in allMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) { _%>
-          case <%= method.methodDeclarationWithParameters() -%>
-      <%  } %>
-      <%_ %>
+    struct Given {
+        fileprivate var method: MethodType
+        var returns: Any?
+        var `throws`: Error?
 
-          static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
-              switch (lhs, rhs) { <%_ for method in allMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) { %>
-                  <%= method.equalCase -%> <% for parameter in method.parameters { %>
-                      <%= parameter.comparator -%> <%  } %>
-                      return true <% } %>
-                  <%_ -%>
-                  default: return false
-              }
-          }
-      <%_ %>
-          func intValue() -> Int {
-              switch self { <%_ for method in allMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) { %>
-                  <%= method.intValueCase -%><% } %>
-              }
-          }
-      }
-      <%_ } else { %>
-      fileprivate struct MethodType {
-          static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool { return true }
-          func intValue() -> Int { return 0 }
-      }
-      <% } %>
+        private init(method: MethodType, returns: Any?, throws: Error?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
 
-      struct MethodProxy {
-          fileprivate var method: MethodType
-          var returns: Any?
-          <%_ for method in allMethods.filter({ !$0.returnTypeName.isVoid && !$0.isInitializer }).map(wrapMethod) { %>
-          <%= method.proxyConstructorName() -%> {
-              <%= method.proxyConstructor() _%>
-          }
-  <%  } %> <%_ -%>
-      }
+        <%_ for method in wrappedMethods.filter({ !$0.method.returnTypeName.isVoid && !$0.method.isInitializer }) { -%>
+        <%= method.givenConstructorName() -%> {
+            <%= method.givenConstructor() _%>
+        }
+        <%_ } -%>
+        <%_ for method in wrappedMethods.filter({ ($0.method.throws || $0.method.rethrows) && !$0.method.isInitializer }) { -%>
+        <%= method.givenConstructorNameThrows() -%> {
+            <%= method.givenConstructorThrows() _%>
+        }
+        <%_  } %> <%_ -%>
+    }
 
-      struct VerificationProxy {
-          fileprivate var method: MethodType
+    struct Verify {
+        fileprivate var method: MethodType
 
-          <%_ for method in allMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) { %>
-          <%= method.verificationProxyConstructorName() -%> {
-              <%= method.verificationProxyConstructor() _%>
-          }
-  <%  } %> <%_ -%>
-      }
+        <%_ for method in wrappedMethods { -%>
+        <%= method.verificationProxyConstructorName() -%> {
+            <%= method.verificationProxyConstructor() _%>
+        }
+        <%_  } %> <%_ -%>
+    }
 
-      struct PerformProxy {
-          fileprivate var method: MethodType
-          var performs: Any
-          <%_ for method in allMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) { %>
-          <%= method.performProxyConstructorName() -%> {
-              <%= method.performProxyConstructor() _%>
-          }
-  <%  } %> <%_ -%>
-      }
+    struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
 
-      public func matchingCalls(_ method: VerificationProxy) -> Int {
-          return matchingCalls(method.method).count
-      }
+        <%_ for method in wrappedMethods { -%>
+        <%= method.performProxyConstructorName() -%> {
+            <%= method.performProxyConstructor() _%>
+        }
+        <%_  } %> <%_ -%>
+    }
 
-      public func given(_ method: MethodProxy) {
-          methodReturnValues.append(method)
-          methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
-      }
+    public func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
 
-      public func perform(_ method: PerformProxy) {
-          methodPerformValues.append(method)
-          methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
-      }
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+        methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
 
-      public func verify(_ method: VerificationProxy, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
-          let method = method.method
-          let invocations = matchingCalls(method)
-          XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
-      }
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
 
-      private func addInvocation(_ call: MethodType) {
-          invocations.append(call)
-      }
+    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+        let method = method.method
+        let invocations = matchingCalls(method)
+        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    }
 
-      private func methodReturnValue(_ method: MethodType) -> Any? {
-          let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
-              return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
-          })
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
 
-          return matched?.returns
-      }
+    private func methodReturnValue(_ method: MethodType) -> Any? {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
+        return matched?.returns
+    }
 
-      private func methodPerformValue(_ method: MethodType) -> Any? {
-          let matched = methodPerformValues.reversed().first(where: { proxy -> Bool in
-              return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
-          })
+    private func methodThrowValue(_ method: MethodType) -> Error? {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
+        return matched?.`throws`
+    }
 
-          return matched?.performs
-      }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
 
-      private func matchingCalls(_ method: MethodType) -> [MethodType] {
-          let matchingInvocations = invocations.filter({ (call) -> Bool in
-              return MethodType.compareParameters(lhs: call, rhs: method, matcher: matcher)
-          })
-          return matchingInvocations
-      }
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
 }
-
 <% } -%>
 
 <%# Inline annotations -%>
@@ -607,48 +649,47 @@ class <%= type.name %>Mock:<%= type.annotations["ObjcProtocol"] != nil ? " NSObj
     <%_ } -%>
 
     fileprivate var invocations: [MethodType] = []
-    var methodReturnValues: [MethodProxy] = []
-    var methodPerformValues: [PerformProxy] = []
+    var methodReturnValues: [Given] = []
+    var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
     <%_ -%>
-    <% let allVariables = uniques(variables: aProtocol.allVariables) %><%_ -%>
-    <% let allMethods = uniques(methods: aProtocol.allMethods) %><%_ -%>
+    <%_ let allVariables = uniques(variables: aProtocol.allVariables) %><%_ -%>
+    <%_ let allMethods = uniques(methods: aProtocol.allMethods) %><%_ -%>
 
     //MARK : <%= aProtocol.name %>
-    <%_ for variable in allVariables { %>
-    <%= stubProperty(variable,type.name) -%>
-    <% } %> <%_ -%>
+    <%_ for variable in allVariables { -%>
+    <%= stubProperty(variable,type.name) %>
+    <%_ } %> <%_ -%>
     <%_ -%>
-    <% MethodWrapper.clear() -%>
-    <% for method in allMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) { method.register() } -%>
+    <%_ MethodWrapper.clear() -%>
+    <%_ let wrappedMethods = allMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) -%>
+    <%_ for method in wrappedMethods { method.register() } -%>
 
-    <%_ for method in allMethods.map(wrapMethod) { %>
+    <%_ for method in allMethods.map(wrapMethod) { -%>
     <%= method.functionPrototype _%> {
-        <%= method.invocation _%>
-        <%= method.performCall() _%>
-        <%= method.returnValue _%>
+        <%= method.invocation _%><%= method.performCall() _%><%= method.throwValue _%><%= method.returnValue _%>
     }
-    <%  } %> <%_ -%>
 
-    <% if !allMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }).isEmpty { -%>
+    <%_ } %> <%_ -%>
+    <%_ if !wrappedMethods.isEmpty { -%>
     fileprivate enum MethodType {
-    <%_ for method in allMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) { _%>
-        case <%= method.methodDeclarationWithParameters() -%>
-    <%  } %>
+    <%_ for method in wrappedMethods { -%>
+        case <%= method.methodDeclarationWithParameters() _%>
+    <%_  } %>
     <%_ -%>
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
-            switch (lhs, rhs) {
-             <%_ for method in allMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) { %>
+            switch (lhs, rhs) { <%_ for method in wrappedMethods { %>
                 <%= method.equalCase -%> <% for parameter in method.parameters { %>
-                    <%= parameter.comparator -%> <%  } %>
+                <%= parameter.comparator -%> <%  } %>
                     return true <% } %>
-                <%_ -%>
+                <%_ if wrappedMethods.count > 1 { -%>
                 default: return false
+                <%_ } -%>
             }
         }
     <%_ %>
         func intValue() -> Int {
-            switch self { <%_ for method in allMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) { %>
+            switch self { <%_ for method in wrappedMethods { %>
                 <%= method.intValueCase -%><% } %>
             }
         }
@@ -658,53 +699,67 @@ class <%= type.name %>Mock:<%= type.annotations["ObjcProtocol"] != nil ? " NSObj
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool { return true }
         func intValue() -> Int { return 0 }
     }
-    <% } %>
+    <% } -%>
 
-    struct MethodProxy {
+    struct Given {
         fileprivate var method: MethodType
         var returns: Any?
-        <%_ for method in allMethods.filter({ !$0.returnTypeName.isVoid && !$0.isInitializer }).map(wrapMethod) { %>
-        <%= method.proxyConstructorName() -%> {
-            <%= method.proxyConstructor() _%>
+        var `throws`: Error?
+
+        private init(method: MethodType, returns: Any?, throws: Error?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
         }
-<%  } %> <%_ -%>
+
+        <%_ for method in wrappedMethods.filter({ !$0.method.returnTypeName.isVoid && !$0.method.isInitializer }) { -%>
+        <%= method.givenConstructorName() -%> {
+            <%= method.givenConstructor() _%>
+        }
+        <%_ } -%>
+        <%_ for method in wrappedMethods.filter({ ($0.method.throws || $0.method.rethrows) && !$0.method.isInitializer }) { -%>
+        <%= method.givenConstructorNameThrows() -%> {
+            <%= method.givenConstructorThrows() _%>
+        }
+        <%_  } %> <%_ -%>
     }
 
-    struct VerificationProxy {
+    struct Verify {
         fileprivate var method: MethodType
 
-        <%_ for method in allMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) { %>
+        <%_ for method in wrappedMethods { -%>
         <%= method.verificationProxyConstructorName() -%> {
             <%= method.verificationProxyConstructor() _%>
         }
-<%  } %> <%_ -%>
+        <%_  } %> <%_ -%>
     }
 
-    struct PerformProxy {
+    struct Perform {
         fileprivate var method: MethodType
         var performs: Any
-        <%_ for method in allMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) { %>
+
+        <%_ for method in wrappedMethods { -%>
         <%= method.performProxyConstructorName() -%> {
             <%= method.performProxyConstructor() _%>
         }
-<%  } %> <%_ -%>
+        <%_  } %> <%_ -%>
     }
 
-    public func matchingCalls(_ method: VerificationProxy) -> Int {
+    public func matchingCalls(_ method: Verify) -> Int {
         return matchingCalls(method.method).count
     }
 
-    public func given(_ method: MethodProxy) {
+    public func given(_ method: Given) {
         methodReturnValues.append(method)
         methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func perform(_ method: PerformProxy) {
+    public func perform(_ method: Perform) {
         methodPerformValues.append(method)
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: VerificationProxy, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
         let method = method.method
         let invocations = matchingCalls(method)
         XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
@@ -715,26 +770,22 @@ class <%= type.name %>Mock:<%= type.annotations["ObjcProtocol"] != nil ? " NSObj
     }
 
     private func methodReturnValue(_ method: MethodType) -> Any? {
-        let matched = methodReturnValues.reversed().first(where: { proxy -> Bool in
-            return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
-        })
-
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
         return matched?.returns
     }
 
-    private func methodPerformValue(_ method: MethodType) -> Any? {
-        let matched = methodPerformValues.reversed().first(where: { proxy -> Bool in
-            return MethodType.compareParameters(lhs: proxy.method, rhs: method, matcher: matcher)
-        })
+    private func methodThrowValue(_ method: MethodType) -> Error? {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
+        return matched?.`throws`
+    }
 
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
         return matched?.performs
     }
 
     private func matchingCalls(_ method: MethodType) -> [MethodType] {
-        let matchingInvocations = invocations.filter({ (call) -> Bool in
-            return MethodType.compareParameters(lhs: call, rhs: method, matcher: matcher)
-        })
-        return matchingInvocations
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
     }
 // sourcery:end
 <% }

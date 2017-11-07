@@ -71,10 +71,10 @@ Verify(mockStorage, 2, .storeUser(name: .value("Johny"), surname: .any))
 
 Master branch is still in beta, breaking changes are possible.
 
-## Author
+## Authors
 
-Przemysław Wośko, wosko.przemyslaw@gmail.com
-Andrzej Michnia, amichnia@gmail.com
+- Przemysław Wośko, wosko.przemyslaw@gmail.com
+- Andrzej Michnia, amichnia@gmail.com
 
 ## License
 

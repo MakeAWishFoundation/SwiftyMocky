@@ -13,6 +13,16 @@ public class Matcher {
     public static var `default` = Matcher()
     private var matchers: [(Mirror,Any)] = []
 
+    /// Create new clean matcher instance.
+    public init() {}
+
+    /// Creante new matcher instance, copying existing comparator from another instance.
+    ///
+    /// - Parameter matcher: other matcher instance
+    public init(matcher: Matcher) {
+        self.matchers = matcher.matchers
+    }
+
     /// Registers comparator for given type **T**.
     ///
     /// Comparator is a closure of `(T,T) -> Bool`.

@@ -12,15 +12,15 @@ import XCTest
 /// Every generated mock implementation adopts **Mock** protocol.
 /// It defines base Mock structure
 public protocol Mock: class {
-    associatedtype MethodProxy
-    associatedtype VerificationProxy
-    associatedtype PerformProxy
+    associatedtype Given
+    associatedtype Verify
+    associatedtype Perform
 
     /// Returns number of invocations of given method (with matching attributes).
     ///
     /// - Parameter method: signature, with attributes (any or explicit value). Type `.` for all available
     /// - Returns: How many times, stub for given signature was called
-    func matchingCalls(_ method: VerificationProxy) -> Int
+    func matchingCalls(_ method: Verify) -> Int
 
     /// Registers return value for stubbed method, for specified attributes set.
     ///
@@ -36,7 +36,7 @@ public protocol Mock: class {
     ///
     ///
     /// - Parameter method: signature, with attributes (any or explicit value). Type `.` for all available
-    func given(_ method: MethodProxy)
+    func given(_ method: Given)
 
     /// Registers perform closure, which will be executed upon calling stubbed method, for specified attribtes.
     ///
@@ -52,7 +52,7 @@ public protocol Mock: class {
     ///     Method stub will return most recent one.
     ///
     /// - Parameter method: signature, with attributes (any or explicit value). Type `.` for all available
-    func perform(_ method: PerformProxy)
+    func perform(_ method: Perform)
 
     /// Verifies, that given method stub was called exact number of times.
     ///
@@ -61,5 +61,5 @@ public protocol Mock: class {
     ///   - count: Number of invocations
     ///   - file: for XCTest print purposes
     ///   - line: for XCTest print purposes
-    func verify(_ method: VerificationProxy, count: UInt, file: StaticString, line: UInt)
+    func verify(_ method: Verify, count: UInt, file: StaticString, line: UInt)
 }

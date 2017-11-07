@@ -76,9 +76,9 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 To trigger mocks generation, run `rake mock` from root directory. For watcher mode, when mocks are generated every time you change your file projects, use `rake mock_watcher` instead.
 
-### 5. Documentation
+# Documentation
 
-Full documentation is available [here](https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/1f4e3c29/docs/index.html), as well as through *docs* directory.
+Full documentation is available [here](https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/92717539/docs/index.html), as well as through *docs* directory.
 
 # How to start using SwiftyMocky
 
@@ -185,16 +185,16 @@ pod "SwiftyMocky"
 
 Then add **mocky.yml** and **Rakefile** (or build script phase) to your project root directory, as described above.
 
-For [Carthage](https://github.com/Carthage/Carthage) install instructions, see full [documentation](https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/1f4e3c29/docs/installation.html).
+For [Carthage](https://github.com/Carthage/Carthage) install instructions, see full [documentation](https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/92717539/docs/index.html).
 
 ## Current version
 
 Master branch is still in beta, breaking changes are possible.
 
-## Author
+## Authors
 
-Przemysław Wośko, wosko.przemyslaw@gmail.com
-Andrzej Michnia, amichnia@gmail.com
+- Przemysław Wośko, wosko.przemyslaw@gmail.com
+- Andrzej Michnia, amichnia@gmail.com
 
 ## License
 

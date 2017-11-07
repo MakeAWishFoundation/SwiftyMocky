@@ -16,7 +16,7 @@ import XCTest
 ///   - method: Method signature with wrapped parameters (`Parameter`)
 ///   - file: for XCTest print purposes
 ///   - line: for XCTest print purposes
-public func Verify<T: Mock>(_ object: T, _ method: T.VerificationProxy, file: StaticString = #file, line: UInt = #line) {
+public func Verify<T: Mock>(_ object: T, _ method: T.Verify, file: StaticString = #file, line: UInt = #line) {
     let invocations = object.matchingCalls(method)
     XCTAssert(invocations > 0, "Expeced: any invocations of `\(method)`, but was: \(invocations)", file: file, line: line)
 }
@@ -29,7 +29,7 @@ public func Verify<T: Mock>(_ object: T, _ method: T.VerificationProxy, file: St
 ///   - method: Method signature with wrapped parameters (`Parameter`)
 ///   - file: for XCTest print purposes
 ///   - line: for XCTest print purposes
-public func Verify<T: Mock>(_ object: T, _ count: UInt, _ method: T.VerificationProxy, file: StaticString = #file, line: UInt = #line) {
+public func Verify<T: Mock>(_ object: T, _ count: UInt, _ method: T.Verify, file: StaticString = #file, line: UInt = #line) {
     let invocations = object.matchingCalls(method)
     XCTAssert(invocations == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations)", file: file, line: line)
 }
@@ -48,7 +48,7 @@ public func Verify<T: Mock>(_ object: T, _ count: UInt, _ method: T.Verification
 /// - Parameters:
 ///   - object: Mock instance
 ///   - method: Method signature with wrapped parameters (Parameter<ValueType>) and return value
-public func Given<T: Mock>(_ object: T, _ method: T.MethodProxy) {
+public func Given<T: Mock>(_ object: T, _ method: T.Given) {
     object.given(method)
 }
 
@@ -66,6 +66,26 @@ public func Given<T: Mock>(_ object: T, _ method: T.MethodProxy) {
 /// - Parameters:
 ///   - object: Mock instance
 ///   - method: Method signature with wrapped parameters (Parameter<ValueType>) and perform closure
-public func Perform<T: Mock>(_ object: T, _ method: T.PerformProxy) {
+public func Perform<T: Mock>(_ object: T, _ method: T.Perform) {
     object.perform(method)
+}
+
+/// Fails flow with given message
+///
+/// - Parameter message: Failure message
+/// - Returns: Never
+public func Failure(_ message: String) -> Swift.Never {
+    let errorMessage = "[FATAL] \(message)!"
+    print(errorMessage)
+    fatalError(errorMessage)
+}
+
+public extension Optional {
+    /// Returns unwrapped value, or fails.
+    ///
+    /// - Parameter message: Failure message
+    /// - Returns: Unwrapped value
+    public func orFail(_ message: String = "unwrapping nil") -> Wrapped {
+        return self ?? { Failure(message) }()
+    }
 }
