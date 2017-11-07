@@ -26,63 +26,56 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
     var matcher: Matcher = Matcher.default
         
     //MARK : ItemsRepository
-        
+            
 
     func storeItems(items: [Item]) {
         addInvocation(.storeItems__items_items(.value(items)))
-        	let perform = methodPerformValue(.storeItems__items_items(.value(items))) as? ([Item]) -> Void
-			perform?(items)
+        let perform = methodPerformValue(.storeItems__items_items(.value(items))) as? ([Item]) -> Void
+		perform?(items)
         
     }
     
     func storeDetails(details: ItemDetails) {
         addInvocation(.storeDetails__details_details(.value(details)))
-        	let perform = methodPerformValue(.storeDetails__details_details(.value(details))) as? (ItemDetails) -> Void
-			perform?(details)
+        let perform = methodPerformValue(.storeDetails__details_details(.value(details))) as? (ItemDetails) -> Void
+		perform?(details)
         
     }
     
     func storedItems() -> [Item]? {
         addInvocation(.storedItems)
-        	let perform = methodPerformValue(.storedItems) as? () -> Void
-			perform?()
-        guard let value = methodReturnValue(.storedItems) as? [Item]? else {
-			print("[FATAL] stub return value not specified for storedItems(). Use given.")
-			fatalError("[FATAL] stub return value not specified for storedItems(). Use given.")
-		}
-		return value
+        let perform = methodPerformValue(.storedItems) as? () -> Void
+		perform?()
+        let value = methodReturnValue(.storedItems) as? [Item]?
+		return value.orFail("stub return value not specified for storedItems(). Use given")
     }
     
     func storedDetails(item: Item) -> ItemDetails? {
         addInvocation(.storedDetails__item_item(.value(item)))
-        	let perform = methodPerformValue(.storedDetails__item_item(.value(item))) as? (Item) -> Void
-			perform?(item)
-        guard let value = methodReturnValue(.storedDetails__item_item(.value(item))) as? ItemDetails? else {
-			print("[FATAL] stub return value not specified for storedDetails(item: Item). Use given.")
-			fatalError("[FATAL] stub return value not specified for storedDetails(item: Item). Use given.")
-		}
-		return value
+        let perform = methodPerformValue(.storedDetails__item_item(.value(item))) as? (Item) -> Void
+		perform?(item)
+        let value = methodReturnValue(.storedDetails__item_item(.value(item))) as? ItemDetails?
+		return value.orFail("stub return value not specified for storedDetails(item: Item). Use given")
     }
     
     fileprivate enum MethodType {
+        case storeItems__items_items(Parameter<[Item]>)
+        case storeDetails__details_details(Parameter<ItemDetails>)
+        case storedItems
+        case storedDetails__item_item(Parameter<Item>)
 
-        case storeItems__items_items(Parameter<[Item]>)    
-        case storeDetails__details_details(Parameter<ItemDetails>)    
-        case storedItems    
-        case storedDetails__item_item(Parameter<Item>)    
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-
                 case (.storeItems__items_items(let lhsItems), .storeItems__items_items(let rhsItems)): 
-                    guard Parameter.compare(lhs: lhsItems, rhs: rhsItems, with: matcher) else { return false } 
+                guard Parameter.compare(lhs: lhsItems, rhs: rhsItems, with: matcher) else { return false } 
                     return true 
                 case (.storeDetails__details_details(let lhsDetails), .storeDetails__details_details(let rhsDetails)): 
-                    guard Parameter.compare(lhs: lhsDetails, rhs: rhsDetails, with: matcher) else { return false } 
+                guard Parameter.compare(lhs: lhsDetails, rhs: rhsDetails, with: matcher) else { return false } 
                     return true 
                 case (.storedItems, .storedItems): 
                     return true 
                 case (.storedDetails__item_item(let lhsItem), .storedDetails__item_item(let rhsItem)): 
-                    guard Parameter.compare(lhs: lhsItem, rhs: rhsItem, with: matcher) else { return false } 
+                guard Parameter.compare(lhs: lhsItem, rhs: rhsItem, with: matcher) else { return false } 
                     return true 
                 default: return false
             }
@@ -114,19 +107,15 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
     struct VerificationProxy {
         fileprivate var method: MethodType
 
-
         static func storeItems(items: Parameter<[Item]>) -> VerificationProxy {
             return VerificationProxy(method: .storeItems__items_items(items))
         }
-
         static func storeDetails(details: Parameter<ItemDetails>) -> VerificationProxy {
             return VerificationProxy(method: .storeDetails__details_details(details))
         }
-
         static func storedItems() -> VerificationProxy {
             return VerificationProxy(method: .storedItems)
         }
-
         static func storedDetails(item: Parameter<Item>) -> VerificationProxy {
             return VerificationProxy(method: .storedDetails__item_item(item))
         }

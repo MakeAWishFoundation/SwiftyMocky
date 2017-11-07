@@ -69,3 +69,23 @@ public func Given<T: Mock>(_ object: T, _ method: T.MethodProxy) {
 public func Perform<T: Mock>(_ object: T, _ method: T.PerformProxy) {
     object.perform(method)
 }
+
+/// Fails flow with given message
+///
+/// - Parameter message: Failure message
+/// - Returns: Never
+public func Failure(_ message: String) -> Swift.Never {
+    let errorMessage = "[FATAL] \(message)!"
+    print(errorMessage)
+    fatalError(errorMessage)
+}
+
+public extension Optional {
+    /// Returns unwrapped value, or fails.
+    ///
+    /// - Parameter message: Failure message
+    /// - Returns: Unwrapped value
+    public func orFail(_ message: String = "unwrapping nil") -> Wrapped {
+        return self ?? { Failure(message) }()
+    }
+}
