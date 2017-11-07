@@ -222,11 +222,11 @@ class MethodWrapper {
         let message = "stub return value not specified for \(method.name). Use given"
 
         if method.parameters.isEmpty {
-            return "let value = methodReturnValue(.\(prototype)) as? \(method.returnTypeName)\n" +
+            return "\n\t\tlet value = methodReturnValue(.\(prototype)) as? \(method.returnTypeName)\n" +
             "\t\treturn value.orFail(\"\(message)\")"
         } else {
             let parameters = method.parameters.map { ".value(\($0.name))" }.joined(separator: ", ")
-            return "let value = methodReturnValue(.\(prototype)(\(parameters))) as? \(method.returnTypeName)\n" +
+            return "\n\t\tlet value = methodReturnValue(.\(prototype)(\(parameters))) as? \(method.returnTypeName)\n" +
             "\t\treturn value.orFail(\"\(message)\")"
         }
     }
@@ -291,7 +291,7 @@ class MethodWrapper {
         return !method.isInitializer
     }
 
-    func proxyConstructorName() -> String {
+    func givenConstructorName() -> String {
         if method.parameters.isEmpty {
             return "static func \(method.shortName)(willReturn: \(method.returnTypeName)) -> Given"
         } else {
@@ -311,12 +311,41 @@ class MethodWrapper {
         }
     }
 
-    func proxyConstructor() -> String {
+    func givenConstructorNameThrows() -> String {
         if method.parameters.isEmpty {
-            return "return Given(method: .\(prototype), returns: willReturn)"
+            return "static func \(method.shortName)(willThrow: Error) -> Given"
+        } else {
+            let functionParameters = method.parameters.map {
+                let paramType = strip("\($0.typeName)")
+                guard let argumentLabel = $0.argumentLabel else {
+                    return "\($0.name): Parameter<\(paramType)>"
+                }
+
+                guard argumentLabel != $0.name else {
+                    return "\($0.name): Parameter<\(paramType)>"
+                }
+
+                return "\(argumentLabel) \($0.name): Parameter<\(paramType)>"
+            }.joined(separator: ", ")
+            return "static func \(method.shortName)(\(functionParameters), willThrow: Error) -> Given"
+        }
+    }
+
+    func givenConstructor() -> String {
+        if method.parameters.isEmpty {
+            return "return Given(method: .\(prototype), returns: willReturn, throws: nil)"
         } else {
             let parameters = method.parameters.map { "\($0.name)" }.joined(separator: ", ")
-            return "return Given(method: .\(prototype)(\(parameters)), returns: willReturn)"
+            return "return Given(method: .\(prototype)(\(parameters)), returns: willReturn, throws: nil)"
+        }
+    }
+
+    func givenConstructorThrows() -> String {
+        if method.parameters.isEmpty {
+            return "return Given(method: .\(prototype), returns: nil, throws: willThrow)"
+        } else {
+            let parameters = method.parameters.map { "\($0.name)" }.joined(separator: ", ")
+            return "return Given(method: .\(prototype)(\(parameters)), returns: nil, throws: willThrow)"
         }
     }
 
@@ -423,7 +452,7 @@ class MethodWrapper {
         let cast = "let perform = methodPerformValue(.\(proxy)) as? \(type)"
         let call = performProxyClosureCall()
 
-        return "\(cast)\n\t\t\(call)"
+        return "\n\t\t\(cast)\n\t\t\(call)"
     }
 
     private func strip(_ type: String) -> String {
@@ -458,24 +487,23 @@ class <%= type.name %>Mock:<%= type.annotations["ObjcProtocol"] != nil ? " NSObj
     var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
     <%_ -%>
-    <% let allVariables = uniques(variables: aProtocol.allVariables) %><%_ -%>
-    <% let allMethods = uniques(methods: aProtocol.allMethods) %><%_ -%>
-    <%_ for variable in allVariables { %>
-    <%= stubProperty(variable,"\(type.name)Mock") -%>
-    <% } %> <%_ -%>
+    <%_ let allVariables = uniques(variables: aProtocol.allVariables) %><%_ -%>
+    <%_ let allMethods = uniques(methods: aProtocol.allMethods) %><%_ -%>
+
+    <%_ for variable in allVariables { -%>
+    <%= stubProperty(variable,"\(type.name)Mock") %>
+    <%_ } %> <%_ -%>
     <%_ -%>
-    <% MethodWrapper.clear() -%>
-    <% let wrappedMethods = allMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) -%>
-    <% for method in wrappedMethods { method.register() } -%>
+    <%_ MethodWrapper.clear() -%>
+    <%_ let wrappedMethods = allMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) -%>
+    <%_ for method in wrappedMethods { method.register() } -%>
 
-    <%_ for method in allMethods.map(wrapMethod) { %>
+    <%_ for method in allMethods.map(wrapMethod) { -%>
     <%= method.functionPrototype _%> {
-        <%= method.invocation _%>
-        <%= method.performCall() _%>
-        <%= method.returnValue _%>
+        <%= method.invocation _%> <%= method.performCall() _%> <%= method.returnValue _%>
     }
-    <%  } %> <%_ -%>
 
+    <%_ } %> <%_ -%>
     <%_ if !wrappedMethods.isEmpty { -%>
     fileprivate enum MethodType {
     <%_ for method in wrappedMethods { -%>
@@ -509,9 +537,22 @@ class <%= type.name %>Mock:<%= type.annotations["ObjcProtocol"] != nil ? " NSObj
     struct Given {
         fileprivate var method: MethodType
         var returns: Any?
-        <%_ for method in allMethods.filter({ !$0.returnTypeName.isVoid && !$0.isInitializer }).map(wrapMethod) { %>
-        <%= method.proxyConstructorName() -%> {
-            <%= method.proxyConstructor() _%>
+        var `throws`: Any?
+
+        private init(method: MethodType, returns: Any?, throws: Any?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
+
+        <%_ for method in wrappedMethods.filter({ !$0.method.returnTypeName.isVoid && !$0.method.isInitializer }) { -%>
+        <%= method.givenConstructorName() -%> {
+            <%= method.givenConstructor() _%>
+        }
+        <%_ } -%>
+        <%_ for method in wrappedMethods.filter({ $0.method.throws && !$0.method.isInitializer }) { -%>
+        <%= method.givenConstructorNameThrows() -%> {
+            <%= method.givenConstructorThrows() _%>
         }
         <%_  } %> <%_ -%>
     }
@@ -529,7 +570,8 @@ class <%= type.name %>Mock:<%= type.annotations["ObjcProtocol"] != nil ? " NSObj
     struct Perform {
         fileprivate var method: MethodType
         var performs: Any
-        <%_ for method in wrappedMethods { %>
+
+        <%_ for method in wrappedMethods { -%>
         <%= method.performProxyConstructorName() -%> {
             <%= method.performProxyConstructor() _%>
         }
@@ -601,26 +643,24 @@ class <%= type.name %>Mock:<%= type.annotations["ObjcProtocol"] != nil ? " NSObj
     var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
     <%_ -%>
-    <% let allVariables = uniques(variables: aProtocol.allVariables) %><%_ -%>
-    <% let allMethods = uniques(methods: aProtocol.allMethods) %><%_ -%>
+    <%_ let allVariables = uniques(variables: aProtocol.allVariables) %><%_ -%>
+    <%_ let allMethods = uniques(methods: aProtocol.allMethods) %><%_ -%>
 
     //MARK : <%= aProtocol.name %>
-    <%_ for variable in allVariables { %>
-    <%= stubProperty(variable,type.name) -%>
-    <% } %> <%_ -%>
+    <%_ for variable in allVariables { -%>
+    <%= stubProperty(variable,type.name) %>
+    <%_ } %> <%_ -%>
     <%_ -%>
-    <% MethodWrapper.clear() -%>
-    <% let wrappedMethods = allMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) -%>
-    <% for method in wrappedMethods { method.register() } -%>
+    <%_ MethodWrapper.clear() -%>
+    <%_ let wrappedMethods = allMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) -%>
+    <%_ for method in wrappedMethods { method.register() } -%>
 
-    <%_ for method in allMethods.map(wrapMethod) { %>
+    <%_ for method in allMethods.map(wrapMethod) { -%>
     <%= method.functionPrototype _%> {
-        <%= method.invocation _%>
-        <%= method.performCall() _%>
-        <%= method.returnValue _%>
+        <%= method.invocation _%> <%= method.performCall() _%> <%= method.returnValue _%>
     }
-    <%  } %> <%_ -%>
 
+    <%_ } %> <%_ -%>
     <%_ if !wrappedMethods.isEmpty { -%>
     fileprivate enum MethodType {
     <%_ for method in wrappedMethods { -%>
@@ -654,9 +694,22 @@ class <%= type.name %>Mock:<%= type.annotations["ObjcProtocol"] != nil ? " NSObj
     struct Given {
         fileprivate var method: MethodType
         var returns: Any?
-        <%_ for method in allMethods.filter({ !$0.returnTypeName.isVoid && !$0.isInitializer }).map(wrapMethod) { %>
-        <%= method.proxyConstructorName() -%> {
-            <%= method.proxyConstructor() _%>
+        var `throws`: Any?
+
+        private init(method: MethodType, returns: Any?, throws: Any?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
+
+        <%_ for method in wrappedMethods.filter({ !$0.method.returnTypeName.isVoid && !$0.method.isInitializer }) { -%>
+        <%= method.givenConstructorName() -%> {
+            <%= method.givenConstructor() _%>
+        }
+        <%_ } -%>
+        <%_ for method in wrappedMethods.filter({ $0.method.throws && !$0.method.isInitializer }) { -%>
+        <%= method.givenConstructorNameThrows() -%> {
+            <%= method.givenConstructorThrows() _%>
         }
         <%_  } %> <%_ -%>
     }
@@ -674,7 +727,8 @@ class <%= type.name %>Mock:<%= type.annotations["ObjcProtocol"] != nil ? " NSObj
     struct Perform {
         fileprivate var method: MethodType
         var performs: Any
-        <%_ for method in wrappedMethods { %>
+
+        <%_ for method in wrappedMethods { -%>
         <%= method.performProxyConstructorName() -%> {
             <%= method.performProxyConstructor() _%>
         }

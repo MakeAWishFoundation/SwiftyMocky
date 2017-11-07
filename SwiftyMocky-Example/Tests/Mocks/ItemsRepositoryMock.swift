@@ -24,40 +24,37 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
     var methodReturnValues: [Given] = []
     var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
-        
+
     //MARK : ItemsRepository
-            
 
     func storeItems(items: [Item]) {
         addInvocation(.storeItems__items_items(.value(items)))
-        let perform = methodPerformValue(.storeItems__items_items(.value(items))) as? ([Item]) -> Void
+		let perform = methodPerformValue(.storeItems__items_items(.value(items))) as? ([Item]) -> Void
 		perform?(items)
-        
     }
-    
+
     func storeDetails(details: ItemDetails) {
         addInvocation(.storeDetails__details_details(.value(details)))
-        let perform = methodPerformValue(.storeDetails__details_details(.value(details))) as? (ItemDetails) -> Void
+		let perform = methodPerformValue(.storeDetails__details_details(.value(details))) as? (ItemDetails) -> Void
 		perform?(details)
-        
     }
-    
+
     func storedItems() -> [Item]? {
         addInvocation(.storedItems)
-        let perform = methodPerformValue(.storedItems) as? () -> Void
+		let perform = methodPerformValue(.storedItems) as? () -> Void
 		perform?()
-        let value = methodReturnValue(.storedItems) as? [Item]?
+		let value = methodReturnValue(.storedItems) as? [Item]?
 		return value.orFail("stub return value not specified for storedItems(). Use given")
     }
-    
+
     func storedDetails(item: Item) -> ItemDetails? {
         addInvocation(.storedDetails__item_item(.value(item)))
-        let perform = methodPerformValue(.storedDetails__item_item(.value(item))) as? (Item) -> Void
+		let perform = methodPerformValue(.storedDetails__item_item(.value(item))) as? (Item) -> Void
 		perform?(item)
-        let value = methodReturnValue(.storedDetails__item_item(.value(item))) as? ItemDetails?
+		let value = methodReturnValue(.storedDetails__item_item(.value(item))) as? ItemDetails?
 		return value.orFail("stub return value not specified for storedDetails(item: Item). Use given")
     }
-    
+
     fileprivate enum MethodType {
         case storeItems__items_items(Parameter<[Item]>)
         case storeDetails__details_details(Parameter<ItemDetails>)
@@ -94,13 +91,19 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
     struct Given {
         fileprivate var method: MethodType
         var returns: Any?
+        var `throws`: Any?
 
-        static func storedItems(willReturn: [Item]?) -> Given {
-            return Given(method: .storedItems, returns: willReturn)
+        private init(method: MethodType, returns: Any?, throws: Any?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
         }
 
+        static func storedItems(willReturn: [Item]?) -> Given {
+            return Given(method: .storedItems, returns: willReturn, throws: nil)
+        }
         static func storedDetails(item: Parameter<Item>, willReturn: ItemDetails?) -> Given {
-            return Given(method: .storedDetails__item_item(item), returns: willReturn)
+            return Given(method: .storedDetails__item_item(item), returns: willReturn, throws: nil)
         }
     }
 
@@ -128,15 +131,12 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         static func storeItems(items: Parameter<[Item]>, perform: ([Item]) -> Void) -> Perform {
             return Perform(method: .storeItems__items_items(items), performs: perform)
         }
-
         static func storeDetails(details: Parameter<ItemDetails>, perform: (ItemDetails) -> Void) -> Perform {
             return Perform(method: .storeDetails__details_details(details), performs: perform)
         }
-
         static func storedItems(perform: () -> Void) -> Perform {
             return Perform(method: .storedItems, performs: perform)
         }
-
         static func storedDetails(item: Parameter<Item>, perform: (Item) -> Void) -> Perform {
             return Perform(method: .storedDetails__item_item(item), performs: perform)
         }

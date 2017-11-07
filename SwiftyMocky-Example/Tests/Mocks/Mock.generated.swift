@@ -27,83 +27,81 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
     var methodReturnValues: [Given] = []
     var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
-        
+
     var youCouldOnlyGetThis: String { 
 		get { return __youCouldOnlyGetThis.orFail("ComplicatedServiceTypeMock - value for youCouldOnlyGetThis was not defined") }
 		set { __youCouldOnlyGetThis = newValue }
 	}
-	private var __youCouldOnlyGetThis: (String)?                
+	private var __youCouldOnlyGetThis: (String)?
 
     func serviceName() -> String {
         addInvocation(.serviceName)
-        let perform = methodPerformValue(.serviceName) as? () -> Void
+		let perform = methodPerformValue(.serviceName) as? () -> Void
 		perform?()
-        let value = methodReturnValue(.serviceName) as? String
+		let value = methodReturnValue(.serviceName) as? String
 		return value.orFail("stub return value not specified for serviceName(). Use given")
     }
-    
+
     func aNewWayToSayHooray() {
         addInvocation(.aNewWayToSayHooray)
-        let perform = methodPerformValue(.aNewWayToSayHooray) as? () -> Void
+		let perform = methodPerformValue(.aNewWayToSayHooray) as? () -> Void
 		perform?()
-        
     }
-    
+
     func getPoint(from point: Point) -> Point {
         addInvocation(.getPoint__from_point(.value(point)))
-        let perform = methodPerformValue(.getPoint__from_point(.value(point))) as? (Point) -> Void
+		let perform = methodPerformValue(.getPoint__from_point(.value(point))) as? (Point) -> Void
 		perform?(point)
-        let value = methodReturnValue(.getPoint__from_point(.value(point))) as? Point
+		let value = methodReturnValue(.getPoint__from_point(.value(point))) as? Point
 		return value.orFail("stub return value not specified for getPoint(from point: Point). Use given")
     }
-    
+
     func getPoint(from tuple: (Float,Float)) -> Point {
         addInvocation(.getPoint__from_tuple(.value(tuple)))
-        let perform = methodPerformValue(.getPoint__from_tuple(.value(tuple))) as? ((Float,Float)) -> Void
+		let perform = methodPerformValue(.getPoint__from_tuple(.value(tuple))) as? ((Float,Float)) -> Void
 		perform?(tuple)
-        let value = methodReturnValue(.getPoint__from_tuple(.value(tuple))) as? Point
+		let value = methodReturnValue(.getPoint__from_tuple(.value(tuple))) as? Point
 		return value.orFail("stub return value not specified for getPoint(from tuple: (Float,Float)). Use given")
     }
-    
+
     func similarMethodThatDiffersOnType(_ value: Float) -> Bool {
         addInvocation(.similarMethodThatDiffersOnType__value_1(.value(value)))
-        let perform = methodPerformValue(.similarMethodThatDiffersOnType__value_1(.value(value))) as? (Float) -> Void
+		let perform = methodPerformValue(.similarMethodThatDiffersOnType__value_1(.value(value))) as? (Float) -> Void
 		perform?(value)
-        let value = methodReturnValue(.similarMethodThatDiffersOnType__value_1(.value(value))) as? Bool
+		let value = methodReturnValue(.similarMethodThatDiffersOnType__value_1(.value(value))) as? Bool
 		return value.orFail("stub return value not specified for similarMethodThatDiffersOnType(_ value: Float). Use given")
     }
-    
+
     func similarMethodThatDiffersOnType(_ value: Point) -> Bool {
         addInvocation(.similarMethodThatDiffersOnType__value_2(.value(value)))
-        let perform = methodPerformValue(.similarMethodThatDiffersOnType__value_2(.value(value))) as? (Point) -> Void
+		let perform = methodPerformValue(.similarMethodThatDiffersOnType__value_2(.value(value))) as? (Point) -> Void
 		perform?(value)
-        let value = methodReturnValue(.similarMethodThatDiffersOnType__value_2(.value(value))) as? Bool
+		let value = methodReturnValue(.similarMethodThatDiffersOnType__value_2(.value(value))) as? Bool
 		return value.orFail("stub return value not specified for similarMethodThatDiffersOnType(_ value: Point). Use given")
     }
-    
+
     func methodWithTypedef(_ scalar: Scalar) {
         addInvocation(.methodWithTypedef__scalar(.value(scalar)))
-        let perform = methodPerformValue(.methodWithTypedef__scalar(.value(scalar))) as? (Scalar) -> Void
+		let perform = methodPerformValue(.methodWithTypedef__scalar(.value(scalar))) as? (Scalar) -> Void
 		perform?(scalar)
-        
     }
-    
+
     func methodWithClosures(success function: LinearFunction) -> ClosureFabric {
         addInvocation(.methodWithClosures__success_function_1(Parameter<LinearFunction>.any))
-        let perform = methodPerformValue(.methodWithClosures__success_function_1(Parameter<LinearFunction>.any)) as? (LinearFunction) -> Void
+		let perform = methodPerformValue(.methodWithClosures__success_function_1(Parameter<LinearFunction>.any)) as? (LinearFunction) -> Void
 		perform?(function)
-        let value = methodReturnValue(.methodWithClosures__success_function_1(.value(function))) as? ClosureFabric
+		let value = methodReturnValue(.methodWithClosures__success_function_1(.value(function))) as? ClosureFabric
 		return value.orFail("stub return value not specified for methodWithClosures(success function: LinearFunction). Use given")
     }
-    
+
     func methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?) -> ((Int) -> Void) {
         addInvocation(.methodWithClosures__success_function_2(.value(function)))
-        let perform = methodPerformValue(.methodWithClosures__success_function_2(.value(function))) as? (((Scalar,Scalar) -> Scalar)?) -> Void
+		let perform = methodPerformValue(.methodWithClosures__success_function_2(.value(function))) as? (((Scalar,Scalar) -> Scalar)?) -> Void
 		perform?(function)
-        let value = methodReturnValue(.methodWithClosures__success_function_2(.value(function))) as? ((Int) -> Void)
+		let value = methodReturnValue(.methodWithClosures__success_function_2(.value(function))) as? ((Int) -> Void)
 		return value.orFail("stub return value not specified for methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?). Use given")
     }
-    
+
     fileprivate enum MethodType {
         case serviceName
         case aNewWayToSayHooray
@@ -164,33 +162,34 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
     struct Given {
         fileprivate var method: MethodType
         var returns: Any?
+        var `throws`: Any?
+
+        private init(method: MethodType, returns: Any?, throws: Any?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
 
         static func serviceName(willReturn: String) -> Given {
-            return Given(method: .serviceName, returns: willReturn)
+            return Given(method: .serviceName, returns: willReturn, throws: nil)
         }
-
         static func getPoint(from point: Parameter<Point>, willReturn: Point) -> Given {
-            return Given(method: .getPoint__from_point(point), returns: willReturn)
+            return Given(method: .getPoint__from_point(point), returns: willReturn, throws: nil)
         }
-
         static func getPoint(from tuple: Parameter<(Float,Float)>, willReturn: Point) -> Given {
-            return Given(method: .getPoint__from_tuple(tuple), returns: willReturn)
+            return Given(method: .getPoint__from_tuple(tuple), returns: willReturn, throws: nil)
         }
-
         static func similarMethodThatDiffersOnType(value: Parameter<Float>, willReturn: Bool) -> Given {
-            return Given(method: .similarMethodThatDiffersOnType__value_1(value), returns: willReturn)
+            return Given(method: .similarMethodThatDiffersOnType__value_1(value), returns: willReturn, throws: nil)
         }
-
         static func similarMethodThatDiffersOnType(value: Parameter<Point>, willReturn: Bool) -> Given {
-            return Given(method: .similarMethodThatDiffersOnType__value_2(value), returns: willReturn)
+            return Given(method: .similarMethodThatDiffersOnType__value_2(value), returns: willReturn, throws: nil)
         }
-
         static func methodWithClosures(success function: Parameter<LinearFunction>, willReturn: ClosureFabric) -> Given {
-            return Given(method: .methodWithClosures__success_function_1(function), returns: willReturn)
+            return Given(method: .methodWithClosures__success_function_1(function), returns: willReturn, throws: nil)
         }
-
         static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>, willReturn: ((Int) -> Void)) -> Given {
-            return Given(method: .methodWithClosures__success_function_2(function), returns: willReturn)
+            return Given(method: .methodWithClosures__success_function_2(function), returns: willReturn, throws: nil)
         }
     }
 
@@ -233,35 +232,27 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
         static func serviceName(perform: () -> Void) -> Perform {
             return Perform(method: .serviceName, performs: perform)
         }
-
         static func aNewWayToSayHooray(perform: () -> Void) -> Perform {
             return Perform(method: .aNewWayToSayHooray, performs: perform)
         }
-
         static func getPoint(from point: Parameter<Point>, perform: (Point) -> Void) -> Perform {
             return Perform(method: .getPoint__from_point(point), performs: perform)
         }
-
         static func getPoint(from tuple: Parameter<(Float,Float)>, perform: ((Float,Float)) -> Void) -> Perform {
             return Perform(method: .getPoint__from_tuple(tuple), performs: perform)
         }
-
         static func similarMethodThatDiffersOnType(value: Parameter<Float>, perform: (Float) -> Void) -> Perform {
             return Perform(method: .similarMethodThatDiffersOnType__value_1(value), performs: perform)
         }
-
         static func similarMethodThatDiffersOnType(value: Parameter<Point>, perform: (Point) -> Void) -> Perform {
             return Perform(method: .similarMethodThatDiffersOnType__value_2(value), performs: perform)
         }
-
         static func methodWithTypedef(scalar: Parameter<Scalar>, perform: (Scalar) -> Void) -> Perform {
             return Perform(method: .methodWithTypedef__scalar(scalar), performs: perform)
         }
-
         static func methodWithClosures(success function: Parameter<LinearFunction>, perform: (LinearFunction) -> Void) -> Perform {
             return Perform(method: .methodWithClosures__success_function_1(function), performs: perform)
         }
-
         static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>, perform: (((Scalar,Scalar) -> Scalar)?) -> Void) -> Perform {
             return Perform(method: .methodWithClosures__success_function_2(function), performs: perform)
         }
@@ -320,32 +311,32 @@ class ItemsClientMock: ItemsClient, Mock {
     var methodReturnValues: [Given] = []
     var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
-                    
+
 
     func getExampleItems() -> Observable<[Item]> {
         addInvocation(.getExampleItems)
-        let perform = methodPerformValue(.getExampleItems) as? () -> Void
+		let perform = methodPerformValue(.getExampleItems) as? () -> Void
 		perform?()
-        let value = methodReturnValue(.getExampleItems) as? Observable<[Item]>
+		let value = methodReturnValue(.getExampleItems) as? Observable<[Item]>
 		return value.orFail("stub return value not specified for getExampleItems(). Use given")
     }
-    
+
     func getItemDetails(item: Item) -> Observable<ItemDetails> {
         addInvocation(.getItemDetails__item_item(.value(item)))
-        let perform = methodPerformValue(.getItemDetails__item_item(.value(item))) as? (Item) -> Void
+		let perform = methodPerformValue(.getItemDetails__item_item(.value(item))) as? (Item) -> Void
 		perform?(item)
-        let value = methodReturnValue(.getItemDetails__item_item(.value(item))) as? Observable<ItemDetails>
+		let value = methodReturnValue(.getItemDetails__item_item(.value(item))) as? Observable<ItemDetails>
 		return value.orFail("stub return value not specified for getItemDetails(item: Item). Use given")
     }
-    
+
     func update(item: Item, withLimit limit: Decimal, expirationDate date: Date?) -> Single<Void> {
         addInvocation(.update__item_itemwithLimit_limitexpirationDate_date(.value(item), .value(limit), .value(date)))
-        let perform = methodPerformValue(.update__item_itemwithLimit_limitexpirationDate_date(.value(item), .value(limit), .value(date))) as? (Item, Decimal, Date?) -> Void
+		let perform = methodPerformValue(.update__item_itemwithLimit_limitexpirationDate_date(.value(item), .value(limit), .value(date))) as? (Item, Decimal, Date?) -> Void
 		perform?(item, limit, date)
-        let value = methodReturnValue(.update__item_itemwithLimit_limitexpirationDate_date(.value(item), .value(limit), .value(date))) as? Single<Void>
+		let value = methodReturnValue(.update__item_itemwithLimit_limitexpirationDate_date(.value(item), .value(limit), .value(date))) as? Single<Void>
 		return value.orFail("stub return value not specified for update(item: Item, withLimit limit: Decimal, expirationDate date: Date?). Use given")
     }
-    
+
     fileprivate enum MethodType {
         case getExampleItems
         case getItemDetails__item_item(Parameter<Item>)
@@ -379,17 +370,22 @@ class ItemsClientMock: ItemsClient, Mock {
     struct Given {
         fileprivate var method: MethodType
         var returns: Any?
+        var `throws`: Any?
+
+        private init(method: MethodType, returns: Any?, throws: Any?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
 
         static func getExampleItems(willReturn: Observable<[Item]>) -> Given {
-            return Given(method: .getExampleItems, returns: willReturn)
+            return Given(method: .getExampleItems, returns: willReturn, throws: nil)
         }
-
         static func getItemDetails(item: Parameter<Item>, willReturn: Observable<ItemDetails>) -> Given {
-            return Given(method: .getItemDetails__item_item(item), returns: willReturn)
+            return Given(method: .getItemDetails__item_item(item), returns: willReturn, throws: nil)
         }
-
         static func update(item: Parameter<Item>, withLimit limit: Parameter<Decimal>, expirationDate date: Parameter<Date?>, willReturn: Single<Void>) -> Given {
-            return Given(method: .update__item_itemwithLimit_limitexpirationDate_date(item, limit, date), returns: willReturn)
+            return Given(method: .update__item_itemwithLimit_limitexpirationDate_date(item, limit, date), returns: willReturn, throws: nil)
         }
     }
 
@@ -414,11 +410,9 @@ class ItemsClientMock: ItemsClient, Mock {
         static func getExampleItems(perform: () -> Void) -> Perform {
             return Perform(method: .getExampleItems, performs: perform)
         }
-
         static func getItemDetails(item: Parameter<Item>, perform: (Item) -> Void) -> Perform {
             return Perform(method: .getItemDetails__item_item(item), performs: perform)
         }
-
         static func update(item: Parameter<Item>, withLimit limit: Parameter<Decimal>, expirationDate date: Parameter<Date?>, perform: (Item, Decimal, Date?) -> Void) -> Perform {
             return Perform(method: .update__item_itemwithLimit_limitexpirationDate_date(item, limit, date), performs: perform)
         }
@@ -477,62 +471,62 @@ class ItemsModelMock: ItemsModel, Mock {
     var methodReturnValues: [Given] = []
     var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
-        
+
     static var defaultIdentifier: Int { 
 		get { return ItemsModelMock.__defaultIdentifier.orFail("ItemsModelMock - value for defaultIdentifier was not defined") }
 		set { ItemsModelMock.__defaultIdentifier = newValue }
 	}
-	private static var __defaultIdentifier: (Int)?    
+	private static var __defaultIdentifier: (Int)?
     static var optionalIdentifier: String? { 
 		get { return ItemsModelMock.__optionalIdentifier.orFail("ItemsModelMock - value for optionalIdentifier was not defined") }
 		set { ItemsModelMock.__optionalIdentifier = newValue }
 	}
-	private static var __optionalIdentifier: (String)?    
+	private static var __optionalIdentifier: (String)?
     var context: Any? { 
 		get { return __context.orFail("ItemsModelMock - value for context was not defined") }
 		set { __context = newValue }
 	}
-	private var __context: (Any)?    
+	private var __context: (Any)?
     var storage: Any! { 
 		get { return __storage.orFail("ItemsModelMock - value for storage was not defined") }
 		set { __storage = newValue }
 	}
-	private var __storage: (Any)?    
+	private var __storage: (Any)?
     var some: Any { 
 		get { return __some.orFail("ItemsModelMock - value for some was not defined") }
 		set { __some = newValue }
 	}
-	private var __some: (Any)?    
+	private var __some: (Any)?
     var storedProperty: Any { 
 		get { return __storedProperty.orFail("ItemsModelMock - value for storedProperty was not defined") }
 		set { __storedProperty = newValue }
 	}
-	private var __storedProperty: (Any)?                
+	private var __storedProperty: (Any)?
 
     func getExampleItems() -> Observable<[Item]> {
         addInvocation(.getExampleItems)
-        let perform = methodPerformValue(.getExampleItems) as? () -> Void
+		let perform = methodPerformValue(.getExampleItems) as? () -> Void
 		perform?()
-        let value = methodReturnValue(.getExampleItems) as? Observable<[Item]>
+		let value = methodReturnValue(.getExampleItems) as? Observable<[Item]>
 		return value.orFail("stub return value not specified for getExampleItems(). Use given")
     }
-    
+
     func getItemDetails(item: Item) -> Observable<ItemDetails> {
         addInvocation(.getItemDetails__item_item(.value(item)))
-        let perform = methodPerformValue(.getItemDetails__item_item(.value(item))) as? (Item) -> Void
+		let perform = methodPerformValue(.getItemDetails__item_item(.value(item))) as? (Item) -> Void
 		perform?(item)
-        let value = methodReturnValue(.getItemDetails__item_item(.value(item))) as? Observable<ItemDetails>
+		let value = methodReturnValue(.getItemDetails__item_item(.value(item))) as? Observable<ItemDetails>
 		return value.orFail("stub return value not specified for getItemDetails(item: Item). Use given")
     }
-    
+
     func getPrice(for item: Item) -> Decimal {
         addInvocation(.getPrice__for_item(.value(item)))
-        let perform = methodPerformValue(.getPrice__for_item(.value(item))) as? (Item) -> Void
+		let perform = methodPerformValue(.getPrice__for_item(.value(item))) as? (Item) -> Void
 		perform?(item)
-        let value = methodReturnValue(.getPrice__for_item(.value(item))) as? Decimal
+		let value = methodReturnValue(.getPrice__for_item(.value(item))) as? Decimal
 		return value.orFail("stub return value not specified for getPrice(for item: Item). Use given")
     }
-    
+
     fileprivate enum MethodType {
         case getExampleItems
         case getItemDetails__item_item(Parameter<Item>)
@@ -564,17 +558,22 @@ class ItemsModelMock: ItemsModel, Mock {
     struct Given {
         fileprivate var method: MethodType
         var returns: Any?
+        var `throws`: Any?
+
+        private init(method: MethodType, returns: Any?, throws: Any?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
 
         static func getExampleItems(willReturn: Observable<[Item]>) -> Given {
-            return Given(method: .getExampleItems, returns: willReturn)
+            return Given(method: .getExampleItems, returns: willReturn, throws: nil)
         }
-
         static func getItemDetails(item: Parameter<Item>, willReturn: Observable<ItemDetails>) -> Given {
-            return Given(method: .getItemDetails__item_item(item), returns: willReturn)
+            return Given(method: .getItemDetails__item_item(item), returns: willReturn, throws: nil)
         }
-
         static func getPrice(for item: Parameter<Item>, willReturn: Decimal) -> Given {
-            return Given(method: .getPrice__for_item(item), returns: willReturn)
+            return Given(method: .getPrice__for_item(item), returns: willReturn, throws: nil)
         }
     }
 
@@ -599,11 +598,9 @@ class ItemsModelMock: ItemsModel, Mock {
         static func getExampleItems(perform: () -> Void) -> Perform {
             return Perform(method: .getExampleItems, performs: perform)
         }
-
         static func getItemDetails(item: Parameter<Item>, perform: (Item) -> Void) -> Perform {
             return Perform(method: .getItemDetails__item_item(item), performs: perform)
         }
-
         static func getPrice(for item: Parameter<Item>, perform: (Item) -> Void) -> Perform {
             return Perform(method: .getPrice__for_item(item), performs: perform)
         }
@@ -662,22 +659,20 @@ class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
     var methodReturnValues: [Given] = []
     var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
-                    
+
 
     func returnNoting() {
         addInvocation(.returnNoting)
-        let perform = methodPerformValue(.returnNoting) as? () -> Void
+		let perform = methodPerformValue(.returnNoting) as? () -> Void
 		perform?()
-        
     }
-    
+
     func someMethod() {
         addInvocation(.someMethod)
-        let perform = methodPerformValue(.someMethod) as? () -> Void
+		let perform = methodPerformValue(.someMethod) as? () -> Void
 		perform?()
-        
     }
-    
+
     fileprivate enum MethodType {
         case returnNoting
         case someMethod
@@ -703,6 +698,14 @@ class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
     struct Given {
         fileprivate var method: MethodType
         var returns: Any?
+        var `throws`: Any?
+
+        private init(method: MethodType, returns: Any?, throws: Any?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
+
     }
 
     struct Verify {
@@ -723,7 +726,6 @@ class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
         static func returnNoting(perform: () -> Void) -> Perform {
             return Perform(method: .returnNoting, performs: perform)
         }
-
         static func someMethod(perform: () -> Void) -> Perform {
             return Perform(method: .someMethod, performs: perform)
         }
@@ -782,22 +784,22 @@ class ProtocolWithOptionalClosuresMock: ProtocolWithOptionalClosures, Mock {
     var methodReturnValues: [Given] = []
     var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
-        
+
     var nonOptionalClosure: () -> Void { 
 		get { return __nonOptionalClosure.orFail("ProtocolWithOptionalClosuresMock - value for nonOptionalClosure was not defined") }
 		set { __nonOptionalClosure = newValue }
 	}
-	private var __nonOptionalClosure: (() -> Void)?    
+	private var __nonOptionalClosure: (() -> Void)?
     var optionalClosure: (() -> Int)? { 
 		get { return __optionalClosure.orFail("ProtocolWithOptionalClosuresMock - value for optionalClosure was not defined") }
 		set { __optionalClosure = newValue }
 	}
-	private var __optionalClosure: (() -> Int)?    
+	private var __optionalClosure: (() -> Int)?
     var implicitelyUnwrappedClosure: (() -> Void)! { 
 		get { return __implicitelyUnwrappedClosure.orFail("ProtocolWithOptionalClosuresMock - value for implicitelyUnwrappedClosure was not defined") }
 		set { __implicitelyUnwrappedClosure = newValue }
 	}
-	private var __implicitelyUnwrappedClosure: (() -> Void)?                
+	private var __implicitelyUnwrappedClosure: (() -> Void)?
 
 
     fileprivate struct MethodType {
@@ -808,6 +810,14 @@ class ProtocolWithOptionalClosuresMock: ProtocolWithOptionalClosures, Mock {
     struct Given {
         fileprivate var method: MethodType
         var returns: Any?
+        var `throws`: Any?
+
+        private init(method: MethodType, returns: Any?, throws: Any?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
+
     }
 
     struct Verify {
@@ -818,6 +828,7 @@ class ProtocolWithOptionalClosuresMock: ProtocolWithOptionalClosures, Mock {
     struct Perform {
         fileprivate var method: MethodType
         var performs: Any
+
     }
 
     public func matchingCalls(_ method: Verify) -> Int {
@@ -873,23 +884,22 @@ class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
     var methodReturnValues: [Given] = []
     var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
-                    
+
 
     func methodThatThrows() throws {
         addInvocation(.methodThatThrows)
-        let perform = methodPerformValue(.methodThatThrows) as? () -> Void
+		let perform = methodPerformValue(.methodThatThrows) as? () -> Void
 		perform?()
-        
     }
-    
+
     func methodThatReturnsAndThrows(param: String) throws -> Int {
         addInvocation(.methodThatReturnsAndThrows__param_param(.value(param)))
-        let perform = methodPerformValue(.methodThatReturnsAndThrows__param_param(.value(param))) as? (String) -> Void
+		let perform = methodPerformValue(.methodThatReturnsAndThrows__param_param(.value(param))) as? (String) -> Void
 		perform?(param)
-        let value = methodReturnValue(.methodThatReturnsAndThrows__param_param(.value(param))) as? Int
+		let value = methodReturnValue(.methodThatReturnsAndThrows__param_param(.value(param))) as? Int
 		return value.orFail("stub return value not specified for methodThatReturnsAndThrows(param: String). Use given")
     }
-    
+
     fileprivate enum MethodType {
         case methodThatThrows
         case methodThatReturnsAndThrows__param_param(Parameter<String>)
@@ -916,9 +926,22 @@ class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
     struct Given {
         fileprivate var method: MethodType
         var returns: Any?
+        var `throws`: Any?
+
+        private init(method: MethodType, returns: Any?, throws: Any?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
 
         static func methodThatReturnsAndThrows(param: Parameter<String>, willReturn: Int) -> Given {
-            return Given(method: .methodThatReturnsAndThrows__param_param(param), returns: willReturn)
+            return Given(method: .methodThatReturnsAndThrows__param_param(param), returns: willReturn, throws: nil)
+        }
+        static func methodThatThrows(willThrow: Error) -> Given {
+            return Given(method: .methodThatThrows, returns: nil, throws: willThrow)
+        }
+        static func methodThatReturnsAndThrows(param: Parameter<String>, willThrow: Error) -> Given {
+            return Given(method: .methodThatReturnsAndThrows__param_param(param), returns: nil, throws: willThrow)
         }
     }
 
@@ -940,7 +963,6 @@ class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
         static func methodThatThrows(perform: () -> Void) -> Perform {
             return Perform(method: .methodThatThrows, performs: perform)
         }
-
         static func methodThatReturnsAndThrows(param: Parameter<String>, perform: (String) -> Void) -> Perform {
             return Perform(method: .methodThatReturnsAndThrows__param_param(param), performs: perform)
         }
@@ -999,71 +1021,70 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
     var methodReturnValues: [Given] = []
     var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
-                    
+
 
     func serviceName() -> String {
         addInvocation(.serviceName)
-        let perform = methodPerformValue(.serviceName) as? () -> Void
+		let perform = methodPerformValue(.serviceName) as? () -> Void
 		perform?()
-        let value = methodReturnValue(.serviceName) as? String
+		let value = methodReturnValue(.serviceName) as? String
 		return value.orFail("stub return value not specified for serviceName(). Use given")
     }
-    
+
     func getPoint(from point: Point) -> Point {
         addInvocation(.getPoint__from_point(.value(point)))
-        let perform = methodPerformValue(.getPoint__from_point(.value(point))) as? (Point) -> Void
+		let perform = methodPerformValue(.getPoint__from_point(.value(point))) as? (Point) -> Void
 		perform?(point)
-        let value = methodReturnValue(.getPoint__from_point(.value(point))) as? Point
+		let value = methodReturnValue(.getPoint__from_point(.value(point))) as? Point
 		return value.orFail("stub return value not specified for getPoint(from point: Point). Use given")
     }
-    
+
     func getPoint(from tuple: (Float,Float)) -> Point {
         addInvocation(.getPoint__from_tuple(.value(tuple)))
-        let perform = methodPerformValue(.getPoint__from_tuple(.value(tuple))) as? ((Float,Float)) -> Void
+		let perform = methodPerformValue(.getPoint__from_tuple(.value(tuple))) as? ((Float,Float)) -> Void
 		perform?(tuple)
-        let value = methodReturnValue(.getPoint__from_tuple(.value(tuple))) as? Point
+		let value = methodReturnValue(.getPoint__from_tuple(.value(tuple))) as? Point
 		return value.orFail("stub return value not specified for getPoint(from tuple: (Float,Float)). Use given")
     }
-    
+
     func similarMethodThatDiffersOnType(_ value: Float) -> Bool {
         addInvocation(.similarMethodThatDiffersOnType__value_1(.value(value)))
-        let perform = methodPerformValue(.similarMethodThatDiffersOnType__value_1(.value(value))) as? (Float) -> Void
+		let perform = methodPerformValue(.similarMethodThatDiffersOnType__value_1(.value(value))) as? (Float) -> Void
 		perform?(value)
-        let value = methodReturnValue(.similarMethodThatDiffersOnType__value_1(.value(value))) as? Bool
+		let value = methodReturnValue(.similarMethodThatDiffersOnType__value_1(.value(value))) as? Bool
 		return value.orFail("stub return value not specified for similarMethodThatDiffersOnType(_ value: Float). Use given")
     }
-    
+
     func similarMethodThatDiffersOnType(_ value: Point) -> Bool {
         addInvocation(.similarMethodThatDiffersOnType__value_2(.value(value)))
-        let perform = methodPerformValue(.similarMethodThatDiffersOnType__value_2(.value(value))) as? (Point) -> Void
+		let perform = methodPerformValue(.similarMethodThatDiffersOnType__value_2(.value(value))) as? (Point) -> Void
 		perform?(value)
-        let value = methodReturnValue(.similarMethodThatDiffersOnType__value_2(.value(value))) as? Bool
+		let value = methodReturnValue(.similarMethodThatDiffersOnType__value_2(.value(value))) as? Bool
 		return value.orFail("stub return value not specified for similarMethodThatDiffersOnType(_ value: Point). Use given")
     }
-    
+
     func methodWithTypedef(_ scalar: Scalar) {
         addInvocation(.methodWithTypedef__scalar(.value(scalar)))
-        let perform = methodPerformValue(.methodWithTypedef__scalar(.value(scalar))) as? (Scalar) -> Void
+		let perform = methodPerformValue(.methodWithTypedef__scalar(.value(scalar))) as? (Scalar) -> Void
 		perform?(scalar)
-        
     }
-    
+
     func methodWithClosures(success function: LinearFunction) -> ClosureFabric {
         addInvocation(.methodWithClosures__success_function_1(Parameter<LinearFunction>.any))
-        let perform = methodPerformValue(.methodWithClosures__success_function_1(Parameter<LinearFunction>.any)) as? (LinearFunction) -> Void
+		let perform = methodPerformValue(.methodWithClosures__success_function_1(Parameter<LinearFunction>.any)) as? (LinearFunction) -> Void
 		perform?(function)
-        let value = methodReturnValue(.methodWithClosures__success_function_1(.value(function))) as? ClosureFabric
+		let value = methodReturnValue(.methodWithClosures__success_function_1(.value(function))) as? ClosureFabric
 		return value.orFail("stub return value not specified for methodWithClosures(success function: LinearFunction). Use given")
     }
-    
+
     func methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?) -> ((Int) -> Void) {
         addInvocation(.methodWithClosures__success_function_2(.value(function)))
-        let perform = methodPerformValue(.methodWithClosures__success_function_2(.value(function))) as? (((Scalar,Scalar) -> Scalar)?) -> Void
+		let perform = methodPerformValue(.methodWithClosures__success_function_2(.value(function))) as? (((Scalar,Scalar) -> Scalar)?) -> Void
 		perform?(function)
-        let value = methodReturnValue(.methodWithClosures__success_function_2(.value(function))) as? ((Int) -> Void)
+		let value = methodReturnValue(.methodWithClosures__success_function_2(.value(function))) as? ((Int) -> Void)
 		return value.orFail("stub return value not specified for methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?). Use given")
     }
-    
+
     fileprivate enum MethodType {
         case serviceName
         case getPoint__from_point(Parameter<Point>)
@@ -1120,33 +1141,34 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
     struct Given {
         fileprivate var method: MethodType
         var returns: Any?
+        var `throws`: Any?
+
+        private init(method: MethodType, returns: Any?, throws: Any?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
 
         static func serviceName(willReturn: String) -> Given {
-            return Given(method: .serviceName, returns: willReturn)
+            return Given(method: .serviceName, returns: willReturn, throws: nil)
         }
-
         static func getPoint(from point: Parameter<Point>, willReturn: Point) -> Given {
-            return Given(method: .getPoint__from_point(point), returns: willReturn)
+            return Given(method: .getPoint__from_point(point), returns: willReturn, throws: nil)
         }
-
         static func getPoint(from tuple: Parameter<(Float,Float)>, willReturn: Point) -> Given {
-            return Given(method: .getPoint__from_tuple(tuple), returns: willReturn)
+            return Given(method: .getPoint__from_tuple(tuple), returns: willReturn, throws: nil)
         }
-
         static func similarMethodThatDiffersOnType(value: Parameter<Float>, willReturn: Bool) -> Given {
-            return Given(method: .similarMethodThatDiffersOnType__value_1(value), returns: willReturn)
+            return Given(method: .similarMethodThatDiffersOnType__value_1(value), returns: willReturn, throws: nil)
         }
-
         static func similarMethodThatDiffersOnType(value: Parameter<Point>, willReturn: Bool) -> Given {
-            return Given(method: .similarMethodThatDiffersOnType__value_2(value), returns: willReturn)
+            return Given(method: .similarMethodThatDiffersOnType__value_2(value), returns: willReturn, throws: nil)
         }
-
         static func methodWithClosures(success function: Parameter<LinearFunction>, willReturn: ClosureFabric) -> Given {
-            return Given(method: .methodWithClosures__success_function_1(function), returns: willReturn)
+            return Given(method: .methodWithClosures__success_function_1(function), returns: willReturn, throws: nil)
         }
-
         static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>, willReturn: ((Int) -> Void)) -> Given {
-            return Given(method: .methodWithClosures__success_function_2(function), returns: willReturn)
+            return Given(method: .methodWithClosures__success_function_2(function), returns: willReturn, throws: nil)
         }
     }
 
@@ -1186,31 +1208,24 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
         static func serviceName(perform: () -> Void) -> Perform {
             return Perform(method: .serviceName, performs: perform)
         }
-
         static func getPoint(from point: Parameter<Point>, perform: (Point) -> Void) -> Perform {
             return Perform(method: .getPoint__from_point(point), performs: perform)
         }
-
         static func getPoint(from tuple: Parameter<(Float,Float)>, perform: ((Float,Float)) -> Void) -> Perform {
             return Perform(method: .getPoint__from_tuple(tuple), performs: perform)
         }
-
         static func similarMethodThatDiffersOnType(value: Parameter<Float>, perform: (Float) -> Void) -> Perform {
             return Perform(method: .similarMethodThatDiffersOnType__value_1(value), performs: perform)
         }
-
         static func similarMethodThatDiffersOnType(value: Parameter<Point>, perform: (Point) -> Void) -> Perform {
             return Perform(method: .similarMethodThatDiffersOnType__value_2(value), performs: perform)
         }
-
         static func methodWithTypedef(scalar: Parameter<Scalar>, perform: (Scalar) -> Void) -> Perform {
             return Perform(method: .methodWithTypedef__scalar(scalar), performs: perform)
         }
-
         static func methodWithClosures(success function: Parameter<LinearFunction>, perform: (LinearFunction) -> Void) -> Perform {
             return Perform(method: .methodWithClosures__success_function_1(function), performs: perform)
         }
-
         static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>, perform: (((Scalar,Scalar) -> Scalar)?) -> Void) -> Perform {
             return Perform(method: .methodWithClosures__success_function_2(function), performs: perform)
         }
@@ -1269,21 +1284,21 @@ class SimpleServiceTypeMock: SimpleServiceType, Mock {
     var methodReturnValues: [Given] = []
     var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
-        
+
     var youCouldOnlyGetThis: String { 
 		get { return __youCouldOnlyGetThis.orFail("SimpleServiceTypeMock - value for youCouldOnlyGetThis was not defined") }
 		set { __youCouldOnlyGetThis = newValue }
 	}
-	private var __youCouldOnlyGetThis: (String)?                
+	private var __youCouldOnlyGetThis: (String)?
 
     func serviceName() -> String {
         addInvocation(.serviceName)
-        let perform = methodPerformValue(.serviceName) as? () -> Void
+		let perform = methodPerformValue(.serviceName) as? () -> Void
 		perform?()
-        let value = methodReturnValue(.serviceName) as? String
+		let value = methodReturnValue(.serviceName) as? String
 		return value.orFail("stub return value not specified for serviceName(). Use given")
     }
-    
+
     fileprivate enum MethodType {
         case serviceName
 
@@ -1304,9 +1319,16 @@ class SimpleServiceTypeMock: SimpleServiceType, Mock {
     struct Given {
         fileprivate var method: MethodType
         var returns: Any?
+        var `throws`: Any?
+
+        private init(method: MethodType, returns: Any?, throws: Any?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
 
         static func serviceName(willReturn: String) -> Given {
-            return Given(method: .serviceName, returns: willReturn)
+            return Given(method: .serviceName, returns: willReturn, throws: nil)
         }
     }
 
@@ -1380,48 +1402,40 @@ class UserNetworkTypeMock: UserNetworkType, Mock {
     var methodReturnValues: [Given] = []
     var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
-                    
+
 
     required init(config: NetworkConfig) {
         
-        
-        
     }
-    
+
     required init(baseUrl: String) {
         
-        
-        
     }
-    
+
     func getUser(for id: String, completion: (User?) -> Void) {
         addInvocation(.getUser__for_idcompletion_completion(.value(id), Parameter<(User?) -> Void>.any))
-        let perform = methodPerformValue(.getUser__for_idcompletion_completion(.value(id), Parameter<(User?) -> Void>.any)) as? (String, (User?) -> Void) -> Void
+		let perform = methodPerformValue(.getUser__for_idcompletion_completion(.value(id), Parameter<(User?) -> Void>.any)) as? (String, (User?) -> Void) -> Void
 		perform?(id, completion)
-        
     }
-    
+
     func getUserEscaping(for id: String, completion: @escaping (User?,Error?) -> Void) {
         addInvocation(.getUserEscaping__for_idcompletion_completion(.value(id), .value(completion)))
-        let perform = methodPerformValue(.getUserEscaping__for_idcompletion_completion(.value(id), .value(completion))) as? (String, @escaping (User?,Error?) -> Void) -> Void
+		let perform = methodPerformValue(.getUserEscaping__for_idcompletion_completion(.value(id), .value(completion))) as? (String, @escaping (User?,Error?) -> Void) -> Void
 		perform?(id, completion)
-        
     }
-    
+
     func doSomething(prop: @autoclosure () -> String) {
         addInvocation(.doSomething__prop_prop(Parameter< () -> String>.any))
-        let perform = methodPerformValue(.doSomething__prop_prop(Parameter< () -> String>.any)) as? (@autoclosure () -> String) -> Void
+		let perform = methodPerformValue(.doSomething__prop_prop(Parameter< () -> String>.any)) as? (@autoclosure () -> String) -> Void
 		perform?(prop)
-        
     }
-    
+
     func testDefaultValues(value: String) {
         addInvocation(.testDefaultValues__value_value(.value(value)))
-        let perform = methodPerformValue(.testDefaultValues__value_value(.value(value))) as? (String) -> Void
+		let perform = methodPerformValue(.testDefaultValues__value_value(.value(value))) as? (String) -> Void
 		perform?(value)
-        
     }
-    
+
     fileprivate enum MethodType {
         case getUser__for_idcompletion_completion(Parameter<String>, Parameter<(User?) -> Void>)
         case getUserEscaping__for_idcompletion_completion(Parameter<String>, Parameter< (User?,Error?) -> Void>)
@@ -1461,6 +1475,14 @@ class UserNetworkTypeMock: UserNetworkType, Mock {
     struct Given {
         fileprivate var method: MethodType
         var returns: Any?
+        var `throws`: Any?
+
+        private init(method: MethodType, returns: Any?, throws: Any?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
+
     }
 
     struct Verify {
@@ -1487,15 +1509,12 @@ class UserNetworkTypeMock: UserNetworkType, Mock {
         static func getUser(for id: Parameter<String>, completion: Parameter<(User?) -> Void>, perform: (String, (User?) -> Void) -> Void) -> Perform {
             return Perform(method: .getUser__for_idcompletion_completion(id, completion), performs: perform)
         }
-
         static func getUserEscaping(for id: Parameter<String>, completion: Parameter< (User?,Error?) -> Void>, perform: (String, @escaping (User?,Error?) -> Void) -> Void) -> Perform {
             return Perform(method: .getUserEscaping__for_idcompletion_completion(id, completion), performs: perform)
         }
-
         static func doSomething(prop: Parameter< () -> String>, perform: (@autoclosure () -> String) -> Void) -> Perform {
             return Perform(method: .doSomething__prop_prop(prop), performs: perform)
         }
-
         static func testDefaultValues(value: Parameter<String>, perform: (String) -> Void) -> Perform {
             return Perform(method: .testDefaultValues__value_value(value), performs: perform)
         }
@@ -1554,23 +1573,22 @@ class UserStorageTypeMock: UserStorageType, Mock {
     var methodReturnValues: [Given] = []
     var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
-                    
+
 
     func surname(for name: String) -> String {
         addInvocation(.surname__for_name(.value(name)))
-        let perform = methodPerformValue(.surname__for_name(.value(name))) as? (String) -> Void
+		let perform = methodPerformValue(.surname__for_name(.value(name))) as? (String) -> Void
 		perform?(name)
-        let value = methodReturnValue(.surname__for_name(.value(name))) as? String
+		let value = methodReturnValue(.surname__for_name(.value(name))) as? String
 		return value.orFail("stub return value not specified for surname(for name: String). Use given")
     }
-    
+
     func storeUser(name: String, surname: String) {
         addInvocation(.storeUser__name_namesurname_surname(.value(name), .value(surname)))
-        let perform = methodPerformValue(.storeUser__name_namesurname_surname(.value(name), .value(surname))) as? (String, String) -> Void
+		let perform = methodPerformValue(.storeUser__name_namesurname_surname(.value(name), .value(surname))) as? (String, String) -> Void
 		perform?(name, surname)
-        
     }
-    
+
     fileprivate enum MethodType {
         case surname__for_name(Parameter<String>)
         case storeUser__name_namesurname_surname(Parameter<String>, Parameter<String>)
@@ -1599,9 +1617,16 @@ class UserStorageTypeMock: UserStorageType, Mock {
     struct Given {
         fileprivate var method: MethodType
         var returns: Any?
+        var `throws`: Any?
+
+        private init(method: MethodType, returns: Any?, throws: Any?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
 
         static func surname(for name: Parameter<String>, willReturn: String) -> Given {
-            return Given(method: .surname__for_name(name), returns: willReturn)
+            return Given(method: .surname__for_name(name), returns: willReturn, throws: nil)
         }
     }
 
@@ -1623,7 +1648,6 @@ class UserStorageTypeMock: UserStorageType, Mock {
         static func surname(for name: Parameter<String>, perform: (String) -> Void) -> Perform {
             return Perform(method: .surname__for_name(name), performs: perform)
         }
-
         static func storeUser(name: Parameter<String>, surname: Parameter<String>, perform: (String, String) -> Void) -> Perform {
             return Perform(method: .storeUser__name_namesurname_surname(name, surname), performs: perform)
         }
