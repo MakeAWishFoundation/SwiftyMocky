@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Other Extensions  Reference</title>
+    <title>Supported features  Reference</title>
     <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,7 +10,7 @@
     
   </head>
   <body>
-    <a title="Other Extensions  Reference"></a>
+    <a title="Supported features  Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="index.html">SwiftyMocky Docs</a> (74% documented)</p>
@@ -21,7 +21,7 @@
       <p id="breadcrumbs">
         <a href="index.html">SwiftyMocky Reference</a>
         <img id="carat" src="img/carat.png" />
-        Other Extensions  Reference
+        Supported features  Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -125,42 +125,116 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>Other Extensions</h1>
-            <p>The following extensions are available globally.</p>
+            
+            <h1 id='supported-features' class='heading'>Supported features</h1>
+<h2 id='generation' class='heading'>Generation:</h2>
 
-          </section>
-          <section class="section task-group-section">
-            <div class="task-group">
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:Sq"></a>
-                    <a name="//apple_ref/swift/Extension/Optional" class="dashAnchor"></a>
-                    <a class="token" href="#/s:Sq">Optional</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        
-                        <a href="Extensions/Optional.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">enum</span> <span class="kt">Optional</span><span class="o">&lt;</span><span class="kt">Wrapped</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">ExpressibleByNilLiteral</span></code></pre>
+<p>All supported ways of generating mocks. Handling mockable types:</p>
 
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
+<ul>
+<li>[x] generating inline mocks</li>
+<li>[x] generate in Mocked.generated based on AutoMockable protocol</li>
+<li>[x] generate in Mocked.generated based on AutoMockable annotation</li>
+<li>[ ] skip protocols that cannot be generated with warning</li>
+<li>[x] support protocol inheritance</li>
+<li>[x] support objc protocols (with special protocol/annotation)</li>
+<li>[ ] support generic protocols</li>
+</ul>
+<h2 id='stubbing' class='heading'>Stubbing:</h2>
+
+<p>Support for stubbing protocol members:</p>
+
+<ul>
+<li>[x] stubbing initializers <strong>only for protocol conformance - they have empty implementation!</strong></li>
+<li>[ ] stubbing deinitializers</li>
+<li>[x] stubbing instance methods
+
+<ul>
+<li>[x] with return value</li>
+<li>[ ] with return as Swift.Never</li>
+<li>[x] that throws</li>
+<li>[x] that rethrows</li>
+</ul></li>
+<li>[x] stubbing static methods</li>
+<li>[ ] stubbing generic methods</li>
+<li>[x] stubbing variables (with get, set)
+
+<ul>
+<li>[x] instance variables</li>
+<li>[x] static variables</li>
+<li>[x] optional</li>
+<li>[x] implicitly unwrapped optional</li>
+</ul></li>
+<li>[ ] handling associated types</li>
+<li>[x] wrapping method attributes as Parameter
+
+<ul>
+<li>[x] basic types</li>
+<li>[x] closures</li>
+<li>[x] @escaping closures</li>
+<li>[x] typealiases</li>
+</ul></li>
+</ul>
+<h2 id='given' class='heading'>Given</h2>
+
+<p>Usage of Given to specify return value and error thrown for stubbed methods:</p>
+
+<ul>
+<li>[x] constraint to attributes matching <code>.any</code></li>
+<li>[x] constraint to attributes matching explicit <code>.value(ValueType)</code> where:
+
+<ul>
+<li>[x] ValueType is Equatable</li>
+<li>[x] ValueType is Sequences of Equatable elements</li>
+<li>[x] ValueType is not Equatable - <strong>when registered comparator in Matcher</strong></li>
+<li>[x] ValueType is Equatable is <code>@escaping</code> closure - <strong>when registered comparator in Matcher</strong></li>
+<li>[ ] <strong>!!!</strong> ValueType is not <code>@escaping</code> closure - <strong>always handled as</strong> <code>.any</code></li>
+</ul></li>
+<li>[x] return value for instance stub</li>
+<li>[x] error thrown for instance stub</li>
+<li>[ ] error thrown for instance stubs that rethrows</li>
+<li>[x] return value for static stubs</li>
+<li>[x] error thrown for static stubs</li>
+<li>[ ] error thrown for static stubs, that rethrows</li>
+</ul>
+<h2 id='perform' class='heading'>Perform</h2>
+
+<p>Usage of Perform to execute closure, when stubbed method is called:</p>
+
+<ul>
+<li>[x] perform closure attributes matching stub attributes</li>
+<li>[x] constraint to attributes matching <code>.any</code></li>
+<li>[x] constraint to attributes matching explicit <code>.value(ValueType)</code> where:
+
+<ul>
+<li>[x] ValueType is Equatable</li>
+<li>[x] ValueType is Sequences of Equatable elements</li>
+<li>[x] ValueType is not Equatable - <strong>when registered comparator in Matcher</strong></li>
+<li>[x] ValueType is Equatable is <code>@escaping</code> closure - <strong>when registered comparator in Matcher</strong></li>
+<li>[ ] <strong>!!!</strong> ValueType is not <code>@escaping</code> closure - <strong>always handled as</strong> <code>.any</code></li>
+</ul></li>
+<li>[x] expect perform closure for static stubs</li>
+</ul>
+<h2 id='verify' class='heading'>Verify</h2>
+
+<p>Usage of Verify to check, whether specific stubbed method was called on Mock</p>
+
+<ul>
+<li>[x] constraint to attributes matching <code>.any</code></li>
+<li>[x] constraint to attributes matching explicit <code>.value(ValueType)</code> where:
+
+<ul>
+<li>[x] ValueType is Equatable</li>
+<li>[x] ValueType is Sequences of Equatable elements</li>
+<li>[x] ValueType is not Equatable - <strong>when registered comparator in Matcher</strong></li>
+<li>[x] ValueType is Equatable is <code>@escaping</code> closure - <strong>when registered comparator in Matcher</strong></li>
+<li>[ ] <strong>!!!</strong> ValueType is not <code>@escaping</code> closure - <strong>always handled as</strong> <code>.any</code></li>
+</ul></li>
+<li>[x] verify if called at least once</li>
+<li>[x] verify if called exactly number of times</li>
+<li>[x] verify for static methods</li>
+</ul>
+
           </section>
         </section>
         <section id="footer">

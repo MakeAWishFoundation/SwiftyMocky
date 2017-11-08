@@ -30,7 +30,7 @@ All mocks has **given** method (accessible both as instance method or global fun
 
 ![Generating mock][example-given]
 
-All protocol methods are nicely put into **MethodProxy**, with matching signature. That allows to use auto-complete (just type `.`) to see all mocked protocol methods, and specify return value for them.
+All protocol methods are nicely put into **Given**, with matching signature. That allows to use auto-complete (just type `.`) to see all mocked protocol methods, and specify return value for them.
 
 All method attributes are wrapped as **Parameter** enum, allowing to choose between `any` and `value`, giving great flexibility to mock behaviour. Please consider following:
 
@@ -49,7 +49,7 @@ All mocks has **verify** method (accessible both as instance method or global fu
 
 ![Generating mock][example-verify]
 
-All protocol methods are nicely put into **VerificationProxy**, with matching signature. That allows to use auto-complete (just type `.`) to see all mocked protocol methods, and specify which one we want to verify.
+All protocol methods are nicely put into **Verify**, with matching signature. That allows to use auto-complete (just type `.`) to see all mocked protocol methods, and specify which one we want to verify.
 
 All method attributes are wrapped as **Parameter** enum, allowing to choose between `any` and `value`, giving great flexibility to tests. Please consider following:
 
@@ -68,7 +68,11 @@ Verify(mockStorage, 3, .storeUser(name: .any, surname: .any))
 Verify(mockStorage, 2, .storeUser(name: .value("Johny"), surname: .any))
 ```
 
-### 4. Example of usage
+### 4. All supported features
+
+For list all supported features, check documentation [here](https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/92717539/docs/supported.html) or [guides](/guides/Supported.md)
+
+### 5. Example of usage
 
 For more examples, check out our example project.
 
@@ -79,6 +83,8 @@ To trigger mocks generation, run `rake mock` from root directory. For watcher mo
 # Documentation
 
 Full documentation is available [here](https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/92717539/docs/index.html), as well as through *docs* directory.
+
+Guides - [Table of contents](guides/Contents.md)
 
 # How to start using SwiftyMocky
 

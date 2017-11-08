@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Comparing with Matcher  Reference</title>
+    <title>Other Guides  Reference</title>
     <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,10 +10,10 @@
     
   </head>
   <body>
-    <a title="Comparing with Matcher  Reference"></a>
+    <a title="Other Guides  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">SwiftyMocky Docs</a> (73% documented)</p>
+        <p><a href="index.html">SwiftyMocky Docs</a> (74% documented)</p>
         <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -21,7 +21,7 @@
       <p id="breadcrumbs">
         <a href="index.html">SwiftyMocky Reference</a>
         <img id="carat" src="img/carat.png" />
-        Comparing with Matcher  Reference
+        Other Guides  Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -34,16 +34,22 @@
                 <a href="overview.html">Overview</a>
               </li>
               <li class="nav-group-task">
+                <a href="supported-features.html">Supported features</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="installation.html">Installation</a>
               </li>
               <li class="nav-group-task">
                 <a href="setup-in-project.html">Setup in project</a>
               </li>
               <li class="nav-group-task">
-                <a href="comparing-with-matcher.html">Comparing with Matcher</a>
+                <a href="matcher-support-for-not-equatable.html">Matcher support for not Equatable</a>
               </li>
               <li class="nav-group-task">
                 <a href="examples.html">Examples</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="known-issues.html">Known issues</a>
               </li>
             </ul>
           </li>
@@ -68,13 +74,33 @@
                 <a href="Global methods.html#/s:11SwiftyMocky5Givenyx_ABQztAA4MockRzlF">Given(_:_:)</a>
               </li>
               <li class="nav-group-task">
+                <a href="Global methods.html#/s:11SwiftyMocky5Givenyxm_06StaticC0QztAA0D4MockRzlF">Given(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Global methods.html#/s:11SwiftyMocky7Performyx_ABQztAA4MockRzlF">Perform(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global methods.html#/s:11SwiftyMocky7Performyxm_06StaticC0QztAA0D4MockRzlF">Perform(_:_:)</a>
               </li>
               <li class="nav-group-task">
                 <a href="Global methods.html#/s:11SwiftyMocky6Verifyyx_ABQzs12StaticStringV4fileSu4linetAA4MockRzlF">Verify(_:_:file:line:)</a>
               </li>
               <li class="nav-group-task">
+                <a href="Global methods.html#/s:11SwiftyMocky6Verifyyxm_06StaticC0Qzs0D6StringV4fileSu4linetAA0D4MockRzlF">Verify(_:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Global methods.html#/s:11SwiftyMocky6Verifyyx_SuABQzs12StaticStringV4fileSu4linetAA4MockRzlF">Verify(_:_:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global methods.html#/s:11SwiftyMocky6Verifyyxm_Su06StaticC0Qzs0D6StringV4fileSu4linetAA0D4MockRzlF">Verify(_:_:_:file:line:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other Guides.html">Other Guides</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="contents.html">Contents</a>
               </li>
             </ul>
           </li>
@@ -99,44 +125,11 @@
       <article class="main-content">
         <section>
           <section class="section">
-            
-            <h2 id='matcher-handling-parameters-that-are-not-equatable' class='heading'>Matcher - handling parameters that are not Equatable</h2>
+            <h1>Other Guides</h1>
+            <p>The following guides are available globally.</p>
 
-<p>In some cases there is a need to specify return value (by <code>Given</code>) for a method, which parameters are not <strong><em>Equatable</em></strong>, or check (by Verify), whether a method was called with specific attribute which is not <strong><em>Equatable</em></strong>.</p>
-
-<p>If you try to perform Given or Verify for explicit parameter, whereas its type is not Equatable, <strong>fatalError</strong> will occur. There are two options to handle attributes types, that are not <strong><em>Equatable</em></strong>:</p>
-
-<p><strong>1) Use only wildcard .any parameters, or adopt Equatable</strong></p>
-
-<p>Sometimes .any is enough, or you can provide Equatable implementation.</p>
-
-<p><strong>2) Register comparator for that type in Matcher</strong></p>
-
-<p>Every Mock has <code>matcher</code> variable, which is <code>Matcher.default</code> singleton instance by default.</p>
-
-<p>Usage of <strong>Matcher</strong>:</p>
-<pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">User</span> <span class="p">{</span>
-  <span class="k">let</span> <span class="nv">id</span><span class="p">:</span> <span class="kt">String</span>
-  <span class="k">let</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span>
-<span class="p">}</span>
-
-<span class="c1">// ...</span>
-
-<span class="k">override</span> <span class="kd">func</span> <span class="nf">setUp</span><span class="p">()</span> <span class="p">{</span>
-  <span class="c1">// register all comparators for custom, non equatable attributes</span>
-  <span class="kt">Matcher</span><span class="o">.</span><span class="k">default</span><span class="o">.</span><span class="nf">register</span><span class="p">(</span><span class="kt">User</span><span class="o">.</span><span class="k">self</span><span class="p">)</span> <span class="p">{</span> <span class="n">lhs</span><span class="p">,</span><span class="n">rhs</span> <span class="o">-&gt;</span> <span class="kt">Bool</span> <span class="k">in</span>
-      <span class="k">return</span> <span class="n">lhs</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">rhs</span><span class="o">.</span><span class="n">id</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-
-<span class="kd">func</span> <span class="nf">testFetchUserDetails</span><span class="p">()</span> <span class="p">{</span>
-  <span class="c1">//...</span>
-  <span class="k">let</span> <span class="nv">john</span> <span class="o">=</span> <span class="kt">User</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="s">"Johny123"</span><span class="p">,</span> <span class="nv">name</span><span class="p">:</span> <span class="s">"Johny"</span><span class="p">)</span>
-  <span class="c1">// now we can safely verify explicit parameter</span>
-  <span class="kt">Verify</span><span class="p">(</span><span class="n">mockNetwork</span><span class="p">,</span> <span class="o">.</span><span class="nf">fetchUserDetails</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="n">john</span><span class="p">)))</span>
-<span class="p">}</span>
-</code></pre>
-
+          </section>
+          <section class="section task-group-section">
           </section>
         </section>
         <section id="footer">

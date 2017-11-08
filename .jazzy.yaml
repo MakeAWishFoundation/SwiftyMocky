@@ -12,9 +12,10 @@ custom_categories:
   - name: Guides
     children:
       - Overview
+      - Supported features
       - Installation
       - Setup in project
-      - Comparing with Matcher
+      - Matcher support for not Equatable
       - Examples
       - Known issues
 

@@ -157,7 +157,7 @@ class ExampleTests: XCTestCase {
         Verify(AMassiveTestProtocolMock.self, .methodThatReturnsAndThrows(param: .value("anything")))
         XCTAssertEqual(value, 1)
         waitForExpectations(timeout: 1) { error in
-            if let error = error {
+            if let _ = error {
                 XCTFail()
             }
         }

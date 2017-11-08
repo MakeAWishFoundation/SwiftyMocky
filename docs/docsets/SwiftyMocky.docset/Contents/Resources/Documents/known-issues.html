@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Other Extensions  Reference</title>
+    <title>Known issues  Reference</title>
     <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,7 +10,7 @@
     
   </head>
   <body>
-    <a title="Other Extensions  Reference"></a>
+    <a title="Known issues  Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="index.html">SwiftyMocky Docs</a> (74% documented)</p>
@@ -21,7 +21,7 @@
       <p id="breadcrumbs">
         <a href="index.html">SwiftyMocky Reference</a>
         <img id="carat" src="img/carat.png" />
-        Other Extensions  Reference
+        Known issues  Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -125,42 +125,12 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>Other Extensions</h1>
-            <p>The following extensions are available globally.</p>
+            
+            <h1 id='known-issues' class='heading'>Known issues</h1>
+<h2 id='1-when-triggering-generation-error-about-modules-in-different-swift-versions-appears' class='heading'>1. When triggering generation - error about modules in different swift versions appears</h2>
 
-          </section>
-          <section class="section task-group-section">
-            <div class="task-group">
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:Sq"></a>
-                    <a name="//apple_ref/swift/Extension/Optional" class="dashAnchor"></a>
-                    <a class="token" href="#/s:Sq">Optional</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        
-                        <a href="Extensions/Optional.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">enum</span> <span class="kt">Optional</span><span class="o">&lt;</span><span class="kt">Wrapped</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">ExpressibleByNilLiteral</span></code></pre>
+<p>This seems to be a problem with dependency to Sourcery, which, for some case, event if included as dependency in Pods, does not use project swift version setting. Use swift version support branches, or download/build Sourcery binary manually</p>
 
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
           </section>
         </section>
         <section id="footer">

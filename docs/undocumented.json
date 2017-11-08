@@ -1,6 +1,13 @@
 {
   "warnings": [
     {
+      "file": "/Users/andrzejmichnia/Projekty/Pods/SwiftyMocky/Sources/Classes/Mock.swift",
+      "line": 67,
+      "symbol": "StaticMock",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
       "file": "/Users/andrzejmichnia/Projekty/Pods/SwiftyMocky/Sources/Classes/Parameter.swift",
       "line": 28,
       "symbol": "Parameter._",

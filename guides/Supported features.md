@@ -1,6 +1,6 @@
 # Supported features
 
-### Generation:
+## Generation:
 
 All supported ways of generating mocks. Handling mockable types:
 
@@ -12,7 +12,7 @@ All supported ways of generating mocks. Handling mockable types:
 - [x] support objc protocols (with special protocol/annotation)
 - [ ] support generic protocols
 
-### Stubbing:
+## Stubbing:
 
 Support for stubbing protocol members:
 
@@ -23,7 +23,7 @@ Support for stubbing protocol members:
     - [ ] with return as Swift.Never
     - [x] that throws
     - [x] that rethrows
-- [ ] stubbing static methods
+- [x] stubbing static methods
 - [ ] stubbing generic methods
 - [x] stubbing variables (with get, set)
     - [x] instance variables
@@ -31,13 +31,13 @@ Support for stubbing protocol members:
     - [x] optional
     - [x] implicitly unwrapped optional
 - [ ] handling associated types
-- [ ] wrapping method attributes as Parameter
+- [x] wrapping method attributes as Parameter
     - [x] basic types
     - [x] closures
     - [x] @escaping closures
     - [x] typealiases
 
-### Given
+## Given
 
 Usage of Given to specify return value and error thrown for stubbed methods:
 
@@ -51,11 +51,11 @@ Usage of Given to specify return value and error thrown for stubbed methods:
 - [x] return value for instance stub
 - [x] error thrown for instance stub
 - [ ] error thrown for instance stubs that rethrows
-- [ ] return value for static stubs
-- [ ] error thrown for static stubs
+- [x] return value for static stubs
+- [x] error thrown for static stubs
 - [ ] error thrown for static stubs, that rethrows
 
-### Perform
+## Perform
 
 Usage of Perform to execute closure, when stubbed method is called:
 
@@ -67,9 +67,9 @@ Usage of Perform to execute closure, when stubbed method is called:
     - [x] ValueType is not Equatable - **when registered comparator in Matcher**
     - [x] ValueType is Equatable is `@escaping` closure - **when registered comparator in Matcher**
     - [ ] **!!!** ValueType is not `@escaping` closure - **always handled as** `.any`
-- [ ] expect perform closure for static stubs
+- [x] expect perform closure for static stubs
 
-### Verify
+## Verify
 
 Usage of Verify to check, whether specific stubbed method was called on Mock
 
@@ -82,3 +82,4 @@ Usage of Verify to check, whether specific stubbed method was called on Mock
     - [ ] **!!!** ValueType is not `@escaping` closure - **always handled as** `.any`
 - [x] verify if called at least once
 - [x] verify if called exactly number of times
+- [x] verify for static methods
