@@ -85,7 +85,7 @@ class ExampleTests: XCTestCase {
     }
 
     func testGiven_with_throwing() {
-        let mock = ProtocolWithThrowingMethodsMock()
+        let mock = AMassiveTestProtocolMock()
 
         Given(mock, .methodThatThrows(willThrow: TestError.first))
 
@@ -141,6 +141,25 @@ class ExampleTests: XCTestCase {
             XCTAssertEqual(value, 1)
         } catch {
             XCTFail("Should not fail")
+        }
+    }
+
+    func testAll_static_calls() {
+        let perform = expectation(description: "Should perform")
+        Given(AMassiveTestProtocolMock.self, .methodThatReturnsAndThrows(param: .any, willReturn: 1))
+        Perform(AMassiveTestProtocolMock.self, .methodThatThrows(perform: {
+            perform.fulfill()
+        }))
+        try? AMassiveTestProtocolMock.methodThatThrows()
+        Verify(AMassiveTestProtocolMock.self, .methodThatThrows())
+
+        let value = try? AMassiveTestProtocolMock.methodThatReturnsAndThrows(param: "anything")
+        Verify(AMassiveTestProtocolMock.self, .methodThatReturnsAndThrows(param: .value("anything")))
+        XCTAssertEqual(value, 1)
+        waitForExpectations(timeout: 1) { error in
+            if let error = error {
+                XCTFail()
+            }
         }
     }
 }

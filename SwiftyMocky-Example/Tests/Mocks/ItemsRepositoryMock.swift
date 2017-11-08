@@ -15,64 +15,58 @@ import RxSwift
 // sourcery: mock = "ItemsRepository"
 class ItemsRepositoryMock: ItemsRepository, Mock {
 // sourcery:inline:auto:ItemsRepositoryMock.autoMocked
-//swiftlint:disable force_cast
-//swiftlint:disable function_body_length
-//swiftlint:disable line_length
-//swiftlint:disable vertical_whitespace
-
-    fileprivate var invocations: [MethodType] = []
-    var methodReturnValues: [Given] = []
-    var methodPerformValues: [Perform] = []
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
 
-    //MARK : ItemsRepository
 
     func storeItems(items: [Item]) {
-        addInvocation(.storeItems__items_items(.value(items)))
-		let perform = methodPerformValue(.storeItems__items_items(.value(items))) as? ([Item]) -> Void
+        addInvocation(.istoreItems__items_items(.value(items)))
+		let perform = methodPerformValue(.istoreItems__items_items(.value(items))) as? ([Item]) -> Void
 		perform?(items)
     }
 
     func storeDetails(details: ItemDetails) {
-        addInvocation(.storeDetails__details_details(.value(details)))
-		let perform = methodPerformValue(.storeDetails__details_details(.value(details))) as? (ItemDetails) -> Void
+        addInvocation(.istoreDetails__details_details(.value(details)))
+		let perform = methodPerformValue(.istoreDetails__details_details(.value(details))) as? (ItemDetails) -> Void
 		perform?(details)
     }
 
     func storedItems() -> [Item]? {
-        addInvocation(.storedItems)
-		let perform = methodPerformValue(.storedItems) as? () -> Void
+        addInvocation(.istoredItems)
+		let perform = methodPerformValue(.istoredItems) as? () -> Void
 		perform?()
-		let value = methodReturnValue(.storedItems) as? [Item]?
+		let value = methodReturnValue(.istoredItems) as? [Item]?
 		return value.orFail("stub return value not specified for storedItems(). Use given")
     }
 
     func storedDetails(item: Item) -> ItemDetails? {
-        addInvocation(.storedDetails__item_item(.value(item)))
-		let perform = methodPerformValue(.storedDetails__item_item(.value(item))) as? (Item) -> Void
+        addInvocation(.istoredDetails__item_item(.value(item)))
+		let perform = methodPerformValue(.istoredDetails__item_item(.value(item))) as? (Item) -> Void
 		perform?(item)
-		let value = methodReturnValue(.storedDetails__item_item(.value(item))) as? ItemDetails?
+		let value = methodReturnValue(.istoredDetails__item_item(.value(item))) as? ItemDetails?
 		return value.orFail("stub return value not specified for storedDetails(item: Item). Use given")
     }
 
     fileprivate enum MethodType {
-        case storeItems__items_items(Parameter<[Item]>)
-        case storeDetails__details_details(Parameter<ItemDetails>)
-        case storedItems
-        case storedDetails__item_item(Parameter<Item>)
+        case istoreItems__items_items(Parameter<[Item]>)
+        case istoreDetails__details_details(Parameter<ItemDetails>)
+        case istoredItems
+        case istoredDetails__item_item(Parameter<Item>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.storeItems__items_items(let lhsItems), .storeItems__items_items(let rhsItems)): 
-                guard Parameter.compare(lhs: lhsItems, rhs: rhsItems, with: matcher) else { return false } 
+                case (.istoreItems__items_items(let lhsItems), .istoreItems__items_items(let rhsItems)): 
+                    guard Parameter.compare(lhs: lhsItems, rhs: rhsItems, with: matcher) else { return false } 
                     return true 
-                case (.storeDetails__details_details(let lhsDetails), .storeDetails__details_details(let rhsDetails)): 
-                guard Parameter.compare(lhs: lhsDetails, rhs: rhsDetails, with: matcher) else { return false } 
+                case (.istoreDetails__details_details(let lhsDetails), .istoreDetails__details_details(let rhsDetails)): 
+                    guard Parameter.compare(lhs: lhsDetails, rhs: rhsDetails, with: matcher) else { return false } 
                     return true 
-                case (.storedItems, .storedItems): 
+                case (.istoredItems, .istoredItems): 
                     return true 
-                case (.storedDetails__item_item(let lhsItem), .storedDetails__item_item(let rhsItem)): 
-                guard Parameter.compare(lhs: lhsItem, rhs: rhsItem, with: matcher) else { return false } 
+                case (.istoredDetails__item_item(let lhsItem), .istoredDetails__item_item(let rhsItem)): 
+                    guard Parameter.compare(lhs: lhsItem, rhs: rhsItem, with: matcher) else { return false } 
                     return true 
                 default: return false
             }
@@ -80,10 +74,10 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
 
         func intValue() -> Int {
             switch self {
-                case let .storeItems__items_items(p0): return p0.intValue
-                case let .storeDetails__details_details(p0): return p0.intValue
-                case .storedItems: return 0
-                case let .storedDetails__item_item(p0): return p0.intValue
+                case let .istoreItems__items_items(p0): return p0.intValue
+                case let .istoreDetails__details_details(p0): return p0.intValue
+                case .istoredItems: return 0
+                case let .istoredDetails__item_item(p0): return p0.intValue
             }
         }
     }
@@ -100,10 +94,10 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         }
 
         static func storedItems(willReturn: [Item]?) -> Given {
-            return Given(method: .storedItems, returns: willReturn, throws: nil)
+            return Given(method: .istoredItems, returns: willReturn, throws: nil)
         }
         static func storedDetails(item: Parameter<Item>, willReturn: ItemDetails?) -> Given {
-            return Given(method: .storedDetails__item_item(item), returns: willReturn, throws: nil)
+            return Given(method: .istoredDetails__item_item(item), returns: willReturn, throws: nil)
         }
     }
 
@@ -111,16 +105,16 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         fileprivate var method: MethodType
 
         static func storeItems(items: Parameter<[Item]>) -> Verify {
-            return Verify(method: .storeItems__items_items(items))
+            return Verify(method: .istoreItems__items_items(items))
         }
         static func storeDetails(details: Parameter<ItemDetails>) -> Verify {
-            return Verify(method: .storeDetails__details_details(details))
+            return Verify(method: .istoreDetails__details_details(details))
         }
         static func storedItems() -> Verify {
-            return Verify(method: .storedItems)
+            return Verify(method: .istoredItems)
         }
         static func storedDetails(item: Parameter<Item>) -> Verify {
-            return Verify(method: .storedDetails__item_item(item))
+            return Verify(method: .istoredDetails__item_item(item))
         }
     }
 
@@ -129,16 +123,16 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         var performs: Any
 
         static func storeItems(items: Parameter<[Item]>, perform: ([Item]) -> Void) -> Perform {
-            return Perform(method: .storeItems__items_items(items), performs: perform)
+            return Perform(method: .istoreItems__items_items(items), performs: perform)
         }
         static func storeDetails(details: Parameter<ItemDetails>, perform: (ItemDetails) -> Void) -> Perform {
-            return Perform(method: .storeDetails__details_details(details), performs: perform)
+            return Perform(method: .istoreDetails__details_details(details), performs: perform)
         }
         static func storedItems(perform: () -> Void) -> Perform {
-            return Perform(method: .storedItems, performs: perform)
+            return Perform(method: .istoredItems, performs: perform)
         }
         static func storedDetails(item: Parameter<Item>, perform: (Item) -> Void) -> Perform {
-            return Perform(method: .storedDetails__item_item(item), performs: perform)
+            return Perform(method: .istoredDetails__item_item(item), performs: perform)
         }
     }
 
