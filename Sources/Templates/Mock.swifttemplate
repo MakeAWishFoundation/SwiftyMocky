@@ -2,90 +2,126 @@
 #if Mocky
 import SwiftyMocky
 import XCTest
-<%_ if let imported = arguments["import"] as? String { -%>
-    <%_ %>import <%= imported %>
-<%_ } -%>
-<%_ if let allimported = arguments["import"] as? [String] { -%>
-    <%_ for imported in allimported { -%>
+<%# ================================================== IMPORTS -%><%_ -%>
+    <%_ if let imported = arguments["import"] as? String { -%>
         <%_ %>import <%= imported %>
     <%_ } -%>
-<%_ } -%>
-<%_ if let tested = arguments["testable"] as? String { -%>
-    <%_ %>@testable import <%= tested %>
-<%_ } -%>
-<%_ if let alltested = arguments["testable"] as? [String] { -%>
-    <%_ for tested in alltested { -%>
+    <%_ if let allimported = arguments["import"] as? [String] { -%>
+        <%_ for imported in allimported { -%>
+            <%_ %>import <%= imported %>
+        <%_ } -%>
+    <%_ } -%>
+    <%_ if let tested = arguments["testable"] as? String { -%>
         <%_ %>@testable import <%= tested %>
     <%_ } -%>
-<%_ } -%>
+    <%_ if let alltested = arguments["testable"] as? [String] { -%>
+        <%_ for tested in alltested { -%>
+            <%_ %>@testable import <%= tested %>
+        <%_ } -%>
+    <%_ } -%>
 #else
 import Sourcery
 import SourceryRuntime
 #endif
 
-<%# SwiftLint -%><%_ -%>
+<%# ================================================== SwiftLint -%><%_ -%>
 <%_ if let rules = arguments["excludedSwiftLintRules"] as? [String] { -%>
     <%_ for rule in rules { -%>
     <%_ %>//swiftlint:disable <%= rule %>
     <%_ } -%>
 <%_ } -%>
 
-<%# Helper methods -%><%_ -%>
+<%# ================================================== HELPERS -%><%_ -%>
 <%_
-    func uniques(methods: [SourceryRuntime.Method]) -> [SourceryRuntime.Method] {
-        func areSameParams(_ p1: SourceryRuntime.MethodParameter, _ p2: SourceryRuntime.MethodParameter) -> Bool {
-            guard p1.argumentLabel == p2.argumentLabel else { return false }
-            guard p1.name == p2.name else { return false }
-            guard p1.argumentLabel == p2.argumentLabel else { return false }
-            guard p1.typeName.name == p2.typeName.name else { return false }
-            guard p1.actualTypeName?.name == p2.actualTypeName?.name else { return false }
-            return true
+    class TypeWrapper {
+        let type: SourceryRuntime.TypeName
+
+        var unwrapped: String {
+            return type.unwrappedTypeName
+        }
+        var stripped: String {
+            if type.isImplicitlyUnwrappedOptional {
+                return type.isClosure ? "(\(unwrapped))!" : "\(unwrapped)!"
+            } else if type.isOptional {
+                return type.isClosure ? "(\(unwrapped))?" : "\(unwrapped)?"
+            } else {
+                return unwrapped
+            }
         }
 
-        func areSameMethods(_ m1: SourceryRuntime.Method, _ m2: SourceryRuntime.Method) -> Bool {
-            guard m1.name != m2.name else { return true }
-            guard m1.selectorName == m2.selectorName else { return false }
-            guard m1.parameters.count == m2.parameters.count else { return false }
+        init(_ type: SourceryRuntime.TypeName) {
+            self.type = type
+        }
 
-            let p1 = m1.parameters
-            let p2 = m2.parameters
+        func isGeneric(_ types: [String]) -> Bool {
+            guard !type.isVoid else { return false }
 
-            for i in 0..<p1.count {
-                if !areSameParams(p1[i],p2[i]) { return false }
+            if types.contains(unwrapped) {
+                return true
+            } else if let tuple = type.tuple {
+                for element in tuple.elements {
+                    guard !TypeWrapper(element.typeName).isGeneric(types) else { return true }
+                }
+            } else if let array = type.array {
+                return TypeWrapper(array.elementTypeName).isGeneric(types)
+            } else if let dictionary = type.dictionary {
+                guard !TypeWrapper(dictionary.valueTypeName).isGeneric(types) else { return true }
+                guard !TypeWrapper(dictionary.keyTypeName).isGeneric(types) else { return true }
+            } else if let closure = type.closure {
+                guard !TypeWrapper(closure.actualReturnTypeName).isGeneric(types) else { return true }
+                guard !TypeWrapper(closure.actualReturnTypeName).isGeneric(types) else { return true }
+                for parameter in closure.parameters {
+                    guard !ParameterWrapper(parameter).isGeneric(types) else { return true }
+                }
             }
 
-            return true
+            return false
         }
-
-        return methods.reduce([], { (result, element) -> [SourceryRuntime.Method] in
-            guard !result.contains(where: { areSameMethods($0,element) }) else { return result }
-            return result + [element]
-        })
-    }
-
-    func uniques(variables: [SourceryRuntime.Variable]) -> [SourceryRuntime.Variable] {
-        return variables.reduce([], { (result, element) -> [SourceryRuntime.Variable] in
-            guard !result.contains(where: { $0.name == element.name }) else { return result }
-            return result + [element]
-        })
     }
 
     class ParameterWrapper {
         let parameter: MethodParameter
+
+        var wrappedForCall: String {
+            let typeString = "\(type.actualTypeName ?? type)"
+            let isEscaping = typeString.contains("@escaping")
+            let isOptional = (type.actualTypeName ?? type).isOptional
+            if parameter.isClosure, !isEscaping, !isOptional {
+                return "\(wrappedType).any"
+            } else {
+                return "\(wrappedType).value(\(name))"
+            }
+        }
+        var wrappedType: String {
+            return "Parameter<\(TypeWrapper(type).stripped)>"
+        }
+        var genericType: String {
+            return "Parameter<GenericAttribute>"
+        }
+        var type: SourceryRuntime.TypeName {
+            return parameter.typeName
+        }
+        var name: String {
+            return parameter.name
+        }
+        var comparator: String {
+            return "guard Parameter.compare(lhs: lhs\(parameter.name.capitalized), rhs: rhs\(parameter.name.capitalized), with: matcher) else { return false }"
+        }
+
         init(_ parameter: SourceryRuntime.MethodParameter) {
             self.parameter = parameter
         }
 
-        var wrappedType: String {
-            get {
-                return "Parameter<\(parameter.typeName.name)>"
-            }
+        func isGeneric(_ types: [String]) -> Bool {
+            return TypeWrapper(type).isGeneric(types)
         }
 
-        var comparator: String {
-            get {
-                return "guard Parameter.compare(lhs: lhs\(parameter.name.capitalized), rhs: rhs\(parameter.name.capitalized), with: matcher) else { return false }"
-            }
+        func wrappedForProxy(_ generics: [String]) -> String {
+            return isGeneric(generics) ? "\(name).wrapAsGeneric()" : "\(name)"
+        }
+
+        func wrappedForCalls(_ generics: [String]) -> String {
+            return isGeneric(generics) ? "\(wrappedForCall).wrapAsGeneric()" : "\(wrappedForCall)"
         }
     }
 
@@ -142,9 +178,7 @@ import SourceryRuntime
                     rawName.replaceSubrange(range, with: "_\(name)")
                 }
 
-                return  rawName
-                    .replacingOccurrences(of: "___", with: "__")
-                    .trimmingCharacters(in: CharacterSet(charactersIn: "_"))
+                return  rawName.replacingOccurrences(of: "___", with: "__").trimmingCharacters(in: CharacterSet(charactersIn: "_"))
             }
         }
         private var uniqueName: String {
@@ -157,14 +191,12 @@ import SourceryRuntime
                     rawName.replaceSubrange(range, with: "_\(name)")
                 }
 
-                return rawName
-                    .trimmingCharacters(in: CharacterSet(charactersIn: "_"))
+                return rawName.trimmingCharacters(in: CharacterSet(charactersIn: "_"))
             }
         }
         private var nameSuffix: String {
             guard let count = MethodWrapper.registered[registrationName] else { return "" }
             guard count > 1 else { return "" }
-
             guard let index = MethodWrapper.suffixes[uniqueName] else { return "" }
             return "_\(index)"
         }
@@ -201,8 +233,7 @@ import SourceryRuntime
             if method.parameters.isEmpty {
                 return "addInvocation(.\(prototype))"
             } else {
-                let parameters = parametersForMethodCall()
-                return "addInvocation(.\(prototype)(\(parameters)))"
+                return "addInvocation(.\(prototype)(\(parametersForMethodCall())))"
             }
         }
         var throwValue: String {
@@ -211,8 +242,7 @@ import SourceryRuntime
             if method.parameters.isEmpty {
                 return "\n\t\tif let error = methodThrowValue(.\(prototype)) { throw error }"
             } else {
-                let parameters = parametersForMethodCall()
-                return "\n\t\tif let error = methodThrowValue(.\(prototype)(\(parameters))) { throw error }"
+                return "\n\t\tif let error = methodThrowValue(.\(prototype)(\(parametersForMethodCall()))) { throw error }"
             }
         }
         var returnValue: String {
@@ -225,8 +255,7 @@ import SourceryRuntime
                 return "\n\t\tlet value = methodReturnValue(.\(prototype)) as? \(method.returnTypeName)\n" +
                 "\t\treturn value.orFail(\"\(message)\")"
             } else {
-                let parameters = parametersForMethodCall()
-                return "\n\t\tlet value = methodReturnValue(.\(prototype)(\(parameters))) as? \(method.returnTypeName)\n" +
+                return "\n\t\tlet value = methodReturnValue(.\(prototype)(\(parametersForMethodCall()))) as? \(method.returnTypeName)\n" +
                 "\t\treturn value.orFail(\"\(message)\")"
             }
         }
@@ -277,14 +306,28 @@ import SourceryRuntime
         }
 
         func methodDeclarationWithParameters() -> String {
-            guard !method.parameters.isEmpty else { return prototype }
+            guard !method.parameters.isEmpty else { return "\(prototype)" }
+            return "\(prototype)(\(parametersForMethodTypeDeclaration()))"
+        }
 
-            let parameters = method.parameters
-            .map {  return "Parameter<\(strip($0.typeName.name))>" }
-            .joined(separator: ", ")
-            .replacingOccurrences(of: "@escaping", with: "")
+        private func isGeneric() -> Bool {
+            return method.shortName.contains("<") && method.shortName.contains(">")
+        }
 
-            return "\(prototype)(\(parameters))"
+        private func getGenerics() -> [String] {
+            let name = method.shortName
+            guard let start = name.index(of: "<"), let end = name.index(of: ">") else { return [] }
+
+            var genPart = name[start...end]
+            genPart.removeFirst()
+            genPart.removeLast()
+
+            let parts = genPart.replacingOccurrences(of: " ", with: "").characters.split(separator: ",").map(String.init)
+            return parts.map { stripGenPart(part: $0) }
+        }
+
+        private func stripGenPart(part: String) -> String {
+            return part.characters.split(separator: ":").map(String.init).first!
         }
 
         func wrappedInMethodType() -> Bool {
@@ -296,19 +339,7 @@ import SourceryRuntime
             if method.parameters.isEmpty {
                 return "static func \(method.shortName)(willReturn: \(method.returnTypeName)) -> \(prefix)Given"
             } else {
-                let functionParameters = method.parameters.map {
-                    let paramType = strip("\($0.typeName)")
-                    guard let argumentLabel = $0.argumentLabel else {
-                        return "\($0.name): Parameter<\(paramType)>"
-                    }
-
-                    guard argumentLabel != $0.name else {
-                        return "\($0.name): Parameter<\(paramType)>"
-                    }
-
-                    return "\(argumentLabel) \($0.name): Parameter<\(paramType)>"
-                }.joined(separator: ", ")
-                return "static func \(method.shortName)(\(functionParameters), willReturn: \(method.returnTypeName)) -> \(prefix)Given"
+                return "static func \(method.shortName)(\(parametersForProxySignature()), willReturn: \(method.returnTypeName)) -> \(prefix)Given"
             }
         }
 
@@ -316,19 +347,7 @@ import SourceryRuntime
             if method.parameters.isEmpty {
                 return "static func \(method.shortName)(willThrow: Error) -> \(prefix)Given"
             } else {
-                let functionParameters = method.parameters.map {
-                    let paramType = strip("\($0.typeName)")
-                    guard let argumentLabel = $0.argumentLabel else {
-                        return "\($0.name): Parameter<\(paramType)>"
-                    }
-
-                    guard argumentLabel != $0.name else {
-                        return "\($0.name): Parameter<\(paramType)>"
-                    }
-
-                    return "\(argumentLabel) \($0.name): Parameter<\(paramType)>"
-                }.joined(separator: ", ")
-                return "static func \(method.shortName)(\(functionParameters), willThrow: Error) -> \(prefix)Given"
+                return "static func \(method.shortName)(\(parametersForProxySignature()), willThrow: Error) -> \(prefix)Given"
             }
         }
 
@@ -336,8 +355,7 @@ import SourceryRuntime
             if method.parameters.isEmpty {
                 return "return \(prefix)Given(method: .\(prototype), returns: willReturn, throws: nil)"
             } else {
-                let parameters = method.parameters.map { "\($0.name)" }.joined(separator: ", ")
-                return "return \(prefix)Given(method: .\(prototype)(\(parameters)), returns: willReturn, throws: nil)"
+                return "return \(prefix)Given(method: .\(prototype)(\(parametersForProxyInit())), returns: willReturn, throws: nil)"
             }
         }
 
@@ -345,8 +363,7 @@ import SourceryRuntime
             if method.parameters.isEmpty {
                 return "return \(prefix)Given(method: .\(prototype), returns: nil, throws: willThrow)"
             } else {
-                let parameters = method.parameters.map { "\($0.name)" }.joined(separator: ", ")
-                return "return \(prefix)Given(method: .\(prototype)(\(parameters)), returns: nil, throws: willThrow)"
+                return "return \(prefix)Given(method: .\(prototype)(\(parametersForProxyInit())), returns: nil, throws: willThrow)"
             }
         }
 
@@ -355,19 +372,7 @@ import SourceryRuntime
             if method.parameters.isEmpty {
                 return "static func \(method.shortName)() -> \(prefix)Verify"
             } else {
-                let functionParameters = method.parameters.map {
-                    let paramType = strip("\($0.typeName)")
-                    guard let argumentLabel = $0.argumentLabel else {
-                        return "\($0.name): Parameter<\(paramType)>"
-                    }
-
-                    guard argumentLabel != $0.name else {
-                        return "\($0.name): Parameter<\(paramType)>"
-                    }
-
-                    return "\(argumentLabel) \($0.name): Parameter<\(paramType)>"
-                }.joined(separator: ", ")
-                return "static func \(method.shortName)(\(functionParameters)) -> \(prefix)Verify"
+                return "static func \(method.shortName)(\(parametersForProxySignature())) -> \(prefix)Verify"
             }
         }
 
@@ -375,8 +380,7 @@ import SourceryRuntime
             if method.parameters.isEmpty {
                 return "return \(prefix)Verify(method: .\(prototype))"
             } else {
-                let parameters = method.parameters.map { "\($0.name)" }.joined(separator: ", ")
-                return "return \(prefix)Verify(method: .\(prototype)(\(parameters)))"
+                return "return \(prefix)Verify(method: .\(prototype)(\(parametersForProxyInit())))"
             }
         }
 
@@ -385,19 +389,7 @@ import SourceryRuntime
             if method.parameters.isEmpty {
                 return "static func \(method.shortName)(perform: \(performProxyClosureType())) -> \(prefix)Perform"
             } else {
-                let functionParameters = method.parameters.map {
-                    let paramType = strip("\($0.typeName)")
-                    guard let argumentLabel = $0.argumentLabel else {
-                        return "\($0.name): Parameter<\(paramType)>"
-                    }
-
-                    guard argumentLabel != $0.name else {
-                        return "\($0.name): Parameter<\(paramType)>"
-                    }
-
-                    return "\(argumentLabel) \($0.name): Parameter<\(paramType)>"
-                }.joined(separator: ", ")
-                return "static func \(method.shortName)(\(functionParameters), perform: \(performProxyClosureType())) -> \(prefix)Perform"
+                return "static func \(method.shortName)(\(parametersForProxySignature()), perform: \(performProxyClosureType())) -> \(prefix)Perform"
             }
         }
 
@@ -405,8 +397,7 @@ import SourceryRuntime
             if method.parameters.isEmpty {
                 return "return \(prefix)Perform(method: .\(prototype), performs: perform)"
             } else {
-                let parameters = method.parameters.map { "\($0.name)" }.joined(separator: ", ")
-                return "return \(prefix)Perform(method: .\(prototype)(\(parameters)), performs: perform)"
+                return "return \(prefix)Perform(method: .\(prototype)(\(parametersForProxyInit())), performs: perform)"
             }
         }
 
@@ -414,8 +405,8 @@ import SourceryRuntime
             if method.parameters.isEmpty {
                 return "() -> Void"
             } else {
-                let parameters = method.parameters
-                .map { "\($0.typeName)" }
+                let parameters = self.parameters
+                .map { "\($0.type)" }
                 .joined(separator: ", ")
                 return "(\(parameters)) -> Void"
             }
@@ -433,24 +424,7 @@ import SourceryRuntime
         func performCall() -> String {
             guard !method.isInitializer else { return "" }
             let type = performProxyClosureType()
-            var proxy = ""
-
-            if method.parameters.isEmpty {
-                proxy = "\(prototype)"
-            } else {
-                let parameters = method.parameters.map { param in
-                  let typeString = "\(param.actualTypeName ?? param.typeName)"
-                  let isEscaping = typeString.contains("@escaping")
-                  let isOptional = (param.actualTypeName ?? param.typeName).isOptional
-                  if param.isClosure, !isEscaping, !isOptional {
-                    let type = strip("\(param.typeName)")
-                    return "Parameter<\(type)>.any"
-                  } else {
-                    return ".value(\(param.name))"
-                  }
-                }.joined(separator: ", ")
-                proxy = "\(prototype)(\(parameters))"
-            }
+            var proxy = method.parameters.isEmpty ? "\(prototype)" : "\(prototype)(\(parametersForMethodCall()))"
 
             let cast = "let perform = methodPerformValue(.\(proxy)) as? \(type)"
             let call = performProxyClosureCall()
@@ -458,23 +432,68 @@ import SourceryRuntime
             return "\n\t\t\(cast)\n\t\t\(call)"
         }
 
-        private func strip(_ type: String) -> String {
-            return type.replacingOccurrences(of: "@escaping", with: "").replacingOccurrences(of: "@autoclosure", with: "")
+        private func parametersForMethodCall() -> String {
+            let generics = getGenerics()
+            return parameters.map { $0.wrappedForCalls(generics) }.joined(separator: ", ")
         }
 
-        private func parametersForMethodCall() -> String {
-            return method.parameters.map { param in
-                let typeString = "\(param.actualTypeName ?? param.typeName)"
-                let isEscaping = typeString.contains("@escaping")
-                let isOptional = (param.actualTypeName ?? param.typeName).isOptional
-                if param.isClosure, !isEscaping, !isOptional {
-                    let type = strip("\(param.typeName)")
-                    return "Parameter<\(type)>.any"
-                } else {
-                    return ".value(\(param.name))"
-                }
+        private func parametersForMethodTypeDeclaration() -> String {
+            let generics = getGenerics()
+            return parameters.map { param in
+                return param.isGeneric(generics) ? param.genericType : param.wrappedType
             }.joined(separator: ", ")
         }
+
+        private func parametersForProxySignature() -> String {
+            return parameters.map { p in
+                guard let argumentLabel = p.parameter.argumentLabel else { return "\(p.name): \(p.wrappedType)" }
+                guard argumentLabel != p.name else { return "\(p.name): \(p.wrappedType)" }
+                return "\(argumentLabel) \(p.name): \(p.wrappedType)"
+            }.joined(separator: ", ")
+        }
+
+        private func parametersForProxyInit() -> String {
+            let generics = getGenerics()
+            return parameters.map { "\($0.wrappedForProxy(generics))" }.joined(separator: ", ")
+        }
+    }
+
+    func uniques(methods: [SourceryRuntime.Method]) -> [SourceryRuntime.Method] {
+        func areSameParams(_ p1: SourceryRuntime.MethodParameter, _ p2: SourceryRuntime.MethodParameter) -> Bool {
+            guard p1.argumentLabel == p2.argumentLabel else { return false }
+            guard p1.name == p2.name else { return false }
+            guard p1.argumentLabel == p2.argumentLabel else { return false }
+            guard p1.typeName.name == p2.typeName.name else { return false }
+            guard p1.actualTypeName?.name == p2.actualTypeName?.name else { return false }
+            return true
+        }
+
+        func areSameMethods(_ m1: SourceryRuntime.Method, _ m2: SourceryRuntime.Method) -> Bool {
+            guard m1.name != m2.name else { return true }
+            guard m1.selectorName == m2.selectorName else { return false }
+            guard m1.parameters.count == m2.parameters.count else { return false }
+
+            let p1 = m1.parameters
+            let p2 = m2.parameters
+
+            for i in 0..<p1.count {
+                if !areSameParams(p1[i],p2[i]) { return false }
+            }
+
+            return true
+        }
+
+        return methods.reduce([], { (result, element) -> [SourceryRuntime.Method] in
+            guard !result.contains(where: { areSameMethods($0,element) }) else { return result }
+            return result + [element]
+        })
+    }
+
+    func uniques(variables: [SourceryRuntime.Variable]) -> [SourceryRuntime.Variable] {
+        return variables.reduce([], { (result, element) -> [SourceryRuntime.Variable] in
+            guard !result.contains(where: { $0.name == element.name }) else { return result }
+            return result + [element]
+        })
     }
 
     func wrapMethod(_ method: SourceryRuntime.Method) -> MethodWrapper {
@@ -482,12 +501,12 @@ import SourceryRuntime
     }
 
     func stubProperty(_ variable: SourceryRuntime.Variable, _ scope: String) -> String {
-    let wrapper = VariableWrapper(variable, scope: scope)
-    return "\(wrapper.prototype)\n\t\(wrapper.privatePrototype)"
-}
+        let wrapper = VariableWrapper(variable, scope: scope)
+        return "\(wrapper.prototype)\n\t\(wrapper.privatePrototype)"
+    }
 -%>
 
-<%# Mock.generated -%><%_ -%>
+<%# ================================================== SETUP -%><%_ -%>
 <%_ var all = types.all
     all += types.protocols.map { $0 } -%>
 
@@ -506,13 +525,13 @@ class <%= type.name %>Mock:<%= type.annotations["ObjcProtocol"] != nil ? " NSObj
 <%_ } else { -%>
 // sourcery:inline:auto:<%= type.name %>.autoMocked
 <%_ } -%>
-<%# MAIN CLASS -%><%_ -%>
+<%# ================================================== MAIN CLASS -%><%_ -%>
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
     <%_ -%>
-    <%# STATIC PROPERTIES -%><%_ -%>
+  <%# ================================================== STATIC PROPERTIES -%><%_ -%>
     <%_ if conformsToStaticMock { -%>
     static private var invocations: [StaticMethodType] = []
     static private var methodReturnValues: [StaticGiven] = []
@@ -520,7 +539,7 @@ class <%= type.name %>Mock:<%= type.annotations["ObjcProtocol"] != nil ? " NSObj
     static var matcher: Matcher = Matcher.default
     <%_  } -%>
 
-    <%# VARIABLES -%><%_ -%>
+  <%# ================================================== VARIABLES -%><%_ -%>
     <%_ for variable in allVariables { -%>
     <%= stubProperty(variable,"\(type.name)Mock") %>
     <%_ } %> <%_ -%>
@@ -531,7 +550,7 @@ class <%= type.name %>Mock:<%= type.annotations["ObjcProtocol"] != nil ? " NSObj
     <%_ for method in wrappedMethods { method.register() } -%>
     <%_ for method in wrappedStaticMethods { method.register() } -%><%_ -%>
 
-    <%# STATIC METHODS -%><%_ -%>
+  <%# ================================================== STATIC STUBS -%><%_ -%>
     <%_ for method in wrappedStaticMethods { -%>
     <%= method.functionPrototype _%> {
         <%= method.invocation _%><%= method.performCall() _%><%= method.throwValue _%><%= method.returnValue _%>
@@ -539,20 +558,20 @@ class <%= type.name %>Mock:<%= type.annotations["ObjcProtocol"] != nil ? " NSObj
 
     <%_ } %><%_ -%>
     <%_ -%>
-    <%# INITIALIZERS -%><%_ -%>
+  <%# ================================================== INITIALIZERS -%><%_ -%>
     <%_ for method in wrappedInitializers { -%>
     <%= method.functionPrototype _%> { }
 
     <%_ } -%><%_ -%>
     <%_ -%><%_ -%>
-    <%# METHODS -%><%_ -%>
+  <%# ================================================== STUBS -%><%_ -%>
     <%_ for method in wrappedMethods { -%>
     <%= method.functionPrototype _%> {
         <%= method.invocation _%><%= method.performCall() _%><%= method.throwValue _%><%= method.returnValue _%>
     }
 
     <%_ } -%>
-    <%# STATIC METHOD TYPE -%><%_ -%>
+  <%# ================================================== STATIC METHOD TYPE -%><%_ -%>
     <%_ if conformsToStaticMock { -%>
     fileprivate enum StaticMethodType {
     <%_ for method in wrappedStaticMethods { -%>
@@ -622,7 +641,7 @@ class <%= type.name %>Mock:<%= type.annotations["ObjcProtocol"] != nil ? " NSObj
     }
 
     <% } -%>
-    <%# METHOD TYPE -%><%_ -%>
+  <%# ================================================== METHOD TYPE -%><%_ -%>
     <%_ if !wrappedMethods.isEmpty { -%>
     fileprivate enum MethodType {
     <%_ for method in wrappedMethods { -%>
@@ -651,7 +670,7 @@ class <%= type.name %>Mock:<%= type.annotations["ObjcProtocol"] != nil ? " NSObj
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool { return true }
         func intValue() -> Int { return 0 }
     }
-    <% } -%>
+    <%_ } -%><%_ -%>
 
     struct Given {
         fileprivate var method: MethodType
@@ -697,6 +716,7 @@ class <%= type.name %>Mock:<%= type.annotations["ObjcProtocol"] != nil ? " NSObj
         <%_  } %> <%_ -%>
     }
 
+  <%# ================================================== MOCK METHODS -%><%_ -%>
     public func matchingCalls(_ method: Verify) -> Int {
         return matchingCalls(method.method).count
     }
@@ -739,7 +759,7 @@ class <%= type.name %>Mock:<%= type.annotations["ObjcProtocol"] != nil ? " NSObj
     private func matchingCalls(_ method: MethodType) -> [MethodType] {
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
     }
-    <%# STATIC METHOD TYPE -%><%_ -%>
+  <%# ================================================== STATIC MOCK METHODS -%><%_ -%>
     <%_ if conformsToStaticMock { -%>
 
     static public func matchingCalls(_ method: StaticVerify) -> Int {

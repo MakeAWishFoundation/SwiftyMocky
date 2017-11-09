@@ -49,11 +49,36 @@ public class Matcher {
     /// - Returns: comparator closure
     public func comparator<T>(for valueType: T.Type) -> ((T,T) -> Bool)? {
         let mirror = Mirror(reflecting: valueType)
-
         let comparator = matchers.reversed().first { (current, _) -> Bool in
             return current.subjectType == mirror.subjectType
         }?.1
 
         return comparator as? (T,T) -> Bool
     }
+
+    public func comparator<T: Sequence>(for valueType: T.Type) -> ((T,T) -> Bool)? {
+        let mirror = Mirror(reflecting: valueType)
+        let comparator = matchers.reversed().first { (current, _) -> Bool in
+            return current.subjectType == mirror.subjectType
+        }?.1
+
+        if let compare = comparator as? (T,T) -> Bool {
+            return compare
+        } else if let compare = self.comparator(for: T.Element.self) {
+            return { (l: T, r: T) -> Bool in
+                let lhs = l.map { $0 }
+                let rhs = r.map { $0 }
+                guard lhs.count == rhs.count else { return false }
+
+                for i in 0..<lhs.count {
+                    guard compare(lhs[i],rhs[i]) else { return false }
+                }
+
+                return true
+            }
+        } else {
+            return nil
+        }
+    }
 }
+

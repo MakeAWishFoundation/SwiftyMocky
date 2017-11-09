@@ -162,4 +162,21 @@ class ExampleTests: XCTestCase {
             }
         }
     }
+
+    func test_generics() {
+        let date = Date.init(timeIntervalSince1970: 321123)
+        let item1 = DateSortableMock()
+        item1.date = date
+        Matcher.default.register(DateSortableMock.self) { (lhs, rhs) -> Bool in
+            return lhs.date == rhs.date
+        }
+
+        let mock = HistorySectionMapperTypeMock()
+
+        Given(mock, .map(items: .any, willReturn: [(key: String, items: [DateSortableMock])]()))
+        Given(mock, .map(items: .value([item1]), willReturn: [(key: "only item", items: [item1])]))
+
+        print(mock.map([DateSortableMock]()))
+        print(mock.map([item1]))
+    }
 }

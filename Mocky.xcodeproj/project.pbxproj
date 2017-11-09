@@ -24,6 +24,8 @@
 		CCAFCA041FAF24EB003F776A /* Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAFC9FC1FAF24EB003F776A /* Mock.swift */; };
 		CCAFCA051FAF24EB003F776A /* Matcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAFC9FD1FAF24EB003F776A /* Matcher.swift */; };
 		CCAFCA061FAF24EB003F776A /* Mock+Assertions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAFC9FE1FAF24EB003F776A /* Mock+Assertions.swift */; };
+		CCB026A61FB46A8C00ACA9F0 /* GenericProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB026A51FB46A8C00ACA9F0 /* GenericProtocols.swift */; };
+		CCB026A81FB4F39000ACA9F0 /* GenericAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB026A71FB4F38F00ACA9F0 /* GenericAttribute.swift */; };
 		CCBB91441FAF7D0F00B1D671 /* Mock.swifttemplate in Resources */ = {isa = PBXBuildFile; fileRef = CCAFC9F81FAF24EA003F776A /* Mock.swifttemplate */; };
 		CCFE3B7D1FA123B700D04185 /* ExampleProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFE3B7C1FA123B600D04185 /* ExampleProtocols.swift */; };
 		CCFE3B7F1FA123D500D04185 /* ExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFE3B7E1FA123D500D04185 /* ExampleTests.swift */; };
@@ -69,6 +71,8 @@
 		CCAFC9FC1FAF24EB003F776A /* Mock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mock.swift; sourceTree = "<group>"; };
 		CCAFC9FD1FAF24EB003F776A /* Matcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matcher.swift; sourceTree = "<group>"; };
 		CCAFC9FE1FAF24EB003F776A /* Mock+Assertions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Mock+Assertions.swift"; sourceTree = "<group>"; };
+		CCB026A51FB46A8C00ACA9F0 /* GenericProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericProtocols.swift; sourceTree = "<group>"; };
+		CCB026A71FB4F38F00ACA9F0 /* GenericAttribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericAttribute.swift; sourceTree = "<group>"; };
 		CCFE3B7C1FA123B600D04185 /* ExampleProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleProtocols.swift; sourceTree = "<group>"; };
 		CCFE3B7E1FA123D500D04185 /* ExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleTests.swift; sourceTree = "<group>"; };
 		D8A601F4B387200EB86F8F29 /* Pods-Mocky_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Tests/Pods-Mocky_Tests.release.xcconfig"; sourceTree = "<group>"; };
@@ -205,6 +209,7 @@
 			isa = PBXGroup;
 			children = (
 				CCFE3B7C1FA123B600D04185 /* ExampleProtocols.swift */,
+				CCB026A51FB46A8C00ACA9F0 /* GenericProtocols.swift */,
 				CC0B1D891F785623006CB46D /* SampleService.swift */,
 				E46714881ECF140C00C7DAB3 /* ItemsRepository.swift */,
 				E45FB8AC1FA669E2005CECE1 /* NonSwiftProtocol.swift */,
@@ -247,10 +252,11 @@
 		CCAFC9F91FAF24EB003F776A /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				CCAFC9FA1FAF24EB003F776A /* Parameter.swift */,
 				CCAFC9FC1FAF24EB003F776A /* Mock.swift */,
-				CCAFC9FD1FAF24EB003F776A /* Matcher.swift */,
 				CCAFC9FE1FAF24EB003F776A /* Mock+Assertions.swift */,
+				CCAFC9FA1FAF24EB003F776A /* Parameter.swift */,
+				CCAFC9FD1FAF24EB003F776A /* Matcher.swift */,
+				CCB026A71FB4F38F00ACA9F0 /* GenericAttribute.swift */,
 			);
 			name = Classes;
 			path = Sources/Classes;
@@ -552,6 +558,7 @@
 				E45FB8AD1FA669E2005CECE1 /* NonSwiftProtocol.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				CC0B1D8A1F785623006CB46D /* SampleService.swift in Sources */,
+				CCB026A61FB46A8C00ACA9F0 /* GenericProtocols.swift in Sources */,
 				CCFE3B7D1FA123B700D04185 /* ExampleProtocols.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -576,6 +583,7 @@
 				CCAFCA021FAF24EB003F776A /* Parameter.swift in Sources */,
 				CCAFCA051FAF24EB003F776A /* Matcher.swift in Sources */,
 				CCAFCA041FAF24EB003F776A /* Mock.swift in Sources */,
+				CCB026A81FB4F39000ACA9F0 /* GenericAttribute.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

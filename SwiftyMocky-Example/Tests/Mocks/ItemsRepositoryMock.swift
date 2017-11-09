@@ -22,14 +22,14 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
 
 
     func storeItems(items: [Item]) {
-        addInvocation(.istoreItems__items_items(.value(items)))
-		let perform = methodPerformValue(.istoreItems__items_items(.value(items))) as? ([Item]) -> Void
+        addInvocation(.istoreItems__items_items(Parameter<[Item]>.value(items)))
+		let perform = methodPerformValue(.istoreItems__items_items(Parameter<[Item]>.value(items))) as? ([Item]) -> Void
 		perform?(items)
     }
 
     func storeDetails(details: ItemDetails) {
-        addInvocation(.istoreDetails__details_details(.value(details)))
-		let perform = methodPerformValue(.istoreDetails__details_details(.value(details))) as? (ItemDetails) -> Void
+        addInvocation(.istoreDetails__details_details(Parameter<ItemDetails>.value(details)))
+		let perform = methodPerformValue(.istoreDetails__details_details(Parameter<ItemDetails>.value(details))) as? (ItemDetails) -> Void
 		perform?(details)
     }
 
@@ -42,10 +42,10 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
     }
 
     func storedDetails(item: Item) -> ItemDetails? {
-        addInvocation(.istoredDetails__item_item(.value(item)))
-		let perform = methodPerformValue(.istoredDetails__item_item(.value(item))) as? (Item) -> Void
+        addInvocation(.istoredDetails__item_item(Parameter<Item>.value(item)))
+		let perform = methodPerformValue(.istoredDetails__item_item(Parameter<Item>.value(item))) as? (Item) -> Void
 		perform?(item)
-		let value = methodReturnValue(.istoredDetails__item_item(.value(item))) as? ItemDetails?
+		let value = methodReturnValue(.istoredDetails__item_item(Parameter<Item>.value(item))) as? ItemDetails?
 		return value.orFail("stub return value not specified for storedDetails(item: Item). Use given")
     }
 
