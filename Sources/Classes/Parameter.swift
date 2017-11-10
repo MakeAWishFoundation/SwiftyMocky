@@ -97,6 +97,17 @@ public extension Parameter {
     }
 }
 
+public extension Parameter where ValueType: GenericAttributeType {
+    public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
+        switch (lhs, rhs) {
+            case (._, _): return true
+            case (_, ._): return true
+            case (.value(let lhsGeneric), .value(let rhsGeneric)): return lhsGeneric.compare(lhsGeneric.value,rhsGeneric.value,matcher)
+            default: return false
+        }
+    }
+}
+
 #if swift(>=4)
 public extension Parameter where ValueType: Equatable {
     public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
@@ -169,8 +180,8 @@ public extension Parameter where ValueType: Sequence, ValueType.Element: Equatab
                 guard leftArray.count == rightArray.count else { return false }
 
                 let values = (0..<leftArray.count)
-                    .map { i -> (ValueType.Element, ValueType.Element) in
-                        return ((leftArray[i]),(rightArray[i]))
+                .map { i -> (ValueType.Element, ValueType.Element) in
+                    return ((leftArray[i]),(rightArray[i]))
                 }
 
                 for (left,right) in values {
