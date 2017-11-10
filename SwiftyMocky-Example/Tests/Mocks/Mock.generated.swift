@@ -356,7 +356,366 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
     static private func matchingCalls(_ method: StaticMethodType) -> [StaticMethodType] {
         return invocations.filter { StaticMethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
     }
+}
+
+// MARK: - AVeryAssociatedProtocol
+class AVeryAssociatedProtocolMock<TypeT1,TypeT2>: AVeryAssociatedProtocol, Mock where TypeT1: Sequence, TypeT2: Comparable, TypeT2: EmptyProtocol {
+
+	typealias T1 = TypeT1
+	typealias T2 = TypeT2
+
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    var matcher: Matcher = Matcher.default
+
+
+    func fetch(for value: T2) -> T1 {
+        addInvocation(.ifetch__for_value(Parameter<T2>.value(value)))
+		let perform = methodPerformValue(.ifetch__for_value(Parameter<T2>.value(value))) as? (T2) -> Void
+		perform?(value)
+		let value = methodReturnValue(.ifetch__for_value(Parameter<T2>.value(value))) as? T1
+		return value.orFail("stub return value not specified for fetch(for value: T2). Use given")
     }
+
+    fileprivate enum MethodType {
+        case ifetch__for_value(Parameter<T2>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+                case (.ifetch__for_value(let lhsValue), .ifetch__for_value(let rhsValue)): 
+                    guard Parameter.compare(lhs: lhsValue, rhs: rhsValue, with: matcher) else { return false } 
+                    return true 
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+                case let .ifetch__for_value(p0): return p0.intValue
+            }
+        }
+    }
+
+    struct Given {
+        fileprivate var method: MethodType
+        var returns: Any?
+        var `throws`: Error?
+
+        private init(method: MethodType, returns: Any?, throws: Error?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
+
+        static func fetch(for value: Parameter<T2>, willReturn: T1) -> Given {
+            return Given(method: .ifetch__for_value(value), returns: willReturn, throws: nil)
+        }
+    }
+
+    struct Verify {
+        fileprivate var method: MethodType
+
+        static func fetch(for value: Parameter<T2>) -> Verify {
+            return Verify(method: .ifetch__for_value(value))
+        }
+    }
+
+    struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        static func fetch(for value: Parameter<T2>, perform: (T2) -> Void) -> Perform {
+            return Perform(method: .ifetch__for_value(value), performs: perform)
+        }
+    }
+
+    public func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+        methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+        let method = method.method
+        let invocations = matchingCalls(method)
+        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+
+    private func methodReturnValue(_ method: MethodType) -> Any? {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
+        return matched?.returns
+    }
+
+    private func methodThrowValue(_ method: MethodType) -> Error? {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
+        return matched?.`throws`
+    }
+
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+}
+
+// MARK: - AVeryGenericProtocol
+class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    var matcher: Matcher = Matcher.default
+    static private var invocations: [StaticMethodType] = []
+    static private var methodReturnValues: [StaticGiven] = []
+    static private var methodPerformValues: [StaticPerform] = []
+    static var matcher: Matcher = Matcher.default
+
+
+    static func generic<Q>(lhs: Q, rhs: Q) -> Bool where Q: Equatable {
+        addInvocation(.sgeneric__lhs_lhsrhs_rhs(Parameter<Q>.value(lhs).wrapAsGeneric(), Parameter<Q>.value(rhs).wrapAsGeneric()))
+		let perform = methodPerformValue(.sgeneric__lhs_lhsrhs_rhs(Parameter<Q>.value(lhs).wrapAsGeneric(), Parameter<Q>.value(rhs).wrapAsGeneric())) as? (Q, Q) -> Void
+		perform?(lhs, rhs)
+		let value = methodReturnValue(.sgeneric__lhs_lhsrhs_rhs(Parameter<Q>.value(lhs).wrapAsGeneric(), Parameter<Q>.value(rhs).wrapAsGeneric())) as? Bool
+		return value.orFail("stub return value not specified for generic<Q>(lhs: Q, rhs: Q). Use given")
+    }
+
+    static func veryConstrained<Q: Sequence>(lhs: Q, rhs: Q) -> Bool where Q: Equatable {
+        addInvocation(.sveryConstrained__lhs_lhsrhs_rhs(Parameter<Q>.value(lhs).wrapAsGeneric(), Parameter<Q>.value(rhs).wrapAsGeneric()))
+		let perform = methodPerformValue(.sveryConstrained__lhs_lhsrhs_rhs(Parameter<Q>.value(lhs).wrapAsGeneric(), Parameter<Q>.value(rhs).wrapAsGeneric())) as? (Q, Q) -> Void
+		perform?(lhs, rhs)
+		let value = methodReturnValue(.sveryConstrained__lhs_lhsrhs_rhs(Parameter<Q>.value(lhs).wrapAsGeneric(), Parameter<Q>.value(rhs).wrapAsGeneric())) as? Bool
+		return value.orFail("stub return value not specified for veryConstrained<Q: Sequence>(lhs: Q, rhs: Q). Use given")
+    }
+
+    required init<V>(value: V) { }
+
+    func methodConstrained<A,B,C>(param: A) -> (B,C) {
+        addInvocation(.imethodConstrained__param_param(Parameter<A>.value(param).wrapAsGeneric()))
+		let perform = methodPerformValue(.imethodConstrained__param_param(Parameter<A>.value(param).wrapAsGeneric())) as? (A) -> Void
+		perform?(param)
+		let value = methodReturnValue(.imethodConstrained__param_param(Parameter<A>.value(param).wrapAsGeneric())) as? (B,C)
+		return value.orFail("stub return value not specified for methodConstrained<A,B,C>(param: A). Use given")
+    }
+
+    fileprivate enum StaticMethodType {
+        case sgeneric__lhs_lhsrhs_rhs(Parameter<GenericAttribute>, Parameter<GenericAttribute>)
+        case sveryConstrained__lhs_lhsrhs_rhs(Parameter<GenericAttribute>, Parameter<GenericAttribute>)
+
+        static func compareParameters(lhs: StaticMethodType, rhs: StaticMethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+                case (.sgeneric__lhs_lhsrhs_rhs(let lhsLhs, let lhsRhs), .sgeneric__lhs_lhsrhs_rhs(let rhsLhs, let rhsRhs)): 
+                    guard Parameter.compare(lhs: lhsLhs, rhs: rhsLhs, with: matcher) else { return false } 
+                    guard Parameter.compare(lhs: lhsRhs, rhs: rhsRhs, with: matcher) else { return false } 
+                    return true 
+                case (.sveryConstrained__lhs_lhsrhs_rhs(let lhsLhs, let lhsRhs), .sveryConstrained__lhs_lhsrhs_rhs(let rhsLhs, let rhsRhs)): 
+                    guard Parameter.compare(lhs: lhsLhs, rhs: rhsLhs, with: matcher) else { return false } 
+                    guard Parameter.compare(lhs: lhsRhs, rhs: rhsRhs, with: matcher) else { return false } 
+                    return true 
+                default: return false
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+                case let .sgeneric__lhs_lhsrhs_rhs(p0, p1): return p0.intValue + p1.intValue
+                case let .sveryConstrained__lhs_lhsrhs_rhs(p0, p1): return p0.intValue + p1.intValue
+            }
+        }
+    }
+
+    struct StaticGiven {
+        fileprivate var method: StaticMethodType
+        var returns: Any?
+        var `throws`: Error?
+
+        private init(method: StaticMethodType, returns: Any?, throws: Error?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
+
+        static func generic<Q>(lhs: Parameter<Q>, rhs: Parameter<Q>, willReturn: Bool) -> StaticGiven {
+            return StaticGiven(method: .sgeneric__lhs_lhsrhs_rhs(lhs.wrapAsGeneric(), rhs.wrapAsGeneric()), returns: willReturn, throws: nil)
+        }
+        static func veryConstrained<Q: Sequence>(lhs: Parameter<Q>, rhs: Parameter<Q>, willReturn: Bool) -> StaticGiven {
+            return StaticGiven(method: .sveryConstrained__lhs_lhsrhs_rhs(lhs.wrapAsGeneric(), rhs.wrapAsGeneric()), returns: willReturn, throws: nil)
+        }
+    }
+
+    struct StaticVerify {
+        fileprivate var method: StaticMethodType
+
+        static func generic<Q>(lhs: Parameter<Q>, rhs: Parameter<Q>) -> StaticVerify {
+            return StaticVerify(method: .sgeneric__lhs_lhsrhs_rhs(lhs.wrapAsGeneric(), rhs.wrapAsGeneric()))
+        }
+        static func veryConstrained<Q>(lhs: Parameter<Q>, rhs: Parameter<Q>) -> StaticVerify {
+            return StaticVerify(method: .sveryConstrained__lhs_lhsrhs_rhs(lhs.wrapAsGeneric(), rhs.wrapAsGeneric()))
+        }
+    }
+
+    struct StaticPerform {
+        fileprivate var method: StaticMethodType
+        var performs: Any
+
+        static func generic<Q>(lhs: Parameter<Q>, rhs: Parameter<Q>, perform: (Q, Q) -> Void) -> StaticPerform {
+            return StaticPerform(method: .sgeneric__lhs_lhsrhs_rhs(lhs.wrapAsGeneric(), rhs.wrapAsGeneric()), performs: perform)
+        }
+        static func veryConstrained<Q>(lhs: Parameter<Q>, rhs: Parameter<Q>, perform: (Q, Q) -> Void) -> StaticPerform {
+            return StaticPerform(method: .sveryConstrained__lhs_lhsrhs_rhs(lhs.wrapAsGeneric(), rhs.wrapAsGeneric()), performs: perform)
+        }
+    }
+
+        fileprivate enum MethodType {
+        case imethodConstrained__param_param(Parameter<GenericAttribute>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+                case (.imethodConstrained__param_param(let lhsParam), .imethodConstrained__param_param(let rhsParam)): 
+                    guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
+                    return true 
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+                case let .imethodConstrained__param_param(p0): return p0.intValue
+            }
+        }
+    }
+
+    struct Given {
+        fileprivate var method: MethodType
+        var returns: Any?
+        var `throws`: Error?
+
+        private init(method: MethodType, returns: Any?, throws: Error?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
+
+        static func methodConstrained<A,B,C>(param: Parameter<A>, willReturn: (B,C)) -> Given {
+            return Given(method: .imethodConstrained__param_param(param.wrapAsGeneric()), returns: willReturn, throws: nil)
+        }
+    }
+
+    struct Verify {
+        fileprivate var method: MethodType
+
+        static func methodConstrained<A>(param: Parameter<A>) -> Verify {
+            return Verify(method: .imethodConstrained__param_param(param.wrapAsGeneric()))
+        }
+    }
+
+    struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        static func methodConstrained<A>(param: Parameter<A>, perform: (A) -> Void) -> Perform {
+            return Perform(method: .imethodConstrained__param_param(param.wrapAsGeneric()), performs: perform)
+        }
+    }
+
+    public func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+        methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+        let method = method.method
+        let invocations = matchingCalls(method)
+        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+
+    private func methodReturnValue(_ method: MethodType) -> Any? {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
+        return matched?.returns
+    }
+
+    private func methodThrowValue(_ method: MethodType) -> Error? {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
+        return matched?.`throws`
+    }
+
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+
+    static public func matchingCalls(_ method: StaticVerify) -> Int {
+        return matchingCalls(method.method).count
+    }
+
+    static public func given(_ method: StaticGiven) {
+        methodReturnValues.append(method)
+        methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    static public func perform(_ method: StaticPerform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    static public func verify(_ method: StaticVerify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+        let method = method.method
+        let invocations = matchingCalls(method)
+        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    static private func addInvocation(_ call: StaticMethodType) {
+        invocations.append(call)
+    }
+
+    static private func methodReturnValue(_ method: StaticMethodType) -> Any? {
+        let matched = methodReturnValues.reversed().first { StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
+        return matched?.returns
+    }
+
+    static private func methodThrowValue(_ method: StaticMethodType) -> Error? {
+        let matched = methodReturnValues.reversed().first { StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
+        return matched?.`throws`
+    }
+
+    static private func methodPerformValue(_ method: StaticMethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+
+    static private func matchingCalls(_ method: StaticMethodType) -> [StaticMethodType] {
+        return invocations.filter { StaticMethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+}
 
 // MARK: - ComplicatedServiceType
 class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
@@ -435,7 +794,7 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
         addInvocation(.imethodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.value(function)))
 		let perform = methodPerformValue(.imethodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.value(function))) as? (((Scalar,Scalar) -> Scalar)?) -> Void
 		perform?(function)
-		let value = methodReturnValue(.imethodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.value(function))) as? ((Int) -> Void)
+		let value = methodReturnValue(.imethodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.value(function))) as? (Int) -> Void
 		return value.orFail("stub return value not specified for methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?). Use given")
     }
 
@@ -525,7 +884,7 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
         static func methodWithClosures(success function: Parameter<LinearFunction>, willReturn: ClosureFabric) -> Given {
             return Given(method: .imethodWithClosures__success_function_1(function), returns: willReturn, throws: nil)
         }
-        static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>, willReturn: ((Int) -> Void)) -> Given {
+        static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>, willReturn: (Int) -> Void) -> Given {
             return Given(method: .imethodWithClosures__success_function_2(function), returns: willReturn, throws: nil)
         }
     }
@@ -861,7 +1220,7 @@ class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
     struct Verify {
         fileprivate var method: MethodType
 
-        static func map<T: DateSortable>(items: Parameter<[T]>) -> Verify {
+        static func map<T>(items: Parameter<[T]>) -> Verify {
             return Verify(method: .imap__items(items.wrapAsGeneric()))
         }
     }
@@ -870,7 +1229,7 @@ class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func map<T: DateSortable>(items: Parameter<[T]>, perform: ([T]) -> Void) -> Perform {
+        static func map<T>(items: Parameter<[T]>, perform: ([T]) -> Void) -> Perform {
             return Perform(method: .imap__items(items.wrapAsGeneric()), performs: perform)
         }
     }
@@ -1107,7 +1466,7 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
         addInvocation(.imethodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.value(function)))
 		let perform = methodPerformValue(.imethodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.value(function))) as? (((Scalar,Scalar) -> Scalar)?) -> Void
 		perform?(function)
-		let value = methodReturnValue(.imethodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.value(function))) as? ((Int) -> Void)
+		let value = methodReturnValue(.imethodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.value(function))) as? (Int) -> Void
 		return value.orFail("stub return value not specified for methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?). Use given")
     }
 
@@ -1193,7 +1552,7 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
         static func methodWithClosures(success function: Parameter<LinearFunction>, willReturn: ClosureFabric) -> Given {
             return Given(method: .imethodWithClosures__success_function_1(function), returns: willReturn, throws: nil)
         }
-        static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>, willReturn: ((Int) -> Void)) -> Given {
+        static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>, willReturn: (Int) -> Void) -> Given {
             return Given(method: .imethodWithClosures__success_function_2(function), returns: willReturn, throws: nil)
         }
     }

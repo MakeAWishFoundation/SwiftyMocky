@@ -14,7 +14,17 @@ public class Matcher {
     private var matchers: [(Mirror,Any)] = []
 
     /// Create new clean matcher instance.
-    public init() {}
+    public init() {
+        register(GenericAttribute.self) { [unowned self] (a, b) -> Bool in
+            return a.compare(a.value,b.value,self)
+        }
+        register(Int.self) { [unowned self] (a, b) -> Bool in
+            return a == b
+        }
+        register(String.self) { [unowned self] (a, b) -> Bool in
+            return a == b
+        }
+    }
 
     /// Creante new matcher instance, copying existing comparator from another instance.
     ///

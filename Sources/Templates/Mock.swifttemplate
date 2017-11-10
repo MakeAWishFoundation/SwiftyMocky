@@ -252,10 +252,10 @@ import SourceryRuntime
             let message = "stub return value not specified for \(method.name). Use given"
 
             if method.parameters.isEmpty {
-                return "\n\t\tlet value = methodReturnValue(.\(prototype)) as? \(method.returnTypeName)\n" +
+                return "\n\t\tlet value = methodReturnValue(.\(prototype)) as? \(TypeWrapper(method.returnTypeName).stripped)\n" +
                 "\t\treturn value.orFail(\"\(message)\")"
             } else {
-                return "\n\t\tlet value = methodReturnValue(.\(prototype)(\(parametersForMethodCall()))) as? \(method.returnTypeName)\n" +
+                return "\n\t\tlet value = methodReturnValue(.\(prototype)(\(parametersForMethodCall()))) as? \(TypeWrapper(method.returnTypeName).stripped)\n" +
                 "\t\treturn value.orFail(\"\(message)\")"
             }
         }
@@ -310,26 +310,6 @@ import SourceryRuntime
             return "\(prototype)(\(parametersForMethodTypeDeclaration()))"
         }
 
-        private func isGeneric() -> Bool {
-            return method.shortName.contains("<") && method.shortName.contains(">")
-        }
-
-        private func getGenerics() -> [String] {
-            let name = method.shortName
-            guard let start = name.index(of: "<"), let end = name.index(of: ">") else { return [] }
-
-            var genPart = name[start...end]
-            genPart.removeFirst()
-            genPart.removeLast()
-
-            let parts = genPart.replacingOccurrences(of: " ", with: "").characters.split(separator: ",").map(String.init)
-            return parts.map { stripGenPart(part: $0) }
-        }
-
-        private func stripGenPart(part: String) -> String {
-            return part.characters.split(separator: ":").map(String.init).first!
-        }
-
         func wrappedInMethodType() -> Bool {
             return !method.isInitializer
         }
@@ -337,9 +317,9 @@ import SourceryRuntime
         // Given
         func givenConstructorName(prefix: String = "") -> String {
             if method.parameters.isEmpty {
-                return "static func \(method.shortName)(willReturn: \(method.returnTypeName)) -> \(prefix)Given"
+                return "static func \(method.shortName)(willReturn: \(TypeWrapper(method.returnTypeName).stripped)) -> \(prefix)Given"
             } else {
-                return "static func \(method.shortName)(\(parametersForProxySignature()), willReturn: \(method.returnTypeName)) -> \(prefix)Given"
+                return "static func \(method.shortName)(\(parametersForProxySignature()), willReturn: \(TypeWrapper(method.returnTypeName).stripped)) -> \(prefix)Given"
             }
         }
 
@@ -370,9 +350,9 @@ import SourceryRuntime
         // Verify
         func verificationProxyConstructorName(prefix: String = "") -> String {
             if method.parameters.isEmpty {
-                return "static func \(method.shortName)() -> \(prefix)Verify"
+                return "static func \(method.callName)\(wrapGenerics(getGenericsAmongParameters()))() -> \(prefix)Verify"
             } else {
-                return "static func \(method.shortName)(\(parametersForProxySignature())) -> \(prefix)Verify"
+                return "static func \(method.callName)\(wrapGenerics(getGenericsAmongParameters()))(\(parametersForProxySignature())) -> \(prefix)Verify"
             }
         }
 
@@ -387,9 +367,9 @@ import SourceryRuntime
         // Perform
         func performProxyConstructorName(prefix: String = "") -> String {
             if method.parameters.isEmpty {
-                return "static func \(method.shortName)(perform: \(performProxyClosureType())) -> \(prefix)Perform"
+                return "static func \(method.callName)\(wrapGenerics(getGenericsAmongParameters()))(perform: \(performProxyClosureType())) -> \(prefix)Perform"
             } else {
-                return "static func \(method.shortName)(\(parametersForProxySignature()), perform: \(performProxyClosureType())) -> \(prefix)Perform"
+                return "static func \(method.callName)\(wrapGenerics(getGenericsAmongParameters()))(\(parametersForProxySignature()), perform: \(performProxyClosureType())) -> \(prefix)Perform"
             }
         }
 
@@ -456,6 +436,40 @@ import SourceryRuntime
             let generics = getGenerics()
             return parameters.map { "\($0.wrappedForProxy(generics))" }.joined(separator: ", ")
         }
+
+        private func isGeneric() -> Bool {
+            return method.shortName.contains("<") && method.shortName.contains(">")
+        }
+
+        private func getGenerics() -> [String] {
+            let name = method.shortName
+            guard let start = name.index(of: "<"), let end = name.index(of: ">") else { return [] }
+
+            var genPart = name[start...end]
+            genPart.removeFirst()
+            genPart.removeLast()
+
+            let parts = genPart.replacingOccurrences(of: " ", with: "").characters.split(separator: ",").map(String.init)
+            return parts.map { stripGenPart(part: $0) }
+        }
+
+        private func getGenericsAmongParameters() -> [String] {
+            return getGenerics().filter {
+                for param in self.parameters {
+                    if param.isGeneric([$0]) { return true }
+                }
+                return false
+            }
+        }
+
+        private func wrapGenerics(_ generics: [String]) -> String {
+            guard !generics.isEmpty else { return "" }
+            return "<\(generics.joined(separator:","))>"
+        }
+
+        private func stripGenPart(part: String) -> String {
+            return part.characters.split(separator: ":").map(String.init).first!
+        }
     }
 
     func uniques(methods: [SourceryRuntime.Method]) -> [SourceryRuntime.Method] {
@@ -515,17 +529,59 @@ import SourceryRuntime
     let protocolToDecorate = types.protocols.first(where: { $0.name == (type.annotations["mock"] as? String) })
     let inlineMockable = protocolToDecorate != nil
     guard let aProtocol = autoMockable ? type : protocolToDecorate else { continue }
+    let associatedTypes: [String]? = {
+        if let types = aProtocol.annotations["associatedtype"] as? [String] {
+            return types.reversed()
+        } else if let type = aProtocol.annotations["associatedtype"] as? String {
+            return [type]
+        } else {
+            return nil
+        }
+    }()
+    let genericTypesModifier: String = {
+        guard let all = associatedTypes else { return "" }
+        let joined = all.flatMap {
+            $0.replacingOccurrences(of: " ", with: "").characters.split(separator: ":").map(String.init).first
+        }.map { "Type\($0)" }
+        .joined(separator: ",")
+        return "<\(joined)>"
+    }()
+    let genericTypesTypealiases: String = {
+        guard let all = associatedTypes else { return "" }
+        let joined = all.flatMap {
+            $0.replacingOccurrences(of: " ", with: "").characters.split(separator: ":").map(String.init).first
+        }.map { "\ttypealias \($0) = Type\($0)\n" }
+        .joined(separator: "")
+        return "\n\(joined)\n"
+    }()
+    let genericTypesConstraints: String = {
+        guard let all = associatedTypes else { return "" }
+        let constraints = all.flatMap { t -> String? in
+            let constraint = t.replacingOccurrences(of: " ", with: "").characters.split(separator: ":").map(String.init)
+            guard constraint.count == 2 else { return nil }
+
+            let adopts = constraint[1].characters.split(separator: ",").map(String.init)
+
+            return adopts.map {
+                return "Type\(constraint[0]): \($0)"
+            }.joined(separator: ", ")
+        }
+        .joined(separator: ", ")
+        guard !constraints.isEmpty else { return "" }
+        return " where \(constraints)"
+    }()
     let allVariables = uniques(variables: aProtocol.allVariables.filter({ !$0.isStatic })) + uniques(variables: aProtocol.allVariables.filter({ $0.isStatic }))
     let allMethods = uniques(methods: aProtocol.allMethods.filter({ !$0.isStatic }))
     let allStaticMethods = uniques(methods: aProtocol.allMethods.filter({ $0.isStatic }))
     let conformsToStaticMock = !allStaticMethods.isEmpty -%><%_ -%><%_ -%>
 <%_ if autoMockable { -%>
 // MARK: - <%= type.name %>
-class <%= type.name %>Mock:<%= type.annotations["ObjcProtocol"] != nil ? " NSObject," : "" %> <%= type.name %>, Mock<%= conformsToStaticMock ? ", StaticMock" : "" %> {
+class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["ObjcProtocol"] != nil ? " NSObject," : "" %> <%= type.name %>, Mock<%= conformsToStaticMock ? ", StaticMock" : "" %><%= genericTypesConstraints %> {
 <%_ } else { -%>
 // sourcery:inline:auto:<%= type.name %>.autoMocked
 <%_ } -%>
 <%# ================================================== MAIN CLASS -%><%_ -%>
+    <%_ %><%= genericTypesTypealiases -%>
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
@@ -804,7 +860,7 @@ class <%= type.name %>Mock:<%= type.annotations["ObjcProtocol"] != nil ? " NSObj
     static private func matchingCalls(_ method: StaticMethodType) -> [StaticMethodType] {
         return invocations.filter { StaticMethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
     }
-    <% } -%>
+    <%_ } -%>
 <%_ if autoMockable { -%>
 }
 
