@@ -13,7 +13,7 @@
     <a title="Supported features  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">SwiftyMocky Docs</a> (74% documented)</p>
+        <p><a href="index.html">SwiftyMocky Docs</a> (71% documented)</p>
         <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -46,6 +46,9 @@
                 <a href="matcher-support-for-not-equatable.html">Matcher support for not Equatable</a>
               </li>
               <li class="nav-group-task">
+                <a href="generics.html">Generics</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="examples.html">Examples</a>
               </li>
               <li class="nav-group-task">
@@ -64,6 +67,12 @@
               </li>
               <li class="nav-group-task">
                 <a href="Classes/Matcher.html">Matcher</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Types.html#/s:11SwiftyMocky16GenericAttributeV">GenericAttribute</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Types.html#/s:11SwiftyMocky20GenericAttributeTypeP">GenericAttributeType</a>
               </li>
             </ul>
           </li>
@@ -120,6 +129,14 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a href="Other Protocols.html">Other Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Other Protocols.html#/s:11SwiftyMocky10StaticMockP">StaticMock</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
@@ -138,7 +155,7 @@
 <li>[ ] skip protocols that cannot be generated with warning</li>
 <li>[x] support protocol inheritance</li>
 <li>[x] support objc protocols (with special protocol/annotation)</li>
-<li>[ ] support generic protocols</li>
+<li>[x] support generic protocols - see <strong>Generics</strong> section for more information <strong>!!!</strong></li>
 </ul>
 <h2 id='stubbing' class='heading'>Stubbing:</h2>
 
@@ -156,7 +173,12 @@
 <li>[x] that rethrows</li>
 </ul></li>
 <li>[x] stubbing static methods</li>
-<li>[ ] stubbing generic methods</li>
+<li>[ ] stubbing generic methods
+
+<ul>
+<li>[x] constrained to protocol conformance</li>
+<li>[ ] constrained to same type</li>
+</ul></li>
 <li>[x] stubbing variables (with get, set)
 
 <ul>
@@ -165,7 +187,8 @@
 <li>[x] optional</li>
 <li>[x] implicitly unwrapped optional</li>
 </ul></li>
-<li>[ ] handling associated types</li>
+<li>[x] handling associated types - <strong>done by annotations</strong></li>
+<li>[x] handling conformances in associated types</li>
 <li>[x] wrapping method attributes as Parameter
 
 <ul>

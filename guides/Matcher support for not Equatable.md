@@ -1,5 +1,4 @@
-
-## Matcher - handling parameters that are not Equatable
+# Matcher - handling parameters that are not Equatable
 
 In some cases there is a need to specify return value (by `Given`) for a method, which parameters are not __*Equatable*__, or check (by Verify), whether a method was called with specific attribute which is not __*Equatable*__.
 
@@ -37,3 +36,13 @@ func testFetchUserDetails() {
   Verify(mockNetwork, .fetchUserDetails(for: .value(john)))
 }
 ```
+
+In most cases, you don't have to register comparators for Equatable and Sequence types (as long as Sequence Elememnt is Equatable)
+
+## Matcher for generic methods in Mocks
+
+As generic methods and mocks are breaking generic constraints, for that particular case you also have to register comparators for Equatable / Sequence types.
+
+There are bunch of convenience registration methods, that will simplify registrations for that case.
+
+See **Generics** section for more information.

@@ -10,7 +10,7 @@ All supported ways of generating mocks. Handling mockable types:
 - [ ] skip protocols that cannot be generated with warning
 - [x] support protocol inheritance
 - [x] support objc protocols (with special protocol/annotation)
-- [ ] support generic protocols
+- [x] support generic protocols - see **Generics** section for more information **!!!**
 
 ## Stubbing:
 
@@ -25,12 +25,15 @@ Support for stubbing protocol members:
     - [x] that rethrows
 - [x] stubbing static methods
 - [ ] stubbing generic methods
+    - [x] constrained to protocol conformance
+    - [ ] constrained to same type
 - [x] stubbing variables (with get, set)
     - [x] instance variables
     - [x] static variables
     - [x] optional
     - [x] implicitly unwrapped optional
-- [ ] handling associated types
+- [x] handling associated types - **done by annotations**
+- [x] handling conformances in associated types
 - [x] wrapping method attributes as Parameter
     - [x] basic types
     - [x] closures

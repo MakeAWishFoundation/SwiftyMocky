@@ -13,7 +13,7 @@
     <a title="Known issues  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">SwiftyMocky Docs</a> (74% documented)</p>
+        <p><a href="index.html">SwiftyMocky Docs</a> (71% documented)</p>
         <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -46,6 +46,9 @@
                 <a href="matcher-support-for-not-equatable.html">Matcher support for not Equatable</a>
               </li>
               <li class="nav-group-task">
+                <a href="generics.html">Generics</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="examples.html">Examples</a>
               </li>
               <li class="nav-group-task">
@@ -64,6 +67,12 @@
               </li>
               <li class="nav-group-task">
                 <a href="Classes/Matcher.html">Matcher</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Types.html#/s:11SwiftyMocky16GenericAttributeV">GenericAttribute</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Types.html#/s:11SwiftyMocky20GenericAttributeTypeP">GenericAttributeType</a>
               </li>
             </ul>
           </li>
@@ -120,6 +129,14 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a href="Other Protocols.html">Other Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Other Protocols.html#/s:11SwiftyMocky10StaticMockP">StaticMock</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
@@ -127,9 +144,23 @@
           <section class="section">
             
             <h1 id='known-issues' class='heading'>Known issues</h1>
+
+<p><strong>Please always check, if your problem is not related to feature being not supported</strong> - for that we have <strong><q>Supported Features</q></strong> section.</p>
+
+<hr>
 <h2 id='1-when-triggering-generation-error-about-modules-in-different-swift-versions-appears' class='heading'>1. When triggering generation - error about modules in different swift versions appears</h2>
 
 <p>This seems to be a problem with dependency to Sourcery, which, for some case, event if included as dependency in Pods, does not use project swift version setting. Use swift version support branches, or download/build Sourcery binary manually</p>
+<h2 id='2-matcher-fatal-error-for-simple-equatable-sequence-types' class='heading'>2. Matcher [FATAL] error for simple Equatable / Sequence types</h2>
+
+<p>This happens for generic mocks - seems that wrapping generic methods causes breaking default resolving of generic contraints, and you might end up seeing something like <code>[FATAL] No registered matcher comparator for Int</code> or other types, that should be rather obvious.</p>
+
+<p>As for now - the only valid solution is to add comparators for these types. There are convenience methods on matcher, that allows simple adding of comparators for types conforming to Equatable or Sequence.</p>
+
+<p>See <strong>Generics</strong> section for more informations.</p>
+<h2 id='3-generated-mock-breaks' class='heading'>3. Generated Mock breaks</h2>
+
+<p>When methods has labels or attributes names that are either escaped using  <code></code> <code>, or  are matching Swift keywords like</code>for, while, guard &hellip;`. For now - we advise not to use that. It will be resolved in the future.</p>
 
           </section>
         </section>

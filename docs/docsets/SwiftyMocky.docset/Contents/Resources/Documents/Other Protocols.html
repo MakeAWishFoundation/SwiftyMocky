@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Matcher support for not Equatable  Reference</title>
+    <title>Other Protocols  Reference</title>
     <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,7 +10,7 @@
     
   </head>
   <body>
-    <a title="Matcher support for not Equatable  Reference"></a>
+    <a title="Other Protocols  Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="index.html">SwiftyMocky Docs</a> (71% documented)</p>
@@ -21,7 +21,7 @@
       <p id="breadcrumbs">
         <a href="index.html">SwiftyMocky Reference</a>
         <img id="carat" src="img/carat.png" />
-        Matcher support for not Equatable  Reference
+        Other Protocols  Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -142,53 +142,43 @@
       <article class="main-content">
         <section>
           <section class="section">
-            
-            <h1 id='matcher-handling-parameters-that-are-not-equatable' class='heading'>Matcher - handling parameters that are not Equatable</h1>
+            <h1>Other Protocols</h1>
+            <p>The following protocols are available globally.</p>
 
-<p>In some cases there is a need to specify return value (by <code>Given</code>) for a method, which parameters are not <strong><em>Equatable</em></strong>, or check (by Verify), whether a method was called with specific attribute which is not <strong><em>Equatable</em></strong>.</p>
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky10StaticMockP"></a>
+                    <a name="//apple_ref/swift/Protocol/StaticMock" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky10StaticMockP">StaticMock</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Every mock, that stubs static methods, should adopt <strong>StaticMock</strong> protocol.
+It defines base StaticMock structure and features.</p>
 
-<p>If you try to perform Given or Verify for explicit parameter, whereas its type is not Equatable, <strong>fatalError</strong> will occur. There are two options to handle attributes types, that are not <strong><em>Equatable</em></strong>:</p>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">StaticMock</span><span class="p">:</span> <span class="kd">class</span></code></pre>
 
-<p><strong>1) Use only wildcard .any parameters, or adopt Equatable</strong></p>
-
-<p>Sometimes .any is enough, or you can provide Equatable implementation.</p>
-
-<p><strong>2) Register comparator for that type in Matcher</strong></p>
-
-<p>Every Mock has <code>matcher</code> variable, which is <code>Matcher.default</code> singleton instance by default.</p>
-
-<p>Usage of <strong>Matcher</strong>:</p>
-<pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">User</span> <span class="p">{</span>
-  <span class="k">let</span> <span class="nv">id</span><span class="p">:</span> <span class="kt">String</span>
-  <span class="k">let</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span>
-<span class="p">}</span>
-
-<span class="c1">// ...</span>
-
-<span class="k">override</span> <span class="kd">func</span> <span class="nf">setUp</span><span class="p">()</span> <span class="p">{</span>
-  <span class="c1">// register all comparators for custom, non equatable attributes</span>
-  <span class="kt">Matcher</span><span class="o">.</span><span class="k">default</span><span class="o">.</span><span class="nf">register</span><span class="p">(</span><span class="kt">User</span><span class="o">.</span><span class="k">self</span><span class="p">)</span> <span class="p">{</span> <span class="n">lhs</span><span class="p">,</span><span class="n">rhs</span> <span class="o">-&gt;</span> <span class="kt">Bool</span> <span class="k">in</span>
-      <span class="k">return</span> <span class="n">lhs</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">rhs</span><span class="o">.</span><span class="n">id</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-
-<span class="kd">func</span> <span class="nf">testFetchUserDetails</span><span class="p">()</span> <span class="p">{</span>
-  <span class="c1">//...</span>
-  <span class="k">let</span> <span class="nv">john</span> <span class="o">=</span> <span class="kt">User</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="s">"Johny123"</span><span class="p">,</span> <span class="nv">name</span><span class="p">:</span> <span class="s">"Johny"</span><span class="p">)</span>
-  <span class="c1">// now we can safely verify explicit parameter</span>
-  <span class="kt">Verify</span><span class="p">(</span><span class="n">mockNetwork</span><span class="p">,</span> <span class="o">.</span><span class="nf">fetchUserDetails</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="n">john</span><span class="p">)))</span>
-<span class="p">}</span>
-</code></pre>
-
-<p>In most cases, you don&rsquo;t have to register comparators for Equatable and Sequence types (as long as Sequence Elememnt is Equatable)</p>
-<h2 id='matcher-for-generic-methods-in-mocks' class='heading'>Matcher for generic methods in Mocks</h2>
-
-<p>As generic methods and mocks are breaking generic constraints, for that particular case you also have to register comparators for Equatable / Sequence types.</p>
-
-<p>There are bunch of convenience registration methods, that will simplify registrations for that case.</p>
-
-<p>See <strong>Generics</strong> section for more information.</p>
-
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </section>
         </section>
         <section id="footer">

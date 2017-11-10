@@ -16,6 +16,7 @@ custom_categories:
       - Installation
       - Setup in project
       - Matcher support for not Equatable
+      - Generics
       - Examples
       - Known issues
 
@@ -24,6 +25,8 @@ custom_categories:
       - Mock
       - Parameter
       - Matcher
+      - GenericAttribute
+      - GenericAttributeType
 
   - name: Global methods
     children:

@@ -13,7 +13,7 @@
     <a title="Matcher support for not Equatable  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">SwiftyMocky Docs</a> (74% documented)</p>
+        <p><a href="index.html">SwiftyMocky Docs</a> (71% documented)</p>
         <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -46,6 +46,9 @@
                 <a href="matcher-support-for-not-equatable.html">Matcher support for not Equatable</a>
               </li>
               <li class="nav-group-task">
+                <a href="generics.html">Generics</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="examples.html">Examples</a>
               </li>
               <li class="nav-group-task">
@@ -64,6 +67,12 @@
               </li>
               <li class="nav-group-task">
                 <a href="Classes/Matcher.html">Matcher</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Types.html#/s:11SwiftyMocky16GenericAttributeV">GenericAttribute</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Types.html#/s:11SwiftyMocky20GenericAttributeTypeP">GenericAttributeType</a>
               </li>
             </ul>
           </li>
@@ -120,13 +129,21 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a href="Other Protocols.html">Other Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Other Protocols.html#/s:11SwiftyMocky10StaticMockP">StaticMock</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
         <section>
           <section class="section">
             
-            <h2 id='matcher-handling-parameters-that-are-not-equatable' class='heading'>Matcher - handling parameters that are not Equatable</h2>
+            <h1 id='matcher-handling-parameters-that-are-not-equatable' class='heading'>Matcher - handling parameters that are not Equatable</h1>
 
 <p>In some cases there is a need to specify return value (by <code>Given</code>) for a method, which parameters are not <strong><em>Equatable</em></strong>, or check (by Verify), whether a method was called with specific attribute which is not <strong><em>Equatable</em></strong>.</p>
 
@@ -162,6 +179,15 @@
   <span class="kt">Verify</span><span class="p">(</span><span class="n">mockNetwork</span><span class="p">,</span> <span class="o">.</span><span class="nf">fetchUserDetails</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="n">john</span><span class="p">)))</span>
 <span class="p">}</span>
 </code></pre>
+
+<p>In most cases, you don&rsquo;t have to register comparators for Equatable and Sequence types (as long as Sequence Elememnt is Equatable)</p>
+<h2 id='matcher-for-generic-methods-in-mocks' class='heading'>Matcher for generic methods in Mocks</h2>
+
+<p>As generic methods and mocks are breaking generic constraints, for that particular case you also have to register comparators for Equatable / Sequence types.</p>
+
+<p>There are bunch of convenience registration methods, that will simplify registrations for that case.</p>
+
+<p>See <strong>Generics</strong> section for more information.</p>
 
           </section>
         </section>
