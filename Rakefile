@@ -2,12 +2,21 @@
 
 task :mock do
   print_info "Generating mocks"
-	sh "Pods/Sourcery/bin/sourcery --config mocky.yml"
+	sh "Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config mocky.yml"
 end
 
 task :debug do
   print_info "Generating mocks - debug"
-	sh "Pods/Sourcery/bin/sourcery --config mocky.yml --disableCache --verbose"
+	sh "Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config mocky.yml --disableCache --verbose"
+end
+
+## [ Sourcery ] ################################################################
+
+desc "Download prebuilt sourcery app."
+desc "Can specify version as argument (default is 4.0.2)"
+task :sourcery do
+    ARGV.each { |a| task a.to_sym do ; end }
+    sh "sh get_sourcery.sh " + ARGV[1].to_s + " " + ARGV[2].to_s
 end
 
 ## [ CocoaPods ] ###############################################################

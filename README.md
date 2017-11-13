@@ -171,7 +171,7 @@ Every protocol in source directories, having this annotation, will be added to `
 
 ## Roadmap
 
-- [x] stubbibg protocols in elegant way
+- [x] stubbing protocols in elegant way
 - [x] template for generating mocks
 - [x] example project
 - [x] stubbing protocols with variables
@@ -179,7 +179,7 @@ Every protocol in source directories, having this annotation, will be added to `
 - [ ] cover 95% of framework codebase with unit tests
 - [ ] add unit tests for template
 - [ ] support for tvOS, Linux and MacOS
-- [ ] Carthage support
+- [x] Carthage support
 
 ## Installation
 

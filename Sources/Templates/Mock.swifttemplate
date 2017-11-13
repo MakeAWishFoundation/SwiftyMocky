@@ -86,7 +86,7 @@ import SourceryRuntime
             let typeString = "\(type.actualTypeName ?? type)"
             let isEscaping = typeString.contains("@escaping")
             let isOptional = (type.actualTypeName ?? type).isOptional
-            if parameter.isClosure, !isEscaping, !isOptional {
+            if parameter.isClosure && !isEscaping && !isOptional {
                 return "\(wrappedType).any"
             } else {
                 return "\(wrappedType).value(\(name))"

@@ -17,6 +17,7 @@ install:
 
 script:
   - rake pod_install
+  - rake sourcery 4.0.2 # workaround - getting prebuilt sourcery version
   - rake mock
   - fastlane scan
 
