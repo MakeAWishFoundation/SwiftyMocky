@@ -129,6 +129,7 @@ args:
 
   `Pods/Sourcery/bin/sourcery --config mocky.yml --watch`
 
+> **!!! In case of incompatibile swift module versions error** - check Known issues section in guides or docs
 
 **Don't forget** to add `Mock.generated.swift` to your test target :)
 
