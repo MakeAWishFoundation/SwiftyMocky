@@ -12,9 +12,11 @@ custom_categories:
   - name: Guides
     children:
       - Overview
+      - Supported features
       - Installation
       - Setup in project
-      - Comparing with Matcher
+      - Matcher support for not Equatable
+      - Generics
       - Examples
       - Known issues
 
@@ -23,6 +25,8 @@ custom_categories:
       - Mock
       - Parameter
       - Matcher
+      - GenericAttribute
+      - GenericAttributeType
 
   - name: Global methods
     children:

@@ -14,34 +14,6 @@ protocol UserStorageType {
     func storeUser(name: String, surname: String)
 }
 
-class UsersViewModel {
-    var usersStorage: UserStorageType!
-    var userNetwork: UserNetworkType!
-
-    var id: String = "someid"
-    var error: Error?
-    var user: User?
-
-    func saveUser(name: String, surname: String) {
-        usersStorage.storeUser(name: name, surname: surname)
-    }
-
-    func fetchUser(completion: @escaping () -> Void) {
-        userNetwork.getUser(for: id) { user in
-            self.user = user
-            completion()
-        }
-    }
-}
-
-struct User {
-    let name: String
-}
-
-struct NetworkConfig {
-    let baseUrl: String
-}
-
 //sourcery: AutoMockable
 protocol UserNetworkType {
     init(config: NetworkConfig)
@@ -60,15 +32,24 @@ extension UserNetworkType {
 }
 
 //sourcery: AutoMockable
-protocol ProtocolWithOptionalClosures {
+protocol EmptyProtocol { }
+
+//sourcery: AutoMockable
+protocol AMassiveTestProtocol {
     var nonOptionalClosure: () -> Void { get set }
     var optionalClosure: (() -> Int)? { get set }
     var implicitelyUnwrappedClosure: (() -> Void)! { get set }
-}
 
-//sourcery: AutoMockable
-protocol ProtocolWithThrowingMethods {
+    static var optionalClosure: (() -> Int)? { get set }
+
     func methodThatThrows() throws
     func methodThatReturnsAndThrows(param: String) throws -> Int
     func methodThatRethrows(param: (String) throws -> Int) rethrows -> Int
+
+    static func methodThatThrows() throws
+    static func methodThatReturnsAndThrows(param: String) throws -> Int
+    static func methodThatRethrows(param: (String) throws -> Int) rethrows -> Int
+
+    init()
+    init(_ sth: Int)
 }

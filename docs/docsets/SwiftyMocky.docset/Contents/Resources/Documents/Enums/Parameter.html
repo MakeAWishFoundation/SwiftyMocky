@@ -14,7 +14,7 @@
     <a title="Parameter Enum Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">SwiftyMocky Docs</a> (73% documented)</p>
+        <p><a href="../index.html">SwiftyMocky Docs</a> (71% documented)</p>
         <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -35,16 +35,25 @@
                 <a href="../overview.html">Overview</a>
               </li>
               <li class="nav-group-task">
+                <a href="../supported-features.html">Supported features</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../installation.html">Installation</a>
               </li>
               <li class="nav-group-task">
                 <a href="../setup-in-project.html">Setup in project</a>
               </li>
               <li class="nav-group-task">
-                <a href="../comparing-with-matcher.html">Comparing with Matcher</a>
+                <a href="../matcher-support-for-not-equatable.html">Matcher support for not Equatable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../generics.html">Generics</a>
               </li>
               <li class="nav-group-task">
                 <a href="../examples.html">Examples</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../known-issues.html">Known issues</a>
               </li>
             </ul>
           </li>
@@ -60,6 +69,12 @@
               <li class="nav-group-task">
                 <a href="../Classes/Matcher.html">Matcher</a>
               </li>
+              <li class="nav-group-task">
+                <a href="../Types.html#/s:11SwiftyMocky16GenericAttributeV">GenericAttribute</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Types.html#/s:11SwiftyMocky20GenericAttributeTypeP">GenericAttributeType</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -69,13 +84,33 @@
                 <a href="../Global methods.html#/s:11SwiftyMocky5Givenyx_ABQztAA4MockRzlF">Given(_:_:)</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Global methods.html#/s:11SwiftyMocky5Givenyxm_06StaticC0QztAA0D4MockRzlF">Given(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Global methods.html#/s:11SwiftyMocky7Performyx_ABQztAA4MockRzlF">Perform(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Global methods.html#/s:11SwiftyMocky7Performyxm_06StaticC0QztAA0D4MockRzlF">Perform(_:_:)</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Global methods.html#/s:11SwiftyMocky6Verifyyx_ABQzs12StaticStringV4fileSu4linetAA4MockRzlF">Verify(_:_:file:line:)</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Global methods.html#/s:11SwiftyMocky6Verifyyxm_06StaticC0Qzs0D6StringV4fileSu4linetAA0D4MockRzlF">Verify(_:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Global methods.html#/s:11SwiftyMocky6Verifyyx_SuABQzs12StaticStringV4fileSu4linetAA4MockRzlF">Verify(_:_:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Global methods.html#/s:11SwiftyMocky6Verifyyxm_Su06StaticC0Qzs0D6StringV4fileSu4linetAA0D4MockRzlF">Verify(_:_:_:file:line:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other Guides.html">Other Guides</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../contents.html">Contents</a>
               </li>
             </ul>
           </li>
@@ -92,6 +127,14 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Other Functions.html#/s:11SwiftyMocky7Failures5NeverOSSF">Failure(_:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other Protocols.html">Other Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Other Protocols.html#/s:11SwiftyMocky10StaticMockP">StaticMock</a>
               </li>
             </ul>
           </li>
@@ -238,6 +281,121 @@ wrapped <em>ValueType</em> type, to resolve ambiguity between methods with same 
                           <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">intValue</span><span class="p">:</span> <span class="kt">Int</span></code></pre>
 
                         </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky9ParameterO7compareSbACyxG3lhs_AE3rhsAA7MatcherC4withtFZ"></a>
+                    <a name="//apple_ref/swift/Method/compare(lhs:rhs:with:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky9ParameterO7compareSbACyxG3lhs_AE3rhsAA7MatcherC4withtFZ">compare(lhs:rhs:with:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns whether given two parameters are matching each other, with following rules:</p>
+
+<ol>
+<li>if parameter is .any - it is equal to any other parameter</li>
+<li>if both are .value - then compare wrapped ValueType instances.</li>
+<li>if they are not Equatable (or not a Sequences of Equatable), use provided matcher instance</li>
+</ol>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">compare</span><span class="p">(</span><span class="nv">lhs</span><span class="p">:</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt">ValueType</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">rhs</span><span class="p">:</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt">ValueType</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">with</span> <span class="nv">matcher</span><span class="p">:</span> <span class="kt"><a href="../Classes/Matcher.html">Matcher</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>lhs</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>First parameter</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>rhs</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Second parameter</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>matcher</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Matcher instance</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>true, if first is matching second</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky9ParameterO13wrapAsGenericACyAA0F9AttributeVGyF"></a>
+                    <a name="//apple_ref/swift/Method/wrapAsGeneric()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky9ParameterO13wrapAsGenericACyAA0F9AttributeVGyF">wrapAsGeneric()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[Internal] Wraps as generic Parameter instance. Should not be ever called directly.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">wrapAsGeneric</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt"><a href="../Types.html#/s:11SwiftyMocky16GenericAttributeV">GenericAttribute</a></span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Wrapped parameter</p>
                       </div>
                     </section>
                   </div>

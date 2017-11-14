@@ -85,7 +85,7 @@ class ExampleTests: XCTestCase {
     }
 
     func testGiven_with_throwing() {
-        let mock = ProtocolWithThrowingMethodsMock()
+        let mock = AMassiveTestProtocolMock()
 
         Given(mock, .methodThatThrows(willThrow: TestError.first))
 
@@ -143,4 +143,69 @@ class ExampleTests: XCTestCase {
             XCTFail("Should not fail")
         }
     }
+
+    func testAll_static_calls() {
+        let perform = expectation(description: "Should perform")
+        Given(AMassiveTestProtocolMock.self, .methodThatReturnsAndThrows(param: .any, willReturn: 1))
+        Perform(AMassiveTestProtocolMock.self, .methodThatThrows(perform: {
+            perform.fulfill()
+        }))
+        try? AMassiveTestProtocolMock.methodThatThrows()
+        Verify(AMassiveTestProtocolMock.self, .methodThatThrows())
+
+        let value = try? AMassiveTestProtocolMock.methodThatReturnsAndThrows(param: "anything")
+        Verify(AMassiveTestProtocolMock.self, .methodThatReturnsAndThrows(param: .value("anything")))
+        XCTAssertEqual(value, 1)
+        waitForExpectations(timeout: 1) { error in
+            if let _ = error {
+                XCTFail()
+            }
+        }
+    }
+
+    func test_generics() {
+        let date = Date.init(timeIntervalSince1970: 321123)
+        let item1 = DateSortableMock()
+        item1.date = date
+        Matcher.default.register(DateSortableMock.self) { (lhs, rhs) -> Bool in
+            return lhs.date == rhs.date
+        }
+
+        let mock = HistorySectionMapperTypeMock()
+
+        Given(mock, .map(items: .any, willReturn: [(key: String, items: [DateSortableMock])]()))
+        Given(mock, .map(items: .value([item1]), willReturn: [(key: "only item", items: [item1])]))
+
+        print(mock.map([DateSortableMock]()))
+        print(mock.map([item1]))
+    }
+
+    func test_generics_2() {
+        let mock = AVeryAssociatedProtocolMock<[Int],String>()
+        mock.given(.fetch(for: .value("aaa"), willReturn: [1,2,3]))
+        XCTAssertEqual(mock.fetch(for: "aaa"),[1,2,3])
+    }
+
+    func test_generics_3() {
+        let mock = AVeryGenericProtocolMock(value: 1)
+
+        Given(mock, .methodConstrained(param: .value(1), willReturn: (0,0)))
+        Given(mock, .methodConstrained(param: .value(2), willReturn: (0,1)))
+        Given(mock, .methodConstrained(param: .value("abc"), willReturn: (0,2)))
+
+        Matcher.default.register(Int.self)
+        Matcher.default.register(String.self)
+
+        let (_, a): (Int,Int) = mock.methodConstrained(param: 1)
+        let (_, b): (Int,Int) = mock.methodConstrained(param: 2)
+        let (_, c): (Int,Int) = mock.methodConstrained(param: "abc")
+        XCTAssertEqual(0, a)
+        XCTAssertEqual(1, b)
+        XCTAssertEqual(2, c)
+
+        Verify(mock, .methodConstrained(param: .value("abc")))
+        Verify(mock, 3, .methodConstrained(param: .any(Any.self)))
+    }
 }
+
+extension String: EmptyProtocol { }

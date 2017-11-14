@@ -10,7 +10,7 @@ import Foundation
 import XCTest
 
 /// Every generated mock implementation adopts **Mock** protocol.
-/// It defines base Mock structure
+/// It defines base Mock structure and features.
 public protocol Mock: class {
     associatedtype Given
     associatedtype Verify
@@ -63,3 +63,20 @@ public protocol Mock: class {
     ///   - line: for XCTest print purposes
     func verify(_ method: Verify, count: UInt, file: StaticString, line: UInt)
 }
+
+/// Every mock, that stubs static methods, should adopt **StaticMock** protocol.
+/// It defines base StaticMock structure and features.
+public protocol StaticMock: class {
+    associatedtype StaticGiven
+    associatedtype StaticVerify
+    associatedtype StaticPerform
+
+    static func matchingCalls(_ method: StaticVerify) -> Int
+
+    static func given(_ method: StaticGiven)
+
+    static func perform(_ method: StaticPerform)
+
+    static func verify(_ method: StaticVerify, count: UInt, file: StaticString, line: UInt)
+}
+

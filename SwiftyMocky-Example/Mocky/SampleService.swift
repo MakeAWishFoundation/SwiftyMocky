@@ -8,6 +8,8 @@
 
 import Foundation
 
+public protocol AutoMockable { }
+
 struct Point {
     let x: Float
     let y: Float
@@ -27,3 +29,16 @@ protocol SampleServiceType: AutoMockable {
     func methodWithClosures(success function: LinearFunction) -> ClosureFabric
     func methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?) -> ((Int) -> Void)
 }
+
+protocol SimpleServiceType {
+    var youCouldOnlyGetThis: String { get }
+    func serviceName() -> String
+}
+
+// sourcery: AutoMockable
+protocol ComplicatedServiceType: SampleServiceType, SimpleServiceType {
+    var youCouldOnlyGetThis:String { get }
+    func serviceName() -> String
+    func aNewWayToSayHooray() -> Void
+}
+

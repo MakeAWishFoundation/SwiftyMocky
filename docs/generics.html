@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Generics  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a title="Generics  Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="index.html">SwiftyMocky Docs</a> (71% documented)</p>
+        <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="img/gh.png"/>View on GitHub</a></p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="index.html">SwiftyMocky Reference</a>
+        <img id="carat" src="img/carat.png" />
+        Generics  Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="Guides.html">Guides</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="overview.html">Overview</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="supported-features.html">Supported features</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="installation.html">Installation</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="setup-in-project.html">Setup in project</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="matcher-support-for-not-equatable.html">Matcher support for not Equatable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="generics.html">Generics</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="examples.html">Examples</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="known-issues.html">Known issues</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Types.html">Types</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Protocols/Mock.html">Mock</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/Parameter.html">Parameter</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/Matcher.html">Matcher</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Types.html#/s:11SwiftyMocky16GenericAttributeV">GenericAttribute</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Types.html#/s:11SwiftyMocky20GenericAttributeTypeP">GenericAttributeType</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Global methods.html">Global methods</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Global methods.html#/s:11SwiftyMocky5Givenyx_ABQztAA4MockRzlF">Given(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global methods.html#/s:11SwiftyMocky5Givenyxm_06StaticC0QztAA0D4MockRzlF">Given(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global methods.html#/s:11SwiftyMocky7Performyx_ABQztAA4MockRzlF">Perform(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global methods.html#/s:11SwiftyMocky7Performyxm_06StaticC0QztAA0D4MockRzlF">Perform(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global methods.html#/s:11SwiftyMocky6Verifyyx_ABQzs12StaticStringV4fileSu4linetAA4MockRzlF">Verify(_:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global methods.html#/s:11SwiftyMocky6Verifyyxm_06StaticC0Qzs0D6StringV4fileSu4linetAA0D4MockRzlF">Verify(_:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global methods.html#/s:11SwiftyMocky6Verifyyx_SuABQzs12StaticStringV4fileSu4linetAA4MockRzlF">Verify(_:_:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global methods.html#/s:11SwiftyMocky6Verifyyxm_Su06StaticC0Qzs0D6StringV4fileSu4linetAA0D4MockRzlF">Verify(_:_:_:file:line:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other Guides.html">Other Guides</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="contents.html">Contents</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other Extensions.html">Other Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Extensions/Optional.html">Optional</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other Functions.html">Other Functions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Other Functions.html#/s:11SwiftyMocky7Failures5NeverOSSF">Failure(_:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other Protocols.html">Other Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Other Protocols.html#/s:11SwiftyMocky10StaticMockP">StaticMock</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            
+            <h1 id='generics-support' class='heading'>Generics Support</h1>
+
+<p>In <strong>SwiftyMocky</strong>, we are supporting generics for methods generation, as well as for generic constrained methods in mocked protocols.</p>
+<h2 id='protocols-with-generic-methods' class='heading'>Protocols with generic methods</h2>
+
+<p>We support generic constrained methods in protocols definition, so something like below:</p>
+<pre class="highlight swift"><code><span class="c1">//sourcery: AutoMockable</span>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">HistorySectionMapperType</span><span class="p">:</span> <span class="kd">class</span> <span class="p">{</span>
+    <span class="kd">func</span> <span class="n">map</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">:</span> <span class="kt">DateSortable</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">items</span><span class="p">:</span> <span class="p">[</span><span class="kt">T</span><span class="p">])</span> <span class="o">-&gt;</span>  <span class="p">[(</span><span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">items</span><span class="p">:</span> <span class="p">[</span><span class="kt">T</span><span class="p">])]</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>Will generate valid mock.</p>
+
+<p>Please have in mind, that generic methods are problematic in a lot of cases, so you could experience:</p>
+
+<ol>
+<li>AutoComplete issues for given, perform and verify: - use full <code>&lt;MockName&gt;.Given.</code> for getting autocomplete.</li>
+<li>Matching issues - if you are using generic parameters as <code>.value</code>, you might need to add additional comparators to <code>Matcher</code> instance.</li>
+</ol>
+<h2 id='protocols-with-associated-types' class='heading'>Protocols with associated types</h2>
+
+<p>We are also supporting protocols with associated types (mock will be generated as generic class), but that requires some aditional manuall annotations:</p>
+<pre class="highlight swift"><code><span class="c1">//sourcery: AutoMockable</span>
+<span class="c1">//sourcery: associatedtype = "T1: Sequence"</span>
+<span class="c1">//sourcery: associatedtype = "T2: Comparable, EmptyProtocol"</span>
+<span class="kd">protocol</span> <span class="kt">AVeryAssociatedProtocol</span> <span class="p">{</span>
+    <span class="k">associatedtype</span> <span class="kt">T1</span><span class="p">:</span> <span class="kt">Sequence</span>
+    <span class="k">associatedtype</span> <span class="kt">T2</span><span class="p">:</span> <span class="kt">Comparable</span><span class="p">,</span> <span class="kt">EmptyProtocol</span>
+
+    <span class="kd">func</span> <span class="nf">fetch</span><span class="p">(</span><span class="k">for</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">T2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">T1</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>Definition above will produce:</p>
+<pre class="highlight swift"><code><span class="kd">class</span> <span class="kt">AVeryAssociatedProtocolMock</span><span class="o">&lt;</span><span class="kt">TypeT1</span><span class="p">,</span><span class="kt">TypeT2</span><span class="o">&gt;</span><span class="p">:</span> <span class="kt">AVeryAssociatedProtocol</span><span class="p">,</span> <span class="kt">Mock</span> <span class="k">where</span> <span class="kt">TypeT1</span><span class="p">:</span> <span class="kt">Sequence</span><span class="p">,</span> <span class="kt">TypeT2</span><span class="p">:</span> <span class="kt">Comparable</span><span class="p">,</span> <span class="kt">TypeT2</span><span class="p">:</span> <span class="kt">EmptyProtocol</span> <span class="p">{</span>
+
+    <span class="kd">typealias</span> <span class="kt">T1</span> <span class="o">=</span> <span class="kt">TypeT1</span>
+    <span class="kd">typealias</span> <span class="kt">T2</span> <span class="o">=</span> <span class="kt">TypeT2</span>
+
+<span class="c1">// ...</span>
+</code></pre>
+
+          </section>
+        </section>
+        <section id="footer">
+          <p>Copyright © 2017 MakeAWishFoundation. All rights reserved.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.8.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

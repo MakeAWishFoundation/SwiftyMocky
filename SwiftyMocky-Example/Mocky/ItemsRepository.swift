@@ -15,21 +15,3 @@ protocol ItemsRepository {
     func storedDetails(item: Item) -> ItemDetails?
 }
 
-class ConcreteItemsRepository: ItemsRepository {
-    
-    func storeItems(items: [Item]) {
-        
-    }
-    
-    func storeDetails(details: ItemDetails) {
-        
-    }
-    
-    func storedItems() -> [Item]? {
-        return nil
-    }
-    
-    func storedDetails(item: Item) -> ItemDetails? {
-        return nil
-    }
-}
