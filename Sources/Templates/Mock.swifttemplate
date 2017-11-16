@@ -237,14 +237,20 @@ import SourceryRuntime
                 return "addInvocation(.\(prototype)(\(parametersForMethodCall())))"
             }
         }
+        var givenValue: String {
+            guard !method.isInitializer else { return "" }
+            guard method.throws || !method.returnTypeName.isVoid else { return "" }
+
+            if method.parameters.isEmpty {
+                return "\n\t\tlet givenValue: (value: Any?, error: Error?) = methodReturnValue(.\(prototype))"
+            } else {
+                return "\n\t\tlet givenValue: (value: Any?, error: Error?) = methodReturnValue(.\(prototype)(\(parametersForMethodCall())))"
+            }
+        }
         var throwValue: String {
             guard !method.isInitializer, method.throws else { return "" }
 
-            if method.parameters.isEmpty {
-                return "\n\t\tif let error = methodThrowValue(.\(prototype)) { throw error }"
-            } else {
-                return "\n\t\tif let error = methodThrowValue(.\(prototype)(\(parametersForMethodCall()))) { throw error }"
-            }
+            return "\n\t\tif let error = givenValue.error { throw error }"
         }
         var returnValue: String {
             guard !method.isInitializer else { return "" }
@@ -252,13 +258,8 @@ import SourceryRuntime
 
             let message = "stub return value not specified for \(method.name). Use given"
 
-            if method.parameters.isEmpty {
-                return "\n\t\tlet value = methodReturnValue(.\(prototype)) as? \(TypeWrapper(method.returnTypeName).stripped)\n" +
-                "\t\treturn value.orFail(\"\(message)\")"
-            } else {
-                return "\n\t\tlet value = methodReturnValue(.\(prototype)(\(parametersForMethodCall()))) as? \(TypeWrapper(method.returnTypeName).stripped)\n" +
-                "\t\treturn value.orFail(\"\(message)\")"
-            }
+            return "\n\t\tlet value = givenValue.value as? \(TypeWrapper(method.returnTypeName).stripped)\n" +
+            "\t\treturn value.orFail(\"\(message)\")"
         }
         var equalCase: String {
             guard !method.isInitializer else { return "" }
@@ -610,7 +611,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
   <%# ================================================== STATIC STUBS -%><%_ -%>
     <%_ for method in wrappedStaticMethods { -%>
     <%= method.functionPrototype _%> {
-        <%= method.invocation _%><%= method.performCall() _%><%= method.throwValue _%><%= method.returnValue _%>
+        <%= method.invocation _%><%= method.performCall() _%><%= method.givenValue _%><%= method.throwValue _%><%= method.returnValue _%>
     }
 
     <%_ } %><%_ -%>
@@ -624,7 +625,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
   <%# ================================================== STUBS -%><%_ -%>
     <%_ for method in wrappedMethods { -%>
     <%= method.functionPrototype _%> {
-        <%= method.invocation _%><%= method.performCall() _%><%= method.throwValue _%><%= method.returnValue _%>
+        <%= method.invocation _%><%= method.performCall() _%><%= method.givenValue _%><%= method.throwValue _%><%= method.returnValue _%>
     }
 
     <%_ } -%>
@@ -798,14 +799,9 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         invocations.append(call)
     }
 
-    private func methodReturnValue(_ method: MethodType) -> Any? {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
-        return matched?.returns
-    }
-
-    private func methodThrowValue(_ method: MethodType) -> Error? {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
-        return matched?.`throws`
+    private func methodReturnValue(_ method: MethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
     }
 
     private func methodPerformValue(_ method: MethodType) -> Any? {
@@ -843,14 +839,9 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         invocations.append(call)
     }
 
-    static private func methodReturnValue(_ method: StaticMethodType) -> Any? {
-        let matched = methodReturnValues.reversed().first { StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
-        return matched?.returns
-    }
-
-    static private func methodThrowValue(_ method: StaticMethodType) -> Error? {
-        let matched = methodReturnValues.reversed().first { StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
-        return matched?.`throws`
+    static private func methodReturnValue(_ method: StaticMethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
     }
 
     static private func methodPerformValue(_ method: StaticMethodType) -> Any? {

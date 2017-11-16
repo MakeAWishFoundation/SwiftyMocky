@@ -53,15 +53,17 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
         addInvocation(.smethodThatThrows)
 		let perform = methodPerformValue(.smethodThatThrows) as? () -> Void
 		perform?()
-		if let error = methodThrowValue(.smethodThatThrows) { throw error }
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.smethodThatThrows)
+		if let error = givenValue.error { throw error }
     }
 
     static func methodThatReturnsAndThrows(param: String) throws -> Int {
         addInvocation(.smethodThatReturnsAndThrows__param_param(Parameter<String>.value(param)))
 		let perform = methodPerformValue(.smethodThatReturnsAndThrows__param_param(Parameter<String>.value(param))) as? (String) -> Void
 		perform?(param)
-		if let error = methodThrowValue(.smethodThatReturnsAndThrows__param_param(Parameter<String>.value(param))) { throw error }
-		let value = methodReturnValue(.smethodThatReturnsAndThrows__param_param(Parameter<String>.value(param))) as? Int
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.smethodThatReturnsAndThrows__param_param(Parameter<String>.value(param)))
+		if let error = givenValue.error { throw error }
+		let value = givenValue.value as? Int
 		return value.orFail("stub return value not specified for methodThatReturnsAndThrows(param: String). Use given")
     }
 
@@ -69,7 +71,8 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
         addInvocation(.smethodThatRethrows__param_param(Parameter<(String) throws -> Int>.any))
 		let perform = methodPerformValue(.smethodThatRethrows__param_param(Parameter<(String) throws -> Int>.any)) as? ((String) throws -> Int) -> Void
 		perform?(param)
-		let value = methodReturnValue(.smethodThatRethrows__param_param(Parameter<(String) throws -> Int>.any)) as? Int
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.smethodThatRethrows__param_param(Parameter<(String) throws -> Int>.any))
+		let value = givenValue.value as? Int
 		return value.orFail("stub return value not specified for methodThatRethrows(param: (String) throws -> Int). Use given")
     }
 
@@ -81,15 +84,17 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
         addInvocation(.imethodThatThrows)
 		let perform = methodPerformValue(.imethodThatThrows) as? () -> Void
 		perform?()
-		if let error = methodThrowValue(.imethodThatThrows) { throw error }
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodThatThrows)
+		if let error = givenValue.error { throw error }
     }
 
     func methodThatReturnsAndThrows(param: String) throws -> Int {
         addInvocation(.imethodThatReturnsAndThrows__param_param(Parameter<String>.value(param)))
 		let perform = methodPerformValue(.imethodThatReturnsAndThrows__param_param(Parameter<String>.value(param))) as? (String) -> Void
 		perform?(param)
-		if let error = methodThrowValue(.imethodThatReturnsAndThrows__param_param(Parameter<String>.value(param))) { throw error }
-		let value = methodReturnValue(.imethodThatReturnsAndThrows__param_param(Parameter<String>.value(param))) as? Int
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodThatReturnsAndThrows__param_param(Parameter<String>.value(param)))
+		if let error = givenValue.error { throw error }
+		let value = givenValue.value as? Int
 		return value.orFail("stub return value not specified for methodThatReturnsAndThrows(param: String). Use given")
     }
 
@@ -97,7 +102,8 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
         addInvocation(.imethodThatRethrows__param_param(Parameter<(String) throws -> Int>.any))
 		let perform = methodPerformValue(.imethodThatRethrows__param_param(Parameter<(String) throws -> Int>.any)) as? ((String) throws -> Int) -> Void
 		perform?(param)
-		let value = methodReturnValue(.imethodThatRethrows__param_param(Parameter<(String) throws -> Int>.any)) as? Int
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodThatRethrows__param_param(Parameter<(String) throws -> Int>.any))
+		let value = givenValue.value as? Int
 		return value.orFail("stub return value not specified for methodThatRethrows(param: (String) throws -> Int). Use given")
     }
 
@@ -295,14 +301,9 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
         invocations.append(call)
     }
 
-    private func methodReturnValue(_ method: MethodType) -> Any? {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
-        return matched?.returns
-    }
-
-    private func methodThrowValue(_ method: MethodType) -> Error? {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
-        return matched?.`throws`
+    private func methodReturnValue(_ method: MethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
     }
 
     private func methodPerformValue(_ method: MethodType) -> Any? {
@@ -338,14 +339,9 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
         invocations.append(call)
     }
 
-    static private func methodReturnValue(_ method: StaticMethodType) -> Any? {
-        let matched = methodReturnValues.reversed().first { StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
-        return matched?.returns
-    }
-
-    static private func methodThrowValue(_ method: StaticMethodType) -> Error? {
-        let matched = methodReturnValues.reversed().first { StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
-        return matched?.`throws`
+    static private func methodReturnValue(_ method: StaticMethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
     }
 
     static private func methodPerformValue(_ method: StaticMethodType) -> Any? {
@@ -374,7 +370,8 @@ class AVeryAssociatedProtocolMock<TypeT1,TypeT2>: AVeryAssociatedProtocol, Mock 
         addInvocation(.ifetch__for_value(Parameter<T2>.value(value)))
 		let perform = methodPerformValue(.ifetch__for_value(Parameter<T2>.value(value))) as? (T2) -> Void
 		perform?(value)
-		let value = methodReturnValue(.ifetch__for_value(Parameter<T2>.value(value))) as? T1
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.ifetch__for_value(Parameter<T2>.value(value)))
+		let value = givenValue.value as? T1
 		return value.orFail("stub return value not specified for fetch(for value: T2). Use given")
     }
 
@@ -453,14 +450,9 @@ class AVeryAssociatedProtocolMock<TypeT1,TypeT2>: AVeryAssociatedProtocol, Mock 
         invocations.append(call)
     }
 
-    private func methodReturnValue(_ method: MethodType) -> Any? {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
-        return matched?.returns
-    }
-
-    private func methodThrowValue(_ method: MethodType) -> Error? {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
-        return matched?.`throws`
+    private func methodReturnValue(_ method: MethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
     }
 
     private func methodPerformValue(_ method: MethodType) -> Any? {
@@ -489,7 +481,8 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
         addInvocation(.sgeneric__lhs_lhsrhs_rhs(Parameter<Q>.value(lhs).wrapAsGeneric(), Parameter<Q>.value(rhs).wrapAsGeneric()))
 		let perform = methodPerformValue(.sgeneric__lhs_lhsrhs_rhs(Parameter<Q>.value(lhs).wrapAsGeneric(), Parameter<Q>.value(rhs).wrapAsGeneric())) as? (Q, Q) -> Void
 		perform?(lhs, rhs)
-		let value = methodReturnValue(.sgeneric__lhs_lhsrhs_rhs(Parameter<Q>.value(lhs).wrapAsGeneric(), Parameter<Q>.value(rhs).wrapAsGeneric())) as? Bool
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.sgeneric__lhs_lhsrhs_rhs(Parameter<Q>.value(lhs).wrapAsGeneric(), Parameter<Q>.value(rhs).wrapAsGeneric()))
+		let value = givenValue.value as? Bool
 		return value.orFail("stub return value not specified for generic<Q>(lhs: Q, rhs: Q). Use given")
     }
 
@@ -497,7 +490,8 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
         addInvocation(.sveryConstrained__lhs_lhsrhs_rhs(Parameter<Q>.value(lhs).wrapAsGeneric(), Parameter<Q>.value(rhs).wrapAsGeneric()))
 		let perform = methodPerformValue(.sveryConstrained__lhs_lhsrhs_rhs(Parameter<Q>.value(lhs).wrapAsGeneric(), Parameter<Q>.value(rhs).wrapAsGeneric())) as? (Q, Q) -> Void
 		perform?(lhs, rhs)
-		let value = methodReturnValue(.sveryConstrained__lhs_lhsrhs_rhs(Parameter<Q>.value(lhs).wrapAsGeneric(), Parameter<Q>.value(rhs).wrapAsGeneric())) as? Bool
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.sveryConstrained__lhs_lhsrhs_rhs(Parameter<Q>.value(lhs).wrapAsGeneric(), Parameter<Q>.value(rhs).wrapAsGeneric()))
+		let value = givenValue.value as? Bool
 		return value.orFail("stub return value not specified for veryConstrained<Q: Sequence>(lhs: Q, rhs: Q). Use given")
     }
 
@@ -507,7 +501,8 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
         addInvocation(.imethodConstrained__param_param(Parameter<A>.value(param).wrapAsGeneric()))
 		let perform = methodPerformValue(.imethodConstrained__param_param(Parameter<A>.value(param).wrapAsGeneric())) as? (A) -> Void
 		perform?(param)
-		let value = methodReturnValue(.imethodConstrained__param_param(Parameter<A>.value(param).wrapAsGeneric())) as? (B,C)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodConstrained__param_param(Parameter<A>.value(param).wrapAsGeneric()))
+		let value = givenValue.value as? (B,C)
 		return value.orFail("stub return value not specified for methodConstrained<A,B,C>(param: A). Use given")
     }
 
@@ -654,14 +649,9 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
         invocations.append(call)
     }
 
-    private func methodReturnValue(_ method: MethodType) -> Any? {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
-        return matched?.returns
-    }
-
-    private func methodThrowValue(_ method: MethodType) -> Error? {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
-        return matched?.`throws`
+    private func methodReturnValue(_ method: MethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
     }
 
     private func methodPerformValue(_ method: MethodType) -> Any? {
@@ -697,14 +687,9 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
         invocations.append(call)
     }
 
-    static private func methodReturnValue(_ method: StaticMethodType) -> Any? {
-        let matched = methodReturnValues.reversed().first { StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
-        return matched?.returns
-    }
-
-    static private func methodThrowValue(_ method: StaticMethodType) -> Error? {
-        let matched = methodReturnValues.reversed().first { StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
-        return matched?.`throws`
+    static private func methodReturnValue(_ method: StaticMethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
     }
 
     static private func methodPerformValue(_ method: StaticMethodType) -> Any? {
@@ -734,7 +719,8 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
         addInvocation(.iserviceName)
 		let perform = methodPerformValue(.iserviceName) as? () -> Void
 		perform?()
-		let value = methodReturnValue(.iserviceName) as? String
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.iserviceName)
+		let value = givenValue.value as? String
 		return value.orFail("stub return value not specified for serviceName(). Use given")
     }
 
@@ -748,7 +734,8 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
         addInvocation(.igetPoint__from_point(Parameter<Point>.value(point)))
 		let perform = methodPerformValue(.igetPoint__from_point(Parameter<Point>.value(point))) as? (Point) -> Void
 		perform?(point)
-		let value = methodReturnValue(.igetPoint__from_point(Parameter<Point>.value(point))) as? Point
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.igetPoint__from_point(Parameter<Point>.value(point)))
+		let value = givenValue.value as? Point
 		return value.orFail("stub return value not specified for getPoint(from point: Point). Use given")
     }
 
@@ -756,7 +743,8 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
         addInvocation(.igetPoint__from_tuple(Parameter<(Float,Float)>.value(tuple)))
 		let perform = methodPerformValue(.igetPoint__from_tuple(Parameter<(Float,Float)>.value(tuple))) as? ((Float,Float)) -> Void
 		perform?(tuple)
-		let value = methodReturnValue(.igetPoint__from_tuple(Parameter<(Float,Float)>.value(tuple))) as? Point
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.igetPoint__from_tuple(Parameter<(Float,Float)>.value(tuple)))
+		let value = givenValue.value as? Point
 		return value.orFail("stub return value not specified for getPoint(from tuple: (Float,Float)). Use given")
     }
 
@@ -764,7 +752,8 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
         addInvocation(.isimilarMethodThatDiffersOnType__value_1(Parameter<Float>.value(value)))
 		let perform = methodPerformValue(.isimilarMethodThatDiffersOnType__value_1(Parameter<Float>.value(value))) as? (Float) -> Void
 		perform?(value)
-		let value = methodReturnValue(.isimilarMethodThatDiffersOnType__value_1(Parameter<Float>.value(value))) as? Bool
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.isimilarMethodThatDiffersOnType__value_1(Parameter<Float>.value(value)))
+		let value = givenValue.value as? Bool
 		return value.orFail("stub return value not specified for similarMethodThatDiffersOnType(_ value: Float). Use given")
     }
 
@@ -772,7 +761,8 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
         addInvocation(.isimilarMethodThatDiffersOnType__value_2(Parameter<Point>.value(value)))
 		let perform = methodPerformValue(.isimilarMethodThatDiffersOnType__value_2(Parameter<Point>.value(value))) as? (Point) -> Void
 		perform?(value)
-		let value = methodReturnValue(.isimilarMethodThatDiffersOnType__value_2(Parameter<Point>.value(value))) as? Bool
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.isimilarMethodThatDiffersOnType__value_2(Parameter<Point>.value(value)))
+		let value = givenValue.value as? Bool
 		return value.orFail("stub return value not specified for similarMethodThatDiffersOnType(_ value: Point). Use given")
     }
 
@@ -786,7 +776,8 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
         addInvocation(.imethodWithClosures__success_function_1(Parameter<LinearFunction>.any))
 		let perform = methodPerformValue(.imethodWithClosures__success_function_1(Parameter<LinearFunction>.any)) as? (LinearFunction) -> Void
 		perform?(function)
-		let value = methodReturnValue(.imethodWithClosures__success_function_1(Parameter<LinearFunction>.any)) as? ClosureFabric
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodWithClosures__success_function_1(Parameter<LinearFunction>.any))
+		let value = givenValue.value as? ClosureFabric
 		return value.orFail("stub return value not specified for methodWithClosures(success function: LinearFunction). Use given")
     }
 
@@ -794,7 +785,8 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
         addInvocation(.imethodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.value(function)))
 		let perform = methodPerformValue(.imethodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.value(function))) as? (((Scalar,Scalar) -> Scalar)?) -> Void
 		perform?(function)
-		let value = methodReturnValue(.imethodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.value(function))) as? (Int) -> Void
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.value(function)))
+		let value = givenValue.value as? (Int) -> Void
 		return value.orFail("stub return value not specified for methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?). Use given")
     }
 
@@ -978,14 +970,9 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
         invocations.append(call)
     }
 
-    private func methodReturnValue(_ method: MethodType) -> Any? {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
-        return matched?.returns
-    }
-
-    private func methodThrowValue(_ method: MethodType) -> Error? {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
-        return matched?.`throws`
+    private func methodReturnValue(_ method: MethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
     }
 
     private func methodPerformValue(_ method: MethodType) -> Any? {
@@ -1065,14 +1052,9 @@ class DateSortableMock: DateSortable, Mock {
         invocations.append(call)
     }
 
-    private func methodReturnValue(_ method: MethodType) -> Any? {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
-        return matched?.returns
-    }
-
-    private func methodThrowValue(_ method: MethodType) -> Error? {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
-        return matched?.`throws`
+    private func methodReturnValue(_ method: MethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
     }
 
     private func methodPerformValue(_ method: MethodType) -> Any? {
@@ -1147,14 +1129,9 @@ class EmptyProtocolMock: EmptyProtocol, Mock {
         invocations.append(call)
     }
 
-    private func methodReturnValue(_ method: MethodType) -> Any? {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
-        return matched?.returns
-    }
-
-    private func methodThrowValue(_ method: MethodType) -> Error? {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
-        return matched?.`throws`
+    private func methodReturnValue(_ method: MethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
     }
 
     private func methodPerformValue(_ method: MethodType) -> Any? {
@@ -1179,7 +1156,8 @@ class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
         addInvocation(.imap__items(Parameter<[T]>.value(items).wrapAsGeneric()))
 		let perform = methodPerformValue(.imap__items(Parameter<[T]>.value(items).wrapAsGeneric())) as? ([T]) -> Void
 		perform?(items)
-		let value = methodReturnValue(.imap__items(Parameter<[T]>.value(items).wrapAsGeneric())) as? [(key: String, items: [T])]
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imap__items(Parameter<[T]>.value(items).wrapAsGeneric()))
+		let value = givenValue.value as? [(key: String, items: [T])]
 		return value.orFail("stub return value not specified for map<T: DateSortable>(_ items: [T]). Use given")
     }
 
@@ -1258,14 +1236,9 @@ class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
         invocations.append(call)
     }
 
-    private func methodReturnValue(_ method: MethodType) -> Any? {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
-        return matched?.returns
-    }
-
-    private func methodThrowValue(_ method: MethodType) -> Error? {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
-        return matched?.`throws`
+    private func methodReturnValue(_ method: MethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
     }
 
     private func methodPerformValue(_ method: MethodType) -> Any? {
@@ -1380,14 +1353,142 @@ class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
         invocations.append(call)
     }
 
-    private func methodReturnValue(_ method: MethodType) -> Any? {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
-        return matched?.returns
+    private func methodReturnValue(_ method: MethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
     }
 
-    private func methodThrowValue(_ method: MethodType) -> Error? {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
-        return matched?.`throws`
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+}
+
+// MARK: - ProtocolWithThrowingMethods
+class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    var matcher: Matcher = Matcher.default
+
+
+    func methodThatThrows() throws {
+        addInvocation(.imethodThatThrows)
+		let perform = methodPerformValue(.imethodThatThrows) as? () -> Void
+		perform?()
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodThatThrows)
+		if let error = givenValue.error { throw error }
+    }
+
+    func methodThatReturnsAndThrows(param: Int) throws -> Bool {
+        addInvocation(.imethodThatReturnsAndThrows__param_param(Parameter<Int>.value(param)))
+		let perform = methodPerformValue(.imethodThatReturnsAndThrows__param_param(Parameter<Int>.value(param))) as? (Int) -> Void
+		perform?(param)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodThatReturnsAndThrows__param_param(Parameter<Int>.value(param)))
+		if let error = givenValue.error { throw error }
+		let value = givenValue.value as? Bool
+		return value.orFail("stub return value not specified for methodThatReturnsAndThrows(param: Int). Use given")
+    }
+
+    fileprivate enum MethodType {
+        case imethodThatThrows
+        case imethodThatReturnsAndThrows__param_param(Parameter<Int>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+                case (.imethodThatThrows, .imethodThatThrows): 
+                    return true 
+                case (.imethodThatReturnsAndThrows__param_param(let lhsParam), .imethodThatReturnsAndThrows__param_param(let rhsParam)): 
+                    guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
+                    return true 
+                default: return false
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+                case .imethodThatThrows: return 0
+                case let .imethodThatReturnsAndThrows__param_param(p0): return p0.intValue
+            }
+        }
+    }
+
+    struct Given {
+        fileprivate var method: MethodType
+        var returns: Any?
+        var `throws`: Error?
+
+        private init(method: MethodType, returns: Any?, throws: Error?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
+
+        static func methodThatReturnsAndThrows(param: Parameter<Int>, willReturn: Bool) -> Given {
+            return Given(method: .imethodThatReturnsAndThrows__param_param(param), returns: willReturn, throws: nil)
+        }
+        static func methodThatThrows(willThrow: Error) -> Given {
+            return Given(method: .imethodThatThrows, returns: nil, throws: willThrow)
+        }
+        static func methodThatReturnsAndThrows(param: Parameter<Int>, willThrow: Error) -> Given {
+            return Given(method: .imethodThatReturnsAndThrows__param_param(param), returns: nil, throws: willThrow)
+        }
+    }
+
+    struct Verify {
+        fileprivate var method: MethodType
+
+        static func methodThatThrows() -> Verify {
+            return Verify(method: .imethodThatThrows)
+        }
+        static func methodThatReturnsAndThrows(param: Parameter<Int>) -> Verify {
+            return Verify(method: .imethodThatReturnsAndThrows__param_param(param))
+        }
+    }
+
+    struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        static func methodThatThrows(perform: () -> Void) -> Perform {
+            return Perform(method: .imethodThatThrows, performs: perform)
+        }
+        static func methodThatReturnsAndThrows(param: Parameter<Int>, perform: (Int) -> Void) -> Perform {
+            return Perform(method: .imethodThatReturnsAndThrows__param_param(param), performs: perform)
+        }
+    }
+
+    public func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+        methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+        let method = method.method
+        let invocations = matchingCalls(method)
+        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+
+    private func methodReturnValue(_ method: MethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
     }
 
     private func methodPerformValue(_ method: MethodType) -> Any? {
@@ -1412,7 +1513,8 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
         addInvocation(.iserviceName)
 		let perform = methodPerformValue(.iserviceName) as? () -> Void
 		perform?()
-		let value = methodReturnValue(.iserviceName) as? String
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.iserviceName)
+		let value = givenValue.value as? String
 		return value.orFail("stub return value not specified for serviceName(). Use given")
     }
 
@@ -1420,7 +1522,8 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
         addInvocation(.igetPoint__from_point(Parameter<Point>.value(point)))
 		let perform = methodPerformValue(.igetPoint__from_point(Parameter<Point>.value(point))) as? (Point) -> Void
 		perform?(point)
-		let value = methodReturnValue(.igetPoint__from_point(Parameter<Point>.value(point))) as? Point
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.igetPoint__from_point(Parameter<Point>.value(point)))
+		let value = givenValue.value as? Point
 		return value.orFail("stub return value not specified for getPoint(from point: Point). Use given")
     }
 
@@ -1428,7 +1531,8 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
         addInvocation(.igetPoint__from_tuple(Parameter<(Float,Float)>.value(tuple)))
 		let perform = methodPerformValue(.igetPoint__from_tuple(Parameter<(Float,Float)>.value(tuple))) as? ((Float,Float)) -> Void
 		perform?(tuple)
-		let value = methodReturnValue(.igetPoint__from_tuple(Parameter<(Float,Float)>.value(tuple))) as? Point
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.igetPoint__from_tuple(Parameter<(Float,Float)>.value(tuple)))
+		let value = givenValue.value as? Point
 		return value.orFail("stub return value not specified for getPoint(from tuple: (Float,Float)). Use given")
     }
 
@@ -1436,7 +1540,8 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
         addInvocation(.isimilarMethodThatDiffersOnType__value_1(Parameter<Float>.value(value)))
 		let perform = methodPerformValue(.isimilarMethodThatDiffersOnType__value_1(Parameter<Float>.value(value))) as? (Float) -> Void
 		perform?(value)
-		let value = methodReturnValue(.isimilarMethodThatDiffersOnType__value_1(Parameter<Float>.value(value))) as? Bool
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.isimilarMethodThatDiffersOnType__value_1(Parameter<Float>.value(value)))
+		let value = givenValue.value as? Bool
 		return value.orFail("stub return value not specified for similarMethodThatDiffersOnType(_ value: Float). Use given")
     }
 
@@ -1444,7 +1549,8 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
         addInvocation(.isimilarMethodThatDiffersOnType__value_2(Parameter<Point>.value(value)))
 		let perform = methodPerformValue(.isimilarMethodThatDiffersOnType__value_2(Parameter<Point>.value(value))) as? (Point) -> Void
 		perform?(value)
-		let value = methodReturnValue(.isimilarMethodThatDiffersOnType__value_2(Parameter<Point>.value(value))) as? Bool
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.isimilarMethodThatDiffersOnType__value_2(Parameter<Point>.value(value)))
+		let value = givenValue.value as? Bool
 		return value.orFail("stub return value not specified for similarMethodThatDiffersOnType(_ value: Point). Use given")
     }
 
@@ -1458,7 +1564,8 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
         addInvocation(.imethodWithClosures__success_function_1(Parameter<LinearFunction>.any))
 		let perform = methodPerformValue(.imethodWithClosures__success_function_1(Parameter<LinearFunction>.any)) as? (LinearFunction) -> Void
 		perform?(function)
-		let value = methodReturnValue(.imethodWithClosures__success_function_1(Parameter<LinearFunction>.any)) as? ClosureFabric
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodWithClosures__success_function_1(Parameter<LinearFunction>.any))
+		let value = givenValue.value as? ClosureFabric
 		return value.orFail("stub return value not specified for methodWithClosures(success function: LinearFunction). Use given")
     }
 
@@ -1466,7 +1573,8 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
         addInvocation(.imethodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.value(function)))
 		let perform = methodPerformValue(.imethodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.value(function))) as? (((Scalar,Scalar) -> Scalar)?) -> Void
 		perform?(function)
-		let value = methodReturnValue(.imethodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.value(function))) as? (Int) -> Void
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.value(function)))
+		let value = givenValue.value as? (Int) -> Void
 		return value.orFail("stub return value not specified for methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?). Use given")
     }
 
@@ -1640,14 +1748,9 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
         invocations.append(call)
     }
 
-    private func methodReturnValue(_ method: MethodType) -> Any? {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
-        return matched?.returns
-    }
-
-    private func methodThrowValue(_ method: MethodType) -> Error? {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
-        return matched?.`throws`
+    private func methodReturnValue(_ method: MethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
     }
 
     private func methodPerformValue(_ method: MethodType) -> Any? {
@@ -1672,7 +1775,8 @@ class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
         addInvocation(.igetArray)
 		let perform = methodPerformValue(.igetArray) as? () -> Void
 		perform?()
-		let value = methodReturnValue(.igetArray) as? [Int]
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.igetArray)
+		let value = givenValue.value as? [Int]
 		return value.orFail("stub return value not specified for getArray(). Use given")
     }
 
@@ -1680,7 +1784,8 @@ class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
         addInvocation(.imap__array_arrayparam_param(Parameter<[String]>.value(array), Parameter<Int>.value(param)))
 		let perform = methodPerformValue(.imap__array_arrayparam_param(Parameter<[String]>.value(array), Parameter<Int>.value(param))) as? ([String], Int) -> Void
 		perform?(array, param)
-		let value = methodReturnValue(.imap__array_arrayparam_param(Parameter<[String]>.value(array), Parameter<Int>.value(param))) as? [Int: String]
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imap__array_arrayparam_param(Parameter<[String]>.value(array), Parameter<Int>.value(param)))
+		let value = givenValue.value as? [Int: String]
 		return value.orFail("stub return value not specified for map(array: [String], param: Int). Use given")
     }
 
@@ -1688,7 +1793,8 @@ class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
         addInvocation(.iverify__set_set(Parameter<Set<Int>>.value(set)))
 		let perform = methodPerformValue(.iverify__set_set(Parameter<Set<Int>>.value(set))) as? (Set<Int>) -> Void
 		perform?(set)
-		let value = methodReturnValue(.iverify__set_set(Parameter<Set<Int>>.value(set))) as? Bool
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.iverify__set_set(Parameter<Set<Int>>.value(set)))
+		let value = givenValue.value as? Bool
 		return value.orFail("stub return value not specified for verify(set: Set<Int>). Use given")
     }
 
@@ -1796,14 +1902,9 @@ class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
         invocations.append(call)
     }
 
-    private func methodReturnValue(_ method: MethodType) -> Any? {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
-        return matched?.returns
-    }
-
-    private func methodThrowValue(_ method: MethodType) -> Error? {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
-        return matched?.`throws`
+    private func methodReturnValue(_ method: MethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
     }
 
     private func methodPerformValue(_ method: MethodType) -> Any? {
@@ -1833,7 +1934,8 @@ class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBothMeth
         addInvocation(.isimpleMethod)
 		let perform = methodPerformValue(.isimpleMethod) as? () -> Void
 		perform?()
-		let value = methodReturnValue(.isimpleMethod) as? String
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.isimpleMethod)
+		let value = givenValue.value as? String
 		return value.orFail("stub return value not specified for simpleMethod(). Use given")
     }
 
@@ -1911,14 +2013,9 @@ class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBothMeth
         invocations.append(call)
     }
 
-    private func methodReturnValue(_ method: MethodType) -> Any? {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
-        return matched?.returns
-    }
-
-    private func methodThrowValue(_ method: MethodType) -> Error? {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
-        return matched?.`throws`
+    private func methodReturnValue(_ method: MethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
     }
 
     private func methodPerformValue(_ method: MethodType) -> Any? {
@@ -1949,7 +2046,8 @@ class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
         addInvocation(.isimpleMehtodThatReturns)
 		let perform = methodPerformValue(.isimpleMehtodThatReturns) as? () -> Void
 		perform?()
-		let value = methodReturnValue(.isimpleMehtodThatReturns) as? Int
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.isimpleMehtodThatReturns)
+		let value = givenValue.value as? Int
 		return value.orFail("stub return value not specified for simpleMehtodThatReturns(). Use given")
     }
 
@@ -1957,7 +2055,8 @@ class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
         addInvocation(.isimpleMehtodThatReturns__param_param(Parameter<String>.value(param)))
 		let perform = methodPerformValue(.isimpleMehtodThatReturns__param_param(Parameter<String>.value(param))) as? (String) -> Void
 		perform?(param)
-		let value = methodReturnValue(.isimpleMehtodThatReturns__param_param(Parameter<String>.value(param))) as? String
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.isimpleMehtodThatReturns__param_param(Parameter<String>.value(param)))
+		let value = givenValue.value as? String
 		return value.orFail("stub return value not specified for simpleMehtodThatReturns(param: String). Use given")
     }
 
@@ -1965,7 +2064,8 @@ class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
         addInvocation(.isimpleMehtodThatReturns__optionalParam_optionalParam(Parameter<String?>.value(optionalParam)))
 		let perform = methodPerformValue(.isimpleMehtodThatReturns__optionalParam_optionalParam(Parameter<String?>.value(optionalParam))) as? (String?) -> Void
 		perform?(optionalParam)
-		let value = methodReturnValue(.isimpleMehtodThatReturns__optionalParam_optionalParam(Parameter<String?>.value(optionalParam))) as? String?
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.isimpleMehtodThatReturns__optionalParam_optionalParam(Parameter<String?>.value(optionalParam)))
+		let value = givenValue.value as? String?
 		return value.orFail("stub return value not specified for simpleMehtodThatReturns(optionalParam: String?). Use given")
     }
 
@@ -2082,14 +2182,9 @@ class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
         invocations.append(call)
     }
 
-    private func methodReturnValue(_ method: MethodType) -> Any? {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
-        return matched?.returns
-    }
-
-    private func methodThrowValue(_ method: MethodType) -> Error? {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
-        return matched?.`throws`
+    private func methodReturnValue(_ method: MethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
     }
 
     private func methodPerformValue(_ method: MethodType) -> Any? {
@@ -2189,14 +2284,9 @@ class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock {
         invocations.append(call)
     }
 
-    private func methodReturnValue(_ method: MethodType) -> Any? {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
-        return matched?.returns
-    }
-
-    private func methodThrowValue(_ method: MethodType) -> Error? {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
-        return matched?.`throws`
+    private func methodReturnValue(_ method: MethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
     }
 
     private func methodPerformValue(_ method: MethodType) -> Any? {
@@ -2353,14 +2443,9 @@ class UserNetworkTypeMock: UserNetworkType, Mock {
         invocations.append(call)
     }
 
-    private func methodReturnValue(_ method: MethodType) -> Any? {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
-        return matched?.returns
-    }
-
-    private func methodThrowValue(_ method: MethodType) -> Error? {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
-        return matched?.`throws`
+    private func methodReturnValue(_ method: MethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
     }
 
     private func methodPerformValue(_ method: MethodType) -> Any? {
@@ -2385,7 +2470,8 @@ class UserStorageTypeMock: UserStorageType, Mock {
         addInvocation(.isurname__for_name(Parameter<String>.value(name)))
 		let perform = methodPerformValue(.isurname__for_name(Parameter<String>.value(name))) as? (String) -> Void
 		perform?(name)
-		let value = methodReturnValue(.isurname__for_name(Parameter<String>.value(name))) as? String
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.isurname__for_name(Parameter<String>.value(name)))
+		let value = givenValue.value as? String
 		return value.orFail("stub return value not specified for surname(for name: String). Use given")
     }
 
@@ -2483,14 +2569,9 @@ class UserStorageTypeMock: UserStorageType, Mock {
         invocations.append(call)
     }
 
-    private func methodReturnValue(_ method: MethodType) -> Any? {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
-        return matched?.returns
-    }
-
-    private func methodThrowValue(_ method: MethodType) -> Error? {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
-        return matched?.`throws`
+    private func methodReturnValue(_ method: MethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
     }
 
     private func methodPerformValue(_ method: MethodType) -> Any? {
