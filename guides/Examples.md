@@ -4,12 +4,15 @@ All examples are part of example project, which contains more examples.
 
 ## Table of Contents:
 
-1. [Example 1:](#example1):
+1. [Example 1:](#example1) basic cases
     - [Simple protocol with methods](#example1.1)
     - [Simple protocol with methods - optional attributes](#example1.2)
     - [Simple protocol with properties](#example1.3)
-2. [Example 2:](#example2)
+2. [Example 2:](#example2) throwing
     - [Simple protocol with methods that throws](#example2.1)
+3. [Example 3:](#example3) custom attributes
+    - [Simple protocol with methods using tuples](#example3.1)
+    - [Simple protocol with methods using custom type](#example3.2)
 
 ## <a name="example1"></a> Example 1:
 
@@ -164,4 +167,90 @@ XCTAssertThrowsError(try mock.methodThatReturnsAndThrows(param: 404))
 XCTAssertThrowsError(try mock.methodThatReturnsAndThrows(param: 123))
 
 Verify(mock, 3, .methodThatReturnsAndThrows(param: .any))
+```
+
+## <a name="example3"></a> Example 3:
+
+Simple protocol that declares methods that uses more sophisticated data, that plain strings or integers.
+
+### <a name="example3.1"></a> Simple protocol with methods using tuples
+
+Protocol definition:
+
+```swift
+//sourcery: AutoMockable
+protocol ProtocolWithTuples {
+    func methodThatTakesTuple(tuple: (String,Int)) -> Int
+}
+```
+
+Test - usage of `Given` to specify stubbed methods return values and throws errors:
+
+```swift
+let mock = ProtocolWithTuplesMock()
+
+// When using only .any - no matcher registering needed
+Given(mock, .methodThatTakesTuple(tuple: .any, willReturn: 0))
+XCTAssertEqual(mock.methodThatTakesTuple(tuple: ("first",1)), 0)
+
+// When using custom attributes or tuples as .value(...) - registering comparator in Matcher is required!
+Matcher.default.register((String,Int).self) { (lhs, rhs) -> Bool in
+    return lhs.0 == rhs.0 && lhs.1 == rhs.1
+}
+
+Given(mock, .methodThatTakesTuple(tuple: .value(("first",1)), willReturn: 1))
+Given(mock, .methodThatTakesTuple(tuple: .value(("second",2)), willReturn: 2))
+XCTAssertEqual(mock.methodThatTakesTuple(tuple: ("first",1)), 1)
+XCTAssertEqual(mock.methodThatTakesTuple(tuple: ("second",2)), 2)
+XCTAssertEqual(mock.methodThatTakesTuple(tuple: ("first",0)), 0)
+
+Verify(mock, 4, .methodThatTakesTuple(tuple: .any))
+Verify(mock, 2, .methodThatTakesTuple(tuple: .value(("first",1))))
+```
+
+### <a name="example3.2"></a> Simple protocol with methods using custom type
+
+Protocol and object definition:
+
+```swift
+struct UserObject {
+    let name: String
+    let surname: String
+    let age: Int
+}
+
+//sourcery: AutoMockable
+protocol ProtocolWithCustomAttributes {
+    func methodThatTakesUser(user: UserObject) throws
+    func methodThatTakesArrayOfUsers(array: [UserObject]) -> Int
+}
+```
+
+Test - usage of `Given` to specify stubbed methods return values and throws errors:
+
+
+```swift
+let mock = ProtocolWithCustomAttributesMock()
+
+// Register comparing user object
+// We can use registration for Array of elements, which will compare value by value
+// Also, providing by default comparator for element type
+Matcher.default.register([UserObject].self) { (lhs: UserObject, rhs: UserObject) -> Bool in
+    guard lhs.name == rhs.name else { return false }
+    guard lhs.surname == rhs.surname else { return false }
+    guard lhs.age == rhs.age else { return false }
+    return true
+}
+
+let user1 = UserObject(name: "Karl", surname: "Gustav", age: 90)
+let user2 = UserObject(name: "Dan", surname: "Dannerson", age: 13)
+Given(mock, .methodThatTakesUser(user: .value(user2), willThrow: UserVerifyError.tooYoung))
+Given(mock, .methodThatTakesArrayOfUsers(array: .any, willReturn: 0))
+Given(mock, .methodThatTakesArrayOfUsers(array: .value([user1, user2]), willReturn: 2))
+
+XCTAssertNoThrow(try mock.methodThatTakesUser(user: user1), "Should not throw")
+XCTAssertThrowsError(try mock.methodThatTakesUser(user: user2))
+XCTAssertEqual(mock.methodThatTakesArrayOfUsers(array: [user1, user2]), 2)
+XCTAssertEqual(mock.methodThatTakesArrayOfUsers(array: [user1, user2, user1]), 0)
+XCTAssertEqual(mock.methodThatTakesArrayOfUsers(array: [user2, user1]), 0)
 ```

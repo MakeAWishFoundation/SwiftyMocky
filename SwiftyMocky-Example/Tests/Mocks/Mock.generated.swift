@@ -1368,6 +1368,159 @@ class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
     }
 }
 
+// MARK: - ProtocolWithCustomAttributes
+class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock {
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    var matcher: Matcher = Matcher.default
+
+
+    func methodWith(point: CGPoint) -> Int {
+        addInvocation(.imethodWith__point_point(Parameter<CGPoint>.value(point)))
+		let perform = methodPerformValue(.imethodWith__point_point(Parameter<CGPoint>.value(point))) as? (CGPoint) -> Void
+		perform?(point)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodWith__point_point(Parameter<CGPoint>.value(point)))
+		let value = givenValue.value as? Int
+		return value.orFail("stub return value not specified for methodWith(point: CGPoint). Use given")
+    }
+
+    func methodThatTakesUser(user: UserObject) throws {
+        addInvocation(.imethodThatTakesUser__user_user(Parameter<UserObject>.value(user)))
+		let perform = methodPerformValue(.imethodThatTakesUser__user_user(Parameter<UserObject>.value(user))) as? (UserObject) -> Void
+		perform?(user)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodThatTakesUser__user_user(Parameter<UserObject>.value(user)))
+		if let error = givenValue.error { throw error }
+    }
+
+    func methodThatTakesArrayOfUsers(array: [UserObject]) -> Int {
+        addInvocation(.imethodThatTakesArrayOfUsers__array_array(Parameter<[UserObject]>.value(array)))
+		let perform = methodPerformValue(.imethodThatTakesArrayOfUsers__array_array(Parameter<[UserObject]>.value(array))) as? ([UserObject]) -> Void
+		perform?(array)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodThatTakesArrayOfUsers__array_array(Parameter<[UserObject]>.value(array)))
+		let value = givenValue.value as? Int
+		return value.orFail("stub return value not specified for methodThatTakesArrayOfUsers(array: [UserObject]). Use given")
+    }
+
+    fileprivate enum MethodType {
+        case imethodWith__point_point(Parameter<CGPoint>)
+        case imethodThatTakesUser__user_user(Parameter<UserObject>)
+        case imethodThatTakesArrayOfUsers__array_array(Parameter<[UserObject]>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+                case (.imethodWith__point_point(let lhsPoint), .imethodWith__point_point(let rhsPoint)): 
+                    guard Parameter.compare(lhs: lhsPoint, rhs: rhsPoint, with: matcher) else { return false } 
+                    return true 
+                case (.imethodThatTakesUser__user_user(let lhsUser), .imethodThatTakesUser__user_user(let rhsUser)): 
+                    guard Parameter.compare(lhs: lhsUser, rhs: rhsUser, with: matcher) else { return false } 
+                    return true 
+                case (.imethodThatTakesArrayOfUsers__array_array(let lhsArray), .imethodThatTakesArrayOfUsers__array_array(let rhsArray)): 
+                    guard Parameter.compare(lhs: lhsArray, rhs: rhsArray, with: matcher) else { return false } 
+                    return true 
+                default: return false
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+                case let .imethodWith__point_point(p0): return p0.intValue
+                case let .imethodThatTakesUser__user_user(p0): return p0.intValue
+                case let .imethodThatTakesArrayOfUsers__array_array(p0): return p0.intValue
+            }
+        }
+    }
+
+    struct Given {
+        fileprivate var method: MethodType
+        var returns: Any?
+        var `throws`: Error?
+
+        private init(method: MethodType, returns: Any?, throws: Error?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
+
+        static func methodWith(point: Parameter<CGPoint>, willReturn: Int) -> Given {
+            return Given(method: .imethodWith__point_point(point), returns: willReturn, throws: nil)
+        }
+        static func methodThatTakesArrayOfUsers(array: Parameter<[UserObject]>, willReturn: Int) -> Given {
+            return Given(method: .imethodThatTakesArrayOfUsers__array_array(array), returns: willReturn, throws: nil)
+        }
+        static func methodThatTakesUser(user: Parameter<UserObject>, willThrow: Error) -> Given {
+            return Given(method: .imethodThatTakesUser__user_user(user), returns: nil, throws: willThrow)
+        }
+    }
+
+    struct Verify {
+        fileprivate var method: MethodType
+
+        static func methodWith(point: Parameter<CGPoint>) -> Verify {
+            return Verify(method: .imethodWith__point_point(point))
+        }
+        static func methodThatTakesUser(user: Parameter<UserObject>) -> Verify {
+            return Verify(method: .imethodThatTakesUser__user_user(user))
+        }
+        static func methodThatTakesArrayOfUsers(array: Parameter<[UserObject]>) -> Verify {
+            return Verify(method: .imethodThatTakesArrayOfUsers__array_array(array))
+        }
+    }
+
+    struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        static func methodWith(point: Parameter<CGPoint>, perform: (CGPoint) -> Void) -> Perform {
+            return Perform(method: .imethodWith__point_point(point), performs: perform)
+        }
+        static func methodThatTakesUser(user: Parameter<UserObject>, perform: (UserObject) -> Void) -> Perform {
+            return Perform(method: .imethodThatTakesUser__user_user(user), performs: perform)
+        }
+        static func methodThatTakesArrayOfUsers(array: Parameter<[UserObject]>, perform: ([UserObject]) -> Void) -> Perform {
+            return Perform(method: .imethodThatTakesArrayOfUsers__array_array(array), performs: perform)
+        }
+    }
+
+    public func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+        methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+        let method = method.method
+        let invocations = matchingCalls(method)
+        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+
+    private func methodReturnValue(_ method: MethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
+    }
+
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+}
+
 // MARK: - ProtocolWithThrowingMethods
 class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
     private var invocations: [MethodType] = []
@@ -1459,6 +1612,113 @@ class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
         }
         static func methodThatReturnsAndThrows(param: Parameter<Int>, perform: (Int) -> Void) -> Perform {
             return Perform(method: .imethodThatReturnsAndThrows__param_param(param), performs: perform)
+        }
+    }
+
+    public func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+        methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+        let method = method.method
+        let invocations = matchingCalls(method)
+        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+
+    private func methodReturnValue(_ method: MethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
+    }
+
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+}
+
+// MARK: - ProtocolWithTuples
+class ProtocolWithTuplesMock: ProtocolWithTuples, Mock {
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    var matcher: Matcher = Matcher.default
+
+
+    func methodThatTakesTuple(tuple: (String,Int)) -> Int {
+        addInvocation(.imethodThatTakesTuple__tuple_tuple(Parameter<(String,Int)>.value(tuple)))
+		let perform = methodPerformValue(.imethodThatTakesTuple__tuple_tuple(Parameter<(String,Int)>.value(tuple))) as? ((String,Int)) -> Void
+		perform?(tuple)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodThatTakesTuple__tuple_tuple(Parameter<(String,Int)>.value(tuple)))
+		let value = givenValue.value as? Int
+		return value.orFail("stub return value not specified for methodThatTakesTuple(tuple: (String,Int)). Use given")
+    }
+
+    fileprivate enum MethodType {
+        case imethodThatTakesTuple__tuple_tuple(Parameter<(String,Int)>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+                case (.imethodThatTakesTuple__tuple_tuple(let lhsTuple), .imethodThatTakesTuple__tuple_tuple(let rhsTuple)): 
+                    guard Parameter.compare(lhs: lhsTuple, rhs: rhsTuple, with: matcher) else { return false } 
+                    return true 
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+                case let .imethodThatTakesTuple__tuple_tuple(p0): return p0.intValue
+            }
+        }
+    }
+
+    struct Given {
+        fileprivate var method: MethodType
+        var returns: Any?
+        var `throws`: Error?
+
+        private init(method: MethodType, returns: Any?, throws: Error?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
+
+        static func methodThatTakesTuple(tuple: Parameter<(String,Int)>, willReturn: Int) -> Given {
+            return Given(method: .imethodThatTakesTuple__tuple_tuple(tuple), returns: willReturn, throws: nil)
+        }
+    }
+
+    struct Verify {
+        fileprivate var method: MethodType
+
+        static func methodThatTakesTuple(tuple: Parameter<(String,Int)>) -> Verify {
+            return Verify(method: .imethodThatTakesTuple__tuple_tuple(tuple))
+        }
+    }
+
+    struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        static func methodThatTakesTuple(tuple: Parameter<(String,Int)>, perform: ((String,Int)) -> Void) -> Perform {
+            return Perform(method: .imethodThatTakesTuple__tuple_tuple(tuple), performs: perform)
         }
     }
 
