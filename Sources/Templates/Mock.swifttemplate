@@ -133,7 +133,8 @@ import SourceryRuntime
 
         var getter: String {
             let message = "\(scope) - value for \(variable.name) was not defined"
-            return "get { return \(variable.isStatic ? "\(scope)." : "")\(privatePrototypeName).orFail(\"\(message)\") }"
+            let orFail = !(variable.isOptional && !variable.isImplicitlyUnwrappedOptional) ? ".orFail(\"\(message)\")" : ""
+            return "get { return \(variable.isStatic ? "\(scope)." : "")\(privatePrototypeName)\(orFail) }"
         }
         var setter: String {
             return "set { \(variable.isStatic ? "\(scope)." : "")\(privatePrototypeName) = newValue }"

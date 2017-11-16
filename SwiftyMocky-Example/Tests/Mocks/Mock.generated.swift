@@ -34,7 +34,7 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
 	}
 	private var __nonOptionalClosure: (() -> Void)?
     var optionalClosure: (() -> Int)? { 
-		get { return __optionalClosure.orFail("AMassiveTestProtocolMock - value for optionalClosure was not defined") }
+		get { return __optionalClosure }
 		set { __optionalClosure = newValue }
 	}
 	private var __optionalClosure: (() -> Int)?
@@ -44,7 +44,7 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
 	}
 	private var __implicitelyUnwrappedClosure: (() -> Void)?
     static var optionalClosure: (() -> Int)? { 
-		get { return AMassiveTestProtocolMock.__optionalClosure.orFail("AMassiveTestProtocolMock - value for optionalClosure was not defined") }
+		get { return AMassiveTestProtocolMock.__optionalClosure }
 		set { AMassiveTestProtocolMock.__optionalClosure = newValue }
 	}
 	private static var __optionalClosure: (() -> Int)?
@@ -1614,6 +1614,555 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
         static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>, perform: (((Scalar,Scalar) -> Scalar)?) -> Void) -> Perform {
             return Perform(method: .imethodWithClosures__success_function_2(function), performs: perform)
         }
+    }
+
+    public func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+        methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+        let method = method.method
+        let invocations = matchingCalls(method)
+        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+
+    private func methodReturnValue(_ method: MethodType) -> Any? {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
+        return matched?.returns
+    }
+
+    private func methodThrowValue(_ method: MethodType) -> Error? {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
+        return matched?.`throws`
+    }
+
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+}
+
+// MARK: - SimpleProtocolUsingCollections
+class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    var matcher: Matcher = Matcher.default
+
+
+    func getArray() -> [Int] {
+        addInvocation(.igetArray)
+		let perform = methodPerformValue(.igetArray) as? () -> Void
+		perform?()
+		let value = methodReturnValue(.igetArray) as? [Int]
+		return value.orFail("stub return value not specified for getArray(). Use given")
+    }
+
+    func map(array: [String], param: Int) -> [Int: String] {
+        addInvocation(.imap__array_arrayparam_param(Parameter<[String]>.value(array), Parameter<Int>.value(param)))
+		let perform = methodPerformValue(.imap__array_arrayparam_param(Parameter<[String]>.value(array), Parameter<Int>.value(param))) as? ([String], Int) -> Void
+		perform?(array, param)
+		let value = methodReturnValue(.imap__array_arrayparam_param(Parameter<[String]>.value(array), Parameter<Int>.value(param))) as? [Int: String]
+		return value.orFail("stub return value not specified for map(array: [String], param: Int). Use given")
+    }
+
+    func verify(set: Set<Int>) -> Bool {
+        addInvocation(.iverify__set_set(Parameter<Set<Int>>.value(set)))
+		let perform = methodPerformValue(.iverify__set_set(Parameter<Set<Int>>.value(set))) as? (Set<Int>) -> Void
+		perform?(set)
+		let value = methodReturnValue(.iverify__set_set(Parameter<Set<Int>>.value(set))) as? Bool
+		return value.orFail("stub return value not specified for verify(set: Set<Int>). Use given")
+    }
+
+    fileprivate enum MethodType {
+        case igetArray
+        case imap__array_arrayparam_param(Parameter<[String]>, Parameter<Int>)
+        case iverify__set_set(Parameter<Set<Int>>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+                case (.igetArray, .igetArray): 
+                    return true 
+                case (.imap__array_arrayparam_param(let lhsArray, let lhsParam), .imap__array_arrayparam_param(let rhsArray, let rhsParam)): 
+                    guard Parameter.compare(lhs: lhsArray, rhs: rhsArray, with: matcher) else { return false } 
+                    guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
+                    return true 
+                case (.iverify__set_set(let lhsSet), .iverify__set_set(let rhsSet)): 
+                    guard Parameter.compare(lhs: lhsSet, rhs: rhsSet, with: matcher) else { return false } 
+                    return true 
+                default: return false
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+                case .igetArray: return 0
+                case let .imap__array_arrayparam_param(p0, p1): return p0.intValue + p1.intValue
+                case let .iverify__set_set(p0): return p0.intValue
+            }
+        }
+    }
+
+    struct Given {
+        fileprivate var method: MethodType
+        var returns: Any?
+        var `throws`: Error?
+
+        private init(method: MethodType, returns: Any?, throws: Error?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
+
+        static func getArray(willReturn: [Int]) -> Given {
+            return Given(method: .igetArray, returns: willReturn, throws: nil)
+        }
+        static func map(array: Parameter<[String]>, param: Parameter<Int>, willReturn: [Int: String]) -> Given {
+            return Given(method: .imap__array_arrayparam_param(array, param), returns: willReturn, throws: nil)
+        }
+        static func verify(set: Parameter<Set<Int>>, willReturn: Bool) -> Given {
+            return Given(method: .iverify__set_set(set), returns: willReturn, throws: nil)
+        }
+    }
+
+    struct Verify {
+        fileprivate var method: MethodType
+
+        static func getArray() -> Verify {
+            return Verify(method: .igetArray)
+        }
+        static func map(array: Parameter<[String]>, param: Parameter<Int>) -> Verify {
+            return Verify(method: .imap__array_arrayparam_param(array, param))
+        }
+        static func verify(set: Parameter<Set<Int>>) -> Verify {
+            return Verify(method: .iverify__set_set(set))
+        }
+    }
+
+    struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        static func getArray(perform: () -> Void) -> Perform {
+            return Perform(method: .igetArray, performs: perform)
+        }
+        static func map(array: Parameter<[String]>, param: Parameter<Int>, perform: ([String], Int) -> Void) -> Perform {
+            return Perform(method: .imap__array_arrayparam_param(array, param), performs: perform)
+        }
+        static func verify(set: Parameter<Set<Int>>, perform: (Set<Int>) -> Void) -> Perform {
+            return Perform(method: .iverify__set_set(set), performs: perform)
+        }
+    }
+
+    public func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+        methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+        let method = method.method
+        let invocations = matchingCalls(method)
+        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+
+    private func methodReturnValue(_ method: MethodType) -> Any? {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
+        return matched?.returns
+    }
+
+    private func methodThrowValue(_ method: MethodType) -> Error? {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
+        return matched?.`throws`
+    }
+
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+}
+
+// MARK: - SimpleProtocolWithBothMethodsAndProperties
+class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBothMethodsAndProperties, Mock {
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    var matcher: Matcher = Matcher.default
+
+    var property: String { 
+		get { return __property.orFail("SimpleProtocolWithBothMethodsAndPropertiesMock - value for property was not defined") }
+		set { __property = newValue }
+	}
+	private var __property: (String)?
+
+    func simpleMethod() -> String {
+        addInvocation(.isimpleMethod)
+		let perform = methodPerformValue(.isimpleMethod) as? () -> Void
+		perform?()
+		let value = methodReturnValue(.isimpleMethod) as? String
+		return value.orFail("stub return value not specified for simpleMethod(). Use given")
+    }
+
+    fileprivate enum MethodType {
+        case isimpleMethod
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+                case (.isimpleMethod, .isimpleMethod): 
+                    return true 
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+                case .isimpleMethod: return 0
+            }
+        }
+    }
+
+    struct Given {
+        fileprivate var method: MethodType
+        var returns: Any?
+        var `throws`: Error?
+
+        private init(method: MethodType, returns: Any?, throws: Error?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
+
+        static func simpleMethod(willReturn: String) -> Given {
+            return Given(method: .isimpleMethod, returns: willReturn, throws: nil)
+        }
+    }
+
+    struct Verify {
+        fileprivate var method: MethodType
+
+        static func simpleMethod() -> Verify {
+            return Verify(method: .isimpleMethod)
+        }
+    }
+
+    struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        static func simpleMethod(perform: () -> Void) -> Perform {
+            return Perform(method: .isimpleMethod, performs: perform)
+        }
+    }
+
+    public func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+        methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+        let method = method.method
+        let invocations = matchingCalls(method)
+        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+
+    private func methodReturnValue(_ method: MethodType) -> Any? {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
+        return matched?.returns
+    }
+
+    private func methodThrowValue(_ method: MethodType) -> Error? {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
+        return matched?.`throws`
+    }
+
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+}
+
+// MARK: - SimpleProtocolWithMethods
+class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    var matcher: Matcher = Matcher.default
+
+
+    func simpleMethod() {
+        addInvocation(.isimpleMethod)
+		let perform = methodPerformValue(.isimpleMethod) as? () -> Void
+		perform?()
+    }
+
+    func simpleMehtodThatReturns() -> Int {
+        addInvocation(.isimpleMehtodThatReturns)
+		let perform = methodPerformValue(.isimpleMehtodThatReturns) as? () -> Void
+		perform?()
+		let value = methodReturnValue(.isimpleMehtodThatReturns) as? Int
+		return value.orFail("stub return value not specified for simpleMehtodThatReturns(). Use given")
+    }
+
+    func simpleMehtodThatReturns(param: String) -> String {
+        addInvocation(.isimpleMehtodThatReturns__param_param(Parameter<String>.value(param)))
+		let perform = methodPerformValue(.isimpleMehtodThatReturns__param_param(Parameter<String>.value(param))) as? (String) -> Void
+		perform?(param)
+		let value = methodReturnValue(.isimpleMehtodThatReturns__param_param(Parameter<String>.value(param))) as? String
+		return value.orFail("stub return value not specified for simpleMehtodThatReturns(param: String). Use given")
+    }
+
+    func simpleMehtodThatReturns(optionalParam: String?) -> String? {
+        addInvocation(.isimpleMehtodThatReturns__optionalParam_optionalParam(Parameter<String?>.value(optionalParam)))
+		let perform = methodPerformValue(.isimpleMehtodThatReturns__optionalParam_optionalParam(Parameter<String?>.value(optionalParam))) as? (String?) -> Void
+		perform?(optionalParam)
+		let value = methodReturnValue(.isimpleMehtodThatReturns__optionalParam_optionalParam(Parameter<String?>.value(optionalParam))) as? String?
+		return value.orFail("stub return value not specified for simpleMehtodThatReturns(optionalParam: String?). Use given")
+    }
+
+    fileprivate enum MethodType {
+        case isimpleMethod
+        case isimpleMehtodThatReturns
+        case isimpleMehtodThatReturns__param_param(Parameter<String>)
+        case isimpleMehtodThatReturns__optionalParam_optionalParam(Parameter<String?>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+                case (.isimpleMethod, .isimpleMethod): 
+                    return true 
+                case (.isimpleMehtodThatReturns, .isimpleMehtodThatReturns): 
+                    return true 
+                case (.isimpleMehtodThatReturns__param_param(let lhsParam), .isimpleMehtodThatReturns__param_param(let rhsParam)): 
+                    guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
+                    return true 
+                case (.isimpleMehtodThatReturns__optionalParam_optionalParam(let lhsOptionalparam), .isimpleMehtodThatReturns__optionalParam_optionalParam(let rhsOptionalparam)): 
+                    guard Parameter.compare(lhs: lhsOptionalparam, rhs: rhsOptionalparam, with: matcher) else { return false } 
+                    return true 
+                default: return false
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+                case .isimpleMethod: return 0
+                case .isimpleMehtodThatReturns: return 0
+                case let .isimpleMehtodThatReturns__param_param(p0): return p0.intValue
+                case let .isimpleMehtodThatReturns__optionalParam_optionalParam(p0): return p0.intValue
+            }
+        }
+    }
+
+    struct Given {
+        fileprivate var method: MethodType
+        var returns: Any?
+        var `throws`: Error?
+
+        private init(method: MethodType, returns: Any?, throws: Error?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
+
+        static func simpleMehtodThatReturns(willReturn: Int) -> Given {
+            return Given(method: .isimpleMehtodThatReturns, returns: willReturn, throws: nil)
+        }
+        static func simpleMehtodThatReturns(param: Parameter<String>, willReturn: String) -> Given {
+            return Given(method: .isimpleMehtodThatReturns__param_param(param), returns: willReturn, throws: nil)
+        }
+        static func simpleMehtodThatReturns(optionalParam: Parameter<String?>, willReturn: String?) -> Given {
+            return Given(method: .isimpleMehtodThatReturns__optionalParam_optionalParam(optionalParam), returns: willReturn, throws: nil)
+        }
+    }
+
+    struct Verify {
+        fileprivate var method: MethodType
+
+        static func simpleMethod() -> Verify {
+            return Verify(method: .isimpleMethod)
+        }
+        static func simpleMehtodThatReturns() -> Verify {
+            return Verify(method: .isimpleMehtodThatReturns)
+        }
+        static func simpleMehtodThatReturns(param: Parameter<String>) -> Verify {
+            return Verify(method: .isimpleMehtodThatReturns__param_param(param))
+        }
+        static func simpleMehtodThatReturns(optionalParam: Parameter<String?>) -> Verify {
+            return Verify(method: .isimpleMehtodThatReturns__optionalParam_optionalParam(optionalParam))
+        }
+    }
+
+    struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        static func simpleMethod(perform: () -> Void) -> Perform {
+            return Perform(method: .isimpleMethod, performs: perform)
+        }
+        static func simpleMehtodThatReturns(perform: () -> Void) -> Perform {
+            return Perform(method: .isimpleMehtodThatReturns, performs: perform)
+        }
+        static func simpleMehtodThatReturns(param: Parameter<String>, perform: (String) -> Void) -> Perform {
+            return Perform(method: .isimpleMehtodThatReturns__param_param(param), performs: perform)
+        }
+        static func simpleMehtodThatReturns(optionalParam: Parameter<String?>, perform: (String?) -> Void) -> Perform {
+            return Perform(method: .isimpleMehtodThatReturns__optionalParam_optionalParam(optionalParam), performs: perform)
+        }
+    }
+
+    public func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+        methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+        let method = method.method
+        let invocations = matchingCalls(method)
+        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+
+    private func methodReturnValue(_ method: MethodType) -> Any? {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
+        return matched?.returns
+    }
+
+    private func methodThrowValue(_ method: MethodType) -> Error? {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
+        return matched?.`throws`
+    }
+
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+}
+
+// MARK: - SimpleProtocolWithProperties
+class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock {
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    var matcher: Matcher = Matcher.default
+
+    var property: String { 
+		get { return __property.orFail("SimpleProtocolWithPropertiesMock - value for property was not defined") }
+		set { __property = newValue }
+	}
+	private var __property: (String)?
+    var weakProperty: AnyObject! { 
+		get { return __weakProperty.orFail("SimpleProtocolWithPropertiesMock - value for weakProperty was not defined") }
+		set { __weakProperty = newValue }
+	}
+	private var __weakProperty: (AnyObject)?
+    var propertyGetOnly: String { 
+		get { return __propertyGetOnly.orFail("SimpleProtocolWithPropertiesMock - value for propertyGetOnly was not defined") }
+		set { __propertyGetOnly = newValue }
+	}
+	private var __propertyGetOnly: (String)?
+    var propertyOptional: Int? { 
+		get { return __propertyOptional }
+		set { __propertyOptional = newValue }
+	}
+	private var __propertyOptional: (Int)?
+    var propertyImplicit: Int! { 
+		get { return __propertyImplicit.orFail("SimpleProtocolWithPropertiesMock - value for propertyImplicit was not defined") }
+		set { __propertyImplicit = newValue }
+	}
+	private var __propertyImplicit: (Int)?
+
+
+    fileprivate struct MethodType {
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool { return true }
+        func intValue() -> Int { return 0 }
+    }
+
+    struct Given {
+        fileprivate var method: MethodType
+        var returns: Any?
+        var `throws`: Error?
+
+        private init(method: MethodType, returns: Any?, throws: Error?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
+
+    }
+
+    struct Verify {
+        fileprivate var method: MethodType
+
+    }
+
+    struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
     }
 
     public func matchingCalls(_ method: Verify) -> Int {
