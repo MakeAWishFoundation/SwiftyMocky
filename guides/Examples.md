@@ -1,14 +1,15 @@
 # Examples
 
-All examples are part of examples project.
+All examples are part of example project, which contains more examples.
 
 ## Table of Contents:
 
-1. [Example 1](#example1):
+1. [Example 1:](#example1):
     - [Simple protocol with methods](#example1.1)
     - [Simple protocol with methods - optional attributes](#example1.2)
     - [Simple protocol with properties](#example1.3)
-2. Example 2: todo
+2. [Example 2:](#example2)
+    - [Simple protocol with methods that throws](#example2.1)
 
 ## <a name="example1"></a> Example 1:
 
@@ -131,4 +132,36 @@ XCTAssertEqual(mock.propertyImplicit, 1)
 
 mock.propertyOptional = 2
 XCTAssertEqual(mock.propertyOptional, 2)
+```
+
+## <a name="example2"></a> Example 2:
+
+Simple protocol that declares methods that throws. For rethrowing methods valid signatures are generated, but there is no possibility to specify thrown error value.
+
+### <a name="example2.1"></a> Simple protocol with methods that throws
+
+Protocol definition:
+
+```swift
+//sourcery: AutoMockable
+protocol ProtocolWithThrowingMethods {
+    func methodThatThrows() throws
+    func methodThatReturnsAndThrows(param: Int) throws -> Bool
+}
+```
+
+Test - usage of `Given` to specify stubbed methods return values and throws errors:
+
+```swift
+let mock = ProtocolWithThrowingMethodsMock()
+
+Given(mock, .methodThatReturnsAndThrows(param: .value(200), willReturn: true))
+Given(mock, .methodThatReturnsAndThrows(param: .value(404), willThrow: SimpleTestError.failure))
+Given(mock, .methodThatReturnsAndThrows(param: .any, willThrow: SimpleTestError.other))
+
+XCTAssertNoThrow(try mock.methodThatReturnsAndThrows(param: 200), "Should not throw")
+XCTAssertThrowsError(try mock.methodThatReturnsAndThrows(param: 404))
+XCTAssertThrowsError(try mock.methodThatReturnsAndThrows(param: 123))
+
+Verify(mock, 3, .methodThatReturnsAndThrows(param: .any))
 ```

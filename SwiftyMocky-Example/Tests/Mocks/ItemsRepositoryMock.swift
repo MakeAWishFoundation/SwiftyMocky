@@ -37,7 +37,8 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         addInvocation(.istoredItems)
 		let perform = methodPerformValue(.istoredItems) as? () -> Void
 		perform?()
-		let value = methodReturnValue(.istoredItems) as? [Item]?
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.istoredItems)
+		let value = givenValue.value as? [Item]?
 		return value.orFail("stub return value not specified for storedItems(). Use given")
     }
 
@@ -45,7 +46,8 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         addInvocation(.istoredDetails__item_item(Parameter<Item>.value(item)))
 		let perform = methodPerformValue(.istoredDetails__item_item(Parameter<Item>.value(item))) as? (Item) -> Void
 		perform?(item)
-		let value = methodReturnValue(.istoredDetails__item_item(Parameter<Item>.value(item))) as? ItemDetails?
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.istoredDetails__item_item(Parameter<Item>.value(item)))
+		let value = givenValue.value as? ItemDetails?
 		return value.orFail("stub return value not specified for storedDetails(item: Item). Use given")
     }
 
@@ -160,14 +162,9 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         invocations.append(call)
     }
 
-    private func methodReturnValue(_ method: MethodType) -> Any? {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.returns != nil  }
-        return matched?.returns
-    }
-
-    private func methodThrowValue(_ method: MethodType) -> Error? {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) && $0.`throws` != nil  }
-        return matched?.`throws`
+    private func methodReturnValue(_ method: MethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
     }
 
     private func methodPerformValue(_ method: MethodType) -> Any? {
