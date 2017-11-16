@@ -34,3 +34,29 @@ Include Sources in your project, and setup [Sourcery](https://github.com/krzyszt
 > **Important!!!**
 >
 > Main difference between how SwiftyMocky is installed, is location of sourcery binary and templates, used to generate Mocks. Whatever you choose, make sure that correct paths are setup for mocky.yml, and sourcery call.
+
+## Support for other swift versions
+
+Download/build Sourcery binary manually, or use prebuilt sourcery versions from: `https://github.com/MakeAWishFoundation/SwiftyMocky.wiki.git`
+
+Currentyly we support:
+- 3.1
+- 4.0
+- 4.0.2
+
+**Usage from root project dir:**
+
+```shell
+sh get_sourcery.sh 4.0.2
+```
+
+**get_sourcery.sh**
+
+```shell
+[[ $# > 0 ]] && VERSION="$1" || VERSION="4.0.2"
+[[ $# > 1 ]] && OUTPUT="$2" || OUTPUT="./Pods/Sourcery/bin"
+
+echo "CLONE SOURCERY FOR $VERSION INTO $OUTPUT"
+rm -r -f "$OUTPUT"
+git clone -b "swift/$VERSION" --single-branch --depth 1 https://github.com/MakeAWishFoundation/SwiftyMocky.wiki.git "$OUTPUT"
+```

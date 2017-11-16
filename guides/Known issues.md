@@ -6,7 +6,30 @@
 
 ## 1. When triggering generation - error about modules in different swift versions appears
 
-This seems to be a problem with dependency to Sourcery, which, for some case, event if included as dependency in Pods, does not use project swift version setting. Use swift version support branches, or download/build Sourcery binary manually
+This seems to be a problem with Swift abi. Either download/build Sourcery binary manually, or use prebuilt sourcery versions from: `https://github.com/MakeAWishFoundation/SwiftyMocky.wiki.git`
+
+Currentyly we support:
+
+- 3.1
+- 4.0
+- 4.0.2
+
+**Usage from root project dir:**
+
+```shell
+sh get_sourcery.sh 4.0.2
+```
+
+**get_sourcery.sh**
+
+```shell
+[[ $# > 0 ]] && VERSION="$1" || VERSION="4.0.2"
+[[ $# > 1 ]] && OUTPUT="$2" || OUTPUT="./Pods/Sourcery/bin"
+
+echo "CLONE SOURCERY FOR $VERSION INTO $OUTPUT"
+rm -r -f "$OUTPUT"
+git clone -b "swift/$VERSION" --single-branch --depth 1 https://github.com/MakeAWishFoundation/SwiftyMocky.wiki.git "$OUTPUT"
+```
 
 ## 2. Matcher [FATAL] error for simple Equatable / Sequence types
 

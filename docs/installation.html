@@ -182,6 +182,30 @@
 
 <p>Main difference between how SwiftyMocky is installed, is location of sourcery binary and templates, used to generate Mocks. Whatever you choose, make sure that correct paths are setup for mocky.yml, and sourcery call.</p>
 </blockquote>
+<h2 id='support-for-other-swift-versions' class='heading'>Support for other swift versions</h2>
+
+<p>Download/build Sourcery binary manually, or use prebuilt sourcery versions from: <code>https://github.com/MakeAWishFoundation/SwiftyMocky.wiki.git</code></p>
+
+<p>Currentyly we support:</p>
+
+<ul>
+<li>3.1</li>
+<li>4.0</li>
+<li>4.0.2</li>
+</ul>
+
+<p><strong>Usage from root project dir:</strong></p>
+<pre class="highlight shell"><code>sh get_sourcery.sh 4.0.2
+</code></pre>
+
+<p><strong>get_sourcery.sh</strong></p>
+<pre class="highlight shell"><code><span class="o">[[</span> <span class="nv">$# </span>&gt; 0 <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nv">VERSION</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> <span class="o">||</span> <span class="nv">VERSION</span><span class="o">=</span><span class="s2">"4.0.2"</span>
+<span class="o">[[</span> <span class="nv">$# </span>&gt; 1 <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nv">OUTPUT</span><span class="o">=</span><span class="s2">"</span><span class="nv">$2</span><span class="s2">"</span> <span class="o">||</span> <span class="nv">OUTPUT</span><span class="o">=</span><span class="s2">"./Pods/Sourcery/bin"</span>
+
+<span class="nb">echo</span> <span class="s2">"CLONE SOURCERY FOR </span><span class="nv">$VERSION</span><span class="s2"> INTO </span><span class="nv">$OUTPUT</span><span class="s2">"</span>
+rm -r -f <span class="s2">"</span><span class="nv">$OUTPUT</span><span class="s2">"</span>
+git clone -b <span class="s2">"swift/</span><span class="nv">$VERSION</span><span class="s2">"</span> --single-branch --depth 1 https://github.com/MakeAWishFoundation/SwiftyMocky.wiki.git <span class="s2">"</span><span class="nv">$OUTPUT</span><span class="s2">"</span>
+</code></pre>
 
           </section>
         </section>
