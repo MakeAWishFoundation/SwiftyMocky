@@ -31,4 +31,18 @@ class ProtocolsWithCollectionsTests: XCTestCase {
 
         Verify(mock, 3, .map(array: .any, param: .any)) // total three invocations should be performed
     }
+
+    func test_protocol_with_set() {
+        let mock = SimpleProtocolUsingCollectionsMock()
+
+        // Set<Int> is a Sequence of equatable, so it should work by default
+        Given(mock, .verify(set: .value(Set<Int>(arrayLiteral: 1,2,3)), willReturn: true))
+        Given(mock, .verify(set: .any, willReturn: false))
+
+        XCTAssertEqual(mock.verify(set: Set<Int>(arrayLiteral: 1,2,3)), true)
+        XCTAssertEqual(mock.verify(set: Set<Int>(arrayLiteral: 1,2,4)), false)
+        XCTAssertEqual(mock.verify(set: Set<Int>(arrayLiteral: 0)), false)
+
+        Verify(mock, 3, .verify(set: .any))
+    }
 }

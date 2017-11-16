@@ -24,6 +24,8 @@
 		CC382D621FBDB61400906BF3 /* ProtocolsWithCollectionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC382D611FBDB61400906BF3 /* ProtocolsWithCollectionsTests.swift */; };
 		CC382D681FBDB93900906BF3 /* ProtocolWithThrowingMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC382D671FBDB93900906BF3 /* ProtocolWithThrowingMethods.swift */; };
 		CC382D6A1FBDB98000906BF3 /* ProtocolWithThrowingMehtodsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC382D691FBDB98000906BF3 /* ProtocolWithThrowingMehtodsTests.swift */; };
+		CC382D701FBDD34500906BF3 /* ProtocolsWithCustomAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC382D6F1FBDD34500906BF3 /* ProtocolsWithCustomAttributes.swift */; };
+		CC382D721FBDD5A300906BF3 /* ProtocolsWithCustomAttributesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC382D711FBDD5A300906BF3 /* ProtocolsWithCustomAttributesTests.swift */; };
 		CC89511E1FB450B200FEC2BB /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89511D1FB450B200FEC2BB /* Models.swift */; };
 		CCAFC9F31FAF244D003F776A /* SwiftyMocky.h in Headers */ = {isa = PBXBuildFile; fileRef = CCAFC9F11FAF244D003F776A /* SwiftyMocky.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CCAFCA021FAF24EB003F776A /* Parameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAFC9FA1FAF24EB003F776A /* Parameter.swift */; };
@@ -74,6 +76,8 @@
 		CC382D611FBDB61400906BF3 /* ProtocolsWithCollectionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolsWithCollectionsTests.swift; sourceTree = "<group>"; };
 		CC382D671FBDB93900906BF3 /* ProtocolWithThrowingMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolWithThrowingMethods.swift; sourceTree = "<group>"; };
 		CC382D691FBDB98000906BF3 /* ProtocolWithThrowingMehtodsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolWithThrowingMehtodsTests.swift; sourceTree = "<group>"; };
+		CC382D6F1FBDD34500906BF3 /* ProtocolsWithCustomAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolsWithCustomAttributes.swift; sourceTree = "<group>"; };
+		CC382D711FBDD5A300906BF3 /* ProtocolsWithCustomAttributesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolsWithCustomAttributesTests.swift; sourceTree = "<group>"; };
 		CC89511D1FB450B200FEC2BB /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		CCAFC9EF1FAF244D003F776A /* SwiftyMocky.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyMocky.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCAFC9F11FAF244D003F776A /* SwiftyMocky.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftyMocky.h; sourceTree = "<group>"; };
@@ -151,6 +155,8 @@
 			children = (
 				CC382D511FBD8A5500906BF3 /* Example 1 */,
 				CC382D651FBDB90700906BF3 /* Example 2 */,
+				CC382D6B1FBDD2F700906BF3 /* Example 3 */,
+				CC382D6C1FBDD30200906BF3 /* Example 4 */,
 				CC0C8C701F76AF1100032C5E /* Mocked */,
 				CC0C8C711F76AF1800032C5E /* Other */,
 				CC0C8C6F1F76AF0200032C5E /* Resources */,
@@ -174,6 +180,8 @@
 			children = (
 				CC382D5D1FBD98BA00906BF3 /* Example 1 */,
 				CC382D661FBDB91600906BF3 /* Example 2 */,
+				CC382D6E1FBDD30D00906BF3 /* Example 3 */,
+				CC382D6D1FBDD30B00906BF3 /* Example 4 */,
 				E467149E1ED021B200C7DAB3 /* XCTests */,
 				E467148A1ECF172500C7DAB3 /* Mocks */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
@@ -275,6 +283,36 @@
 				CC382D691FBDB98000906BF3 /* ProtocolWithThrowingMehtodsTests.swift */,
 			);
 			path = "Example 2";
+			sourceTree = "<group>";
+		};
+		CC382D6B1FBDD2F700906BF3 /* Example 3 */ = {
+			isa = PBXGroup;
+			children = (
+				CC382D6F1FBDD34500906BF3 /* ProtocolsWithCustomAttributes.swift */,
+			);
+			name = "Example 3";
+			sourceTree = "<group>";
+		};
+		CC382D6C1FBDD30200906BF3 /* Example 4 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Example 4";
+			sourceTree = "<group>";
+		};
+		CC382D6D1FBDD30B00906BF3 /* Example 4 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Example 4";
+			sourceTree = "<group>";
+		};
+		CC382D6E1FBDD30D00906BF3 /* Example 3 */ = {
+			isa = PBXGroup;
+			children = (
+				CC382D711FBDD5A300906BF3 /* ProtocolsWithCustomAttributesTests.swift */,
+			);
+			path = "Example 3";
 			sourceTree = "<group>";
 		};
 		CCAFC9F01FAF244D003F776A /* SwiftyMocky-Runtime */ = {
@@ -604,6 +642,7 @@
 				CC382D681FBDB93900906BF3 /* ProtocolWithThrowingMethods.swift in Sources */,
 				E46714851ECF11D100C7DAB3 /* Item.swift in Sources */,
 				CC89511E1FB450B200FEC2BB /* Models.swift in Sources */,
+				CC382D701FBDD34500906BF3 /* ProtocolsWithCustomAttributes.swift in Sources */,
 				E46714891ECF140C00C7DAB3 /* ItemsRepository.swift in Sources */,
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				CC382D5C1FBD8FB800906BF3 /* ProtocolsWithCollections.swift in Sources */,
@@ -622,6 +661,7 @@
 			files = (
 				CC382D6A1FBDB98000906BF3 /* ProtocolWithThrowingMehtodsTests.swift in Sources */,
 				CC2A8DBE1F9F3D9400FBF8DC /* ComplicatedServiceTests.swift in Sources */,
+				CC382D721FBDD5A300906BF3 /* ProtocolsWithCustomAttributesTests.swift in Sources */,
 				E46714931ECF1A8600C7DAB3 /* ItemsRepositoryMock.swift in Sources */,
 				CC0F23DE1F9E19AE00F94D35 /* Mock.generated.swift in Sources */,
 				CC0B1D901F786851006CB46D /* SampleServiceTests.swift in Sources */,
