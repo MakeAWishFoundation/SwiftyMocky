@@ -19,6 +19,10 @@ All examples are part of example project, which contains more examples.
     - [Working with non escaping closures](#example5.1)
     - [Working with escaping closures](#example5.2)
     - [Using completion block based approach](#example5.3)
+6. [Example 6:](#example6) protocol with initializers requirement
+6. [Example 7:](#example7) generics
+    - [Protocol with generic methods](#example7.1)
+    - [Protocol with associated types](#example7.2)
 
 ## <a name="example1"></a> Example 1:
 
@@ -380,4 +384,124 @@ waitForExpectations(timeout: 0.5) { (error) in
     guard let error = error else { return }
     XCTFail("Error: \(error)")
 }
+```
+## <a name="example6"></a> Example 6:
+
+Protocol that has initializer requirements.
+
+Protocol definition:
+
+```swift
+//sourcery: AutoMockable
+protocol ProtocolWithInitializers {
+    var param: Int { get }
+    var other: String { get }
+
+    init(param: Int, other: String)
+    init(param: Int)
+}
+```
+
+Sample test setup:
+
+```swift
+// You can use all required initializers
+let mock1 = ProtocolWithInitializersMock(param: 1)
+let mock2 = ProtocolWithInitializersMock(param: 2, other: "something")
+
+// Please hav in mind, that they are only to satisfy protocol requirements
+// there is no logic behind that, and so all properties has to be set manually anyway
+mock1.param = 1
+mock1.other = ""
+mock2.param = 2
+mock2.other = "something"
+```
+
+## <a name="example7"></a> Example 7:
+
+SwiftyMocky has support for generic protocols:
+
+
+### <a name="example7.1"></a> Protocol with generic methods
+
+When working with generic methods, as in following protocol definition, there are some additional requirements and limitations.
+
+Protocol definition:
+
+```swift
+//sourcery: AutoMockable
+protocol ProtocolWithGenericMethods {
+    func methodWithGeneric<T>(lhs: T, rhs: T) -> Bool
+    func methodWithGenericConstraint<U>(param: [U]) -> U where U: Equatable
+}
+```
+
+Sample test when using generic methods:
+
+```swift
+let mock = ProtocolWithGenericMethodsMock()
+
+// For generics - you have to use .any(ValueType.Type) to avoid ambiguity
+Given(mock, .methodWithGeneric(lhs: .any(Int.self), rhs: .any(Int.self), willReturn: false))
+Given(mock, .methodWithGeneric(lhs: .any(String.self), rhs: .any(String.self), willReturn: true))
+// In that case it is enough to specify type for only one elemen, so the type inference could do the rest
+Given(mock, .methodWithGeneric(lhs: .value(1), rhs: .any, willReturn: true))
+
+// Also, for generics default comparators for equatable and sequence types breaks - so even for
+// simple types like Int or String, you have to register comparator
+// Foe equatable, you can use simplified syntax:
+Matcher.default.register(Int.self)
+Matcher.default.register(String.self)
+
+XCTAssertEqual(mock.methodWithGeneric(lhs: 1, rhs: 0), true)
+XCTAssertEqual(mock.methodWithGeneric(lhs: 0, rhs: 1), false)
+XCTAssertEqual(mock.methodWithGeneric(lhs: "0", rhs: "1"), true)
+
+// Same applies to verify - specify type to avoid ambiguity
+Verify(mock, 2, .methodWithGeneric(lhs: .any(Int.self), rhs: .any(Int.self)))
+Verify(mock, 1, .methodWithGeneric(lhs: .any(String.self), rhs: .any(String.self)))
+```
+
+### <a name="example7.2"></a> Protocol with associated types
+
+All mocks for protocols with associated types requires additional annotations - one per every associated type. The mock will be generated as generic class.
+
+Protocol definition:
+
+```swift
+//sourcery: AutoMockable
+//sourcery: associatedtype = "T: Sequence"
+protocol ProtocolWithAssociatedType {
+    associatedtype T: Sequence
+
+    var sequence: T { get }
+
+    func methodWithType(t: T) -> Bool
+}
+```
+
+Sample test when using mock adopting protocol with associated types:
+
+```swift
+let mock = ProtocolWithAssociatedTypeMock<[Int]>()
+mock.sequence = [1,2,3]
+
+// For generics - default comparators for equatable and sequence types breaks - so even for
+// simple types like Int or String, you have to register comparator
+// Foe equatable, you can use simplified syntax:
+Matcher.default.register(Int.self)
+
+// There is autocomplete issue, so in order to get autocomplete for all available methods
+// Use full <MockName>.Given. ... syntax
+Given(mock, ProtocolWithAssociatedTypeMock.Given.methodWithType(t: .any, willReturn: false))
+// It works slightly better, when using given directly on mock instance
+mock.given(ProtocolWithAssociatedTypeMock<[Int]>.Given.methodWithType(t: .value([1,1,1]), willReturn: true))
+
+XCTAssertTrue(mock.methodWithType(t: [1,1,1]))
+XCTAssertFalse(mock.methodWithType(t: [2,2]))
+
+// Similar here
+Verify(mock, ProtocolWithAssociatedTypeMock.Verify.methodWithType(t: .value([1,1,1])))
+// And also here, using method on instance works slightly better when comes to types inference
+mock.verify(ProtocolWithAssociatedTypeMock<[Int]>.Verify.methodWithType(t: .value([2,2])))
 ```

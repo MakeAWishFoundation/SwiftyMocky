@@ -30,6 +30,10 @@
 		CC382D781FBE501800906BF3 /* ProtocolsWithClosures.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC382D771FBE501800906BF3 /* ProtocolsWithClosures.swift */; };
 		CC382D7A1FBE5C9300906BF3 /* ProtocolWithStaticMembersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC382D791FBE5C9300906BF3 /* ProtocolWithStaticMembersTests.swift */; };
 		CC382D7C1FBE5E3C00906BF3 /* ProtocolWithClosuresTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC382D7B1FBE5E3C00906BF3 /* ProtocolWithClosuresTests.swift */; };
+		CC382D801FBEE0E800906BF3 /* ProtocolWithInitializers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC382D7F1FBEE0E800906BF3 /* ProtocolWithInitializers.swift */; };
+		CC382D841FBEE1D600906BF3 /* ProtocolWithInitializersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC382D831FBEE1D600906BF3 /* ProtocolWithInitializersTests.swift */; };
+		CC382D861FBEE34C00906BF3 /* ProtocolsWithGenerics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC382D851FBEE34C00906BF3 /* ProtocolsWithGenerics.swift */; };
+		CC382D881FBEE4FF00906BF3 /* ProtocolsWithGenericsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC382D871FBEE4FF00906BF3 /* ProtocolsWithGenericsTests.swift */; };
 		CC89511E1FB450B200FEC2BB /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89511D1FB450B200FEC2BB /* Models.swift */; };
 		CCAFC9F31FAF244D003F776A /* SwiftyMocky.h in Headers */ = {isa = PBXBuildFile; fileRef = CCAFC9F11FAF244D003F776A /* SwiftyMocky.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CCAFCA021FAF24EB003F776A /* Parameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAFC9FA1FAF24EB003F776A /* Parameter.swift */; };
@@ -86,6 +90,10 @@
 		CC382D771FBE501800906BF3 /* ProtocolsWithClosures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolsWithClosures.swift; sourceTree = "<group>"; };
 		CC382D791FBE5C9300906BF3 /* ProtocolWithStaticMembersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolWithStaticMembersTests.swift; sourceTree = "<group>"; };
 		CC382D7B1FBE5E3C00906BF3 /* ProtocolWithClosuresTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolWithClosuresTests.swift; sourceTree = "<group>"; };
+		CC382D7F1FBEE0E800906BF3 /* ProtocolWithInitializers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolWithInitializers.swift; sourceTree = "<group>"; };
+		CC382D831FBEE1D600906BF3 /* ProtocolWithInitializersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolWithInitializersTests.swift; sourceTree = "<group>"; };
+		CC382D851FBEE34C00906BF3 /* ProtocolsWithGenerics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolsWithGenerics.swift; sourceTree = "<group>"; };
+		CC382D871FBEE4FF00906BF3 /* ProtocolsWithGenericsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolsWithGenericsTests.swift; sourceTree = "<group>"; };
 		CC89511D1FB450B200FEC2BB /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		CCAFC9EF1FAF244D003F776A /* SwiftyMocky.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyMocky.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCAFC9F11FAF244D003F776A /* SwiftyMocky.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftyMocky.h; sourceTree = "<group>"; };
@@ -166,6 +174,8 @@
 				CC382D6B1FBDD2F700906BF3 /* Example 3 */,
 				CC382D6C1FBDD30200906BF3 /* Example 4 */,
 				CC382D731FBE4E5E00906BF3 /* Example 5 */,
+				CC382D7E1FBEE0BC00906BF3 /* Example 6 */,
+				CC382D7D1FBEE0B900906BF3 /* Example 7 */,
 				CC0C8C701F76AF1100032C5E /* Mocked */,
 				CC0C8C711F76AF1800032C5E /* Other */,
 				CC0C8C6F1F76AF0200032C5E /* Resources */,
@@ -192,6 +202,8 @@
 				CC382D6E1FBDD30D00906BF3 /* Example 3 */,
 				CC382D6D1FBDD30B00906BF3 /* Example 4 */,
 				CC382D741FBE4E6D00906BF3 /* Example 5 */,
+				CC382D821FBEE1B200906BF3 /* Example 6 */,
+				CC382D811FBEE1B000906BF3 /* Example 7 */,
 				E467149E1ED021B200C7DAB3 /* XCTests */,
 				E467148A1ECF172500C7DAB3 /* Mocks */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
@@ -341,6 +353,38 @@
 				CC382D7B1FBE5E3C00906BF3 /* ProtocolWithClosuresTests.swift */,
 			);
 			path = "Example 5";
+			sourceTree = "<group>";
+		};
+		CC382D7D1FBEE0B900906BF3 /* Example 7 */ = {
+			isa = PBXGroup;
+			children = (
+				CC382D851FBEE34C00906BF3 /* ProtocolsWithGenerics.swift */,
+			);
+			name = "Example 7";
+			sourceTree = "<group>";
+		};
+		CC382D7E1FBEE0BC00906BF3 /* Example 6 */ = {
+			isa = PBXGroup;
+			children = (
+				CC382D7F1FBEE0E800906BF3 /* ProtocolWithInitializers.swift */,
+			);
+			name = "Example 6";
+			sourceTree = "<group>";
+		};
+		CC382D811FBEE1B000906BF3 /* Example 7 */ = {
+			isa = PBXGroup;
+			children = (
+				CC382D871FBEE4FF00906BF3 /* ProtocolsWithGenericsTests.swift */,
+			);
+			path = "Example 7";
+			sourceTree = "<group>";
+		};
+		CC382D821FBEE1B200906BF3 /* Example 6 */ = {
+			isa = PBXGroup;
+			children = (
+				CC382D831FBEE1D600906BF3 /* ProtocolWithInitializersTests.swift */,
+			);
+			path = "Example 6";
 			sourceTree = "<group>";
 		};
 		CCAFC9F01FAF244D003F776A /* SwiftyMocky-Runtime */ = {
@@ -680,7 +724,9 @@
 				CC382D581FBD8D6300906BF3 /* SimpleProtocols.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				CC0B1D8A1F785623006CB46D /* SampleService.swift in Sources */,
+				CC382D861FBEE34C00906BF3 /* ProtocolsWithGenerics.swift in Sources */,
 				CCB026A61FB46A8C00ACA9F0 /* GenericProtocols.swift in Sources */,
+				CC382D801FBEE0E800906BF3 /* ProtocolWithInitializers.swift in Sources */,
 				CCFE3B7D1FA123B700D04185 /* ExampleProtocols.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -691,6 +737,8 @@
 			files = (
 				CC382D6A1FBDB98000906BF3 /* ProtocolWithThrowingMehtodsTests.swift in Sources */,
 				CC382D7A1FBE5C9300906BF3 /* ProtocolWithStaticMembersTests.swift in Sources */,
+				CC382D841FBEE1D600906BF3 /* ProtocolWithInitializersTests.swift in Sources */,
+				CC382D881FBEE4FF00906BF3 /* ProtocolsWithGenericsTests.swift in Sources */,
 				CC382D7C1FBE5E3C00906BF3 /* ProtocolWithClosuresTests.swift in Sources */,
 				CC2A8DBE1F9F3D9400FBF8DC /* ComplicatedServiceTests.swift in Sources */,
 				CC382D721FBDD5A300906BF3 /* ProtocolsWithCustomAttributesTests.swift in Sources */,

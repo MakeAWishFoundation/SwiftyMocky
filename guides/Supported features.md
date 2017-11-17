@@ -32,6 +32,7 @@ Support for stubbing protocol members:
     - [x] static variables
     - [x] optional
     - [x] implicitly unwrapped optional
+- [ ] stubbing subscripts
 - [x] handling associated types - **done by annotations**
 - [x] handling conformances in associated types
 - [x] wrapping method attributes as Parameter
