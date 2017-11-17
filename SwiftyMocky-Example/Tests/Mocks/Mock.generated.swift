@@ -1368,6 +1368,142 @@ class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
     }
 }
 
+// MARK: - ProtocolWithClosures
+class ProtocolWithClosuresMock: ProtocolWithClosures, Mock {
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    var matcher: Matcher = Matcher.default
+
+
+    func methodThatTakes(closure: (Int) -> Int) {
+        addInvocation(.imethodThatTakes__closure_closure(Parameter<(Int) -> Int>.any))
+		let perform = methodPerformValue(.imethodThatTakes__closure_closure(Parameter<(Int) -> Int>.any)) as? ((Int) -> Int) -> Void
+		perform?(closure)
+    }
+
+    func methodThatTakesEscaping(closure: @escaping (Int) -> Int) {
+        addInvocation(.imethodThatTakesEscaping__closure_closure(Parameter<(Int) -> Int>.value(closure)))
+		let perform = methodPerformValue(.imethodThatTakesEscaping__closure_closure(Parameter<(Int) -> Int>.value(closure))) as? (@escaping (Int) -> Int) -> Void
+		perform?(closure)
+    }
+
+    func methodThatTakesCompletionBlock(completion: (Bool,Error?) -> Void) {
+        addInvocation(.imethodThatTakesCompletionBlock__completion_completion(Parameter<(Bool,Error?) -> Void>.any))
+		let perform = methodPerformValue(.imethodThatTakesCompletionBlock__completion_completion(Parameter<(Bool,Error?) -> Void>.any)) as? ((Bool,Error?) -> Void) -> Void
+		perform?(completion)
+    }
+
+    fileprivate enum MethodType {
+        case imethodThatTakes__closure_closure(Parameter<(Int) -> Int>)
+        case imethodThatTakesEscaping__closure_closure(Parameter<(Int) -> Int>)
+        case imethodThatTakesCompletionBlock__completion_completion(Parameter<(Bool,Error?) -> Void>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+                case (.imethodThatTakes__closure_closure(let lhsClosure), .imethodThatTakes__closure_closure(let rhsClosure)): 
+                    guard Parameter.compare(lhs: lhsClosure, rhs: rhsClosure, with: matcher) else { return false } 
+                    return true 
+                case (.imethodThatTakesEscaping__closure_closure(let lhsClosure), .imethodThatTakesEscaping__closure_closure(let rhsClosure)): 
+                    guard Parameter.compare(lhs: lhsClosure, rhs: rhsClosure, with: matcher) else { return false } 
+                    return true 
+                case (.imethodThatTakesCompletionBlock__completion_completion(let lhsCompletion), .imethodThatTakesCompletionBlock__completion_completion(let rhsCompletion)): 
+                    guard Parameter.compare(lhs: lhsCompletion, rhs: rhsCompletion, with: matcher) else { return false } 
+                    return true 
+                default: return false
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+                case let .imethodThatTakes__closure_closure(p0): return p0.intValue
+                case let .imethodThatTakesEscaping__closure_closure(p0): return p0.intValue
+                case let .imethodThatTakesCompletionBlock__completion_completion(p0): return p0.intValue
+            }
+        }
+    }
+
+    struct Given {
+        fileprivate var method: MethodType
+        var returns: Any?
+        var `throws`: Error?
+
+        private init(method: MethodType, returns: Any?, throws: Error?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
+
+    }
+
+    struct Verify {
+        fileprivate var method: MethodType
+
+        static func methodThatTakes(closure: Parameter<(Int) -> Int>) -> Verify {
+            return Verify(method: .imethodThatTakes__closure_closure(closure))
+        }
+        static func methodThatTakesEscaping(closure: Parameter<(Int) -> Int>) -> Verify {
+            return Verify(method: .imethodThatTakesEscaping__closure_closure(closure))
+        }
+        static func methodThatTakesCompletionBlock(completion: Parameter<(Bool,Error?) -> Void>) -> Verify {
+            return Verify(method: .imethodThatTakesCompletionBlock__completion_completion(completion))
+        }
+    }
+
+    struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        static func methodThatTakes(closure: Parameter<(Int) -> Int>, perform: ((Int) -> Int) -> Void) -> Perform {
+            return Perform(method: .imethodThatTakes__closure_closure(closure), performs: perform)
+        }
+        static func methodThatTakesEscaping(closure: Parameter<(Int) -> Int>, perform: (@escaping (Int) -> Int) -> Void) -> Perform {
+            return Perform(method: .imethodThatTakesEscaping__closure_closure(closure), performs: perform)
+        }
+        static func methodThatTakesCompletionBlock(completion: Parameter<(Bool,Error?) -> Void>, perform: ((Bool,Error?) -> Void) -> Void) -> Perform {
+            return Perform(method: .imethodThatTakesCompletionBlock__completion_completion(completion), performs: perform)
+        }
+    }
+
+    public func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+        methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+        let method = method.method
+        let invocations = matchingCalls(method)
+        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+
+    private func methodReturnValue(_ method: MethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
+    }
+
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+}
+
 // MARK: - ProtocolWithCustomAttributes
 class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock {
     private var invocations: [MethodType] = []
@@ -1518,6 +1654,194 @@ class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock {
 
     private func matchingCalls(_ method: MethodType) -> [MethodType] {
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+}
+
+// MARK: - ProtocolWithStaticMembers
+class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, StaticMock {
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    var matcher: Matcher = Matcher.default
+    static private var invocations: [StaticMethodType] = []
+    static private var methodReturnValues: [StaticGiven] = []
+    static private var methodPerformValues: [StaticPerform] = []
+    static var matcher: Matcher = Matcher.default
+
+    static var staticProperty: String { 
+		get { return ProtocolWithStaticMembersMock.__staticProperty.orFail("ProtocolWithStaticMembersMock - value for staticProperty was not defined") }
+		set { ProtocolWithStaticMembersMock.__staticProperty = newValue }
+	}
+	private static var __staticProperty: (String)?
+
+    static func staticMethod(param: Int) throws -> Int {
+        addInvocation(.sstaticMethod__param_param(Parameter<Int>.value(param)))
+		let perform = methodPerformValue(.sstaticMethod__param_param(Parameter<Int>.value(param))) as? (Int) -> Void
+		perform?(param)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.sstaticMethod__param_param(Parameter<Int>.value(param)))
+		if let error = givenValue.error { throw error }
+		let value = givenValue.value as? Int
+		return value.orFail("stub return value not specified for staticMethod(param: Int). Use given")
+    }
+
+    fileprivate enum StaticMethodType {
+        case sstaticMethod__param_param(Parameter<Int>)
+
+        static func compareParameters(lhs: StaticMethodType, rhs: StaticMethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+                case (.sstaticMethod__param_param(let lhsParam), .sstaticMethod__param_param(let rhsParam)): 
+                    guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
+                    return true 
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+                case let .sstaticMethod__param_param(p0): return p0.intValue
+            }
+        }
+    }
+
+    struct StaticGiven {
+        fileprivate var method: StaticMethodType
+        var returns: Any?
+        var `throws`: Error?
+
+        private init(method: StaticMethodType, returns: Any?, throws: Error?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
+
+        static func staticMethod(param: Parameter<Int>, willReturn: Int) -> StaticGiven {
+            return StaticGiven(method: .sstaticMethod__param_param(param), returns: willReturn, throws: nil)
+        }
+        static func staticMethod(param: Parameter<Int>, willThrow: Error) -> StaticGiven {
+            return StaticGiven(method: .sstaticMethod__param_param(param), returns: nil, throws: willThrow)
+        }
+    }
+
+    struct StaticVerify {
+        fileprivate var method: StaticMethodType
+
+        static func staticMethod(param: Parameter<Int>) -> StaticVerify {
+            return StaticVerify(method: .sstaticMethod__param_param(param))
+        }
+    }
+
+    struct StaticPerform {
+        fileprivate var method: StaticMethodType
+        var performs: Any
+
+        static func staticMethod(param: Parameter<Int>, perform: (Int) -> Void) -> StaticPerform {
+            return StaticPerform(method: .sstaticMethod__param_param(param), performs: perform)
+        }
+    }
+
+    
+    fileprivate struct MethodType {
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool { return true }
+        func intValue() -> Int { return 0 }
+    }
+
+    struct Given {
+        fileprivate var method: MethodType
+        var returns: Any?
+        var `throws`: Error?
+
+        private init(method: MethodType, returns: Any?, throws: Error?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
+
+    }
+
+    struct Verify {
+        fileprivate var method: MethodType
+
+    }
+
+    struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+    }
+
+    public func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+        methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+        let method = method.method
+        let invocations = matchingCalls(method)
+        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+
+    private func methodReturnValue(_ method: MethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
+    }
+
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+
+    static public func matchingCalls(_ method: StaticVerify) -> Int {
+        return matchingCalls(method.method).count
+    }
+
+    static public func given(_ method: StaticGiven) {
+        methodReturnValues.append(method)
+        methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    static public func perform(_ method: StaticPerform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    static public func verify(_ method: StaticVerify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+        let method = method.method
+        let invocations = matchingCalls(method)
+        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    static private func addInvocation(_ call: StaticMethodType) {
+        invocations.append(call)
+    }
+
+    static private func methodReturnValue(_ method: StaticMethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
+    }
+
+    static private func methodPerformValue(_ method: StaticMethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+
+    static private func matchingCalls(_ method: StaticMethodType) -> [StaticMethodType] {
+        return invocations.filter { StaticMethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
     }
 }
 
