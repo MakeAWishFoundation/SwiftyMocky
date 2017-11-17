@@ -18,6 +18,7 @@ custom_categories:
       - Matcher support for not Equatable
       - Generics
       - Examples
+      - Add XCode generate action
       - Known issues
 
   - name: Types
