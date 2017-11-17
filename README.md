@@ -87,6 +87,8 @@ Full documentation is available [here](https://cdn.rawgit.com/MakeAWishFoundatio
 
 Guides - [Table of contents](guides/Contents.md)
 
+Changelog is available [here](guides/CHANGELOG.md)
+
 # How to start using SwiftyMocky
 
 Mocks generation is based on `mocky.yml` file.
