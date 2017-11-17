@@ -179,6 +179,13 @@
 <li><a href="#example5.2">Working with escaping closures</a></li>
 <li><a href="#example5.3">Using completion block based approach</a></li>
 </ul></li>
+<li><a href="#example6">Example 6:</a> protocol with initializers requirement</li>
+<li><a href="#example7">Example 7:</a> generics
+
+<ul>
+<li><a href="#example7.1">Protocol with generic methods</a></li>
+<li><a href="#example7.2">Protocol with associated types</a></li>
+</ul></li>
 </ol>
 <h2 id='a-name-example1-a-example-1' class='heading'><a name="example1"></a> Example 1:</h2>
 
@@ -489,6 +496,110 @@
     <span class="k">guard</span> <span class="k">let</span> <span class="nv">error</span> <span class="o">=</span> <span class="n">error</span> <span class="k">else</span> <span class="p">{</span> <span class="k">return</span> <span class="p">}</span>
     <span class="kt">XCTFail</span><span class="p">(</span><span class="s">"Error: </span><span class="se">\(</span><span class="n">error</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
 <span class="p">}</span>
+</code></pre>
+<h2 id='a-name-example6-a-example-6' class='heading'><a name="example6"></a> Example 6:</h2>
+
+<p>Protocol that has initializer requirements.</p>
+
+<p>Protocol definition:</p>
+<pre class="highlight swift"><code><span class="c1">//sourcery: AutoMockable</span>
+<span class="kd">protocol</span> <span class="kt">ProtocolWithInitializers</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">param</span><span class="p">:</span> <span class="kt">Int</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span>
+    <span class="k">var</span> <span class="nv">other</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span>
+
+    <span class="nf">init</span><span class="p">(</span><span class="nv">param</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">other</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span>
+    <span class="nf">init</span><span class="p">(</span><span class="nv">param</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>Sample test setup:</p>
+<pre class="highlight swift"><code><span class="c1">// You can use all required initializers</span>
+<span class="k">let</span> <span class="nv">mock1</span> <span class="o">=</span> <span class="kt">ProtocolWithInitializersMock</span><span class="p">(</span><span class="nv">param</span><span class="p">:</span> <span class="mi">1</span><span class="p">)</span>
+<span class="k">let</span> <span class="nv">mock2</span> <span class="o">=</span> <span class="kt">ProtocolWithInitializersMock</span><span class="p">(</span><span class="nv">param</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nv">other</span><span class="p">:</span> <span class="s">"something"</span><span class="p">)</span>
+
+<span class="c1">// Please hav in mind, that they are only to satisfy protocol requirements</span>
+<span class="c1">// there is no logic behind that, and so all properties has to be set manually anyway</span>
+<span class="n">mock1</span><span class="o">.</span><span class="n">param</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">mock1</span><span class="o">.</span><span class="n">other</span> <span class="o">=</span> <span class="s">""</span>
+<span class="n">mock2</span><span class="o">.</span><span class="n">param</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">mock2</span><span class="o">.</span><span class="n">other</span> <span class="o">=</span> <span class="s">"something"</span>
+</code></pre>
+<h2 id='a-name-example7-a-example-7' class='heading'><a name="example7"></a> Example 7:</h2>
+
+<p>SwiftyMocky has support for generic protocols:</p>
+<h3 id='a-name-example7-1-a-protocol-with-generic-methods' class='heading'><a name="example7.1"></a> Protocol with generic methods</h3>
+
+<p>When working with generic methods, as in following protocol definition, there are some additional requirements and limitations.</p>
+
+<p>Protocol definition:</p>
+<pre class="highlight swift"><code><span class="c1">//sourcery: AutoMockable</span>
+<span class="kd">protocol</span> <span class="kt">ProtocolWithGenericMethods</span> <span class="p">{</span>
+    <span class="kd">func</span> <span class="n">methodWithGeneric</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">lhs</span><span class="p">:</span> <span class="kt">T</span><span class="p">,</span> <span class="nv">rhs</span><span class="p">:</span> <span class="kt">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span>
+    <span class="kd">func</span> <span class="n">methodWithGenericConstraint</span><span class="o">&lt;</span><span class="kt">U</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">param</span><span class="p">:</span> <span class="p">[</span><span class="kt">U</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kt">U</span> <span class="k">where</span> <span class="kt">U</span><span class="p">:</span> <span class="kt">Equatable</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>Sample test when using generic methods:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">mock</span> <span class="o">=</span> <span class="kt">ProtocolWithGenericMethodsMock</span><span class="p">()</span>
+
+<span class="c1">// For generics - you have to use .any(ValueType.Type) to avoid ambiguity</span>
+<span class="kt">Given</span><span class="p">(</span><span class="n">mock</span><span class="p">,</span> <span class="o">.</span><span class="nf">methodWithGeneric</span><span class="p">(</span><span class="nv">lhs</span><span class="p">:</span> <span class="o">.</span><span class="nf">any</span><span class="p">(</span><span class="kt">Int</span><span class="o">.</span><span class="k">self</span><span class="p">),</span> <span class="nv">rhs</span><span class="p">:</span> <span class="o">.</span><span class="nf">any</span><span class="p">(</span><span class="kt">Int</span><span class="o">.</span><span class="k">self</span><span class="p">),</span> <span class="nv">willReturn</span><span class="p">:</span> <span class="kc">false</span><span class="p">))</span>
+<span class="kt">Given</span><span class="p">(</span><span class="n">mock</span><span class="p">,</span> <span class="o">.</span><span class="nf">methodWithGeneric</span><span class="p">(</span><span class="nv">lhs</span><span class="p">:</span> <span class="o">.</span><span class="nf">any</span><span class="p">(</span><span class="kt">String</span><span class="o">.</span><span class="k">self</span><span class="p">),</span> <span class="nv">rhs</span><span class="p">:</span> <span class="o">.</span><span class="nf">any</span><span class="p">(</span><span class="kt">String</span><span class="o">.</span><span class="k">self</span><span class="p">),</span> <span class="nv">willReturn</span><span class="p">:</span> <span class="kc">true</span><span class="p">))</span>
+<span class="c1">// In that case it is enough to specify type for only one elemen, so the type inference could do the rest</span>
+<span class="kt">Given</span><span class="p">(</span><span class="n">mock</span><span class="p">,</span> <span class="o">.</span><span class="nf">methodWithGeneric</span><span class="p">(</span><span class="nv">lhs</span><span class="p">:</span> <span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="nv">rhs</span><span class="p">:</span> <span class="o">.</span><span class="n">any</span><span class="p">,</span> <span class="nv">willReturn</span><span class="p">:</span> <span class="kc">true</span><span class="p">))</span>
+
+<span class="c1">// Also, for generics default comparators for equatable and sequence types breaks - so even for</span>
+<span class="c1">// simple types like Int or String, you have to register comparator</span>
+<span class="c1">// Foe equatable, you can use simplified syntax:</span>
+<span class="kt">Matcher</span><span class="o">.</span><span class="k">default</span><span class="o">.</span><span class="nf">register</span><span class="p">(</span><span class="kt">Int</span><span class="o">.</span><span class="k">self</span><span class="p">)</span>
+<span class="kt">Matcher</span><span class="o">.</span><span class="k">default</span><span class="o">.</span><span class="nf">register</span><span class="p">(</span><span class="kt">String</span><span class="o">.</span><span class="k">self</span><span class="p">)</span>
+
+<span class="kt">XCTAssertEqual</span><span class="p">(</span><span class="n">mock</span><span class="o">.</span><span class="nf">methodWithGeneric</span><span class="p">(</span><span class="nv">lhs</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nv">rhs</span><span class="p">:</span> <span class="mi">0</span><span class="p">),</span> <span class="kc">true</span><span class="p">)</span>
+<span class="kt">XCTAssertEqual</span><span class="p">(</span><span class="n">mock</span><span class="o">.</span><span class="nf">methodWithGeneric</span><span class="p">(</span><span class="nv">lhs</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nv">rhs</span><span class="p">:</span> <span class="mi">1</span><span class="p">),</span> <span class="kc">false</span><span class="p">)</span>
+<span class="kt">XCTAssertEqual</span><span class="p">(</span><span class="n">mock</span><span class="o">.</span><span class="nf">methodWithGeneric</span><span class="p">(</span><span class="nv">lhs</span><span class="p">:</span> <span class="s">"0"</span><span class="p">,</span> <span class="nv">rhs</span><span class="p">:</span> <span class="s">"1"</span><span class="p">),</span> <span class="kc">true</span><span class="p">)</span>
+
+<span class="c1">// Same applies to verify - specify type to avoid ambiguity</span>
+<span class="kt">Verify</span><span class="p">(</span><span class="n">mock</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">.</span><span class="nf">methodWithGeneric</span><span class="p">(</span><span class="nv">lhs</span><span class="p">:</span> <span class="o">.</span><span class="nf">any</span><span class="p">(</span><span class="kt">Int</span><span class="o">.</span><span class="k">self</span><span class="p">),</span> <span class="nv">rhs</span><span class="p">:</span> <span class="o">.</span><span class="nf">any</span><span class="p">(</span><span class="kt">Int</span><span class="o">.</span><span class="k">self</span><span class="p">)))</span>
+<span class="kt">Verify</span><span class="p">(</span><span class="n">mock</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">.</span><span class="nf">methodWithGeneric</span><span class="p">(</span><span class="nv">lhs</span><span class="p">:</span> <span class="o">.</span><span class="nf">any</span><span class="p">(</span><span class="kt">String</span><span class="o">.</span><span class="k">self</span><span class="p">),</span> <span class="nv">rhs</span><span class="p">:</span> <span class="o">.</span><span class="nf">any</span><span class="p">(</span><span class="kt">String</span><span class="o">.</span><span class="k">self</span><span class="p">)))</span>
+</code></pre>
+<h3 id='a-name-example7-2-a-protocol-with-associated-types' class='heading'><a name="example7.2"></a> Protocol with associated types</h3>
+
+<p>All mocks for protocols with associated types requires additional annotations - one per every associated type. The mock will be generated as generic class.</p>
+
+<p>Protocol definition:</p>
+<pre class="highlight swift"><code><span class="c1">//sourcery: AutoMockable</span>
+<span class="c1">//sourcery: associatedtype = "T: Sequence"</span>
+<span class="kd">protocol</span> <span class="kt">ProtocolWithAssociatedType</span> <span class="p">{</span>
+    <span class="k">associatedtype</span> <span class="kt">T</span><span class="p">:</span> <span class="kt">Sequence</span>
+
+    <span class="k">var</span> <span class="nv">sequence</span><span class="p">:</span> <span class="kt">T</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span>
+
+    <span class="kd">func</span> <span class="nf">methodWithType</span><span class="p">(</span><span class="nv">t</span><span class="p">:</span> <span class="kt">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>Sample test when using mock adopting protocol with associated types:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">mock</span> <span class="o">=</span> <span class="kt">ProtocolWithAssociatedTypeMock</span><span class="o">&lt;</span><span class="p">[</span><span class="kt">Int</span><span class="p">]</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="n">mock</span><span class="o">.</span><span class="n">sequence</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+
+<span class="c1">// For generics - default comparators for equatable and sequence types breaks - so even for</span>
+<span class="c1">// simple types like Int or String, you have to register comparator</span>
+<span class="c1">// Foe equatable, you can use simplified syntax:</span>
+<span class="kt">Matcher</span><span class="o">.</span><span class="k">default</span><span class="o">.</span><span class="nf">register</span><span class="p">(</span><span class="kt">Int</span><span class="o">.</span><span class="k">self</span><span class="p">)</span>
+
+<span class="c1">// There is autocomplete issue, so in order to get autocomplete for all available methods</span>
+<span class="c1">// Use full &lt;MockName&gt;.Given. ... syntax</span>
+<span class="kt">Given</span><span class="p">(</span><span class="n">mock</span><span class="p">,</span> <span class="kt">ProtocolWithAssociatedTypeMock</span><span class="o">.</span><span class="kt">Given</span><span class="o">.</span><span class="nf">methodWithType</span><span class="p">(</span><span class="nv">t</span><span class="p">:</span> <span class="o">.</span><span class="n">any</span><span class="p">,</span> <span class="nv">willReturn</span><span class="p">:</span> <span class="kc">false</span><span class="p">))</span>
+<span class="c1">// It works slightly better, when using given directly on mock instance</span>
+<span class="n">mock</span><span class="o">.</span><span class="nf">given</span><span class="p">(</span><span class="kt">ProtocolWithAssociatedTypeMock</span><span class="o">&lt;</span><span class="p">[</span><span class="kt">Int</span><span class="p">]</span><span class="o">&gt;.</span><span class="kt">Given</span><span class="o">.</span><span class="nf">methodWithType</span><span class="p">(</span><span class="nv">t</span><span class="p">:</span> <span class="o">.</span><span class="nf">value</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]),</span> <span class="nv">willReturn</span><span class="p">:</span> <span class="kc">true</span><span class="p">))</span>
+
+<span class="kt">XCTAssertTrue</span><span class="p">(</span><span class="n">mock</span><span class="o">.</span><span class="nf">methodWithType</span><span class="p">(</span><span class="nv">t</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]))</span>
+<span class="kt">XCTAssertFalse</span><span class="p">(</span><span class="n">mock</span><span class="o">.</span><span class="nf">methodWithType</span><span class="p">(</span><span class="nv">t</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]))</span>
+
+<span class="c1">// Similar here</span>
+<span class="kt">Verify</span><span class="p">(</span><span class="n">mock</span><span class="p">,</span> <span class="kt">ProtocolWithAssociatedTypeMock</span><span class="o">.</span><span class="kt">Verify</span><span class="o">.</span><span class="nf">methodWithType</span><span class="p">(</span><span class="nv">t</span><span class="p">:</span> <span class="o">.</span><span class="nf">value</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">])))</span>
+<span class="c1">// And also here, using method on instance works slightly better when comes to types inference</span>
+<span class="n">mock</span><span class="o">.</span><span class="nf">verify</span><span class="p">(</span><span class="kt">ProtocolWithAssociatedTypeMock</span><span class="o">&lt;</span><span class="p">[</span><span class="kt">Int</span><span class="p">]</span><span class="o">&gt;.</span><span class="kt">Verify</span><span class="o">.</span><span class="nf">methodWithType</span><span class="p">(</span><span class="nv">t</span><span class="p">:</span> <span class="o">.</span><span class="nf">value</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">])))</span>
 </code></pre>
 
           </section>
