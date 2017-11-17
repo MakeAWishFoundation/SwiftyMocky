@@ -204,7 +204,36 @@ class ExampleTests: XCTestCase {
         XCTAssertEqual(2, c)
 
         Verify(mock, .methodConstrained(param: .value("abc")))
-        Verify(mock, 3, .methodConstrained(param: .any(Any.self)))
+        Verify(mock, 2, .methodConstrained(param: .any(Int.self)))
+        Verify(mock, 1, .methodConstrained(param: .any(String.self)))
+    }
+
+    func test_generic_parameters_compare() {
+        Matcher.default.register(Int.self)
+        Matcher.default.register(String.self)
+        Matcher.default.register(Character.self)
+
+        // Any vs Any
+        XCTAssertTrue(Parameter.compare(lhs: Parameter<Int>.any.wrapAsGeneric(), rhs: Parameter<Int>.any.wrapAsGeneric(), with: Matcher.default))
+        XCTAssertFalse(Parameter.compare(lhs: Parameter<Int>.any.wrapAsGeneric(), rhs: Parameter<String>.any.wrapAsGeneric(), with: Matcher.default))
+
+        // Any vs Value
+        XCTAssertTrue(Parameter.compare(lhs: Parameter<Int>.any.wrapAsGeneric(), rhs: Parameter<Int>.value(1).wrapAsGeneric(), with: Matcher.default))
+        XCTAssertTrue(Parameter.compare(lhs: Parameter<String>.any.wrapAsGeneric(), rhs: Parameter<String>.value("1").wrapAsGeneric(), with: Matcher.default))
+        XCTAssertFalse(Parameter.compare(lhs: Parameter<Int>.any.wrapAsGeneric(), rhs: Parameter<String>.value("1").wrapAsGeneric(), with: Matcher.default))
+        XCTAssertFalse(Parameter.compare(lhs: Parameter<String>.any.wrapAsGeneric(), rhs: Parameter<Int>.value(1).wrapAsGeneric(), with: Matcher.default))
+
+        // Value vs Any
+        XCTAssertTrue(Parameter.compare(lhs: Parameter<Int>.value(1).wrapAsGeneric(), rhs: Parameter<Int>.any.wrapAsGeneric(), with: Matcher.default))
+        XCTAssertTrue(Parameter.compare(lhs: Parameter<String>.value("1").wrapAsGeneric(), rhs: Parameter<String>.any.wrapAsGeneric(), with: Matcher.default))
+        XCTAssertFalse(Parameter.compare(lhs: Parameter<Int>.value(1).wrapAsGeneric(), rhs: Parameter<String>.any.wrapAsGeneric(), with: Matcher.default))
+        XCTAssertFalse(Parameter.compare(lhs: Parameter<String>.value("1").wrapAsGeneric(), rhs: Parameter<Int>.any.wrapAsGeneric(), with: Matcher.default))
+
+        // Value vs Value
+        XCTAssertTrue(Parameter.compare(lhs: Parameter<Int>.value(1).wrapAsGeneric(), rhs: Parameter<Int>.value(1).wrapAsGeneric(), with: Matcher.default))
+        XCTAssertTrue(Parameter.compare(lhs: Parameter<String>.value("1").wrapAsGeneric(), rhs: Parameter<String>.value("1").wrapAsGeneric(), with: Matcher.default))
+        XCTAssertFalse(Parameter.compare(lhs: Parameter<Int>.value(1).wrapAsGeneric(), rhs: Parameter<String>.value("1").wrapAsGeneric(), with: Matcher.default))
+        XCTAssertFalse(Parameter.compare(lhs: Parameter<String>.value("1").wrapAsGeneric(), rhs: Parameter<Int>.value(1).wrapAsGeneric(), with: Matcher.default))
     }
 }
 

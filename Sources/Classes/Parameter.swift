@@ -84,13 +84,30 @@ public extension Parameter {
     /// - Returns: Wrapped parameter
     public func wrapAsGeneric() -> Parameter<GenericAttribute> {
         switch self {
-        case ._: return Parameter<GenericAttribute>.any
+        case ._:
+            let attribute = GenericAttribute(Mirror(reflecting: ValueType.self), { (l, r, m) -> Bool in
+                guard let lv = l as? Mirror else { return false }
+                if let rv = r as? Mirror {
+                    return lv.subjectType == rv.subjectType
+                } else if let _ = r as? ValueType {
+                    return true // .any comparing .value
+                } else {
+                    return false
+                }
+            })
+            return Parameter<GenericAttribute>.value(attribute)
         case let .value(value):
             let attribute = GenericAttribute(value, { (l, r, m) -> Bool in
-                guard let lv = l as? ValueType, let rv = r as? ValueType  else { return false }
-                let lhs = Parameter<ValueType>.value(lv)
-                let rhs = Parameter<ValueType>.value(rv)
-                return Parameter<ValueType>.compare(lhs: lhs, rhs: rhs, with: m)
+                guard let lv = l as? ValueType  else { return false }
+                if let rv = r as? ValueType {
+                    let lhs = Parameter<ValueType>.value(lv)
+                    let rhs = Parameter<ValueType>.value(rv)
+                    return Parameter<ValueType>.compare(lhs: lhs, rhs: rhs, with: m)
+                } else if let rv = r as? Mirror {
+                    return Mirror(reflecting: ValueType.self).subjectType == rv.subjectType
+                } else {
+                    return false
+                }
             })
             return Parameter<GenericAttribute>.value(attribute)
         }
@@ -122,7 +139,6 @@ public extension Parameter where ValueType: Equatable {
 
 public extension Parameter where ValueType: Sequence {
     public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
-        print("\(ValueType.self) is Sequence")
         switch (lhs, rhs) {
             case (._, _): return true
             case (_, ._): return true
@@ -155,13 +171,30 @@ public extension Parameter where ValueType: Sequence {
 
     public func wrapAsGeneric() -> Parameter<GenericAttribute> {
         switch self {
-            case ._: return Parameter<GenericAttribute>.any
+            case ._:
+                let attribute = GenericAttribute(Mirror(reflecting: ValueType.self), { (l, r, m) -> Bool in
+                    guard let lv = l as? Mirror else { return false }
+                    if let rv = r as? Mirror {
+                        return lv.subjectType == rv.subjectType
+                    } else if let _ = r as? ValueType {
+                        return true // .any comparing .value
+                    } else {
+                        return false
+                    }
+                })
+                return Parameter<GenericAttribute>.value(attribute)
             case let .value(value):
                 let attribute = GenericAttribute(value, { (l, r, m) -> Bool in
-                    guard let lv = l as? ValueType, let rv = r as? ValueType  else { return false }
-                    let lhs = Parameter<ValueType>.value(lv)
-                    let rhs = Parameter<ValueType>.value(rv)
-                    return Parameter<ValueType>.compare(lhs: lhs, rhs: rhs, with: m)
+                    guard let lv = l as? ValueType  else { return false }
+                    if let rv = r as? ValueType {
+                        let lhs = Parameter<ValueType>.value(lv)
+                        let rhs = Parameter<ValueType>.value(rv)
+                        return Parameter<ValueType>.compare(lhs: lhs, rhs: rhs, with: m)
+                    } else if let rv = r as? Mirror {
+                        return Mirror(reflecting: ValueType.self).subjectType == rv.subjectType
+                    } else {
+                        return false
+                    }
                 })
                 return Parameter<GenericAttribute>.value(attribute)
         }
@@ -238,13 +271,30 @@ public extension Parameter where ValueType : Sequence {
 
     public func wrapAsGeneric() -> Parameter<GenericAttribute> {
         switch self {
-            case ._: return Parameter<GenericAttribute>.any
+            case ._:
+                let attribute = GenericAttribute(Mirror(reflecting: ValueType.self), { (l, r, m) -> Bool in
+                    guard let lv = l as? Mirror else { return false }
+                    if let rv = r as? Mirror {
+                        return lv.subjectType == rv.subjectType
+                    } else if let _ = r as? ValueType {
+                        return true // .any comparing .value
+                    } else {
+                        return false
+                    }
+                })
+                return Parameter<GenericAttribute>.value(attribute)
             case let .value(value):
                 let attribute = GenericAttribute(value, { (l, r, m) -> Bool in
-                    guard let lv = l as? ValueType, let rv = r as? ValueType  else { return false }
-                    let lhs = Parameter<ValueType>.value(lv)
-                    let rhs = Parameter<ValueType>.value(rv)
-                    return Parameter<ValueType>.compare(lhs: lhs, rhs: rhs, with: m)
+                    guard let lv = l as? ValueType  else { return false }
+                    if let rv = r as? ValueType {
+                        let lhs = Parameter<ValueType>.value(lv)
+                        let rhs = Parameter<ValueType>.value(rv)
+                        return Parameter<ValueType>.compare(lhs: lhs, rhs: rhs, with: m)
+                    } else if let rv = r as? Mirror {
+                        return Mirror(reflecting: ValueType.self).subjectType == rv.subjectType
+                    } else {
+                        return false
+                    }
                 })
                 return Parameter<GenericAttribute>.value(attribute)
         }
