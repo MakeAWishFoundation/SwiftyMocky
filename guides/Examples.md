@@ -13,6 +13,12 @@ All examples are part of example project, which contains more examples.
 3. [Example 3:](#example3) custom attributes
     - [Simple protocol with methods using tuples](#example3.1)
     - [Simple protocol with methods using custom type](#example3.2)
+4. [Example 4:](#example4) static
+    - [Simple protocol with static methods and properties](#example4.1)
+5. [Example 5:](#example5) closures as attributes
+    - [Working with non escaping closures](#example5.1)
+    - [Working with escaping closures](#example5.2)
+    - [Using completion block based approach](#example5.3)
 
 ## <a name="example1"></a> Example 1:
 
@@ -253,4 +259,125 @@ XCTAssertThrowsError(try mock.methodThatTakesUser(user: user2))
 XCTAssertEqual(mock.methodThatTakesArrayOfUsers(array: [user1, user2]), 2)
 XCTAssertEqual(mock.methodThatTakesArrayOfUsers(array: [user1, user2, user1]), 0)
 XCTAssertEqual(mock.methodThatTakesArrayOfUsers(array: [user2, user1]), 0)
+```
+
+## <a name="example4"></a> Example 4:
+
+Protocol that have static members.
+
+### <a name="example4.1"></a> Simple protocol with static methods and properties
+
+Protocol definition:
+
+```swift
+//sourcery: AutoMockable
+protocol ProtocolWithStaticMembers {
+    static var staticProperty: String { get }
+    static func staticMethod(param: Int) throws -> Int
+}
+```
+
+Test - usage of `Given` and `Verify` with static members.
+
+```swift
+// Static members are handled similar way - but instead of instance
+// you pass its type to Verify and Given calls
+
+// Static properties should be set with default values - same as with instance ones
+ProtocolWithStaticMembersMock.staticProperty = "value"
+
+Given(ProtocolWithStaticMembersMock.self, .staticMethod(param: .value(0), willReturn: 1))
+Given(ProtocolWithStaticMembersMock.self, .staticMethod(param: .value(1), willReturn: 2))
+Given(ProtocolWithStaticMembersMock.self, .staticMethod(param: .any, willThrow: SimpleTestError.failure))
+
+XCTAssertEqual(ProtocolWithStaticMembersMock.staticProperty, "value")
+XCTAssertEqual(try? ProtocolWithStaticMembersMock.staticMethod(param: 0), 1)
+XCTAssertEqual(try? ProtocolWithStaticMembersMock.staticMethod(param: 1), 2)
+XCTAssertThrowsError(try ProtocolWithStaticMembersMock.staticMethod(param: -3))
+XCTAssertThrowsError(try ProtocolWithStaticMembersMock.staticMethod(param: 2))
+
+Verify(ProtocolWithStaticMembersMock.self, 4, .staticMethod(param: .any))
+```
+
+## <a name="example5"></a> Example 5:
+
+Protocol that has methods with attributes being closures.
+
+Protocol definition:
+
+```swift
+//sourcery: AutoMockable
+protocol ProtocolWithClosures {
+    func methodThatTakes(closure: (Int) -> Int)
+    func methodThatTakesEscaping(closure: @escaping (Int) -> Int)
+    func methodThatTakesCompletionBlock(completion: (Bool,Error?) -> Void)
+}
+```
+
+### <a name="example5.1"></a> Working with non escaping closures
+
+For non escaping closures - every parameter defined as .value(...) is always treated as .any
+
+Sample test:
+
+```swift
+let mock = ProtocolWithClosuresMock()
+
+mock.methodThatTakes(closure: { $0 })
+mock.methodThatTakes(closure: { $0 * 2 })
+
+Verify(mock, 2, .methodThatTakes(closure: .any))
+// For non escaping closures - every .value(...) is always treated as .any
+Verify(mock, 2, .methodThatTakes(closure: .value({ $0 })))
+```
+
+### <a name="example5.2"></a> Working with escaping closures
+
+There is no limitation as above for escaping closures. Still it makes little sense to compare two closures.
+
+Sample test:
+
+```swift
+let mock = ProtocolWithClosuresMock()
+
+mock.methodThatTakesEscaping(closure: { $0 })
+mock.methodThatTakesEscaping(closure: { $0 * 2 })
+
+// It is possible to check based on .value(...) for escaping closures
+// It requires to register closure comparator to Matcher
+// Nevertheless - we have not found ane good reason to do that yet :)
+Matcher.default.register(((Int) -> Int).self) { (lhs, rhs) -> Bool in
+    return lhs(1) == rhs(1) && lhs(2) == rhs(2)
+}
+
+Verify(mock, 2, .methodThatTakesEscaping(closure: .any))
+Verify(mock, 1, .methodThatTakesEscaping(closure: .value({ $0 })))
+```
+
+### <a name="example5.3"></a> Using completion block based approach
+
+In these cases, we usually need to execute completion block specified as method attribute. For that, we can use `Perform`, to specify closure, that will execute upon method invocation.
+
+Sample test:
+
+```swift
+let mock = ProtocolWithClosuresMock()
+
+let calledCompletionBlock = expectation(description: "Should call completion block")
+
+// Perform allows to execute given closure, with all the method parameters, as soon as it is being called
+Perform(mock, .methodThatTakesCompletionBlock(completion: .any, perform: { (completion) in
+    completion(true,nil)
+}))
+
+mock.methodThatTakesCompletionBlock { (success, error) in
+    calledCompletionBlock.fulfill()
+    XCTAssertTrue(success)
+    XCTAssertNil(error)
+}
+
+waitForExpectations(timeout: 0.5) { (error) in
+    guard let error = error else { return }
+    XCTFail("Error: \(error)")
+}
 ```
