@@ -1368,6 +1368,121 @@ class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
     }
 }
 
+// MARK: - ProtocolWithAssociatedType
+class ProtocolWithAssociatedTypeMock<TypeT>: ProtocolWithAssociatedType, Mock where TypeT: Sequence {
+
+	typealias T = TypeT
+
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    var matcher: Matcher = Matcher.default
+
+    var sequence: T { 
+		get { return __sequence.orFail("ProtocolWithAssociatedTypeMock - value for sequence was not defined") }
+		set { __sequence = newValue }
+	}
+	private var __sequence: (T)?
+
+    func methodWithType(t: T) -> Bool {
+        addInvocation(.imethodWithType__t_t(Parameter<T>.value(t)))
+		let perform = methodPerformValue(.imethodWithType__t_t(Parameter<T>.value(t))) as? (T) -> Void
+		perform?(t)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodWithType__t_t(Parameter<T>.value(t)))
+		let value = givenValue.value as? Bool
+		return value.orFail("stub return value not specified for methodWithType(t: T). Use given")
+    }
+
+    fileprivate enum MethodType {
+        case imethodWithType__t_t(Parameter<T>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+                case (.imethodWithType__t_t(let lhsT), .imethodWithType__t_t(let rhsT)): 
+                    guard Parameter.compare(lhs: lhsT, rhs: rhsT, with: matcher) else { return false } 
+                    return true 
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+                case let .imethodWithType__t_t(p0): return p0.intValue
+            }
+        }
+    }
+
+    struct Given {
+        fileprivate var method: MethodType
+        var returns: Any?
+        var `throws`: Error?
+
+        private init(method: MethodType, returns: Any?, throws: Error?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
+
+        static func methodWithType(t: Parameter<T>, willReturn: Bool) -> Given {
+            return Given(method: .imethodWithType__t_t(t), returns: willReturn, throws: nil)
+        }
+    }
+
+    struct Verify {
+        fileprivate var method: MethodType
+
+        static func methodWithType(t: Parameter<T>) -> Verify {
+            return Verify(method: .imethodWithType__t_t(t))
+        }
+    }
+
+    struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        static func methodWithType(t: Parameter<T>, perform: (T) -> Void) -> Perform {
+            return Perform(method: .imethodWithType__t_t(t), performs: perform)
+        }
+    }
+
+    public func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+        methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+        let method = method.method
+        let invocations = matchingCalls(method)
+        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+
+    private func methodReturnValue(_ method: MethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
+    }
+
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+}
+
 // MARK: - ProtocolWithClosures
 class ProtocolWithClosuresMock: ProtocolWithClosures, Mock {
     private var invocations: [MethodType] = []
@@ -1616,6 +1731,229 @@ class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock {
         static func methodThatTakesArrayOfUsers(array: Parameter<[UserObject]>, perform: ([UserObject]) -> Void) -> Perform {
             return Perform(method: .imethodThatTakesArrayOfUsers__array_array(array), performs: perform)
         }
+    }
+
+    public func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+        methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+        let method = method.method
+        let invocations = matchingCalls(method)
+        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+
+    private func methodReturnValue(_ method: MethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
+    }
+
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+}
+
+// MARK: - ProtocolWithGenericMethods
+class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    var matcher: Matcher = Matcher.default
+
+
+    func methodWithGeneric<T>(lhs: T, rhs: T) -> Bool {
+        addInvocation(.imethodWithGeneric__lhs_lhsrhs_rhs(Parameter<T>.value(lhs).wrapAsGeneric(), Parameter<T>.value(rhs).wrapAsGeneric()))
+		let perform = methodPerformValue(.imethodWithGeneric__lhs_lhsrhs_rhs(Parameter<T>.value(lhs).wrapAsGeneric(), Parameter<T>.value(rhs).wrapAsGeneric())) as? (T, T) -> Void
+		perform?(lhs, rhs)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodWithGeneric__lhs_lhsrhs_rhs(Parameter<T>.value(lhs).wrapAsGeneric(), Parameter<T>.value(rhs).wrapAsGeneric()))
+		let value = givenValue.value as? Bool
+		return value.orFail("stub return value not specified for methodWithGeneric<T>(lhs: T, rhs: T). Use given")
+    }
+
+    func methodWithGenericConstraint<U>(param: [U]) -> U where U: Equatable {
+        addInvocation(.imethodWithGenericConstraint__param_param(Parameter<[U]>.value(param).wrapAsGeneric()))
+		let perform = methodPerformValue(.imethodWithGenericConstraint__param_param(Parameter<[U]>.value(param).wrapAsGeneric())) as? ([U]) -> Void
+		perform?(param)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodWithGenericConstraint__param_param(Parameter<[U]>.value(param).wrapAsGeneric()))
+		let value = givenValue.value as? U
+		return value.orFail("stub return value not specified for methodWithGenericConstraint<U>(param: [U]). Use given")
+    }
+
+    fileprivate enum MethodType {
+        case imethodWithGeneric__lhs_lhsrhs_rhs(Parameter<GenericAttribute>, Parameter<GenericAttribute>)
+        case imethodWithGenericConstraint__param_param(Parameter<GenericAttribute>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+                case (.imethodWithGeneric__lhs_lhsrhs_rhs(let lhsLhs, let lhsRhs), .imethodWithGeneric__lhs_lhsrhs_rhs(let rhsLhs, let rhsRhs)): 
+                    guard Parameter.compare(lhs: lhsLhs, rhs: rhsLhs, with: matcher) else { return false } 
+                    guard Parameter.compare(lhs: lhsRhs, rhs: rhsRhs, with: matcher) else { return false } 
+                    return true 
+                case (.imethodWithGenericConstraint__param_param(let lhsParam), .imethodWithGenericConstraint__param_param(let rhsParam)): 
+                    guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
+                    return true 
+                default: return false
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+                case let .imethodWithGeneric__lhs_lhsrhs_rhs(p0, p1): return p0.intValue + p1.intValue
+                case let .imethodWithGenericConstraint__param_param(p0): return p0.intValue
+            }
+        }
+    }
+
+    struct Given {
+        fileprivate var method: MethodType
+        var returns: Any?
+        var `throws`: Error?
+
+        private init(method: MethodType, returns: Any?, throws: Error?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
+
+        static func methodWithGeneric<T>(lhs: Parameter<T>, rhs: Parameter<T>, willReturn: Bool) -> Given {
+            return Given(method: .imethodWithGeneric__lhs_lhsrhs_rhs(lhs.wrapAsGeneric(), rhs.wrapAsGeneric()), returns: willReturn, throws: nil)
+        }
+        static func methodWithGenericConstraint<U>(param: Parameter<[U]>, willReturn: U) -> Given {
+            return Given(method: .imethodWithGenericConstraint__param_param(param.wrapAsGeneric()), returns: willReturn, throws: nil)
+        }
+    }
+
+    struct Verify {
+        fileprivate var method: MethodType
+
+        static func methodWithGeneric<T>(lhs: Parameter<T>, rhs: Parameter<T>) -> Verify {
+            return Verify(method: .imethodWithGeneric__lhs_lhsrhs_rhs(lhs.wrapAsGeneric(), rhs.wrapAsGeneric()))
+        }
+        static func methodWithGenericConstraint<U>(param: Parameter<[U]>) -> Verify {
+            return Verify(method: .imethodWithGenericConstraint__param_param(param.wrapAsGeneric()))
+        }
+    }
+
+    struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        static func methodWithGeneric<T>(lhs: Parameter<T>, rhs: Parameter<T>, perform: (T, T) -> Void) -> Perform {
+            return Perform(method: .imethodWithGeneric__lhs_lhsrhs_rhs(lhs.wrapAsGeneric(), rhs.wrapAsGeneric()), performs: perform)
+        }
+        static func methodWithGenericConstraint<U>(param: Parameter<[U]>, perform: ([U]) -> Void) -> Perform {
+            return Perform(method: .imethodWithGenericConstraint__param_param(param.wrapAsGeneric()), performs: perform)
+        }
+    }
+
+    public func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+        methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
+        let method = method.method
+        let invocations = matchingCalls(method)
+        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+
+    private func methodReturnValue(_ method: MethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
+    }
+
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+}
+
+// MARK: - ProtocolWithInitializers
+class ProtocolWithInitializersMock: ProtocolWithInitializers, Mock {
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    var matcher: Matcher = Matcher.default
+
+    var param: Int { 
+		get { return __param.orFail("ProtocolWithInitializersMock - value for param was not defined") }
+		set { __param = newValue }
+	}
+	private var __param: (Int)?
+    var other: String { 
+		get { return __other.orFail("ProtocolWithInitializersMock - value for other was not defined") }
+		set { __other = newValue }
+	}
+	private var __other: (String)?
+
+    required init(param: Int, other: String) { }
+
+    required init(param: Int) { }
+
+
+    fileprivate struct MethodType {
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool { return true }
+        func intValue() -> Int { return 0 }
+    }
+
+    struct Given {
+        fileprivate var method: MethodType
+        var returns: Any?
+        var `throws`: Error?
+
+        private init(method: MethodType, returns: Any?, throws: Error?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
+
+    }
+
+    struct Verify {
+        fileprivate var method: MethodType
+
+    }
+
+    struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
     }
 
     public func matchingCalls(_ method: Verify) -> Int {

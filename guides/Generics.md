@@ -18,7 +18,8 @@ Will generate valid mock.
 Please have in mind, that generic methods are problematic in a lot of cases, so you could experience:
 
 1. AutoComplete issues for given, perform and verify: - use full `<MockName>.Given.` for getting autocomplete.
-2. Matching issues - if you are using generic parameters as `.value`, you might need to add additional comparators to `Matcher` instance.
+1. Use full `.any(Value.Type)` instead of `.any`, to avoid ambiguity.
+1. Matching issues - if you are using generic parameters as `.value`, you might need to add additional comparators to `Matcher` instance.
 
 ## Protocols with associated types
 
