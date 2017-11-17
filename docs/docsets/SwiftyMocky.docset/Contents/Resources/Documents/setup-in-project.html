@@ -13,7 +13,7 @@
     <a title="Setup in project  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">SwiftyMocky Docs</a> (69% documented)</p>
+        <p><a href="index.html">SwiftyMocky Docs</a> (71% documented)</p>
         <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -34,16 +34,25 @@
                 <a href="overview.html">Overview</a>
               </li>
               <li class="nav-group-task">
+                <a href="supported-features.html">Supported features</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="installation.html">Installation</a>
               </li>
               <li class="nav-group-task">
                 <a href="setup-in-project.html">Setup in project</a>
               </li>
               <li class="nav-group-task">
-                <a href="comparing-with-matcher.html">Comparing with Matcher</a>
+                <a href="matcher-support-for-not-equatable.html">Matcher support for not Equatable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="generics.html">Generics</a>
               </li>
               <li class="nav-group-task">
                 <a href="examples.html">Examples</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="known-issues.html">Known issues</a>
               </li>
             </ul>
           </li>
@@ -59,22 +68,72 @@
               <li class="nav-group-task">
                 <a href="Classes/Matcher.html">Matcher</a>
               </li>
+              <li class="nav-group-task">
+                <a href="Types.html#/s:11SwiftyMocky16GenericAttributeV">GenericAttribute</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Types.html#/s:11SwiftyMocky20GenericAttributeTypeP">GenericAttributeType</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
             <a href="Global methods.html">Global methods</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="Global methods.html#/s:11SwiftyMocky5Givenyx_11MethodProxyQztAA4MockRzlF">Given(_:_:)</a>
+                <a href="Global methods.html#/s:11SwiftyMocky5Givenyx_ABQztAA4MockRzlF">Given(_:_:)</a>
               </li>
               <li class="nav-group-task">
-                <a href="Global methods.html#/s:11SwiftyMocky7Performyx_0C5ProxyQztAA4MockRzlF">Perform(_:_:)</a>
+                <a href="Global methods.html#/s:11SwiftyMocky5Givenyxm_06StaticC0QztAA0D4MockRzlF">Given(_:_:)</a>
               </li>
               <li class="nav-group-task">
-                <a href="Global methods.html#/s:11SwiftyMocky6Verifyyx_17VerificationProxyQzs12StaticStringV4fileSu4linetAA4MockRzlF">Verify(_:_:file:line:)</a>
+                <a href="Global methods.html#/s:11SwiftyMocky7Performyx_ABQztAA4MockRzlF">Perform(_:_:)</a>
               </li>
               <li class="nav-group-task">
-                <a href="Global methods.html#/s:11SwiftyMocky6Verifyyx_Su17VerificationProxyQzs12StaticStringV4fileSu4linetAA4MockRzlF">Verify(_:_:_:file:line:)</a>
+                <a href="Global methods.html#/s:11SwiftyMocky7Performyxm_06StaticC0QztAA0D4MockRzlF">Perform(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global methods.html#/s:11SwiftyMocky6Verifyyx_ABQzs12StaticStringV4fileSu4linetAA4MockRzlF">Verify(_:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global methods.html#/s:11SwiftyMocky6Verifyyxm_06StaticC0Qzs0D6StringV4fileSu4linetAA0D4MockRzlF">Verify(_:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global methods.html#/s:11SwiftyMocky6Verifyyx_SuABQzs12StaticStringV4fileSu4linetAA4MockRzlF">Verify(_:_:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global methods.html#/s:11SwiftyMocky6Verifyyxm_Su06StaticC0Qzs0D6StringV4fileSu4linetAA0D4MockRzlF">Verify(_:_:_:file:line:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other Guides.html">Other Guides</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="contents.html">Contents</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other Extensions.html">Other Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Extensions/Optional.html">Optional</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other Functions.html">Other Functions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Other Functions.html#/s:11SwiftyMocky7Failures5NeverOSSF">Failure(_:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other Protocols.html">Other Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Other Protocols.html#/s:11SwiftyMocky10StaticMockP">StaticMock</a>
               </li>
             </ul>
           </li>
@@ -123,13 +182,13 @@
 <li><strong>manually</strong>: by triggering:</li>
 </ol>
 
-<p><code>Pods/Sourcery/bin/sourcery --config mocky.yml</code></p>
+<p><code>Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config mocky.yml</code></p>
 
 <ol>
 <li><strong>in <code>watch</code> mode</strong>: changed methods will be reflected in mocks, after generation of mock, by triggering:</li>
 </ol>
 
-<p><code>Pods/Sourcery/bin/sourcery --config mocky.yml --watch</code></p>
+<p><code>Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config mocky.yml --watch</code></p>
 
 <p><strong>Don&rsquo;t forget</strong> to add <code>Mock.generated.swift</code> to your test target :)</p>
 
@@ -139,11 +198,11 @@ Most convenient way is to put generation in some kind of script - like Rakefile 
 Just create file named Rakefile - generation is triggered by <code>rake mock</code></p>
 <pre class="highlight ruby"><code><span class="c1"># Rakefile</span>
 <span class="n">task</span> <span class="ss">:mock</span> <span class="k">do</span>
-  <span class="n">sh</span> <span class="s2">"Pods/Sourcery/bin/sourcery --config mocky.yml"</span>
+  <span class="n">sh</span> <span class="s2">"Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config mocky.yml"</span>
 <span class="k">end</span>
 
 <span class="n">task</span> <span class="ss">:mock_watcher</span> <span class="k">do</span>
-  <span class="n">sh</span> <span class="s2">"Pods/Sourcery/bin/sourcery --config mocky.yml --watch"</span>
+  <span class="n">sh</span> <span class="s2">"Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config mocky.yml --watch"</span>
 <span class="k">end</span>
 </code></pre>
 </blockquote>

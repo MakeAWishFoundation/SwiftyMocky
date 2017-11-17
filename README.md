@@ -1,9 +1,10 @@
-[![Travis CI](https://travis-ci.org/MakeAWishFoundation/Swifty.svg?branch=master)](https://travis-ci.org/MakeAWishFoundation/SwiftyMocky) ![platforms](https://img.shields.io/badge/platforms-iOS%20%7C%20-333333.svg) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
-# SwiftyMocky
+[![Build Status](https://travis-ci.org/MakeAWishFoundation/SwiftyMocky.svg?branch=master)](https://travis-ci.org/MakeAWishFoundation/SwiftyMocky) ![platforms](https://img.shields.io/badge/platforms-iOS%20%7C%20-333333.svg) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+
+# ![logo](icon.png) SwiftyMocky
 
 ## Overview
 
-**SwiftyMocky** is Lightweight, strongly typed framework for Mockito-like unit testing experience. As Swift doesn't support reflections well enough to allow building mocks in runtime, library depends on Sourcery, that scans your source code and generates Swift code for you.
+**SwiftyMocky** is Lightweight, strongly typed framework for Mockito-like unit testing experience. As Swift doesn't support reflections well enough to allow building mocks in runtime, library depends on [Sourcery](https://github.com/krzysztofzablocki/Sourcery), that scans your source code and generates Swift code for you.
 
 The idea of **SwiftyMokcy** is to mock Swift protocols. The main features are:
 
@@ -30,7 +31,7 @@ All mocks has **given** method (accessible both as instance method or global fun
 
 ![Generating mock][example-given]
 
-All protocol methods are nicely put into **MethodProxy**, with matching signature. That allows to use auto-complete (just type `.`) to see all mocked protocol methods, and specify return value for them.
+All protocol methods are nicely put into **Given**, with matching signature. That allows to use auto-complete (just type `.`) to see all mocked protocol methods, and specify return value for them.
 
 All method attributes are wrapped as **Parameter** enum, allowing to choose between `any` and `value`, giving great flexibility to mock behaviour. Please consider following:
 
@@ -49,7 +50,7 @@ All mocks has **verify** method (accessible both as instance method or global fu
 
 ![Generating mock][example-verify]
 
-All protocol methods are nicely put into **VerificationProxy**, with matching signature. That allows to use auto-complete (just type `.`) to see all mocked protocol methods, and specify which one we want to verify.
+All protocol methods are nicely put into **Verify**, with matching signature. That allows to use auto-complete (just type `.`) to see all mocked protocol methods, and specify which one we want to verify.
 
 All method attributes are wrapped as **Parameter** enum, allowing to choose between `any` and `value`, giving great flexibility to tests. Please consider following:
 
@@ -68,7 +69,11 @@ Verify(mockStorage, 3, .storeUser(name: .any, surname: .any))
 Verify(mockStorage, 2, .storeUser(name: .value("Johny"), surname: .any))
 ```
 
-### 4. Example of usage
+### 4. All supported features
+
+For list all supported features, check documentation [here](https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/92717539/docs/supported.html) or [guides](/guides/Supported.md)
+
+### 5. Example of usage
 
 For more examples, check out our example project.
 
@@ -76,9 +81,11 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 To trigger mocks generation, run `rake mock` from root directory. For watcher mode, when mocks are generated every time you change your file projects, use `rake mock_watcher` instead.
 
-### 5. Documentation
+# Documentation
 
-Full documentation is available [here](https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/1f4e3c29/docs/index.html), as well as through *docs* directory.
+Full documentation is available [here](https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/92717539/docs/index.html), as well as through *docs* directory.
+
+Guides - [Table of contents](guides/Contents.md)
 
 # How to start using SwiftyMocky
 
@@ -123,6 +130,7 @@ args:
 
   `Pods/Sourcery/bin/sourcery --config mocky.yml --watch`
 
+> **!!! In case of incompatibile swift module versions error** - check Known issues section in guides or docs
 
 **Don't forget** to add `Mock.generated.swift` to your test target :)
 
@@ -165,7 +173,7 @@ Every protocol in source directories, having this annotation, will be added to `
 
 ## Roadmap
 
-- [x] stubbibg protocols in elegant way
+- [x] stubbing protocols in elegant way
 - [x] template for generating mocks
 - [x] example project
 - [x] stubbing protocols with variables
@@ -173,7 +181,7 @@ Every protocol in source directories, having this annotation, will be added to `
 - [ ] cover 95% of framework codebase with unit tests
 - [ ] add unit tests for template
 - [ ] support for tvOS, Linux and MacOS
-- [ ] Carthage support
+- [x] Carthage support
 
 ## Installation
 
@@ -185,16 +193,16 @@ pod "SwiftyMocky"
 
 Then add **mocky.yml** and **Rakefile** (or build script phase) to your project root directory, as described above.
 
-For [Carthage](https://github.com/Carthage/Carthage) install instructions, see full [documentation](https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/1f4e3c29/docs/installation.html).
+For [Carthage](https://github.com/Carthage/Carthage) install instructions, see full [documentation](https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/92717539/docs/index.html).
 
 ## Current version
 
 Master branch is still in beta, breaking changes are possible.
 
-## Author
+## Authors
 
-Przemysław Wośko, wosko.przemyslaw@gmail.com
-Andrzej Michnia, amichnia@gmail.com
+- Przemysław Wośko, wosko.przemyslaw@gmail.com
+- Andrzej Michnia, amichnia@gmail.com
 
 ## License
 

@@ -36,10 +36,10 @@ args:
 
 1. **manually**: by triggering:
 
-  `Pods/Sourcery/bin/sourcery --config mocky.yml`
+  `Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config mocky.yml`
 1. **in `watch` mode**: changed methods will be reflected in mocks, after generation of mock, by triggering:
 
-  `Pods/Sourcery/bin/sourcery --config mocky.yml --watch`
+  `Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config mocky.yml --watch`
 
 
 **Don't forget** to add `Mock.generated.swift` to your test target :)
@@ -50,11 +50,11 @@ args:
 > ```ruby
 > # Rakefile
 > task :mock do
->   sh "Pods/Sourcery/bin/sourcery --config mocky.yml"
+>   sh "Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config mocky.yml"
 > end
 >
 > task :mock_watcher do
->   sh "Pods/Sourcery/bin/sourcery --config mocky.yml --watch"
+>   sh "Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config mocky.yml --watch"
 > end
 > ```
 
