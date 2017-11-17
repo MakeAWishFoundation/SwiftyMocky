@@ -79,42 +79,42 @@
     },
     {
       "file": "/Users/andrzejmichnia/Projekty/Pods/SwiftyMocky/Sources/Classes/Parameter.swift",
-      "line": 101,
+      "line": 118,
       "symbol": "Parameter.compare(lhs:rhs:with:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrzejmichnia/Projekty/Pods/SwiftyMocky/Sources/Classes/Parameter.swift",
-      "line": 113,
+      "line": 130,
       "symbol": "Parameter.compare(lhs:rhs:with:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrzejmichnia/Projekty/Pods/SwiftyMocky/Sources/Classes/Parameter.swift",
-      "line": 124,
+      "line": 141,
       "symbol": "Parameter.compare(lhs:rhs:with:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrzejmichnia/Projekty/Pods/SwiftyMocky/Sources/Classes/Parameter.swift",
-      "line": 156,
+      "line": 172,
       "symbol": "Parameter.wrapAsGeneric()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrzejmichnia/Projekty/Pods/SwiftyMocky/Sources/Classes/Parameter.swift",
-      "line": 172,
+      "line": 205,
       "symbol": "Parameter.compare(lhs:rhs:with:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrzejmichnia/Projekty/Pods/SwiftyMocky/Sources/Classes/Parameter.swift",
-      "line": 198,
+      "line": 231,
       "symbol": "Parameter.compare(lhs:rhs:with:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
