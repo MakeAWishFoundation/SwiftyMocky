@@ -182,13 +182,13 @@
 <li><strong>manually</strong>: by triggering:</li>
 </ol>
 
-<p><code>Pods/Sourcery/bin/sourcery --config mocky.yml</code></p>
+<p><code>Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config mocky.yml</code></p>
 
 <ol>
 <li><strong>in <code>watch</code> mode</strong>: changed methods will be reflected in mocks, after generation of mock, by triggering:</li>
 </ol>
 
-<p><code>Pods/Sourcery/bin/sourcery --config mocky.yml --watch</code></p>
+<p><code>Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config mocky.yml --watch</code></p>
 
 <p><strong>Don&rsquo;t forget</strong> to add <code>Mock.generated.swift</code> to your test target :)</p>
 
@@ -198,11 +198,11 @@ Most convenient way is to put generation in some kind of script - like Rakefile 
 Just create file named Rakefile - generation is triggered by <code>rake mock</code></p>
 <pre class="highlight ruby"><code><span class="c1"># Rakefile</span>
 <span class="n">task</span> <span class="ss">:mock</span> <span class="k">do</span>
-  <span class="n">sh</span> <span class="s2">"Pods/Sourcery/bin/sourcery --config mocky.yml"</span>
+  <span class="n">sh</span> <span class="s2">"Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config mocky.yml"</span>
 <span class="k">end</span>
 
 <span class="n">task</span> <span class="ss">:mock_watcher</span> <span class="k">do</span>
-  <span class="n">sh</span> <span class="s2">"Pods/Sourcery/bin/sourcery --config mocky.yml --watch"</span>
+  <span class="n">sh</span> <span class="s2">"Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config mocky.yml --watch"</span>
 <span class="k">end</span>
 </code></pre>
 </blockquote>
