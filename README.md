@@ -83,7 +83,7 @@ To trigger mocks generation, run `rake mock` from root directory. For watcher mo
 
 # Documentation
 
-Full documentation is available [here](https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/92717539/docs/index.html), as well as through *docs* directory.
+Full documentation is available [here](https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/df41d95b/docs/index.html), as well as through *docs* directory.
 
 Guides - [Table of contents](guides/Contents.md)
 

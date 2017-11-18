@@ -24,6 +24,7 @@ custom_categories:
   - name: Types
     children:
       - Mock
+      - StaticMock
       - Parameter
       - Matcher
       - GenericAttribute
