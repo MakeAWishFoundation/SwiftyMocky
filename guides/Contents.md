@@ -3,6 +3,7 @@
 ## Table of Contents
 
 1. [Overview](./Overview.md)
+1. [Changelog](./CHANGELOG.md)
 1. [Supported Features](./Supported%20features.md)
 1. [Installation](./Installation.md)
 1. [Setup in project](./Setup%20in%20project.md)

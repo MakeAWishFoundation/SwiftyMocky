@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Installation  Reference</title>
+    <title>Add XCode generate action  Reference</title>
     <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,7 +10,7 @@
     
   </head>
   <body>
-    <a title="Installation  Reference"></a>
+    <a title="Add XCode generate action  Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="index.html">SwiftyMocky Docs</a> (71% documented)</p>
@@ -21,7 +21,7 @@
       <p id="breadcrumbs">
         <a href="index.html">SwiftyMocky Reference</a>
         <img id="carat" src="img/carat.png" />
-        Installation  Reference
+        Add XCode generate action  Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -144,69 +144,42 @@
         <section>
           <section class="section">
             
-            <h1 id='installation' class='heading'>Installation</h1>
+            <h1 id='adding-generate-action-to-xcode' class='heading'>Adding generate action to XCode</h1>
 
-<p>SwiftyMocky is available through:</p>
-<h2 id='1-a-href-http-cocoapods-org-cocoapods-a' class='heading'>1. <a href="http://cocoapods.org">CocoaPods</a>.</h2>
+<p>Following these few simple steps, you can integrate mock generation with XCode, triggering it by key shortcut.</p>
+<h2 id='1-prepare-mock-shell-script' class='heading'>1. Prepare mock shell script</h2>
 
-<p>To install it, simply add the following line to your Podfile:</p>
-<pre class="highlight ruby"><code><span class="n">pod</span> <span class="s2">"SwiftyMocky"</span>
+<p>Create <code>mock.sh</code> file in project root directory, that will execute mock generation. We are wrapping all mock tasks in Rakefile, so we can just trigger <code>rake mock</code>.</p>
+
+<p>// mock.sh</p>
+<pre class="highlight shell"><code><span class="c">#!/bin/sh</span>
+
+rake mock
 </code></pre>
 
-<p>Then execute <code>pod install</code></p>
-<h2 id='2-a-href-https-github-com-carthage-carthage-carthage-a' class='heading'>2. <a href="https://github.com/Carthage/Carthage">Carthage</a>.</h2>
-
-<p>To install, add following to you Cartfile:</p>
-<pre class="highlight ruby"><code><span class="n">github</span> <span class="s2">"MakeAWishFoundation/SwiftyMocky"</span>
+<p>Make it executable, by executing in terminal:</p>
+<pre class="highlight plaintext"><code>chmod +x mock.sh
 </code></pre>
-
-<p>Then execute <code>carthage update</code></p>
-
-<p>For Carthage, few additional steps are required:</p>
+<h2 id='2-add-xcode-behavior-with-key-bindings' class='heading'>2. Add XCode behavior with key bindings</h2>
 
 <ol>
-<li>Obtain <a href="https://github.com/krzysztofzablocki/Sourcery">Sourcery</a> - used to generate mocks (specify valid path in generate mock)</li>
-<li>Change templates path to <code>Carthage/Build/iOS/SwiftyMocky.framework/</code></li>
-<li>In your test framework <strong>add</strong> to:
-
-<ul>
-<li><strong>Other Swift Flags</strong>: <code>-DMocky</code></li>
-<li><strong>Framework Search Paths</strong>: <code>$(SRCROOT)/Carthage/Build/iOS</code></li>
-</ul></li>
+<li>Open settings (<code>⌘ ,</code>)</li>
+<li>Navigate to <code>Behaviors</code> tab</li>
+<li>Tap little <code>+</code> on bottom of the behaviors list</li>
+<li>Name your behavior (like <q>Generate Mock</q>)</li>
+<li>Press <code>⌘</code> (cmd) icon on the right part of added behavior entry.</li>
+<li>Record shortcut</li>
+<li>Select <code>Run</code> checkbox</li>
+<li>Choose script from disk (If it is grayed out - it means it is not enabled to be executed. Look to step 1)</li>
+<li>[optional] change sound notification, which will play when mock generation is finished</li>
 </ol>
-<h2 id='3-manually' class='heading'>3. Manually.</h2>
 
-<p>Include Sources in your project, and setup <a href="https://github.com/krzysztofzablocki/Sourcery">Sourcery</a></p>
+<p><img src="../guides/assets/guide-add-generate.gif" alt="Adding generate behavior" title="Adding generation behavior"></p>
+<h2 id='3-useage' class='heading'>3. Useage</h2>
 
-<blockquote>
-<p><strong>Important!!!</strong></p>
+<p>Execute recorded shortcut, and watch stuff being done :)</p>
 
-<p>Main difference between how SwiftyMocky is installed, is location of sourcery binary and templates, used to generate Mocks. Whatever you choose, make sure that correct paths are setup for mocky.yml, and sourcery call.</p>
-</blockquote>
-<h2 id='support-for-other-swift-versions' class='heading'>Support for other swift versions</h2>
-
-<p>Download/build Sourcery binary manually, or use prebuilt sourcery versions from: <code>https://github.com/MakeAWishFoundation/SwiftyMocky.wiki.git</code></p>
-
-<p>Currentyly we support:</p>
-
-<ul>
-<li>3.1</li>
-<li>4.0</li>
-<li>4.0.2</li>
-</ul>
-
-<p><strong>Usage from root project dir:</strong></p>
-<pre class="highlight shell"><code>sh get_sourcery.sh 4.0.2
-</code></pre>
-
-<p><strong>get_sourcery.sh</strong></p>
-<pre class="highlight shell"><code><span class="o">[[</span> <span class="nv">$# </span>&gt; 0 <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nv">VERSION</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> <span class="o">||</span> <span class="nv">VERSION</span><span class="o">=</span><span class="s2">"4.0.2"</span>
-<span class="o">[[</span> <span class="nv">$# </span>&gt; 1 <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nv">OUTPUT</span><span class="o">=</span><span class="s2">"</span><span class="nv">$2</span><span class="s2">"</span> <span class="o">||</span> <span class="nv">OUTPUT</span><span class="o">=</span><span class="s2">"./Pods/Sourcery/bin"</span>
-
-<span class="nb">echo</span> <span class="s2">"CLONE SOURCERY FOR </span><span class="nv">$VERSION</span><span class="s2"> INTO </span><span class="nv">$OUTPUT</span><span class="s2">"</span>
-rm -r -f <span class="s2">"</span><span class="nv">$OUTPUT</span><span class="s2">"</span>
-git clone -b <span class="s2">"swift/</span><span class="nv">$VERSION</span><span class="s2">"</span> --single-branch --depth 1 https://github.com/MakeAWishFoundation/SwiftyMocky.wiki.git <span class="s2">"</span><span class="nv">$OUTPUT</span><span class="s2">"</span>
-</code></pre>
+<!-- Assets -->
 
           </section>
         </section>

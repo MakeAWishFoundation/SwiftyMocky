@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Other Protocols  Reference</title>
+    <title>CHANGELOG  Reference</title>
     <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,7 +10,7 @@
     
   </head>
   <body>
-    <a title="Other Protocols  Reference"></a>
+    <a title="CHANGELOG  Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="index.html">SwiftyMocky Docs</a> (71% documented)</p>
@@ -21,7 +21,7 @@
       <p id="breadcrumbs">
         <a href="index.html">SwiftyMocky Reference</a>
         <img id="carat" src="img/carat.png" />
-        Other Protocols  Reference
+        CHANGELOG  Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -52,6 +52,9 @@
                 <a href="examples.html">Examples</a>
               </li>
               <li class="nav-group-task">
+                <a href="add-xcode-generate-action.html">Add XCode generate action</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="known-issues.html">Known issues</a>
               </li>
             </ul>
@@ -61,6 +64,9 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Protocols/Mock.html">Mock</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Types.html#/s:11SwiftyMocky10StaticMockP">StaticMock</a>
               </li>
               <li class="nav-group-task">
                 <a href="Enums/Parameter.html">Parameter</a>
@@ -109,6 +115,9 @@
             <a href="Other Guides.html">Other Guides</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a href="changelog.html">CHANGELOG</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="contents.html">Contents</a>
               </li>
             </ul>
@@ -129,56 +138,69 @@
               </li>
             </ul>
           </li>
-          <li class="nav-group-name">
-            <a href="Other Protocols.html">Other Protocols</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="Other Protocols.html#/s:11SwiftyMocky10StaticMockP">StaticMock</a>
-              </li>
-            </ul>
-          </li>
         </ul>
       </nav>
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>Other Protocols</h1>
-            <p>The following protocols are available globally.</p>
+            
+            <h1 id='changelog' class='heading'>Changelog</h1>
 
-          </section>
-          <section class="section task-group-section">
-            <div class="task-group">
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:11SwiftyMocky10StaticMockP"></a>
-                    <a name="//apple_ref/swift/Protocol/StaticMock" class="dashAnchor"></a>
-                    <a class="token" href="#/s:11SwiftyMocky10StaticMockP">StaticMock</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Every mock, that stubs static methods, should adopt <strong>StaticMock</strong> protocol.
-It defines base StaticMock structure and features.</p>
+<p>All changes to SwiftyMocky project will be documented in this file.</p>
 
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">StaticMock</span><span class="p">:</span> <span class="kd">class</span></code></pre>
+<hr>
+<h2 id='strong-1-0-0-strong-2017' class='heading'><strong>1.0.0</strong> / 2017</h2>
+<h4 id='added' class='heading'>Added:</h4>
 
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
+<ul>
+<li>Support for generics</li>
+<li>Support for static members</li>
+<li>Different Swift versions support</li>
+<li>Matcher convenience registrations</li>
+<li>More extensive documentation</li>
+</ul>
+<h4 id='updated' class='heading'>Updated:</h4>
+
+<ul>
+<li>Simplified Mock template</li>
+<li>Generated code simplified and beautified</li>
+<li>Renamed &hellip;Proxy to <code>Given</code>,<code>Verify</code>,<code>Perform</code></li>
+<li>Reduced generation time</li>
+</ul>
+<h4 id='fixed' class='heading'>Fixed:</h4>
+
+<ul>
+<li>Comparing parameters</li>
+<li>Matcher comparing issues</li>
+</ul>
+
+<hr>
+<h2 id='strong-0-9-0-strong-2017' class='heading'><strong>0.9.0</strong> / 2017</h2>
+<h4 id='added' class='heading'>Added:</h4>
+
+<ul>
+<li>basic generation flow</li>
+<li>basic documentation</li>
+<li>readme</li>
+<li>template</li>
+<li>basic swift 3.1 support</li>
+</ul>
+<h4 id='updated' class='heading'>Updated:</h4>
+
+<ul>
+<li>Wrapping methods into <code>Proxy</code></li>
+<li>Example tests</li>
+</ul>
+
+<hr>
+<h2 id='0-1-0-0-4-0-2017' class='heading'>0.1.0 - 0.4.0 / 2017</h2>
+
+<ul>
+<li>Initial commit</li>
+<li>Foundation of <strong>SwiftyMocky</strong> project</li>
+<li>Tests and CI setup</li>
+</ul>
+
           </section>
         </section>
         <section id="footer">
