@@ -2,6 +2,8 @@
 
 # ![logo](icon.png) SwiftyMocky
 
+Join our community on Slack! -> [invitation link here](https://join.slack.com/t/swiftymocky/shared_invite/enQtMjc0NzI5ODU3NTcxLTdmN2Q0NzQ3OWFmYTZlZmZkYTI3M2VmNzAzZDIzNWUwYjVhOTlmYWFiYzc2OGZkMzBkN2RkMmQ3NzQyMmIyNDU)
+
 ## Overview
 
 **SwiftyMocky** is Lightweight, strongly typed framework for Mockito-like unit testing experience. As Swift doesn't support reflections well enough to allow building mocks in runtime, library depends on [Sourcery](https://github.com/krzysztofzablocki/Sourcery), that scans your source code and generates Swift code for you.
