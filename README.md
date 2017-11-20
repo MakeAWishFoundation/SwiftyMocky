@@ -1,6 +1,8 @@
 [![Build Status](https://travis-ci.org/MakeAWishFoundation/SwiftyMocky.svg?branch=master)](https://travis-ci.org/MakeAWishFoundation/SwiftyMocky) ![platforms](https://img.shields.io/badge/platforms-iOS%20%7C%20-333333.svg) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
-# ![logo](icon.png) SwiftyMocky
+# ![logo](https://raw.githubusercontent.com/MakeAWishFoundation/SwiftyMocky/1.0.0/icon.png) SwiftyMocky
+
+Join our community on Slack! -> [invitation link here](https://join.slack.com/t/swiftymocky/shared_invite/enQtMjc0NzI5ODU3NTcxLTdmN2Q0NzQ3OWFmYTZlZmZkYTI3M2VmNzAzZDIzNWUwYjVhOTlmYWFiYzc2OGZkMzBkN2RkMmQ3NzQyMmIyNDU)
 
 ## Overview
 
@@ -71,7 +73,7 @@ Verify(mockStorage, 2, .storeUser(name: .value("Johny"), surname: .any))
 
 ### 4. All supported features
 
-For list all supported features, check documentation [here](https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/92717539/docs/supported.html) or [guides](/guides/Supported.md)
+For list all supported features, check documentation [here](https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/1.0.1/docs/supported-features.html) or [guides](./guides/Supported%20features.md)
 
 ### 5. Example of usage
 
@@ -83,7 +85,7 @@ To trigger mocks generation, run `rake mock` from root directory. For watcher mo
 
 # Documentation
 
-Full documentation is available [here](https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/df41d95b/docs/index.html), as well as through *docs* directory.
+Full documentation is available [here](https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/1.0.1/docs/index.html), as well as through *docs* directory.
 
 Guides - [Table of contents](guides/Contents.md)
 
@@ -195,7 +197,7 @@ pod "SwiftyMocky"
 
 Then add **mocky.yml** and **Rakefile** (or build script phase) to your project root directory, as described above.
 
-For [Carthage](https://github.com/Carthage/Carthage) install instructions, see full [documentation](https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/92717539/docs/index.html).
+For [Carthage](https://github.com/Carthage/Carthage) install instructions, see full [documentation](https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/1.0.1/docs/installation.html).
 
 ## Current version
 
@@ -212,6 +214,6 @@ SwiftyMocky is available under the MIT license. See the LICENSE file for more in
 
 <!-- Assets -->
 
-[example-watcher]: ./guides/assets/example-watcher.gif "Example - generation"
-[example-given]: ./guides/assets/example-given.gif "Example - given"
-[example-verify]: ./guides/assets/example-verify.gif "Example - verify"
+[example-watcher]: https://raw.githubusercontent.com/MakeAWishFoundation/SwiftyMocky/1.0.0/guides/assets/example-watcher.gif "Example - generation"
+[example-given]: https://raw.githubusercontent.com/MakeAWishFoundation/SwiftyMocky/1.0.0/guides/assets/example-given.gif "Example - given"
+[example-verify]: https://raw.githubusercontent.com/MakeAWishFoundation/SwiftyMocky/1.0.0/guides/assets/example-verify.gif "Example - verify"
