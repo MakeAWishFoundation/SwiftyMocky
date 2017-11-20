@@ -4,6 +4,15 @@ All changes to SwiftyMocky project will be documented in this file.
 
 -----
 
+## __1.0.1__ / 2017
+
+#### Fixed:
+* Missing Parameter case for ValueType both Sequence and Equatable, causing compile error under Swift 3.x in XCode 9
+* Images not showing in expanded description on cocoapods.org
+* Documentation link based on tag, not commit
+
+-----
+
 ## __1.0.0__ / 2017
 
 #### Added:
