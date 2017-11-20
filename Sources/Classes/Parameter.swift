@@ -311,4 +311,15 @@ public extension Parameter where ValueType: Equatable {
         }
     }
 }
+
+public extension Parameter where ValueType: Equatable, ValueType: Sequence {
+    public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
+        switch (lhs, rhs) {
+        case (._, _): return true
+        case (_, ._): return true
+        case (.value(let left), .value(let right)): return left == right
+        default: return false
+        }
+    }
+}
 #endif
