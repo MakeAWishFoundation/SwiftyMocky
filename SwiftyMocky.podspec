@@ -8,14 +8,14 @@
 
 Pod::Spec.new do |s|
   s.name             = 'SwiftyMocky'
-  s.version          = '1.0.0'
+  s.version          = '1.0.1'
   s.summary          = 'Unit testing library for Swift'
   s.description      = <<-DESC
 Library that uses metaprogramming technique to generate mocks based on sources, that makes testing for Swift Mockito-like.
                        DESC
 
   s.homepage         = 'https://github.com/MakeAWishFoundation/SwiftyMocky'
-  s.screenshots      = 'https://raw.githubusercontent.com/MakeAWishFoundation/SwiftyMocky/develop/icon.png'
+  s.screenshots      = 'https://raw.githubusercontent.com/MakeAWishFoundation/SwiftyMocky/1.0.0/icon.png'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Przemysław Wośko' => 'przemyslaw.wosko@intive.com', 'Andrzej Michnia' => 'amichnia@gmail.com' }
   s.source           = { :git => 'https://github.com/MakeAWishFoundation/SwiftyMocky.git', :tag => s.version.to_s }
