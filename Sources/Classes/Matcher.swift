@@ -42,6 +42,7 @@ public class Matcher {
         matchers.append((mirror, match as Any))
     }
 
+#if swift(>=3.2)
     /// Register sequence comparator, based on elements comparing.
     ///
     /// - Parameters:
@@ -62,6 +63,28 @@ public class Matcher {
             return true
         }
     }
+#else
+    /// Register sequence comparator, based on elements comparing.
+    ///
+    /// - Parameters:
+    ///   - valueType: Sequence type
+    ///   - match: Element comparator closure
+    public func register<T>(_ valueType: T.Type, match: @escaping (T.Iterator.Element,T.Iterator.Element) -> Bool) where T: Sequence {
+        let mirror = Mirror(reflecting: T.Iterator.Element.self)
+        matchers.append((mirror, match as Any))
+        register(T.self) { (l: T, r: T) -> Bool in
+            let lhs = l.map { $0 }
+            let rhs = r.map { $0 }
+            guard lhs.count == rhs.count else { return false }
+
+            for i in 0..<lhs.count {
+                guard match(lhs[i],rhs[i]) else { return false }
+            }
+
+            return true
+        }
+    }
+#endif
 
     /// Register default comparatot for Equatable types. Required for generic mocks to work.
     ///
@@ -89,6 +112,7 @@ public class Matcher {
         return comparator as? (T,T) -> Bool
     }
 
+#if swift(>=3.2)
     /// Default Sequence comparator, compares count, and then element by element.
     ///
     /// - Parameter valueType: Sequence type
@@ -117,6 +141,36 @@ public class Matcher {
             return nil
         }
     }
+#else
+    /// Default Sequence comparator, compares count, and then element by element.
+    ///
+    /// - Parameter valueType: Sequence type
+    /// - Returns: comparator closure
+    public func comparator<T>(for valueType: T.Type) -> ((T,T) -> Bool)? where T: Sequence {
+        let mirror = Mirror(reflecting: valueType)
+        let comparator = matchers.reversed().first { (current, _) -> Bool in
+            return current.subjectType == mirror.subjectType
+        }?.1
+
+        if let compare = comparator as? (T,T) -> Bool {
+            return compare
+        } else if let compare = self.comparator(for: T.Iterator.Element.self) {
+            return { (l: T, r: T) -> Bool in
+                let lhs = l.map { $0 }
+                let rhs = r.map { $0 }
+                guard lhs.count == rhs.count else { return false }
+
+                for i in 0..<lhs.count {
+                    guard compare(lhs[i],rhs[i]) else { return false }
+                }
+
+                return true
+            }
+        } else {
+            return nil
+        }
+    }
+#endif
 
     /// Default Equatable comparator, compares if elements are equal.
     ///
