@@ -31,9 +31,9 @@ rm -r -f "$OUTPUT"
 git clone -b "swift/$VERSION" --single-branch --depth 1 https://github.com/MakeAWishFoundation/SwiftyMocky.wiki.git "$OUTPUT"
 ```
 
-## 2. Matcher [FATAL] error for simple Equatable / Sequence types
+## 2. Matcher [FATAL] error for Equatable / Sequence types
 
-This happens for generic mocks - seems that wrapping generic methods causes breaking default resolving of generic contraints, and you might end up seeing something like `[FATAL] No registered matcher comparator for Int` or other types, that should be rather obvious.
+This happens usually for generic mocks - seems that wrapping generic methods causes breaking default resolving of generic contraints, and you might end up seeing something like `[FATAL] No registered matcher comparator for <ValueType>` even when ValueType conforms to Equatable, or is a Collection of objects conforming to Equatable.
 
 As for now - the only valid solution is to add comparators for these types. There are convenience methods on matcher, that allows simple adding of comparators for types conforming to Equatable or Sequence.
 
