@@ -3,9 +3,9 @@ PODS:
     - RxSwift (~> 4.0)
   - RxSwift (4.0.0)
   - Sourcery (0.9.0)
-  - SwiftyMocky (0.9.0):
-    - SwiftyMocky/Core (= 0.9.0)
-  - SwiftyMocky/Core (0.9.0):
+  - SwiftyMocky (1.0.1):
+    - SwiftyMocky/Core (= 1.0.1)
+  - SwiftyMocky/Core (1.0.1):
     - Sourcery
 
 DEPENDENCIES:
@@ -21,7 +21,7 @@ SPEC CHECKSUMS:
   RxBlocking: 923c2c8106d80d7c2d6b276afd66ce3b10824836
   RxSwift: fd680d75283beb5e2559486f3c0ff852f0d35334
   Sourcery: e3829460a1fa0bcd3b689e6087a89cc063cd2289
-  SwiftyMocky: 5c65fdb6939253b8f8a6acd8e4892e91a26396d9
+  SwiftyMocky: 35d1e7ddc247699f2276becc3855ab25dd6bb27c
 
 PODFILE CHECKSUM: a2473869e45fc6c9d085871be68447dee1e0afe5
 
