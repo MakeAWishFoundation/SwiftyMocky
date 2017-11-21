@@ -15,6 +15,7 @@ public class Matcher {
 
     /// Create new clean matcher instance.
     public init() {
+        registerBasicTypes()
         register(GenericAttribute.self) { [unowned self] (a, b) -> Bool in
             return a.compare(a.value,b.value,self)
         }
@@ -25,6 +26,63 @@ public class Matcher {
     /// - Parameter matcher: other matcher instance
     public init(matcher: Matcher) {
         self.matchers = matcher.matchers
+    }
+
+    /// Registers array comparators for all basic types, their optional versions
+    /// and arrays containing elements of that type. For all of them, no manual
+    /// registering of comparator is needed.
+    ///
+    /// We defined basic types as:
+    ///
+    /// - Bool
+    /// - String
+    /// - Float
+    /// - Double
+    /// - Character
+    /// - Int
+    /// - Int8
+    /// - Int16
+    /// - Int32
+    /// - Int64
+    /// - UInt
+    /// - UInt8
+    /// - UInt16
+    /// - UInt32
+    /// - UInt64
+    ///
+    /// Called automatically in every Matcher init.
+    ///
+    internal func registerBasicTypes() {
+        register([Bool].self) { $0 == $1 }
+        register([String].self) { $0 == $1 }
+        register([Float].self) { $0 == $1 }
+        register([Double].self) { $0 == $1 }
+        register([Character].self) { $0 == $1 }
+        register([Int].self) { $0 == $1 }
+        register([Int8].self) { $0 == $1 }
+        register([Int16].self) { $0 == $1 }
+        register([Int32].self) { $0 == $1 }
+        register([Int64].self) { $0 == $1 }
+        register([UInt].self) { $0 == $1 }
+        register([UInt8].self) { $0 == $1 }
+        register([UInt16].self) { $0 == $1 }
+        register([UInt32].self) { $0 == $1 }
+        register([UInt64].self) { $0 == $1 }
+        register([Bool?].self) { $0 == $1 }
+        register([String?].self) { $0 == $1 }
+        register([Float?].self) { $0 == $1 }
+        register([Double?].self) { $0 == $1 }
+        register([Character?].self) { $0 == $1 }
+        register([Int?].self) { $0 == $1 }
+        register([Int8?].self) { $0 == $1 }
+        register([Int16?].self) { $0 == $1 }
+        register([Int32?].self) { $0 == $1 }
+        register([Int64?].self) { $0 == $1 }
+        register([UInt?].self) { $0 == $1 }
+        register([UInt8?].self) { $0 == $1 }
+        register([UInt16?].self) { $0 == $1 }
+        register([UInt32?].self) { $0 == $1 }
+        register([UInt64?].self) { $0 == $1 }
     }
 
     /// Registers comparator for given type **T**.

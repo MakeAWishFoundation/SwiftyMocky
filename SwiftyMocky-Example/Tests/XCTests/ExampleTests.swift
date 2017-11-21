@@ -193,9 +193,6 @@ class ExampleTests: XCTestCase {
         Given(mock, .methodConstrained(param: .value(2), willReturn: (0,1)))
         Given(mock, .methodConstrained(param: .value("abc"), willReturn: (0,2)))
 
-        Matcher.default.register(Int.self)
-        Matcher.default.register(String.self)
-
         let (_, a): (Int,Int) = mock.methodConstrained(param: 1)
         let (_, b): (Int,Int) = mock.methodConstrained(param: 2)
         let (_, c): (Int,Int) = mock.methodConstrained(param: "abc")
@@ -209,10 +206,6 @@ class ExampleTests: XCTestCase {
     }
 
     func test_generic_parameters_compare() {
-        Matcher.default.register(Int.self)
-        Matcher.default.register(String.self)
-        Matcher.default.register(Character.self)
-
         // Any vs Any
         XCTAssertTrue(Parameter.compare(lhs: Parameter<Int>.any.wrapAsGeneric(), rhs: Parameter<Int>.any.wrapAsGeneric(), with: Matcher.default))
         XCTAssertFalse(Parameter.compare(lhs: Parameter<Int>.any.wrapAsGeneric(), rhs: Parameter<String>.any.wrapAsGeneric(), with: Matcher.default))
