@@ -5,9 +5,9 @@
 [![Version](https://img.shields.io/cocoapods/v/SwiftyMocky.svg?style=flat)](http://cocoapods.org/pods/SwiftyMocky)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
-# ![logo](https://raw.githubusercontent.com/MakeAWishFoundation/SwiftyMocky/1.0.0/icon.png) SwiftyMocky
+# ![logo][logo] SwiftyMocky
 
-Join our community on Slack! -> [invitation link here](https://join.slack.com/t/swiftymocky/shared_invite/enQtMjc0NzI5ODU3NTcxLTdmN2Q0NzQ3OWFmYTZlZmZkYTI3M2VmNzAzZDIzNWUwYjVhOTlmYWFiYzc2OGZkMzBkN2RkMmQ3NzQyMmIyNDU)
+Join our community on Slack! -> [invitation link here][link-slack]
 
 ## Overview
 
@@ -78,7 +78,7 @@ Verify(mockStorage, 2, .storeUser(name: .value("Johny"), surname: .any))
 
 ### 4. All supported features
 
-For list all supported features, check documentation [here](https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/1.0.1/docs/supported-features.html) or [guides](./guides/Supported%20features.md)
+For list all supported features, check documentation [here][link-docs-features] or [guides][link-guides-features]
 
 ### 5. Example of usage
 
@@ -90,11 +90,11 @@ To trigger mocks generation, run `rake mock` from root directory. For watcher mo
 
 # Documentation
 
-Full documentation is available [here](https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/1.0.1/docs/index.html), as well as through *docs* directory.
+Full documentation is available [here][link-docs], as well as through *docs* directory.
 
-Guides - [Table of contents](guides/Contents.md)
+Guides - [Table of contents][link-guides-contents]
 
-Changelog is available [here](guides/CHANGELOG.md)
+Changelog is available [here][link-changelog]
 
 # How to start using SwiftyMocky
 
@@ -202,11 +202,11 @@ pod "SwiftyMocky"
 
 Then add **mocky.yml** and **Rakefile** (or build script phase) to your project root directory, as described above.
 
-For [Carthage](https://github.com/Carthage/Carthage) install instructions, see full [documentation](https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/1.0.1/docs/installation.html).
+For [Carthage](https://github.com/Carthage/Carthage) install instructions, see full [documentation][link-docs-installation].
 
 ## Current version
 
-Master branch is still in beta, breaking changes are possible.
+Master branch is stabilizing, breaking changes possible in version 2.0. For more information about upcoming changes - see issues and projects section.
 
 ## Authors
 
@@ -215,10 +215,25 @@ Master branch is still in beta, breaking changes are possible.
 
 ## License
 
-SwiftyMocky is available under the MIT license. See the LICENSE file for more info.
+SwiftyMocky is available under the MIT license. See the [LICENSE][link-license] file for more info.
+
+<!-- Links -->
+
+[link-slack]: https://join.slack.com/t/swiftymocky/shared_invite/enQtMjc0NzI5ODU3NTcxLTdmN2Q0NzQ3OWFmYTZlZmZkYTI3M2VmNzAzZDIzNWUwYjVhOTlmYWFiYzc2OGZkMzBkN2RkMmQ3NzQyMmIyNDU
+[link-license]: https://github.com/MakeAWishFoundation/SwiftyMocky/blob/master/LICENSE
+[link-guides-contents]: https://github.com/MakeAWishFoundation/SwiftyMocky/blob/master/guides/Contents.md
+[link-guides-features]: https://github.com/MakeAWishFoundation/SwiftyMocky/blob/master/guides/Supported%20features.md
+[link-changelog]: https://github.com/MakeAWishFoundation/SwiftyMocky/blob/master/guides/CHANGELOG.md
+
+<!-- Links based on tag -->
+
+[link-docs]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/1.0.2/docs/index.html
+[link-docs-features]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/1.0.2/docs/supported-features.html
+[link-docs-installation]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/1.0.2/docs/installation.html
 
 <!-- Assets -->
 
+[logo]: https://raw.githubusercontent.com/MakeAWishFoundation/SwiftyMocky/1.0.0/icon.png
 [example-watcher]: https://raw.githubusercontent.com/MakeAWishFoundation/SwiftyMocky/1.0.0/guides/assets/example-watcher.gif "Example - generation"
 [example-given]: https://raw.githubusercontent.com/MakeAWishFoundation/SwiftyMocky/1.0.0/guides/assets/example-given.gif "Example - given"
 [example-verify]: https://raw.githubusercontent.com/MakeAWishFoundation/SwiftyMocky/1.0.0/guides/assets/example-verify.gif "Example - verify"
