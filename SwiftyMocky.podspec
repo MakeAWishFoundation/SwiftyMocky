@@ -21,6 +21,7 @@ Library that uses metaprogramming technique to generate mocks based on sources, 
   s.source           = { :git => 'https://github.com/MakeAWishFoundation/SwiftyMocky.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '8.0'
+  s.tvos.deployment_target = '9.0'
   s.default_subspec  = "Core"
   s.preserve_paths = '*'
 
