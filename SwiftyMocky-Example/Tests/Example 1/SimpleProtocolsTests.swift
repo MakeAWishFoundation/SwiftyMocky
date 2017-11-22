@@ -69,9 +69,6 @@ class SimpleProtocolsTests: XCTestCase {
     func test_simpleProtocol_methodsThatReturns_optionalAttributes() {
         let mock = SimpleProtocolWithMethodsMock()
 
-        // As String? is not recognized as Equatable, we need to register comparator on matcher
-        mock.matcher.register((Optional<String>).self) { $0 == $1 } // Could use Matcher.default instead, as it is default matcher for all mocks
-
         Verify(mock, 0, .simpleMehtodThatReturns(optionalParam: .any)) // Should be 0
 
         // When same level of explicity - last given is matched first

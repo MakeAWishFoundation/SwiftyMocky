@@ -20,12 +20,6 @@ class ProtocolsWithGenericsTests: XCTestCase {
         // In that case it is enough to specify type for only one elemen, so the type inference could do the rest
         Given(mock, .methodWithGeneric(lhs: .value(1), rhs: .any, willReturn: true))
 
-        // Also, for generics default comparators for equatable and sequence types breaks - so even for
-        // simple types like Int or String, you have to register comparator
-        // Foe equatable, you can use simplified syntax:
-        Matcher.default.register(Int.self)
-        Matcher.default.register(String.self)
-
         XCTAssertEqual(mock.methodWithGeneric(lhs: 1, rhs: 0), true)
         XCTAssertEqual(mock.methodWithGeneric(lhs: 0, rhs: 1), false)
         XCTAssertEqual(mock.methodWithGeneric(lhs: "0", rhs: "1"), true)
@@ -38,11 +32,6 @@ class ProtocolsWithGenericsTests: XCTestCase {
     func test_protocol_with_associated_types() {
         let mock = ProtocolWithAssociatedTypeMock<[Int]>()
         mock.sequence = [1,2,3]
-
-        // For generics - default comparators for equatable and sequence types breaks - so even for
-        // simple types like Int or String, you have to register comparator
-        // Foe equatable, you can use simplified syntax:
-        Matcher.default.register(Int.self)
 
         // There is autocomplete issue, so in order to get autocomplete for all available methods
         // Use full <MockName>.Given. ... syntax

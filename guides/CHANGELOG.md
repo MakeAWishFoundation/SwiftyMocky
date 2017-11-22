@@ -4,6 +4,22 @@ All changes to SwiftyMocky project will be documented in this file.
 
 -----
 
+## __1.0.2__ / 2017
+
+#### Added:
+* Code of contribution
+* Code of conduct
+* Default Matcher cases for basic types
+
+#### Fixed:
+* Handling of different Swift versions, checked on:
+    * Swift 3.1 Xcode 8.3 and Xcode 8.3.3
+    * Swift 3.2 Xcode 9
+    * Swift 4.0.x Xcode 9
+* Fixed links for cocoapods.org expanded site
+
+-----
+
 ## __1.0.1__ / 2017
 
 #### Fixed:

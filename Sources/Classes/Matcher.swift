@@ -15,6 +15,7 @@ public class Matcher {
 
     /// Create new clean matcher instance.
     public init() {
+        registerBasicTypes()
         register(GenericAttribute.self) { [unowned self] (a, b) -> Bool in
             return a.compare(a.value,b.value,self)
         }
@@ -25,6 +26,63 @@ public class Matcher {
     /// - Parameter matcher: other matcher instance
     public init(matcher: Matcher) {
         self.matchers = matcher.matchers
+    }
+
+    /// Registers array comparators for all basic types, their optional versions
+    /// and arrays containing elements of that type. For all of them, no manual
+    /// registering of comparator is needed.
+    ///
+    /// We defined basic types as:
+    ///
+    /// - Bool
+    /// - String
+    /// - Float
+    /// - Double
+    /// - Character
+    /// - Int
+    /// - Int8
+    /// - Int16
+    /// - Int32
+    /// - Int64
+    /// - UInt
+    /// - UInt8
+    /// - UInt16
+    /// - UInt32
+    /// - UInt64
+    ///
+    /// Called automatically in every Matcher init.
+    ///
+    internal func registerBasicTypes() {
+        register([Bool].self) { $0 == $1 }
+        register([String].self) { $0 == $1 }
+        register([Float].self) { $0 == $1 }
+        register([Double].self) { $0 == $1 }
+        register([Character].self) { $0 == $1 }
+        register([Int].self) { $0 == $1 }
+        register([Int8].self) { $0 == $1 }
+        register([Int16].self) { $0 == $1 }
+        register([Int32].self) { $0 == $1 }
+        register([Int64].self) { $0 == $1 }
+        register([UInt].self) { $0 == $1 }
+        register([UInt8].self) { $0 == $1 }
+        register([UInt16].self) { $0 == $1 }
+        register([UInt32].self) { $0 == $1 }
+        register([UInt64].self) { $0 == $1 }
+        register([Bool?].self) { $0 == $1 }
+        register([String?].self) { $0 == $1 }
+        register([Float?].self) { $0 == $1 }
+        register([Double?].self) { $0 == $1 }
+        register([Character?].self) { $0 == $1 }
+        register([Int?].self) { $0 == $1 }
+        register([Int8?].self) { $0 == $1 }
+        register([Int16?].self) { $0 == $1 }
+        register([Int32?].self) { $0 == $1 }
+        register([Int64?].self) { $0 == $1 }
+        register([UInt?].self) { $0 == $1 }
+        register([UInt8?].self) { $0 == $1 }
+        register([UInt16?].self) { $0 == $1 }
+        register([UInt32?].self) { $0 == $1 }
+        register([UInt64?].self) { $0 == $1 }
     }
 
     /// Registers comparator for given type **T**.
@@ -42,6 +100,7 @@ public class Matcher {
         matchers.append((mirror, match as Any))
     }
 
+#if swift(>=3.2)
     /// Register sequence comparator, based on elements comparing.
     ///
     /// - Parameters:
@@ -62,6 +121,28 @@ public class Matcher {
             return true
         }
     }
+#else
+    /// Register sequence comparator, based on elements comparing.
+    ///
+    /// - Parameters:
+    ///   - valueType: Sequence type
+    ///   - match: Element comparator closure
+    public func register<T>(_ valueType: T.Type, match: @escaping (T.Iterator.Element,T.Iterator.Element) -> Bool) where T: Sequence {
+        let mirror = Mirror(reflecting: T.Iterator.Element.self)
+        matchers.append((mirror, match as Any))
+        register(T.self) { (l: T, r: T) -> Bool in
+            let lhs = l.map { $0 }
+            let rhs = r.map { $0 }
+            guard lhs.count == rhs.count else { return false }
+
+            for i in 0..<lhs.count {
+                guard match(lhs[i],rhs[i]) else { return false }
+            }
+
+            return true
+        }
+    }
+#endif
 
     /// Register default comparatot for Equatable types. Required for generic mocks to work.
     ///
@@ -89,6 +170,7 @@ public class Matcher {
         return comparator as? (T,T) -> Bool
     }
 
+#if swift(>=3.2)
     /// Default Sequence comparator, compares count, and then element by element.
     ///
     /// - Parameter valueType: Sequence type
@@ -117,6 +199,36 @@ public class Matcher {
             return nil
         }
     }
+#else
+    /// Default Sequence comparator, compares count, and then element by element.
+    ///
+    /// - Parameter valueType: Sequence type
+    /// - Returns: comparator closure
+    public func comparator<T>(for valueType: T.Type) -> ((T,T) -> Bool)? where T: Sequence {
+        let mirror = Mirror(reflecting: valueType)
+        let comparator = matchers.reversed().first { (current, _) -> Bool in
+            return current.subjectType == mirror.subjectType
+        }?.1
+
+        if let compare = comparator as? (T,T) -> Bool {
+            return compare
+        } else if let compare = self.comparator(for: T.Iterator.Element.self) {
+            return { (l: T, r: T) -> Bool in
+                let lhs = l.map { $0 }
+                let rhs = r.map { $0 }
+                guard lhs.count == rhs.count else { return false }
+
+                for i in 0..<lhs.count {
+                    guard compare(lhs[i],rhs[i]) else { return false }
+                }
+
+                return true
+            }
+        } else {
+            return nil
+        }
+    }
+#endif
 
     /// Default Equatable comparator, compares if elements are equal.
     ///
