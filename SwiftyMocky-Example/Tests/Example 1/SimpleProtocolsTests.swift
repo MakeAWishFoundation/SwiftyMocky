@@ -45,6 +45,26 @@ class SimpleProtocolsTests: XCTestCase {
         mock.verify(.simpleMehtodThatReturns(), count: 3) // Can use vrify directly on mock instance
     }
 
+    func test_simpleProtocol_methodThatReturns_attributes_verifyMatching() {
+        let mock = SimpleProtocolWithMethodsMock()
+
+        Verify(mock, 0, .simpleMehtodThatReturns(param: .any)) // Should be 0
+
+        Given(mock, .simpleMehtodThatReturns(param: .matching({ $0.contains("a") }), willReturn: "1"))
+        Given(mock, .simpleMehtodThatReturns(param: .matching({ $0 == "aaa" }), willReturn: "3"))
+        Given(mock, .simpleMehtodThatReturns(param: .any, willReturn: "no a at all"))
+
+        XCTAssertEqual(mock.simpleMehtodThatReturns(param: "qqq"), "no a at all")
+        XCTAssertEqual(mock.simpleMehtodThatReturns(param: "aaa"), "3")
+        XCTAssertEqual(mock.simpleMehtodThatReturns(param: "aas"), "1")
+        XCTAssertEqual(mock.simpleMehtodThatReturns(param: "Makaron"), "1")
+        XCTAssertEqual(mock.simpleMehtodThatReturns(param: "kotlet"), "no a at all")
+
+        Verify(mock, 2, .simpleMehtodThatReturns(param: .matching({ $0.count > 3 })))
+        Verify(mock, 3, .simpleMehtodThatReturns(param: .matching({ $0.count == 3 })))
+        Verify(mock, 5, .simpleMehtodThatReturns(param: .any))
+    }
+
     func test_simpleProtocol_methodsThatReturns_attributes() {
         let mock = SimpleProtocolWithMethodsMock()
 

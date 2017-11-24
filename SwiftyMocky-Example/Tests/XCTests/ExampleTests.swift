@@ -227,6 +227,32 @@ class ExampleTests: XCTestCase {
         XCTAssertTrue(Parameter.compare(lhs: Parameter<String>.value("1").wrapAsGeneric(), rhs: Parameter<String>.value("1").wrapAsGeneric(), with: Matcher.default))
         XCTAssertFalse(Parameter.compare(lhs: Parameter<Int>.value(1).wrapAsGeneric(), rhs: Parameter<String>.value("1").wrapAsGeneric(), with: Matcher.default))
         XCTAssertFalse(Parameter.compare(lhs: Parameter<String>.value("1").wrapAsGeneric(), rhs: Parameter<Int>.value(1).wrapAsGeneric(), with: Matcher.default))
+
+        // Matching
+        let greater: (Int) -> Bool = { $0 > 5 }
+        let less: (Int) -> Bool = { $0 < 5 }
+
+        XCTAssertTrue(Parameter.compare(lhs: Parameter<Int>.value(1), rhs: Parameter<Int>.matching(less), with: Matcher.default))
+        XCTAssertTrue(Parameter.compare(lhs: Parameter<Int>.value(1).wrapAsGeneric(), rhs: Parameter<Int>.matching(less).wrapAsGeneric(), with: Matcher.default))
+        XCTAssertFalse(Parameter.compare(lhs: Parameter<Int>.value(1).wrapAsGeneric(), rhs: Parameter<Int>.matching(greater).wrapAsGeneric(), with: Matcher.default))
+        XCTAssertTrue(Parameter.compare(lhs: Parameter<Int>.value(13).wrapAsGeneric(), rhs: Parameter<Int>.matching(greater).wrapAsGeneric(), with: Matcher.default))
+        XCTAssertFalse(Parameter.compare(lhs: Parameter<Int>.value(13).wrapAsGeneric(), rhs: Parameter<Int>.matching(less).wrapAsGeneric(), with: Matcher.default))
+
+        XCTAssertTrue(Parameter.compare(lhs: Parameter<Int>.matching(less).wrapAsGeneric(), rhs: Parameter<Int>.value(1).wrapAsGeneric(), with: Matcher.default))
+        XCTAssertFalse(Parameter.compare(lhs: Parameter<Int>.matching(greater).wrapAsGeneric(), rhs: Parameter<Int>.value(1).wrapAsGeneric(), with: Matcher.default))
+        XCTAssertTrue(Parameter.compare(lhs: Parameter<Int>.matching(greater).wrapAsGeneric(), rhs: Parameter<Int>.value(13).wrapAsGeneric(), with: Matcher.default))
+        XCTAssertFalse(Parameter.compare(lhs: Parameter<Int>.matching(less).wrapAsGeneric(), rhs: Parameter<Int>.value(13).wrapAsGeneric(), with: Matcher.default))
+    }
+
+    func test_matching_parameters() {
+        let m = Matcher.default
+        let containsZero: ([Int]) -> Bool = { $0.contains(0) }
+        let isEmpty: ([Int]) -> Bool = { $0.isEmpty }
+
+        XCTAssertFalse(Parameter.compare(lhs: Parameter<[Int]>.value([1,2,3,4,5]), rhs: .matching(containsZero), with: m))
+        XCTAssertFalse(Parameter.compare(lhs: Parameter<[Int]>.value([1,2,3,4,5]), rhs: .matching(isEmpty), with: m))
+        XCTAssertTrue(Parameter.compare(lhs: Parameter<[Int]>.value([]), rhs: .matching(isEmpty), with: m))
+        XCTAssertTrue(Parameter.compare(lhs: Parameter<[Int]>.value([2,3,0,0,0]), rhs: .matching(containsZero), with: m))
     }
 }
 
