@@ -22,6 +22,7 @@ Library that uses metaprogramming technique to generate mocks based on sources, 
 
   s.ios.deployment_target = '8.0'
   s.tvos.deployment_target = '9.0'
+  s.macos.deployment_target = '10.9'
   s.default_subspec  = "Core"
   s.preserve_paths = '*'
 
