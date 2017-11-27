@@ -1,6 +1,6 @@
 sources:
   - ./SwiftyMocky-Example/Shared
-  - ./SwiftyMocky-Example/tvOS
+  - ./SwiftyMocky-Example/iOS
   - ./SwiftyMocky-Tests/iOS
 templates:
   - ./Sources/Templates
