@@ -1,0 +1,16 @@
+sources:
+  - ./SwiftyMocky-Example/Shared
+  - ./SwiftyMocky-Example/tvOS
+  - ./SwiftyMocky-Tests/iOS
+templates:
+  - ./Sources/Templates
+output:
+  ./SwiftyMocky-Tests/iOS/Mocks
+args:
+  testable:
+    - Mocky_Example_iOS
+  excludedSwiftLintRules:
+    - force_cast
+    - function_body_length
+    - line_length
+    - vertical_whitespace

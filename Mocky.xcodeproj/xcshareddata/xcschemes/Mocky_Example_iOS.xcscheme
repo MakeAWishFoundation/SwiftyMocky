@@ -14,9 +14,23 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "47EB3B0D1FC3562B00905329"
-               BuildableName = "Mocky_Example_tvOS.app"
-               BlueprintName = "Mocky_Example_tvOS"
+               BlueprintIdentifier = "607FACCF1AFB9204008FA782"
+               BuildableName = "Mocky_Example_iOS.app"
+               BlueprintName = "Mocky_Example_iOS"
+               ReferencedContainer = "container:Mocky.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "607FACE41AFB9204008FA782"
+               BuildableName = "Mocky_Tests_iOS.xctest"
+               BlueprintName = "Mocky_Tests_iOS"
                ReferencedContainer = "container:Mocky.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -33,9 +47,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "47EB3B201FC356B000905329"
-               BuildableName = "Mocky_Tests_tvOS.xctest"
-               BlueprintName = "Mocky_Tests_tvOS"
+               BlueprintIdentifier = "607FACE41AFB9204008FA782"
+               BuildableName = "Mocky_Tests_iOS.xctest"
+               BlueprintName = "Mocky_Tests_iOS"
                ReferencedContainer = "container:Mocky.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -43,9 +57,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "47EB3B0D1FC3562B00905329"
-            BuildableName = "Mocky_Example_tvOS.app"
-            BlueprintName = "Mocky_Example_tvOS"
+            BlueprintIdentifier = "607FACCF1AFB9204008FA782"
+            BuildableName = "Mocky_Example_iOS.app"
+            BlueprintName = "Mocky_Example_iOS"
             ReferencedContainer = "container:Mocky.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -67,9 +81,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "47EB3B0D1FC3562B00905329"
-            BuildableName = "Mocky_Example_tvOS.app"
-            BlueprintName = "Mocky_Example_tvOS"
+            BlueprintIdentifier = "607FACCF1AFB9204008FA782"
+            BuildableName = "Mocky_Example_iOS.app"
+            BlueprintName = "Mocky_Example_iOS"
             ReferencedContainer = "container:Mocky.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -86,9 +100,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "47EB3B0D1FC3562B00905329"
-            BuildableName = "Mocky_Example_tvOS.app"
-            BlueprintName = "Mocky_Example_tvOS"
+            BlueprintIdentifier = "607FACCF1AFB9204008FA782"
+            BuildableName = "Mocky_Example_iOS.app"
+            BlueprintName = "Mocky_Example_iOS"
             ReferencedContainer = "container:Mocky.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

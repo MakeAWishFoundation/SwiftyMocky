@@ -1,13 +1,17 @@
 ## [ Mocks Generation ] ########################################################
 
 task :mock do
-  print_info "Generating mocks"
-	sh "Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config mocky.yml"
+    print_info "Generating mocks - iOS"
+	sh "Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config .mocky.iOS.yml"
+    print_info "Generating mocks - tvOS"
+	sh "Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config .mocky.tvOS.yml"
 end
 
 task :debug do
-  print_info "Generating mocks - debug"
-	sh "Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config mocky.yml --disableCache --verbose"
+    print_info "Generating mocks - iOS - debug"
+	sh "Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config .mocky.iOS.yml --disableCache --verbose"
+    print_info "Generating mocks - iOS - debug"
+	sh "Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config .mocky.tvOS.yml --disableCache --verbose"
 end
 
 ## [ Sourcery ] ################################################################
