@@ -9,14 +9,14 @@
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "47EB3B0D1FC3562B00905329"
-               BuildableName = "Mocky_Example_tvOS.app"
-               BlueprintName = "Mocky_Example_tvOS"
+               BlueprintIdentifier = "47EB3B201FC356B000905329"
+               BuildableName = "Mocky_Tests_tvOS.xctest"
+               BlueprintName = "Mocky_Tests_tvOS"
                ReferencedContainer = "container:Mocky.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -43,9 +43,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "47EB3B0D1FC3562B00905329"
-            BuildableName = "Mocky_Example_tvOS.app"
-            BlueprintName = "Mocky_Example_tvOS"
+            BlueprintIdentifier = "47EB3B201FC356B000905329"
+            BuildableName = "Mocky_Tests_tvOS.xctest"
+            BlueprintName = "Mocky_Tests_tvOS"
             ReferencedContainer = "container:Mocky.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -63,16 +63,15 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "47EB3B0D1FC3562B00905329"
-            BuildableName = "Mocky_Example_tvOS.app"
-            BlueprintName = "Mocky_Example_tvOS"
+            BlueprintIdentifier = "47EB3B201FC356B000905329"
+            BuildableName = "Mocky_Tests_tvOS.xctest"
+            BlueprintName = "Mocky_Tests_tvOS"
             ReferencedContainer = "container:Mocky.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -82,16 +81,6 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "47EB3B0D1FC3562B00905329"
-            BuildableName = "Mocky_Example_tvOS.app"
-            BlueprintName = "Mocky_Example_tvOS"
-            ReferencedContainer = "container:Mocky.xcodeproj">
-         </BuildableReference>
-      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
