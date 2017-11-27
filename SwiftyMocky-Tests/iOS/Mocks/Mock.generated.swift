@@ -1626,15 +1626,6 @@ class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock {
     var matcher: Matcher = Matcher.default
 
 
-    func methodWith(point: CGPoint) -> Int {
-        addInvocation(.imethodWith__point_point(Parameter<CGPoint>.value(point)))
-		let perform = methodPerformValue(.imethodWith__point_point(Parameter<CGPoint>.value(point))) as? (CGPoint) -> Void
-		perform?(point)
-		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodWith__point_point(Parameter<CGPoint>.value(point)))
-		let value = givenValue.value as? Int
-		return value.orFail("stub return value not specified for methodWith(point: CGPoint). Use given")
-    }
-
     func methodThatTakesUser(user: UserObject) throws {
         addInvocation(.imethodThatTakesUser__user_user(Parameter<UserObject>.value(user)))
 		let perform = methodPerformValue(.imethodThatTakesUser__user_user(Parameter<UserObject>.value(user))) as? (UserObject) -> Void
@@ -1653,15 +1644,11 @@ class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock {
     }
 
     fileprivate enum MethodType {
-        case imethodWith__point_point(Parameter<CGPoint>)
         case imethodThatTakesUser__user_user(Parameter<UserObject>)
         case imethodThatTakesArrayOfUsers__array_array(Parameter<[UserObject]>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.imethodWith__point_point(let lhsPoint), .imethodWith__point_point(let rhsPoint)): 
-                    guard Parameter.compare(lhs: lhsPoint, rhs: rhsPoint, with: matcher) else { return false } 
-                    return true 
                 case (.imethodThatTakesUser__user_user(let lhsUser), .imethodThatTakesUser__user_user(let rhsUser)): 
                     guard Parameter.compare(lhs: lhsUser, rhs: rhsUser, with: matcher) else { return false } 
                     return true 
@@ -1674,7 +1661,6 @@ class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock {
 
         func intValue() -> Int {
             switch self {
-                case let .imethodWith__point_point(p0): return p0.intValue
                 case let .imethodThatTakesUser__user_user(p0): return p0.intValue
                 case let .imethodThatTakesArrayOfUsers__array_array(p0): return p0.intValue
             }
@@ -1692,9 +1678,6 @@ class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock {
             self.`throws` = `throws`
         }
 
-        static func methodWith(point: Parameter<CGPoint>, willReturn: Int) -> Given {
-            return Given(method: .imethodWith__point_point(point), returns: willReturn, throws: nil)
-        }
         static func methodThatTakesArrayOfUsers(array: Parameter<[UserObject]>, willReturn: Int) -> Given {
             return Given(method: .imethodThatTakesArrayOfUsers__array_array(array), returns: willReturn, throws: nil)
         }
@@ -1706,9 +1689,6 @@ class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock {
     struct Verify {
         fileprivate var method: MethodType
 
-        static func methodWith(point: Parameter<CGPoint>) -> Verify {
-            return Verify(method: .imethodWith__point_point(point))
-        }
         static func methodThatTakesUser(user: Parameter<UserObject>) -> Verify {
             return Verify(method: .imethodThatTakesUser__user_user(user))
         }
@@ -1721,9 +1701,6 @@ class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func methodWith(point: Parameter<CGPoint>, perform: (CGPoint) -> Void) -> Perform {
-            return Perform(method: .imethodWith__point_point(point), performs: perform)
-        }
         static func methodThatTakesUser(user: Parameter<UserObject>, perform: (UserObject) -> Void) -> Perform {
             return Perform(method: .imethodThatTakesUser__user_user(user), performs: perform)
         }

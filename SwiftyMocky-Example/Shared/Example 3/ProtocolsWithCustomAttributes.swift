@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import CoreGraphics
 
 struct UserObject {
     let name: String
@@ -22,7 +21,6 @@ protocol ProtocolWithTuples {
 
 //sourcery: AutoMockable
 protocol ProtocolWithCustomAttributes {
-    func methodWith(point: CGPoint) -> Int
     func methodThatTakesUser(user: UserObject) throws
     func methodThatTakesArrayOfUsers(array: [UserObject]) -> Int
 }
