@@ -44,14 +44,6 @@ class ProtocolsWithCustomAttributesTests: XCTestCase {
     func test_protocol_using_customAttributes() {
         let mock = ProtocolWithCustomAttributesMock()
 
-        // Register comparator for CGPoint
-        Matcher.default.register(CGPoint.self) { $0.x == $0.y && $0.y == $1.y }
-
-        Given(mock, .methodWith(point: .value(.zero), willReturn: 0))
-        Given(mock, .methodWith(point: .value(CGPoint(x: 1, y: 1)), willReturn: 1))
-        XCTAssertEqual(mock.methodWith(point: CGPoint.zero), 0)
-        XCTAssertEqual(mock.methodWith(point: CGPoint(x: 1, y: 1)), 1)
-
         // Register comparing user object
         // We can use registration for Array of elements, which will compare value by value
         // Also, providing by default comparator for element type
