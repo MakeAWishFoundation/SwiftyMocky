@@ -5,13 +5,17 @@ task :mock do
 	sh "Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config .mocky.iOS.yml"
     print_info "Generating mocks - tvOS"
 	sh "Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config .mocky.tvOS.yml"
+    print_info "Generating mocks - macOS"
+	sh "Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config .mocky.macOS.yml"
 end
 
 task :debug do
     print_info "Generating mocks - iOS - debug"
 	sh "Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config .mocky.iOS.yml --disableCache --verbose"
-    print_info "Generating mocks - iOS - debug"
+    print_info "Generating mocks - tvOS - debug"
 	sh "Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config .mocky.tvOS.yml --disableCache --verbose"
+    print_info "Generating mocks - macOS - debug"
+	sh "Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config .mocky.macOS.yml --disableCache --verbose"
 end
 
 ## [ Sourcery ] ################################################################

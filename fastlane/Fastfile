@@ -3,13 +3,22 @@ fastlane_version "2.51.0"
 default_platform :ios
 
 platform :ios do
-  before_all do
-    cocoapods
-  end
-
-  desc "Runs all the tests"
-  lane :test do
-    scan
-  end
+    desc "Runs all the tests"
+    lane :test do
+        scan(scheme: "Mocky_Tests_iOS")
+    end
 end
 
+platform :tvos do
+    desc "Runs all the tests"
+    lane :test do
+        scan(scheme: "Mocky_Tests_tvOS")
+    end
+end
+
+platform :mac do
+    desc "Runs all the tests"
+    lane :test do
+        scan(scheme: "Mocky_Tests_macOS")
+    end
+end
