@@ -16,9 +16,7 @@
 		CC5B61BF1FCC1764007FB209 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC5B61B81FCC1763007FB209 /* Assets.xcassets */; };
 		CC5B61C01FCC1764007FB209 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC5B61BA1FCC1763007FB209 /* Main.storyboard */; };
 		CC5B61C11FCC1764007FB209 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B61BC1FCC1763007FB209 /* AppDelegate.swift */; };
-		CC5B61C21FCC1764007FB209 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC5B61BD1FCC1763007FB209 /* Info.plist */; };
 		CC5B61C61FCC178F007FB209 /* Mocky_Example_macOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B61C41FCC178F007FB209 /* Mocky_Example_macOSTests.swift */; };
-		CC5B61C71FCC178F007FB209 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC5B61C51FCC178F007FB209 /* Info.plist */; };
 		CC5B61CB1FCC188D007FB209 /* Mock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B61C91FCC188D007FB209 /* Mock.generated.swift */; };
 		CC5B61CC1FCC188D007FB209 /* ItemsRepositoryMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B61CA1FCC188D007FB209 /* ItemsRepositoryMock.swift */; };
 		CC5B61CD1FCC18BC007FB209 /* ProtocolsWithCollections.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE350DC1FCC0A9400A76C4C /* ProtocolsWithCollections.swift */; };
@@ -868,7 +866,6 @@
 					};
 					607FACCF1AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = R6JBLAQ685;
 						LastSwiftMigration = 0900;
 					};
 					607FACE41AFB9204008FA782 = {
@@ -880,7 +877,7 @@
 					CC5B61971FCC16F7007FB209 = {
 						CreatedOnToolsVersion = 9.1;
 						DevelopmentTeam = YYAKJ5SR76;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 					CC5B61A81FCC16F8007FB209 = {
 						CreatedOnToolsVersion = 9.1;
@@ -958,7 +955,6 @@
 			files = (
 				CC5B61BF1FCC1764007FB209 /* Assets.xcassets in Resources */,
 				CC5B61C01FCC1764007FB209 /* Main.storyboard in Resources */,
-				CC5B61C21FCC1764007FB209 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -966,7 +962,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CC5B61C71FCC178F007FB209 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1694,7 +1689,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = R6JBLAQ685;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "$(SRCROOT)/SwiftyMocky-Example/iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1712,7 +1707,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = R6JBLAQ685;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "$(SRCROOT)/SwiftyMocky-Example/iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1785,7 +1780,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = "SwiftyMocky-Example/macOS/Mocky_Example_macOS.entitlements";
 				CODE_SIGN_IDENTITY = "Mac Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = YYAKJ5SR76;
@@ -1795,6 +1790,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.cocoapods.org.demo.Mocky-Example-macOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_VERSION = 4.0;
@@ -1814,7 +1810,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = "SwiftyMocky-Example/macOS/Mocky_Example_macOS.entitlements";
 				CODE_SIGN_IDENTITY = "Mac Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = YYAKJ5SR76;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -1823,6 +1819,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.cocoapods.org.demo.Mocky-Example-macOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 4.0;
 			};
