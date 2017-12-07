@@ -17,8 +17,18 @@ import XCTest
 ///   - file: for XCTest print purposes
 ///   - line: for XCTest print purposes
 public func Verify<T: Mock>(_ object: T, _ method: T.Verify, file: StaticString = #file, line: UInt = #line) {
-    let invocations = object.matchingCalls(method)
-    XCTAssert(invocations > 0, "Expeced: any invocations of `\(method)`, but was: \(invocations)", file: file, line: line)
+    object.verify(method, count: UInt.moreOrEqual(to: 1), file: file, line: line)
+}
+
+/// Verify that given property getter or setter was called on mock object **at least once**.
+///
+/// - Parameters:
+///   - object: Mock instance
+///   - property: Property name, get or set with wrapped newValue (`Parameter`)
+///   - file: for XCTest print purposes
+///   - line: for XCTest print purposes
+public func VerifyProperty<T: Mock>(_ object: T, _ property: T.Property, file: StaticString = #file, line: UInt = #line) {
+    object.verify(property: property, count: UInt.moreOrEqual(to: 1), file: file, line: line)
 }
 
 /// Verify that given static method was called on mock type **at least once**.
@@ -29,8 +39,18 @@ public func Verify<T: Mock>(_ object: T, _ method: T.Verify, file: StaticString 
 ///   - file: for XCTest print purposes
 ///   - line: for XCTest print purposes
 public func Verify<T: StaticMock>(_ type: T.Type, _ method: T.StaticVerify, file: StaticString = #file, line: UInt = #line) {
-    let invocations = T.matchingCalls(method)
-    XCTAssert(invocations > 0, "Expeced: any invocations of `\(method)`, but was: \(invocations)", file: file, line: line)
+    T.verify(method, count: UInt.moreOrEqual(to: 1), file: file, line: line)
+}
+
+/// Verify that given static property getter or setter was called on mock object **at least once**.
+///
+/// - Parameters:
+///   - object: Mock type
+///   - property: Property name, get or set with wrapped newValue (`Parameter`)
+///   - file: for XCTest print purposes
+///   - line: for XCTest print purposes
+public func VerifyProperty<T: StaticMock>(_ object: T.Type, _ property: T.StaticProperty, file: StaticString = #file, line: UInt = #line) {
+    T.verify(property: property, count: UInt.moreOrEqual(to: 1), file: file, line: line)
 }
 
 /// Verify that given method was called on mock object **exact number of times**.
@@ -41,9 +61,20 @@ public func Verify<T: StaticMock>(_ type: T.Type, _ method: T.StaticVerify, file
 ///   - method: Method signature with wrapped parameters (`Parameter`)
 ///   - file: for XCTest print purposes
 ///   - line: for XCTest print purposes
-public func Verify<T: Mock>(_ object: T, _ count: UInt, _ method: T.Verify, file: StaticString = #file, line: UInt = #line) {
-    let invocations = object.matchingCalls(method)
-    XCTAssert(invocations == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations)", file: file, line: line)
+public func Verify<T: Mock>(_ object: T, _ count: Countable, _ method: T.Verify, file: StaticString = #file, line: UInt = #line) {
+    object.verify(method, count: count, file: file, line: line)
+}
+
+/// Verify that given property get / set was called on mock object **exact number of times**.
+///
+/// - Parameters:
+///   - object: Mock instance
+///   - count: Number of invocations
+///   - method: Property name, get or set with wrapped newValue (`Parameter`)
+///   - file: for XCTest print purposes
+///   - line: for XCTest print purposes
+public func VerifyProperty<T: Mock>(_ object: T, _ count: Countable, _ property: T.Property, file: StaticString = #file, line: UInt = #line) {
+    object.verify(property: property, count: count, file: file, line: line)
 }
 
 /// Verify that given static method was called on mock type **exact number of times**.
@@ -54,9 +85,20 @@ public func Verify<T: Mock>(_ object: T, _ count: UInt, _ method: T.Verify, file
 ///   - method: Static method signature with wrapped parameters (`Parameter`)
 ///   - file: for XCTest print purposes
 ///   - line: for XCTest print purposes
-public func Verify<T: StaticMock>(_ type: T.Type, _ count: UInt, _ method: T.StaticVerify, file: StaticString = #file, line: UInt = #line) {
-    let invocations = T.matchingCalls(method)
-    XCTAssert(invocations == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations)", file: file, line: line)
+public func Verify<T: StaticMock>(_ type: T.Type, _ count: Countable, _ method: T.StaticVerify, file: StaticString = #file, line: UInt = #line) {
+    T.verify(method, count: count, file: file, line: line)
+}
+
+/// Verify that given static property get / set was called on mock type **exact number of times**.
+///
+/// - Parameters:
+///   - object: Mock type
+///   - count: Number of invocations
+///   - method: Static property name, get or set with wrapped newValue (`Parameter`)
+///   - file: for XCTest print purposes
+///   - line: for XCTest print purposes
+public func VerifyProperty<T: StaticMock>(_ type: T.Type, _ count: Countable, _ property: T.StaticProperty, file: StaticString = #file, line: UInt = #line) {
+    T.verify(property: property, count: count, file: file, line: line)
 }
 
 /// Setup return value for method stubs in mock instance. When this method will be called on mock, it

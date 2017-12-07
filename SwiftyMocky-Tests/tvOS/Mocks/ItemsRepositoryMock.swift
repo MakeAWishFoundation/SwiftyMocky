@@ -20,6 +20,9 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
     var matcher: Matcher = Matcher.default
 
 
+    typealias Property = Swift.Never
+
+
     func storeItems(items: [Item]) {
         addInvocation(.istoreItems__items_items(Parameter<[Item]>.value(items)))
 		let perform = methodPerformValue(.istoreItems__items_items(Parameter<[Item]>.value(items))) as? ([Item]) -> Void
@@ -151,11 +154,11 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
-        let method = method.method
-        let invocations = matchingCalls(method)
-        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    public func verify(_ method: Verify, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
+    public func verify(property: Property, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)

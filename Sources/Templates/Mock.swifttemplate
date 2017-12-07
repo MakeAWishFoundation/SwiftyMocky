@@ -48,6 +48,15 @@ import SourceryRuntime
                 return unwrapped
             }
         }
+        var nestedParameter: String {
+            if type.isImplicitlyUnwrappedOptional {
+                return "Parameter<" + (type.isClosure ? "(\(unwrapped))?" : "\(unwrapped)?") + ">"
+            } else if type.isOptional {
+                return "Parameter<" + (type.isClosure ? "(\(unwrapped))?" : "\(unwrapped)?") + ">"
+            } else {
+                return "Parameter<\(unwrapped)>"
+            }
+        }
 
         init(_ type: SourceryRuntime.TypeName) {
             self.type = type
@@ -134,7 +143,8 @@ import SourceryRuntime
         var getter: String {
             let message = "\(scope) - value for \(variable.name) was not defined"
             let orFail = !(variable.isOptional && !variable.isImplicitlyUnwrappedOptional) ? ".orFail(\"\(message)\")" : ""
-            return "get { return \(variable.isStatic ? "\(scope)." : "")\(privatePrototypeName)\(orFail) }"
+            let staticModifier = variable.isStatic ? "\(scope)." : ""
+            return "get {\t\(staticModifier)invocations.append(.\(propertyCaseGetName))" + "\n\t\t\t\treturn \(staticModifier)\(privatePrototypeName)\(orFail) }"
         }
         var setter: String {
             return "set { \(variable.isStatic ? "\(scope)." : "")\(privatePrototypeName) = newValue }"
@@ -152,10 +162,45 @@ import SourceryRuntime
             let staticModifier = variable.isStatic ? "static " : ""
             return "private \(staticModifier)var \(privatePrototypeName): (\(variable.typeName.unwrappedTypeName))?"
         }
+        var nestedType: String {
+            return "\(TypeWrapper(variable.typeName).nestedParameter)"
+        }
 
         init(_ variable: SourceryRuntime.Variable, scope: String) {
             self.variable = variable
             self.scope = scope
+        }
+
+        func propertyGet() -> String {
+            let staticModifier = variable.isStatic ? "Static" : ""
+            return "static var \(variable.name): \(staticModifier)Property { return \(staticModifier)Property(method: .\(propertyCaseGetName)) }"
+        }
+
+        func propertySet() -> String {
+            let staticModifier = variable.isStatic ? "Static" : ""
+            return "static func \(variable.name)(set newValue: \(nestedType)) -> \(staticModifier)Property { return \(staticModifier)Property(method: .\(propertyCaseSetName)(newValue)) }"
+        }
+
+        var propertyCaseGetName: String { return "\(variable.name)_get" }
+        func propertyCaseGet() -> String {
+            return "case \(propertyCaseGetName)"
+        }
+        func propertyCaseGetCompare() -> String {
+            return "case (.\(propertyCaseGetName),.\(propertyCaseGetName)): return true"
+        }
+        func propertyCaseGetIntValue() -> String {
+            return "case .\(propertyCaseGetName): return 0"
+        }
+
+        var propertyCaseSetName: String { return "\(variable.name)_set" }
+        func propertyCaseSet() -> String {
+            return "case \(propertyCaseSetName)(\(nestedType))"
+        }
+        func propertyCaseSetCompare() -> String {
+            return "case (.\(propertyCaseSetName)(let left),.\(propertyCaseSetName)(let right)): return \(nestedType).compare(lhs: left, rhs: right, with: matcher)"
+        }
+        func propertyCaseSetIntValue() -> String {
+            return "case .\(propertyCaseSetName)(let newValue): return newValue.intValue"
         }
     }
 
@@ -520,6 +565,26 @@ import SourceryRuntime
         let wrapper = VariableWrapper(variable, scope: scope)
         return "\(wrapper.prototype)\n\t\(wrapper.privatePrototype)"
     }
+
+    func propertyTypes(_ variable: SourceryRuntime.Variable) -> String {
+        let wrapper = VariableWrapper(variable, scope: "scope")
+        return "\(wrapper.propertyGet())\n\t\t\(wrapper.propertySet())"
+    }
+
+    func propertyMethodTypes(_ variable: SourceryRuntime.Variable) -> String {
+        let wrapper = VariableWrapper(variable, scope: "")
+        return "\(wrapper.propertyCaseGet())\n\t\t\(wrapper.propertyCaseSet())"
+    }
+
+    func propertyMethodTypesCompare(_ variable: SourceryRuntime.Variable) -> String {
+        let wrapper = VariableWrapper(variable, scope: "")
+        return "\(wrapper.propertyCaseGetCompare())\n\t\t\t\t\(wrapper.propertyCaseSetCompare())"
+    }
+
+    func propertyMethodTypesIntValue(_ variable: SourceryRuntime.Variable) -> String {
+        let wrapper = VariableWrapper(variable, scope: "")
+        return "\(wrapper.propertyCaseGetIntValue())\n\t\t\t\t\(wrapper.propertyCaseSetIntValue())"
+    }
 -%>
 
 <%# ================================================== SETUP -%><%_ -%>
@@ -572,10 +637,14 @@ import SourceryRuntime
         guard !constraints.isEmpty else { return "" }
         return " where \(constraints)"
     }()
-    let allVariables = uniques(variables: aProtocol.allVariables.filter({ !$0.isStatic })) + uniques(variables: aProtocol.allVariables.filter({ $0.isStatic }))
+    let allVariables = uniques(variables: aProtocol.allVariables.filter({ !$0.isStatic }))
+    let containsVariables = !allVariables.isEmpty
+    let allStaticVariables = uniques(variables: aProtocol.allVariables.filter({ $0.isStatic }))
+    let containsStaticVariables = !allStaticVariables.isEmpty
     let allMethods = uniques(methods: aProtocol.allMethods.filter({ !$0.isStatic }))
     let allStaticMethods = uniques(methods: aProtocol.allMethods.filter({ $0.isStatic }))
-    let conformsToStaticMock = !allStaticMethods.isEmpty -%><%_ -%><%_ -%>
+    let conformsToStaticMock = !allStaticMethods.isEmpty || !allStaticVariables.isEmpty
+    let conformsToMock = !allMethods.isEmpty || !allVariables.isEmpty -%><%_ -%><%_ -%>
 <%_ if autoMockable { -%>
 // MARK: - <%= type.name %>
 class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["ObjcProtocol"] != nil ? " NSObject," : "" %> <%= type.name %>, Mock<%= conformsToStaticMock ? ", StaticMock" : "" %><%= genericTypesConstraints %> {
@@ -583,13 +652,14 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
 // sourcery:inline:auto:<%= type.name %>.autoMocked
 <%_ } -%>
 <%# ================================================== MAIN CLASS -%><%_ -%>
+  <%# ================================================== MOCK INTERNALS -%><%_ -%>
     <%_ %><%= genericTypesTypealiases -%>
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
     <%_ -%>
-  <%# ================================================== STATIC PROPERTIES -%><%_ -%>
+  <%# ================================================== STATIC MOCK INTERNALS -%><%_ -%>
     <%_ if conformsToStaticMock { -%>
     static private var invocations: [StaticMethodType] = []
     static private var methodReturnValues: [StaticGiven] = []
@@ -601,6 +671,33 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
     <%_ for variable in allVariables { -%>
     <%= stubProperty(variable,"\(type.name)Mock") %>
     <%_ } %> <%_ -%>
+
+    <%_ if containsVariables { -%>
+    struct Property {
+        fileprivate var method: MethodType
+        <%_ for variable in allVariables { -%>
+        <%= propertyTypes(variable) %>
+        <%_ } %> <%_ -%>
+    }
+    <%_ } else { %> <%_ -%>
+    typealias Property = Swift.Never
+    <%_ } %> <%_ -%>
+  <%# ================================================== STATIC VARIABLES -%><%_ -%>
+    <%_ for variable in allStaticVariables { -%>
+    <%= stubProperty(variable,"\(type.name)Mock") %>
+    <%_ } %> <%_ -%>
+
+    <%_ if containsStaticVariables { -%>
+    struct StaticProperty {
+        fileprivate var method: StaticMethodType
+        <%_ for variable in allStaticVariables { -%>
+        <%= propertyTypes(variable) %>
+        <%_ } %> <%_ -%>
+    }
+    <%_ } else if conformsToStaticMock { %> <%_ -%>
+    typealias StaticProperty = Swift.Never
+    <%_ } %> <%_ -%>
+  <%# ================================================== METHOD REGISTRATIONS -%><%_ -%>
     <%_ MethodWrapper.clear() -%>
     <%_ let wrappedMethods = allMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) -%>
     <%_ let wrappedInitializers = allMethods.map(wrapMethod).filter({ $0.method.isInitializer }) -%>
@@ -635,13 +732,19 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
     <%_ for method in wrappedStaticMethods { -%>
         case <%= method.methodDeclarationWithParameters() _%>
     <%_  } %>
+    <%_ for variable in allStaticVariables { -%>
+        <%= propertyMethodTypes(variable) %>
+    <%_ } %> <%_ %>
     <%_ -%>
         static func compareParameters(lhs: StaticMethodType, rhs: StaticMethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) { <%_ for method in wrappedStaticMethods { %>
                 <%= method.equalCase -%> <% for parameter in method.parameters { %>
                     <%= parameter.comparator -%> <%  } %>
                     return true <% } %>
-                <%_ if wrappedStaticMethods.count > 1 { -%>
+                <%_ for variable in allStaticVariables { -%>
+                <%= propertyMethodTypesCompare(variable) %>
+                <%_ } %> <%_ -%>
+                <%_ if wrappedStaticMethods.count + 2 * allStaticVariables.count > 1 { -%>
                 default: return false
                 <%_ } -%>
             }
@@ -650,6 +753,9 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         func intValue() -> Int {
             switch self { <%_ for method in wrappedStaticMethods { %>
                 <%= method.intValueCase -%><% } %>
+                <%_ for variable in allStaticVariables { -%>
+                <%= propertyMethodTypesIntValue(variable) %>
+                <%_ } %> <%_ -%>
             }
         }
     }
@@ -700,18 +806,24 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
 
     <% } -%>
   <%# ================================================== METHOD TYPE -%><%_ -%>
-    <%_ if !wrappedMethods.isEmpty { -%>
+    <%_ if !wrappedMethods.isEmpty || !allVariables.isEmpty { -%>
     fileprivate enum MethodType {
     <%_ for method in wrappedMethods { -%>
         case <%= method.methodDeclarationWithParameters() _%>
-    <%_  } %>
+    <%_  } -%>
+    <%_ for variable in allVariables { -%>
+        <%= propertyMethodTypes(variable) %>
+    <%_ } %> <%_ %>
     <%_ -%>
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) { <%_ for method in wrappedMethods { %>
                 <%= method.equalCase -%> <% for parameter in method.parameters { %>
                     <%= parameter.comparator -%> <%  } %>
                     return true <% } %>
-                <%_ if wrappedMethods.count > 1 { -%>
+                <%_ for variable in allVariables { -%>
+                <%= propertyMethodTypesCompare(variable) %>
+                <%_ } %> <%_ -%>
+                <%_ if wrappedMethods.count + 2 * allVariables.count > 1 { -%>
                 default: return false
                 <%_ } -%>
             }
@@ -720,6 +832,9 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         func intValue() -> Int {
             switch self { <%_ for method in wrappedMethods { %>
                 <%= method.intValueCase -%><% } %>
+                <%_ for variable in allVariables { -%>
+                <%= propertyMethodTypesIntValue(variable) %>
+                <%_ } %> <%_ -%>
             }
         }
     }
@@ -789,11 +904,19 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
-        let method = method.method
-        let invocations = matchingCalls(method)
-        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    public func verify(_ method: Verify, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
+    <%_ if containsVariables { -%>
+
+    public func verify(property: Property, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(property.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+    <%_ } else { -%>
+    public func verify(property: Property, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
+    <%_ } -%>
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -829,11 +952,19 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    static public func verify(_ method: StaticVerify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
-        let method = method.method
-        let invocations = matchingCalls(method)
-        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    static public func verify(_ method: StaticVerify, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
+    <%_ if containsStaticVariables { -%>
+
+    static public func verify(property: StaticProperty, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(property.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+    <%_ } else { -%>
+    static public func verify(property: StaticProperty, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
+    <%_ } -%>
 
     static private func addInvocation(_ call: StaticMethodType) {
         invocations.append(call)

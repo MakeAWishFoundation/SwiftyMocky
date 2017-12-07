@@ -28,25 +28,45 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
     static var matcher: Matcher = Matcher.default
 
     var nonOptionalClosure: () -> Void { 
-		get { return __nonOptionalClosure.orFail("AMassiveTestProtocolMock - value for nonOptionalClosure was not defined") }
+		get {	invocations.append(.nonOptionalClosure_get)
+				return __nonOptionalClosure.orFail("AMassiveTestProtocolMock - value for nonOptionalClosure was not defined") }
 		set { __nonOptionalClosure = newValue }
 	}
 	private var __nonOptionalClosure: (() -> Void)?
     var optionalClosure: (() -> Int)? { 
-		get { return __optionalClosure }
+		get {	invocations.append(.optionalClosure_get)
+				return __optionalClosure }
 		set { __optionalClosure = newValue }
 	}
 	private var __optionalClosure: (() -> Int)?
     var implicitelyUnwrappedClosure: (() -> Void)! { 
-		get { return __implicitelyUnwrappedClosure.orFail("AMassiveTestProtocolMock - value for implicitelyUnwrappedClosure was not defined") }
+		get {	invocations.append(.implicitelyUnwrappedClosure_get)
+				return __implicitelyUnwrappedClosure.orFail("AMassiveTestProtocolMock - value for implicitelyUnwrappedClosure was not defined") }
 		set { __implicitelyUnwrappedClosure = newValue }
 	}
 	private var __implicitelyUnwrappedClosure: (() -> Void)?
+
+    struct Property {
+        fileprivate var method: MethodType
+        static var nonOptionalClosure: Property { return Property(method: .nonOptionalClosure_get) }
+		static func nonOptionalClosure(set newValue: Parameter<() -> Void>) -> Property { return Property(method: .nonOptionalClosure_set(newValue)) }
+        static var optionalClosure: Property { return Property(method: .optionalClosure_get) }
+		static func optionalClosure(set newValue: Parameter<(() -> Int)?>) -> Property { return Property(method: .optionalClosure_set(newValue)) }
+        static var implicitelyUnwrappedClosure: Property { return Property(method: .implicitelyUnwrappedClosure_get) }
+		static func implicitelyUnwrappedClosure(set newValue: Parameter<(() -> Void)?>) -> Property { return Property(method: .implicitelyUnwrappedClosure_set(newValue)) }
+    }
     static var optionalClosure: (() -> Int)? { 
-		get { return AMassiveTestProtocolMock.__optionalClosure }
+		get {	AMassiveTestProtocolMock.invocations.append(.optionalClosure_get)
+				return AMassiveTestProtocolMock.__optionalClosure }
 		set { AMassiveTestProtocolMock.__optionalClosure = newValue }
 	}
 	private static var __optionalClosure: (() -> Int)?
+
+    struct StaticProperty {
+        fileprivate var method: StaticMethodType
+        static var optionalClosure: StaticProperty { return StaticProperty(method: .optionalClosure_get) }
+		static func optionalClosure(set newValue: Parameter<(() -> Int)?>) -> StaticProperty { return StaticProperty(method: .optionalClosure_set(newValue)) }
+    }
 
     static func methodThatThrows() throws {
         addInvocation(.smethodThatThrows)
@@ -111,6 +131,9 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
         case smethodThatReturnsAndThrows__param_param(Parameter<String>)
         case smethodThatRethrows__param_param(Parameter<(String) throws -> Int>)
 
+        case optionalClosure_get
+		case optionalClosure_set(Parameter<(() -> Int)?>)
+
         static func compareParameters(lhs: StaticMethodType, rhs: StaticMethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
                 case (.smethodThatThrows, .smethodThatThrows): 
@@ -121,6 +144,8 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
                 case (.smethodThatRethrows__param_param(let lhsParam), .smethodThatRethrows__param_param(let rhsParam)): 
                     guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
                     return true 
+                case (.optionalClosure_get,.optionalClosure_get): return true
+				case (.optionalClosure_set(let left),.optionalClosure_set(let right)): return Parameter<(() -> Int)?>.compare(lhs: left, rhs: right, with: matcher)
                 default: return false
             }
         }
@@ -130,6 +155,8 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
                 case .smethodThatThrows: return 0
                 case let .smethodThatReturnsAndThrows__param_param(p0): return p0.intValue
                 case let .smethodThatRethrows__param_param(p0): return p0.intValue
+                case .optionalClosure_get: return 0
+				case .optionalClosure_set(let newValue): return newValue.intValue
             }
         }
     }
@@ -195,6 +222,12 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
         case imethodThatThrows
         case imethodThatReturnsAndThrows__param_param(Parameter<String>)
         case imethodThatRethrows__param_param(Parameter<(String) throws -> Int>)
+        case nonOptionalClosure_get
+		case nonOptionalClosure_set(Parameter<() -> Void>)
+        case optionalClosure_get
+		case optionalClosure_set(Parameter<(() -> Int)?>)
+        case implicitelyUnwrappedClosure_get
+		case implicitelyUnwrappedClosure_set(Parameter<(() -> Void)?>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
@@ -206,6 +239,12 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
                 case (.imethodThatRethrows__param_param(let lhsParam), .imethodThatRethrows__param_param(let rhsParam)): 
                     guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
                     return true 
+                case (.nonOptionalClosure_get,.nonOptionalClosure_get): return true
+				case (.nonOptionalClosure_set(let left),.nonOptionalClosure_set(let right)): return Parameter<() -> Void>.compare(lhs: left, rhs: right, with: matcher)
+                case (.optionalClosure_get,.optionalClosure_get): return true
+				case (.optionalClosure_set(let left),.optionalClosure_set(let right)): return Parameter<(() -> Int)?>.compare(lhs: left, rhs: right, with: matcher)
+                case (.implicitelyUnwrappedClosure_get,.implicitelyUnwrappedClosure_get): return true
+				case (.implicitelyUnwrappedClosure_set(let left),.implicitelyUnwrappedClosure_set(let right)): return Parameter<(() -> Void)?>.compare(lhs: left, rhs: right, with: matcher)
                 default: return false
             }
         }
@@ -215,6 +254,12 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
                 case .imethodThatThrows: return 0
                 case let .imethodThatReturnsAndThrows__param_param(p0): return p0.intValue
                 case let .imethodThatRethrows__param_param(p0): return p0.intValue
+                case .nonOptionalClosure_get: return 0
+				case .nonOptionalClosure_set(let newValue): return newValue.intValue
+                case .optionalClosure_get: return 0
+				case .optionalClosure_set(let newValue): return newValue.intValue
+                case .implicitelyUnwrappedClosure_get: return 0
+				case .implicitelyUnwrappedClosure_set(let newValue): return newValue.intValue
             }
         }
     }
@@ -290,10 +335,14 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
-        let method = method.method
-        let invocations = matchingCalls(method)
-        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    public func verify(_ method: Verify, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    public func verify(property: Property, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(property.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -328,10 +377,14 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    static public func verify(_ method: StaticVerify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
-        let method = method.method
-        let invocations = matchingCalls(method)
-        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    static public func verify(_ method: StaticVerify, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    static public func verify(property: StaticProperty, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(property.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     static private func addInvocation(_ call: StaticMethodType) {
@@ -363,6 +416,9 @@ class AVeryAssociatedProtocolMock<TypeT1,TypeT2>: AVeryAssociatedProtocol, Mock 
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
+
+
+    typealias Property = Swift.Never
 
 
     func fetch(for value: T2) -> T1 {
@@ -439,11 +495,11 @@ class AVeryAssociatedProtocolMock<TypeT1,TypeT2>: AVeryAssociatedProtocol, Mock 
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
-        let method = method.method
-        let invocations = matchingCalls(method)
-        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    public func verify(_ method: Verify, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
+    public func verify(property: Property, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -475,6 +531,10 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
     static private var methodPerformValues: [StaticPerform] = []
     static var matcher: Matcher = Matcher.default
 
+
+    typealias Property = Swift.Never
+
+    typealias StaticProperty = Swift.Never
 
     static func generic<Q>(lhs: Q, rhs: Q) -> Bool where Q: Equatable {
         addInvocation(.sgeneric__lhs_lhsrhs_rhs(Parameter<Q>.value(lhs).wrapAsGeneric(), Parameter<Q>.value(rhs).wrapAsGeneric()))
@@ -508,6 +568,7 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
     fileprivate enum StaticMethodType {
         case sgeneric__lhs_lhsrhs_rhs(Parameter<GenericAttribute>, Parameter<GenericAttribute>)
         case sveryConstrained__lhs_lhsrhs_rhs(Parameter<GenericAttribute>, Parameter<GenericAttribute>)
+
 
         static func compareParameters(lhs: StaticMethodType, rhs: StaticMethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
@@ -638,11 +699,11 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
-        let method = method.method
-        let invocations = matchingCalls(method)
-        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    public func verify(_ method: Verify, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
+    public func verify(property: Property, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -676,11 +737,11 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    static public func verify(_ method: StaticVerify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
-        let method = method.method
-        let invocations = matchingCalls(method)
-        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    static public func verify(_ method: StaticVerify, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
+    static public func verify(property: StaticProperty, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     static private func addInvocation(_ call: StaticMethodType) {
         invocations.append(call)
@@ -709,10 +770,18 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
     var matcher: Matcher = Matcher.default
 
     var youCouldOnlyGetThis: String { 
-		get { return __youCouldOnlyGetThis.orFail("ComplicatedServiceTypeMock - value for youCouldOnlyGetThis was not defined") }
+		get {	invocations.append(.youCouldOnlyGetThis_get)
+				return __youCouldOnlyGetThis.orFail("ComplicatedServiceTypeMock - value for youCouldOnlyGetThis was not defined") }
 		set { __youCouldOnlyGetThis = newValue }
 	}
 	private var __youCouldOnlyGetThis: (String)?
+
+    struct Property {
+        fileprivate var method: MethodType
+        static var youCouldOnlyGetThis: Property { return Property(method: .youCouldOnlyGetThis_get) }
+		static func youCouldOnlyGetThis(set newValue: Parameter<String>) -> Property { return Property(method: .youCouldOnlyGetThis_set(newValue)) }
+    }
+
 
     func serviceName() -> String {
         addInvocation(.iserviceName)
@@ -799,6 +868,8 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
         case imethodWithTypedef__scalar(Parameter<Scalar>)
         case imethodWithClosures__success_function_1(Parameter<LinearFunction>)
         case imethodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>)
+        case youCouldOnlyGetThis_get
+		case youCouldOnlyGetThis_set(Parameter<String>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
@@ -827,6 +898,8 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
                 case (.imethodWithClosures__success_function_2(let lhsFunction), .imethodWithClosures__success_function_2(let rhsFunction)): 
                     guard Parameter.compare(lhs: lhsFunction, rhs: rhsFunction, with: matcher) else { return false } 
                     return true 
+                case (.youCouldOnlyGetThis_get,.youCouldOnlyGetThis_get): return true
+				case (.youCouldOnlyGetThis_set(let left),.youCouldOnlyGetThis_set(let right)): return Parameter<String>.compare(lhs: left, rhs: right, with: matcher)
                 default: return false
             }
         }
@@ -842,6 +915,8 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
                 case let .imethodWithTypedef__scalar(p0): return p0.intValue
                 case let .imethodWithClosures__success_function_1(p0): return p0.intValue
                 case let .imethodWithClosures__success_function_2(p0): return p0.intValue
+                case .youCouldOnlyGetThis_get: return 0
+				case .youCouldOnlyGetThis_set(let newValue): return newValue.intValue
             }
         }
     }
@@ -959,10 +1034,14 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
-        let method = method.method
-        let invocations = matchingCalls(method)
-        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    public func verify(_ method: Verify, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    public func verify(property: Property, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(property.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -992,15 +1071,37 @@ class DateSortableMock: DateSortable, Mock {
     var matcher: Matcher = Matcher.default
 
     var date: Date { 
-		get { return __date.orFail("DateSortableMock - value for date was not defined") }
+		get {	invocations.append(.date_get)
+				return __date.orFail("DateSortableMock - value for date was not defined") }
 		set { __date = newValue }
 	}
 	private var __date: (Date)?
 
+    struct Property {
+        fileprivate var method: MethodType
+        static var date: Property { return Property(method: .date_get) }
+		static func date(set newValue: Parameter<Date>) -> Property { return Property(method: .date_set(newValue)) }
+    }
 
-    fileprivate struct MethodType {
-        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool { return true }
-        func intValue() -> Int { return 0 }
+
+    fileprivate enum MethodType {
+        case date_get
+		case date_set(Parameter<Date>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+                case (.date_get,.date_get): return true
+				case (.date_set(let left),.date_set(let right)): return Parameter<Date>.compare(lhs: left, rhs: right, with: matcher)
+                default: return false
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+                case .date_get: return 0
+				case .date_set(let newValue): return newValue.intValue
+            }
+        }
     }
 
     struct Given {
@@ -1041,10 +1142,14 @@ class DateSortableMock: DateSortable, Mock {
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
-        let method = method.method
-        let invocations = matchingCalls(method)
-        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    public func verify(_ method: Verify, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    public func verify(property: Property, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(property.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -1074,6 +1179,9 @@ class EmptyProtocolMock: EmptyProtocol, Mock {
     var matcher: Matcher = Matcher.default
 
 
+    typealias Property = Swift.Never
+
+
 
     fileprivate struct MethodType {
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool { return true }
@@ -1118,11 +1226,11 @@ class EmptyProtocolMock: EmptyProtocol, Mock {
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
-        let method = method.method
-        let invocations = matchingCalls(method)
-        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    public func verify(_ method: Verify, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
+    public func verify(property: Property, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -1149,6 +1257,9 @@ class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
+
+
+    typealias Property = Swift.Never
 
 
     func map<T: DateSortable>(_ items: [T]) -> [(key: String, items: [T])] {
@@ -1225,11 +1336,11 @@ class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
-        let method = method.method
-        let invocations = matchingCalls(method)
-        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    public func verify(_ method: Verify, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
+    public func verify(property: Property, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -1256,6 +1367,9 @@ class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
+
+
+    typealias Property = Swift.Never
 
 
     func returnNoting() {
@@ -1342,11 +1456,11 @@ class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
-        let method = method.method
-        let invocations = matchingCalls(method)
-        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    public func verify(_ method: Verify, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
+    public func verify(property: Property, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -1378,10 +1492,18 @@ class ProtocolWithAssociatedTypeMock<TypeT>: ProtocolWithAssociatedType, Mock wh
     var matcher: Matcher = Matcher.default
 
     var sequence: T { 
-		get { return __sequence.orFail("ProtocolWithAssociatedTypeMock - value for sequence was not defined") }
+		get {	invocations.append(.sequence_get)
+				return __sequence.orFail("ProtocolWithAssociatedTypeMock - value for sequence was not defined") }
 		set { __sequence = newValue }
 	}
 	private var __sequence: (T)?
+
+    struct Property {
+        fileprivate var method: MethodType
+        static var sequence: Property { return Property(method: .sequence_get) }
+		static func sequence(set newValue: Parameter<T>) -> Property { return Property(method: .sequence_set(newValue)) }
+    }
+
 
     func methodWithType(t: T) -> Bool {
         addInvocation(.imethodWithType__t_t(Parameter<T>.value(t)))
@@ -1394,18 +1516,25 @@ class ProtocolWithAssociatedTypeMock<TypeT>: ProtocolWithAssociatedType, Mock wh
 
     fileprivate enum MethodType {
         case imethodWithType__t_t(Parameter<T>)
+        case sequence_get
+		case sequence_set(Parameter<T>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
                 case (.imethodWithType__t_t(let lhsT), .imethodWithType__t_t(let rhsT)): 
                     guard Parameter.compare(lhs: lhsT, rhs: rhsT, with: matcher) else { return false } 
                     return true 
+                case (.sequence_get,.sequence_get): return true
+				case (.sequence_set(let left),.sequence_set(let right)): return Parameter<T>.compare(lhs: left, rhs: right, with: matcher)
+                default: return false
             }
         }
 
         func intValue() -> Int {
             switch self {
                 case let .imethodWithType__t_t(p0): return p0.intValue
+                case .sequence_get: return 0
+				case .sequence_set(let newValue): return newValue.intValue
             }
         }
     }
@@ -1457,10 +1586,14 @@ class ProtocolWithAssociatedTypeMock<TypeT>: ProtocolWithAssociatedType, Mock wh
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
-        let method = method.method
-        let invocations = matchingCalls(method)
-        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    public func verify(_ method: Verify, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    public func verify(property: Property, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(property.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -1488,6 +1621,9 @@ class ProtocolWithClosuresMock: ProtocolWithClosures, Mock {
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
+
+
+    typealias Property = Swift.Never
 
 
     func methodThatTakes(closure: (Int) -> Int) {
@@ -1593,11 +1729,11 @@ class ProtocolWithClosuresMock: ProtocolWithClosures, Mock {
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
-        let method = method.method
-        let invocations = matchingCalls(method)
-        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    public func verify(_ method: Verify, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
+    public func verify(property: Property, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -1624,6 +1760,9 @@ class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock {
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
+
+
+    typealias Property = Swift.Never
 
 
     func methodThatTakesUser(user: UserObject) throws {
@@ -1723,11 +1862,11 @@ class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock {
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
-        let method = method.method
-        let invocations = matchingCalls(method)
-        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    public func verify(_ method: Verify, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
+    public func verify(property: Property, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -1754,6 +1893,9 @@ class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
+
+
+    typealias Property = Swift.Never
 
 
     func methodWithGeneric<T>(lhs: T, rhs: T) -> Bool {
@@ -1855,11 +1997,11 @@ class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
-        let method = method.method
-        let invocations = matchingCalls(method)
-        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    public func verify(_ method: Verify, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
+    public func verify(property: Property, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -1888,24 +2030,55 @@ class ProtocolWithInitializersMock: ProtocolWithInitializers, Mock {
     var matcher: Matcher = Matcher.default
 
     var param: Int { 
-		get { return __param.orFail("ProtocolWithInitializersMock - value for param was not defined") }
+		get {	invocations.append(.param_get)
+				return __param.orFail("ProtocolWithInitializersMock - value for param was not defined") }
 		set { __param = newValue }
 	}
 	private var __param: (Int)?
     var other: String { 
-		get { return __other.orFail("ProtocolWithInitializersMock - value for other was not defined") }
+		get {	invocations.append(.other_get)
+				return __other.orFail("ProtocolWithInitializersMock - value for other was not defined") }
 		set { __other = newValue }
 	}
 	private var __other: (String)?
+
+    struct Property {
+        fileprivate var method: MethodType
+        static var param: Property { return Property(method: .param_get) }
+		static func param(set newValue: Parameter<Int>) -> Property { return Property(method: .param_set(newValue)) }
+        static var other: Property { return Property(method: .other_get) }
+		static func other(set newValue: Parameter<String>) -> Property { return Property(method: .other_set(newValue)) }
+    }
+
 
     required init(param: Int, other: String) { }
 
     required init(param: Int) { }
 
+    fileprivate enum MethodType {
+        case param_get
+		case param_set(Parameter<Int>)
+        case other_get
+		case other_set(Parameter<String>)
 
-    fileprivate struct MethodType {
-        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool { return true }
-        func intValue() -> Int { return 0 }
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+                case (.param_get,.param_get): return true
+				case (.param_set(let left),.param_set(let right)): return Parameter<Int>.compare(lhs: left, rhs: right, with: matcher)
+                case (.other_get,.other_get): return true
+				case (.other_set(let left),.other_set(let right)): return Parameter<String>.compare(lhs: left, rhs: right, with: matcher)
+                default: return false
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+                case .param_get: return 0
+				case .param_set(let newValue): return newValue.intValue
+                case .other_get: return 0
+				case .other_set(let newValue): return newValue.intValue
+            }
+        }
     }
 
     struct Given {
@@ -1946,10 +2119,14 @@ class ProtocolWithInitializersMock: ProtocolWithInitializers, Mock {
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
-        let method = method.method
-        let invocations = matchingCalls(method)
-        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    public func verify(_ method: Verify, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    public func verify(property: Property, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(property.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -1982,11 +2159,20 @@ class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, StaticMock
     static private var methodPerformValues: [StaticPerform] = []
     static var matcher: Matcher = Matcher.default
 
+
+    typealias Property = Swift.Never
     static var staticProperty: String { 
-		get { return ProtocolWithStaticMembersMock.__staticProperty.orFail("ProtocolWithStaticMembersMock - value for staticProperty was not defined") }
+		get {	ProtocolWithStaticMembersMock.invocations.append(.staticProperty_get)
+				return ProtocolWithStaticMembersMock.__staticProperty.orFail("ProtocolWithStaticMembersMock - value for staticProperty was not defined") }
 		set { ProtocolWithStaticMembersMock.__staticProperty = newValue }
 	}
 	private static var __staticProperty: (String)?
+
+    struct StaticProperty {
+        fileprivate var method: StaticMethodType
+        static var staticProperty: StaticProperty { return StaticProperty(method: .staticProperty_get) }
+		static func staticProperty(set newValue: Parameter<String>) -> StaticProperty { return StaticProperty(method: .staticProperty_set(newValue)) }
+    }
 
     static func staticMethod(param: Int) throws -> Int {
         addInvocation(.sstaticMethod__param_param(Parameter<Int>.value(param)))
@@ -2001,17 +2187,25 @@ class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, StaticMock
     fileprivate enum StaticMethodType {
         case sstaticMethod__param_param(Parameter<Int>)
 
+        case staticProperty_get
+		case staticProperty_set(Parameter<String>)
+
         static func compareParameters(lhs: StaticMethodType, rhs: StaticMethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
                 case (.sstaticMethod__param_param(let lhsParam), .sstaticMethod__param_param(let rhsParam)): 
                     guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
                     return true 
+                case (.staticProperty_get,.staticProperty_get): return true
+				case (.staticProperty_set(let left),.staticProperty_set(let right)): return Parameter<String>.compare(lhs: left, rhs: right, with: matcher)
+                default: return false
             }
         }
 
         func intValue() -> Int {
             switch self {
                 case let .sstaticMethod__param_param(p0): return p0.intValue
+                case .staticProperty_get: return 0
+				case .staticProperty_set(let newValue): return newValue.intValue
             }
         }
     }
@@ -2096,11 +2290,11 @@ class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, StaticMock
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
-        let method = method.method
-        let invocations = matchingCalls(method)
-        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    public func verify(_ method: Verify, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
+    public func verify(property: Property, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -2134,10 +2328,14 @@ class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, StaticMock
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    static public func verify(_ method: StaticVerify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
-        let method = method.method
-        let invocations = matchingCalls(method)
-        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    static public func verify(_ method: StaticVerify, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    static public func verify(property: StaticProperty, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(property.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     static private func addInvocation(_ call: StaticMethodType) {
@@ -2165,6 +2363,9 @@ class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
+
+
+    typealias Property = Swift.Never
 
 
     func methodThatThrows() throws {
@@ -2267,11 +2468,11 @@ class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
-        let method = method.method
-        let invocations = matchingCalls(method)
-        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    public func verify(_ method: Verify, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
+    public func verify(property: Property, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -2298,6 +2499,9 @@ class ProtocolWithTuplesMock: ProtocolWithTuples, Mock {
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
+
+
+    typealias Property = Swift.Never
 
 
     func methodThatTakesTuple(tuple: (String,Int)) -> Int {
@@ -2374,11 +2578,11 @@ class ProtocolWithTuplesMock: ProtocolWithTuples, Mock {
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
-        let method = method.method
-        let invocations = matchingCalls(method)
-        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    public func verify(_ method: Verify, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
+    public func verify(property: Property, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -2405,6 +2609,9 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
+
+
+    typealias Property = Swift.Never
 
 
     func serviceName() -> String {
@@ -2636,11 +2843,11 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
-        let method = method.method
-        let invocations = matchingCalls(method)
-        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    public func verify(_ method: Verify, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
+    public func verify(property: Property, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -2667,6 +2874,9 @@ class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
+
+
+    typealias Property = Swift.Never
 
 
     func getArray() -> [Int] {
@@ -2790,11 +3000,11 @@ class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
-        let method = method.method
-        let invocations = matchingCalls(method)
-        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    public func verify(_ method: Verify, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
+    public func verify(property: Property, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -2823,10 +3033,18 @@ class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBothMeth
     var matcher: Matcher = Matcher.default
 
     var property: String { 
-		get { return __property.orFail("SimpleProtocolWithBothMethodsAndPropertiesMock - value for property was not defined") }
+		get {	invocations.append(.property_get)
+				return __property.orFail("SimpleProtocolWithBothMethodsAndPropertiesMock - value for property was not defined") }
 		set { __property = newValue }
 	}
 	private var __property: (String)?
+
+    struct Property {
+        fileprivate var method: MethodType
+        static var property: Property { return Property(method: .property_get) }
+		static func property(set newValue: Parameter<String>) -> Property { return Property(method: .property_set(newValue)) }
+    }
+
 
     func simpleMethod() -> String {
         addInvocation(.isimpleMethod)
@@ -2839,17 +3057,24 @@ class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBothMeth
 
     fileprivate enum MethodType {
         case isimpleMethod
+        case property_get
+		case property_set(Parameter<String>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
                 case (.isimpleMethod, .isimpleMethod): 
                     return true 
+                case (.property_get,.property_get): return true
+				case (.property_set(let left),.property_set(let right)): return Parameter<String>.compare(lhs: left, rhs: right, with: matcher)
+                default: return false
             }
         }
 
         func intValue() -> Int {
             switch self {
                 case .isimpleMethod: return 0
+                case .property_get: return 0
+				case .property_set(let newValue): return newValue.intValue
             }
         }
     }
@@ -2901,10 +3126,14 @@ class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBothMeth
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
-        let method = method.method
-        let invocations = matchingCalls(method)
-        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    public func verify(_ method: Verify, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    public func verify(property: Property, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(property.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -2932,6 +3161,9 @@ class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
+
+
+    typealias Property = Swift.Never
 
 
     func simpleMethod() {
@@ -3070,11 +3302,11 @@ class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
-        let method = method.method
-        let invocations = matchingCalls(method)
-        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    public func verify(_ method: Verify, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
+    public func verify(property: Property, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -3103,35 +3335,93 @@ class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock {
     var matcher: Matcher = Matcher.default
 
     var property: String { 
-		get { return __property.orFail("SimpleProtocolWithPropertiesMock - value for property was not defined") }
+		get {	invocations.append(.property_get)
+				return __property.orFail("SimpleProtocolWithPropertiesMock - value for property was not defined") }
 		set { __property = newValue }
 	}
 	private var __property: (String)?
     var weakProperty: AnyObject! { 
-		get { return __weakProperty.orFail("SimpleProtocolWithPropertiesMock - value for weakProperty was not defined") }
+		get {	invocations.append(.weakProperty_get)
+				return __weakProperty.orFail("SimpleProtocolWithPropertiesMock - value for weakProperty was not defined") }
 		set { __weakProperty = newValue }
 	}
 	private var __weakProperty: (AnyObject)?
     var propertyGetOnly: String { 
-		get { return __propertyGetOnly.orFail("SimpleProtocolWithPropertiesMock - value for propertyGetOnly was not defined") }
+		get {	invocations.append(.propertyGetOnly_get)
+				return __propertyGetOnly.orFail("SimpleProtocolWithPropertiesMock - value for propertyGetOnly was not defined") }
 		set { __propertyGetOnly = newValue }
 	}
 	private var __propertyGetOnly: (String)?
     var propertyOptional: Int? { 
-		get { return __propertyOptional }
+		get {	invocations.append(.propertyOptional_get)
+				return __propertyOptional }
 		set { __propertyOptional = newValue }
 	}
 	private var __propertyOptional: (Int)?
     var propertyImplicit: Int! { 
-		get { return __propertyImplicit.orFail("SimpleProtocolWithPropertiesMock - value for propertyImplicit was not defined") }
+		get {	invocations.append(.propertyImplicit_get)
+				return __propertyImplicit.orFail("SimpleProtocolWithPropertiesMock - value for propertyImplicit was not defined") }
 		set { __propertyImplicit = newValue }
 	}
 	private var __propertyImplicit: (Int)?
 
+    struct Property {
+        fileprivate var method: MethodType
+        static var property: Property { return Property(method: .property_get) }
+		static func property(set newValue: Parameter<String>) -> Property { return Property(method: .property_set(newValue)) }
+        static var weakProperty: Property { return Property(method: .weakProperty_get) }
+		static func weakProperty(set newValue: Parameter<AnyObject?>) -> Property { return Property(method: .weakProperty_set(newValue)) }
+        static var propertyGetOnly: Property { return Property(method: .propertyGetOnly_get) }
+		static func propertyGetOnly(set newValue: Parameter<String>) -> Property { return Property(method: .propertyGetOnly_set(newValue)) }
+        static var propertyOptional: Property { return Property(method: .propertyOptional_get) }
+		static func propertyOptional(set newValue: Parameter<Int?>) -> Property { return Property(method: .propertyOptional_set(newValue)) }
+        static var propertyImplicit: Property { return Property(method: .propertyImplicit_get) }
+		static func propertyImplicit(set newValue: Parameter<Int?>) -> Property { return Property(method: .propertyImplicit_set(newValue)) }
+    }
 
-    fileprivate struct MethodType {
-        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool { return true }
-        func intValue() -> Int { return 0 }
+
+    fileprivate enum MethodType {
+        case property_get
+		case property_set(Parameter<String>)
+        case weakProperty_get
+		case weakProperty_set(Parameter<AnyObject?>)
+        case propertyGetOnly_get
+		case propertyGetOnly_set(Parameter<String>)
+        case propertyOptional_get
+		case propertyOptional_set(Parameter<Int?>)
+        case propertyImplicit_get
+		case propertyImplicit_set(Parameter<Int?>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+                case (.property_get,.property_get): return true
+				case (.property_set(let left),.property_set(let right)): return Parameter<String>.compare(lhs: left, rhs: right, with: matcher)
+                case (.weakProperty_get,.weakProperty_get): return true
+				case (.weakProperty_set(let left),.weakProperty_set(let right)): return Parameter<AnyObject?>.compare(lhs: left, rhs: right, with: matcher)
+                case (.propertyGetOnly_get,.propertyGetOnly_get): return true
+				case (.propertyGetOnly_set(let left),.propertyGetOnly_set(let right)): return Parameter<String>.compare(lhs: left, rhs: right, with: matcher)
+                case (.propertyOptional_get,.propertyOptional_get): return true
+				case (.propertyOptional_set(let left),.propertyOptional_set(let right)): return Parameter<Int?>.compare(lhs: left, rhs: right, with: matcher)
+                case (.propertyImplicit_get,.propertyImplicit_get): return true
+				case (.propertyImplicit_set(let left),.propertyImplicit_set(let right)): return Parameter<Int?>.compare(lhs: left, rhs: right, with: matcher)
+                default: return false
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+                case .property_get: return 0
+				case .property_set(let newValue): return newValue.intValue
+                case .weakProperty_get: return 0
+				case .weakProperty_set(let newValue): return newValue.intValue
+                case .propertyGetOnly_get: return 0
+				case .propertyGetOnly_set(let newValue): return newValue.intValue
+                case .propertyOptional_get: return 0
+				case .propertyOptional_set(let newValue): return newValue.intValue
+                case .propertyImplicit_get: return 0
+				case .propertyImplicit_set(let newValue): return newValue.intValue
+            }
+        }
     }
 
     struct Given {
@@ -3172,10 +3462,14 @@ class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock {
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
-        let method = method.method
-        let invocations = matchingCalls(method)
-        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    public func verify(_ method: Verify, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    public func verify(property: Property, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(property.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -3203,6 +3497,9 @@ class UserNetworkTypeMock: UserNetworkType, Mock {
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
+
+
+    typealias Property = Swift.Never
 
 
     required init(config: NetworkConfig) { }
@@ -3331,11 +3628,11 @@ class UserNetworkTypeMock: UserNetworkType, Mock {
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
-        let method = method.method
-        let invocations = matchingCalls(method)
-        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    public func verify(_ method: Verify, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
+    public func verify(property: Property, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -3362,6 +3659,9 @@ class UserStorageTypeMock: UserStorageType, Mock {
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
+
+
+    typealias Property = Swift.Never
 
 
     func surname(for name: String) -> String {
@@ -3457,11 +3757,11 @@ class UserStorageTypeMock: UserStorageType, Mock {
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: Verify, count: UInt = 1, file: StaticString = #file, line: UInt = #line) {
-        let method = method.method
-        let invocations = matchingCalls(method)
-        XCTAssert(invocations.count == Int(count), "Expeced: \(count) invocations of `\(method)`, but was: \(invocations.count)", file: file, line: line)
+    public func verify(_ method: Verify, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
+    public func verify(property: Property, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
