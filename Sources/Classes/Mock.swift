@@ -17,12 +17,6 @@ public protocol Mock: class {
     associatedtype Perform
     associatedtype Property
 
-    /// Returns number of invocations of given method (with matching attributes).
-    ///
-    /// - Parameter method: signature, with attributes (any or explicit value). Type `.` for all available
-    /// - Returns: How many times, stub for given signature was called
-    func matchingCalls(_ method: Verify) -> Int
-
     /// Registers return value for stubbed method, for specified attributes set.
     ///
     /// When this method will be called on mock, it will check for first matching given, with following rules:
@@ -82,7 +76,7 @@ public protocol StaticMock: class {
     associatedtype StaticPerform
     associatedtype StaticProperty
 
-    static func matchingCalls(_ method: StaticVerify) -> Int
+    static func clear()
 
     static func given(_ method: StaticGiven)
 

@@ -675,6 +675,11 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
     static private var methodReturnValues: [StaticGiven] = []
     static private var methodPerformValues: [StaticPerform] = []
     static var matcher: Matcher = Matcher.default
+    static func clear() {
+        invocations = []
+        methodReturnValues = []
+        methodPerformValues = []
+    }
     <%_  } -%>
 
   <%# ================================================== VARIABLES -%><%_ -%>
@@ -902,7 +907,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
     }
 
   <%# ================================================== MOCK METHODS -%><%_ -%>
-    public func matchingCalls(_ method: Verify) -> Int {
+    private func matchingCalls(_ method: Verify) -> Int {
         return matchingCalls(method.method).count
     }
 
@@ -916,18 +921,18 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: Verify, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+    public func verify(_ method: Verify, count: Countable = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
         XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
     <%_ if containsVariables { -%>
 
-    public func verify(property: Property, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+    public func verify(property: Property, count: Countable = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(property.method)
         XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
     <%_ } else { -%>
-    public func verify(property: Property, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
+    public func verify(property: Property, count: Countable = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
     <%_ } -%>
 
     private func addInvocation(_ call: MethodType) {
@@ -950,7 +955,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
   <%# ================================================== STATIC MOCK METHODS -%><%_ -%>
     <%_ if conformsToStaticMock { -%>
 
-    static public func matchingCalls(_ method: StaticVerify) -> Int {
+    static private func matchingCalls(_ method: StaticVerify) -> Int {
         return matchingCalls(method.method).count
     }
 
@@ -964,18 +969,18 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    static public func verify(_ method: StaticVerify, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+    static public func verify(_ method: StaticVerify, count: Countable = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
         XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
     <%_ if containsStaticVariables { -%>
 
-    static public func verify(property: StaticProperty, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+    static public func verify(property: StaticProperty, count: Countable = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(property.method)
         XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
     <%_ } else { -%>
-    static public func verify(property: StaticProperty, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
+    static public func verify(property: StaticProperty, count: Countable = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
     <%_ } -%>
 
     static private func addInvocation(_ call: StaticMethodType) {

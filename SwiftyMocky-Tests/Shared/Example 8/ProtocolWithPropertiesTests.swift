@@ -17,12 +17,80 @@ import SwiftyMocky
 #endif
 
 class ProtocolsWithPropertiesTests: XCTestCase {
-    func test_static_properties_getters() {
+    func test_properties_getters() {
+        let mock = ProtocolWithPropoertiesMock()
 
+        VerifyProperty(mock, Count.never, .name)
+        VerifyProperty(mock, Count.never, .name(set: .any))
+
+        mock.name = "danny_13"
+
+        // Get properties randomly between 10 and 20 times
+        let upper: Int = 10 + Int(arc4random_uniform(10))
+        for _ in 1...upper {
+            XCTAssertEqual(mock.name, "danny_13")
+        }
+
+        VerifyProperty(mock, Count.in(range: 10..<20), .name)
+        VerifyProperty(mock, Count.in(range: 10...20), .name)
+        VerifyProperty(mock, Count.in(range: 10...), .name)
+    }
+
+    func test_properties_setters() {
+        let mock = ProtocolWithPropoertiesMock()
+
+        VerifyProperty(mock, Count.never, .name)
+        VerifyProperty(mock, Count.never, .name(set: .any))
+
+        // Get properties randomly between 10 and 20 times
+        let upper: Int = 10 + Int(arc4random_uniform(10))
+        for i in 1...upper {
+            mock.name = "danny_\(i)"
+        }
+
+        VerifyProperty(mock, Count.atLeastOnce, .name(set: .value("danny_1")))
+        VerifyProperty(mock, Count.in(range: 10..<20), .name(set: .any))
+        VerifyProperty(mock, Count.in(range: 10...20), .name(set: .any))
+        VerifyProperty(mock, Count.in(range: 10...), .name(set: .any))
+    }
+
+    func test_static_properties_getters() {
+        let mock = ProtocolWithPropoertiesMock.self
+        mock.clear()
+
+        VerifyProperty(mock, Count.never, .name)
+        VerifyProperty(mock, Count.never, .name(set: .any))
+
+        mock.name = "danny_13"
+
+        // Get properties randomly between 10 and 20 times
+        let upper: Int = 10 + Int(arc4random_uniform(10))
+        for _ in 1...upper {
+            XCTAssertEqual(mock.name, "danny_13")
+        }
+
+        VerifyProperty(mock, Count.in(range: 10..<20), .name)
+        VerifyProperty(mock, Count.in(range: 10...20), .name)
+        VerifyProperty(mock, Count.in(range: 10...), .name)
     }
 
     func test_static_properties_setters() {
+        let mock = ProtocolWithPropoertiesMock.self
+        mock.clear()
 
+        VerifyProperty(mock, Count.never, .name)
+        VerifyProperty(mock, Count.never, .name(set: .any))
+
+        // Get properties randomly between 10 and 20 times
+        let upper: Int = 10 + Int(arc4random_uniform(10))
+        for i in 1...upper {
+            mock.name = "danny_\(i)"
+        }
+
+        VerifyProperty(mock, Count.atLeastOnce, .name(set: .value("danny_1")))
+        VerifyProperty(mock, Count.in(range: 10..<20), .name(set: .any))
+        VerifyProperty(mock, Count.in(range: 10...20), .name(set: .any))
+        VerifyProperty(mock, Count.in(range: 10...), .name(set: .any))
     }
 }
 

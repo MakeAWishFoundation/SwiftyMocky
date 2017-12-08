@@ -30,7 +30,15 @@ public extension Countable {
         return moreOrEqual(to: 1)
     }
 
-    public static func `in`(range: Range<Int>) -> Countable {
+    public static func `in`(range: CountableRange<Int>) -> Countable {
+        return Counter() { range.contains(Int($0)) }
+    }
+
+    public static func `in`(range: CountableClosedRange<Int>) -> Countable {
+        return Counter() { range.contains(Int($0)) }
+    }
+
+    public static func `in`(range: CountablePartialRangeFrom<Int>) -> Countable {
         return Counter() { range.contains(Int($0)) }
     }
 

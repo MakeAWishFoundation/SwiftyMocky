@@ -140,7 +140,7 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         }
     }
 
-    public func matchingCalls(_ method: Verify) -> Int {
+    private func matchingCalls(_ method: Verify) -> Int {
         return matchingCalls(method.method).count
     }
 
@@ -154,11 +154,11 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: Verify, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+    public func verify(_ method: Verify, count: Countable = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
         XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
-    public func verify(property: Property, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
+    public func verify(property: Property, count: Countable = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
