@@ -30,19 +30,22 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
     var nonOptionalClosure: () -> Void { 
 		get {	invocations.append(.nonOptionalClosure_get)
 				return __nonOptionalClosure.orFail("AMassiveTestProtocolMock - value for nonOptionalClosure was not defined") }
-		set { __nonOptionalClosure = newValue }
+		set {	invocations.append(.nonOptionalClosure_set(.value(newValue)))
+				__nonOptionalClosure = newValue }
 	}
 	private var __nonOptionalClosure: (() -> Void)?
     var optionalClosure: (() -> Int)? { 
 		get {	invocations.append(.optionalClosure_get)
 				return __optionalClosure }
-		set { __optionalClosure = newValue }
+		set {	invocations.append(.optionalClosure_set(.value(newValue)))
+				__optionalClosure = newValue }
 	}
 	private var __optionalClosure: (() -> Int)?
     var implicitelyUnwrappedClosure: (() -> Void)! { 
 		get {	invocations.append(.implicitelyUnwrappedClosure_get)
 				return __implicitelyUnwrappedClosure.orFail("AMassiveTestProtocolMock - value for implicitelyUnwrappedClosure was not defined") }
-		set { __implicitelyUnwrappedClosure = newValue }
+		set {	invocations.append(.implicitelyUnwrappedClosure_set(.value(newValue)))
+				__implicitelyUnwrappedClosure = newValue }
 	}
 	private var __implicitelyUnwrappedClosure: (() -> Void)?
 
@@ -58,7 +61,8 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
     static var optionalClosure: (() -> Int)? { 
 		get {	AMassiveTestProtocolMock.invocations.append(.optionalClosure_get)
 				return AMassiveTestProtocolMock.__optionalClosure }
-		set { AMassiveTestProtocolMock.__optionalClosure = newValue }
+		set {	AMassiveTestProtocolMock.invocations.append(.optionalClosure_set(.value(newValue)))
+				AMassiveTestProtocolMock.__optionalClosure = newValue }
 	}
 	private static var __optionalClosure: (() -> Int)?
 
@@ -772,7 +776,8 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
     var youCouldOnlyGetThis: String { 
 		get {	invocations.append(.youCouldOnlyGetThis_get)
 				return __youCouldOnlyGetThis.orFail("ComplicatedServiceTypeMock - value for youCouldOnlyGetThis was not defined") }
-		set { __youCouldOnlyGetThis = newValue }
+		set {	invocations.append(.youCouldOnlyGetThis_set(.value(newValue)))
+				__youCouldOnlyGetThis = newValue }
 	}
 	private var __youCouldOnlyGetThis: (String)?
 
@@ -1073,7 +1078,8 @@ class DateSortableMock: DateSortable, Mock {
     var date: Date { 
 		get {	invocations.append(.date_get)
 				return __date.orFail("DateSortableMock - value for date was not defined") }
-		set { __date = newValue }
+		set {	invocations.append(.date_set(.value(newValue)))
+				__date = newValue }
 	}
 	private var __date: (Date)?
 
@@ -1494,7 +1500,8 @@ class ProtocolWithAssociatedTypeMock<TypeT>: ProtocolWithAssociatedType, Mock wh
     var sequence: T { 
 		get {	invocations.append(.sequence_get)
 				return __sequence.orFail("ProtocolWithAssociatedTypeMock - value for sequence was not defined") }
-		set { __sequence = newValue }
+		set {	invocations.append(.sequence_set(.value(newValue)))
+				__sequence = newValue }
 	}
 	private var __sequence: (T)?
 
@@ -2032,13 +2039,15 @@ class ProtocolWithInitializersMock: ProtocolWithInitializers, Mock {
     var param: Int { 
 		get {	invocations.append(.param_get)
 				return __param.orFail("ProtocolWithInitializersMock - value for param was not defined") }
-		set { __param = newValue }
+		set {	invocations.append(.param_set(.value(newValue)))
+				__param = newValue }
 	}
 	private var __param: (Int)?
     var other: String { 
 		get {	invocations.append(.other_get)
 				return __other.orFail("ProtocolWithInitializersMock - value for other was not defined") }
-		set { __other = newValue }
+		set {	invocations.append(.other_set(.value(newValue)))
+				__other = newValue }
 	}
 	private var __other: (String)?
 
@@ -2164,7 +2173,8 @@ class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, StaticMock
     static var staticProperty: String { 
 		get {	ProtocolWithStaticMembersMock.invocations.append(.staticProperty_get)
 				return ProtocolWithStaticMembersMock.__staticProperty.orFail("ProtocolWithStaticMembersMock - value for staticProperty was not defined") }
-		set { ProtocolWithStaticMembersMock.__staticProperty = newValue }
+		set {	ProtocolWithStaticMembersMock.invocations.append(.staticProperty_set(.value(newValue)))
+				ProtocolWithStaticMembersMock.__staticProperty = newValue }
 	}
 	private static var __staticProperty: (String)?
 
@@ -3035,7 +3045,8 @@ class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBothMeth
     var property: String { 
 		get {	invocations.append(.property_get)
 				return __property.orFail("SimpleProtocolWithBothMethodsAndPropertiesMock - value for property was not defined") }
-		set { __property = newValue }
+		set {	invocations.append(.property_set(.value(newValue)))
+				__property = newValue }
 	}
 	private var __property: (String)?
 
@@ -3337,31 +3348,36 @@ class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock {
     var property: String { 
 		get {	invocations.append(.property_get)
 				return __property.orFail("SimpleProtocolWithPropertiesMock - value for property was not defined") }
-		set { __property = newValue }
+		set {	invocations.append(.property_set(.value(newValue)))
+				__property = newValue }
 	}
 	private var __property: (String)?
     var weakProperty: AnyObject! { 
 		get {	invocations.append(.weakProperty_get)
 				return __weakProperty.orFail("SimpleProtocolWithPropertiesMock - value for weakProperty was not defined") }
-		set { __weakProperty = newValue }
+		set {	invocations.append(.weakProperty_set(.value(newValue)))
+				__weakProperty = newValue }
 	}
 	private var __weakProperty: (AnyObject)?
     var propertyGetOnly: String { 
 		get {	invocations.append(.propertyGetOnly_get)
 				return __propertyGetOnly.orFail("SimpleProtocolWithPropertiesMock - value for propertyGetOnly was not defined") }
-		set { __propertyGetOnly = newValue }
+		set {	invocations.append(.propertyGetOnly_set(.value(newValue)))
+				__propertyGetOnly = newValue }
 	}
 	private var __propertyGetOnly: (String)?
     var propertyOptional: Int? { 
 		get {	invocations.append(.propertyOptional_get)
 				return __propertyOptional }
-		set { __propertyOptional = newValue }
+		set {	invocations.append(.propertyOptional_set(.value(newValue)))
+				__propertyOptional = newValue }
 	}
 	private var __propertyOptional: (Int)?
     var propertyImplicit: Int! { 
 		get {	invocations.append(.propertyImplicit_get)
 				return __propertyImplicit.orFail("SimpleProtocolWithPropertiesMock - value for propertyImplicit was not defined") }
-		set { __propertyImplicit = newValue }
+		set {	invocations.append(.propertyImplicit_set(.value(newValue)))
+				__propertyImplicit = newValue }
 	}
 	private var __propertyImplicit: (Int)?
 

@@ -147,7 +147,8 @@ import SourceryRuntime
             return "get {\t\(staticModifier)invocations.append(.\(propertyCaseGetName))" + "\n\t\t\t\treturn \(staticModifier)\(privatePrototypeName)\(orFail) }"
         }
         var setter: String {
-            return "set { \(variable.isStatic ? "\(scope)." : "")\(privatePrototypeName) = newValue }"
+            let staticModifier = variable.isStatic ? "\(scope)." : ""
+            return "set {\t\(staticModifier)invocations.append(.\(propertyCaseSetName)(.value(newValue)))" + "\n\t\t\t\t\(variable.isStatic ? "\(scope)." : "")\(privatePrototypeName) = newValue }"
         }
         var prototype: String {
             let staticModifier = variable.isStatic ? "static " : ""
@@ -339,8 +340,11 @@ import SourceryRuntime
             return ""
         }
 
-        func register() -> String {
-            let name = registrationName
+        func register() {
+            MethodWrapper.register(registrationName,uniqueName)
+        }
+
+        static func register(_ name: String, _ uniqueName: String) {
             if let count = MethodWrapper.registered[name] {
                 MethodWrapper.registered[name] = count + 1
                 MethodWrapper.suffixes[uniqueName] = count + 1
@@ -348,8 +352,6 @@ import SourceryRuntime
                 MethodWrapper.registered[name] = 1
                 MethodWrapper.suffixes[uniqueName] = 1
             }
-
-            return ""
         }
 
         func methodDeclarationWithParameters() -> String {
@@ -585,6 +587,12 @@ import SourceryRuntime
         let wrapper = VariableWrapper(variable, scope: "")
         return "\(wrapper.propertyCaseGetIntValue())\n\t\t\t\t\(wrapper.propertyCaseSetIntValue())"
     }
+
+    func propertyRegister(_ variable: SourceryRuntime.Variable) {
+        let wrapper = VariableWrapper(variable, scope: "")
+        MethodWrapper.register(wrapper.propertyCaseGetName,wrapper.propertyCaseGetName)
+        MethodWrapper.register(wrapper.propertyCaseSetName,wrapper.propertyCaseSetName)
+    }
 -%>
 
 <%# ================================================== SETUP -%><%_ -%>
@@ -702,6 +710,8 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
     <%_ let wrappedMethods = allMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) -%>
     <%_ let wrappedInitializers = allMethods.map(wrapMethod).filter({ $0.method.isInitializer }) -%>
     <%_ let wrappedStaticMethods = allStaticMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) -%>
+    <%_ for variable in allVariables { propertyRegister(variable) } -%>
+    <%_ for variable in allStaticVariables { propertyRegister(variable) } -%>
     <%_ for method in wrappedMethods { method.register() } -%>
     <%_ for method in wrappedStaticMethods { method.register() } -%><%_ -%>
 

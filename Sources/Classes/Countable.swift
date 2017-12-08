@@ -8,19 +8,26 @@
 
 import Foundation
 
+public struct Count: Countable {
+    private init() { }
+
+    public func matches(_ count: Int) -> Bool {
+        assertionFailure("Should not be here")
+        return false
+    }
+}
+
 public protocol Countable {
     func matches(_ count: Int) -> Bool
-    static var never: Countable { get }
-    static func `in`(range: Range<Int>) -> Countable
-    static func more(than: Int) -> Countable
-    static func moreOrEqual(to: Int) -> Countable
-    static func less(than: Int) -> Countable
-    static func lessOrEqual(to: Int) -> Countable
 }
 
 public extension Countable {
     public static var never: Countable {
-        return Counter() { _ in return false }
+        return 0
+    }
+
+    public static var atLeastOnce: Countable {
+        return moreOrEqual(to: 1)
     }
 
     public static func `in`(range: Range<Int>) -> Countable {

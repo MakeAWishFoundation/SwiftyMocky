@@ -114,18 +114,44 @@ class SimpleProtocolsTests: XCTestCase {
     func test_simpleProtocol_with_properties() {
         let mock = SimpleProtocolWithPropertiesMock()
 
+        // Can use explicit values, or Count convenience static members as Count
+        // Check property getters invocations
+        VerifyProperty(mock, 0, .property)
+        VerifyProperty(mock, Count.never, .property)
+        // Check property setters invocations
+        VerifyProperty(mock, Count.never, .property(set: .any))
+
         // We should set all initial values for non optional parameters and implicitly unwrapped optional parameters
-        mock.property = "some property"
+        mock.property = "test"
         mock.propertyGetOnly = "get only ;)"
         mock.propertyImplicit = 1
 
-        XCTAssertEqual(mock.property, "some property")
+        VerifyProperty(mock, Count.atLeastOnce, .property(set: .any))
+        VerifyProperty(mock, Count.atLeastOnce, .property(set: .value("test")))
+
+        XCTAssertEqual(mock.property, "test")
         XCTAssertEqual(mock.propertyGetOnly, "get only ;)")
         XCTAssertEqual(mock.propertyOptional, nil)
         XCTAssertEqual(mock.propertyImplicit, 1)
 
-        mock.propertyOptional = 2
-        XCTAssertEqual(mock.propertyOptional, 2)
+        // Verify getters were called
+
+        // Verify setters with different cases
+        for i in 1...3 {
+            mock.propertyOptional = i
+        }
+        VerifyProperty(mock, 3, .propertyOptional(set: .any)) // Verify setter called exactly 3 times
+        VerifyProperty(mock, Count.more(than: 2), .propertyOptional(set: .any))
+        VerifyProperty(mock, Count.never, .propertyOptional(set: .value(0)))
+
+        // Verify using mathcing
+        mock.propertyImplicit = 2
+        mock.propertyImplicit = 5
+        mock.propertyImplicit = 7
+        // Verify, that for given mock, with specific count, property get or set was called (with attributes matching)
+        VerifyProperty(mock, Count.less(than: 2), .propertyImplicit(set: .matching({ $0! < 2 })))
+        VerifyProperty(mock, Count.moreOrEqual(to: 4), .propertyImplicit(set: .matching({ $0! > 0 })))
+        XCTAssertEqual(mock.propertyImplicit, 7)
     }
 
     func test_simpleProtocol_with_both() {
@@ -139,5 +165,7 @@ class SimpleProtocolsTests: XCTestCase {
         XCTAssertEqual(mock.simpleMethod(), "some return value")
 
         Verify(mock, .simpleMethod())
+        VerifyProperty(mock, .property)
+        VerifyProperty(mock, Count.atLeastOnce, .property(set: .any))
     }
 }
