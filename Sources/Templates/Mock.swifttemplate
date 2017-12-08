@@ -31,8 +31,7 @@ import SourceryRuntime
     <%_ } -%>
 <%_ } -%>
 
-<%# ================================================== HELPERS -%><%_ -%>
-<%_
+<%# ================================================== HELPERS -%><%_
     class TypeWrapper {
         let type: SourceryRuntime.TypeName
 
@@ -96,13 +95,16 @@ import SourceryRuntime
             let isEscaping = typeString.contains("@escaping")
             let isOptional = (type.actualTypeName ?? type).isOptional
             if parameter.isClosure && !isEscaping && !isOptional {
-                return "\(wrappedType).any"
+                return "\(nestedType).any"
             } else {
-                return "\(wrappedType).value(\(name))"
+                return "\(nestedType).value(\(name))"
             }
         }
         var wrappedType: String {
             return "Parameter<\(TypeWrapper(type).stripped)>"
+        }
+        var nestedType: String {
+            return "\(TypeWrapper(type).nestedParameter)"
         }
         var genericType: String {
             return "Parameter<GenericAttribute>"
@@ -469,15 +471,15 @@ import SourceryRuntime
         private func parametersForMethodTypeDeclaration() -> String {
             let generics = getGenerics()
             return parameters.map { param in
-                return param.isGeneric(generics) ? param.genericType : param.wrappedType
+                return param.isGeneric(generics) ? param.genericType : param.nestedType
             }.joined(separator: ", ")
         }
 
         private func parametersForProxySignature() -> String {
             return parameters.map { p in
-                guard let argumentLabel = p.parameter.argumentLabel else { return "\(p.name): \(p.wrappedType)" }
-                guard argumentLabel != p.name else { return "\(p.name): \(p.wrappedType)" }
-                return "\(argumentLabel) \(p.name): \(p.wrappedType)"
+                guard let argumentLabel = p.parameter.argumentLabel else { return "\(p.name): \(p.nestedType)" }
+                guard argumentLabel != p.name else { return "\(p.name): \(p.nestedType)" }
+                return "\(argumentLabel) \(p.name): \(p.nestedType)"
             }.joined(separator: ", ")
         }
 

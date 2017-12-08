@@ -2157,6 +2157,299 @@ class ProtocolWithInitializersMock: ProtocolWithInitializers, Mock {
     }
 }
 
+// MARK: - ProtocolWithPropoerties
+class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    var matcher: Matcher = Matcher.default
+    static private var invocations: [StaticMethodType] = []
+    static private var methodReturnValues: [StaticGiven] = []
+    static private var methodPerformValues: [StaticPerform] = []
+    static var matcher: Matcher = Matcher.default
+
+    var name: String { 
+		get {	invocations.append(.name_get)
+				return __name.orFail("ProtocolWithPropoertiesMock - value for name was not defined") }
+		set {	invocations.append(.name_set(.value(newValue)))
+				__name = newValue }
+	}
+	private var __name: (String)?
+    var email: String? { 
+		get {	invocations.append(.email_get)
+				return __email }
+		set {	invocations.append(.email_set(.value(newValue)))
+				__email = newValue }
+	}
+	private var __email: (String)?
+
+    struct Property {
+        fileprivate var method: MethodType
+        static var name: Property { return Property(method: .name_get) }
+		static func name(set newValue: Parameter<String>) -> Property { return Property(method: .name_set(newValue)) }
+        static var email: Property { return Property(method: .email_get) }
+		static func email(set newValue: Parameter<String?>) -> Property { return Property(method: .email_set(newValue)) }
+    }
+    static var name: String { 
+		get {	ProtocolWithPropoertiesMock.invocations.append(.name_get)
+				return ProtocolWithPropoertiesMock.__name.orFail("ProtocolWithPropoertiesMock - value for name was not defined") }
+		set {	ProtocolWithPropoertiesMock.invocations.append(.name_set(.value(newValue)))
+				ProtocolWithPropoertiesMock.__name = newValue }
+	}
+	private static var __name: (String)?
+    static var defaultEmail: String? { 
+		get {	ProtocolWithPropoertiesMock.invocations.append(.defaultEmail_get)
+				return ProtocolWithPropoertiesMock.__defaultEmail }
+		set {	ProtocolWithPropoertiesMock.invocations.append(.defaultEmail_set(.value(newValue)))
+				ProtocolWithPropoertiesMock.__defaultEmail = newValue }
+	}
+	private static var __defaultEmail: (String)?
+
+    struct StaticProperty {
+        fileprivate var method: StaticMethodType
+        static var name: StaticProperty { return StaticProperty(method: .name_get) }
+		static func name(set newValue: Parameter<String>) -> StaticProperty { return StaticProperty(method: .name_set(newValue)) }
+        static var defaultEmail: StaticProperty { return StaticProperty(method: .defaultEmail_get) }
+		static func defaultEmail(set newValue: Parameter<String?>) -> StaticProperty { return StaticProperty(method: .defaultEmail_set(newValue)) }
+    }
+
+    static func defaultEmail(set newValue: String!) {
+        addInvocation(.sdefaultEmail__set_newValue(Parameter<String?>.value(newValue)))
+		let perform = methodPerformValue(.sdefaultEmail__set_newValue(Parameter<String?>.value(newValue))) as? (String!) -> Void
+		perform?(newValue)
+    }
+
+    func name(set newValue: String) {
+        addInvocation(.iname__set_newValue(Parameter<String>.value(newValue)))
+		let perform = methodPerformValue(.iname__set_newValue(Parameter<String>.value(newValue))) as? (String) -> Void
+		perform?(newValue)
+    }
+
+    func email(set: String!) {
+        addInvocation(.iemail__set_set(Parameter<String?>.value(set)))
+		let perform = methodPerformValue(.iemail__set_set(Parameter<String?>.value(set))) as? (String!) -> Void
+		perform?(set)
+    }
+
+    fileprivate enum StaticMethodType {
+        case sdefaultEmail__set_newValue(Parameter<String?>)
+
+        case name_get
+		case name_set(Parameter<String>)
+        case defaultEmail_get
+		case defaultEmail_set(Parameter<String?>)
+
+        static func compareParameters(lhs: StaticMethodType, rhs: StaticMethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+                case (.sdefaultEmail__set_newValue(let lhsNewvalue), .sdefaultEmail__set_newValue(let rhsNewvalue)): 
+                    guard Parameter.compare(lhs: lhsNewvalue, rhs: rhsNewvalue, with: matcher) else { return false } 
+                    return true 
+                case (.name_get,.name_get): return true
+				case (.name_set(let left),.name_set(let right)): return Parameter<String>.compare(lhs: left, rhs: right, with: matcher)
+                case (.defaultEmail_get,.defaultEmail_get): return true
+				case (.defaultEmail_set(let left),.defaultEmail_set(let right)): return Parameter<String?>.compare(lhs: left, rhs: right, with: matcher)
+                default: return false
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+                case let .sdefaultEmail__set_newValue(p0): return p0.intValue
+                case .name_get: return 0
+				case .name_set(let newValue): return newValue.intValue
+                case .defaultEmail_get: return 0
+				case .defaultEmail_set(let newValue): return newValue.intValue
+            }
+        }
+    }
+
+    struct StaticGiven {
+        fileprivate var method: StaticMethodType
+        var returns: Any?
+        var `throws`: Error?
+
+        private init(method: StaticMethodType, returns: Any?, throws: Error?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
+
+    }
+
+    struct StaticVerify {
+        fileprivate var method: StaticMethodType
+
+        static func defaultEmail(set newValue: Parameter<String?>) -> StaticVerify {
+            return StaticVerify(method: .sdefaultEmail__set_newValue(newValue))
+        }
+    }
+
+    struct StaticPerform {
+        fileprivate var method: StaticMethodType
+        var performs: Any
+
+        static func defaultEmail(set newValue: Parameter<String?>, perform: (String!) -> Void) -> StaticPerform {
+            return StaticPerform(method: .sdefaultEmail__set_newValue(newValue), performs: perform)
+        }
+    }
+
+        fileprivate enum MethodType {
+        case iname__set_newValue(Parameter<String>)
+        case iemail__set_set(Parameter<String?>)
+        case name_get
+		case name_set(Parameter<String>)
+        case email_get
+		case email_set(Parameter<String?>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+                case (.iname__set_newValue(let lhsNewvalue), .iname__set_newValue(let rhsNewvalue)): 
+                    guard Parameter.compare(lhs: lhsNewvalue, rhs: rhsNewvalue, with: matcher) else { return false } 
+                    return true 
+                case (.iemail__set_set(let lhsSet), .iemail__set_set(let rhsSet)): 
+                    guard Parameter.compare(lhs: lhsSet, rhs: rhsSet, with: matcher) else { return false } 
+                    return true 
+                case (.name_get,.name_get): return true
+				case (.name_set(let left),.name_set(let right)): return Parameter<String>.compare(lhs: left, rhs: right, with: matcher)
+                case (.email_get,.email_get): return true
+				case (.email_set(let left),.email_set(let right)): return Parameter<String?>.compare(lhs: left, rhs: right, with: matcher)
+                default: return false
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+                case let .iname__set_newValue(p0): return p0.intValue
+                case let .iemail__set_set(p0): return p0.intValue
+                case .name_get: return 0
+				case .name_set(let newValue): return newValue.intValue
+                case .email_get: return 0
+				case .email_set(let newValue): return newValue.intValue
+            }
+        }
+    }
+
+    struct Given {
+        fileprivate var method: MethodType
+        var returns: Any?
+        var `throws`: Error?
+
+        private init(method: MethodType, returns: Any?, throws: Error?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
+
+    }
+
+    struct Verify {
+        fileprivate var method: MethodType
+
+        static func name(set newValue: Parameter<String>) -> Verify {
+            return Verify(method: .iname__set_newValue(newValue))
+        }
+        static func email(set: Parameter<String?>) -> Verify {
+            return Verify(method: .iemail__set_set(set))
+        }
+    }
+
+    struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        static func name(set newValue: Parameter<String>, perform: (String) -> Void) -> Perform {
+            return Perform(method: .iname__set_newValue(newValue), performs: perform)
+        }
+        static func email(set: Parameter<String?>, perform: (String!) -> Void) -> Perform {
+            return Perform(method: .iemail__set_set(set), performs: perform)
+        }
+    }
+
+    public func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+        methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    public func verify(property: Property, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(property.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+
+    private func methodReturnValue(_ method: MethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
+    }
+
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+
+    static public func matchingCalls(_ method: StaticVerify) -> Int {
+        return matchingCalls(method.method).count
+    }
+
+    static public func given(_ method: StaticGiven) {
+        methodReturnValues.append(method)
+        methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    static public func perform(_ method: StaticPerform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    static public func verify(_ method: StaticVerify, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    static public func verify(property: StaticProperty, count: Countable = UInt.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(property.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    static private func addInvocation(_ call: StaticMethodType) {
+        invocations.append(call)
+    }
+
+    static private func methodReturnValue(_ method: StaticMethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
+    }
+
+    static private func methodPerformValue(_ method: StaticMethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+
+    static private func matchingCalls(_ method: StaticMethodType) -> [StaticMethodType] {
+        return invocations.filter { StaticMethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+}
+
 // MARK: - ProtocolWithStaticMembers
 class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, StaticMock {
     private var invocations: [MethodType] = []
