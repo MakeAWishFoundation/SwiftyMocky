@@ -56,7 +56,7 @@ public protocol Mock: class {
     ///   - count: Number of invocations
     ///   - file: for XCTest print purposes
     ///   - line: for XCTest print purposes
-    func verify(_ method: Verify, count: Countable, file: StaticString, line: UInt)
+    func verify(_ method: Verify, count: Count, file: StaticString, line: UInt)
 
     /// Verifies, that given method stub was called exact number of times.
     ///
@@ -65,7 +65,7 @@ public protocol Mock: class {
     ///   - count: Number of invocations
     ///   - file: for XCTest print purposes
     ///   - line: for XCTest print purposes
-    func verify(property: Property, count: Countable, file: StaticString, line: UInt)
+    func verify(property: Property, count: Count, file: StaticString, line: UInt)
 }
 
 /// Every mock, that stubs static methods, should adopt **StaticMock** protocol.
@@ -82,8 +82,8 @@ public protocol StaticMock: class {
 
     static func perform(_ method: StaticPerform)
 
-    static func verify(_ method: StaticVerify, count: Countable, file: StaticString, line: UInt)
+    static func verify(_ method: StaticVerify, count: Count, file: StaticString, line: UInt)
 
-    static func verify(property: StaticProperty, count: Countable, file: StaticString, line: UInt)
+    static func verify(property: StaticProperty, count: Count, file: StaticString, line: UInt)
 }
 

@@ -8,59 +8,17 @@
 
 import Foundation
 
-public struct Count: Countable {
-    private init() { }
-
-    public func matches(_ count: Int) -> Bool {
-        assertionFailure("Should not be here")
-        return false
-    }
-}
-
 public protocol Countable {
     func matches(_ count: Int) -> Bool
 }
 
-public extension Countable {
-    public static var never: Countable {
-        return 0
-    }
+public struct Count: Countable, ExpressibleByIntegerLiteral {
+    public typealias IntegerLiteralType = Int
+    private let match: (Int) -> Bool
 
-    public static var atLeastOnce: Countable {
-        return moreOrEqual(to: 1)
+    public init(integerLiteral value: IntegerLiteralType) {
+        self.match = { value.matches($0) }
     }
-
-    public static func `in`(range: CountableRange<Int>) -> Countable {
-        return Counter() { range.contains(Int($0)) }
-    }
-
-    public static func `in`(range: CountableClosedRange<Int>) -> Countable {
-        return Counter() { range.contains(Int($0)) }
-    }
-
-    public static func `in`(range: CountablePartialRangeFrom<Int>) -> Countable {
-        return Counter() { range.contains(Int($0)) }
-    }
-
-    public static func more(than: Int) -> Countable {
-        return Counter() { $0 > than }
-    }
-
-    public static func moreOrEqual(to: Int) -> Countable {
-        return Counter() { $0 >= to }
-    }
-
-    public static func less(than: Int) -> Countable {
-        return Counter() { $0 < than }
-    }
-
-    public static func lessOrEqual(to: Int) -> Countable {
-        return Counter() { $0 <= to }
-    }
-}
-
-public struct Counter: Countable {
-    let match: (Int) -> Bool
 
     public init(match: @escaping (Int) -> Bool) {
         self.match = match
@@ -68,6 +26,42 @@ public struct Counter: Countable {
 
     public func matches(_ count: Int) -> Bool {
         return match(count)
+    }
+}
+
+public extension Count {
+    public static var never: Count { return 0 }
+
+    public static var atLeastOnce: Count {
+        return moreOrEqual(to: 1)
+    }
+
+    public static func `in`(range: CountableRange<Int>) -> Count {
+        return Count() { range.contains(Int($0)) }
+    }
+
+    public static func `in`(range: CountableClosedRange<Int>) -> Count {
+        return Count() { range.contains(Int($0)) }
+    }
+
+    public static func `in`(range: CountablePartialRangeFrom<Int>) -> Count {
+        return Count() { range.contains(Int($0)) }
+    }
+
+    public static func more(than: Int) -> Count {
+        return Count() { $0 > than }
+    }
+
+    public static func moreOrEqual(to: Int) -> Count {
+        return Count() { $0 >= to }
+    }
+
+    public static func less(than: Int) -> Count {
+        return Count() { $0 < than }
+    }
+
+    public static func lessOrEqual(to: Int) -> Count {
+        return Count() { $0 <= to }
     }
 }
 

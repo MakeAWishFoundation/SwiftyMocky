@@ -20,8 +20,8 @@ class ProtocolsWithPropertiesTests: XCTestCase {
     func test_properties_getters() {
         let mock = ProtocolWithPropoertiesMock()
 
-        VerifyProperty(mock, Count.never, .name)
-        VerifyProperty(mock, Count.never, .name(set: .any))
+        VerifyProperty(mock, .never, .name)
+        VerifyProperty(mock, .never, .name(set: .any))
 
         mock.name = "danny_13"
 
@@ -31,16 +31,16 @@ class ProtocolsWithPropertiesTests: XCTestCase {
             XCTAssertEqual(mock.name, "danny_13")
         }
 
-        VerifyProperty(mock, Count.in(range: 10..<20), .name)
-        VerifyProperty(mock, Count.in(range: 10...20), .name)
-        VerifyProperty(mock, Count.in(range: 10...), .name)
+        VerifyProperty(mock, .in(range: 10..<20), .name)
+        VerifyProperty(mock, .in(range: 10...20), .name)
+        VerifyProperty(mock, .in(range: 10...), .name)
     }
 
     func test_properties_setters() {
         let mock = ProtocolWithPropoertiesMock()
 
-        VerifyProperty(mock, Count.never, .name)
-        VerifyProperty(mock, Count.never, .name(set: .any))
+        VerifyProperty(mock, .never, .name)
+        VerifyProperty(mock, .never, .name(set: .any))
 
         // Get properties randomly between 10 and 20 times
         let upper: Int = 10 + Int(arc4random_uniform(10))
@@ -48,18 +48,18 @@ class ProtocolsWithPropertiesTests: XCTestCase {
             mock.name = "danny_\(i)"
         }
 
-        VerifyProperty(mock, Count.atLeastOnce, .name(set: .value("danny_1")))
-        VerifyProperty(mock, Count.in(range: 10..<20), .name(set: .any))
-        VerifyProperty(mock, Count.in(range: 10...20), .name(set: .any))
-        VerifyProperty(mock, Count.in(range: 10...), .name(set: .any))
+        VerifyProperty(mock, .atLeastOnce, .name(set: .value("danny_1")))
+        VerifyProperty(mock, .in(range: 10..<20), .name(set: .any))
+        VerifyProperty(mock, .in(range: 10...20), .name(set: .any))
+        VerifyProperty(mock, .in(range: 10...), .name(set: .any))
     }
 
     func test_static_properties_getters() {
         let mock = ProtocolWithPropoertiesMock.self
         mock.clear()
 
-        VerifyProperty(mock, Count.never, .name)
-        VerifyProperty(mock, Count.never, .name(set: .any))
+        VerifyProperty(mock, .never, .name)
+        VerifyProperty(mock, .never, .name(set: .any))
 
         mock.name = "danny_13"
 
@@ -69,17 +69,17 @@ class ProtocolsWithPropertiesTests: XCTestCase {
             XCTAssertEqual(mock.name, "danny_13")
         }
 
-        VerifyProperty(mock, Count.in(range: 10..<20), .name)
-        VerifyProperty(mock, Count.in(range: 10...20), .name)
-        VerifyProperty(mock, Count.in(range: 10...), .name)
+        VerifyProperty(mock, .in(range: 10..<20), .name)
+        VerifyProperty(mock, .in(range: 10...20), .name)
+        VerifyProperty(mock, .in(range: 10...), .name)
     }
 
     func test_static_properties_setters() {
         let mock = ProtocolWithPropoertiesMock.self
         mock.clear()
 
-        VerifyProperty(mock, Count.never, .name)
-        VerifyProperty(mock, Count.never, .name(set: .any))
+        VerifyProperty(mock, .never, .name)
+        VerifyProperty(mock, .never, .name(set: .any))
 
         // Get properties randomly between 10 and 20 times
         let upper: Int = 10 + Int(arc4random_uniform(10))
@@ -87,10 +87,10 @@ class ProtocolsWithPropertiesTests: XCTestCase {
             mock.name = "danny_\(i)"
         }
 
-        VerifyProperty(mock, Count.atLeastOnce, .name(set: .value("danny_1")))
-        VerifyProperty(mock, Count.in(range: 10..<20), .name(set: .any))
-        VerifyProperty(mock, Count.in(range: 10...20), .name(set: .any))
-        VerifyProperty(mock, Count.in(range: 10...), .name(set: .any))
+        VerifyProperty(mock, .atLeastOnce, .name(set: .value("danny_1")))
+        VerifyProperty(mock, .in(range: 10..<20), .name(set: .any))
+        VerifyProperty(mock, .in(range: 10...20), .name(set: .any))
+        VerifyProperty(mock, .in(range: 10...), .name(set: .any))
     }
 }
 
