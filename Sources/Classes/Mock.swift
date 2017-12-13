@@ -15,12 +15,7 @@ public protocol Mock: class {
     associatedtype Given
     associatedtype Verify
     associatedtype Perform
-
-    /// Returns number of invocations of given method (with matching attributes).
-    ///
-    /// - Parameter method: signature, with attributes (any or explicit value). Type `.` for all available
-    /// - Returns: How many times, stub for given signature was called
-    func matchingCalls(_ method: Verify) -> Int
+    associatedtype Property
 
     /// Registers return value for stubbed method, for specified attributes set.
     ///
@@ -61,7 +56,16 @@ public protocol Mock: class {
     ///   - count: Number of invocations
     ///   - file: for XCTest print purposes
     ///   - line: for XCTest print purposes
-    func verify(_ method: Verify, count: UInt, file: StaticString, line: UInt)
+    func verify(_ method: Verify, count: Count, file: StaticString, line: UInt)
+
+    /// Verifies, that given method stub was called exact number of times.
+    ///
+    /// - Parameters:
+    ///   - method: Method signature with wrapped parameters (Parameter<ValueType>)
+    ///   - count: Number of invocations
+    ///   - file: for XCTest print purposes
+    ///   - line: for XCTest print purposes
+    func verify(property: Property, count: Count, file: StaticString, line: UInt)
 }
 
 /// Every mock, that stubs static methods, should adopt **StaticMock** protocol.
@@ -70,13 +74,16 @@ public protocol StaticMock: class {
     associatedtype StaticGiven
     associatedtype StaticVerify
     associatedtype StaticPerform
+    associatedtype StaticProperty
 
-    static func matchingCalls(_ method: StaticVerify) -> Int
+    static func clear()
 
     static func given(_ method: StaticGiven)
 
     static func perform(_ method: StaticPerform)
 
-    static func verify(_ method: StaticVerify, count: UInt, file: StaticString, line: UInt)
+    static func verify(_ method: StaticVerify, count: Count, file: StaticString, line: UInt)
+
+    static func verify(property: StaticProperty, count: Count, file: StaticString, line: UInt)
 }
 

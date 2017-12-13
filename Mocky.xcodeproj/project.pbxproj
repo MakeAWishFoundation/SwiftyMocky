@@ -12,6 +12,13 @@
 		61B65D431C6E4154C44B6B1D /* Pods_Mocky_Example_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D435D6B1D3850EB6C36B69E /* Pods_Mocky_Example_iOS.framework */; };
 		6A629255223ACC1B05F1B6D7 /* Pods_Mocky_Tests_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 835A7223A01A944E0F3E0BCF /* Pods_Mocky_Tests_macOS.framework */; };
 		7D1174B528873ECD259B355C /* Pods_Mocky_Example_tvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 356426D9A4F6925FCD6469A5 /* Pods_Mocky_Example_tvOS.framework */; };
+		CC491A1B1FD9A33F001CAB8A /* Countable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC491A1A1FD9A33F001CAB8A /* Countable.swift */; };
+		CC491A1F1FDAB4BA001CAB8A /* ProtocolWithProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC491A1D1FDAB4AB001CAB8A /* ProtocolWithProperties.swift */; };
+		CC491A201FDAB4BB001CAB8A /* ProtocolWithProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC491A1D1FDAB4AB001CAB8A /* ProtocolWithProperties.swift */; };
+		CC491A211FDAB4BB001CAB8A /* ProtocolWithProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC491A1D1FDAB4AB001CAB8A /* ProtocolWithProperties.swift */; };
+		CC491A251FDAB587001CAB8A /* ProtocolWithPropertiesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC491A231FDAB583001CAB8A /* ProtocolWithPropertiesTests.swift */; };
+		CC491A261FDAB587001CAB8A /* ProtocolWithPropertiesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC491A231FDAB583001CAB8A /* ProtocolWithPropertiesTests.swift */; };
+		CC491A271FDAB588001CAB8A /* ProtocolWithPropertiesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC491A231FDAB583001CAB8A /* ProtocolWithPropertiesTests.swift */; };
 		CC5B61BE1FCC1764007FB209 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B61B71FCC1763007FB209 /* ViewController.swift */; };
 		CC5B61BF1FCC1764007FB209 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC5B61B81FCC1763007FB209 /* Assets.xcassets */; };
 		CC5B61C01FCC1764007FB209 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC5B61BA1FCC1763007FB209 /* Main.storyboard */; };
@@ -165,6 +172,9 @@
 		AAEE52510F67C7DF13FF8AF2 /* Pods-Mocky_Example_tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Example_tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Example_tvOS/Pods-Mocky_Example_tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		BCB5C12EDA17046011396E79 /* Pods-Mocky_Tests_tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Tests_tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Tests_tvOS/Pods-Mocky_Tests_tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		CAC0C2FE2E105DB67A93DC7E /* Pods_Mocky_Example_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mocky_Example_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC491A1A1FD9A33F001CAB8A /* Countable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Countable.swift; sourceTree = "<group>"; };
+		CC491A1D1FDAB4AB001CAB8A /* ProtocolWithProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolWithProperties.swift; sourceTree = "<group>"; };
+		CC491A231FDAB583001CAB8A /* ProtocolWithPropertiesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolWithPropertiesTests.swift; sourceTree = "<group>"; };
 		CC5B61981FCC16F7007FB209 /* Mocky_Example_macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mocky_Example_macOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC5B61A91FCC16F8007FB209 /* Mocky_Tests_macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Mocky_Tests_macOS.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC5B61B71FCC1763007FB209 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -378,6 +388,22 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		CC491A1C1FDAB48F001CAB8A /* Example 8 */ = {
+			isa = PBXGroup;
+			children = (
+				CC491A1D1FDAB4AB001CAB8A /* ProtocolWithProperties.swift */,
+			);
+			path = "Example 8";
+			sourceTree = "<group>";
+		};
+		CC491A221FDAB56F001CAB8A /* Example 8 */ = {
+			isa = PBXGroup;
+			children = (
+				CC491A231FDAB583001CAB8A /* ProtocolWithPropertiesTests.swift */,
+			);
+			path = "Example 8";
+			sourceTree = "<group>";
+		};
 		CC5B61B61FCC1763007FB209 /* macOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -438,6 +464,7 @@
 				CCAFC9FE1FAF24EB003F776A /* Mock+Assertions.swift */,
 				CCAFC9FA1FAF24EB003F776A /* Parameter.swift */,
 				CCAFC9FD1FAF24EB003F776A /* Matcher.swift */,
+				CC491A1A1FD9A33F001CAB8A /* Countable.swift */,
 				CCB026A71FB4F38F00ACA9F0 /* GenericAttribute.swift */,
 			);
 			name = Classes;
@@ -462,6 +489,7 @@
 				CCE350E71FCC0A9400A76C4C /* Example 5 */,
 				CCE350D91FCC0A9400A76C4C /* Example 6 */,
 				CCE350D71FCC0A9400A76C4C /* Example 7 */,
+				CC491A1C1FDAB48F001CAB8A /* Example 8 */,
 				CCE350DE1FCC0A9400A76C4C /* Model */,
 				CCE350D11FCC0A9400A76C4C /* Other */,
 			);
@@ -581,6 +609,7 @@
 				CCE351401FCC0B8200A76C4C /* Example 5 */,
 				CCE351351FCC0B8200A76C4C /* Example 6 */,
 				CCE351331FCC0B8200A76C4C /* Example 7 */,
+				CC491A221FDAB56F001CAB8A /* Example 8 */,
 				CCE3512F1FCC0B8200A76C4C /* Other */,
 			);
 			path = Shared;
@@ -1294,6 +1323,7 @@
 				CCE351041FCC0A9400A76C4C /* ProtocolWithThrowingMethods.swift in Sources */,
 				CCE350F21FCC0A9400A76C4C /* SampleService.swift in Sources */,
 				CCE350F41FCC0A9400A76C4C /* ProtocolsWithGenerics.swift in Sources */,
+				CC491A201FDAB4BB001CAB8A /* ProtocolWithProperties.swift in Sources */,
 				CCE351291FCC0AC300A76C4C /* ViewController.swift in Sources */,
 				CCE3512C1FCC0AC300A76C4C /* AppDelegate.swift in Sources */,
 				CCE351001FCC0A9400A76C4C /* ProtocolWithStaticMembers.swift in Sources */,
@@ -1313,6 +1343,7 @@
 				CCE351661FCC0B9700A76C4C /* Mock.generated.swift in Sources */,
 				CCE351511FCC0B8200A76C4C /* ProtocolWithStaticMembersTests.swift in Sources */,
 				CCE351451FCC0B8200A76C4C /* ComplicatedServiceTests.swift in Sources */,
+				CC491A261FDAB587001CAB8A /* ProtocolWithPropertiesTests.swift in Sources */,
 				CCE351681FCC0B9700A76C4C /* Mocky_tvOS_Tests.swift in Sources */,
 				CCE3514D1FCC0B8200A76C4C /* ProtocolsWithCollectionsTests.swift in Sources */,
 				CCE351671FCC0B9700A76C4C /* ItemsRepositoryMock.swift in Sources */,
@@ -1339,6 +1370,7 @@
 				CCE351031FCC0A9400A76C4C /* ProtocolWithThrowingMethods.swift in Sources */,
 				CCE350F11FCC0A9400A76C4C /* SampleService.swift in Sources */,
 				CCE350F31FCC0A9400A76C4C /* ProtocolsWithGenerics.swift in Sources */,
+				CC491A1F1FDAB4BA001CAB8A /* ProtocolWithProperties.swift in Sources */,
 				CCE351101FCC0A9F00A76C4C /* ViewController.swift in Sources */,
 				CCE351141FCC0A9F00A76C4C /* AppDelegate.swift in Sources */,
 				CCE350FF1FCC0A9400A76C4C /* ProtocolWithStaticMembers.swift in Sources */,
@@ -1353,6 +1385,7 @@
 				CCE351421FCC0B8200A76C4C /* SampleServiceTests.swift in Sources */,
 				CCE351561FCC0B8200A76C4C /* ProtocolWithClosuresTests.swift in Sources */,
 				CCE351521FCC0B8200A76C4C /* ProtocolsWithCustomAttributesTests.swift in Sources */,
+				CC491A251FDAB587001CAB8A /* ProtocolWithPropertiesTests.swift in Sources */,
 				CCE3514A1FCC0B8200A76C4C /* ProtocolWithInitializersTests.swift in Sources */,
 				CCE351541FCC0B8200A76C4C /* ProtocolWithThrowingMehtodsTests.swift in Sources */,
 				CCE3515D1FCC0B8F00A76C4C /* Mock.generated.swift in Sources */,
@@ -1383,6 +1416,7 @@
 				CC5B61D51FCC18C4007FB209 /* Item.swift in Sources */,
 				CC5B61BE1FCC1764007FB209 /* ViewController.swift in Sources */,
 				CC5B61CD1FCC18BC007FB209 /* ProtocolsWithCollections.swift in Sources */,
+				CC491A211FDAB4BB001CAB8A /* ProtocolWithProperties.swift in Sources */,
 				CC5B61CE1FCC18BC007FB209 /* SimpleProtocols.swift in Sources */,
 				CC5B61D71FCC18C4007FB209 /* NonSwiftProtocol.swift in Sources */,
 				CC5B61D21FCC18C4007FB209 /* ProtocolsWithClosures.swift in Sources */,
@@ -1402,6 +1436,7 @@
 				CC5B61E21FCC18D0007FB209 /* ProtocolWithInitializersTests.swift in Sources */,
 				CC5B61E51FCC18D0007FB209 /* SampleServiceTests.swift in Sources */,
 				CC5B61DE1FCC18D0007FB209 /* ProtocolWithThrowingMehtodsTests.swift in Sources */,
+				CC491A271FDAB588001CAB8A /* ProtocolWithPropertiesTests.swift in Sources */,
 				CC5B61E61FCC18D0007FB209 /* ComplicatedServiceTests.swift in Sources */,
 				CC5B61E41FCC18D0007FB209 /* ExampleTests.swift in Sources */,
 				CC5B61DF1FCC18D0007FB209 /* ProtocolsWithCustomAttributesTests.swift in Sources */,
@@ -1417,6 +1452,7 @@
 				CCAFCA061FAF24EB003F776A /* Mock+Assertions.swift in Sources */,
 				CCAFCA021FAF24EB003F776A /* Parameter.swift in Sources */,
 				CCAFCA051FAF24EB003F776A /* Matcher.swift in Sources */,
+				CC491A1B1FD9A33F001CAB8A /* Countable.swift in Sources */,
 				CCAFCA041FAF24EB003F776A /* Mock.swift in Sources */,
 				CCB026A81FB4F39000ACA9F0 /* GenericAttribute.swift in Sources */,
 			);
