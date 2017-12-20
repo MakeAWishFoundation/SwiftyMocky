@@ -219,7 +219,7 @@ SwiftyMocky is available under the MIT license. See the [LICENSE][link-license] 
 
 <!-- Links -->
 
-[link-slack]: https://join.slack.com/t/swiftymocky/shared_invite/enQtMjc0NzI5ODU3NTcxLTdmN2Q0NzQ3OWFmYTZlZmZkYTI3M2VmNzAzZDIzNWUwYjVhOTlmYWFiYzc2OGZkMzBkN2RkMmQ3NzQyMmIyNDU
+[link-slack]: https://join.slack.com/t/swiftymocky/shared_invite/enQtMjkwNDE1NjY5MjA3LTU2YjA4YTI3NDE5MzNkZTU4MzlmMzkwYmUzNzRiNWRlN2U5NmUyMDNkN2U0NGE2ZDkxYTU4NGViYzIxYjc5ZmE
 [link-license]: https://github.com/MakeAWishFoundation/SwiftyMocky/blob/master/LICENSE
 [link-guides-contents]: https://github.com/MakeAWishFoundation/SwiftyMocky/blob/master/guides/Contents.md
 [link-guides-features]: https://github.com/MakeAWishFoundation/SwiftyMocky/blob/master/guides/Supported%20features.md
