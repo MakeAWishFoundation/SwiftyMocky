@@ -1,7 +1,10 @@
 sources:
-  - ./SwiftyMocky-Example/Shared
-  - ./SwiftyMocky-Example/iOS
-  - ./SwiftyMocky-Tests/iOS
+  include:
+    - ./SwiftyMocky-Example/Shared
+    - ./SwiftyMocky-Example/iOS
+    - ./SwiftyMocky-Tests/iOS
+  exclude:
+    - ./SwiftyMocky-Example/Shared/Other/Excluded.generated.swift
 templates:
   - ./Sources/Templates
 output:

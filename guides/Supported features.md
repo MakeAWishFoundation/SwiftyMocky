@@ -26,6 +26,7 @@ Support for stubbing protocol members:
 - [x] stubbing static methods
 - [ ] stubbing generic methods
     - [x] constrained to protocol conformance
+    - [ ] with 'T.Type' attributes
     - [ ] constrained to same type
 - [x] stubbing variables (with get, set)
     - [x] instance variables
@@ -70,7 +71,7 @@ Usage of Perform to execute closure, when stubbed method is called:
     - [x] ValueType is Sequences of Equatable elements
     - [x] ValueType is not Equatable - **when registered comparator in Matcher**
     - [x] ValueType is Equatable is `@escaping` closure - **when registered comparator in Matcher**
-    - [ ] **!!!** ValueType is not `@escaping` closure - **always handled as** `.any`
+    - [x] **!!!** ValueType is not `@escaping` closure - **always handled as** `.any`
 - [x] expect perform closure for static stubs
 
 ## Verify
@@ -83,7 +84,7 @@ Usage of Verify to check, whether specific stubbed method was called on Mock
     - [x] ValueType is Sequences of Equatable elements
     - [x] ValueType is not Equatable - **when registered comparator in Matcher**
     - [x] ValueType is Equatable is `@escaping` closure - **when registered comparator in Matcher**
-    - [ ] **!!!** ValueType is not `@escaping` closure - **always handled as** `.any`
+    - [x] **!!!** ValueType is not `@escaping` closure - **always handled as** `.any`
 - [x] verify if called at least once
 - [x] verify if called exactly number of times
 - [x] verify for static methods

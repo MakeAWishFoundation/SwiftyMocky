@@ -4,6 +4,16 @@ All changes to SwiftyMocky project will be documented in this file.
 
 -----
 
+## __1.0.3__ / 2018
+
+#### Added:
+* Exclude sources documentation
+* Protocol 'inheritance' test
+
+#### Fixed:
+
+-----
+
 ## __1.0.2__ / 2017
 
 #### Added:

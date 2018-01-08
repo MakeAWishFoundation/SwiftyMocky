@@ -13,7 +13,7 @@
     <a title="Setup in project  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">SwiftyMocky Docs</a> (71% documented)</p>
+        <p><a href="index.html">SwiftyMocky Docs</a> (67% documented)</p>
         <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -107,10 +107,22 @@
                 <a href="Global methods.html#/s:11SwiftyMocky6Verifyyxm_06StaticC0Qzs0D6StringV4fileSu4linetAA0D4MockRzlF">Verify(_:_:file:line:)</a>
               </li>
               <li class="nav-group-task">
-                <a href="Global methods.html#/s:11SwiftyMocky6Verifyyx_SuABQzs12StaticStringV4fileSu4linetAA4MockRzlF">Verify(_:_:_:file:line:)</a>
+                <a href="Global methods.html#/s:11SwiftyMocky6Verifyyx_AA5CountVABQzs12StaticStringV4fileSu4linetAA4MockRzlF">Verify(_:_:_:file:line:)</a>
               </li>
               <li class="nav-group-task">
-                <a href="Global methods.html#/s:11SwiftyMocky6Verifyyxm_Su06StaticC0Qzs0D6StringV4fileSu4linetAA0D4MockRzlF">Verify(_:_:_:file:line:)</a>
+                <a href="Global methods.html#/s:11SwiftyMocky6Verifyyxm_AA5CountV06StaticC0Qzs0E6StringV4fileSu4linetAA0E4MockRzlF">Verify(_:_:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global methods.html#/s:11SwiftyMocky14VerifyPropertyyx_0D0Qzs12StaticStringV4fileSu4linetAA4MockRzlF">VerifyProperty(_:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global methods.html#/s:11SwiftyMocky14VerifyPropertyyxm_06StaticD0Qzs0E6StringV4fileSu4linetAA0E4MockRzlF">VerifyProperty(_:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global methods.html#/s:11SwiftyMocky14VerifyPropertyyx_AA5CountV0D0Qzs12StaticStringV4fileSu4linetAA4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global methods.html#/s:11SwiftyMocky14VerifyPropertyyxm_AA5CountV06StaticD0Qzs0F6StringV4fileSu4linetAA0F4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
               </li>
             </ul>
           </li>
@@ -126,7 +138,13 @@
             <a href="Other Extensions.html">Other Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a href="Other Extensions.html#/s:Si">Int</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Extensions/Optional.html">Optional</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Other Extensions.html#/s:Su">UInt</a>
               </li>
             </ul>
           </li>
@@ -150,8 +168,9 @@
 
 <p>First, create file in your project root directory with following structure:</p>
 <pre class="highlight yaml"><code><span class="s">sources</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="s">./ExampleApp</span>
-  <span class="pi">-</span> <span class="s">./ExampleAppTests</span>
+  <span class="s">include</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">./ExampleApp</span>
+    <span class="pi">-</span> <span class="s">./ExampleAppTests</span>
 <span class="s">templates</span><span class="pi">:</span>
   <span class="pi">-</span> <span class="s">./Pods/SwiftyMocky/Sources/Templates</span>
 <span class="s">output</span><span class="pi">:</span>
@@ -170,13 +189,19 @@
 </code></pre>
 
 <ul>
-<li><strong>sources</strong>: all directories you want to scan for protocols/files marked to be auto mocked, or inline mocked</li>
+<li><strong>sources</strong>: all directories you want to scan for protocols/files marked to be auto mocked, or inline mocked. You can use <code>exclude</code>, to prevent from scanning particular files (makes sense for big <code>*.generated.swift</code> files)</li>
 <li><strong>templates</strong>: path to SwiftyMocky sourcery templates, in Pods directory</li>
 <li><strong>output</strong>: place where <code>Mock.generated.swift</code> will be placed</li>
 <li><strong>testable</strong>: specify imports for Mock.generated, that should be marked as <code>@testable</code> (usually tested app module)</li>
 <li><strong>import</strong>: all additional imports, external libraries etc. to be placed in Mock.generated</li>
 <li><strong>excludedSwiftLintRules</strong>: if using swift SwiftLint.</li>
 </ul>
+
+<blockquote>
+<p>** Please note!**
+In some cases (for example when using R.swift for assets management), there are big generated swift files involved, that can extend time of generating mocks.
+In such cases, you can exclude particular files from whole process, using <code>exclude</code> in same way as <code>include</code> in config.yml.</p>
+</blockquote>
 <h2 id='generate-mocks' class='heading'>Generate mocks:</h2>
 
 <ol>

@@ -175,6 +175,9 @@ class SimpleProtocolsTests: XCTestCase {
     func test_simpleProtocol_that_inherits() {
         let mock = SimpleProtocolThatInheritsOtherProtocolsMock()
 
+        XCTAssert(mock is SimpleProtocolWithProperties)
+        XCTAssert(mock is SimpleProtocolWithMethods)
+
         Verify(mock, 0, .simpleMethod()) // Should be 0
 
         mock.simpleMethod()

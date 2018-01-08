@@ -37,3 +37,5 @@ custom_categories:
       - Perform(_:_:)
       - Verify(_:_:file:line:)
       - Verify(_:_:_:file:line:)
+      - VerifyProperty(_:_:file:line:)
+      - VerifyProperty(_:_:_:file:line:)

@@ -8,6 +8,7 @@ All examples are part of example project, which contains more examples.
     - [Simple protocol with methods](#example1.1)
     - [Simple protocol with methods - optional attributes](#example1.2)
     - [Simple protocol with properties](#example1.3)
+    - [Protocol, that adopts other protocols](#example1.4)
 2. [Example 2:](#example2) throwing
     - [Simple protocol with methods that throws](#example2.1)
 3. [Example 3:](#example3) custom attributes
@@ -145,6 +146,48 @@ XCTAssertEqual(mock.propertyImplicit, 1)
 
 mock.propertyOptional = 2
 XCTAssertEqual(mock.propertyOptional, 2)
+```
+
+### <a name="example1.4"></a> Protocol, that adopts other protocols
+
+By default, SwiftyMocky will generate Mock, adopting all methods/properties gathered from all protocols, so it will support
+
+Protocol definition:
+
+```swift
+//sourcery: AutoMockable
+protocol SimpleProtocolWithMethods {
+    func simpleMethod()
+    func simpleMehtodThatReturns() -> Int
+    func simpleMehtodThatReturns(param: String) -> String
+    func simpleMehtodThatReturns(optionalParam: String?) -> String?
+}
+
+//sourcery: AutoMockable
+protocol SimpleProtocolWithProperties {
+    var property: String { get set }
+    weak var weakProperty: AnyObject! { get set }
+    var propertyGetOnly: String { get }
+    var propertyOptional: Int? { get set }
+    var propertyImplicit: Int! { get set }
+}
+
+//sourcery: AutoMockable
+protocol SimpleProtocolThatInheritsOtherProtocols: SimpleProtocolWithMethods, SimpleProtocolWithProperties {
+
+}
+```
+
+Test - setup mock:
+
+```swift
+func test_simpleProtocol_that_inherits() {
+    let mock = SimpleProtocolThatInheritsOtherProtocolsMock()
+
+    XCTAssert(mock is SimpleProtocolWithProperties)
+    XCTAssert(mock is SimpleProtocolWithMethods)
+    ...
+}
 ```
 
 ## <a name="example2"></a> Example 2:
