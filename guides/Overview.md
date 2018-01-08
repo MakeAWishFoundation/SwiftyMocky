@@ -67,6 +67,37 @@ Verify(mockStorage, 3, .storeUser(name: .any, surname: .any))
 Verify(mockStorage, 2, .storeUser(name: .value("Johny"), surname: .any))
 ```
 
+For **Verify**, you can use **Count** to specify how many times you expect something to be triggered. **Count** can be defined as explicit value:
+
+```swift
+Verify(mockStorage, 2, .storeUser(name: .value("Johny"), surname: .any))
+```
+
+But has many more predefined options, like:
+
+```swift
+Verify(mockStorage, .atLeastOnce, .storeUser(name: .value("Johny"), surname: .any))
+Verify(mockStorage, .in(range: 0...3), .storeUser(name: .value("Johny"), surname: .any))
+Verify(mockStorage, .less(than: 4), .storeUser(name: .value("Johny"), surname: .any))
+```
+
+### **4. Do something when stub is called - Perform**
+
+All mocks has **perform** method (accessible both as instance method or global function), with easy to use syntax, allowing to specify closure, that will be executed upon stubbed method being called.
+
+It uses same paramter wrapping features as given, so you can specify different **Perform** cases for different attributes set.
+
+It's very handy when working with completion block based approach.
+
+Example:
+
+```swift
+// Perform allows to execute given closure, with all the method parameters, as soon as it is being called
+Perform(mock, .methodThatTakesCompletionBlock(completion: .any, perform: { completion in
+    completion(true,nil)
+}))
+```
+
 ## Current version
 
 Master branch is still in beta, breaking changes are possible.

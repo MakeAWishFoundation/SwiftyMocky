@@ -21,7 +21,7 @@ All examples are part of example project, which contains more examples.
     - [Working with escaping closures](#example5.2)
     - [Using completion block based approach](#example5.3)
 6. [Example 6:](#example6) protocol with initializers requirement
-6. [Example 7:](#example7) generics
+7. [Example 7:](#example7) generics
     - [Protocol with generic methods](#example7.1)
     - [Protocol with associated types](#example7.2)
 

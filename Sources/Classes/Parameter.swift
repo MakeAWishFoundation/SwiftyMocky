@@ -25,8 +25,11 @@ import Foundation
 /// - any: represents and matches any parameter value
 /// - value: represents explicit parameter value
 public enum Parameter<ValueType> {
+    /// Wildcard - any value
     case `_`
+    /// Explicit value
     case value(ValueType)
+    /// Any value matching
     case matching((ValueType) -> Bool)
 
     /// Represents and matches any parameter value - syntactic sugar for `._` case.

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Optional Extension Reference</title>
+    <title>Countable Protocol Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,8 +10,8 @@
     
   </head>
   <body>
-    <a name="//apple_ref/swift/Extension/Optional" class="dashAnchor"></a>
-    <a title="Optional Extension Reference"></a>
+    <a name="//apple_ref/swift/Protocol/Countable" class="dashAnchor"></a>
+    <a title="Countable Protocol Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html">SwiftyMocky Docs</a> (93% documented)</p>
@@ -22,7 +22,7 @@
       <p id="breadcrumbs">
         <a href="../index.html">SwiftyMocky Reference</a>
         <img id="carat" src="../img/carat.png" />
-        Optional Extension Reference
+        Countable Protocol Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -173,14 +173,15 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>Optional</h1>
+            <h1>Countable</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="kd">enum</span> <span class="kt">Optional</span><span class="o">&lt;</span><span class="kt">Wrapped</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">ExpressibleByNilLiteral</span></code></pre>
+                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Countable</span></code></pre>
 
                 </div>
               </div>
-            
+            <p>Allows matching count, verifying whether given count is right or not</p>
+
           </section>
           <section class="section task-group-section">
             <div class="task-group">
@@ -188,9 +189,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:Sq11SwiftyMockyE6orFailxSSF"></a>
-                    <a name="//apple_ref/swift/Method/orFail(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:Sq11SwiftyMockyE6orFailxSSF">orFail(_:)</a>
+                    <a name="/s:11SwiftyMocky9CountableP7matchesSbSiF"></a>
+                    <a name="//apple_ref/swift/Method/matches(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky9CountableP7matchesSbSiF">matches(_:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -198,14 +199,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Returns unwrapped value, or fails.</p>
+                        <p>Returns whether given count matches countable case.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">orFail</span><span class="p">(</span><span class="n">_</span> <span class="nv">message</span><span class="p">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">"unwrapping nil"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Wrapped</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">matches</span><span class="p">(</span><span class="n">_</span> <span class="nv">count</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
 
                         </div>
                       </div>
@@ -216,12 +217,12 @@
                             <tr>
                               <td>
                                 <code>
-                                <em>message</em>
+                                <em>count</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>Failure message</p>
+                                  <p>Given count</p>
                                 </div>
                               </td>
                             </tr>
@@ -230,7 +231,7 @@
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>Unwrapped value</p>
+                        <p>true, if it is within boundaries, false otherwise</p>
                       </div>
                     </section>
                   </div>

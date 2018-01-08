@@ -28,8 +28,8 @@ custom_categories:
       - StaticMock
       - Parameter
       - Matcher
-      - GenericAttribute
-      - GenericAttributeType
+      - Countable
+      - Count
 
   - name: Global methods
     children:
@@ -39,3 +39,8 @@ custom_categories:
       - Verify(_:_:_:file:line:)
       - VerifyProperty(_:_:file:line:)
       - VerifyProperty(_:_:_:file:line:)
+
+  - name: Generics
+    children:
+      - GenericAttribute
+      - GenericAttributeType

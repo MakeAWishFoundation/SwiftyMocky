@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Optional Extension Reference</title>
+    <title>GenericAttributeType Protocol Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,8 +10,8 @@
     
   </head>
   <body>
-    <a name="//apple_ref/swift/Extension/Optional" class="dashAnchor"></a>
-    <a title="Optional Extension Reference"></a>
+    <a name="//apple_ref/swift/Protocol/GenericAttributeType" class="dashAnchor"></a>
+    <a title="GenericAttributeType Protocol Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html">SwiftyMocky Docs</a> (93% documented)</p>
@@ -22,7 +22,7 @@
       <p id="breadcrumbs">
         <a href="../index.html">SwiftyMocky Reference</a>
         <img id="carat" src="../img/carat.png" />
-        Optional Extension Reference
+        GenericAttributeType Protocol Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -173,14 +173,15 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>Optional</h1>
+            <h1>GenericAttributeType</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="kd">enum</span> <span class="kt">Optional</span><span class="o">&lt;</span><span class="kt">Wrapped</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">ExpressibleByNilLiteral</span></code></pre>
+                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">GenericAttributeType</span></code></pre>
 
                 </div>
               </div>
-            
+            <p>[Internal] Used as generic constraint for generic method stubs.</p>
+
           </section>
           <section class="section task-group-section">
             <div class="task-group">
@@ -188,9 +189,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:Sq11SwiftyMockyE6orFailxSSF"></a>
-                    <a name="//apple_ref/swift/Method/orFail(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:Sq11SwiftyMockyE6orFailxSSF">orFail(_:)</a>
+                    <a name="/s:11SwiftyMocky20GenericAttributeTypeP5valueypv"></a>
+                    <a name="//apple_ref/swift/Property/value" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky20GenericAttributeTypeP5valueypv">value</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -198,39 +199,43 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Returns unwrapped value, or fails.</p>
+                        <p>Returned value</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">orFail</span><span class="p">(</span><span class="n">_</span> <span class="nv">message</span><span class="p">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">"unwrapping nil"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Wrapped</span></code></pre>
+                          <pre class="highlight"><code><span class="k">var</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">Any</span></code></pre>
 
                         </div>
                       </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>message</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>Failure message</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky20GenericAttributeTypeP7compareSbyp_ypAA7MatcherCtcv"></a>
+                    <a name="//apple_ref/swift/Property/compare" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky20GenericAttributeTypeP7compareSbyp_ypAA7MatcherCtcv">compare</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Used to compare with other generic attributes values</p>
+
                       </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>Unwrapped value</p>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">var</span> <span class="nv">compare</span><span class="p">:</span> <span class="p">(</span><span class="kt">Any</span><span class="p">,</span><span class="kt">Any</span><span class="p">,</span><span class="kt"><a href="../Classes/Matcher.html">Matcher</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>

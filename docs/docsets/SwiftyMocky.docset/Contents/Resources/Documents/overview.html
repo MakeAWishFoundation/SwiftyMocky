@@ -13,7 +13,7 @@
     <a title="Overview  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">SwiftyMocky Docs</a> (67% documented)</p>
+        <p><a href="index.html">SwiftyMocky Docs</a> (93% documented)</p>
         <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -69,7 +69,7 @@
                 <a href="Protocols/Mock.html">Mock</a>
               </li>
               <li class="nav-group-task">
-                <a href="Types.html#/s:11SwiftyMocky10StaticMockP">StaticMock</a>
+                <a href="Protocols/StaticMock.html">StaticMock</a>
               </li>
               <li class="nav-group-task">
                 <a href="Enums/Parameter.html">Parameter</a>
@@ -78,10 +78,10 @@
                 <a href="Classes/Matcher.html">Matcher</a>
               </li>
               <li class="nav-group-task">
-                <a href="Types.html#/s:11SwiftyMocky16GenericAttributeV">GenericAttribute</a>
+                <a href="Protocols/Countable.html">Countable</a>
               </li>
               <li class="nav-group-task">
-                <a href="Types.html#/s:11SwiftyMocky20GenericAttributeTypeP">GenericAttributeType</a>
+                <a href="Structs/Count.html">Count</a>
               </li>
             </ul>
           </li>
@@ -127,6 +127,17 @@
             </ul>
           </li>
           <li class="nav-group-name">
+            <a href="Generics.html">Generics</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Structs/GenericAttribute.html">GenericAttribute</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/GenericAttributeType.html">GenericAttributeType</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
             <a href="Other Guides.html">Other Guides</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
@@ -138,13 +149,13 @@
             <a href="Other Extensions.html">Other Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="Other Extensions.html#/s:Si">Int</a>
+                <a href="Extensions/Int.html">Int</a>
               </li>
               <li class="nav-group-task">
                 <a href="Extensions/Optional.html">Optional</a>
               </li>
               <li class="nav-group-task">
-                <a href="Other Extensions.html#/s:Su">UInt</a>
+                <a href="Extensions/UInt.html">UInt</a>
               </li>
             </ul>
           </li>
@@ -223,6 +234,30 @@
 <span class="kt">Verify</span><span class="p">(</span><span class="n">mockStorage</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">.</span><span class="nf">storeUser</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="n">any</span><span class="p">,</span> <span class="nv">surname</span><span class="p">:</span> <span class="o">.</span><span class="n">any</span><span class="p">))</span>
 <span class="c1">// storeUser method should be triggered 2 times with name Johny</span>
 <span class="kt">Verify</span><span class="p">(</span><span class="n">mockStorage</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">.</span><span class="nf">storeUser</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="s">"Johny"</span><span class="p">),</span> <span class="nv">surname</span><span class="p">:</span> <span class="o">.</span><span class="n">any</span><span class="p">))</span>
+</code></pre>
+
+<p>For <strong>Verify</strong>, you can use <strong>Count</strong> to specify how many times you expect something to be triggered. <strong>Count</strong> can be defined as explicit value:</p>
+<pre class="highlight swift"><code><span class="kt">Verify</span><span class="p">(</span><span class="n">mockStorage</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">.</span><span class="nf">storeUser</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="s">"Johny"</span><span class="p">),</span> <span class="nv">surname</span><span class="p">:</span> <span class="o">.</span><span class="n">any</span><span class="p">))</span>
+</code></pre>
+
+<p>But has many more predefined options, like:</p>
+<pre class="highlight swift"><code><span class="kt">Verify</span><span class="p">(</span><span class="n">mockStorage</span><span class="p">,</span> <span class="o">.</span><span class="n">atLeastOnce</span><span class="p">,</span> <span class="o">.</span><span class="nf">storeUser</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="s">"Johny"</span><span class="p">),</span> <span class="nv">surname</span><span class="p">:</span> <span class="o">.</span><span class="n">any</span><span class="p">))</span>
+<span class="kt">Verify</span><span class="p">(</span><span class="n">mockStorage</span><span class="p">,</span> <span class="o">.</span><span class="nf">in</span><span class="p">(</span><span class="nv">range</span><span class="p">:</span> <span class="mi">0</span><span class="o">...</span><span class="mi">3</span><span class="p">),</span> <span class="o">.</span><span class="nf">storeUser</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="s">"Johny"</span><span class="p">),</span> <span class="nv">surname</span><span class="p">:</span> <span class="o">.</span><span class="n">any</span><span class="p">))</span>
+<span class="kt">Verify</span><span class="p">(</span><span class="n">mockStorage</span><span class="p">,</span> <span class="o">.</span><span class="nf">less</span><span class="p">(</span><span class="nv">than</span><span class="p">:</span> <span class="mi">4</span><span class="p">),</span> <span class="o">.</span><span class="nf">storeUser</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="s">"Johny"</span><span class="p">),</span> <span class="nv">surname</span><span class="p">:</span> <span class="o">.</span><span class="n">any</span><span class="p">))</span>
+</code></pre>
+<h3 id='strong-4-do-something-when-stub-is-called-perform-strong' class='heading'><strong>4. Do something when stub is called - Perform</strong></h3>
+
+<p>All mocks has <strong>perform</strong> method (accessible both as instance method or global function), with easy to use syntax, allowing to specify closure, that will be executed upon stubbed method being called.</p>
+
+<p>It uses same paramter wrapping features as given, so you can specify different <strong>Perform</strong> cases for different attributes set.</p>
+
+<p>It&rsquo;s very handy when working with completion block based approach.</p>
+
+<p>Example:</p>
+<pre class="highlight swift"><code><span class="c1">// Perform allows to execute given closure, with all the method parameters, as soon as it is being called</span>
+<span class="kt">Perform</span><span class="p">(</span><span class="n">mock</span><span class="p">,</span> <span class="o">.</span><span class="nf">methodThatTakesCompletionBlock</span><span class="p">(</span><span class="nv">completion</span><span class="p">:</span> <span class="o">.</span><span class="n">any</span><span class="p">,</span> <span class="nv">perform</span><span class="p">:</span> <span class="p">{</span> <span class="n">completion</span> <span class="k">in</span>
+    <span class="nf">completion</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span><span class="kc">nil</span><span class="p">)</span>
+<span class="p">}))</span>
 </code></pre>
 <h2 id='current-version' class='heading'>Current version</h2>
 

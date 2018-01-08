@@ -14,7 +14,7 @@
     <a title="Mock Protocol Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">SwiftyMocky Docs</a> (67% documented)</p>
+        <p><a href="../index.html">SwiftyMocky Docs</a> (93% documented)</p>
         <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -70,7 +70,7 @@
                 <a href="../Protocols/Mock.html">Mock</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Types.html#/s:11SwiftyMocky10StaticMockP">StaticMock</a>
+                <a href="../Protocols/StaticMock.html">StaticMock</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/Parameter.html">Parameter</a>
@@ -79,10 +79,10 @@
                 <a href="../Classes/Matcher.html">Matcher</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Types.html#/s:11SwiftyMocky16GenericAttributeV">GenericAttribute</a>
+                <a href="../Protocols/Countable.html">Countable</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Types.html#/s:11SwiftyMocky20GenericAttributeTypeP">GenericAttributeType</a>
+                <a href="../Structs/Count.html">Count</a>
               </li>
             </ul>
           </li>
@@ -128,6 +128,17 @@
             </ul>
           </li>
           <li class="nav-group-name">
+            <a href="../Generics.html">Generics</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/GenericAttribute.html">GenericAttribute</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/GenericAttributeType.html">GenericAttributeType</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
             <a href="../Other Guides.html">Other Guides</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
@@ -139,13 +150,13 @@
             <a href="../Other Extensions.html">Other Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Other Extensions.html#/s:Si">Int</a>
+                <a href="../Extensions/Int.html">Int</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Extensions/Optional.html">Optional</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Other Extensions.html#/s:Su">UInt</a>
+                <a href="../Extensions/UInt.html">UInt</a>
               </li>
             </ul>
           </li>
@@ -315,7 +326,7 @@ Method stub will return most recent one.</li>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">verify</span><span class="p">(</span><span class="n">_</span> <span class="nv">method</span><span class="p">:</span> <span class="kt">Verify</span><span class="p">,</span> <span class="nv">count</span><span class="p">:</span> <span class="kt">Count</span><span class="p">,</span> <span class="nv">file</span><span class="p">:</span> <span class="kt">StaticString</span><span class="p">,</span> <span class="nv">line</span><span class="p">:</span> <span class="kt">UInt</span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">verify</span><span class="p">(</span><span class="n">_</span> <span class="nv">method</span><span class="p">:</span> <span class="kt">Verify</span><span class="p">,</span> <span class="nv">count</span><span class="p">:</span> <span class="kt"><a href="../Structs/Count.html">Count</a></span><span class="p">,</span> <span class="nv">file</span><span class="p">:</span> <span class="kt">StaticString</span><span class="p">,</span> <span class="nv">line</span><span class="p">:</span> <span class="kt">UInt</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -390,14 +401,14 @@ Method stub will return most recent one.</li>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Verifies, that given method stub was called exact number of times.</p>
+                        <p>Verifies, that given property stub was called exact number of times.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">verify</span><span class="p">(</span><span class="nv">property</span><span class="p">:</span> <span class="kt">Property</span><span class="p">,</span> <span class="nv">count</span><span class="p">:</span> <span class="kt">Count</span><span class="p">,</span> <span class="nv">file</span><span class="p">:</span> <span class="kt">StaticString</span><span class="p">,</span> <span class="nv">line</span><span class="p">:</span> <span class="kt">UInt</span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">verify</span><span class="p">(</span><span class="nv">property</span><span class="p">:</span> <span class="kt">Property</span><span class="p">,</span> <span class="nv">count</span><span class="p">:</span> <span class="kt"><a href="../Structs/Count.html">Count</a></span><span class="p">,</span> <span class="nv">file</span><span class="p">:</span> <span class="kt">StaticString</span><span class="p">,</span> <span class="nv">line</span><span class="p">:</span> <span class="kt">UInt</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -408,12 +419,12 @@ Method stub will return most recent one.</li>
                             <tr>
                               <td>
                                 <code>
-                                <em>method</em>
+                                <em>property</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>Method signature with wrapped parameters (Parameter<ValueType>)</p>
+                                  <p>property with get or set (with newValueParameter<ValueType>)</p>
                                 </div>
                               </td>
                             </tr>
