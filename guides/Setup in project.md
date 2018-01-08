@@ -6,8 +6,9 @@ First, create file in your project root directory with following structure:
 
 ```yaml
 sources:
-  - ./ExampleApp
-  - ./ExampleAppTests
+  include:
+    - ./ExampleApp
+    - ./ExampleAppTests
 templates:
   - ./Pods/SwiftyMocky/Sources/Templates
 output:
@@ -25,12 +26,16 @@ args:
     - vertical_whitespace
 ```
 
-+ **sources**: all directories you want to scan for protocols/files marked to be auto mocked, or inline mocked
++ **sources**: all directories you want to scan for protocols/files marked to be auto mocked, or inline mocked. You can use `exclude`, to prevent from scanning particular files (makes sense for big `*.generated.swift` files)
 + **templates**: path to SwiftyMocky sourcery templates, in Pods directory
 + **output**: place where `Mock.generated.swift` will be placed
 + **testable**: specify imports for Mock.generated, that should be marked as `@testable` (usually tested app module)
 + **import**: all additional imports, external libraries etc. to be placed in Mock.generated
 + **excludedSwiftLintRules**: if using swift SwiftLint.
+
+> ** Please note!**
+> In some cases (for example when using R.swift for assets management), there are big generated swift files involved, that can extend time of generating mocks.
+> In such cases, you can exclude particular files from whole process, using `exclude` in same way as `include` in config.yml.
 
 ## Generate mocks:
 

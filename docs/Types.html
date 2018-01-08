@@ -13,7 +13,7 @@
     <a title="Types  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">SwiftyMocky Docs</a> (71% documented)</p>
+        <p><a href="index.html">SwiftyMocky Docs</a> (93% documented)</p>
         <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -69,7 +69,7 @@
                 <a href="Protocols/Mock.html">Mock</a>
               </li>
               <li class="nav-group-task">
-                <a href="Types.html#/s:11SwiftyMocky10StaticMockP">StaticMock</a>
+                <a href="Protocols/StaticMock.html">StaticMock</a>
               </li>
               <li class="nav-group-task">
                 <a href="Enums/Parameter.html">Parameter</a>
@@ -78,10 +78,10 @@
                 <a href="Classes/Matcher.html">Matcher</a>
               </li>
               <li class="nav-group-task">
-                <a href="Types.html#/s:11SwiftyMocky16GenericAttributeV">GenericAttribute</a>
+                <a href="Protocols/Countable.html">Countable</a>
               </li>
               <li class="nav-group-task">
-                <a href="Types.html#/s:11SwiftyMocky20GenericAttributeTypeP">GenericAttributeType</a>
+                <a href="Structs/Count.html">Count</a>
               </li>
             </ul>
           </li>
@@ -107,10 +107,33 @@
                 <a href="Global methods.html#/s:11SwiftyMocky6Verifyyxm_06StaticC0Qzs0D6StringV4fileSu4linetAA0D4MockRzlF">Verify(_:_:file:line:)</a>
               </li>
               <li class="nav-group-task">
-                <a href="Global methods.html#/s:11SwiftyMocky6Verifyyx_SuABQzs12StaticStringV4fileSu4linetAA4MockRzlF">Verify(_:_:_:file:line:)</a>
+                <a href="Global methods.html#/s:11SwiftyMocky6Verifyyx_AA5CountVABQzs12StaticStringV4fileSu4linetAA4MockRzlF">Verify(_:_:_:file:line:)</a>
               </li>
               <li class="nav-group-task">
-                <a href="Global methods.html#/s:11SwiftyMocky6Verifyyxm_Su06StaticC0Qzs0D6StringV4fileSu4linetAA0D4MockRzlF">Verify(_:_:_:file:line:)</a>
+                <a href="Global methods.html#/s:11SwiftyMocky6Verifyyxm_AA5CountV06StaticC0Qzs0E6StringV4fileSu4linetAA0E4MockRzlF">Verify(_:_:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global methods.html#/s:11SwiftyMocky14VerifyPropertyyx_0D0Qzs12StaticStringV4fileSu4linetAA4MockRzlF">VerifyProperty(_:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global methods.html#/s:11SwiftyMocky14VerifyPropertyyxm_06StaticD0Qzs0E6StringV4fileSu4linetAA0E4MockRzlF">VerifyProperty(_:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global methods.html#/s:11SwiftyMocky14VerifyPropertyyx_AA5CountV0D0Qzs12StaticStringV4fileSu4linetAA4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global methods.html#/s:11SwiftyMocky14VerifyPropertyyxm_AA5CountV06StaticD0Qzs0F6StringV4fileSu4linetAA0F4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Generics.html">Generics</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Structs/GenericAttribute.html">GenericAttribute</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/GenericAttributeType.html">GenericAttributeType</a>
               </li>
             </ul>
           </li>
@@ -126,7 +149,13 @@
             <a href="Other Extensions.html">Other Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a href="Extensions/Int.html">Int</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Extensions/Optional.html">Optional</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/UInt.html">UInt</a>
               </li>
             </ul>
           </li>
@@ -194,6 +223,7 @@ It defines base Mock structure and features.</p>
                         <p>Every mock, that stubs static methods, should adopt <strong>StaticMock</strong> protocol.
 It defines base StaticMock structure and features.</p>
 
+                        <a href="Protocols/StaticMock.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
@@ -297,9 +327,9 @@ unless you register comparator for its <em>ValueType</em> in <strong>Matcher</st
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:11SwiftyMocky16GenericAttributeV"></a>
-                    <a name="//apple_ref/swift/Struct/GenericAttribute" class="dashAnchor"></a>
-                    <a class="token" href="#/s:11SwiftyMocky16GenericAttributeV">GenericAttribute</a>
+                    <a name="/s:11SwiftyMocky9CountableP"></a>
+                    <a name="//apple_ref/swift/Protocol/Countable" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky9CountableP">Countable</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -307,14 +337,15 @@ unless you register comparator for its <em>ValueType</em> in <strong>Matcher</st
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>[Internal] Used to wrap generic parameters, for sake of generic method stubs.</p>
+                        <p>Allows matching count, verifying whether given count is right or not</p>
 
+                        <a href="Protocols/Countable.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">GenericAttribute</span><span class="p">:</span> <span class="kt"><a href="Types.html#/s:11SwiftyMocky20GenericAttributeTypeP">GenericAttributeType</a></span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Countable</span></code></pre>
 
                         </div>
                       </div>
@@ -324,9 +355,9 @@ unless you register comparator for its <em>ValueType</em> in <strong>Matcher</st
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:11SwiftyMocky20GenericAttributeTypeP"></a>
-                    <a name="//apple_ref/swift/Protocol/GenericAttributeType" class="dashAnchor"></a>
-                    <a class="token" href="#/s:11SwiftyMocky20GenericAttributeTypeP">GenericAttributeType</a>
+                    <a name="/s:11SwiftyMocky5CountV"></a>
+                    <a name="//apple_ref/swift/Struct/Count" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky5CountV">Count</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -334,14 +365,38 @@ unless you register comparator for its <em>ValueType</em> in <strong>Matcher</st
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>[Internal] Used as generic constraint for generic method stubs.</p>
+                        <p>Count object. Use it for all Verify features, when checking how many times something happened.</p>
 
+<p>There are three ways of using it:</p>
+
+<ol>
+<li>Explicit literal - you can pass 0, 1, 2 &hellip; to verify exact number</li>
+<li>Using init with closure, to specify matching rule like:
+ <code>
+ Count() { return ... }
+</code></li>
+<li>Using one of predefined rules, for example:
+
+<ul>
+<li>.never</li>
+<li>.atLeastOnce</li>
+<li>.in(range: 0&hellip;3)</li>
+<li>.in(range: 1..&lt;3)</li>
+<li>.in(range: 7&hellip;)</li>
+<li>.more(than: 2)</li>
+<li>.moreOrEqual(to: 3)</li>
+<li>.less(than: 2)</li>
+<li>.lessOrEqual(to: 1)</li>
+</ul></li>
+</ol>
+
+                        <a href="Structs/Count.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">GenericAttributeType</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Count</span><span class="p">:</span> <span class="kt"><a href="Protocols/Countable.html">Countable</a></span><span class="p">,</span> <span class="kt">ExpressibleByIntegerLiteral</span></code></pre>
 
                         </div>
                       </div>
