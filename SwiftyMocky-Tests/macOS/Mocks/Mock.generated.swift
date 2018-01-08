@@ -1,4 +1,4 @@
-// Generated using Sourcery 0.9.0 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 0.10.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
 
@@ -3171,6 +3171,259 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
         XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
     public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+
+    private func methodReturnValue(_ method: MethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
+    }
+
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+}
+
+// MARK: - SimpleProtocolThatInheritsOtherProtocols
+class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInheritsOtherProtocols, Mock {
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    var matcher: Matcher = Matcher.default
+
+    var property: String { 
+		get {	invocations.append(.property_get)
+				return __property.orFail("SimpleProtocolThatInheritsOtherProtocolsMock - value for property was not defined") }
+		set {	invocations.append(.property_set(.value(newValue)))
+				__property = newValue }
+	}
+	private var __property: (String)?
+    var weakProperty: AnyObject! { 
+		get {	invocations.append(.weakProperty_get)
+				return __weakProperty.orFail("SimpleProtocolThatInheritsOtherProtocolsMock - value for weakProperty was not defined") }
+		set {	invocations.append(.weakProperty_set(.value(newValue)))
+				__weakProperty = newValue }
+	}
+	private var __weakProperty: (AnyObject)?
+    var propertyGetOnly: String { 
+		get {	invocations.append(.propertyGetOnly_get)
+				return __propertyGetOnly.orFail("SimpleProtocolThatInheritsOtherProtocolsMock - value for propertyGetOnly was not defined") }
+		set {	invocations.append(.propertyGetOnly_set(.value(newValue)))
+				__propertyGetOnly = newValue }
+	}
+	private var __propertyGetOnly: (String)?
+    var propertyOptional: Int? { 
+		get {	invocations.append(.propertyOptional_get)
+				return __propertyOptional }
+		set {	invocations.append(.propertyOptional_set(.value(newValue)))
+				__propertyOptional = newValue }
+	}
+	private var __propertyOptional: (Int)?
+    var propertyImplicit: Int! { 
+		get {	invocations.append(.propertyImplicit_get)
+				return __propertyImplicit.orFail("SimpleProtocolThatInheritsOtherProtocolsMock - value for propertyImplicit was not defined") }
+		set {	invocations.append(.propertyImplicit_set(.value(newValue)))
+				__propertyImplicit = newValue }
+	}
+	private var __propertyImplicit: (Int)?
+
+    struct Property {
+        fileprivate var method: MethodType
+        static var property: Property { return Property(method: .property_get) }
+		static func property(set newValue: Parameter<String>) -> Property { return Property(method: .property_set(newValue)) }
+        static var weakProperty: Property { return Property(method: .weakProperty_get) }
+		static func weakProperty(set newValue: Parameter<AnyObject?>) -> Property { return Property(method: .weakProperty_set(newValue)) }
+        static var propertyGetOnly: Property { return Property(method: .propertyGetOnly_get) }
+		static func propertyGetOnly(set newValue: Parameter<String>) -> Property { return Property(method: .propertyGetOnly_set(newValue)) }
+        static var propertyOptional: Property { return Property(method: .propertyOptional_get) }
+		static func propertyOptional(set newValue: Parameter<Int?>) -> Property { return Property(method: .propertyOptional_set(newValue)) }
+        static var propertyImplicit: Property { return Property(method: .propertyImplicit_get) }
+		static func propertyImplicit(set newValue: Parameter<Int?>) -> Property { return Property(method: .propertyImplicit_set(newValue)) }
+    }
+
+
+    func simpleMethod() {
+        addInvocation(.isimpleMethod)
+		let perform = methodPerformValue(.isimpleMethod) as? () -> Void
+		perform?()
+    }
+
+    func simpleMehtodThatReturns() -> Int {
+        addInvocation(.isimpleMehtodThatReturns)
+		let perform = methodPerformValue(.isimpleMehtodThatReturns) as? () -> Void
+		perform?()
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.isimpleMehtodThatReturns)
+		let value = givenValue.value as? Int
+		return value.orFail("stub return value not specified for simpleMehtodThatReturns(). Use given")
+    }
+
+    func simpleMehtodThatReturns(param: String) -> String {
+        addInvocation(.isimpleMehtodThatReturns__param_param(Parameter<String>.value(param)))
+		let perform = methodPerformValue(.isimpleMehtodThatReturns__param_param(Parameter<String>.value(param))) as? (String) -> Void
+		perform?(param)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.isimpleMehtodThatReturns__param_param(Parameter<String>.value(param)))
+		let value = givenValue.value as? String
+		return value.orFail("stub return value not specified for simpleMehtodThatReturns(param: String). Use given")
+    }
+
+    func simpleMehtodThatReturns(optionalParam: String?) -> String? {
+        addInvocation(.isimpleMehtodThatReturns__optionalParam_optionalParam(Parameter<String?>.value(optionalParam)))
+		let perform = methodPerformValue(.isimpleMehtodThatReturns__optionalParam_optionalParam(Parameter<String?>.value(optionalParam))) as? (String?) -> Void
+		perform?(optionalParam)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.isimpleMehtodThatReturns__optionalParam_optionalParam(Parameter<String?>.value(optionalParam)))
+		let value = givenValue.value as? String?
+		return value.orFail("stub return value not specified for simpleMehtodThatReturns(optionalParam: String?). Use given")
+    }
+
+    fileprivate enum MethodType {
+        case isimpleMethod
+        case isimpleMehtodThatReturns
+        case isimpleMehtodThatReturns__param_param(Parameter<String>)
+        case isimpleMehtodThatReturns__optionalParam_optionalParam(Parameter<String?>)
+        case property_get
+		case property_set(Parameter<String>)
+        case weakProperty_get
+		case weakProperty_set(Parameter<AnyObject?>)
+        case propertyGetOnly_get
+		case propertyGetOnly_set(Parameter<String>)
+        case propertyOptional_get
+		case propertyOptional_set(Parameter<Int?>)
+        case propertyImplicit_get
+		case propertyImplicit_set(Parameter<Int?>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+                case (.isimpleMethod, .isimpleMethod): 
+                    return true 
+                case (.isimpleMehtodThatReturns, .isimpleMehtodThatReturns): 
+                    return true 
+                case (.isimpleMehtodThatReturns__param_param(let lhsParam), .isimpleMehtodThatReturns__param_param(let rhsParam)): 
+                    guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
+                    return true 
+                case (.isimpleMehtodThatReturns__optionalParam_optionalParam(let lhsOptionalparam), .isimpleMehtodThatReturns__optionalParam_optionalParam(let rhsOptionalparam)): 
+                    guard Parameter.compare(lhs: lhsOptionalparam, rhs: rhsOptionalparam, with: matcher) else { return false } 
+                    return true 
+                case (.property_get,.property_get): return true
+				case (.property_set(let left),.property_set(let right)): return Parameter<String>.compare(lhs: left, rhs: right, with: matcher)
+                case (.weakProperty_get,.weakProperty_get): return true
+				case (.weakProperty_set(let left),.weakProperty_set(let right)): return Parameter<AnyObject?>.compare(lhs: left, rhs: right, with: matcher)
+                case (.propertyGetOnly_get,.propertyGetOnly_get): return true
+				case (.propertyGetOnly_set(let left),.propertyGetOnly_set(let right)): return Parameter<String>.compare(lhs: left, rhs: right, with: matcher)
+                case (.propertyOptional_get,.propertyOptional_get): return true
+				case (.propertyOptional_set(let left),.propertyOptional_set(let right)): return Parameter<Int?>.compare(lhs: left, rhs: right, with: matcher)
+                case (.propertyImplicit_get,.propertyImplicit_get): return true
+				case (.propertyImplicit_set(let left),.propertyImplicit_set(let right)): return Parameter<Int?>.compare(lhs: left, rhs: right, with: matcher)
+                default: return false
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+                case .isimpleMethod: return 0
+                case .isimpleMehtodThatReturns: return 0
+                case let .isimpleMehtodThatReturns__param_param(p0): return p0.intValue
+                case let .isimpleMehtodThatReturns__optionalParam_optionalParam(p0): return p0.intValue
+                case .property_get: return 0
+				case .property_set(let newValue): return newValue.intValue
+                case .weakProperty_get: return 0
+				case .weakProperty_set(let newValue): return newValue.intValue
+                case .propertyGetOnly_get: return 0
+				case .propertyGetOnly_set(let newValue): return newValue.intValue
+                case .propertyOptional_get: return 0
+				case .propertyOptional_set(let newValue): return newValue.intValue
+                case .propertyImplicit_get: return 0
+				case .propertyImplicit_set(let newValue): return newValue.intValue
+            }
+        }
+    }
+
+    struct Given {
+        fileprivate var method: MethodType
+        var returns: Any?
+        var `throws`: Error?
+
+        private init(method: MethodType, returns: Any?, throws: Error?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
+
+        static func simpleMehtodThatReturns(willReturn: Int) -> Given {
+            return Given(method: .isimpleMehtodThatReturns, returns: willReturn, throws: nil)
+        }
+        static func simpleMehtodThatReturns(param: Parameter<String>, willReturn: String) -> Given {
+            return Given(method: .isimpleMehtodThatReturns__param_param(param), returns: willReturn, throws: nil)
+        }
+        static func simpleMehtodThatReturns(optionalParam: Parameter<String?>, willReturn: String?) -> Given {
+            return Given(method: .isimpleMehtodThatReturns__optionalParam_optionalParam(optionalParam), returns: willReturn, throws: nil)
+        }
+    }
+
+    struct Verify {
+        fileprivate var method: MethodType
+
+        static func simpleMethod() -> Verify {
+            return Verify(method: .isimpleMethod)
+        }
+        static func simpleMehtodThatReturns() -> Verify {
+            return Verify(method: .isimpleMehtodThatReturns)
+        }
+        static func simpleMehtodThatReturns(param: Parameter<String>) -> Verify {
+            return Verify(method: .isimpleMehtodThatReturns__param_param(param))
+        }
+        static func simpleMehtodThatReturns(optionalParam: Parameter<String?>) -> Verify {
+            return Verify(method: .isimpleMehtodThatReturns__optionalParam_optionalParam(optionalParam))
+        }
+    }
+
+    struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        static func simpleMethod(perform: () -> Void) -> Perform {
+            return Perform(method: .isimpleMethod, performs: perform)
+        }
+        static func simpleMehtodThatReturns(perform: () -> Void) -> Perform {
+            return Perform(method: .isimpleMehtodThatReturns, performs: perform)
+        }
+        static func simpleMehtodThatReturns(param: Parameter<String>, perform: (String) -> Void) -> Perform {
+            return Perform(method: .isimpleMehtodThatReturns__param_param(param), performs: perform)
+        }
+        static func simpleMehtodThatReturns(optionalParam: Parameter<String?>, perform: (String?) -> Void) -> Perform {
+            return Perform(method: .isimpleMehtodThatReturns__optionalParam_optionalParam(optionalParam), performs: perform)
+        }
+    }
+
+    private func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+        methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(property.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)

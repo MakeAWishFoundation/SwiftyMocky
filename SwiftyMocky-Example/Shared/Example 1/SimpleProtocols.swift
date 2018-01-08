@@ -30,3 +30,8 @@ protocol SimpleProtocolWithBothMethodsAndProperties {
     var property: String { get }
     func simpleMethod() -> String
 }
+
+//sourcery: AutoMockable
+protocol SimpleProtocolThatInheritsOtherProtocols: SimpleProtocolWithMethods, SimpleProtocolWithProperties {
+
+}
