@@ -3326,6 +3326,282 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
     }
 }
 
+// MARK: - SelfConstrainedProtocol
+class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    var matcher: Matcher = Matcher.default
+    static private var invocations: [StaticMethodType] = []
+    static private var methodReturnValues: [StaticGiven] = []
+    static private var methodPerformValues: [StaticPerform] = []
+    static var matcher: Matcher = Matcher.default
+    static func clear() {
+        invocations = []
+        methodReturnValues = []
+        methodPerformValues = []
+    }
+
+
+    typealias Property = Swift.Never
+
+    typealias StaticProperty = Swift.Never
+
+    static func construct(param value: Int) -> Self {
+        func _wrapped<__Self__>() -> __Self__ {
+		addInvocation(.sconstruct__param_value(Parameter<Int>.value(value)))
+		let perform = methodPerformValue(.sconstruct__param_value(Parameter<Int>.value(value))) as? (Int) -> Void
+		perform?(value)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.sconstruct__param_value(Parameter<Int>.value(value)))
+		let value = givenValue.value as? __Self__
+		return value.orFail("stub return value not specified for construct(param value: Int). Use given")
+		}
+		return _wrapped()
+    }
+
+    func copy() -> Self {
+        func _wrapped<__Self__>() -> __Self__ {
+		addInvocation(.icopy)
+		let perform = methodPerformValue(.icopy) as? () -> Void
+		perform?()
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.icopy)
+		let value = givenValue.value as? __Self__
+		return value.orFail("stub return value not specified for copy(). Use given")
+		}
+		return _wrapped()
+    }
+
+    func compare(with other: SelfConstrainedProtocolMock) -> Bool {
+        addInvocation(.icompare__with_other(Parameter<SelfConstrainedProtocolMock>.value(other)))
+		let perform = methodPerformValue(.icompare__with_other(Parameter<SelfConstrainedProtocolMock>.value(other))) as? (SelfConstrainedProtocolMock) -> Void
+		perform?(other)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.icompare__with_other(Parameter<SelfConstrainedProtocolMock>.value(other)))
+		let value = givenValue.value as? Bool
+		return value.orFail("stub return value not specified for compare(with other: Self). Use given")
+    }
+
+    func genericMethodWithNestedSelf<T>(param: Int, second: T, other: (SelfConstrainedProtocolMock,SelfConstrainedProtocolMock)) -> Self {
+        func _wrapped<__Self__>() -> __Self__ {
+		addInvocation(.igenericMethodWithNestedSelf__param_paramsecond_secondother_other(Parameter<Int>.value(param), Parameter<T>.value(second).wrapAsGeneric(), Parameter<(SelfConstrainedProtocolMock,SelfConstrainedProtocolMock)>.value(other)))
+		let perform = methodPerformValue(.igenericMethodWithNestedSelf__param_paramsecond_secondother_other(Parameter<Int>.value(param), Parameter<T>.value(second).wrapAsGeneric(), Parameter<(SelfConstrainedProtocolMock,SelfConstrainedProtocolMock)>.value(other))) as? (Int, T, (SelfConstrainedProtocolMock,SelfConstrainedProtocolMock)) -> Void
+		perform?(param, second, other)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.igenericMethodWithNestedSelf__param_paramsecond_secondother_other(Parameter<Int>.value(param), Parameter<T>.value(second).wrapAsGeneric(), Parameter<(SelfConstrainedProtocolMock,SelfConstrainedProtocolMock)>.value(other)))
+		let value = givenValue.value as? __Self__
+		return value.orFail("stub return value not specified for genericMethodWithNestedSelf<T>(param: Int, second: T, other: (Self,Self)). Use given")
+		}
+		return _wrapped()
+    }
+
+    fileprivate enum StaticMethodType {
+        case sconstruct__param_value(Parameter<Int>)
+
+
+        static func compareParameters(lhs: StaticMethodType, rhs: StaticMethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+                case (.sconstruct__param_value(let lhsValue), .sconstruct__param_value(let rhsValue)): 
+                    guard Parameter.compare(lhs: lhsValue, rhs: rhsValue, with: matcher) else { return false } 
+                    return true 
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+                case let .sconstruct__param_value(p0): return p0.intValue
+            }
+        }
+    }
+
+    struct StaticGiven {
+        fileprivate var method: StaticMethodType
+        var returns: Any?
+        var `throws`: Error?
+
+        private init(method: StaticMethodType, returns: Any?, throws: Error?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
+
+        static func construct(param value: Parameter<Int>, willReturn: SelfConstrainedProtocolMock) -> StaticGiven {
+            return StaticGiven(method: .sconstruct__param_value(value), returns: willReturn, throws: nil)
+        }
+    }
+
+    struct StaticVerify {
+        fileprivate var method: StaticMethodType
+
+        static func construct(param value: Parameter<Int>) -> StaticVerify {
+            return StaticVerify(method: .sconstruct__param_value(value))
+        }
+    }
+
+    struct StaticPerform {
+        fileprivate var method: StaticMethodType
+        var performs: Any
+
+        static func construct(param value: Parameter<Int>, perform: (Int) -> Void) -> StaticPerform {
+            return StaticPerform(method: .sconstruct__param_value(value), performs: perform)
+        }
+    }
+
+        fileprivate enum MethodType {
+        case icopy
+        case icompare__with_other(Parameter<SelfConstrainedProtocolMock>)
+        case igenericMethodWithNestedSelf__param_paramsecond_secondother_other(Parameter<Int>, Parameter<GenericAttribute>, Parameter<(SelfConstrainedProtocolMock,SelfConstrainedProtocolMock)>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+                case (.icopy, .icopy): 
+                    return true 
+                case (.icompare__with_other(let lhsOther), .icompare__with_other(let rhsOther)): 
+                    guard Parameter.compare(lhs: lhsOther, rhs: rhsOther, with: matcher) else { return false } 
+                    return true 
+                case (.igenericMethodWithNestedSelf__param_paramsecond_secondother_other(let lhsParam, let lhsSecond, let lhsOther), .igenericMethodWithNestedSelf__param_paramsecond_secondother_other(let rhsParam, let rhsSecond, let rhsOther)): 
+                    guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
+                    guard Parameter.compare(lhs: lhsSecond, rhs: rhsSecond, with: matcher) else { return false } 
+                    guard Parameter.compare(lhs: lhsOther, rhs: rhsOther, with: matcher) else { return false } 
+                    return true 
+                default: return false
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+                case .icopy: return 0
+                case let .icompare__with_other(p0): return p0.intValue
+                case let .igenericMethodWithNestedSelf__param_paramsecond_secondother_other(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
+            }
+        }
+    }
+
+    struct Given {
+        fileprivate var method: MethodType
+        var returns: Any?
+        var `throws`: Error?
+
+        private init(method: MethodType, returns: Any?, throws: Error?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
+
+        static func copy(willReturn: SelfConstrainedProtocolMock) -> Given {
+            return Given(method: .icopy, returns: willReturn, throws: nil)
+        }
+        static func compare(with other: Parameter<SelfConstrainedProtocolMock>, willReturn: Bool) -> Given {
+            return Given(method: .icompare__with_other(other), returns: willReturn, throws: nil)
+        }
+        static func genericMethodWithNestedSelf<T>(param: Parameter<Int>, second: Parameter<T>, other: Parameter<(SelfConstrainedProtocolMock,SelfConstrainedProtocolMock)>, willReturn: SelfConstrainedProtocolMock) -> Given {
+            return Given(method: .igenericMethodWithNestedSelf__param_paramsecond_secondother_other(param, second.wrapAsGeneric(), other), returns: willReturn, throws: nil)
+        }
+    }
+
+    struct Verify {
+        fileprivate var method: MethodType
+
+        static func copy() -> Verify {
+            return Verify(method: .icopy)
+        }
+        static func compare(with other: Parameter<SelfConstrainedProtocolMock>) -> Verify {
+            return Verify(method: .icompare__with_other(other))
+        }
+        static func genericMethodWithNestedSelf<T>(param: Parameter<Int>, second: Parameter<T>, other: Parameter<(SelfConstrainedProtocolMock,SelfConstrainedProtocolMock)>) -> Verify {
+            return Verify(method: .igenericMethodWithNestedSelf__param_paramsecond_secondother_other(param, second.wrapAsGeneric(), other))
+        }
+    }
+
+    struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        static func copy(perform: () -> Void) -> Perform {
+            return Perform(method: .icopy, performs: perform)
+        }
+        static func compare(with other: Parameter<SelfConstrainedProtocolMock>, perform: (SelfConstrainedProtocolMock) -> Void) -> Perform {
+            return Perform(method: .icompare__with_other(other), performs: perform)
+        }
+        static func genericMethodWithNestedSelf<T>(param: Parameter<Int>, second: Parameter<T>, other: Parameter<(SelfConstrainedProtocolMock,SelfConstrainedProtocolMock)>, perform: (Int, T, (SelfConstrainedProtocolMock,SelfConstrainedProtocolMock)) -> Void) -> Perform {
+            return Perform(method: .igenericMethodWithNestedSelf__param_paramsecond_secondother_other(param, second.wrapAsGeneric(), other), performs: perform)
+        }
+    }
+
+    private func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+        methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+
+    private func methodReturnValue(_ method: MethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
+    }
+
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+
+    static private func matchingCalls(_ method: StaticVerify) -> Int {
+        return matchingCalls(method.method).count
+    }
+
+    static public func given(_ method: StaticGiven) {
+        methodReturnValues.append(method)
+        methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    static public func perform(_ method: StaticPerform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    static public func verify(_ method: StaticVerify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+    static public func verify(property: StaticProperty, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
+
+    static private func addInvocation(_ call: StaticMethodType) {
+        invocations.append(call)
+    }
+
+    static private func methodReturnValue(_ method: StaticMethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
+    }
+
+    static private func methodPerformValue(_ method: StaticMethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+
+    static private func matchingCalls(_ method: StaticMethodType) -> [StaticMethodType] {
+        return invocations.filter { StaticMethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+}
+
 // MARK: - SimpleProtocolThatInheritsOtherProtocols
 class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInheritsOtherProtocols, Mock {
     private var invocations: [MethodType] = []
