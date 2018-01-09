@@ -15,6 +15,9 @@
 		CC3252172003CC22009AD6C2 /* Excluded.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3252162003CC22009AD6C2 /* Excluded.generated.swift */; };
 		CC3252182003CC22009AD6C2 /* Excluded.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3252162003CC22009AD6C2 /* Excluded.generated.swift */; };
 		CC3252192003CC22009AD6C2 /* Excluded.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3252162003CC22009AD6C2 /* Excluded.generated.swift */; };
+		CC32521B2004C217009AD6C2 /* GenericProtocolsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC32521A2004C217009AD6C2 /* GenericProtocolsTests.swift */; };
+		CC32521C2004C217009AD6C2 /* GenericProtocolsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC32521A2004C217009AD6C2 /* GenericProtocolsTests.swift */; };
+		CC32521D2004C217009AD6C2 /* GenericProtocolsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC32521A2004C217009AD6C2 /* GenericProtocolsTests.swift */; };
 		CC491A1B1FD9A33F001CAB8A /* Countable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC491A1A1FD9A33F001CAB8A /* Countable.swift */; };
 		CC491A1F1FDAB4BA001CAB8A /* ProtocolWithProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC491A1D1FDAB4AB001CAB8A /* ProtocolWithProperties.swift */; };
 		CC491A201FDAB4BB001CAB8A /* ProtocolWithProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC491A1D1FDAB4AB001CAB8A /* ProtocolWithProperties.swift */; };
@@ -176,6 +179,7 @@
 		BCB5C12EDA17046011396E79 /* Pods-Mocky_Tests_tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Tests_tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Tests_tvOS/Pods-Mocky_Tests_tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		CAC0C2FE2E105DB67A93DC7E /* Pods_Mocky_Example_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mocky_Example_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC3252162003CC22009AD6C2 /* Excluded.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Excluded.generated.swift; sourceTree = "<group>"; };
+		CC32521A2004C217009AD6C2 /* GenericProtocolsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericProtocolsTests.swift; sourceTree = "<group>"; };
 		CC491A1A1FD9A33F001CAB8A /* Countable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Countable.swift; sourceTree = "<group>"; };
 		CC491A1D1FDAB4AB001CAB8A /* ProtocolWithProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolWithProperties.swift; sourceTree = "<group>"; };
 		CC491A231FDAB583001CAB8A /* ProtocolWithPropertiesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolWithPropertiesTests.swift; sourceTree = "<group>"; };
@@ -626,6 +630,7 @@
 				CCE351321FCC0B8200A76C4C /* ExampleTests.swift */,
 				CCE351301FCC0B8200A76C4C /* SampleServiceTests.swift */,
 				CCE351311FCC0B8200A76C4C /* ComplicatedServiceTests.swift */,
+				CC32521A2004C217009AD6C2 /* GenericProtocolsTests.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -1351,6 +1356,7 @@
 				CCE351451FCC0B8200A76C4C /* ComplicatedServiceTests.swift in Sources */,
 				CC491A261FDAB587001CAB8A /* ProtocolWithPropertiesTests.swift in Sources */,
 				CCE351681FCC0B9700A76C4C /* Mocky_tvOS_Tests.swift in Sources */,
+				CC32521C2004C217009AD6C2 /* GenericProtocolsTests.swift in Sources */,
 				CCE3514D1FCC0B8200A76C4C /* ProtocolsWithCollectionsTests.swift in Sources */,
 				CCE351671FCC0B9700A76C4C /* ItemsRepositoryMock.swift in Sources */,
 				CCE351491FCC0B8200A76C4C /* ProtocolsWithGenericsTests.swift in Sources */,
@@ -1402,6 +1408,7 @@
 				CCE3515E1FCC0B8F00A76C4C /* ItemsRepositoryMock.swift in Sources */,
 				CCE351481FCC0B8200A76C4C /* ProtocolsWithGenericsTests.swift in Sources */,
 				CCE351461FCC0B8200A76C4C /* ExampleTests.swift in Sources */,
+				CC32521B2004C217009AD6C2 /* GenericProtocolsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1446,6 +1453,7 @@
 				CC5B61DE1FCC18D0007FB209 /* ProtocolWithThrowingMehtodsTests.swift in Sources */,
 				CC491A271FDAB588001CAB8A /* ProtocolWithPropertiesTests.swift in Sources */,
 				CC5B61E61FCC18D0007FB209 /* ComplicatedServiceTests.swift in Sources */,
+				CC32521D2004C217009AD6C2 /* GenericProtocolsTests.swift in Sources */,
 				CC5B61E41FCC18D0007FB209 /* ExampleTests.swift in Sources */,
 				CC5B61DF1FCC18D0007FB209 /* ProtocolsWithCustomAttributesTests.swift in Sources */,
 				CC5B61DC1FCC18D0007FB209 /* SimpleProtocolsTests.swift in Sources */,

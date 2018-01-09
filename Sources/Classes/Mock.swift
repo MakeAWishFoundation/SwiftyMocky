@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import XCTest
 
 /// Every generated mock implementation adopts **Mock** protocol.
 /// It defines base Mock structure and features.

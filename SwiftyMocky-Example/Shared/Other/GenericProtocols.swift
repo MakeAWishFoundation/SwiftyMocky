@@ -37,3 +37,9 @@ protocol AVeryAssociatedProtocol {
 
     func fetch(for value: T2) -> T1
 }
+
+//sourcery: AutoMockable
+protocol GenericProtocolWithTypeConstraint {
+    func decode<T: Decodable>(_ type: T.Type, from data: Data) -> T
+    func test<FOO>(_ type: FOO.Type) -> Int
+}
