@@ -2,10 +2,30 @@
 // DO NOT EDIT
 
 
-#if Mocky
+#if MockyCustom
+import SwiftyMocky
+@testable import Mocky_Example_macOS
+
+    public final class MockyAssertion {
+        public static var handler: ((Bool, String, StaticString, UInt) -> Void)?
+    }
+
+    func MockyAssert(_ expression: @autoclosure () -> Bool, _ message: @autoclosure () -> String = "Verification failed", file: StaticString = #file, line: UInt = #line) {
+        guard let handler = MockyAssertion.handler else {
+            assert(expression, message, file: file, line: line)
+            return
+        }
+
+        handler(expression(), message(), file, line)
+    }
+#elseif Mocky
 import SwiftyMocky
 import XCTest
 @testable import Mocky_Example_macOS
+
+    func MockyAssert(_ expression: @autoclosure () -> Bool, _ message: @autoclosure () -> String = "Verification failed", file: StaticString = #file, line: UInt = #line) {
+        XCTAssert(expression(), message(), file: file, line: line)
+    }
 #else
 import Sourcery
 import SourceryRuntime
@@ -145,12 +165,12 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
 
         static func compareParameters(lhs: StaticMethodType, rhs: StaticMethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.smethodThatThrows, .smethodThatThrows): 
+                case (.smethodThatThrows, .smethodThatThrows):
                     return true 
-                case (.smethodThatReturnsAndThrows__param_param(let lhsParam), .smethodThatReturnsAndThrows__param_param(let rhsParam)): 
+                case (.smethodThatReturnsAndThrows__param_param(let lhsParam), .smethodThatReturnsAndThrows__param_param(let rhsParam)):
                     guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
                     return true 
-                case (.smethodThatRethrows__param_param(let lhsParam), .smethodThatRethrows__param_param(let rhsParam)): 
+                case (.smethodThatRethrows__param_param(let lhsParam), .smethodThatRethrows__param_param(let rhsParam)):
                     guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
                     return true 
                 case (.optionalClosure_get,.optionalClosure_get): return true
@@ -240,12 +260,12 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.imethodThatThrows, .imethodThatThrows): 
+                case (.imethodThatThrows, .imethodThatThrows):
                     return true 
-                case (.imethodThatReturnsAndThrows__param_param(let lhsParam), .imethodThatReturnsAndThrows__param_param(let rhsParam)): 
+                case (.imethodThatReturnsAndThrows__param_param(let lhsParam), .imethodThatReturnsAndThrows__param_param(let rhsParam)):
                     guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
                     return true 
-                case (.imethodThatRethrows__param_param(let lhsParam), .imethodThatRethrows__param_param(let rhsParam)): 
+                case (.imethodThatRethrows__param_param(let lhsParam), .imethodThatRethrows__param_param(let rhsParam)):
                     guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
                     return true 
                 case (.nonOptionalClosure_get,.nonOptionalClosure_get): return true
@@ -346,12 +366,12 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(property.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -388,12 +408,12 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
 
     static public func verify(_ method: StaticVerify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     static public func verify(property: StaticProperty, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(property.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     static private func addInvocation(_ call: StaticMethodType) {
@@ -444,7 +464,7 @@ class AVeryAssociatedProtocolMock<TypeT1,TypeT2>: AVeryAssociatedProtocol, Mock 
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.ifetch__for_value(let lhsValue), .ifetch__for_value(let rhsValue)): 
+                case (.ifetch__for_value(let lhsValue), .ifetch__for_value(let rhsValue)):
                     guard Parameter.compare(lhs: lhsValue, rhs: rhsValue, with: matcher) else { return false } 
                     return true 
             }
@@ -506,7 +526,7 @@ class AVeryAssociatedProtocolMock<TypeT1,TypeT2>: AVeryAssociatedProtocol, Mock 
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
     public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
@@ -586,11 +606,11 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
 
         static func compareParameters(lhs: StaticMethodType, rhs: StaticMethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.sgeneric__lhs_lhsrhs_rhs(let lhsLhs, let lhsRhs), .sgeneric__lhs_lhsrhs_rhs(let rhsLhs, let rhsRhs)): 
+                case (.sgeneric__lhs_lhsrhs_rhs(let lhsLhs, let lhsRhs), .sgeneric__lhs_lhsrhs_rhs(let rhsLhs, let rhsRhs)):
                     guard Parameter.compare(lhs: lhsLhs, rhs: rhsLhs, with: matcher) else { return false } 
                     guard Parameter.compare(lhs: lhsRhs, rhs: rhsRhs, with: matcher) else { return false } 
                     return true 
-                case (.sveryConstrained__lhs_lhsrhs_rhs(let lhsLhs, let lhsRhs), .sveryConstrained__lhs_lhsrhs_rhs(let rhsLhs, let rhsRhs)): 
+                case (.sveryConstrained__lhs_lhsrhs_rhs(let lhsLhs, let lhsRhs), .sveryConstrained__lhs_lhsrhs_rhs(let rhsLhs, let rhsRhs)):
                     guard Parameter.compare(lhs: lhsLhs, rhs: rhsLhs, with: matcher) else { return false } 
                     guard Parameter.compare(lhs: lhsRhs, rhs: rhsRhs, with: matcher) else { return false } 
                     return true 
@@ -653,7 +673,7 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.imethodConstrained__param_param(let lhsParam), .imethodConstrained__param_param(let rhsParam)): 
+                case (.imethodConstrained__param_param(let lhsParam), .imethodConstrained__param_param(let rhsParam)):
                     guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
                     return true 
             }
@@ -715,7 +735,7 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
     public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
@@ -753,7 +773,7 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
 
     static public func verify(_ method: StaticVerify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
     static public func verify(property: StaticProperty, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
@@ -888,29 +908,29 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.iserviceName, .iserviceName): 
+                case (.iserviceName, .iserviceName):
                     return true 
-                case (.iaNewWayToSayHooray, .iaNewWayToSayHooray): 
+                case (.iaNewWayToSayHooray, .iaNewWayToSayHooray):
                     return true 
-                case (.igetPoint__from_point(let lhsPoint), .igetPoint__from_point(let rhsPoint)): 
+                case (.igetPoint__from_point(let lhsPoint), .igetPoint__from_point(let rhsPoint)):
                     guard Parameter.compare(lhs: lhsPoint, rhs: rhsPoint, with: matcher) else { return false } 
                     return true 
-                case (.igetPoint__from_tuple(let lhsTuple), .igetPoint__from_tuple(let rhsTuple)): 
+                case (.igetPoint__from_tuple(let lhsTuple), .igetPoint__from_tuple(let rhsTuple)):
                     guard Parameter.compare(lhs: lhsTuple, rhs: rhsTuple, with: matcher) else { return false } 
                     return true 
-                case (.isimilarMethodThatDiffersOnType__value_1(let lhsValue), .isimilarMethodThatDiffersOnType__value_1(let rhsValue)): 
+                case (.isimilarMethodThatDiffersOnType__value_1(let lhsValue), .isimilarMethodThatDiffersOnType__value_1(let rhsValue)):
                     guard Parameter.compare(lhs: lhsValue, rhs: rhsValue, with: matcher) else { return false } 
                     return true 
-                case (.isimilarMethodThatDiffersOnType__value_2(let lhsValue), .isimilarMethodThatDiffersOnType__value_2(let rhsValue)): 
+                case (.isimilarMethodThatDiffersOnType__value_2(let lhsValue), .isimilarMethodThatDiffersOnType__value_2(let rhsValue)):
                     guard Parameter.compare(lhs: lhsValue, rhs: rhsValue, with: matcher) else { return false } 
                     return true 
-                case (.imethodWithTypedef__scalar(let lhsScalar), .imethodWithTypedef__scalar(let rhsScalar)): 
+                case (.imethodWithTypedef__scalar(let lhsScalar), .imethodWithTypedef__scalar(let rhsScalar)):
                     guard Parameter.compare(lhs: lhsScalar, rhs: rhsScalar, with: matcher) else { return false } 
                     return true 
-                case (.imethodWithClosures__success_function_1(let lhsFunction), .imethodWithClosures__success_function_1(let rhsFunction)): 
+                case (.imethodWithClosures__success_function_1(let lhsFunction), .imethodWithClosures__success_function_1(let rhsFunction)):
                     guard Parameter.compare(lhs: lhsFunction, rhs: rhsFunction, with: matcher) else { return false } 
                     return true 
-                case (.imethodWithClosures__success_function_2(let lhsFunction), .imethodWithClosures__success_function_2(let rhsFunction)): 
+                case (.imethodWithClosures__success_function_2(let lhsFunction), .imethodWithClosures__success_function_2(let rhsFunction)):
                     guard Parameter.compare(lhs: lhsFunction, rhs: rhsFunction, with: matcher) else { return false } 
                     return true 
                 case (.youCouldOnlyGetThis_get,.youCouldOnlyGetThis_get): return true
@@ -1051,12 +1071,12 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(property.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -1160,12 +1180,12 @@ class DateSortableMock: DateSortable, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(property.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -1244,7 +1264,7 @@ class EmptyProtocolMock: EmptyProtocol, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
     public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
@@ -1302,11 +1322,11 @@ class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstraint, 
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.idecode__typefrom_data(let lhsType, let lhsData), .idecode__typefrom_data(let rhsType, let rhsData)): 
+                case (.idecode__typefrom_data(let lhsType, let lhsData), .idecode__typefrom_data(let rhsType, let rhsData)):
                     guard Parameter.compare(lhs: lhsType, rhs: rhsType, with: matcher) else { return false } 
                     guard Parameter.compare(lhs: lhsData, rhs: rhsData, with: matcher) else { return false } 
                     return true 
-                case (.itest__type(let lhsType), .itest__type(let rhsType)): 
+                case (.itest__type(let lhsType), .itest__type(let rhsType)):
                     guard Parameter.compare(lhs: lhsType, rhs: rhsType, with: matcher) else { return false } 
                     return true 
                 default: return false
@@ -1379,7 +1399,7 @@ class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstraint, 
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
     public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
@@ -1427,7 +1447,7 @@ class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.imap__items(let lhsItems), .imap__items(let rhsItems)): 
+                case (.imap__items(let lhsItems), .imap__items(let rhsItems)):
                     guard Parameter.compare(lhs: lhsItems, rhs: rhsItems, with: matcher) else { return false } 
                     return true 
             }
@@ -1489,7 +1509,7 @@ class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
     public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
@@ -1541,9 +1561,9 @@ class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.ireturnNoting, .ireturnNoting): 
+                case (.ireturnNoting, .ireturnNoting):
                     return true 
-                case (.isomeMethod, .isomeMethod): 
+                case (.isomeMethod, .isomeMethod):
                     return true 
                 default: return false
             }
@@ -1609,7 +1629,7 @@ class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
     public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
@@ -1673,7 +1693,7 @@ class ProtocolWithAssociatedTypeMock<TypeT>: ProtocolWithAssociatedType, Mock wh
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.imethodWithType__t_t(let lhsT), .imethodWithType__t_t(let rhsT)): 
+                case (.imethodWithType__t_t(let lhsT), .imethodWithType__t_t(let rhsT)):
                     guard Parameter.compare(lhs: lhsT, rhs: rhsT, with: matcher) else { return false } 
                     return true 
                 case (.sequence_get,.sequence_get): return true
@@ -1740,12 +1760,12 @@ class ProtocolWithAssociatedTypeMock<TypeT>: ProtocolWithAssociatedType, Mock wh
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(property.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -1803,13 +1823,13 @@ class ProtocolWithClosuresMock: ProtocolWithClosures, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.imethodThatTakes__closure_closure(let lhsClosure), .imethodThatTakes__closure_closure(let rhsClosure)): 
+                case (.imethodThatTakes__closure_closure(let lhsClosure), .imethodThatTakes__closure_closure(let rhsClosure)):
                     guard Parameter.compare(lhs: lhsClosure, rhs: rhsClosure, with: matcher) else { return false } 
                     return true 
-                case (.imethodThatTakesEscaping__closure_closure(let lhsClosure), .imethodThatTakesEscaping__closure_closure(let rhsClosure)): 
+                case (.imethodThatTakesEscaping__closure_closure(let lhsClosure), .imethodThatTakesEscaping__closure_closure(let rhsClosure)):
                     guard Parameter.compare(lhs: lhsClosure, rhs: rhsClosure, with: matcher) else { return false } 
                     return true 
-                case (.imethodThatTakesCompletionBlock__completion_completion(let lhsCompletion), .imethodThatTakesCompletionBlock__completion_completion(let rhsCompletion)): 
+                case (.imethodThatTakesCompletionBlock__completion_completion(let lhsCompletion), .imethodThatTakesCompletionBlock__completion_completion(let rhsCompletion)):
                     guard Parameter.compare(lhs: lhsCompletion, rhs: rhsCompletion, with: matcher) else { return false } 
                     return true 
                 default: return false
@@ -1883,7 +1903,7 @@ class ProtocolWithClosuresMock: ProtocolWithClosures, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
     public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
@@ -1940,10 +1960,10 @@ class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.imethodThatTakesUser__user_user(let lhsUser), .imethodThatTakesUser__user_user(let rhsUser)): 
+                case (.imethodThatTakesUser__user_user(let lhsUser), .imethodThatTakesUser__user_user(let rhsUser)):
                     guard Parameter.compare(lhs: lhsUser, rhs: rhsUser, with: matcher) else { return false } 
                     return true 
-                case (.imethodThatTakesArrayOfUsers__array_array(let lhsArray), .imethodThatTakesArrayOfUsers__array_array(let rhsArray)): 
+                case (.imethodThatTakesArrayOfUsers__array_array(let lhsArray), .imethodThatTakesArrayOfUsers__array_array(let rhsArray)):
                     guard Parameter.compare(lhs: lhsArray, rhs: rhsArray, with: matcher) else { return false } 
                     return true 
                 default: return false
@@ -2016,7 +2036,7 @@ class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
     public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
@@ -2074,11 +2094,11 @@ class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.imethodWithGeneric__lhs_lhsrhs_rhs(let lhsLhs, let lhsRhs), .imethodWithGeneric__lhs_lhsrhs_rhs(let rhsLhs, let rhsRhs)): 
+                case (.imethodWithGeneric__lhs_lhsrhs_rhs(let lhsLhs, let lhsRhs), .imethodWithGeneric__lhs_lhsrhs_rhs(let rhsLhs, let rhsRhs)):
                     guard Parameter.compare(lhs: lhsLhs, rhs: rhsLhs, with: matcher) else { return false } 
                     guard Parameter.compare(lhs: lhsRhs, rhs: rhsRhs, with: matcher) else { return false } 
                     return true 
-                case (.imethodWithGenericConstraint__param_param(let lhsParam), .imethodWithGenericConstraint__param_param(let rhsParam)): 
+                case (.imethodWithGenericConstraint__param_param(let lhsParam), .imethodWithGenericConstraint__param_param(let rhsParam)):
                     guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
                     return true 
                 default: return false
@@ -2151,7 +2171,7 @@ class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
     public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
@@ -2275,12 +2295,12 @@ class ProtocolWithInitializersMock: ProtocolWithInitializers, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(property.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -2391,7 +2411,7 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
 
         static func compareParameters(lhs: StaticMethodType, rhs: StaticMethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.sdefaultEmail__set_newValue(let lhsNewvalue), .sdefaultEmail__set_newValue(let rhsNewvalue)): 
+                case (.sdefaultEmail__set_newValue(let lhsNewvalue), .sdefaultEmail__set_newValue(let rhsNewvalue)):
                     guard Parameter.compare(lhs: lhsNewvalue, rhs: rhsNewvalue, with: matcher) else { return false } 
                     return true 
                 case (.name_get,.name_get): return true
@@ -2453,10 +2473,10 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.iname__set_newValue(let lhsNewvalue), .iname__set_newValue(let rhsNewvalue)): 
+                case (.iname__set_newValue(let lhsNewvalue), .iname__set_newValue(let rhsNewvalue)):
                     guard Parameter.compare(lhs: lhsNewvalue, rhs: rhsNewvalue, with: matcher) else { return false } 
                     return true 
-                case (.iemail__set_set(let lhsSet), .iemail__set_set(let rhsSet)): 
+                case (.iemail__set_set(let lhsSet), .iemail__set_set(let rhsSet)):
                     guard Parameter.compare(lhs: lhsSet, rhs: rhsSet, with: matcher) else { return false } 
                     return true 
                 case (.name_get,.name_get): return true
@@ -2531,12 +2551,12 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(property.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -2573,12 +2593,12 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
 
     static public func verify(_ method: StaticVerify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     static public func verify(property: StaticProperty, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(property.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     static private func addInvocation(_ call: StaticMethodType) {
@@ -2650,7 +2670,7 @@ class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, StaticMock
 
         static func compareParameters(lhs: StaticMethodType, rhs: StaticMethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.sstaticMethod__param_param(let lhsParam), .sstaticMethod__param_param(let rhsParam)): 
+                case (.sstaticMethod__param_param(let lhsParam), .sstaticMethod__param_param(let rhsParam)):
                     guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
                     return true 
                 case (.staticProperty_get,.staticProperty_get): return true
@@ -2750,7 +2770,7 @@ class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, StaticMock
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
     public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
@@ -2788,12 +2808,12 @@ class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, StaticMock
 
     static public func verify(_ method: StaticVerify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     static public func verify(property: StaticProperty, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(property.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     static private func addInvocation(_ call: StaticMethodType) {
@@ -2850,9 +2870,9 @@ class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.imethodThatThrows, .imethodThatThrows): 
+                case (.imethodThatThrows, .imethodThatThrows):
                     return true 
-                case (.imethodThatReturnsAndThrows__param_param(let lhsParam), .imethodThatReturnsAndThrows__param_param(let rhsParam)): 
+                case (.imethodThatReturnsAndThrows__param_param(let lhsParam), .imethodThatReturnsAndThrows__param_param(let rhsParam)):
                     guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
                     return true 
                 default: return false
@@ -2928,7 +2948,7 @@ class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
     public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
@@ -2976,7 +2996,7 @@ class ProtocolWithTuplesMock: ProtocolWithTuples, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.imethodThatTakesTuple__tuple_tuple(let lhsTuple), .imethodThatTakesTuple__tuple_tuple(let rhsTuple)): 
+                case (.imethodThatTakesTuple__tuple_tuple(let lhsTuple), .imethodThatTakesTuple__tuple_tuple(let rhsTuple)):
                     guard Parameter.compare(lhs: lhsTuple, rhs: rhsTuple, with: matcher) else { return false } 
                     return true 
             }
@@ -3038,7 +3058,7 @@ class ProtocolWithTuplesMock: ProtocolWithTuples, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
     public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
@@ -3153,27 +3173,27 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.iserviceName, .iserviceName): 
+                case (.iserviceName, .iserviceName):
                     return true 
-                case (.igetPoint__from_point(let lhsPoint), .igetPoint__from_point(let rhsPoint)): 
+                case (.igetPoint__from_point(let lhsPoint), .igetPoint__from_point(let rhsPoint)):
                     guard Parameter.compare(lhs: lhsPoint, rhs: rhsPoint, with: matcher) else { return false } 
                     return true 
-                case (.igetPoint__from_tuple(let lhsTuple), .igetPoint__from_tuple(let rhsTuple)): 
+                case (.igetPoint__from_tuple(let lhsTuple), .igetPoint__from_tuple(let rhsTuple)):
                     guard Parameter.compare(lhs: lhsTuple, rhs: rhsTuple, with: matcher) else { return false } 
                     return true 
-                case (.isimilarMethodThatDiffersOnType__value_1(let lhsValue), .isimilarMethodThatDiffersOnType__value_1(let rhsValue)): 
+                case (.isimilarMethodThatDiffersOnType__value_1(let lhsValue), .isimilarMethodThatDiffersOnType__value_1(let rhsValue)):
                     guard Parameter.compare(lhs: lhsValue, rhs: rhsValue, with: matcher) else { return false } 
                     return true 
-                case (.isimilarMethodThatDiffersOnType__value_2(let lhsValue), .isimilarMethodThatDiffersOnType__value_2(let rhsValue)): 
+                case (.isimilarMethodThatDiffersOnType__value_2(let lhsValue), .isimilarMethodThatDiffersOnType__value_2(let rhsValue)):
                     guard Parameter.compare(lhs: lhsValue, rhs: rhsValue, with: matcher) else { return false } 
                     return true 
-                case (.imethodWithTypedef__scalar(let lhsScalar), .imethodWithTypedef__scalar(let rhsScalar)): 
+                case (.imethodWithTypedef__scalar(let lhsScalar), .imethodWithTypedef__scalar(let rhsScalar)):
                     guard Parameter.compare(lhs: lhsScalar, rhs: rhsScalar, with: matcher) else { return false } 
                     return true 
-                case (.imethodWithClosures__success_function_1(let lhsFunction), .imethodWithClosures__success_function_1(let rhsFunction)): 
+                case (.imethodWithClosures__success_function_1(let lhsFunction), .imethodWithClosures__success_function_1(let rhsFunction)):
                     guard Parameter.compare(lhs: lhsFunction, rhs: rhsFunction, with: matcher) else { return false } 
                     return true 
-                case (.imethodWithClosures__success_function_2(let lhsFunction), .imethodWithClosures__success_function_2(let rhsFunction)): 
+                case (.imethodWithClosures__success_function_2(let lhsFunction), .imethodWithClosures__success_function_2(let rhsFunction)):
                     guard Parameter.compare(lhs: lhsFunction, rhs: rhsFunction, with: matcher) else { return false } 
                     return true 
                 default: return false
@@ -3303,7 +3323,7 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
     public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
@@ -3398,7 +3418,7 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
 
         static func compareParameters(lhs: StaticMethodType, rhs: StaticMethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.sconstruct__param_value(let lhsValue), .sconstruct__param_value(let rhsValue)): 
+                case (.sconstruct__param_value(let lhsValue), .sconstruct__param_value(let rhsValue)):
                     guard Parameter.compare(lhs: lhsValue, rhs: rhsValue, with: matcher) else { return false } 
                     return true 
             }
@@ -3451,12 +3471,12 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.imethodReturningSelf, .imethodReturningSelf): 
+                case (.imethodReturningSelf, .imethodReturningSelf):
                     return true 
-                case (.icompare__with_other(let lhsOther), .icompare__with_other(let rhsOther)): 
+                case (.icompare__with_other(let lhsOther), .icompare__with_other(let rhsOther)):
                     guard Parameter.compare(lhs: lhsOther, rhs: rhsOther, with: matcher) else { return false } 
                     return true 
-                case (.igenericMethodWithNestedSelf__param_paramsecond_secondother_other(let lhsParam, let lhsSecond, let lhsOther), .igenericMethodWithNestedSelf__param_paramsecond_secondother_other(let rhsParam, let rhsSecond, let rhsOther)): 
+                case (.igenericMethodWithNestedSelf__param_paramsecond_secondother_other(let lhsParam, let lhsSecond, let lhsOther), .igenericMethodWithNestedSelf__param_paramsecond_secondother_other(let rhsParam, let rhsSecond, let rhsOther)):
                     guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
                     guard Parameter.compare(lhs: lhsSecond, rhs: rhsSecond, with: matcher) else { return false } 
                     guard Parameter.compare(lhs: lhsOther, rhs: rhsOther, with: matcher) else { return false } 
@@ -3541,7 +3561,7 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
     public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
@@ -3579,7 +3599,7 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
 
     static public func verify(_ method: StaticVerify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
     static public func verify(property: StaticProperty, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
@@ -3711,14 +3731,14 @@ class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInheritsOt
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.isimpleMethod, .isimpleMethod): 
+                case (.isimpleMethod, .isimpleMethod):
                     return true 
-                case (.isimpleMehtodThatReturns, .isimpleMehtodThatReturns): 
+                case (.isimpleMehtodThatReturns, .isimpleMehtodThatReturns):
                     return true 
-                case (.isimpleMehtodThatReturns__param_param(let lhsParam), .isimpleMehtodThatReturns__param_param(let rhsParam)): 
+                case (.isimpleMehtodThatReturns__param_param(let lhsParam), .isimpleMehtodThatReturns__param_param(let rhsParam)):
                     guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
                     return true 
-                case (.isimpleMehtodThatReturns__optionalParam_optionalParam(let lhsOptionalparam), .isimpleMehtodThatReturns__optionalParam_optionalParam(let rhsOptionalparam)): 
+                case (.isimpleMehtodThatReturns__optionalParam_optionalParam(let lhsOptionalparam), .isimpleMehtodThatReturns__optionalParam_optionalParam(let rhsOptionalparam)):
                     guard Parameter.compare(lhs: lhsOptionalparam, rhs: rhsOptionalparam, with: matcher) else { return false } 
                     return true 
                 case (.property_get,.property_get): return true
@@ -3828,12 +3848,12 @@ class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInheritsOt
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(property.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -3900,13 +3920,13 @@ class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.igetArray, .igetArray): 
+                case (.igetArray, .igetArray):
                     return true 
-                case (.imap__array_arrayparam_param(let lhsArray, let lhsParam), .imap__array_arrayparam_param(let rhsArray, let rhsParam)): 
+                case (.imap__array_arrayparam_param(let lhsArray, let lhsParam), .imap__array_arrayparam_param(let rhsArray, let rhsParam)):
                     guard Parameter.compare(lhs: lhsArray, rhs: rhsArray, with: matcher) else { return false } 
                     guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
                     return true 
-                case (.iverify__set_set(let lhsSet), .iverify__set_set(let rhsSet)): 
+                case (.iverify__set_set(let lhsSet), .iverify__set_set(let rhsSet)):
                     guard Parameter.compare(lhs: lhsSet, rhs: rhsSet, with: matcher) else { return false } 
                     return true 
                 default: return false
@@ -3989,7 +4009,7 @@ class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
     public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
@@ -4050,7 +4070,7 @@ class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBothMeth
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.isimpleMethod, .isimpleMethod): 
+                case (.isimpleMethod, .isimpleMethod):
                     return true 
                 case (.property_get,.property_get): return true
 				case (.property_set(let left),.property_set(let right)): return Parameter<String>.compare(lhs: left, rhs: right, with: matcher)
@@ -4116,12 +4136,12 @@ class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBothMeth
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(property.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -4195,14 +4215,14 @@ class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.isimpleMethod, .isimpleMethod): 
+                case (.isimpleMethod, .isimpleMethod):
                     return true 
-                case (.isimpleMehtodThatReturns, .isimpleMehtodThatReturns): 
+                case (.isimpleMehtodThatReturns, .isimpleMehtodThatReturns):
                     return true 
-                case (.isimpleMehtodThatReturns__param_param(let lhsParam), .isimpleMehtodThatReturns__param_param(let rhsParam)): 
+                case (.isimpleMehtodThatReturns__param_param(let lhsParam), .isimpleMehtodThatReturns__param_param(let rhsParam)):
                     guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
                     return true 
-                case (.isimpleMehtodThatReturns__optionalParam_optionalParam(let lhsOptionalparam), .isimpleMehtodThatReturns__optionalParam_optionalParam(let rhsOptionalparam)): 
+                case (.isimpleMehtodThatReturns__optionalParam_optionalParam(let lhsOptionalparam), .isimpleMehtodThatReturns__optionalParam_optionalParam(let rhsOptionalparam)):
                     guard Parameter.compare(lhs: lhsOptionalparam, rhs: rhsOptionalparam, with: matcher) else { return false } 
                     return true 
                 default: return false
@@ -4292,7 +4312,7 @@ class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
     public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
@@ -4457,12 +4477,12 @@ class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(property.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -4531,18 +4551,18 @@ class UserNetworkTypeMock: UserNetworkType, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.igetUser__for_idcompletion_completion(let lhsId, let lhsCompletion), .igetUser__for_idcompletion_completion(let rhsId, let rhsCompletion)): 
+                case (.igetUser__for_idcompletion_completion(let lhsId, let lhsCompletion), .igetUser__for_idcompletion_completion(let rhsId, let rhsCompletion)):
                     guard Parameter.compare(lhs: lhsId, rhs: rhsId, with: matcher) else { return false } 
                     guard Parameter.compare(lhs: lhsCompletion, rhs: rhsCompletion, with: matcher) else { return false } 
                     return true 
-                case (.igetUserEscaping__for_idcompletion_completion(let lhsId, let lhsCompletion), .igetUserEscaping__for_idcompletion_completion(let rhsId, let rhsCompletion)): 
+                case (.igetUserEscaping__for_idcompletion_completion(let lhsId, let lhsCompletion), .igetUserEscaping__for_idcompletion_completion(let rhsId, let rhsCompletion)):
                     guard Parameter.compare(lhs: lhsId, rhs: rhsId, with: matcher) else { return false } 
                     guard Parameter.compare(lhs: lhsCompletion, rhs: rhsCompletion, with: matcher) else { return false } 
                     return true 
-                case (.idoSomething__prop_prop(let lhsProp), .idoSomething__prop_prop(let rhsProp)): 
+                case (.idoSomething__prop_prop(let lhsProp), .idoSomething__prop_prop(let rhsProp)):
                     guard Parameter.compare(lhs: lhsProp, rhs: rhsProp, with: matcher) else { return false } 
                     return true 
-                case (.itestDefaultValues__value_value(let lhsValue), .itestDefaultValues__value_value(let rhsValue)): 
+                case (.itestDefaultValues__value_value(let lhsValue), .itestDefaultValues__value_value(let rhsValue)):
                     guard Parameter.compare(lhs: lhsValue, rhs: rhsValue, with: matcher) else { return false } 
                     return true 
                 default: return false
@@ -4623,7 +4643,7 @@ class UserNetworkTypeMock: UserNetworkType, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
     public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
@@ -4678,10 +4698,10 @@ class UserStorageTypeMock: UserStorageType, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.isurname__for_name(let lhsName), .isurname__for_name(let rhsName)): 
+                case (.isurname__for_name(let lhsName), .isurname__for_name(let rhsName)):
                     guard Parameter.compare(lhs: lhsName, rhs: rhsName, with: matcher) else { return false } 
                     return true 
-                case (.istoreUser__name_namesurname_surname(let lhsName, let lhsSurname), .istoreUser__name_namesurname_surname(let rhsName, let rhsSurname)): 
+                case (.istoreUser__name_namesurname_surname(let lhsName, let lhsSurname), .istoreUser__name_namesurname_surname(let rhsName, let rhsSurname)):
                     guard Parameter.compare(lhs: lhsName, rhs: rhsName, with: matcher) else { return false } 
                     guard Parameter.compare(lhs: lhsSurname, rhs: rhsSurname, with: matcher) else { return false } 
                     return true 
@@ -4752,7 +4772,7 @@ class UserStorageTypeMock: UserStorageType, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
     public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 

@@ -53,7 +53,7 @@ import XCTest
     <%_ } -%>
 
     func MockyAssert(_ expression: @autoclosure () -> Bool, _ message: @autoclosure () -> String = "Verification failed", file: StaticString = #file, line: UInt = #line) {
-        XCTAssert(expression, message, file: file, line: line)
+        XCTAssert(expression(), message(), file: file, line: line)
     }
 #else
 import Sourcery
