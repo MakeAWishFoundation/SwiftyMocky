@@ -1267,6 +1267,141 @@ class EmptyProtocolMock: EmptyProtocol, Mock {
     }
 }
 
+// MARK: - GenericProtocolWithTypeConstraint
+class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstraint, Mock {
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    var matcher: Matcher = Matcher.default
+
+
+    typealias Property = Swift.Never
+
+
+    func decode<T: Decodable>(_ type: T.Type, from data: Data) -> T {
+        addInvocation(.idecode__typefrom_data(Parameter<T.Type>.value(type).wrapAsGeneric(), Parameter<Data>.value(data)))
+		let perform = methodPerformValue(.idecode__typefrom_data(Parameter<T.Type>.value(type).wrapAsGeneric(), Parameter<Data>.value(data))) as? (T.Type, Data) -> Void
+		perform?(type, data)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.idecode__typefrom_data(Parameter<T.Type>.value(type).wrapAsGeneric(), Parameter<Data>.value(data)))
+		let value = givenValue.value as? T
+		return value.orFail("stub return value not specified for decode<T: Decodable>(_ type: T.Type, from data: Data). Use given")
+    }
+
+    func test<FOO>(_ type: FOO.Type) -> Int {
+        addInvocation(.itest__type(Parameter<FOO.Type>.value(type).wrapAsGeneric()))
+		let perform = methodPerformValue(.itest__type(Parameter<FOO.Type>.value(type).wrapAsGeneric())) as? (FOO.Type) -> Void
+		perform?(type)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.itest__type(Parameter<FOO.Type>.value(type).wrapAsGeneric()))
+		let value = givenValue.value as? Int
+		return value.orFail("stub return value not specified for test<FOO>(_ type: FOO.Type). Use given")
+    }
+
+    fileprivate enum MethodType {
+        case idecode__typefrom_data(Parameter<GenericAttribute>, Parameter<Data>)
+        case itest__type(Parameter<GenericAttribute>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+                case (.idecode__typefrom_data(let lhsType, let lhsData), .idecode__typefrom_data(let rhsType, let rhsData)): 
+                    guard Parameter.compare(lhs: lhsType, rhs: rhsType, with: matcher) else { return false } 
+                    guard Parameter.compare(lhs: lhsData, rhs: rhsData, with: matcher) else { return false } 
+                    return true 
+                case (.itest__type(let lhsType), .itest__type(let rhsType)): 
+                    guard Parameter.compare(lhs: lhsType, rhs: rhsType, with: matcher) else { return false } 
+                    return true 
+                default: return false
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+                case let .idecode__typefrom_data(p0, p1): return p0.intValue + p1.intValue
+                case let .itest__type(p0): return p0.intValue
+            }
+        }
+    }
+
+    struct Given {
+        fileprivate var method: MethodType
+        var returns: Any?
+        var `throws`: Error?
+
+        private init(method: MethodType, returns: Any?, throws: Error?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
+
+        static func decode<T: Decodable>(type: Parameter<T.Type>, from data: Parameter<Data>, willReturn: T) -> Given {
+            return Given(method: .idecode__typefrom_data(type.wrapAsGeneric(), data), returns: willReturn, throws: nil)
+        }
+        static func test<FOO>(type: Parameter<FOO.Type>, willReturn: Int) -> Given {
+            return Given(method: .itest__type(type.wrapAsGeneric()), returns: willReturn, throws: nil)
+        }
+    }
+
+    struct Verify {
+        fileprivate var method: MethodType
+
+        static func decode<T>(type: Parameter<T.Type>, from data: Parameter<Data>) -> Verify {
+            return Verify(method: .idecode__typefrom_data(type.wrapAsGeneric(), data))
+        }
+        static func test<FOO>(type: Parameter<FOO.Type>) -> Verify {
+            return Verify(method: .itest__type(type.wrapAsGeneric()))
+        }
+    }
+
+    struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        static func decode<T>(type: Parameter<T.Type>, from data: Parameter<Data>, perform: (T.Type, Data) -> Void) -> Perform {
+            return Perform(method: .idecode__typefrom_data(type.wrapAsGeneric(), data), performs: perform)
+        }
+        static func test<FOO>(type: Parameter<FOO.Type>, perform: (FOO.Type) -> Void) -> Perform {
+            return Perform(method: .itest__type(type.wrapAsGeneric()), performs: perform)
+        }
+    }
+
+    private func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+        methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+
+    private func methodReturnValue(_ method: MethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
+    }
+
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+}
+
 // MARK: - HistorySectionMapperType
 class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
     private var invocations: [MethodType] = []

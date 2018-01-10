@@ -11,6 +11,7 @@ All changes to SwiftyMocky project will be documented in this file.
 * Protocol 'inheritance' test
 
 #### Fixed:
+* handling `T.Type` generic parameters
 
 -----
 

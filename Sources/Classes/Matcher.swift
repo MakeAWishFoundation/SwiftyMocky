@@ -68,6 +68,7 @@ public class Matcher {
         register([UInt16].self) { $0 == $1 }
         register([UInt32].self) { $0 == $1 }
         register([UInt64].self) { $0 == $1 }
+        register([Data].self) { $0 == $1 }
         register([Bool?].self) { $0 == $1 }
         register([String?].self) { $0 == $1 }
         register([Float?].self) { $0 == $1 }
@@ -83,6 +84,43 @@ public class Matcher {
         register([UInt16?].self) { $0 == $1 }
         register([UInt32?].self) { $0 == $1 }
         register([UInt64?].self) { $0 == $1 }
+        register([Data?].self) { $0 == $1 }
+
+        // Types
+        register(Any.Type.self) { _, _ in return true }
+        register(Bool.Type.self)
+        register(String.Type.self)
+        register(Float.Type.self)
+        register(Double.Type.self)
+        register(Character.Type.self)
+        register(Int.Type.self)
+        register(Int8.Type.self)
+        register(Int16.Type.self)
+        register(Int32.Type.self)
+        register(Int64.Type.self)
+        register(UInt.Type.self)
+        register(UInt8.Type.self)
+        register(UInt16.Type.self)
+        register(UInt32.Type.self)
+        register(UInt64.Type.self)
+        register(Data.Type.self)
+        register(Any?.Type.self) { _, _ in return true }
+        register(Bool?.Type.self)
+        register(String?.Type.self)
+        register(Float?.Type.self)
+        register(Double?.Type.self)
+        register(Character?.Type.self)
+        register(Int?.Type.self)
+        register(Int8?.Type.self)
+        register(Int16?.Type.self)
+        register(Int32?.Type.self)
+        register(Int64?.Type.self)
+        register(UInt?.Type.self)
+        register(UInt8?.Type.self)
+        register(UInt16?.Type.self)
+        register(UInt32?.Type.self)
+        register(UInt64?.Type.self)
+        register(Data?.Type.self)
     }
 
     /// Registers comparator for given type **T**.
@@ -98,6 +136,13 @@ public class Matcher {
     public func register<T>(_ valueType: T.Type, match: @escaping (T,T) -> Bool) {
         let mirror = Mirror(reflecting: valueType)
         matchers.append((mirror, match as Any))
+    }
+
+    /// Registers comparator for type, like comparing Int.self to Int.self. These types of comparators always returns true
+    ///
+    /// - Parameter valueType: Type.Type.self
+    public func register<T>(_ valueType: T.Type.Type) {
+        self.register(T.Type.self, match: { _, _ in return true })
     }
 
 #if swift(>=3.2)

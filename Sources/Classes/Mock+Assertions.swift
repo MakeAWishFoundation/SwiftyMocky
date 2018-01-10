@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import XCTest
 
 // MARK: - At least once instance member called
 

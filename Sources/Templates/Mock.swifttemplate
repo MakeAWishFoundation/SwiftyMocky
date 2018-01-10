@@ -56,6 +56,9 @@ import SourceryRuntime
                 return "Parameter<\(unwrapped)>"
             }
         }
+        var isType: Bool {
+            return unwrapped.hasSuffix(".Type")
+        }
 
         init(_ type: SourceryRuntime.TypeName) {
             self.type = type
@@ -64,7 +67,15 @@ import SourceryRuntime
         func isGeneric(_ types: [String]) -> Bool {
             guard !type.isVoid else { return false }
 
+            func containsType(_ type: String) -> Bool {
+                return types.contains(where: {
+                    "\($0).Type" == type
+                })
+            }
+
             if types.contains(unwrapped) {
+                return true
+            } else if isType, containsType(unwrapped) {
                 return true
             } else if let tuple = type.tuple {
                 for element in tuple.elements {
@@ -356,13 +367,14 @@ import SourceryRuntime
             }
         }
 
-        func methodDeclarationWithParameters() -> String {
-            guard !method.parameters.isEmpty else { return "\(prototype)" }
-            return "\(prototype)(\(parametersForMethodTypeDeclaration()))"
-        }
-
         func wrappedInMethodType() -> Bool {
             return !method.isInitializer
+        }
+
+        // Method Type
+        func methodTypeDeclarationWithParameters() -> String {
+            guard !method.parameters.isEmpty else { return "\(prototype)" }
+            return "\(prototype)(\(parametersForMethodTypeDeclaration()))"
         }
 
         // Given
@@ -463,6 +475,7 @@ import SourceryRuntime
             return "\n\t\t\(cast)\n\t\t\(call)"
         }
 
+        // Helpers
         private func parametersForMethodCall() -> String {
             let generics = getGenerics()
             return parameters.map { $0.wrappedForCalls(generics) }.joined(separator: ", ")
@@ -747,7 +760,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
     <%_ if conformsToStaticMock { -%>
     fileprivate enum StaticMethodType {
     <%_ for method in wrappedStaticMethods { -%>
-        case <%= method.methodDeclarationWithParameters() _%>
+        case <%= method.methodTypeDeclarationWithParameters() _%>
     <%_  } %>
     <%_ for variable in allStaticVariables { -%>
         <%= propertyMethodTypes(variable) %>
@@ -826,7 +839,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
     <%_ if !wrappedMethods.isEmpty || !allVariables.isEmpty { -%>
     fileprivate enum MethodType {
     <%_ for method in wrappedMethods { -%>
-        case <%= method.methodDeclarationWithParameters() _%>
+        case <%= method.methodTypeDeclarationWithParameters() _%>
     <%_  } -%>
     <%_ for variable in allVariables { -%>
         <%= propertyMethodTypes(variable) %>
