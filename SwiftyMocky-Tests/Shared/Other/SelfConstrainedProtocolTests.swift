@@ -33,11 +33,11 @@ class SelfConstrainedProtocolTests: XCTestCase {
             return a === b
         }
 
-        Given(mock, .copy(willReturn: mock))
+        Given(mock, .methodReturningSelf(willReturn: mock))
         Given(mock, .compare(with: .any, willReturn: false))
         Given(mock, .compare(with: .value(mock), willReturn: true))
 
-        XCTAssert(mock.copy() === mock)
+        XCTAssert(mock.methodReturningSelf() === mock)
         XCTAssertTrue(mock.compare(with: mock))
         XCTAssertFalse(mock.compare(with: other))
     }

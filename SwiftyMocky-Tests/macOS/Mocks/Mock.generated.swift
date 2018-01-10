@@ -3359,14 +3359,14 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
 		return _wrapped()
     }
 
-    func copy() -> Self {
+    func methodReturningSelf() -> Self {
         func _wrapped<__Self__>() -> __Self__ {
-		addInvocation(.icopy)
-		let perform = methodPerformValue(.icopy) as? () -> Void
+		addInvocation(.imethodReturningSelf)
+		let perform = methodPerformValue(.imethodReturningSelf) as? () -> Void
 		perform?()
-		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.icopy)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodReturningSelf)
 		let value = givenValue.value as? __Self__
-		return value.orFail("stub return value not specified for copy(). Use given")
+		return value.orFail("stub return value not specified for methodReturningSelf(). Use given")
 		}
 		return _wrapped()
     }
@@ -3445,13 +3445,13 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
     }
 
         fileprivate enum MethodType {
-        case icopy
+        case imethodReturningSelf
         case icompare__with_other(Parameter<SelfConstrainedProtocolMock>)
         case igenericMethodWithNestedSelf__param_paramsecond_secondother_other(Parameter<Int>, Parameter<GenericAttribute>, Parameter<(SelfConstrainedProtocolMock,SelfConstrainedProtocolMock)>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.icopy, .icopy): 
+                case (.imethodReturningSelf, .imethodReturningSelf): 
                     return true 
                 case (.icompare__with_other(let lhsOther), .icompare__with_other(let rhsOther)): 
                     guard Parameter.compare(lhs: lhsOther, rhs: rhsOther, with: matcher) else { return false } 
@@ -3467,7 +3467,7 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
 
         func intValue() -> Int {
             switch self {
-                case .icopy: return 0
+                case .imethodReturningSelf: return 0
                 case let .icompare__with_other(p0): return p0.intValue
                 case let .igenericMethodWithNestedSelf__param_paramsecond_secondother_other(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
             }
@@ -3485,8 +3485,8 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
             self.`throws` = `throws`
         }
 
-        static func copy(willReturn: SelfConstrainedProtocolMock) -> Given {
-            return Given(method: .icopy, returns: willReturn, throws: nil)
+        static func methodReturningSelf(willReturn: SelfConstrainedProtocolMock) -> Given {
+            return Given(method: .imethodReturningSelf, returns: willReturn, throws: nil)
         }
         static func compare(with other: Parameter<SelfConstrainedProtocolMock>, willReturn: Bool) -> Given {
             return Given(method: .icompare__with_other(other), returns: willReturn, throws: nil)
@@ -3499,8 +3499,8 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
     struct Verify {
         fileprivate var method: MethodType
 
-        static func copy() -> Verify {
-            return Verify(method: .icopy)
+        static func methodReturningSelf() -> Verify {
+            return Verify(method: .imethodReturningSelf)
         }
         static func compare(with other: Parameter<SelfConstrainedProtocolMock>) -> Verify {
             return Verify(method: .icompare__with_other(other))
@@ -3514,8 +3514,8 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func copy(perform: () -> Void) -> Perform {
-            return Perform(method: .icopy, performs: perform)
+        static func methodReturningSelf(perform: () -> Void) -> Perform {
+            return Perform(method: .imethodReturningSelf, performs: perform)
         }
         static func compare(with other: Parameter<SelfConstrainedProtocolMock>, perform: (SelfConstrainedProtocolMock) -> Void) -> Perform {
             return Perform(method: .icompare__with_other(other), performs: perform)

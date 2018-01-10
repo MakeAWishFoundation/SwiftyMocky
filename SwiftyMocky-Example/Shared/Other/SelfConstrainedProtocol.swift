@@ -10,7 +10,7 @@ import Foundation
 
 //sourcery: AutoMockable
 protocol SelfConstrainedProtocol {
-    func copy() -> Self
+    func methodReturningSelf() -> Self
     static func construct(param value: Int) -> Self
     func compare(with other: Self) -> Bool
     func genericMethodWithNestedSelf<T>(param: Int, second: T, other: (Self,Self)) -> Self
