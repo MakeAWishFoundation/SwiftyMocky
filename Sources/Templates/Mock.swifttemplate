@@ -32,32 +32,58 @@ import SourceryRuntime
 <%_ } -%>
 
 <%# ================================================== HELPERS -%><%_
+    class Current {
+        static var selfType: String = "Self"
+    }
+
     class TypeWrapper {
         let type: SourceryRuntime.TypeName
 
         var unwrapped: String {
             return type.unwrappedTypeName
         }
+        var unwrappedReplacingSelf: String {
+            return replacingSelf(unwrap: true)
+        }
         var stripped: String {
             if type.isImplicitlyUnwrappedOptional {
-                return type.isClosure ? "(\(unwrapped))!" : "\(unwrapped)!"
+                return type.isClosure ? "(\(unwrappedReplacingSelf))!" : "\(unwrappedReplacingSelf)!"
             } else if type.isOptional {
-                return type.isClosure ? "(\(unwrapped))?" : "\(unwrapped)?"
+                return type.isClosure ? "(\(unwrappedReplacingSelf))?" : "\(unwrappedReplacingSelf)?"
             } else {
-                return unwrapped
+                return unwrappedReplacingSelf
             }
         }
         var nestedParameter: String {
             if type.isImplicitlyUnwrappedOptional {
-                return "Parameter<" + (type.isClosure ? "(\(unwrapped))?" : "\(unwrapped)?") + ">"
+                return "Parameter<" + (type.isClosure ? "(\(unwrappedReplacingSelf))?" : "\(unwrappedReplacingSelf)?") + ">"
             } else if type.isOptional {
-                return "Parameter<" + (type.isClosure ? "(\(unwrapped))?" : "\(unwrapped)?") + ">"
+                return "Parameter<" + (type.isClosure ? "(\(unwrappedReplacingSelf))?" : "\(unwrappedReplacingSelf)?") + ">"
             } else {
-                return "Parameter<\(unwrapped)>"
+                return "Parameter<\(unwrappedReplacingSelf)>"
             }
         }
-        var isType: Bool {
-            return unwrapped.hasSuffix(".Type")
+        var isSelfType: Bool {
+            return unwrapped == "Self"
+        }
+        func isSelfTypeRecursive() -> Bool {
+            if let tuple = type.tuple {
+                for element in tuple.elements {
+                    guard !TypeWrapper(element.typeName).isSelfTypeRecursive() else { return true }
+                }
+            } else if let array = type.array {
+                return TypeWrapper(array.elementTypeName).isSelfTypeRecursive()
+            } else if let dictionary = type.dictionary {
+                guard !TypeWrapper(dictionary.valueTypeName).isSelfTypeRecursive() else { return true }
+                guard !TypeWrapper(dictionary.keyTypeName).isSelfTypeRecursive() else { return true }
+            } else if let closure = type.closure {
+                guard !TypeWrapper(closure.actualReturnTypeName).isSelfTypeRecursive() else { return true }
+                for parameter in closure.parameters {
+                    guard !TypeWrapper(parameter.typeName).isSelfTypeRecursive() else { return true }
+                }
+            }
+
+            return isSelfType
         }
 
         init(_ type: SourceryRuntime.TypeName) {
@@ -73,9 +99,7 @@ import SourceryRuntime
                 })
             }
 
-            if types.contains(unwrapped) {
-                return true
-            } else if isType, containsType(unwrapped) {
+            if types.contains(unwrapped) || containsType(unwrapped) {
                 return true
             } else if let tuple = type.tuple {
                 for element in tuple.elements {
@@ -88,13 +112,53 @@ import SourceryRuntime
                 guard !TypeWrapper(dictionary.keyTypeName).isGeneric(types) else { return true }
             } else if let closure = type.closure {
                 guard !TypeWrapper(closure.actualReturnTypeName).isGeneric(types) else { return true }
-                guard !TypeWrapper(closure.actualReturnTypeName).isGeneric(types) else { return true }
                 for parameter in closure.parameters {
                     guard !ParameterWrapper(parameter).isGeneric(types) else { return true }
                 }
             }
 
             return false
+        }
+
+        func replacingSelf(unwrap: Bool = false) -> String {
+            guard isSelfTypeRecursive() else {
+                return unwrap ? self.unwrapped : "\(type)"
+            }
+
+            if isSelfType {
+                let optionality: String = {
+                    if type.isImplicitlyUnwrappedOptional {
+                        return "!"
+                    } else if type.isOptional {
+                        return "?"
+                    } else {
+                        return ""
+                    }
+                }()
+                return unwrap ? Current.selfType : Current.selfType + optionality
+            } else if let tuple = type.tuple {
+                let inner = tuple.elements.map({ TypeWrapper($0.typeName).replacingSelf() }).joined(separator: ",")
+                let value = "(\(inner))"
+                return value
+            } else if let array = type.array {
+                let value = "[\(TypeWrapper(array.elementTypeName).replacingSelf())]"
+                return value
+            } else if let dictionary = type.dictionary {
+                let value = "[" +
+                "\(TypeWrapper(dictionary.valueTypeName).replacingSelf())"
+                + ":" +
+                "\(TypeWrapper(dictionary.keyTypeName).replacingSelf())"
+                + "]"
+                return value
+            } else if let closure = type.closure {
+                let returnType = TypeWrapper(closure.actualReturnTypeName).replacingSelf()
+                let inner = closure.parameters.map({ TypeWrapper($0.typeName).replacingSelf() }).joined(separator: ",")
+                let throwing = closure.throws ? "throws " : ""
+                let value = "(\(inner)) \(throwing)-> \(returnType)"
+                return value
+            }
+
+            return unwrap ? self.unwrapped : "\(type)"
         }
     }
 
@@ -116,6 +180,9 @@ import SourceryRuntime
         }
         var nestedType: String {
             return "\(TypeWrapper(type).nestedParameter)"
+        }
+        var justType: String {
+            return "\(TypeWrapper(type).replacingSelf())"
         }
         var genericType: String {
             return "Parameter<GenericAttribute>"
@@ -283,9 +350,9 @@ import SourceryRuntime
                 return "required \(method.name) \(throwing)"
             }
             else if method.returnTypeName.isVoid {
-                return "\(staticModifier)func \(method.name) \(throwing)"
+                return "\(staticModifier)func \(method.shortName)(\(parametersForStubSignature())) \(throwing)"
             } else {
-                return "\(staticModifier)func \(method.name) \(throwing)-> \(method.returnTypeName.name) "
+                return "\(staticModifier)func \(method.shortName)(\(parametersForStubSignature())) \(throwing)-> \(method.returnTypeName.name) "
             }
         }
         var invocation: String {
@@ -316,8 +383,15 @@ import SourceryRuntime
             guard !method.returnTypeName.isVoid else { return "" }
 
             let message = "stub return value not specified for \(method.name). Use given"
+            let returnType: String = {
+                if returnsSelf {
+                    return "__Self__"
+                } else {
+                    return "\(TypeWrapper(method.returnTypeName).stripped)"
+                }
+            }()
 
-            return "\n\t\tlet value = givenValue.value as? \(TypeWrapper(method.returnTypeName).stripped)\n" +
+            return "\n\t\tlet value = givenValue.value as? \(returnType)\n" +
             "\t\treturn value.orFail(\"\(message)\")"
         }
         var equalCase: String {
@@ -342,6 +416,11 @@ import SourceryRuntime
                 return "case let .\(prototype)(\(definitions)): return \(paramsSum)"
             }
         }
+
+        var returnsSelf: Bool {
+            return !method.returnTypeName.isVoid && TypeWrapper(method.returnTypeName).isSelfType
+        }
+        var replaceSelf: String { return Current.selfType }
 
         init(_ method: SourceryRuntime.Method) {
             self.method = method
@@ -371,6 +450,50 @@ import SourceryRuntime
             return !method.isInitializer
         }
 
+        // Stub
+        func stubBody() -> String {
+            if method.isInitializer || !returnsSelf {
+                return invocation + performCall() + givenValue + throwValue + returnValue
+            } else {
+                return wrappedStubPrefix()
+                    + "\t\t" + invocation
+                    + performCall()
+                    + givenValue
+                    + throwValue
+                    + returnValue
+                    + wrappedStubPostfix()
+            }
+        }
+
+        func wrappedStubPrefix() -> String {
+            guard !method.isInitializer, returnsSelf else {
+                return ""
+            }
+
+            let throwing: String = {
+                if method.throws {
+                    return "throws "
+                } else if method.rethrows {
+                    return "rethrows "
+                } else {
+                    return ""
+                }
+            }()
+
+            return "func _wrapped<__Self__>() -> __Self__ {\n"
+        }
+
+        func wrappedStubPostfix() -> String {
+            guard !method.isInitializer, returnsSelf else {
+                return ""
+            }
+
+            let throwing: Bool = method.throws || method.rethrows
+
+            return "\n\t\t}"
+            + "\n\t\treturn _wrapped()"
+        }
+
         // Method Type
         func methodTypeDeclarationWithParameters() -> String {
             guard !method.parameters.isEmpty else { return "\(prototype)" }
@@ -379,10 +502,12 @@ import SourceryRuntime
 
         // Given
         func givenConstructorName(prefix: String = "") -> String {
+            let returnType = returnsSelf ? replaceSelf : TypeWrapper(method.returnTypeName).stripped
+
             if method.parameters.isEmpty {
-                return "static func \(method.shortName)(willReturn: \(TypeWrapper(method.returnTypeName).stripped)) -> \(prefix)Given"
+                return "static func \(method.shortName)(willReturn: \(returnType)) -> \(prefix)Given"
             } else {
-                return "static func \(method.shortName)(\(parametersForProxySignature()), willReturn: \(TypeWrapper(method.returnTypeName).stripped)) -> \(prefix)Given"
+                return "static func \(method.shortName)(\(parametersForProxySignature()), willReturn: \(returnType)) -> \(prefix)Given"
             }
         }
 
@@ -449,7 +574,7 @@ import SourceryRuntime
                 return "() -> Void"
             } else {
                 let parameters = self.parameters
-                .map { "\($0.type)" }
+                .map { "\($0.justType)" }
                 .joined(separator: ", ")
                 return "(\(parameters)) -> Void"
             }
@@ -493,6 +618,14 @@ import SourceryRuntime
                 guard let argumentLabel = p.parameter.argumentLabel else { return "\(p.name): \(p.nestedType)" }
                 guard argumentLabel != p.name else { return "\(p.name): \(p.nestedType)" }
                 return "\(argumentLabel) \(p.name): \(p.nestedType)"
+            }.joined(separator: ", ")
+        }
+
+        private func parametersForStubSignature() -> String {
+            return parameters.map { p in
+                guard let argumentLabel = p.parameter.argumentLabel else { return "_ \(p.name): \(p.justType)" }
+                guard argumentLabel != p.name else { return "\(p.name): \(p.justType)" }
+                return "\(argumentLabel) \(p.name): \(p.justType)"
             }.joined(separator: ", ")
         }
 
@@ -727,6 +860,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
     <%_ } %> <%_ -%>
   <%# ================================================== METHOD REGISTRATIONS -%><%_ -%>
     <%_ MethodWrapper.clear() -%>
+    <%_ Current.selfType = "\(type.name)Mock\(genericTypesModifier)" -%>
     <%_ let wrappedMethods = allMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) -%>
     <%_ let wrappedInitializers = allMethods.map(wrapMethod).filter({ $0.method.isInitializer }) -%>
     <%_ let wrappedStaticMethods = allStaticMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) -%>
@@ -738,7 +872,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
   <%# ================================================== STATIC STUBS -%><%_ -%>
     <%_ for method in wrappedStaticMethods { -%>
     <%= method.functionPrototype _%> {
-        <%= method.invocation _%><%= method.performCall() _%><%= method.givenValue _%><%= method.throwValue _%><%= method.returnValue _%>
+        <%= method.stubBody() _%>
     }
 
     <%_ } %><%_ -%>
@@ -752,7 +886,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
   <%# ================================================== STUBS -%><%_ -%>
     <%_ for method in wrappedMethods { -%>
     <%= method.functionPrototype _%> {
-        <%= method.invocation _%><%= method.performCall() _%><%= method.givenValue _%><%= method.throwValue _%><%= method.returnValue _%>
+        <%= method.stubBody() _%>
     }
 
     <%_ } -%>

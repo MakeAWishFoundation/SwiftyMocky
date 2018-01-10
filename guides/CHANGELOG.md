@@ -9,6 +9,7 @@ All changes to SwiftyMocky project will be documented in this file.
 #### Added:
 * Exclude sources documentation
 * Protocol 'inheritance' test
+* Support for 'Self' requirements
 
 #### Fixed:
 * handling `T.Type` generic parameters
