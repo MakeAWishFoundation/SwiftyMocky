@@ -11,7 +11,9 @@ All changes to SwiftyMocky project will be documented in this file.
 * Support for Verify for properties
 * Exclude sources documentation
 * Protocol 'inheritance' test
-* Support for 'Self' requirements
+* Support for `Self` requirements
+* Dropped `XCTest` dependency
+* Added 'Custom' subspec, for non XCTest depending cases
 
 #### Fixed:
 * handling `T.Type` generic parameters

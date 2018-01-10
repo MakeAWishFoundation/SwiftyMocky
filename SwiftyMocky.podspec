@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'SwiftyMocky'
-  s.version          = '1.0.41'
+  s.version          = '2.0.0'
   s.summary          = 'Unit testing library for Swift, with mock generation. Adds a set of handy methods, simplifying testing.'
   s.description      = <<-DESC
 Library that uses metaprogramming technique to generate mocks based on sources, that makes testing for Swift Mockito-like.
@@ -34,11 +34,11 @@ Library that uses metaprogramming technique to generate mocks based on sources, 
       core.dependency 'Sourcery'
   end
 
-  s.subspec 'InApp' do |inapp|
-      inapp.source_files = 'Sources/Classes/**/*'
-      inapp.resources = '{Sources/Templates/*,get_sourcery.sh}'
-      inapp.xcconfig = { 'OTHER_SWIFT_FLAGS' => '-DMockyInApp' }
-      inapp.frameworks = 'Foundation'
-      inapp.dependency 'Sourcery'
+  s.subspec 'Custom' do |custom|
+      custom.source_files = 'Sources/Classes/**/*'
+      custom.resources = '{Sources/Templates/*,get_sourcery.sh}'
+      custom.xcconfig = { 'OTHER_SWIFT_FLAGS' => '-DMockyCustom' }
+      custom.frameworks = 'Foundation'
+      custom.dependency 'Sourcery'
   end
 end
