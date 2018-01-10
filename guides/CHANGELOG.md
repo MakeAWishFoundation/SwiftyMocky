@@ -4,9 +4,11 @@ All changes to SwiftyMocky project will be documented in this file.
 
 -----
 
-## __1.0.3__ / 2018
+## __2.0.0__ / 2018
 
 #### Added:
+* Support for Given for properties
+* Support for Verify for properties
 * Exclude sources documentation
 * Protocol 'inheritance' test
 * Support for 'Self' requirements
