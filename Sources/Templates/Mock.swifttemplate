@@ -1,5 +1,37 @@
 
-#if Mocky
+#if MockyCustom
+import SwiftyMocky
+<%# ================================================== IMPORTS InAPP -%><%_ -%>
+    <%_ if let imported = arguments["import"] as? String { -%>
+        <%_ %>import <%= imported %>
+    <%_ } -%>
+    <%_ if let allimported = arguments["import"] as? [String] { -%>
+        <%_ for imported in allimported { -%>
+            <%_ %>import <%= imported %>
+        <%_ } -%>
+    <%_ } -%>
+    <%_ if let tested = arguments["testable"] as? String { -%>
+        <%_ %>@testable import <%= tested %>
+    <%_ } -%>
+    <%_ if let alltested = arguments["testable"] as? [String] { -%>
+        <%_ for tested in alltested { -%>
+            <%_ %>@testable import <%= tested %>
+        <%_ } -%>
+    <%_ } -%>
+
+    public final class MockyAssertion {
+        public static var handler: ((Bool, String, StaticString, UInt) -> Void)?
+    }
+
+    func MockyAssert(_ expression: @autoclosure () -> Bool, _ message: @autoclosure () -> String = "Verification failed", file: StaticString = #file, line: UInt = #line) {
+        guard let handler = MockyAssertion.handler else {
+            assert(expression, message, file: file, line: line)
+            return
+        }
+
+        handler(expression(), message(), file, line)
+    }
+#elseif Mocky
 import SwiftyMocky
 import XCTest
 <%# ================================================== IMPORTS -%><%_ -%>
@@ -19,6 +51,10 @@ import XCTest
             <%_ %>@testable import <%= tested %>
         <%_ } -%>
     <%_ } -%>
+
+    func MockyAssert(_ expression: @autoclosure () -> Bool, _ message: @autoclosure () -> String = "Verification failed", file: StaticString = #file, line: UInt = #line) {
+        XCTAssert(expression(), message(), file: file, line: line)
+    }
 #else
 import Sourcery
 import SourceryRuntime
@@ -902,7 +938,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
     <%_ -%>
         static func compareParameters(lhs: StaticMethodType, rhs: StaticMethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) { <%_ for method in wrappedStaticMethods { %>
-                <%= method.equalCase -%> <% for parameter in method.parameters { %>
+                <%= method.equalCase -%><% for parameter in method.parameters { %>
                     <%= parameter.comparator -%> <%  } %>
                     return true <% } %>
                 <%_ for variable in allStaticVariables { -%>
@@ -981,7 +1017,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
     <%_ -%>
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) { <%_ for method in wrappedMethods { %>
-                <%= method.equalCase -%> <% for parameter in method.parameters { %>
+                <%= method.equalCase -%><% for parameter in method.parameters { %>
                     <%= parameter.comparator -%> <%  } %>
                     return true <% } %>
                 <%_ for variable in allVariables { -%>
@@ -1070,13 +1106,13 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
     <%_ if containsVariables { -%>
 
     public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(property.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
     <%_ } else { -%>
     public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
@@ -1118,13 +1154,13 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
 
     static public func verify(_ method: StaticVerify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
     <%_ if containsStaticVariables { -%>
 
     static public func verify(property: StaticProperty, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(property.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
     <%_ } else { -%>
     static public func verify(property: StaticProperty, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }

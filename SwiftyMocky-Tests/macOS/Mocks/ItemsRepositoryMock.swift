@@ -61,15 +61,15 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.istoreItems__items_items(let lhsItems), .istoreItems__items_items(let rhsItems)): 
+                case (.istoreItems__items_items(let lhsItems), .istoreItems__items_items(let rhsItems)):
                     guard Parameter.compare(lhs: lhsItems, rhs: rhsItems, with: matcher) else { return false } 
                     return true 
-                case (.istoreDetails__details_details(let lhsDetails), .istoreDetails__details_details(let rhsDetails)): 
+                case (.istoreDetails__details_details(let lhsDetails), .istoreDetails__details_details(let rhsDetails)):
                     guard Parameter.compare(lhs: lhsDetails, rhs: rhsDetails, with: matcher) else { return false } 
                     return true 
-                case (.istoredItems, .istoredItems): 
+                case (.istoredItems, .istoredItems):
                     return true 
-                case (.istoredDetails__item_item(let lhsItem), .istoredDetails__item_item(let rhsItem)): 
+                case (.istoredDetails__item_item(let lhsItem), .istoredDetails__item_item(let rhsItem)):
                     guard Parameter.compare(lhs: lhsItem, rhs: rhsItem, with: matcher) else { return false } 
                     return true 
                 default: return false
@@ -156,7 +156,7 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        XCTAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
     public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
