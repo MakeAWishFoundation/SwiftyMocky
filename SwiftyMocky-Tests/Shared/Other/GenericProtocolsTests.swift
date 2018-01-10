@@ -63,4 +63,3 @@ class GenericProtocolsTests: XCTestCase {
         XCTAssertEqual(mock.decode(CustomThing.self, from: data).id, 1)
     }
 }
-
