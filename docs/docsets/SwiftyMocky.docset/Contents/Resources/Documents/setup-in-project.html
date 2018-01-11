@@ -46,10 +46,13 @@
                 <a href="matcher-support-for-not-equatable.html">Matcher support for not Equatable</a>
               </li>
               <li class="nav-group-task">
-                <a href="generics.html">Generics</a>
+                <a href="handling-generics.html">Handling Generics</a>
               </li>
               <li class="nav-group-task">
                 <a href="examples.html">Examples</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="custom-subspec.html">Custom Subspec</a>
               </li>
               <li class="nav-group-task">
                 <a href="add-xcode-generate-action.html">Add XCode generate action</a>
@@ -255,7 +258,7 @@ Just create file named Rakefile - generation is triggered by <code>rake mock</co
 
 <p>Every protocol in source directories, having this annotation, will be added to <code>Mock.generated.swift</code></p>
 
-<p>@objc protocols are also supported, but needs to be explicity marked with ObjcProtocol annotation:</p>
+<p>@objc protocols are also supported, but needs to be explicitly marked with ObjcProtocol annotation:</p>
 <pre class="highlight swift"><code><span class="c1">//sourcery: AutoMockable</span>
 <span class="c1">//sourcery: ObjcProtocol</span>
 <span class="kd">@objc</span> <span class="kd">protocol</span> <span class="kt">NonSwiftProtocol</span> <span class="p">{</span>
@@ -292,6 +295,11 @@ Just create file named Rakefile - generation is triggered by <code>rake mock</co
   <span class="c1">// sourcery:end</span>
 <span class="p">}</span>
 </code></pre>
+
+<blockquote>
+<p><strong>Note:</strong>
+Please have in mind, that definition of MockyAssert used in generated mocks is placed in <code>Mock.generated.swift</code>. Even when using only manual annotations, please add this file to your target.</p>
+</blockquote>
 
           </section>
         </section>

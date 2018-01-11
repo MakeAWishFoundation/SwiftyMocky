@@ -46,10 +46,13 @@
                 <a href="matcher-support-for-not-equatable.html">Matcher support for not Equatable</a>
               </li>
               <li class="nav-group-task">
-                <a href="generics.html">Generics</a>
+                <a href="handling-generics.html">Handling Generics</a>
               </li>
               <li class="nav-group-task">
                 <a href="examples.html">Examples</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="custom-subspec.html">Custom Subspec</a>
               </li>
               <li class="nav-group-task">
                 <a href="add-xcode-generate-action.html">Add XCode generate action</a>
@@ -207,8 +210,8 @@
 
 <ul>
 <li>[x] constrained to protocol conformance</li>
-<li>[ ] with &lsquo;T.Type&rsquo; attributes</li>
-<li>[ ] constrained to same type</li>
+<li>[x] with &lsquo;T.Type&rsquo; attributes</li>
+<li>[x] constrained to Self type</li>
 </ul></li>
 <li>[x] stubbing variables (with get, set)
 
@@ -218,7 +221,7 @@
 <li>[x] optional</li>
 <li>[x] implicitly unwrapped optional</li>
 </ul></li>
-<li>[ ] stubbing subscripts</li>
+<li>[ ] stubbing subscripts - <strong>Not possible at the moment!</strong></li>
 <li>[x] handling associated types - <strong>done by annotations</strong></li>
 <li>[x] handling conformances in associated types</li>
 <li>[x] wrapping method attributes as Parameter
@@ -243,7 +246,7 @@
 <li>[x] ValueType is Sequences of Equatable elements</li>
 <li>[x] ValueType is not Equatable - <strong>when registered comparator in Matcher</strong></li>
 <li>[x] ValueType is Equatable is <code>@escaping</code> closure - <strong>when registered comparator in Matcher</strong></li>
-<li>[ ] <strong>!!!</strong> ValueType is not <code>@escaping</code> closure - <strong>always handled as</strong> <code>.any</code></li>
+<li>[x] <strong>!!!</strong> ValueType is not <code>@escaping</code> closure - <strong>always handled as</strong> <code>.any</code></li>
 </ul></li>
 <li>[x] return value for instance stub</li>
 <li>[x] error thrown for instance stub</li>

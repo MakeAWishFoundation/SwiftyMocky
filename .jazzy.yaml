@@ -16,8 +16,9 @@ custom_categories:
       - Installation
       - Setup in project
       - Matcher support for not Equatable
-      - Generics
+      - Handling Generics
       - Examples
+      - Custom Subspec
       - Add XCode generate action
       - Known issues
       - CHANGELOG

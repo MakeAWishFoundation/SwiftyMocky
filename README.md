@@ -22,7 +22,7 @@ The idea of **SwiftyMokcy** is to mock Swift protocols. The main features are:
  - verify, whether a method was called on mock or not
  - check method invocations with specified attributes
 
-### 1. Generating mocks implementations:
+### Generating mocks implementations:
 
 One of the boilerplate part of testing and development is writing and updating **mocks** accordingly to newest changes. SwiftyMocky is capable of generating mock implementations (with configurable behavior), based on protocol definition.
 
@@ -32,7 +32,7 @@ During development process it is possible to use SwiftyMocky in a *watcher* mode
 
 By default, all protocols marked as AutoMockable (inheriting from dummy protocol `AutoMockable` or annotated with `//sourcery: AutoMockable`) are being subject of mock implementation generation. All mocks goes to `Mock.generated.swift`, which can be imported into test target.
 
-### 2. Stubbing return values for mock methods - Given
+### Stubbing return values for mock methods - **Given**
 
 All mocks has **given** method (accessible both as instance method or global function), with easy to use syntax, allowing to specify what should be return values for given methods (based on specified attributes).
 
@@ -51,7 +51,7 @@ print(mock.surname(for: "Mathew")) // Kowalsky
 print(mock.surname(for: "Joanna")) // Kowalsky
 ```
 
-### 3. Check invocations of methods - Verify
+### Check invocations of methods - **Verify**
 
 All mocks has **verify** method (accessible both as instance method or global function), with easy to use syntax, allowing to verify, whether a method was called on mock, and how many times. It also provides convenient way to specify, whether method attributes matters (and which ones).
 
@@ -59,7 +59,7 @@ All mocks has **verify** method (accessible both as instance method or global fu
 
 All protocol methods are nicely put into **Verify**, with matching signature. That allows to use auto-complete (just type `.`) to see all mocked protocol methods, and specify which one we want to verify.
 
-All method attributes are wrapped as **Parameter** enum, allowing to choose between `any` and `value`, giving great flexibility to tests. Please consider following:
+All method attributes are wrapped as **Parameter** enum, allowing to choose between `any`, `value` and `matching`, giving great flexibility to tests. Please consider following:
 
 ```swift
 // inject mock to sut. Every time sut saves user data, it should trigger storage storeUser method
@@ -74,15 +74,37 @@ Verify(mockStorage, .storeUser(name: .value("Jon"), surname: .value("Snow")))
 Verify(mockStorage, 3, .storeUser(name: .any, surname: .any))
 // storeUser method should be triggered 2 times with name Johny
 Verify(mockStorage, 2, .storeUser(name: .value("Johny"), surname: .any))
+// storeUser method should be triggered at least 2 times with name longer than 3
+Verify(mockStorage, .moreOrEqual(to: 2), .storeUser(name: .matching({ $0.count > 3 }}), surname: .any))
 ```
 
-### 4. All supported features
+For **Verify**, you can use **Count** to specify how many times you expect something to be triggered. **Count** can be defined as explicit value, like `1`,`2`,... or in more descriptive and flexible way, like `.never`, `more(than: 1)`, etc.
+
+### Check property getters and setters - **VerifyProperty**
+
+From SwiftyMocky 2.0, it is possible to perform `VerifyProperty`. Syntax is very similar to plain `Verify`, with respect to whether it is get or set:
+
+```swift
+mock.name = "Danny"
+mock.name = "Joanna"
+
+print(mock.name)
+
+// Verify getter:
+VerifyProperty(mock, 1, .name)
+// Verify setter:
+VerifyProperty(mock, 2, .name(set: .any))
+VerifyProperty(mock, 1, .name(set: .value("Danny")))
+VerifyProperty(mock, .never, .name(set: .value("Bishop")))
+```
+
+### All supported features
 
 For list all supported features, check documentation [here][link-docs-features] or [guides][link-guides-features]
 
-### 5. Example of usage
+### Example of usage
 
-For more examples, check out our example project.
+For more examples, check out our example project, or examples section in [guides][link-guides-examples].
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
@@ -171,7 +193,7 @@ protocol ToBeMocked {
 
 Every protocol in source directories, having this annotation, will be added to `Mock.generated.swift`
 
-@objc protocols are also supported, but needs to be explicity marked with ObjcProtocol annotation:
+@objc protocols are also supported, but needs to be explicitly marked with ObjcProtocol annotation:
 
 ```swift
 //sourcery: AutoMockable
@@ -190,7 +212,7 @@ Every protocol in source directories, having this annotation, will be added to `
 - [x] method signature generation without name conflicts
 - [ ] cover 95% of framework codebase with unit tests
 - [ ] add unit tests for template
-- [ ] support for tvOS, Linux and MacOS
+- [x] support for tvOS, Linux and MacOS
 - [x] Carthage support
 
 ## Installation
@@ -224,13 +246,14 @@ SwiftyMocky is available under the MIT license. See the [LICENSE][link-license] 
 [link-license]: https://github.com/MakeAWishFoundation/SwiftyMocky/blob/master/LICENSE
 [link-guides-contents]: https://github.com/MakeAWishFoundation/SwiftyMocky/blob/master/guides/Contents.md
 [link-guides-features]: https://github.com/MakeAWishFoundation/SwiftyMocky/blob/master/guides/Supported%20features.md
+[link-guides-examples]: https://github.com/MakeAWishFoundation/SwiftyMocky/blob/master/guides/Examples.md
 [link-changelog]: https://github.com/MakeAWishFoundation/SwiftyMocky/blob/master/guides/CHANGELOG.md
 
 <!-- Links based on tag -->
 
-[link-docs]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/f9a57ad0/docs/index.html
-[link-docs-features]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/f9a57ad0/docs/supported-features.html
-[link-docs-installation]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/f9a57ad0/docs/installation.html
+[link-docs]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/2.0.0/docs/index.html
+[link-docs-features]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/2.0.0/docs/supported-features.html
+[link-docs-installation]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/2.0.0/docs/installation.html
 
 <!-- Assets -->
 

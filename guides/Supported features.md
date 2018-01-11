@@ -26,14 +26,14 @@ Support for stubbing protocol members:
 - [x] stubbing static methods
 - [ ] stubbing generic methods
     - [x] constrained to protocol conformance
-    - [ ] with 'T.Type' attributes
-    - [ ] constrained to same type
+    - [x] with 'T.Type' attributes
+    - [x] constrained to Self type
 - [x] stubbing variables (with get, set)
     - [x] instance variables
     - [x] static variables
     - [x] optional
     - [x] implicitly unwrapped optional
-- [ ] stubbing subscripts
+- [ ] stubbing subscripts - **Not possible at the moment!**
 - [x] handling associated types - **done by annotations**
 - [x] handling conformances in associated types
 - [x] wrapping method attributes as Parameter
@@ -52,7 +52,7 @@ Usage of Given to specify return value and error thrown for stubbed methods:
     - [x] ValueType is Sequences of Equatable elements
     - [x] ValueType is not Equatable - **when registered comparator in Matcher**
     - [x] ValueType is Equatable is `@escaping` closure - **when registered comparator in Matcher**
-    - [ ] **!!!** ValueType is not `@escaping` closure - **always handled as** `.any`
+    - [x] **!!!** ValueType is not `@escaping` closure - **always handled as** `.any`
 - [x] return value for instance stub
 - [x] error thrown for instance stub
 - [ ] error thrown for instance stubs that rethrows

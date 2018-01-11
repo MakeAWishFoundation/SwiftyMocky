@@ -41,4 +41,4 @@ See **Generics** section for more informations.
 
 ## 3. Generated Mock breaks
 
-When methods has labels or attributes names that are either escaped using  ` ` `, or  are matching Swift keywords like `for, while, guard ...`. For now - we advise not to use that. It will be resolved in the future.
+When methods has labels or attributes names that are either escaped using  \`, or  are matching Swift keywords like `for, while, guard ...`. For now - we advise not to use that. It will be resolved in the future.

@@ -7,13 +7,14 @@ All changes to SwiftyMocky project will be documented in this file.
 ## __2.0.0__ / 2018
 
 #### Added:
-* Support for Given for properties
-* Support for Verify for properties
+* Support `Verify` for properties
+* `Count` object, for easier specification of expected `Verify` results
+* `Parameter` case `.matching`, allowing to specify custom rules for matching
 * Exclude sources documentation
 * Protocol 'inheritance' test
 * Support for `Self` requirements
 * Dropped `XCTest` dependency
-* Added 'Custom' subspec, for non XCTest depending cases
+* Additional `Custom` subspec, for non XCTest depending cases
 
 #### Fixed:
 * handling `T.Type` generic parameters

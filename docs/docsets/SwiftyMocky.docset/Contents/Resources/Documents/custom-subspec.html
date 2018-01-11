@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Setup in project  Reference</title>
+    <title>Custom Subspec  Reference</title>
     <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,7 +10,7 @@
     
   </head>
   <body>
-    <a title="Setup in project  Reference"></a>
+    <a title="Custom Subspec  Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="index.html">SwiftyMocky Docs</a> (93% documented)</p>
@@ -21,7 +21,7 @@
       <p id="breadcrumbs">
         <a href="index.html">SwiftyMocky Reference</a>
         <img id="carat" src="img/carat.png" />
-        Setup in project  Reference
+        Custom Subspec  Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -176,130 +176,38 @@
         <section>
           <section class="section">
             
-            <h1 id='how-to-setup-swiftymocky' class='heading'>How to setup SwiftyMocky</h1>
+            <h1 id='subspecs' class='heading'>Subspecs</h1>
 
-<p>Mocks generation is based on <code>mocky.yml</code> file.</p>
+<p>SwiftyMocky is divided into two main subspecs:</p>
+<h2 id='1-core-default' class='heading'>1. Core (default)</h2>
 
-<p>First, create file in your project root directory with following structure:</p>
-<pre class="highlight yaml"><code><span class="s">sources</span><span class="pi">:</span>
-  <span class="s">include</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="s">./ExampleApp</span>
-    <span class="pi">-</span> <span class="s">./ExampleAppTests</span>
-<span class="s">templates</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="s">./Pods/SwiftyMocky/Sources/Templates</span>
-<span class="s">output</span><span class="pi">:</span>
-  <span class="s">./ExampleApp</span>
-<span class="s">args</span><span class="pi">:</span>
-  <span class="s">testable</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="s">ExampleApp</span>
-  <span class="s">import</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="s">RxSwift</span>
-    <span class="pi">-</span> <span class="s">RxBlocking</span>
-  <span class="s">excludedSwiftLintRules</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="s">force_cast</span>
-    <span class="pi">-</span> <span class="s">function_body_length</span>
-    <span class="pi">-</span> <span class="s">line_length</span>
-    <span class="pi">-</span> <span class="s">vertical_whitespace</span>
-</code></pre>
+<p>This is default subspec, everything is set up for using SwiftyMocky (and generated mocks) in test target, that depends on XCTest framework.</p>
 
-<ul>
-<li><strong>sources</strong>: all directories you want to scan for protocols/files marked to be auto mocked, or inline mocked. You can use <code>exclude</code>, to prevent from scanning particular files (makes sense for big <code>*.generated.swift</code> files)</li>
-<li><strong>templates</strong>: path to SwiftyMocky sourcery templates, in Pods directory</li>
-<li><strong>output</strong>: place where <code>Mock.generated.swift</code> will be placed</li>
-<li><strong>testable</strong>: specify imports for Mock.generated, that should be marked as <code>@testable</code> (usually tested app module)</li>
-<li><strong>import</strong>: all additional imports, external libraries etc. to be placed in Mock.generated</li>
-<li><strong>excludedSwiftLintRules</strong>: if using swift SwiftLint.</li>
-</ul>
+<p>Its implementation of <code>MockyAssert</code> is just simple wrapper around <code>XCTAssert</code>.</p>
 
 <blockquote>
-<p>** Please note!**
-In some cases (for example when using R.swift for assets management), there are big generated swift files involved, that can extend time of generating mocks.
-In such cases, you can exclude particular files from whole process, using <code>exclude</code> in same way as <code>include</code> in config.yml.</p>
+<p><strong>Note:</strong>
+Please have in mind, that definition of MockyAssert used in generated mocks is placed in <code>Mock.generated.swift</code>. Even when using inline mocks, by manual annotations (see <code>Setup in project</code> section), please add this file to your target.</p>
 </blockquote>
-<h2 id='generate-mocks' class='heading'>Generate mocks:</h2>
+<h2 id='2-custom' class='heading'>2. Custom</h2>
 
-<ol>
-<li><strong>manually</strong>: by triggering:</li>
-</ol>
+<p>This subspec drops default dependency over XCTest framework, allowing for more flexibility, both for platforms and targets you can use SwiftyMocky in. The only difference is that it does not depend on <code>XCTest</code> and <code>XCTAssert</code> anymore.</p>
 
-<p><code>Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config mocky.yml</code></p>
-
-<ol>
-<li><strong>in <code>watch</code> mode</strong>: changed methods will be reflected in mocks, after generation of mock, by triggering:</li>
-</ol>
-
-<p><code>Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config mocky.yml --watch</code></p>
-
-<p><strong>Don&rsquo;t forget</strong> to add <code>Mock.generated.swift</code> to your test target :)</p>
-
-<blockquote>
-<p><strong>Please Note!</strong>
-Most convenient way is to put generation in some kind of script - like Rakefile below.
-Just create file named Rakefile - generation is triggered by <code>rake mock</code></p>
-<pre class="highlight ruby"><code><span class="c1"># Rakefile</span>
-<span class="n">task</span> <span class="ss">:mock</span> <span class="k">do</span>
-  <span class="n">sh</span> <span class="s2">"Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config mocky.yml"</span>
-<span class="k">end</span>
-
-<span class="n">task</span> <span class="ss">:mock_watcher</span> <span class="k">do</span>
-  <span class="n">sh</span> <span class="s2">"Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config mocky.yml --watch"</span>
-<span class="k">end</span>
-</code></pre>
-</blockquote>
-<h2 id='marking-protocols-to-be-mocked' class='heading'>Marking protocols to be mocked</h2>
-<h3 id='strong-1-automockable-annotation-strong' class='heading'><strong>1. AutoMockable annotation</strong></h3>
-
-<p>Mark protocols that are meant to be mocked with sourcery annotation as following:</p>
-<pre class="highlight swift"><code><span class="c1">//sourcery: AutoMockable</span>
-<span class="kd">protocol</span> <span class="kt">ToBeMocked</span> <span class="p">{</span>
-  <span class="c1">// ...</span>
-<span class="p">}</span>
-</code></pre>
-
-<p>Every protocol in source directories, having this annotation, will be added to <code>Mock.generated.swift</code></p>
-
-<p>@objc protocols are also supported, but needs to be explicitly marked with ObjcProtocol annotation:</p>
-<pre class="highlight swift"><code><span class="c1">//sourcery: AutoMockable</span>
-<span class="c1">//sourcery: ObjcProtocol</span>
-<span class="kd">@objc</span> <span class="kd">protocol</span> <span class="kt">NonSwiftProtocol</span> <span class="p">{</span>
-  <span class="c1">// ...</span>
-<span class="p">}</span>
-</code></pre>
-<h3 id='strong-2-automockable-protocol-strong' class='heading'><strong>2. AutoMockable protocol</strong></h3>
-
-<p>Create dummy protocol for you project:</p>
-<pre class="highlight swift"><code><span class="kd">protocol</span> <span class="kt">AutoMockable</span> <span class="p">{</span> <span class="p">}</span>
-</code></pre>
-
-<p>Every protocol in source directories, inheriting (directly!) from AutoMockable, will be added to <code>Mock.generated.swift</code>, like:</p>
-<pre class="highlight swift"><code><span class="kd">protocol</span> <span class="kt">ToBeMocked</span><span class="p">:</span> <span class="kt">AutoMockable</span> <span class="p">{</span>
-  <span class="c1">// ...</span>
-<span class="p">}</span>
-</code></pre>
-<h3 id='strong-3-manual-annotation-strong' class='heading'><strong>3. Manual annotation</strong></h3>
-
-<p>In some rare cases, when you don&rsquo;t want to use <code>Mock.generated.swift</code>, or need to add some additional code to generated mock, you can create base for mock implementation yourself. It will look something like following:</p>
-<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">Foundation</span>
-<span class="kd">import</span> <span class="kt">SwiftyMocky</span>
-<span class="kd">import</span> <span class="kt">XCTest</span>
-<span class="kd">@testable</span> <span class="kd">import</span> <span class="kt">TestedApp</span>
-
-<span class="c1">// sourcery: mock = "ToBeMocked"</span>
-<span class="kd">class</span> <span class="kt">SomeCustomMock</span><span class="p">:</span> <span class="kt">ToBeMocked</span><span class="p">,</span> <span class="kt">Mock</span> <span class="p">{</span>
-  <span class="kt">Your</span> <span class="n">custom</span> <span class="n">code</span> <span class="n">can</span> <span class="n">go</span> <span class="n">here</span>
-
-  <span class="c1">// sourcery:inline:auto:ToBeMocked.autoMocked</span>
-
-  <span class="kt">Generated</span> <span class="n">code</span> <span class="n">goes</span> <span class="n">here</span><span class="o">...</span>
-
-  <span class="c1">// sourcery:end</span>
+<p>By default, its implementation of <code>MockyAssert</code> calls plain <code>assert</code> function. However, you can specify its behaviour by setting static member of <code>MockyAssertion</code> class:</p>
+<pre class="highlight swift"><code><span class="kt">MockyAssertion</span><span class="o">.</span><span class="n">handler</span> <span class="o">=</span> <span class="p">{</span> <span class="p">(</span><span class="nv">expression</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">,</span> <span class="nv">message</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">file</span><span class="p">:</span> <span class="kt">StaticString</span><span class="p">,</span> <span class="nv">line</span><span class="p">:</span> <span class="kt">UInt</span><span class="p">)</span> <span class="k">in</span>
+    <span class="o">...</span>
 <span class="p">}</span>
 </code></pre>
 
 <blockquote>
 <p><strong>Note:</strong>
-Please have in mind, that definition of MockyAssert used in generated mocks is placed in <code>Mock.generated.swift</code>. Even when using only manual annotations, please add this file to your target.</p>
+Although it is created for mocking in purpose of unit testing, SwiftyMocky can be also used for fast prototyping inside your main app target, with right combination of <code>Given</code> and <code>Perform</code>. We advise to use it with caution, as it is not built in order to replace &lsquo;real&rsquo; implementations.</p>
 </blockquote>
+<h3 id='carthage' class='heading'>Carthage</h3>
+
+<p>For carthage users there is no additional or different framework. Only difference is what you add in <strong>Other Swift Flags</strong>:
+    - Core: <code>-DMocky</code>
+    - Custom: <code>-DMockyCustom</code></p>
 
           </section>
         </section>
