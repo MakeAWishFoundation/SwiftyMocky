@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'SwiftyMocky'
-  s.version          = '1.0.2'
+  s.version          = '2.0.0'
   s.summary          = 'Unit testing library for Swift, with mock generation. Adds a set of handy methods, simplifying testing.'
   s.description      = <<-DESC
 Library that uses metaprogramming technique to generate mocks based on sources, that makes testing for Swift Mockito-like.
@@ -21,13 +21,24 @@ Library that uses metaprogramming technique to generate mocks based on sources, 
   s.source           = { :git => 'https://github.com/MakeAWishFoundation/SwiftyMocky.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '8.0'
+  s.tvos.deployment_target = '9.0'
+  s.macos.deployment_target = '10.9'
   s.default_subspec  = "Core"
   s.preserve_paths = '*'
 
   s.subspec 'Core' do |core|
       core.source_files = 'Sources/Classes/**/*'
-      core.frameworks = 'XCTest'
-      core.dependency 'Sourcery'
+      core.resources = '{Sources/Templates/*,get_sourcery.sh}'
       core.xcconfig = { 'OTHER_SWIFT_FLAGS' => '-DMocky' }
+      core.frameworks = 'Foundation'
+      core.dependency 'Sourcery'
+  end
+
+  s.subspec 'Custom' do |custom|
+      custom.source_files = 'Sources/Classes/**/*'
+      custom.resources = '{Sources/Templates/*,get_sourcery.sh}'
+      custom.xcconfig = { 'OTHER_SWIFT_FLAGS' => '-DMockyCustom' }
+      custom.frameworks = 'Foundation'
+      custom.dependency 'Sourcery'
   end
 end

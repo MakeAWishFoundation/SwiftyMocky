@@ -13,7 +13,7 @@
     <a title="Examples  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">SwiftyMocky Docs</a> (71% documented)</p>
+        <p><a href="index.html">SwiftyMocky Docs</a> (93% documented)</p>
         <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -46,10 +46,13 @@
                 <a href="matcher-support-for-not-equatable.html">Matcher support for not Equatable</a>
               </li>
               <li class="nav-group-task">
-                <a href="generics.html">Generics</a>
+                <a href="handling-generics.html">Handling Generics</a>
               </li>
               <li class="nav-group-task">
                 <a href="examples.html">Examples</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="custom-subspec.html">Custom Subspec</a>
               </li>
               <li class="nav-group-task">
                 <a href="add-xcode-generate-action.html">Add XCode generate action</a>
@@ -69,7 +72,7 @@
                 <a href="Protocols/Mock.html">Mock</a>
               </li>
               <li class="nav-group-task">
-                <a href="Types.html#/s:11SwiftyMocky10StaticMockP">StaticMock</a>
+                <a href="Protocols/StaticMock.html">StaticMock</a>
               </li>
               <li class="nav-group-task">
                 <a href="Enums/Parameter.html">Parameter</a>
@@ -78,10 +81,10 @@
                 <a href="Classes/Matcher.html">Matcher</a>
               </li>
               <li class="nav-group-task">
-                <a href="Types.html#/s:11SwiftyMocky16GenericAttributeV">GenericAttribute</a>
+                <a href="Protocols/Countable.html">Countable</a>
               </li>
               <li class="nav-group-task">
-                <a href="Types.html#/s:11SwiftyMocky20GenericAttributeTypeP">GenericAttributeType</a>
+                <a href="Structs/Count.html">Count</a>
               </li>
             </ul>
           </li>
@@ -107,10 +110,33 @@
                 <a href="Global methods.html#/s:11SwiftyMocky6Verifyyxm_06StaticC0Qzs0D6StringV4fileSu4linetAA0D4MockRzlF">Verify(_:_:file:line:)</a>
               </li>
               <li class="nav-group-task">
-                <a href="Global methods.html#/s:11SwiftyMocky6Verifyyx_SuABQzs12StaticStringV4fileSu4linetAA4MockRzlF">Verify(_:_:_:file:line:)</a>
+                <a href="Global methods.html#/s:11SwiftyMocky6Verifyyx_AA5CountVABQzs12StaticStringV4fileSu4linetAA4MockRzlF">Verify(_:_:_:file:line:)</a>
               </li>
               <li class="nav-group-task">
-                <a href="Global methods.html#/s:11SwiftyMocky6Verifyyxm_Su06StaticC0Qzs0D6StringV4fileSu4linetAA0D4MockRzlF">Verify(_:_:_:file:line:)</a>
+                <a href="Global methods.html#/s:11SwiftyMocky6Verifyyxm_AA5CountV06StaticC0Qzs0E6StringV4fileSu4linetAA0E4MockRzlF">Verify(_:_:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global methods.html#/s:11SwiftyMocky14VerifyPropertyyx_0D0Qzs12StaticStringV4fileSu4linetAA4MockRzlF">VerifyProperty(_:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global methods.html#/s:11SwiftyMocky14VerifyPropertyyxm_06StaticD0Qzs0E6StringV4fileSu4linetAA0E4MockRzlF">VerifyProperty(_:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global methods.html#/s:11SwiftyMocky14VerifyPropertyyx_AA5CountV0D0Qzs12StaticStringV4fileSu4linetAA4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global methods.html#/s:11SwiftyMocky14VerifyPropertyyxm_AA5CountV06StaticD0Qzs0F6StringV4fileSu4linetAA0F4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Generics.html">Generics</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Structs/GenericAttribute.html">GenericAttribute</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/GenericAttributeType.html">GenericAttributeType</a>
               </li>
             </ul>
           </li>
@@ -126,7 +152,13 @@
             <a href="Other Extensions.html">Other Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a href="Extensions/Int.html">Int</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Extensions/Optional.html">Optional</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/UInt.html">UInt</a>
               </li>
             </ul>
           </li>
@@ -156,6 +188,7 @@
 <li><a href="#example1.1">Simple protocol with methods</a></li>
 <li><a href="#example1.2">Simple protocol with methods - optional attributes</a></li>
 <li><a href="#example1.3">Simple protocol with properties</a></li>
+<li><a href="#example1.4">Protocol, that adopts other protocols</a></li>
 </ul></li>
 <li><a href="#example2">Example 2:</a> throwing
 
@@ -294,6 +327,43 @@
 
 <span class="n">mock</span><span class="o">.</span><span class="n">propertyOptional</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="kt">XCTAssertEqual</span><span class="p">(</span><span class="n">mock</span><span class="o">.</span><span class="n">propertyOptional</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</code></pre>
+<h3 id='a-name-example1-4-a-protocol-that-adopts-other-protocols' class='heading'><a name="example1.4"></a> Protocol, that adopts other protocols</h3>
+
+<p>By default, SwiftyMocky will generate Mock, adopting all methods/properties gathered from all protocols, so it will support</p>
+
+<p>Protocol definition:</p>
+<pre class="highlight swift"><code><span class="c1">//sourcery: AutoMockable</span>
+<span class="kd">protocol</span> <span class="kt">SimpleProtocolWithMethods</span> <span class="p">{</span>
+    <span class="kd">func</span> <span class="nf">simpleMethod</span><span class="p">()</span>
+    <span class="kd">func</span> <span class="nf">simpleMehtodThatReturns</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Int</span>
+    <span class="kd">func</span> <span class="nf">simpleMehtodThatReturns</span><span class="p">(</span><span class="nv">param</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span>
+    <span class="kd">func</span> <span class="nf">simpleMehtodThatReturns</span><span class="p">(</span><span class="nv">optionalParam</span><span class="p">:</span> <span class="kt">String</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">String</span><span class="p">?</span>
+<span class="p">}</span>
+
+<span class="c1">//sourcery: AutoMockable</span>
+<span class="kd">protocol</span> <span class="kt">SimpleProtocolWithProperties</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">property</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span>
+    <span class="k">weak</span> <span class="k">var</span> <span class="nv">weakProperty</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="o">!</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span>
+    <span class="k">var</span> <span class="nv">propertyGetOnly</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span>
+    <span class="k">var</span> <span class="nv">propertyOptional</span><span class="p">:</span> <span class="kt">Int</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span>
+    <span class="k">var</span> <span class="nv">propertyImplicit</span><span class="p">:</span> <span class="kt">Int</span><span class="o">!</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">//sourcery: AutoMockable</span>
+<span class="kd">protocol</span> <span class="kt">SimpleProtocolThatInheritsOtherProtocols</span><span class="p">:</span> <span class="kt">SimpleProtocolWithMethods</span><span class="p">,</span> <span class="kt">SimpleProtocolWithProperties</span> <span class="p">{</span>
+
+<span class="p">}</span>
+</code></pre>
+
+<p>Test - setup mock:</p>
+<pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">test_simpleProtocol_that_inherits</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="nv">mock</span> <span class="o">=</span> <span class="kt">SimpleProtocolThatInheritsOtherProtocolsMock</span><span class="p">()</span>
+
+    <span class="kt">XCTAssert</span><span class="p">(</span><span class="n">mock</span> <span class="k">is</span> <span class="kt">SimpleProtocolWithProperties</span><span class="p">)</span>
+    <span class="kt">XCTAssert</span><span class="p">(</span><span class="n">mock</span> <span class="k">is</span> <span class="kt">SimpleProtocolWithMethods</span><span class="p">)</span>
+    <span class="o">...</span>
+<span class="p">}</span>
 </code></pre>
 <h2 id='a-name-example2-a-example-2' class='heading'><a name="example2"></a> Example 2:</h2>
 

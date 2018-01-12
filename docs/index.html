@@ -13,7 +13,7 @@
     <a title="SwiftyMocky  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">SwiftyMocky Docs</a> (71% documented)</p>
+        <p><a href="index.html">SwiftyMocky Docs</a> (93% documented)</p>
         <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -46,10 +46,13 @@
                 <a href="matcher-support-for-not-equatable.html">Matcher support for not Equatable</a>
               </li>
               <li class="nav-group-task">
-                <a href="generics.html">Generics</a>
+                <a href="handling-generics.html">Handling Generics</a>
               </li>
               <li class="nav-group-task">
                 <a href="examples.html">Examples</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="custom-subspec.html">Custom Subspec</a>
               </li>
               <li class="nav-group-task">
                 <a href="add-xcode-generate-action.html">Add XCode generate action</a>
@@ -69,7 +72,7 @@
                 <a href="Protocols/Mock.html">Mock</a>
               </li>
               <li class="nav-group-task">
-                <a href="Types.html#/s:11SwiftyMocky10StaticMockP">StaticMock</a>
+                <a href="Protocols/StaticMock.html">StaticMock</a>
               </li>
               <li class="nav-group-task">
                 <a href="Enums/Parameter.html">Parameter</a>
@@ -78,10 +81,10 @@
                 <a href="Classes/Matcher.html">Matcher</a>
               </li>
               <li class="nav-group-task">
-                <a href="Types.html#/s:11SwiftyMocky16GenericAttributeV">GenericAttribute</a>
+                <a href="Protocols/Countable.html">Countable</a>
               </li>
               <li class="nav-group-task">
-                <a href="Types.html#/s:11SwiftyMocky20GenericAttributeTypeP">GenericAttributeType</a>
+                <a href="Structs/Count.html">Count</a>
               </li>
             </ul>
           </li>
@@ -107,10 +110,33 @@
                 <a href="Global methods.html#/s:11SwiftyMocky6Verifyyxm_06StaticC0Qzs0D6StringV4fileSu4linetAA0D4MockRzlF">Verify(_:_:file:line:)</a>
               </li>
               <li class="nav-group-task">
-                <a href="Global methods.html#/s:11SwiftyMocky6Verifyyx_SuABQzs12StaticStringV4fileSu4linetAA4MockRzlF">Verify(_:_:_:file:line:)</a>
+                <a href="Global methods.html#/s:11SwiftyMocky6Verifyyx_AA5CountVABQzs12StaticStringV4fileSu4linetAA4MockRzlF">Verify(_:_:_:file:line:)</a>
               </li>
               <li class="nav-group-task">
-                <a href="Global methods.html#/s:11SwiftyMocky6Verifyyxm_Su06StaticC0Qzs0D6StringV4fileSu4linetAA0D4MockRzlF">Verify(_:_:_:file:line:)</a>
+                <a href="Global methods.html#/s:11SwiftyMocky6Verifyyxm_AA5CountV06StaticC0Qzs0E6StringV4fileSu4linetAA0E4MockRzlF">Verify(_:_:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global methods.html#/s:11SwiftyMocky14VerifyPropertyyx_0D0Qzs12StaticStringV4fileSu4linetAA4MockRzlF">VerifyProperty(_:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global methods.html#/s:11SwiftyMocky14VerifyPropertyyxm_06StaticD0Qzs0E6StringV4fileSu4linetAA0E4MockRzlF">VerifyProperty(_:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global methods.html#/s:11SwiftyMocky14VerifyPropertyyx_AA5CountV0D0Qzs12StaticStringV4fileSu4linetAA4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global methods.html#/s:11SwiftyMocky14VerifyPropertyyxm_AA5CountV06StaticD0Qzs0F6StringV4fileSu4linetAA0F4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Generics.html">Generics</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Structs/GenericAttribute.html">GenericAttribute</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/GenericAttributeType.html">GenericAttributeType</a>
               </li>
             </ul>
           </li>
@@ -126,7 +152,13 @@
             <a href="Other Extensions.html">Other Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a href="Extensions/Int.html">Int</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Extensions/Optional.html">Optional</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/UInt.html">UInt</a>
               </li>
             </ul>
           </li>
@@ -176,7 +208,7 @@
 
 <p>All protocol methods are nicely put into <strong>MethodProxy</strong>, with matching signature. That allows to use auto-complete (just type <code>.</code>) to see all mocked protocol methods, and specify return value for them.</p>
 
-<p>All method attributes are wrapped as <strong>Parameter</strong> enum, allowing to choose between <code>any</code> and <code>value</code>, giving great flexibility to mock behaviour. Please consider following:</p>
+<p>All method attributes are wrapped as <strong>Parameter</strong> enum, allowing to choose between <code>any</code>, <code>value</code> and <code>matching</code>, giving great flexibility to mock behavior. Please consider following:</p>
 <pre class="highlight swift"><code><span class="kt">Given</span><span class="p">(</span><span class="n">mock</span><span class="p">,</span> <span class="o">.</span><span class="nf">surname</span><span class="p">(</span><span class="k">for</span> <span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="s">"Johnny"</span><span class="p">),</span> <span class="nv">willReturn</span><span class="p">:</span> <span class="s">"Bravo"</span><span class="p">))</span>
 <span class="kt">Given</span><span class="p">(</span><span class="n">mock</span><span class="p">,</span> <span class="o">.</span><span class="nf">surname</span><span class="p">(</span><span class="k">for</span> <span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="nf">any</span><span class="p">(</span><span class="kt">String</span><span class="o">.</span><span class="k">self</span><span class="p">),</span> <span class="nv">willReturn</span><span class="p">:</span> <span class="s">"Kowalsky"</span><span class="p">))</span>
 
@@ -192,7 +224,7 @@
 
 <p>All protocol methods are nicely put into <strong>VerificationProxy</strong>, with matching signature. That allows to use auto-complete (just type <code>.</code>) to see all mocked protocol methods, and specify which one we want to verify.</p>
 
-<p>All method attributes are wrapped as <strong>Parameter</strong> enum, allowing to choose between <code>any</code> and <code>value</code>, giving great flexibility to tests. Please consider following:</p>
+<p>All method attributes are wrapped as <strong>Parameter</strong> enum, allowing to choose between <code>any</code>, <code>value</code> and <code>matching</code>, giving great flexibility to tests. Please consider following:</p>
 <pre class="highlight swift"><code><span class="c1">// inject mock to sut. Every time sut saves user data, it should trigger storage storeUser method</span>
 <span class="n">sut</span><span class="o">.</span><span class="n">usersStorage</span> <span class="o">=</span> <span class="n">mockStorage</span>
 <span class="n">sut</span><span class="o">.</span><span class="nf">saveUser</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="s">"Johny"</span><span class="p">,</span> <span class="nv">surname</span><span class="p">:</span> <span class="s">"Bravo"</span><span class="p">)</span>
@@ -205,10 +237,51 @@
 <span class="kt">Verify</span><span class="p">(</span><span class="n">mockStorage</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">.</span><span class="nf">storeUser</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="n">any</span><span class="p">,</span> <span class="nv">surname</span><span class="p">:</span> <span class="o">.</span><span class="n">any</span><span class="p">))</span>
 <span class="c1">// storeUser method should be triggered 2 times with name Johny</span>
 <span class="kt">Verify</span><span class="p">(</span><span class="n">mockStorage</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">.</span><span class="nf">storeUser</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="s">"Johny"</span><span class="p">),</span> <span class="nv">surname</span><span class="p">:</span> <span class="o">.</span><span class="n">any</span><span class="p">))</span>
+<span class="c1">// storeUser method should be triggered at least 2 times with name longer than 3</span>
+<span class="kt">Verify</span><span class="p">(</span><span class="n">mockStorage</span><span class="p">,</span> <span class="o">.</span><span class="nf">moreOrEqual</span><span class="p">(</span><span class="nv">to</span><span class="p">:</span> <span class="mi">2</span><span class="p">),</span> <span class="o">.</span><span class="nf">storeUser</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="nf">matching</span><span class="p">({</span> <span class="nv">$0</span><span class="o">.</span><span class="n">count</span> <span class="o">&gt;</span> <span class="mi">3</span> <span class="p">}}),</span> <span class="nv">surname</span><span class="p">:</span> <span class="o">.</span><span class="n">any</span><span class="p">))</span>
+</code></pre>
+
+<p>For <strong>Verify</strong>, you can use <strong>Count</strong> to specify how many times you expect something to be triggered. <strong>Count</strong> can be defined as explicit value:</p>
+<pre class="highlight swift"><code><span class="kt">Verify</span><span class="p">(</span><span class="n">mockStorage</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">.</span><span class="nf">storeUser</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="s">"Johny"</span><span class="p">),</span> <span class="nv">surname</span><span class="p">:</span> <span class="o">.</span><span class="n">any</span><span class="p">))</span>
+</code></pre>
+
+<p>But has many more predefined options, like:</p>
+<pre class="highlight swift"><code><span class="kt">Verify</span><span class="p">(</span><span class="n">mockStorage</span><span class="p">,</span> <span class="o">.</span><span class="n">atLeastOnce</span><span class="p">,</span> <span class="o">.</span><span class="nf">storeUser</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="s">"Johny"</span><span class="p">),</span> <span class="nv">surname</span><span class="p">:</span> <span class="o">.</span><span class="n">any</span><span class="p">))</span>
+<span class="kt">Verify</span><span class="p">(</span><span class="n">mockStorage</span><span class="p">,</span> <span class="o">.</span><span class="nf">in</span><span class="p">(</span><span class="nv">range</span><span class="p">:</span> <span class="mi">0</span><span class="o">...</span><span class="mi">3</span><span class="p">),</span> <span class="o">.</span><span class="nf">storeUser</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="s">"Johny"</span><span class="p">),</span> <span class="nv">surname</span><span class="p">:</span> <span class="o">.</span><span class="n">any</span><span class="p">))</span>
+<span class="kt">Verify</span><span class="p">(</span><span class="n">mockStorage</span><span class="p">,</span> <span class="o">.</span><span class="nf">less</span><span class="p">(</span><span class="nv">than</span><span class="p">:</span> <span class="mi">4</span><span class="p">),</span> <span class="o">.</span><span class="nf">storeUser</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="s">"Johny"</span><span class="p">),</span> <span class="nv">surname</span><span class="p">:</span> <span class="o">.</span><span class="n">any</span><span class="p">))</span>
+</code></pre>
+<h3 id='strong-4-check-property-getters-and-setters-verifyproperty-strong' class='heading'><strong>4. Check property getters and setters - VerifyProperty</strong></h3>
+
+<p>From SwiftyMocky 2.0, it is possible to perform <code>VerifyProperty</code>. Syntax is very similar to plain <code>Verify</code>, with respect to whether it is get or set:</p>
+<pre class="highlight swift"><code><span class="n">mock</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">"Danny"</span>
+<span class="n">mock</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">"Joanna"</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="n">mock</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+<span class="c1">// Verify getter:</span>
+<span class="kt">VerifyProperty</span><span class="p">(</span><span class="n">mock</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="c1">// Verify setter:</span>
+<span class="kt">VerifyProperty</span><span class="p">(</span><span class="n">mock</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">.</span><span class="nf">name</span><span class="p">(</span><span class="nv">set</span><span class="p">:</span> <span class="o">.</span><span class="n">any</span><span class="p">))</span>
+<span class="kt">VerifyProperty</span><span class="p">(</span><span class="n">mock</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">.</span><span class="nf">name</span><span class="p">(</span><span class="nv">set</span><span class="p">:</span> <span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="s">"Danny"</span><span class="p">)))</span>
+<span class="kt">VerifyProperty</span><span class="p">(</span><span class="n">mock</span><span class="p">,</span> <span class="o">.</span><span class="n">never</span><span class="p">,</span> <span class="o">.</span><span class="nf">name</span><span class="p">(</span><span class="nv">set</span><span class="p">:</span> <span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="s">"Bishop"</span><span class="p">)))</span>
+</code></pre>
+<h3 id='strong-5-do-something-when-stub-is-called-perform-strong' class='heading'><strong>5. Do something when stub is called - Perform</strong></h3>
+
+<p>All mocks has <strong>perform</strong> method (accessible both as instance method or global function), with easy to use syntax, allowing to specify closure, that will be executed upon stubbed method being called.</p>
+
+<p>It uses same paramter wrapping features as given, so you can specify different <strong>Perform</strong> cases for different attributes set.</p>
+
+<p>It&rsquo;s very handy when working with completion block based approach.</p>
+
+<p>Example:</p>
+<pre class="highlight swift"><code><span class="c1">// Perform allows to execute given closure, with all the method parameters, as soon as it is being called</span>
+<span class="kt">Perform</span><span class="p">(</span><span class="n">mock</span><span class="p">,</span> <span class="o">.</span><span class="nf">methodThatTakesCompletionBlock</span><span class="p">(</span><span class="nv">completion</span><span class="p">:</span> <span class="o">.</span><span class="n">any</span><span class="p">,</span> <span class="nv">perform</span><span class="p">:</span> <span class="p">{</span> <span class="n">completion</span> <span class="k">in</span>
+    <span class="nf">completion</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span><span class="kc">nil</span><span class="p">)</span>
+<span class="p">}))</span>
 </code></pre>
 <h2 id='current-version' class='heading'>Current version</h2>
 
-<p>Master branch is still in beta, breaking changes are possible.</p>
+<p>Current versions is 2.0. It is stable, breaking changes should not happen until 3.0, and our goal is to make seamless updates. So in general, if you are using 1.2, moving to 2.0 should not require to change any code.</p>
 <h2 id='authors' class='heading'>Authors</h2>
 
 <ul>

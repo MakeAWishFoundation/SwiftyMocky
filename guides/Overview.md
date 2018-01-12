@@ -31,7 +31,7 @@ All mocks has **given** method (accessible both as instance method or global fun
 
 All protocol methods are nicely put into **MethodProxy**, with matching signature. That allows to use auto-complete (just type `.`) to see all mocked protocol methods, and specify return value for them.
 
-All method attributes are wrapped as **Parameter** enum, allowing to choose between `any` and `value`, giving great flexibility to mock behaviour. Please consider following:
+All method attributes are wrapped as **Parameter** enum, allowing to choose between `any`, `value` and `matching`, giving great flexibility to mock behavior. Please consider following:
 
 ```swift
 Given(mock, .surname(for name: .value("Johnny"), willReturn: "Bravo"))
@@ -50,7 +50,7 @@ All mocks has **verify** method (accessible both as instance method or global fu
 
 All protocol methods are nicely put into **VerificationProxy**, with matching signature. That allows to use auto-complete (just type `.`) to see all mocked protocol methods, and specify which one we want to verify.
 
-All method attributes are wrapped as **Parameter** enum, allowing to choose between `any` and `value`, giving great flexibility to tests. Please consider following:
+All method attributes are wrapped as **Parameter** enum, allowing to choose between `any`, `value` and `matching`, giving great flexibility to tests. Please consider following:
 
 ```swift
 // inject mock to sut. Every time sut saves user data, it should trigger storage storeUser method
@@ -65,11 +65,62 @@ Verify(mockStorage, .storeUser(name: .value("Jon"), surname: .value("Snow")))
 Verify(mockStorage, 3, .storeUser(name: .any, surname: .any))
 // storeUser method should be triggered 2 times with name Johny
 Verify(mockStorage, 2, .storeUser(name: .value("Johny"), surname: .any))
+// storeUser method should be triggered at least 2 times with name longer than 3
+Verify(mockStorage, .moreOrEqual(to: 2), .storeUser(name: .matching({ $0.count > 3 }}), surname: .any))
+```
+
+For **Verify**, you can use **Count** to specify how many times you expect something to be triggered. **Count** can be defined as explicit value:
+
+```swift
+Verify(mockStorage, 2, .storeUser(name: .value("Johny"), surname: .any))
+```
+
+But has many more predefined options, like:
+
+```swift
+Verify(mockStorage, .atLeastOnce, .storeUser(name: .value("Johny"), surname: .any))
+Verify(mockStorage, .in(range: 0...3), .storeUser(name: .value("Johny"), surname: .any))
+Verify(mockStorage, .less(than: 4), .storeUser(name: .value("Johny"), surname: .any))
+```
+
+### **4. Check property getters and setters - VerifyProperty**
+
+From SwiftyMocky 2.0, it is possible to perform `VerifyProperty`. Syntax is very similar to plain `Verify`, with respect to whether it is get or set:
+
+```swift
+mock.name = "Danny"
+mock.name = "Joanna"
+
+print(mock.name)
+
+// Verify getter:
+VerifyProperty(mock, 1, .name)
+// Verify setter:
+VerifyProperty(mock, 2, .name(set: .any))
+VerifyProperty(mock, 1, .name(set: .value("Danny")))
+VerifyProperty(mock, .never, .name(set: .value("Bishop")))
+```
+
+### **5. Do something when stub is called - Perform**
+
+All mocks has **perform** method (accessible both as instance method or global function), with easy to use syntax, allowing to specify closure, that will be executed upon stubbed method being called.
+
+It uses same paramter wrapping features as given, so you can specify different **Perform** cases for different attributes set.
+
+It's very handy when working with completion block based approach.
+
+Example:
+
+```swift
+// Perform allows to execute given closure, with all the method parameters, as soon as it is being called
+Perform(mock, .methodThatTakesCompletionBlock(completion: .any, perform: { completion in
+    completion(true,nil)
+}))
 ```
 
 ## Current version
 
-Master branch is still in beta, breaking changes are possible.
+Current versions is 2.0. It is stable, breaking changes should not happen until 3.0, and our goal is to make seamless updates. So in general, if you are using 1.2, moving to 2.0 should not require to change any code.
 
 ## Authors
 
