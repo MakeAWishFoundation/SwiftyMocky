@@ -12,6 +12,12 @@
 		61B65D431C6E4154C44B6B1D /* Pods_Mocky_Example_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D435D6B1D3850EB6C36B69E /* Pods_Mocky_Example_iOS.framework */; };
 		6A629255223ACC1B05F1B6D7 /* Pods_Mocky_Tests_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 835A7223A01A944E0F3E0BCF /* Pods_Mocky_Tests_macOS.framework */; };
 		7D1174B528873ECD259B355C /* Pods_Mocky_Example_tvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 356426D9A4F6925FCD6469A5 /* Pods_Mocky_Example_tvOS.framework */; };
+		CC07B603202215F600F51534 /* ProtocolMethodsThatDifferOnlyInReturnType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC07B601202215D500F51534 /* ProtocolMethodsThatDifferOnlyInReturnType.swift */; };
+		CC07B604202215F600F51534 /* ProtocolMethodsThatDifferOnlyInReturnType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC07B601202215D500F51534 /* ProtocolMethodsThatDifferOnlyInReturnType.swift */; };
+		CC07B605202215F700F51534 /* ProtocolMethodsThatDifferOnlyInReturnType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC07B601202215D500F51534 /* ProtocolMethodsThatDifferOnlyInReturnType.swift */; };
+		CC07B60820221B6700F51534 /* ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC07B60720221B6700F51534 /* ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift */; };
+		CC07B60920221B6700F51534 /* ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC07B60720221B6700F51534 /* ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift */; };
+		CC07B60A20221B6700F51534 /* ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC07B60720221B6700F51534 /* ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift */; };
 		CC3252172003CC22009AD6C2 /* Excluded.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3252162003CC22009AD6C2 /* Excluded.generated.swift */; };
 		CC3252182003CC22009AD6C2 /* Excluded.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3252162003CC22009AD6C2 /* Excluded.generated.swift */; };
 		CC3252192003CC22009AD6C2 /* Excluded.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3252162003CC22009AD6C2 /* Excluded.generated.swift */; };
@@ -184,6 +190,8 @@
 		AAEE52510F67C7DF13FF8AF2 /* Pods-Mocky_Example_tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Example_tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Example_tvOS/Pods-Mocky_Example_tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		BCB5C12EDA17046011396E79 /* Pods-Mocky_Tests_tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Tests_tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Tests_tvOS/Pods-Mocky_Tests_tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		CAC0C2FE2E105DB67A93DC7E /* Pods_Mocky_Example_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mocky_Example_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC07B601202215D500F51534 /* ProtocolMethodsThatDifferOnlyInReturnType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolMethodsThatDifferOnlyInReturnType.swift; sourceTree = "<group>"; };
+		CC07B60720221B6700F51534 /* ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift; sourceTree = "<group>"; };
 		CC3252162003CC22009AD6C2 /* Excluded.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Excluded.generated.swift; sourceTree = "<group>"; };
 		CC32521A2004C217009AD6C2 /* GenericProtocolsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericProtocolsTests.swift; sourceTree = "<group>"; };
 		CC32521E20051AC9009AD6C2 /* SelfConstrainedProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfConstrainedProtocol.swift; sourceTree = "<group>"; };
@@ -404,6 +412,22 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		CC07B600202215C200F51534 /* Example 9 */ = {
+			isa = PBXGroup;
+			children = (
+				CC07B601202215D500F51534 /* ProtocolMethodsThatDifferOnlyInReturnType.swift */,
+			);
+			path = "Example 9";
+			sourceTree = "<group>";
+		};
+		CC07B60620221B4B00F51534 /* Example 9 */ = {
+			isa = PBXGroup;
+			children = (
+				CC07B60720221B6700F51534 /* ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift */,
+			);
+			path = "Example 9";
+			sourceTree = "<group>";
+		};
 		CC491A1C1FDAB48F001CAB8A /* Example 8 */ = {
 			isa = PBXGroup;
 			children = (
@@ -506,6 +530,7 @@
 				CCE350D91FCC0A9400A76C4C /* Example 6 */,
 				CCE350D71FCC0A9400A76C4C /* Example 7 */,
 				CC491A1C1FDAB48F001CAB8A /* Example 8 */,
+				CC07B600202215C200F51534 /* Example 9 */,
 				CCE350DE1FCC0A9400A76C4C /* Model */,
 				CCE350D11FCC0A9400A76C4C /* Other */,
 			);
@@ -628,6 +653,7 @@
 				CCE351351FCC0B8200A76C4C /* Example 6 */,
 				CCE351331FCC0B8200A76C4C /* Example 7 */,
 				CC491A221FDAB56F001CAB8A /* Example 8 */,
+				CC07B60620221B4B00F51534 /* Example 9 */,
 				CCE3512F1FCC0B8200A76C4C /* Other */,
 			);
 			path = Shared;
@@ -1341,6 +1367,7 @@
 				CCE350F61FCC0A9400A76C4C /* ProtocolWithInitializers.swift in Sources */,
 				CCE350EA1FCC0A9400A76C4C /* NonSwiftProtocol.swift in Sources */,
 				CCE351061FCC0A9400A76C4C /* ProtocolsWithClosures.swift in Sources */,
+				CC07B604202215F600F51534 /* ProtocolMethodsThatDifferOnlyInReturnType.swift in Sources */,
 				CCE350F01FCC0A9400A76C4C /* GenericProtocols.swift in Sources */,
 				CCE351041FCC0A9400A76C4C /* ProtocolWithThrowingMethods.swift in Sources */,
 				CCE350F21FCC0A9400A76C4C /* SampleService.swift in Sources */,
@@ -1360,6 +1387,7 @@
 				CCE351431FCC0B8200A76C4C /* SampleServiceTests.swift in Sources */,
 				CCE351571FCC0B8200A76C4C /* ProtocolWithClosuresTests.swift in Sources */,
 				CCE351531FCC0B8200A76C4C /* ProtocolsWithCustomAttributesTests.swift in Sources */,
+				CC07B60920221B6700F51534 /* ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift in Sources */,
 				CCE3514B1FCC0B8200A76C4C /* ProtocolWithInitializersTests.swift in Sources */,
 				CCE351551FCC0B8200A76C4C /* ProtocolWithThrowingMehtodsTests.swift in Sources */,
 				CCE351661FCC0B9700A76C4C /* Mock.generated.swift in Sources */,
@@ -1392,6 +1420,7 @@
 				CCE350F51FCC0A9400A76C4C /* ProtocolWithInitializers.swift in Sources */,
 				CCE350E91FCC0A9400A76C4C /* NonSwiftProtocol.swift in Sources */,
 				CCE351051FCC0A9400A76C4C /* ProtocolsWithClosures.swift in Sources */,
+				CC07B603202215F600F51534 /* ProtocolMethodsThatDifferOnlyInReturnType.swift in Sources */,
 				CCE350EF1FCC0A9400A76C4C /* GenericProtocols.swift in Sources */,
 				CCE351031FCC0A9400A76C4C /* ProtocolWithThrowingMethods.swift in Sources */,
 				CCE350F11FCC0A9400A76C4C /* SampleService.swift in Sources */,
@@ -1410,6 +1439,7 @@
 				CCE3514E1FCC0B8200A76C4C /* SimpleProtocolsTests.swift in Sources */,
 				CCE351421FCC0B8200A76C4C /* SampleServiceTests.swift in Sources */,
 				CCE351561FCC0B8200A76C4C /* ProtocolWithClosuresTests.swift in Sources */,
+				CC07B60820221B6700F51534 /* ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift in Sources */,
 				CCE351521FCC0B8200A76C4C /* ProtocolsWithCustomAttributesTests.swift in Sources */,
 				CC491A251FDAB587001CAB8A /* ProtocolWithPropertiesTests.swift in Sources */,
 				CCE3514A1FCC0B8200A76C4C /* ProtocolWithInitializersTests.swift in Sources */,
@@ -1442,6 +1472,7 @@
 				CC5B61DB1FCC18C4007FB209 /* SampleService.swift in Sources */,
 				CC5B61D91FCC18C4007FB209 /* ItemsRepository.swift in Sources */,
 				CC5B61D31FCC18C4007FB209 /* ProtocolWithInitializers.swift in Sources */,
+				CC07B605202215F700F51534 /* ProtocolMethodsThatDifferOnlyInReturnType.swift in Sources */,
 				CC5B61CF1FCC18C4007FB209 /* ProtocolWithThrowingMethods.swift in Sources */,
 				CC5B61D51FCC18C4007FB209 /* Item.swift in Sources */,
 				CC5B61BE1FCC1764007FB209 /* ViewController.swift in Sources */,
@@ -1461,6 +1492,7 @@
 				CC5B61E11FCC18D0007FB209 /* ProtocolWithClosuresTests.swift in Sources */,
 				CC5B61CC1FCC188D007FB209 /* ItemsRepositoryMock.swift in Sources */,
 				CC5B61CB1FCC188D007FB209 /* Mock.generated.swift in Sources */,
+				CC07B60A20221B6700F51534 /* ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift in Sources */,
 				CC5B61E01FCC18D0007FB209 /* ProtocolWithStaticMembersTests.swift in Sources */,
 				CC5B61C61FCC178F007FB209 /* Mocky_Example_macOSTests.swift in Sources */,
 				CC5B61E21FCC18D0007FB209 /* ProtocolWithInitializersTests.swift in Sources */,

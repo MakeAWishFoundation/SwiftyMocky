@@ -1652,6 +1652,140 @@ class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
     }
 }
 
+// MARK: - ProtocolMethodsThatDifferOnlyInReturnType
+class ProtocolMethodsThatDifferOnlyInReturnTypeMock: ProtocolMethodsThatDifferOnlyInReturnType, Mock {
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    var matcher: Matcher = Matcher.default
+
+
+    typealias Property = Swift.Never
+
+
+    func foo(bar: String) -> String {
+        addInvocation(.ifoo__bar_bar_1(Parameter<String>.value(bar)))
+		let perform = methodPerformValue(.ifoo__bar_bar_1(Parameter<String>.value(bar))) as? (String) -> Void
+		perform?(bar)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.ifoo__bar_bar_1(Parameter<String>.value(bar)))
+		let value = givenValue.value as? String
+		return value.orFail("stub return value not specified for foo(bar: String). Use given")
+    }
+
+    func foo(bar: String) -> Int {
+        addInvocation(.ifoo__bar_bar_2(Parameter<String>.value(bar)))
+		let perform = methodPerformValue(.ifoo__bar_bar_2(Parameter<String>.value(bar))) as? (String) -> Void
+		perform?(bar)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.ifoo__bar_bar_2(Parameter<String>.value(bar)))
+		let value = givenValue.value as? Int
+		return value.orFail("stub return value not specified for foo(bar: String). Use given")
+    }
+
+    fileprivate enum MethodType {
+        case ifoo__bar_bar_1(Parameter<String>)
+        case ifoo__bar_bar_2(Parameter<String>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+                case (.ifoo__bar_bar_1(let lhsBar), .ifoo__bar_bar_1(let rhsBar)):
+                    guard Parameter.compare(lhs: lhsBar, rhs: rhsBar, with: matcher) else { return false } 
+                    return true 
+                case (.ifoo__bar_bar_2(let lhsBar), .ifoo__bar_bar_2(let rhsBar)):
+                    guard Parameter.compare(lhs: lhsBar, rhs: rhsBar, with: matcher) else { return false } 
+                    return true 
+                default: return false
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+                case let .ifoo__bar_bar_1(p0): return p0.intValue
+                case let .ifoo__bar_bar_2(p0): return p0.intValue
+            }
+        }
+    }
+
+    struct Given {
+        fileprivate var method: MethodType
+        var returns: Any?
+        var `throws`: Error?
+
+        private init(method: MethodType, returns: Any?, throws: Error?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
+
+        static func foo(bar: Parameter<String>, willReturn: String) -> Given {
+            return Given(method: .ifoo__bar_bar_1(bar), returns: willReturn, throws: nil)
+        }
+        static func foo(bar: Parameter<String>, willReturn: Int) -> Given {
+            return Given(method: .ifoo__bar_bar_2(bar), returns: willReturn, throws: nil)
+        }
+    }
+
+    struct Verify {
+        fileprivate var method: MethodType
+
+        static func foo(bar: Parameter<String>, returning: String.Type) -> Verify {
+            return Verify(method: .ifoo__bar_bar_1(bar))
+        }
+        static func foo(bar: Parameter<String>, returning: Int.Type) -> Verify {
+            return Verify(method: .ifoo__bar_bar_2(bar))
+        }
+    }
+
+    struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        static func foo(bar: Parameter<String>, returning: String.Type, perform: (String) -> Void) -> Perform {
+            return Perform(method: .ifoo__bar_bar_1(bar), performs: perform)
+        }
+        static func foo(bar: Parameter<String>, returning: Int.Type, perform: (String) -> Void) -> Perform {
+            return Perform(method: .ifoo__bar_bar_2(bar), performs: perform)
+        }
+    }
+
+    private func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+        methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+
+    private func methodReturnValue(_ method: MethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
+    }
+
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+}
+
 // MARK: - ProtocolWithAssociatedType
 class ProtocolWithAssociatedTypeMock<TypeT>: ProtocolWithAssociatedType, Mock where TypeT: Sequence {
 
