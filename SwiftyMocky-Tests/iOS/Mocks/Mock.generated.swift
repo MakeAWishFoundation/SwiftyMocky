@@ -1652,6 +1652,195 @@ class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
     }
 }
 
+// MARK: - ProtocolMethodsGenericThatDifferOnlyInReturnType
+class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGenericThatDifferOnlyInReturnType, Mock {
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    var matcher: Matcher = Matcher.default
+
+
+    typealias Property = Swift.Never
+
+
+    func foo<T>(bar: T) -> String {
+        addInvocation(.ifoo__bar_bar_1(Parameter<T>.value(bar).wrapAsGeneric()))
+		let perform = methodPerformValue(.ifoo__bar_bar_1(Parameter<T>.value(bar).wrapAsGeneric())) as? (T) -> Void
+		perform?(bar)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.ifoo__bar_bar_1(Parameter<T>.value(bar).wrapAsGeneric()))
+		let value = givenValue.value as? String
+		return value.orFail("stub return value not specified for foo<T>(bar: T). Use given")
+    }
+
+    func foo<T>(bar: T) -> Int {
+        addInvocation(.ifoo__bar_bar_2(Parameter<T>.value(bar).wrapAsGeneric()))
+		let perform = methodPerformValue(.ifoo__bar_bar_2(Parameter<T>.value(bar).wrapAsGeneric())) as? (T) -> Void
+		perform?(bar)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.ifoo__bar_bar_2(Parameter<T>.value(bar).wrapAsGeneric()))
+		let value = givenValue.value as? Int
+		return value.orFail("stub return value not specified for foo<T>(bar: T). Use given")
+    }
+
+    func foo<T>(bar: T) -> Float where T: A {
+        addInvocation(.ifoo__bar_bar_4(Parameter<T>.value(bar).wrapAsGeneric()))
+		let perform = methodPerformValue(.ifoo__bar_bar_4(Parameter<T>.value(bar).wrapAsGeneric())) as? (T) -> Void
+		perform?(bar)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.ifoo__bar_bar_4(Parameter<T>.value(bar).wrapAsGeneric()))
+		let value = givenValue.value as? Float
+		return value.orFail("stub return value not specified for foo<T>(bar: T). Use given")
+    }
+
+    func foo<T>(bar: T) -> Float where T: B {
+        addInvocation(.ifoo__bar_bar_4(Parameter<T>.value(bar).wrapAsGeneric()))
+		let perform = methodPerformValue(.ifoo__bar_bar_4(Parameter<T>.value(bar).wrapAsGeneric())) as? (T) -> Void
+		perform?(bar)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.ifoo__bar_bar_4(Parameter<T>.value(bar).wrapAsGeneric()))
+		let value = givenValue.value as? Float
+		return value.orFail("stub return value not specified for foo<T>(bar: T). Use given")
+    }
+
+    func foo<T>(bar: T) -> Double where T: B {
+        addInvocation(.ifoo__bar_bar_5(Parameter<T>.value(bar).wrapAsGeneric()))
+		let perform = methodPerformValue(.ifoo__bar_bar_5(Parameter<T>.value(bar).wrapAsGeneric())) as? (T) -> Void
+		perform?(bar)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.ifoo__bar_bar_5(Parameter<T>.value(bar).wrapAsGeneric()))
+		let value = givenValue.value as? Double
+		return value.orFail("stub return value not specified for foo<T>(bar: T). Use given")
+    }
+
+    fileprivate enum MethodType {
+        case ifoo__bar_bar_1(Parameter<GenericAttribute>)
+        case ifoo__bar_bar_2(Parameter<GenericAttribute>)
+        case ifoo__bar_bar_4(Parameter<GenericAttribute>)
+        case ifoo__bar_bar_5(Parameter<GenericAttribute>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+                case (.ifoo__bar_bar_1(let lhsBar), .ifoo__bar_bar_1(let rhsBar)):
+                    guard Parameter.compare(lhs: lhsBar, rhs: rhsBar, with: matcher) else { return false } 
+                    return true 
+                case (.ifoo__bar_bar_2(let lhsBar), .ifoo__bar_bar_2(let rhsBar)):
+                    guard Parameter.compare(lhs: lhsBar, rhs: rhsBar, with: matcher) else { return false } 
+                    return true 
+                case (.ifoo__bar_bar_4(let lhsBar), .ifoo__bar_bar_4(let rhsBar)):
+                    guard Parameter.compare(lhs: lhsBar, rhs: rhsBar, with: matcher) else { return false } 
+                    return true 
+                case (.ifoo__bar_bar_5(let lhsBar), .ifoo__bar_bar_5(let rhsBar)):
+                    guard Parameter.compare(lhs: lhsBar, rhs: rhsBar, with: matcher) else { return false } 
+                    return true 
+                default: return false
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+                case let .ifoo__bar_bar_1(p0): return p0.intValue
+                case let .ifoo__bar_bar_2(p0): return p0.intValue
+                case let .ifoo__bar_bar_4(p0): return p0.intValue
+                case let .ifoo__bar_bar_5(p0): return p0.intValue
+            }
+        }
+    }
+
+    struct Given {
+        fileprivate var method: MethodType
+        var returns: Any?
+        var `throws`: Error?
+
+        private init(method: MethodType, returns: Any?, throws: Error?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
+
+        static func foo<T>(bar: Parameter<T>, willReturn: String) -> Given {
+            return Given(method: .ifoo__bar_bar_1(bar.wrapAsGeneric()), returns: willReturn, throws: nil)
+        }
+        static func foo<T>(bar: Parameter<T>, willReturn: Int) -> Given {
+            return Given(method: .ifoo__bar_bar_2(bar.wrapAsGeneric()), returns: willReturn, throws: nil)
+        }
+        static func foo<T>(bar: Parameter<T>, willReturn: Float) -> Given {
+            return Given(method: .ifoo__bar_bar_4(bar.wrapAsGeneric()), returns: willReturn, throws: nil)
+        }
+        static func foo<T>(bar: Parameter<T>, willReturn: Double) -> Given {
+            return Given(method: .ifoo__bar_bar_5(bar.wrapAsGeneric()), returns: willReturn, throws: nil)
+        }
+    }
+
+    struct Verify {
+        fileprivate var method: MethodType
+
+        static func foo<T>(bar: Parameter<T>, returning: String.Type) -> Verify {
+            return Verify(method: .ifoo__bar_bar_1(bar.wrapAsGeneric()))
+        }
+        static func foo<T>(bar: Parameter<T>, returning: Int.Type) -> Verify {
+            return Verify(method: .ifoo__bar_bar_2(bar.wrapAsGeneric()))
+        }
+        static func foo<T>(bar: Parameter<T>, returning: Float.Type) -> Verify {
+            return Verify(method: .ifoo__bar_bar_4(bar.wrapAsGeneric()))
+        }
+        static func foo<T>(bar: Parameter<T>, returning: Double.Type) -> Verify {
+            return Verify(method: .ifoo__bar_bar_5(bar.wrapAsGeneric()))
+        }
+    }
+
+    struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        static func foo<T>(bar: Parameter<T>, returning: String.Type, perform: (T) -> Void) -> Perform {
+            return Perform(method: .ifoo__bar_bar_1(bar.wrapAsGeneric()), performs: perform)
+        }
+        static func foo<T>(bar: Parameter<T>, returning: Int.Type, perform: (T) -> Void) -> Perform {
+            return Perform(method: .ifoo__bar_bar_2(bar.wrapAsGeneric()), performs: perform)
+        }
+        static func foo<T>(bar: Parameter<T>, returning: Float.Type, perform: (T) -> Void) -> Perform {
+            return Perform(method: .ifoo__bar_bar_4(bar.wrapAsGeneric()), performs: perform)
+        }
+        static func foo<T>(bar: Parameter<T>, returning: Double.Type, perform: (T) -> Void) -> Perform {
+            return Perform(method: .ifoo__bar_bar_5(bar.wrapAsGeneric()), performs: perform)
+        }
+    }
+
+    private func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+        methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+
+    private func methodReturnValue(_ method: MethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
+    }
+
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+}
+
 // MARK: - ProtocolMethodsThatDifferOnlyInReturnType
 class ProtocolMethodsThatDifferOnlyInReturnTypeMock: ProtocolMethodsThatDifferOnlyInReturnType, Mock {
     private var invocations: [MethodType] = []
