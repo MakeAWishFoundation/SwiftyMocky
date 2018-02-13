@@ -1,4 +1,11 @@
 
+<%# ================================================== SwiftLint -%><%_ -%>
+<%_ if let rules = arguments["excludedSwiftLintRules"] as? [String] { -%>
+    <%_ for rule in rules { -%>
+    <%_ %>//swiftlint:disable <%= rule %>
+    <%_ } -%>
+<%_ } -%>
+
 #if MockyCustom
 import SwiftyMocky
 <%# ================================================== IMPORTS InAPP -%><%_ -%>
@@ -59,13 +66,6 @@ import XCTest
 import Sourcery
 import SourceryRuntime
 #endif
-
-<%# ================================================== SwiftLint -%><%_ -%>
-<%_ if let rules = arguments["excludedSwiftLintRules"] as? [String] { -%>
-    <%_ for rule in rules { -%>
-    <%_ %>//swiftlint:disable <%= rule %>
-    <%_ } -%>
-<%_ } -%>
 
 <%# ================================================== HELPERS -%><%_
     class Current {
