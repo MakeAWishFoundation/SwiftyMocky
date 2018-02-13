@@ -1,0 +1,72 @@
+//
+//  ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift
+//  Mocky
+//
+//  Created by Andrzej Michnia on 31.01.2018.
+//  Copyright © 2018 CocoaPods. All rights reserved.
+//
+
+import XCTest
+import SwiftyMocky
+#if os(iOS)
+    @testable import Mocky_Example_iOS
+#elseif os(tvOS)
+    @testable import Mocky_Example_tvOS
+#elseif os(macOS)
+    @testable import Mocky_Example_macOS
+#endif
+
+class ProtocolMethodsThatDifferOnlyInReturnTypeTests: XCTestCase {
+    func test_simple_case() {
+        let mock = ProtocolMethodsThatDifferOnlyInReturnTypeMock()
+
+        Given(mock, .foo(bar: .any, willReturn: 1))
+        Given(mock, .foo(bar: .value("sth"), willReturn: 2))
+        Given(mock, .foo(bar: .any, willReturn: "any"))
+
+        Verify(mock, .never, .foo(bar: .any, returning: Int.self))
+        Verify(mock, .never, .foo(bar: .any, returning: String.self))
+
+        XCTAssertEqual(mock.foo(bar: "aaa"), 1)
+
+        Verify(mock, 1, .foo(bar: .any, returning: Int.self))
+        Verify(mock, .never, .foo(bar: .any, returning: String.self))
+
+        XCTAssertEqual(mock.foo(bar: "sth"), 2)
+        XCTAssertEqual(mock.foo(bar: "sth"), "any")
+
+        Verify(mock, 2, .foo(bar: .any, returning: Int.self))
+        Verify(mock, 1, .foo(bar: .any, returning: String.self))
+    }
+
+    func test_generic_case() {
+        let mock = ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock()
+
+        Matcher.default.register(A.self) { lhs,rhs in
+            return lhs.id == rhs.id
+        }
+        Matcher.default.register(B.self) { lhs,rhs in
+            return lhs.id == rhs.id
+        }
+
+        Given(mock, .foo(bar: .any(A.self), willReturn: Float(0)))
+        Given(mock, .foo(bar: .any(B.self), willReturn: Float(1)))
+        Given(mock, .foo(bar: .value(B(2)), willReturn: Float(2)))
+        Given(mock, .foo(bar: .any(Int.self), willReturn: 3))
+
+        Verify(mock, .never, .foo(bar: .any(A.self), returning: Float.self))
+        Verify(mock, .never, .foo(bar: .any(B.self), returning: Float.self))
+        Verify(mock, .never, .foo(bar: .any(Int.self), returning: Int.self))
+
+        let v1: Float = mock.foo(bar: A(0))
+        XCTAssertEqual(v1, 0)
+        let v2: Float = mock.foo(bar: B(1))
+        XCTAssertEqual(v2, 1)
+        let v3: Float = mock.foo(bar: B(2))
+        XCTAssertEqual(v3, 2)
+
+        Verify(mock, 1, .foo(bar: .any(A.self), returning: Float.self))
+        Verify(mock, 2, .foo(bar: .any(B.self), returning: Float.self))
+        Verify(mock, .never, .foo(bar: .any(Int.self), returning: Int.self))
+    }
+}
