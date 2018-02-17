@@ -2,6 +2,11 @@
 // DO NOT EDIT
 
 
+//swiftlint:disable force_cast
+//swiftlint:disable function_body_length
+//swiftlint:disable line_length
+//swiftlint:disable vertical_whitespace
+
 #if MockyCustom
 import SwiftyMocky
 @testable import Mocky_Example_tvOS
@@ -30,11 +35,6 @@ import XCTest
 import Sourcery
 import SourceryRuntime
 #endif
-
-//swiftlint:disable force_cast
-//swiftlint:disable function_body_length
-//swiftlint:disable line_length
-//swiftlint:disable vertical_whitespace
 
 // MARK: - AMassiveTestProtocol
 class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {

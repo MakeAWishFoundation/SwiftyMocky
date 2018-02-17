@@ -4,6 +4,15 @@ All changes to SwiftyMocky project will be documented in this file.
 
 -----
 
+## __2.0.1__ / 2018
+
+#### Fixed:
+* methods generation when differ only in return types
+* moved lint rules to top (Lammert Westerhoff)
+* updated minimal iOS deployment version (Igor Bulaya)
+
+-----
+
 ## __2.0.0__ / 2018
 
 #### Added:
