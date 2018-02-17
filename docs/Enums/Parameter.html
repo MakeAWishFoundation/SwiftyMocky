@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Parameter Enum Reference</title>
+    <title>Parameter Enumeration Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -11,7 +11,7 @@
   </head>
   <body>
     <a name="//apple_ref/swift/Enum/Parameter" class="dashAnchor"></a>
-    <a title="Parameter Enum Reference"></a>
+    <a title="Parameter Enumeration Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html">SwiftyMocky Docs</a> (93% documented)</p>
@@ -22,7 +22,7 @@
       <p id="breadcrumbs">
         <a href="../index.html">SwiftyMocky Reference</a>
         <img id="carat" src="../img/carat.png" />
-        Parameter Enum Reference
+        Parameter Enumeration Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -179,7 +179,7 @@
             <h1>Parameter</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt">ValueType</span><span class="o">&gt;</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt">ValueType</span><span class="o">&gt;</span></code></pre>
 
                 </div>
               </div>
@@ -229,7 +229,7 @@ unless you register comparator for its <em>ValueType</em> in <strong>Matcher</st
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="k">case</span> <span class="err">`</span><span class="n">_</span><span class="err">`</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="p">`</span><span class="nv">_</span><span class="p">`</span></code></pre>
 
                         </div>
                       </div>
@@ -260,7 +260,7 @@ unless you register comparator for its <em>ValueType</em> in <strong>Matcher</st
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="k">case</span> <span class="nf">value</span><span class="p">(</span><span class="kt">ValueType</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">value</span><span class="p">(</span><span class="kt">ValueType</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -291,7 +291,7 @@ unless you register comparator for its <em>ValueType</em> in <strong>Matcher</st
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="k">case</span> <span class="nf">matching</span><span class="p">((</span><span class="kt">ValueType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">matching</span><span class="p">((</span><span class="kt">ValueType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -322,7 +322,7 @@ unless you register comparator for its <em>ValueType</em> in <strong>Matcher</st
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">any</span><span class="p">:</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt">ValueType</span><span class="o">&gt;</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">any</span><span class="p">:</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt">ValueType</span><span class="o">&gt;</span></code></pre>
 
                         </div>
                       </div>
@@ -350,7 +350,7 @@ wrapped <em>ValueType</em> type, to resolve ambiguity between methods with same 
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="n"><a href="../Enums/Parameter.html#/s:11SwiftyMocky9ParameterO3anyACyxGvZ">any</a></span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n"><a href="../Enums/Parameter.html#/s:11SwiftyMocky9ParameterO1_ACyxGAEmlF">_</a></span> <span class="nv">type</span><span class="p">:</span> <span class="kt">T</span><span class="o">.</span><span class="k">Type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="n"><a href="../Enums/Parameter.html#/s:11SwiftyMocky9ParameterO3anyACyxGvZ">any</a></span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n"><a href="../Enums/Parameter.html#/s:11SwiftyMocky9ParameterO1_ACyxGAEmlF">_</a></span> <span class="nv">type</span><span class="p">:</span> <span class="kt">T</span><span class="o">.</span><span class="k">Type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span></code></pre>
 
                         </div>
                       </div>
@@ -404,7 +404,7 @@ wrapped <em>ValueType</em> type, to resolve ambiguity between methods with same 
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">intValue</span><span class="p">:</span> <span class="kt">Int</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">intValue</span><span class="p">:</span> <span class="kt">Int</span></code></pre>
 
                         </div>
                       </div>
@@ -441,7 +441,7 @@ wrapped <em>ValueType</em> type, to resolve ambiguity between methods with same 
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">compare</span><span class="p">(</span><span class="nv">lhs</span><span class="p">:</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt">ValueType</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">rhs</span><span class="p">:</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt">ValueType</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">with</span> <span class="nv">matcher</span><span class="p">:</span> <span class="kt"><a href="../Classes/Matcher.html">Matcher</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">compare</span><span class="p">(</span><span class="nv">lhs</span><span class="p">:</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt">ValueType</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">rhs</span><span class="p">:</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt">ValueType</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">with</span> <span class="nv">matcher</span><span class="p">:</span> <span class="kt"><a href="../Classes/Matcher.html">Matcher</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
 
                         </div>
                       </div>
@@ -515,7 +515,7 @@ wrapped <em>ValueType</em> type, to resolve ambiguity between methods with same 
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">wrapAsGeneric</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/GenericAttribute.html">GenericAttribute</a></span><span class="o">&gt;</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">wrapAsGeneric</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/GenericAttribute.html">GenericAttribute</a></span><span class="o">&gt;</span></code></pre>
 
                         </div>
                       </div>
@@ -532,7 +532,7 @@ wrapped <em>ValueType</em> type, to resolve ambiguity between methods with same 
         </section>
         <section id="footer">
           <p>Copyright © 2017 MakeAWishFoundation. All rights reserved.</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.8.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>

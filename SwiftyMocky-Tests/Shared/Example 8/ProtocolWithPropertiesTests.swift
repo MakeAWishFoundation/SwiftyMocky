@@ -93,4 +93,3 @@ class ProtocolsWithPropertiesTests: XCTestCase {
         VerifyProperty(mock, .in(range: 10...), .name(set: .any))
     }
 }
-
