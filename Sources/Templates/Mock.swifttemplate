@@ -1,4 +1,11 @@
 
+<%# ================================================== SwiftLint -%><%_ -%>
+<%_ if let rules = arguments["excludedSwiftLintRules"] as? [String] { -%>
+    <%_ for rule in rules { -%>
+    <%_ %>//swiftlint:disable <%= rule %>
+    <%_ } -%>
+<%_ } -%>
+
 #if MockyCustom
 import SwiftyMocky
 <%# ================================================== IMPORTS InAPP -%><%_ -%>
@@ -59,13 +66,6 @@ import XCTest
 import Sourcery
 import SourceryRuntime
 #endif
-
-<%# ================================================== SwiftLint -%><%_ -%>
-<%_ if let rules = arguments["excludedSwiftLintRules"] as? [String] { -%>
-    <%_ for rule in rules { -%>
-    <%_ %>//swiftlint:disable <%= rule %>
-    <%_ } -%>
-<%_ } -%>
 
 <%# ================================================== HELPERS -%><%_
     class Current {
@@ -324,43 +324,50 @@ import SourceryRuntime
     class MethodWrapper {
         private static var registered: [String: Int] = [:]
         private static var suffixes: [String: Int] = [:]
+        private static var suffixesWithoutReturnType: [String: Int] = [:]
 
         let method: SourceryRuntime.Method
 
         private var registrationName: String {
-            get {
-                var rawName = (method.isStatic ? "s\(method.selectorName)" : "i\(method.selectorName)")
-                    .replacingOccurrences(of: "_", with: "")
-                    .replacingOccurrences(of: "(", with: "__")
-                    .replacingOccurrences(of: ")", with: "")
+            var rawName = (method.isStatic ? "s\(method.selectorName)" : "i\(method.selectorName)")
+                .replacingOccurrences(of: "_", with: "")
+                .replacingOccurrences(of: "(", with: "__")
+                .replacingOccurrences(of: ")", with: "")
+            var parametersNames = method.parameters.map { "\($0.name)" }
 
-                var parametersNames = method.parameters.map { "\($0.name)" }
-
-                while let range = rawName.range(of: ":"), let name = parametersNames.first {
-                    parametersNames.removeFirst()
-                    rawName.replaceSubrange(range, with: "_\(name)")
-                }
-
-                return  rawName.replacingOccurrences(of: "___", with: "__").trimmingCharacters(in: CharacterSet(charactersIn: "_"))
+            while let range = rawName.range(of: ":"), let name = parametersNames.first {
+                parametersNames.removeFirst()
+                rawName.replaceSubrange(range, with: "_\(name)")
             }
+
+            return  rawName.replacingOccurrences(of: "___", with: "__").trimmingCharacters(in: CharacterSet(charactersIn: "_"))
         }
         private var uniqueName: String {
-            get {
-                var rawName = (method.isStatic ? "s\(method.selectorName)" : "i\(method.selectorName)")
-                var parametersNames = method.parameters.map { "\($0.name)_of_\($0.typeName.name)" }
+            var rawName = (method.isStatic ? "s\(method.selectorName)" : "i\(method.selectorName)")
+            var parametersNames = method.parameters.map { "\($0.name)_of_\($0.typeName.name)" }
 
-                while let range = rawName.range(of: ":"), let name = parametersNames.first {
-                    parametersNames.removeFirst()
-                    rawName.replaceSubrange(range, with: "_\(name)")
-                }
-
-                return rawName.trimmingCharacters(in: CharacterSet(charactersIn: "_"))
+            while let range = rawName.range(of: ":"), let name = parametersNames.first {
+                parametersNames.removeFirst()
+                rawName.replaceSubrange(range, with: "_\(name)")
             }
+
+            return rawName.trimmingCharacters(in: CharacterSet(charactersIn: "_"))
+        }
+        private var uniqueNameWithReturnType: String {
+            let returnTypeRaw = "\(method.returnTypeName)"
+            var returnTypeStripped: String = {
+                guard let range = returnTypeRaw.range(of: "where") else { return returnTypeRaw }
+                var stripped = returnTypeRaw
+                stripped.removeSubrange((range.lowerBound)...)
+                return stripped
+            }()
+            returnTypeStripped = returnTypeStripped.trimmingCharacters(in: CharacterSet(charactersIn: " "))
+            return "\(uniqueName)->\(returnTypeStripped)"
         }
         private var nameSuffix: String {
             guard let count = MethodWrapper.registered[registrationName] else { return "" }
             guard count > 1 else { return "" }
-            guard let index = MethodWrapper.suffixes[uniqueName] else { return "" }
+            guard let index = MethodWrapper.suffixes[uniqueNameWithReturnType] else { return "" }
             return "_\(index)"
         }
 
@@ -465,25 +472,45 @@ import SourceryRuntime
         static func clear() -> String {
             MethodWrapper.registered = [:]
             MethodWrapper.suffixes = [:]
+            MethodWrapper.suffixesWithoutReturnType = [:]
             return ""
         }
 
         func register() {
-            MethodWrapper.register(registrationName,uniqueName)
+            MethodWrapper.register(registrationName,uniqueName,uniqueNameWithReturnType)
         }
 
-        static func register(_ name: String, _ uniqueName: String) {
+        static func register(_ name: String, _ uniqueName: String, _ uniqueNameWithReturnType: String) {
             if let count = MethodWrapper.registered[name] {
                 MethodWrapper.registered[name] = count + 1
-                MethodWrapper.suffixes[uniqueName] = count + 1
+                MethodWrapper.suffixes[uniqueNameWithReturnType] = count + 1
             } else {
                 MethodWrapper.registered[name] = 1
-                MethodWrapper.suffixes[uniqueName] = 1
+                MethodWrapper.suffixes[uniqueNameWithReturnType] = 1
             }
+
+            if let count = MethodWrapper.suffixesWithoutReturnType[uniqueName] {
+                MethodWrapper.suffixesWithoutReturnType[uniqueName] = count + 1
+            } else {
+                MethodWrapper.suffixesWithoutReturnType[uniqueName] = 1
+            }
+        }
+
+        func returnTypeMatters() -> Bool {
+            let count = MethodWrapper.suffixesWithoutReturnType[uniqueName] ?? 0
+            return count > 1
         }
 
         func wrappedInMethodType() -> Bool {
             return !method.isInitializer
+        }
+
+        func returningParameter(_ multiple: Bool, _ front: Bool) -> String {
+            guard returnTypeMatters() else { return "" }
+            let returning: String = "returning: \(returnTypeStripped(method, type: true))"
+            guard multiple else { return returning }
+
+            return front ? ", \(returning)" : "\(returning), "
         }
 
         // Stub
@@ -574,9 +601,9 @@ import SourceryRuntime
         // Verify
         func verificationProxyConstructorName(prefix: String = "") -> String {
             if method.parameters.isEmpty {
-                return "static func \(method.callName)\(wrapGenerics(getGenericsAmongParameters()))() -> \(prefix)Verify"
+                return "static func \(method.callName)\(wrapGenerics(getGenericsAmongParameters()))(\(returningParameter(false,true))) -> \(prefix)Verify"
             } else {
-                return "static func \(method.callName)\(wrapGenerics(getGenericsAmongParameters()))(\(parametersForProxySignature())) -> \(prefix)Verify"
+                return "static func \(method.callName)\(wrapGenerics(getGenericsAmongParameters()))(\(parametersForProxySignature())\(returningParameter(true,true))) -> \(prefix)Verify"
             }
         }
 
@@ -591,9 +618,9 @@ import SourceryRuntime
         // Perform
         func performProxyConstructorName(prefix: String = "") -> String {
             if method.parameters.isEmpty {
-                return "static func \(method.callName)\(wrapGenerics(getGenericsAmongParameters()))(perform: \(performProxyClosureType())) -> \(prefix)Perform"
+                return "static func \(method.callName)\(wrapGenerics(getGenericsAmongParameters()))(\(returningParameter(true,false))perform: \(performProxyClosureType())) -> \(prefix)Perform"
             } else {
-                return "static func \(method.callName)\(wrapGenerics(getGenericsAmongParameters()))(\(parametersForProxySignature()), perform: \(performProxyClosureType())) -> \(prefix)Perform"
+                return "static func \(method.callName)\(wrapGenerics(getGenericsAmongParameters()))(\(parametersForProxySignature()), \(returningParameter(true,false))perform: \(performProxyClosureType())) -> \(prefix)Perform"
             }
         }
 
@@ -703,9 +730,34 @@ import SourceryRuntime
         private func stripGenPart(part: String) -> String {
             return part.characters.split(separator: ":").map(String.init).first!
         }
+
+        private func returnTypeStripped(_ method: SourceryRuntime.Method, type: Bool = false) -> String {
+            let returnTypeRaw = "\(method.returnTypeName)"
+            var stripped: String = {
+                guard let range = returnTypeRaw.range(of: "where") else { return returnTypeRaw }
+                var stripped = returnTypeRaw
+                stripped.removeSubrange((range.lowerBound)...)
+                return stripped
+            }()
+            stripped = stripped.trimmingCharacters(in: CharacterSet(charactersIn: " "))
+            guard type else { return stripped }
+            return "\(stripped).Type"
+        }
     }
 
     func uniques(methods: [SourceryRuntime.Method]) -> [SourceryRuntime.Method] {
+        func returnTypeStripped(_ method: SourceryRuntime.Method) -> String {
+            let returnTypeRaw = "\(method.returnTypeName)"
+            var stripped: String = {
+                guard let range = returnTypeRaw.range(of: "where") else { return returnTypeRaw }
+                var stripped = returnTypeRaw
+                stripped.removeSubrange((range.lowerBound)...)
+                return stripped
+            }()
+            stripped = stripped.trimmingCharacters(in: CharacterSet(charactersIn: " "))
+            return stripped
+        }
+
         func areSameParams(_ p1: SourceryRuntime.MethodParameter, _ p2: SourceryRuntime.MethodParameter) -> Bool {
             guard p1.argumentLabel == p2.argumentLabel else { return false }
             guard p1.name == p2.name else { return false }
@@ -716,7 +768,7 @@ import SourceryRuntime
         }
 
         func areSameMethods(_ m1: SourceryRuntime.Method, _ m2: SourceryRuntime.Method) -> Bool {
-            guard m1.name != m2.name else { return true }
+            guard m1.name != m2.name else { return m1.returnTypeName == m2.returnTypeName }
             guard m1.selectorName == m2.selectorName else { return false }
             guard m1.parameters.count == m2.parameters.count else { return false }
 
@@ -727,7 +779,50 @@ import SourceryRuntime
                 if !areSameParams(p1[i],p2[i]) { return false }
             }
 
+            return m1.returnTypeName == m2.returnTypeName
+        }
+
+        return methods.reduce([], { (result, element) -> [SourceryRuntime.Method] in
+            guard !result.contains(where: { areSameMethods($0,element) }) else { return result }
+            return result + [element]
+        })
+    }
+
+    func uniquesWithoutGenericConstraints(methods: [SourceryRuntime.Method]) -> [SourceryRuntime.Method] {
+        func returnTypeStripped(_ method: SourceryRuntime.Method) -> String {
+            let returnTypeRaw = "\(method.returnTypeName)"
+            var stripped: String = {
+                guard let range = returnTypeRaw.range(of: "where") else { return returnTypeRaw }
+                var stripped = returnTypeRaw
+                stripped.removeSubrange((range.lowerBound)...)
+                return stripped
+            }()
+            stripped = stripped.trimmingCharacters(in: CharacterSet(charactersIn: " "))
+            return stripped
+        }
+
+        func areSameParams(_ p1: SourceryRuntime.MethodParameter, _ p2: SourceryRuntime.MethodParameter) -> Bool {
+            guard p1.argumentLabel == p2.argumentLabel else { return false }
+            guard p1.name == p2.name else { return false }
+            guard p1.argumentLabel == p2.argumentLabel else { return false }
+            guard p1.typeName.name == p2.typeName.name else { return false }
+            guard p1.actualTypeName?.name == p2.actualTypeName?.name else { return false }
             return true
+        }
+
+        func areSameMethods(_ m1: SourceryRuntime.Method, _ m2: SourceryRuntime.Method) -> Bool {
+            guard m1.name != m2.name else { return returnTypeStripped(m1) == returnTypeStripped(m2) }
+            guard m1.selectorName == m2.selectorName else { return false }
+            guard m1.parameters.count == m2.parameters.count else { return false }
+
+            let p1 = m1.parameters
+            let p2 = m2.parameters
+
+            for i in 0..<p1.count {
+                if !areSameParams(p1[i],p2[i]) { return false }
+            }
+
+            return returnTypeStripped(m1) == returnTypeStripped(m2)
         }
 
         return methods.reduce([], { (result, element) -> [SourceryRuntime.Method] in
@@ -774,8 +869,8 @@ import SourceryRuntime
 
     func propertyRegister(_ variable: SourceryRuntime.Variable) {
         let wrapper = VariableWrapper(variable, scope: "")
-        MethodWrapper.register(wrapper.propertyCaseGetName,wrapper.propertyCaseGetName)
-        MethodWrapper.register(wrapper.propertyCaseSetName,wrapper.propertyCaseSetName)
+        MethodWrapper.register(wrapper.propertyCaseGetName,wrapper.propertyCaseGetName,wrapper.propertyCaseGetName)
+        MethodWrapper.register(wrapper.propertyCaseSetName,wrapper.propertyCaseSetName,wrapper.propertyCaseGetName)
     }
 -%>
 
@@ -834,7 +929,9 @@ import SourceryRuntime
     let allStaticVariables = uniques(variables: aProtocol.allVariables.filter({ $0.isStatic }))
     let containsStaticVariables = !allStaticVariables.isEmpty
     let allMethods = uniques(methods: aProtocol.allMethods.filter({ !$0.isStatic }))
+    let allMethodsForMethodType = uniquesWithoutGenericConstraints(methods: aProtocol.allMethods.filter({ !$0.isStatic }))
     let allStaticMethods = uniques(methods: aProtocol.allMethods.filter({ $0.isStatic }))
+    let allStaticMethodsForMethodType = uniquesWithoutGenericConstraints(methods: aProtocol.allMethods.filter({ $0.isStatic }))
     let conformsToStaticMock = !allStaticMethods.isEmpty || !allStaticVariables.isEmpty
     let conformsToMock = !allMethods.isEmpty || !allVariables.isEmpty -%><%_ -%><%_ -%>
 <%_ if autoMockable { -%>
@@ -898,8 +995,10 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
     <%_ MethodWrapper.clear() -%>
     <%_ Current.selfType = "\(type.name)Mock\(genericTypesModifier)" -%>
     <%_ let wrappedMethods = allMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) -%>
+    <%_ let wrappedMethodsForMethodType = allMethodsForMethodType.map(wrapMethod).filter({ $0.wrappedInMethodType() }) -%>
     <%_ let wrappedInitializers = allMethods.map(wrapMethod).filter({ $0.method.isInitializer }) -%>
     <%_ let wrappedStaticMethods = allStaticMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) -%>
+    <%_ let wrappedStaticMethodsForMethodType = allStaticMethodsForMethodType.map(wrapMethod).filter({ $0.wrappedInMethodType() }) -%>
     <%_ for variable in allVariables { propertyRegister(variable) } -%>
     <%_ for variable in allStaticVariables { propertyRegister(variable) } -%>
     <%_ for method in wrappedMethods { method.register() } -%>
@@ -929,7 +1028,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
   <%# ================================================== STATIC METHOD TYPE -%><%_ -%>
     <%_ if conformsToStaticMock { -%>
     fileprivate enum StaticMethodType {
-    <%_ for method in wrappedStaticMethods { -%>
+    <%_ for method in wrappedStaticMethodsForMethodType { -%>
         case <%= method.methodTypeDeclarationWithParameters() _%>
     <%_  } %>
     <%_ for variable in allStaticVariables { -%>
@@ -937,7 +1036,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
     <%_ } %> <%_ %>
     <%_ -%>
         static func compareParameters(lhs: StaticMethodType, rhs: StaticMethodType, matcher: Matcher) -> Bool {
-            switch (lhs, rhs) { <%_ for method in wrappedStaticMethods { %>
+            switch (lhs, rhs) { <%_ for method in wrappedStaticMethodsForMethodType { %>
                 <%= method.equalCase -%><% for parameter in method.parameters { %>
                     <%= parameter.comparator -%> <%  } %>
                     return true <% } %>
@@ -951,7 +1050,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         }
     <%_ %>
         func intValue() -> Int {
-            switch self { <%_ for method in wrappedStaticMethods { %>
+            switch self { <%_ for method in wrappedStaticMethodsForMethodType { %>
                 <%= method.intValueCase -%><% } %>
                 <%_ for variable in allStaticVariables { -%>
                 <%= propertyMethodTypesIntValue(variable) %>
@@ -971,12 +1070,12 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
             self.`throws` = `throws`
         }
 
-        <%_ for method in wrappedStaticMethods.filter({ !$0.method.returnTypeName.isVoid && !$0.method.isInitializer }) { -%>
+        <%_ for method in wrappedStaticMethodsForMethodType.filter({ !$0.method.returnTypeName.isVoid && !$0.method.isInitializer }) { -%>
         <%= method.givenConstructorName(prefix: "Static") -%> {
             <%= method.givenConstructor(prefix: "Static") _%>
         }
         <%_ } -%>
-        <%_ for method in wrappedStaticMethods.filter({ ($0.method.throws || $0.method.rethrows) && !$0.method.isInitializer }) { -%>
+        <%_ for method in wrappedStaticMethodsForMethodType.filter({ ($0.method.throws || $0.method.rethrows) && !$0.method.isInitializer }) { -%>
         <%= method.givenConstructorNameThrows(prefix: "Static") -%> {
             <%= method.givenConstructorThrows(prefix: "Static") _%>
         }
@@ -986,7 +1085,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
     struct StaticVerify {
         fileprivate var method: StaticMethodType
 
-        <%_ for method in wrappedStaticMethods { -%>
+        <%_ for method in wrappedStaticMethodsForMethodType { -%>
         <%= method.verificationProxyConstructorName(prefix: "Static") -%> {
             <%= method.verificationProxyConstructor(prefix: "Static") _%>
         }
@@ -997,7 +1096,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         fileprivate var method: StaticMethodType
         var performs: Any
 
-        <%_ for method in wrappedStaticMethods { -%>
+        <%_ for method in wrappedStaticMethodsForMethodType { -%>
         <%= method.performProxyConstructorName(prefix: "Static") -%> {
             <%= method.performProxyConstructor(prefix: "Static") _%>
         }
@@ -1008,7 +1107,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
   <%# ================================================== METHOD TYPE -%><%_ -%>
     <%_ if !wrappedMethods.isEmpty || !allVariables.isEmpty { -%>
     fileprivate enum MethodType {
-    <%_ for method in wrappedMethods { -%>
+    <%_ for method in wrappedMethodsForMethodType { -%>
         case <%= method.methodTypeDeclarationWithParameters() _%>
     <%_  } -%>
     <%_ for variable in allVariables { -%>
@@ -1016,7 +1115,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
     <%_ } %> <%_ %>
     <%_ -%>
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
-            switch (lhs, rhs) { <%_ for method in wrappedMethods { %>
+            switch (lhs, rhs) { <%_ for method in wrappedMethodsForMethodType { %>
                 <%= method.equalCase -%><% for parameter in method.parameters { %>
                     <%= parameter.comparator -%> <%  } %>
                     return true <% } %>
@@ -1030,7 +1129,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         }
     <%_ %>
         func intValue() -> Int {
-            switch self { <%_ for method in wrappedMethods { %>
+            switch self { <%_ for method in wrappedMethodsForMethodType { %>
                 <%= method.intValueCase -%><% } %>
                 <%_ for variable in allVariables { -%>
                 <%= propertyMethodTypesIntValue(variable) %>
@@ -1056,12 +1155,12 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
             self.`throws` = `throws`
         }
 
-        <%_ for method in wrappedMethods.filter({ !$0.method.returnTypeName.isVoid && !$0.method.isInitializer }) { -%>
+        <%_ for method in wrappedMethodsForMethodType.filter({ !$0.method.returnTypeName.isVoid && !$0.method.isInitializer }) { -%>
         <%= method.givenConstructorName() -%> {
             <%= method.givenConstructor() _%>
         }
         <%_ } -%>
-        <%_ for method in wrappedMethods.filter({ ($0.method.throws || $0.method.rethrows) && !$0.method.isInitializer }) { -%>
+        <%_ for method in wrappedMethodsForMethodType.filter({ ($0.method.throws || $0.method.rethrows) && !$0.method.isInitializer }) { -%>
         <%= method.givenConstructorNameThrows() -%> {
             <%= method.givenConstructorThrows() _%>
         }
@@ -1071,7 +1170,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
     struct Verify {
         fileprivate var method: MethodType
 
-        <%_ for method in wrappedMethods { -%>
+        <%_ for method in wrappedMethodsForMethodType { -%>
         <%= method.verificationProxyConstructorName() -%> {
             <%= method.verificationProxyConstructor() _%>
         }
@@ -1082,7 +1181,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         fileprivate var method: MethodType
         var performs: Any
 
-        <%_ for method in wrappedMethods { -%>
+        <%_ for method in wrappedMethodsForMethodType { -%>
         <%= method.performProxyConstructorName() -%> {
             <%= method.performProxyConstructor() _%>
         }
