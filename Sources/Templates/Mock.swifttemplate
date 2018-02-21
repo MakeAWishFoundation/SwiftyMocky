@@ -601,9 +601,11 @@ import SourceryRuntime
         // Verify
         func verificationProxyConstructorName(prefix: String = "") -> String {
             if method.parameters.isEmpty {
-                return "static func \(method.callName)\(wrapGenerics(getGenericsAmongParameters()))(\(returningParameter(false,true))) -> \(prefix)Verify"
+                let methodName = returnTypeMatters() ? method.shortName : "\(method.callName)\(wrapGenerics(getGenericsAmongParameters()))"
+                return "static func \(methodName)(\(returningParameter(false,true))) -> \(prefix)Verify"
             } else {
-                return "static func \(method.callName)\(wrapGenerics(getGenericsAmongParameters()))(\(parametersForProxySignature())\(returningParameter(true,true))) -> \(prefix)Verify"
+                let methodName = returnTypeMatters() ? method.shortName : "\(method.callName)\(wrapGenerics(getGenericsAmongParameters()))"
+                return "static func \(methodName)(\(parametersForProxySignature())\(returningParameter(true,true))) -> \(prefix)Verify"
             }
         }
 
@@ -618,9 +620,11 @@ import SourceryRuntime
         // Perform
         func performProxyConstructorName(prefix: String = "") -> String {
             if method.parameters.isEmpty {
-                return "static func \(method.callName)\(wrapGenerics(getGenericsAmongParameters()))(\(returningParameter(true,false))perform: \(performProxyClosureType())) -> \(prefix)Perform"
+                let methodName = returnTypeMatters() ? method.shortName : "\(method.callName)\(wrapGenerics(getGenericsAmongParameters()))"
+                return "static func \(methodName)(\(returningParameter(true,false))perform: \(performProxyClosureType())) -> \(prefix)Perform"
             } else {
-                return "static func \(method.callName)\(wrapGenerics(getGenericsAmongParameters()))(\(parametersForProxySignature()), \(returningParameter(true,false))perform: \(performProxyClosureType())) -> \(prefix)Perform"
+                let methodName = returnTypeMatters() ? method.shortName : "\(method.callName)\(wrapGenerics(getGenericsAmongParameters()))"
+                return "static func \(methodName)(\(parametersForProxySignature()), \(returningParameter(true,false))perform: \(performProxyClosureType())) -> \(prefix)Perform"
             }
         }
 
