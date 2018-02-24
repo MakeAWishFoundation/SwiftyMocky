@@ -1708,11 +1708,50 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
 		return value.orFail("stub return value not specified for foo<T>(bar: T). Use given")
     }
 
+    func foo<T>(bar: String) -> Array<T> {
+        addInvocation(.ifoo__bar_bar_6(Parameter<String>.value(bar)))
+		let perform = methodPerformValue(.ifoo__bar_bar_6(Parameter<String>.value(bar))) as? (String) -> Void
+		perform?(bar)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.ifoo__bar_bar_6(Parameter<String>.value(bar)))
+		let value = givenValue.value as? Array<T>
+		return value.orFail("stub return value not specified for foo<T>(bar: String). Use given")
+    }
+
+    func foo<T>(bar: String) -> Set<T> {
+        addInvocation(.ifoo__bar_bar_7(Parameter<String>.value(bar)))
+		let perform = methodPerformValue(.ifoo__bar_bar_7(Parameter<String>.value(bar))) as? (String) -> Void
+		perform?(bar)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.ifoo__bar_bar_7(Parameter<String>.value(bar)))
+		let value = givenValue.value as? Set<T>
+		return value.orFail("stub return value not specified for foo<T>(bar: String). Use given")
+    }
+
+    func foo<T>(bar: Bool) -> T where T: A {
+        addInvocation(.ifoo__bar_bar_9(Parameter<Bool>.value(bar)))
+		let perform = methodPerformValue(.ifoo__bar_bar_9(Parameter<Bool>.value(bar))) as? (Bool) -> Void
+		perform?(bar)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.ifoo__bar_bar_9(Parameter<Bool>.value(bar)))
+		let value = givenValue.value as? T
+		return value.orFail("stub return value not specified for foo<T>(bar: Bool). Use given")
+    }
+
+    func foo<T>(bar: Bool) -> T where T: B {
+        addInvocation(.ifoo__bar_bar_9(Parameter<Bool>.value(bar)))
+		let perform = methodPerformValue(.ifoo__bar_bar_9(Parameter<Bool>.value(bar))) as? (Bool) -> Void
+		perform?(bar)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.ifoo__bar_bar_9(Parameter<Bool>.value(bar)))
+		let value = givenValue.value as? T
+		return value.orFail("stub return value not specified for foo<T>(bar: Bool). Use given")
+    }
+
     fileprivate enum MethodType {
         case ifoo__bar_bar_1(Parameter<GenericAttribute>)
         case ifoo__bar_bar_2(Parameter<GenericAttribute>)
         case ifoo__bar_bar_4(Parameter<GenericAttribute>)
         case ifoo__bar_bar_5(Parameter<GenericAttribute>)
+        case ifoo__bar_bar_6(Parameter<String>)
+        case ifoo__bar_bar_7(Parameter<String>)
+        case ifoo__bar_bar_9(Parameter<Bool>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
@@ -1728,6 +1767,15 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
                 case (.ifoo__bar_bar_5(let lhsBar), .ifoo__bar_bar_5(let rhsBar)):
                     guard Parameter.compare(lhs: lhsBar, rhs: rhsBar, with: matcher) else { return false } 
                     return true 
+                case (.ifoo__bar_bar_6(let lhsBar), .ifoo__bar_bar_6(let rhsBar)):
+                    guard Parameter.compare(lhs: lhsBar, rhs: rhsBar, with: matcher) else { return false } 
+                    return true 
+                case (.ifoo__bar_bar_7(let lhsBar), .ifoo__bar_bar_7(let rhsBar)):
+                    guard Parameter.compare(lhs: lhsBar, rhs: rhsBar, with: matcher) else { return false } 
+                    return true 
+                case (.ifoo__bar_bar_9(let lhsBar), .ifoo__bar_bar_9(let rhsBar)):
+                    guard Parameter.compare(lhs: lhsBar, rhs: rhsBar, with: matcher) else { return false } 
+                    return true 
                 default: return false
             }
         }
@@ -1738,6 +1786,9 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
                 case let .ifoo__bar_bar_2(p0): return p0.intValue
                 case let .ifoo__bar_bar_4(p0): return p0.intValue
                 case let .ifoo__bar_bar_5(p0): return p0.intValue
+                case let .ifoo__bar_bar_6(p0): return p0.intValue
+                case let .ifoo__bar_bar_7(p0): return p0.intValue
+                case let .ifoo__bar_bar_9(p0): return p0.intValue
             }
         }
     }
@@ -1765,6 +1816,15 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
         static func foo<T>(bar: Parameter<T>, willReturn: Double) -> Given {
             return Given(method: .ifoo__bar_bar_5(bar.wrapAsGeneric()), returns: willReturn, throws: nil)
         }
+        static func foo<T>(bar: Parameter<String>, willReturn: Array<T>) -> Given {
+            return Given(method: .ifoo__bar_bar_6(bar), returns: willReturn, throws: nil)
+        }
+        static func foo<T>(bar: Parameter<String>, willReturn: Set<T>) -> Given {
+            return Given(method: .ifoo__bar_bar_7(bar), returns: willReturn, throws: nil)
+        }
+        static func foo<T>(bar: Parameter<Bool>, willReturn: T) -> Given {
+            return Given(method: .ifoo__bar_bar_9(bar), returns: willReturn, throws: nil)
+        }
     }
 
     struct Verify {
@@ -1781,6 +1841,15 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
         }
         static func foo<T>(bar: Parameter<T>, returning: Double.Type) -> Verify {
             return Verify(method: .ifoo__bar_bar_5(bar.wrapAsGeneric()))
+        }
+        static func foo<T>(bar: Parameter<String>, returning: Array<T>.Type) -> Verify {
+            return Verify(method: .ifoo__bar_bar_6(bar))
+        }
+        static func foo<T>(bar: Parameter<String>, returning: Set<T>.Type) -> Verify {
+            return Verify(method: .ifoo__bar_bar_7(bar))
+        }
+        static func foo<T>(bar: Parameter<Bool>, returning: T.Type) -> Verify {
+            return Verify(method: .ifoo__bar_bar_9(bar))
         }
     }
 
@@ -1799,6 +1868,15 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
         }
         static func foo<T>(bar: Parameter<T>, returning: Double.Type, perform: (T) -> Void) -> Perform {
             return Perform(method: .ifoo__bar_bar_5(bar.wrapAsGeneric()), performs: perform)
+        }
+        static func foo<T>(bar: Parameter<String>, returning: Array<T>.Type, perform: (String) -> Void) -> Perform {
+            return Perform(method: .ifoo__bar_bar_6(bar), performs: perform)
+        }
+        static func foo<T>(bar: Parameter<String>, returning: Set<T>.Type, perform: (String) -> Void) -> Perform {
+            return Perform(method: .ifoo__bar_bar_7(bar), performs: perform)
+        }
+        static func foo<T>(bar: Parameter<Bool>, returning: T.Type, perform: (Bool) -> Void) -> Perform {
+            return Perform(method: .ifoo__bar_bar_9(bar), performs: perform)
         }
     }
 

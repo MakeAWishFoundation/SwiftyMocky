@@ -34,4 +34,8 @@ protocol ProtocolMethodsGenericThatDifferOnlyInReturnType {
     func foo<T>(bar: T) -> Float where T: A
     func foo<T>(bar: T) -> Float where T: B
     func foo<T>(bar: T) -> Double where T: B
+    func foo<T>(bar: String) -> Array<T>
+    func foo<T>(bar: String) -> Set<T>
+    func foo<T>(bar: Bool) -> T where T: A
+    func foo<T>(bar: Bool) -> T where T: B
 }
