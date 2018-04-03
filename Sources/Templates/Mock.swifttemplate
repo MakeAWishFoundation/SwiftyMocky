@@ -131,7 +131,9 @@ import SourceryRuntime
 
             func containsType(_ type: String) -> Bool {
                 return types.contains(where: {
-                    "\($0).Type" == type
+                    "\($0).Type" == type ||
+                    type.contains("<\($0)>") ||
+                    type.contains("<\($0).Type>")
                 })
             }
 

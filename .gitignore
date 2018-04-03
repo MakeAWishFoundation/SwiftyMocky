@@ -168,3 +168,4 @@ Example/fastlane/test_output/report.junit
 
 # Sourcery genreated file
 default.profraw
+.DS_Store
