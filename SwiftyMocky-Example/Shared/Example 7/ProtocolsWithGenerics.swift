@@ -14,6 +14,14 @@ protocol ProtocolWithGenericMethods {
     func methodWithGenericConstraint<U>(param: [U]) -> U where U: Equatable
 }
 
+struct Resource<T> { }
+struct Response<T> { }
+struct Observable<T> { }
+//sourcery: AutoMockable
+protocol ProtocolWithGenericMethodsNested {
+    func methodWithGeneric<T>(resource: Resource<T>) -> Observable<Response<T>>
+}
+
 //sourcery: AutoMockable
 //sourcery: associatedtype = "T: Sequence"
 protocol ProtocolWithAssociatedType {
