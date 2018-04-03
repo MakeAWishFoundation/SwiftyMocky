@@ -13,7 +13,7 @@ Join our community on Slack! -> [invitation link here][link-slack]
 
 **SwiftyMocky** is Lightweight, strongly typed framework for Mockito-like unit testing experience. As Swift doesn't support reflections well enough to allow building mocks in runtime, library depends on [Sourcery](https://github.com/krzysztofzablocki/Sourcery), that scans your source code and generates Swift code for you.
 
-The idea of **SwiftyMokcy** is to mock Swift protocols. The main features are:
+The idea of **SwiftyMocky** is to mock Swift protocols. The main features are:
 
  - easy syntax, utilizing full power of auto-complete, which makes writing test easier and faster
  - mock implementations generation
