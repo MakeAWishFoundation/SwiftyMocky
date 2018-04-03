@@ -53,6 +53,74 @@ public class Matcher {
     /// Called automatically in every Matcher init.
     ///
     internal func registerBasicTypes() {
+#if swift(>=4.1)
+        register([Bool].self)
+        register([String].self)
+        register([Float].self)
+        register([Double].self)
+        register([Character].self)
+        register([Int].self)
+        register([Int8].self)
+        register([Int16].self)
+        register([Int32].self)
+        register([Int64].self)
+        register([UInt].self)
+        register([UInt8].self)
+        register([UInt16].self)
+        register([UInt32].self)
+        register([UInt64].self)
+        register([Data].self)
+        register([Bool?].self)
+        register([String?].self)
+        register([Float?].self)
+        register([Double?].self)
+        register([Character?].self)
+        register([Int?].self)
+        register([Int8?].self)
+        register([Int16?].self)
+        register([Int32?].self)
+        register([Int64?].self)
+        register([UInt?].self)
+        register([UInt8?].self)
+        register([UInt16?].self)
+        register([UInt32?].self)
+        register([UInt64?].self)
+        register([Data?].self)
+
+        // Types
+        register(Bool.self)
+        register(String.self)
+        register(Float.self)
+        register(Double.self)
+        register(Character.self)
+        register(Int.self)
+        register(Int8.self)
+        register(Int16.self)
+        register(Int32.self)
+        register(Int64.self)
+        register(UInt.self)
+        register(UInt8.self)
+        register(UInt16.self)
+        register(UInt32.self)
+        register(UInt64.self)
+        register(Data.self)
+        register(Bool?.self)
+        register(String?.self)
+        register(Float?.self)
+        register(Double?.self)
+        register(Character?.self)
+        register(Int?.self)
+        register(Int8?.self)
+        register(Int16?.self)
+        register(Int32?.self)
+        register(Int64?.self)
+        register(UInt?.self)
+        register(UInt8?.self)
+        register(UInt16?.self)
+        register(UInt32?.self)
+        register(UInt64?.self)
+        register(Data?.self)
+#else
         register([Bool].self) { $0 == $1 }
         register([String].self) { $0 == $1 }
         register([Float].self) { $0 == $1 }
@@ -85,6 +153,7 @@ public class Matcher {
         register([UInt32?].self) { $0 == $1 }
         register([UInt64?].self) { $0 == $1 }
         register([Data?].self) { $0 == $1 }
+#endif
 
         // Types
         register(Any.Type.self) { _, _ in return true }
@@ -142,7 +211,7 @@ public class Matcher {
     ///
     /// - Parameter valueType: Type.Type.self
     public func register<T>(_ valueType: T.Type.Type) {
-        self.register(T.Type.self, match: { _, _ in return true })
+        self.register(valueType, match: { _, _ in return true })
     }
 
 #if swift(>=3.2)
