@@ -51,4 +51,23 @@ class ProtocolsWithCollectionsTests: XCTestCase {
 
         Verify(mock, 3, .verify(set: .any))
     }
+
+    func test_protocol_with_dictionary() {
+        let mock = SimpleProtocolUsingCollectionsMock()
+
+#if swift(>=4.1)
+#else
+        Matcher.default.register([Int: String].Element.self) { $0 == $1 }
+#endif
+
+        // Set<Int> is a Sequence of equatable, so it should work by default
+        Given(mock, .use(dictionary: .value([1:"abc"]), willReturn: [2:"def"]))
+        Given(mock, .use(dictionary: .any, willReturn: [0:""]))
+
+        XCTAssertEqual(mock.use(dictionary: [1:"abc"]), [2:"def"])
+        XCTAssertEqual(mock.use(dictionary: [1:"abcd"]), [0:""])
+        XCTAssertEqual(mock.use(dictionary: [2:"qwert"]), [0:""])
+
+        Verify(mock, 3, .use(dictionary: .any))
+    }
 }

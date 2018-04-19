@@ -4415,6 +4415,15 @@ class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
 		return value.orFail("stub return value not specified for map(array: [String], param: Int). Use given")
     }
 
+    func use(dictionary: [Int: String]) -> [Int: String] {
+        addInvocation(.iuse__dictionary_dictionary(Parameter<[Int: String]>.value(dictionary)))
+		let perform = methodPerformValue(.iuse__dictionary_dictionary(Parameter<[Int: String]>.value(dictionary))) as? ([Int: String]) -> Void
+		perform?(dictionary)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.iuse__dictionary_dictionary(Parameter<[Int: String]>.value(dictionary)))
+		let value = givenValue.value as? [Int: String]
+		return value.orFail("stub return value not specified for use(dictionary: [Int: String]). Use given")
+    }
+
     func verify(set: Set<Int>) -> Bool {
         addInvocation(.iverify__set_set(Parameter<Set<Int>>.value(set)))
 		let perform = methodPerformValue(.iverify__set_set(Parameter<Set<Int>>.value(set))) as? (Set<Int>) -> Void
@@ -4427,6 +4436,7 @@ class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
     fileprivate enum MethodType {
         case igetArray
         case imap__array_arrayparam_param(Parameter<[String]>, Parameter<Int>)
+        case iuse__dictionary_dictionary(Parameter<[Int: String]>)
         case iverify__set_set(Parameter<Set<Int>>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
@@ -4436,6 +4446,9 @@ class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
                 case (.imap__array_arrayparam_param(let lhsArray, let lhsParam), .imap__array_arrayparam_param(let rhsArray, let rhsParam)):
                     guard Parameter.compare(lhs: lhsArray, rhs: rhsArray, with: matcher) else { return false } 
                     guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
+                    return true 
+                case (.iuse__dictionary_dictionary(let lhsDictionary), .iuse__dictionary_dictionary(let rhsDictionary)):
+                    guard Parameter.compare(lhs: lhsDictionary, rhs: rhsDictionary, with: matcher) else { return false } 
                     return true 
                 case (.iverify__set_set(let lhsSet), .iverify__set_set(let rhsSet)):
                     guard Parameter.compare(lhs: lhsSet, rhs: rhsSet, with: matcher) else { return false } 
@@ -4448,6 +4461,7 @@ class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
             switch self {
                 case .igetArray: return 0
                 case let .imap__array_arrayparam_param(p0, p1): return p0.intValue + p1.intValue
+                case let .iuse__dictionary_dictionary(p0): return p0.intValue
                 case let .iverify__set_set(p0): return p0.intValue
             }
         }
@@ -4470,6 +4484,9 @@ class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
         static func map(array: Parameter<[String]>, param: Parameter<Int>, willReturn: [Int: String]) -> Given {
             return Given(method: .imap__array_arrayparam_param(array, param), returns: willReturn, throws: nil)
         }
+        static func use(dictionary: Parameter<[Int: String]>, willReturn: [Int: String]) -> Given {
+            return Given(method: .iuse__dictionary_dictionary(dictionary), returns: willReturn, throws: nil)
+        }
         static func verify(set: Parameter<Set<Int>>, willReturn: Bool) -> Given {
             return Given(method: .iverify__set_set(set), returns: willReturn, throws: nil)
         }
@@ -4483,6 +4500,9 @@ class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
         }
         static func map(array: Parameter<[String]>, param: Parameter<Int>) -> Verify {
             return Verify(method: .imap__array_arrayparam_param(array, param))
+        }
+        static func use(dictionary: Parameter<[Int: String]>) -> Verify {
+            return Verify(method: .iuse__dictionary_dictionary(dictionary))
         }
         static func verify(set: Parameter<Set<Int>>) -> Verify {
             return Verify(method: .iverify__set_set(set))
@@ -4498,6 +4518,9 @@ class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
         }
         static func map(array: Parameter<[String]>, param: Parameter<Int>, perform: ([String], Int) -> Void) -> Perform {
             return Perform(method: .imap__array_arrayparam_param(array, param), performs: perform)
+        }
+        static func use(dictionary: Parameter<[Int: String]>, perform: ([Int: String]) -> Void) -> Perform {
+            return Perform(method: .iuse__dictionary_dictionary(dictionary), performs: perform)
         }
         static func verify(set: Parameter<Set<Int>>, perform: (Set<Int>) -> Void) -> Perform {
             return Perform(method: .iverify__set_set(set), performs: perform)

@@ -250,6 +250,20 @@ public extension Parameter where ValueType: Sequence {
 }
 
 #if swift(>=3.2)
+#if swift(>=4.1)
+public extension Parameter where ValueType: Sequence, ValueType: Equatable {
+    public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
+        switch (lhs, rhs) {
+        case (._, _): return true
+        case (_, ._): return true
+        case (.matching(let match), .value(let value)): return match(value)
+        case (.value(let value), .matching(let match)): return match(value)
+        case let (.value(left), .value(right)): return left == right
+        default: return false
+        }
+    }
+}
+#else
 public extension Parameter where ValueType: Sequence, ValueType.Element: Equatable {
     public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
         switch (lhs, rhs) {
@@ -290,6 +304,7 @@ public extension Parameter where ValueType: Sequence, ValueType.Element: Equatab
         }
     }
 }
+#endif
 #else
 public extension Parameter where ValueType: Sequence, ValueType.Iterator.Element: Equatable {
     public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
