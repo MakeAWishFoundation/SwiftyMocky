@@ -1,4 +1,4 @@
-// Generated using Sourcery 0.9.0 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 0.13.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
 
@@ -876,10 +876,10 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
     }
 
     func methodWithClosures(success function: LinearFunction) -> ClosureFabric {
-        addInvocation(.imethodWithClosures__success_function_1(Parameter<LinearFunction>.any))
-		let perform = methodPerformValue(.imethodWithClosures__success_function_1(Parameter<LinearFunction>.any)) as? (LinearFunction) -> Void
+        addInvocation(.imethodWithClosures__success_function_1(Parameter<LinearFunction>.value(function)))
+		let perform = methodPerformValue(.imethodWithClosures__success_function_1(Parameter<LinearFunction>.value(function))) as? (LinearFunction) -> Void
 		perform?(function)
-		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodWithClosures__success_function_1(Parameter<LinearFunction>.any))
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodWithClosures__success_function_1(Parameter<LinearFunction>.value(function)))
 		let value = givenValue.value as? ClosureFabric
 		return value.orFail("stub return value not specified for methodWithClosures(success function: LinearFunction). Use given")
     }
@@ -3655,10 +3655,10 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
     }
 
     func methodWithClosures(success function: LinearFunction) -> ClosureFabric {
-        addInvocation(.imethodWithClosures__success_function_1(Parameter<LinearFunction>.any))
-		let perform = methodPerformValue(.imethodWithClosures__success_function_1(Parameter<LinearFunction>.any)) as? (LinearFunction) -> Void
+        addInvocation(.imethodWithClosures__success_function_1(Parameter<LinearFunction>.value(function)))
+		let perform = methodPerformValue(.imethodWithClosures__success_function_1(Parameter<LinearFunction>.value(function))) as? (LinearFunction) -> Void
 		perform?(function)
-		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodWithClosures__success_function_1(Parameter<LinearFunction>.any))
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodWithClosures__success_function_1(Parameter<LinearFunction>.value(function)))
 		let value = givenValue.value as? ClosureFabric
 		return value.orFail("stub return value not specified for methodWithClosures(success function: LinearFunction). Use given")
     }
