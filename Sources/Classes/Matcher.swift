@@ -121,38 +121,38 @@ public class Matcher {
         register(UInt64?.self)
         register(Data?.self)
 #else
-        register([Bool].self) { $0 == $1 }
-        register([String].self) { $0 == $1 }
-        register([Float].self) { $0 == $1 }
-        register([Double].self) { $0 == $1 }
-        register([Character].self) { $0 == $1 }
-        register([Int].self) { $0 == $1 }
-        register([Int8].self) { $0 == $1 }
-        register([Int16].self) { $0 == $1 }
-        register([Int32].self) { $0 == $1 }
-        register([Int64].self) { $0 == $1 }
-        register([UInt].self) { $0 == $1 }
-        register([UInt8].self) { $0 == $1 }
-        register([UInt16].self) { $0 == $1 }
-        register([UInt32].self) { $0 == $1 }
-        register([UInt64].self) { $0 == $1 }
-        register([Data].self) { $0 == $1 }
-        register([Bool?].self) { $0 == $1 }
-        register([String?].self) { $0 == $1 }
-        register([Float?].self) { $0 == $1 }
-        register([Double?].self) { $0 == $1 }
-        register([Character?].self) { $0 == $1 }
-        register([Int?].self) { $0 == $1 }
-        register([Int8?].self) { $0 == $1 }
-        register([Int16?].self) { $0 == $1 }
-        register([Int32?].self) { $0 == $1 }
-        register([Int64?].self) { $0 == $1 }
-        register([UInt?].self) { $0 == $1 }
-        register([UInt8?].self) { $0 == $1 }
-        register([UInt16?].self) { $0 == $1 }
-        register([UInt32?].self) { $0 == $1 }
-        register([UInt64?].self) { $0 == $1 }
-        register([Data?].self) { $0 == $1 }
+        register([Bool].self) { (a: Bool, b: Bool) in return a == b }
+        register([String].self) { (a: String, b: String) in return a == b }
+        register([Float].self)  { (a: Float, b: Float) in return a == b }
+        register([Double].self)  { (a: Double, b: Double) in return a == b }
+        register([Character].self) { (a: Character, b: Character) in return a == b }
+        register([Int].self) { (a: Int, b: Int) in return a == b }
+        register([Int8].self) { (a: Int8, b: Int8) in return a == b }
+        register([Int16].self) { (a: Int16, b: Int16) in return a == b }
+        register([Int32].self)  { (a: Int32, b: Int32) in return a == b }
+        register([Int64].self) { (a: Int64, b: Int64) in return a == b }
+        register([UInt].self) { (a: UInt, b: UInt) in return a == b }
+        register([UInt8].self) { (a: UInt8, b: UInt8) in return a == b }
+        register([UInt16].self) { (a: UInt16, b: UInt16) in return a == b }
+        register([UInt32].self) { (a: UInt32, b: UInt32) in return a == b }
+        register([UInt64].self) { (a: UInt64, b: UInt64) in return a == b }
+        register([Data].self) { (a: Data, b: Data) in return a == b }
+        register([Bool?].self) { (a: Bool?, b: Bool?) in return a == b }
+        register([String?].self) { (a: String?, b: String?) in return a == b }
+        register([Float?].self) { (a: Float?, b: Float?) in return a == b }
+        register([Double?].self) { (a: Double?, b: Double?) in return a == b }
+        register([Character?].self) { (a: Character?, b: Character?) in return a == b }
+        register([Int?].self) { (a: Int?, b: Int?) in return a == b }
+        register([Int8?].self) { (a: Int8?, b: Int8?) in return a == b }
+        register([Int16?].self) { (a: Int16?, b: Int16?) in return a == b }
+        register([Int32?].self) { (a: Int32?, b: Int32?) in return a == b }
+        register([Int64?].self) { (a: Int64?, b: Int64?) in return a == b }
+        register([UInt?].self) { (a: UInt?, b: UInt?) in return a == b }
+        register([UInt8?].self) { (a: UInt8?, b: UInt8?) in return a == b }
+        register([UInt16?].self) { (a: UInt16?, b: UInt16?) in return a == b }
+        register([UInt32?].self) { (a: UInt32?, b: UInt32?) in return a == b }
+        register([UInt64?].self) { (a: UInt64?, b: UInt64?) in return a == b }
+        register([Data?].self) { (a: Data?, b: Data?) in return a == b }
 #endif
 
         // Types
@@ -214,7 +214,9 @@ public class Matcher {
         self.register(valueType, match: { _, _ in return true })
     }
 
-#if swift(>=3.2)
+#if swift(>=4.1)
+    // Use equatable
+#elseif swift(>=3.2)
     /// Register sequence comparator, based on elements comparing.
     ///
     /// - Parameters:
