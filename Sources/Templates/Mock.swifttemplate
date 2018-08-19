@@ -1050,7 +1050,11 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
 
   <%# ================================================== VARIABLES -%><%_ -%>
     <%_ for variable in allVariables { -%>
+    <%_ if autoMockable { -%>
     <%= stubProperty(variable,"\(type.name)Mock") %>
+    <%_ } else { %>
+    <%= stubProperty(variable,"\(type.name)") %>
+    <%_ } %>
     <%_ } %> <%_ -%>
 
     <%_ if containsVariables { -%>
@@ -1065,7 +1069,11 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
     <%_ } %> <%_ -%>
   <%# ================================================== STATIC VARIABLES -%><%_ -%>
     <%_ for variable in allStaticVariables { -%>
+    <%_ if autoMockable { -%>
     <%= stubProperty(variable,"\(type.name)Mock") %>
+    <%_ } else { %>
+    <%= stubProperty(variable,"\(type.name)") %>
+    <%_ } %>
     <%_ } %> <%_ -%>
 
     <%_ if containsStaticVariables { -%>
@@ -1080,7 +1088,11 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
     <%_ } %> <%_ -%>
   <%# ================================================== METHOD REGISTRATIONS -%><%_ -%>
     <%_ MethodWrapper.clear() -%>
+    <%_ if autoMockable { -%>
     <%_ Current.selfType = "\(type.name)Mock\(genericTypesModifier)" -%>
+    <%_ } else { %>
+    <%_ Current.selfType = "\(type.name)Mock\(genericTypesModifier)" -%>
+    <%_ } %>
     <%_ let wrappedMethods = allMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) -%>
     <%_ let wrappedMethodsForMethodType = allMethodsForMethodType.map(wrapMethod).filter({ $0.wrappedInMethodType() }) -%>
     <%_ let wrappedInitializers = allMethods.map(wrapMethod).filter({ $0.method.isInitializer }) -%>
