@@ -9,7 +9,7 @@ DEPENDENCIES:
   - SwiftyMocky (from `./`)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  https://github.com/cocoapods/specs.git:
     - Sourcery
 
 EXTERNAL SOURCES:
@@ -20,6 +20,6 @@ SPEC CHECKSUMS:
   Sourcery: d78d3b68aa565a7194e57ccd6995c1368fda9cb0
   SwiftyMocky: 184fc088388e0e59cf0c0cd9288c4db885a340a1
 
-PODFILE CHECKSUM: 06778e14f0a1d260b889612657d3594731029e26
+PODFILE CHECKSUM: 66a756df006ae4796734a3213046822ab7b5db3a
 
-COCOAPODS: 1.5.0
+COCOAPODS: 1.5.3
