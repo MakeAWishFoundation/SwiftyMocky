@@ -180,18 +180,6 @@ class ExpressibleByLiteralsTests: XCTestCase {
         XCTAssertEqual(mock.methodWithDouble(p: 2.0), 2)
 
         Verify(mock, 4, .methodWithDouble(p: .any))
-
-        Given(mock, .methodWithCGFloat(p: .any, willReturn: 0))
-        Given(mock, .methodWithCGFloat(p: nil, willReturn: -1))
-        Given(mock, .methodWithCGFloat(p: 1.0, willReturn: 1))
-        Given(mock, .methodWithCGFloat(p: 2, willReturn: 2))
-
-        XCTAssertEqual(mock.methodWithCGFloat(p: nil), -1)
-        XCTAssertEqual(mock.methodWithCGFloat(p: 1.0000001), 0)
-        XCTAssertEqual(mock.methodWithCGFloat(p: 1.0), 1)
-        XCTAssertEqual(mock.methodWithCGFloat(p: 2.0), 2)
-
-        Verify(mock, 4, .methodWithCGFloat(p: .any))
     }
 
     func test_array_literals() {

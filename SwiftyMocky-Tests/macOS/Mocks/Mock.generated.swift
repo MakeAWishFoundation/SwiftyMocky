@@ -888,15 +888,6 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
 		return value.orFail("stub return value not specified for methodWithDouble(p: Double?). Use given")
     }
 
-    func methodWithCGFloat(p: CGFloat?) -> Int {
-        addInvocation(.imethodWithCGFloat__p_p(Parameter<CGFloat?>.value(p)))
-		let perform = methodPerformValue(.imethodWithCGFloat__p_p(Parameter<CGFloat?>.value(p))) as? (CGFloat?) -> Void
-		perform?(p)
-		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodWithCGFloat__p_p(Parameter<CGFloat?>.value(p)))
-		let value = givenValue.value as? Int
-		return value.orFail("stub return value not specified for methodWithCGFloat(p: CGFloat?). Use given")
-    }
-
     func methodWithArrayOfInt(p: [Int]) -> Int {
         addInvocation(.imethodWithArrayOfInt__p_p(Parameter<[Int]>.value(p)))
 		let perform = methodPerformValue(.imethodWithArrayOfInt__p_p(Parameter<[Int]>.value(p))) as? ([Int]) -> Void
@@ -934,7 +925,6 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
         case imethodWithBool__p_p(Parameter<Bool?>)
         case imethodWithFloat__p_p(Parameter<Float?>)
         case imethodWithDouble__p_p(Parameter<Double?>)
-        case imethodWithCGFloat__p_p(Parameter<CGFloat?>)
         case imethodWithArrayOfInt__p_p(Parameter<[Int]>)
         case imethodWithArrayOfOther__p_p(Parameter<[SomeClass]>)
         case imethodWithDict__p_p(Parameter<[String: SomeClass]>)
@@ -968,9 +958,6 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
                 case (.imethodWithDouble__p_p(let lhsP), .imethodWithDouble__p_p(let rhsP)):
                     guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
                     return true 
-                case (.imethodWithCGFloat__p_p(let lhsP), .imethodWithCGFloat__p_p(let rhsP)):
-                    guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
-                    return true 
                 case (.imethodWithArrayOfInt__p_p(let lhsP), .imethodWithArrayOfInt__p_p(let rhsP)):
                     guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
                     return true 
@@ -995,7 +982,6 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
                 case let .imethodWithBool__p_p(p0): return p0.intValue
                 case let .imethodWithFloat__p_p(p0): return p0.intValue
                 case let .imethodWithDouble__p_p(p0): return p0.intValue
-                case let .imethodWithCGFloat__p_p(p0): return p0.intValue
                 case let .imethodWithArrayOfInt__p_p(p0): return p0.intValue
                 case let .imethodWithArrayOfOther__p_p(p0): return p0.intValue
                 case let .imethodWithDict__p_p(p0): return p0.intValue
@@ -1041,9 +1027,6 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
         static func methodWithDouble(p: Parameter<Double?>, willReturn: Int) -> Given {
             return Given(method: .imethodWithDouble__p_p(p), returns: willReturn, throws: nil)
         }
-        static func methodWithCGFloat(p: Parameter<CGFloat?>, willReturn: Int) -> Given {
-            return Given(method: .imethodWithCGFloat__p_p(p), returns: willReturn, throws: nil)
-        }
         static func methodWithArrayOfInt(p: Parameter<[Int]>, willReturn: Int) -> Given {
             return Given(method: .imethodWithArrayOfInt__p_p(p), returns: willReturn, throws: nil)
         }
@@ -1084,9 +1067,6 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
         }
         static func methodWithDouble(p: Parameter<Double?>) -> Verify {
             return Verify(method: .imethodWithDouble__p_p(p))
-        }
-        static func methodWithCGFloat(p: Parameter<CGFloat?>) -> Verify {
-            return Verify(method: .imethodWithCGFloat__p_p(p))
         }
         static func methodWithArrayOfInt(p: Parameter<[Int]>) -> Verify {
             return Verify(method: .imethodWithArrayOfInt__p_p(p))
@@ -1129,9 +1109,6 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
         }
         static func methodWithDouble(p: Parameter<Double?>, perform: @escaping (Double?) -> Void) -> Perform {
             return Perform(method: .imethodWithDouble__p_p(p), performs: perform)
-        }
-        static func methodWithCGFloat(p: Parameter<CGFloat?>, perform: @escaping (CGFloat?) -> Void) -> Perform {
-            return Perform(method: .imethodWithCGFloat__p_p(p), performs: perform)
         }
         static func methodWithArrayOfInt(p: Parameter<[Int]>, perform: @escaping ([Int]) -> Void) -> Perform {
             return Perform(method: .imethodWithArrayOfInt__p_p(p), performs: perform)

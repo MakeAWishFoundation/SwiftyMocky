@@ -67,7 +67,6 @@ protocol AllLiteralsContainer {
     // ExpressibleByFloatLiteral
     func methodWithFloat(p: Float?) -> Int
     func methodWithDouble(p: Double?) -> Int
-    func methodWithCGFloat(p: CGFloat?) -> Int
 
     // ExpressibleByArrayLiteral
     func methodWithArrayOfInt(p: [Int]) -> Int
