@@ -17,7 +17,7 @@ install:
 
 script:
   # - 'if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then bash certs.sh; fi' # certs for macos app
-  - rake pod_install
+  - rake pods
   - rake sourcery 4.0.2 # workaround - getting prebuilt sourcery version
   - rake mock
   # - 'if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then fastlane mac test; fi' # unable to run macos tests on CI now - turning off on CI

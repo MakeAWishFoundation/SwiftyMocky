@@ -796,6 +796,393 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
     }
 }
 
+// MARK: - AllLiteralsContainer
+class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    var matcher: Matcher = Matcher.default
+
+
+    typealias Property = Swift.Never
+
+
+    func methodWithStringParameter(p: String) -> Int {
+        addInvocation(.imethodWithStringParameter__p_p(Parameter<String>.value(p)))
+		let perform = methodPerformValue(.imethodWithStringParameter__p_p(Parameter<String>.value(p))) as? (String) -> Void
+		perform?(p)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodWithStringParameter__p_p(Parameter<String>.value(p)))
+		let value = givenValue.value as? Int
+		return value.orFail("stub return value not specified for methodWithStringParameter(p: String). Use given")
+    }
+
+    func methodWithOtionalStringParameter(p: String?) -> Int {
+        addInvocation(.imethodWithOtionalStringParameter__p_p(Parameter<String?>.value(p)))
+		let perform = methodPerformValue(.imethodWithOtionalStringParameter__p_p(Parameter<String?>.value(p))) as? (String?) -> Void
+		perform?(p)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodWithOtionalStringParameter__p_p(Parameter<String?>.value(p)))
+		let value = givenValue.value as? Int
+		return value.orFail("stub return value not specified for methodWithOtionalStringParameter(p: String?). Use given")
+    }
+
+    func methodWithCustomStringParameter(p: CustomString) -> Int {
+        addInvocation(.imethodWithCustomStringParameter__p_p(Parameter<CustomString>.value(p)))
+		let perform = methodPerformValue(.imethodWithCustomStringParameter__p_p(Parameter<CustomString>.value(p))) as? (CustomString) -> Void
+		perform?(p)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodWithCustomStringParameter__p_p(Parameter<CustomString>.value(p)))
+		let value = givenValue.value as? Int
+		return value.orFail("stub return value not specified for methodWithCustomStringParameter(p: CustomString). Use given")
+    }
+
+    func methodWithCustomOptionalStringParameter(p: CustomString?) -> Int {
+        addInvocation(.imethodWithCustomOptionalStringParameter__p_p(Parameter<CustomString?>.value(p)))
+		let perform = methodPerformValue(.imethodWithCustomOptionalStringParameter__p_p(Parameter<CustomString?>.value(p))) as? (CustomString?) -> Void
+		perform?(p)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodWithCustomOptionalStringParameter__p_p(Parameter<CustomString?>.value(p)))
+		let value = givenValue.value as? Int
+		return value.orFail("stub return value not specified for methodWithCustomOptionalStringParameter(p: CustomString?). Use given")
+    }
+
+    func methodWithIntParameter(p: Int) -> Int {
+        addInvocation(.imethodWithIntParameter__p_p(Parameter<Int>.value(p)))
+		let perform = methodPerformValue(.imethodWithIntParameter__p_p(Parameter<Int>.value(p))) as? (Int) -> Void
+		perform?(p)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodWithIntParameter__p_p(Parameter<Int>.value(p)))
+		let value = givenValue.value as? Int
+		return value.orFail("stub return value not specified for methodWithIntParameter(p: Int). Use given")
+    }
+
+    func methodWithCustomOptionalIntParameter(p: CustomInt?) -> Int {
+        addInvocation(.imethodWithCustomOptionalIntParameter__p_p(Parameter<CustomInt?>.value(p)))
+		let perform = methodPerformValue(.imethodWithCustomOptionalIntParameter__p_p(Parameter<CustomInt?>.value(p))) as? (CustomInt?) -> Void
+		perform?(p)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodWithCustomOptionalIntParameter__p_p(Parameter<CustomInt?>.value(p)))
+		let value = givenValue.value as? Int
+		return value.orFail("stub return value not specified for methodWithCustomOptionalIntParameter(p: CustomInt?). Use given")
+    }
+
+    func methodWithBool(p: Bool?) -> Int {
+        addInvocation(.imethodWithBool__p_p(Parameter<Bool?>.value(p)))
+		let perform = methodPerformValue(.imethodWithBool__p_p(Parameter<Bool?>.value(p))) as? (Bool?) -> Void
+		perform?(p)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodWithBool__p_p(Parameter<Bool?>.value(p)))
+		let value = givenValue.value as? Int
+		return value.orFail("stub return value not specified for methodWithBool(p: Bool?). Use given")
+    }
+
+    func methodWithFloat(p: Float?) -> Int {
+        addInvocation(.imethodWithFloat__p_p(Parameter<Float?>.value(p)))
+		let perform = methodPerformValue(.imethodWithFloat__p_p(Parameter<Float?>.value(p))) as? (Float?) -> Void
+		perform?(p)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodWithFloat__p_p(Parameter<Float?>.value(p)))
+		let value = givenValue.value as? Int
+		return value.orFail("stub return value not specified for methodWithFloat(p: Float?). Use given")
+    }
+
+    func methodWithDouble(p: Double?) -> Int {
+        addInvocation(.imethodWithDouble__p_p(Parameter<Double?>.value(p)))
+		let perform = methodPerformValue(.imethodWithDouble__p_p(Parameter<Double?>.value(p))) as? (Double?) -> Void
+		perform?(p)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodWithDouble__p_p(Parameter<Double?>.value(p)))
+		let value = givenValue.value as? Int
+		return value.orFail("stub return value not specified for methodWithDouble(p: Double?). Use given")
+    }
+
+    func methodWithCGFloat(p: CGFloat?) -> Int {
+        addInvocation(.imethodWithCGFloat__p_p(Parameter<CGFloat?>.value(p)))
+		let perform = methodPerformValue(.imethodWithCGFloat__p_p(Parameter<CGFloat?>.value(p))) as? (CGFloat?) -> Void
+		perform?(p)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodWithCGFloat__p_p(Parameter<CGFloat?>.value(p)))
+		let value = givenValue.value as? Int
+		return value.orFail("stub return value not specified for methodWithCGFloat(p: CGFloat?). Use given")
+    }
+
+    func methodWithArrayOfInt(p: [Int]) -> Int {
+        addInvocation(.imethodWithArrayOfInt__p_p(Parameter<[Int]>.value(p)))
+		let perform = methodPerformValue(.imethodWithArrayOfInt__p_p(Parameter<[Int]>.value(p))) as? ([Int]) -> Void
+		perform?(p)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodWithArrayOfInt__p_p(Parameter<[Int]>.value(p)))
+		let value = givenValue.value as? Int
+		return value.orFail("stub return value not specified for methodWithArrayOfInt(p: [Int]). Use given")
+    }
+
+    func methodWithArrayOfOther(p: [SomeClass]) -> Int {
+        addInvocation(.imethodWithArrayOfOther__p_p(Parameter<[SomeClass]>.value(p)))
+		let perform = methodPerformValue(.imethodWithArrayOfOther__p_p(Parameter<[SomeClass]>.value(p))) as? ([SomeClass]) -> Void
+		perform?(p)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodWithArrayOfOther__p_p(Parameter<[SomeClass]>.value(p)))
+		let value = givenValue.value as? Int
+		return value.orFail("stub return value not specified for methodWithArrayOfOther(p: [SomeClass]). Use given")
+    }
+
+    func methodWithDict(p: [String: SomeClass]) -> Int {
+        addInvocation(.imethodWithDict__p_p(Parameter<[String: SomeClass]>.value(p)))
+		let perform = methodPerformValue(.imethodWithDict__p_p(Parameter<[String: SomeClass]>.value(p))) as? ([String: SomeClass]) -> Void
+		perform?(p)
+		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.imethodWithDict__p_p(Parameter<[String: SomeClass]>.value(p)))
+		let value = givenValue.value as? Int
+		return value.orFail("stub return value not specified for methodWithDict(p: [String: SomeClass]). Use given")
+    }
+
+    fileprivate enum MethodType {
+        case imethodWithStringParameter__p_p(Parameter<String>)
+        case imethodWithOtionalStringParameter__p_p(Parameter<String?>)
+        case imethodWithCustomStringParameter__p_p(Parameter<CustomString>)
+        case imethodWithCustomOptionalStringParameter__p_p(Parameter<CustomString?>)
+        case imethodWithIntParameter__p_p(Parameter<Int>)
+        case imethodWithCustomOptionalIntParameter__p_p(Parameter<CustomInt?>)
+        case imethodWithBool__p_p(Parameter<Bool?>)
+        case imethodWithFloat__p_p(Parameter<Float?>)
+        case imethodWithDouble__p_p(Parameter<Double?>)
+        case imethodWithCGFloat__p_p(Parameter<CGFloat?>)
+        case imethodWithArrayOfInt__p_p(Parameter<[Int]>)
+        case imethodWithArrayOfOther__p_p(Parameter<[SomeClass]>)
+        case imethodWithDict__p_p(Parameter<[String: SomeClass]>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+                case (.imethodWithStringParameter__p_p(let lhsP), .imethodWithStringParameter__p_p(let rhsP)):
+                    guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
+                    return true 
+                case (.imethodWithOtionalStringParameter__p_p(let lhsP), .imethodWithOtionalStringParameter__p_p(let rhsP)):
+                    guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
+                    return true 
+                case (.imethodWithCustomStringParameter__p_p(let lhsP), .imethodWithCustomStringParameter__p_p(let rhsP)):
+                    guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
+                    return true 
+                case (.imethodWithCustomOptionalStringParameter__p_p(let lhsP), .imethodWithCustomOptionalStringParameter__p_p(let rhsP)):
+                    guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
+                    return true 
+                case (.imethodWithIntParameter__p_p(let lhsP), .imethodWithIntParameter__p_p(let rhsP)):
+                    guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
+                    return true 
+                case (.imethodWithCustomOptionalIntParameter__p_p(let lhsP), .imethodWithCustomOptionalIntParameter__p_p(let rhsP)):
+                    guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
+                    return true 
+                case (.imethodWithBool__p_p(let lhsP), .imethodWithBool__p_p(let rhsP)):
+                    guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
+                    return true 
+                case (.imethodWithFloat__p_p(let lhsP), .imethodWithFloat__p_p(let rhsP)):
+                    guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
+                    return true 
+                case (.imethodWithDouble__p_p(let lhsP), .imethodWithDouble__p_p(let rhsP)):
+                    guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
+                    return true 
+                case (.imethodWithCGFloat__p_p(let lhsP), .imethodWithCGFloat__p_p(let rhsP)):
+                    guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
+                    return true 
+                case (.imethodWithArrayOfInt__p_p(let lhsP), .imethodWithArrayOfInt__p_p(let rhsP)):
+                    guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
+                    return true 
+                case (.imethodWithArrayOfOther__p_p(let lhsP), .imethodWithArrayOfOther__p_p(let rhsP)):
+                    guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
+                    return true 
+                case (.imethodWithDict__p_p(let lhsP), .imethodWithDict__p_p(let rhsP)):
+                    guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
+                    return true 
+                default: return false
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+                case let .imethodWithStringParameter__p_p(p0): return p0.intValue
+                case let .imethodWithOtionalStringParameter__p_p(p0): return p0.intValue
+                case let .imethodWithCustomStringParameter__p_p(p0): return p0.intValue
+                case let .imethodWithCustomOptionalStringParameter__p_p(p0): return p0.intValue
+                case let .imethodWithIntParameter__p_p(p0): return p0.intValue
+                case let .imethodWithCustomOptionalIntParameter__p_p(p0): return p0.intValue
+                case let .imethodWithBool__p_p(p0): return p0.intValue
+                case let .imethodWithFloat__p_p(p0): return p0.intValue
+                case let .imethodWithDouble__p_p(p0): return p0.intValue
+                case let .imethodWithCGFloat__p_p(p0): return p0.intValue
+                case let .imethodWithArrayOfInt__p_p(p0): return p0.intValue
+                case let .imethodWithArrayOfOther__p_p(p0): return p0.intValue
+                case let .imethodWithDict__p_p(p0): return p0.intValue
+            }
+        }
+    }
+
+    struct Given {
+        fileprivate var method: MethodType
+        var returns: Any?
+        var `throws`: Error?
+
+        private init(method: MethodType, returns: Any?, throws: Error?) {
+            self.method = method
+            self.returns = returns
+            self.`throws` = `throws`
+        }
+
+        static func methodWithStringParameter(p: Parameter<String>, willReturn: Int) -> Given {
+            return Given(method: .imethodWithStringParameter__p_p(p), returns: willReturn, throws: nil)
+        }
+        static func methodWithOtionalStringParameter(p: Parameter<String?>, willReturn: Int) -> Given {
+            return Given(method: .imethodWithOtionalStringParameter__p_p(p), returns: willReturn, throws: nil)
+        }
+        static func methodWithCustomStringParameter(p: Parameter<CustomString>, willReturn: Int) -> Given {
+            return Given(method: .imethodWithCustomStringParameter__p_p(p), returns: willReturn, throws: nil)
+        }
+        static func methodWithCustomOptionalStringParameter(p: Parameter<CustomString?>, willReturn: Int) -> Given {
+            return Given(method: .imethodWithCustomOptionalStringParameter__p_p(p), returns: willReturn, throws: nil)
+        }
+        static func methodWithIntParameter(p: Parameter<Int>, willReturn: Int) -> Given {
+            return Given(method: .imethodWithIntParameter__p_p(p), returns: willReturn, throws: nil)
+        }
+        static func methodWithCustomOptionalIntParameter(p: Parameter<CustomInt?>, willReturn: Int) -> Given {
+            return Given(method: .imethodWithCustomOptionalIntParameter__p_p(p), returns: willReturn, throws: nil)
+        }
+        static func methodWithBool(p: Parameter<Bool?>, willReturn: Int) -> Given {
+            return Given(method: .imethodWithBool__p_p(p), returns: willReturn, throws: nil)
+        }
+        static func methodWithFloat(p: Parameter<Float?>, willReturn: Int) -> Given {
+            return Given(method: .imethodWithFloat__p_p(p), returns: willReturn, throws: nil)
+        }
+        static func methodWithDouble(p: Parameter<Double?>, willReturn: Int) -> Given {
+            return Given(method: .imethodWithDouble__p_p(p), returns: willReturn, throws: nil)
+        }
+        static func methodWithCGFloat(p: Parameter<CGFloat?>, willReturn: Int) -> Given {
+            return Given(method: .imethodWithCGFloat__p_p(p), returns: willReturn, throws: nil)
+        }
+        static func methodWithArrayOfInt(p: Parameter<[Int]>, willReturn: Int) -> Given {
+            return Given(method: .imethodWithArrayOfInt__p_p(p), returns: willReturn, throws: nil)
+        }
+        static func methodWithArrayOfOther(p: Parameter<[SomeClass]>, willReturn: Int) -> Given {
+            return Given(method: .imethodWithArrayOfOther__p_p(p), returns: willReturn, throws: nil)
+        }
+        static func methodWithDict(p: Parameter<[String: SomeClass]>, willReturn: Int) -> Given {
+            return Given(method: .imethodWithDict__p_p(p), returns: willReturn, throws: nil)
+        }
+    }
+
+    struct Verify {
+        fileprivate var method: MethodType
+
+        static func methodWithStringParameter(p: Parameter<String>) -> Verify {
+            return Verify(method: .imethodWithStringParameter__p_p(p))
+        }
+        static func methodWithOtionalStringParameter(p: Parameter<String?>) -> Verify {
+            return Verify(method: .imethodWithOtionalStringParameter__p_p(p))
+        }
+        static func methodWithCustomStringParameter(p: Parameter<CustomString>) -> Verify {
+            return Verify(method: .imethodWithCustomStringParameter__p_p(p))
+        }
+        static func methodWithCustomOptionalStringParameter(p: Parameter<CustomString?>) -> Verify {
+            return Verify(method: .imethodWithCustomOptionalStringParameter__p_p(p))
+        }
+        static func methodWithIntParameter(p: Parameter<Int>) -> Verify {
+            return Verify(method: .imethodWithIntParameter__p_p(p))
+        }
+        static func methodWithCustomOptionalIntParameter(p: Parameter<CustomInt?>) -> Verify {
+            return Verify(method: .imethodWithCustomOptionalIntParameter__p_p(p))
+        }
+        static func methodWithBool(p: Parameter<Bool?>) -> Verify {
+            return Verify(method: .imethodWithBool__p_p(p))
+        }
+        static func methodWithFloat(p: Parameter<Float?>) -> Verify {
+            return Verify(method: .imethodWithFloat__p_p(p))
+        }
+        static func methodWithDouble(p: Parameter<Double?>) -> Verify {
+            return Verify(method: .imethodWithDouble__p_p(p))
+        }
+        static func methodWithCGFloat(p: Parameter<CGFloat?>) -> Verify {
+            return Verify(method: .imethodWithCGFloat__p_p(p))
+        }
+        static func methodWithArrayOfInt(p: Parameter<[Int]>) -> Verify {
+            return Verify(method: .imethodWithArrayOfInt__p_p(p))
+        }
+        static func methodWithArrayOfOther(p: Parameter<[SomeClass]>) -> Verify {
+            return Verify(method: .imethodWithArrayOfOther__p_p(p))
+        }
+        static func methodWithDict(p: Parameter<[String: SomeClass]>) -> Verify {
+            return Verify(method: .imethodWithDict__p_p(p))
+        }
+    }
+
+    struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        static func methodWithStringParameter(p: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .imethodWithStringParameter__p_p(p), performs: perform)
+        }
+        static func methodWithOtionalStringParameter(p: Parameter<String?>, perform: @escaping (String?) -> Void) -> Perform {
+            return Perform(method: .imethodWithOtionalStringParameter__p_p(p), performs: perform)
+        }
+        static func methodWithCustomStringParameter(p: Parameter<CustomString>, perform: @escaping (CustomString) -> Void) -> Perform {
+            return Perform(method: .imethodWithCustomStringParameter__p_p(p), performs: perform)
+        }
+        static func methodWithCustomOptionalStringParameter(p: Parameter<CustomString?>, perform: @escaping (CustomString?) -> Void) -> Perform {
+            return Perform(method: .imethodWithCustomOptionalStringParameter__p_p(p), performs: perform)
+        }
+        static func methodWithIntParameter(p: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
+            return Perform(method: .imethodWithIntParameter__p_p(p), performs: perform)
+        }
+        static func methodWithCustomOptionalIntParameter(p: Parameter<CustomInt?>, perform: @escaping (CustomInt?) -> Void) -> Perform {
+            return Perform(method: .imethodWithCustomOptionalIntParameter__p_p(p), performs: perform)
+        }
+        static func methodWithBool(p: Parameter<Bool?>, perform: @escaping (Bool?) -> Void) -> Perform {
+            return Perform(method: .imethodWithBool__p_p(p), performs: perform)
+        }
+        static func methodWithFloat(p: Parameter<Float?>, perform: @escaping (Float?) -> Void) -> Perform {
+            return Perform(method: .imethodWithFloat__p_p(p), performs: perform)
+        }
+        static func methodWithDouble(p: Parameter<Double?>, perform: @escaping (Double?) -> Void) -> Perform {
+            return Perform(method: .imethodWithDouble__p_p(p), performs: perform)
+        }
+        static func methodWithCGFloat(p: Parameter<CGFloat?>, perform: @escaping (CGFloat?) -> Void) -> Perform {
+            return Perform(method: .imethodWithCGFloat__p_p(p), performs: perform)
+        }
+        static func methodWithArrayOfInt(p: Parameter<[Int]>, perform: @escaping ([Int]) -> Void) -> Perform {
+            return Perform(method: .imethodWithArrayOfInt__p_p(p), performs: perform)
+        }
+        static func methodWithArrayOfOther(p: Parameter<[SomeClass]>, perform: @escaping ([SomeClass]) -> Void) -> Perform {
+            return Perform(method: .imethodWithArrayOfOther__p_p(p), performs: perform)
+        }
+        static func methodWithDict(p: Parameter<[String: SomeClass]>, perform: @escaping ([String: SomeClass]) -> Void) -> Perform {
+            return Perform(method: .imethodWithDict__p_p(p), performs: perform)
+        }
+    }
+
+    private func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+        methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+
+    private func methodReturnValue(_ method: MethodType) -> (value: Any?, error: Error?) {
+        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+        return (value: matched?.returns, error: matched?.`throws`)
+    }
+
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+}
+
 // MARK: - ComplicatedServiceType
 class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
     private var invocations: [MethodType] = []
