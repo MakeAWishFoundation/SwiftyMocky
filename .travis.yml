@@ -4,7 +4,7 @@ os: osx
 language: generic
 sudo: required
 dist: trusty
-osx_image: xcode9.1
+osx_image: xcode10
 
 notifications:
   #slack: // TODO:
@@ -17,8 +17,8 @@ install:
 
 script:
   # - 'if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then bash certs.sh; fi' # certs for macos app
-  - rake pod_install
-  - rake sourcery 4.0.2 # workaround - getting prebuilt sourcery version
+  - rake pods
+  - rake sourcery 4.2-xcode10 # workaround - getting prebuilt sourcery version
   - rake mock
   # - 'if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then fastlane mac test; fi' # unable to run macos tests on CI now - turning off on CI
   - fastlane ios test
