@@ -3,17 +3,19 @@
 //  Mocky_Example_macOSTests
 //
 //  Created by Andrzej Michnia on 27.11.2017.
-//  Copyright © 2017 CocoaPods. All rights reserved.
+//  Copyright © 2017 MakeAWishFoundation. All rights reserved.
 //
 
 import XCTest
+import SwiftyMocky
 @testable import Mocky_Example_macOS
 
-class Mocky_Example_macOSTests: XCTestCase {
+class Mocky_Example_macOSTests: SwiftyTestCase {
     
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
+
     }
     
     override func tearDown() {

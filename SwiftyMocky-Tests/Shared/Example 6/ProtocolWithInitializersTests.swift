@@ -3,7 +3,7 @@
 //  Mocky_Tests
 //
 //  Created by Andrzej Michnia on 17.11.2017.
-//  Copyright © 2017 CocoaPods. All rights reserved.
+//  Copyright © 2017 MakeAWishFoundation. All rights reserved.
 //
 
 import XCTest
@@ -16,7 +16,7 @@ import SwiftyMocky
     @testable import Mocky_Example_macOS
 #endif
 
-class ProtocolWithInitializersTests: XCTestCase {
+class ProtocolWithInitializersTests: SwiftyTestCase {
     func test_protocol_with_initializers() {
         // You can use all defined initializers
         let mock1 = ProtocolWithInitializersMock(param: 1)

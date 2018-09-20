@@ -3,7 +3,7 @@
 //  Mocky_Tests
 //
 //  Created by Andrzej Michnia on 25.10.2017.
-//  Copyright © 2017 CocoaPods. All rights reserved.
+//  Copyright © 2017 MakeAWishFoundation. All rights reserved.
 //
 
 import XCTest
@@ -22,7 +22,7 @@ enum TestError: Error {
     case third
 }
 
-class ExampleTests: XCTestCase {
+class ExampleTests: SwiftyTestCase {
     func testGivenExample() {
         let mock = UserStorageTypeMock()
 

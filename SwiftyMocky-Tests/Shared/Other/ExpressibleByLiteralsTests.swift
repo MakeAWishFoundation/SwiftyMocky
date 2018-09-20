@@ -3,7 +3,7 @@
 //  Mocky
 //
 //  Created by Andrzej Michnia on 20/09/2018.
-//  Copyright © 2018 CocoaPods. All rights reserved.
+//  Copyright © 2018 MakeAWishFoundation. All rights reserved.
 //
 
 import XCTest
@@ -16,7 +16,7 @@ import SwiftyMocky
 @testable import Mocky_Example_macOS
 #endif
 
-class ExpressibleByLiteralsTests: XCTestCase {
+class ExpressibleByLiteralsTests: SwiftyTestCase {
     override func setUp() {
         super.setUp()
     }

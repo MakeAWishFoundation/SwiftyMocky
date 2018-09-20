@@ -3,7 +3,7 @@
 //  Mocky_Tests
 //
 //  Created by Andrzej Michnia on 16.11.2017.
-//  Copyright © 2017 CocoaPods. All rights reserved.
+//  Copyright © 2017 MakeAWishFoundation. All rights reserved.
 //
 
 import XCTest
@@ -16,7 +16,7 @@ import SwiftyMocky
     @testable import Mocky_Example_macOS
 #endif
 
-class SimpleProtocolsTests: XCTestCase {
+class SimpleProtocolsTests: SwiftyTestCase {
     func test_simpleProtocol_simpleMethod() {
         let mock = SimpleProtocolWithMethodsMock()
 
@@ -169,6 +169,17 @@ class SimpleProtocolsTests: XCTestCase {
         Verify(mock, .simpleMethod())
         VerifyProperty(mock, .property)
         VerifyProperty(mock, .atLeastOnce, .property(set: .any))
+
+
+        Given(mock, .simpleMethod(willReturn: "a","b","c","d"))
+        XCTAssertEqual(mock.simpleMethod(), "a")
+        XCTAssertEqual(mock.simpleMethod(), "b")
+        XCTAssertEqual(mock.simpleMethod(), "c")
+        XCTAssertEqual(mock.simpleMethod(), "d")
+        XCTAssertEqual(mock.simpleMethod(), "a")
+        XCTAssertEqual(mock.simpleMethod(), "b")
+        XCTAssertEqual(mock.simpleMethod(), "c")
+        XCTAssertEqual(mock.simpleMethod(), "d")
     }
 
 

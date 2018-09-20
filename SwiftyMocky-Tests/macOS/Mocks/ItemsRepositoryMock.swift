@@ -3,7 +3,7 @@
 //  Mocky
 //
 //  Created by przemyslaw.wosko on 19/05/2017.
-//  Copyright © 2017 CocoaPods. All rights reserved.
+//  Copyright © 2017 MakeAWishFoundation. All rights reserved.
 //
 
 import Foundation
@@ -14,10 +14,23 @@ import XCTest
 // sourcery: mock = "ItemsRepository"
 class ItemsRepositoryMock: ItemsRepository, Mock {
 // sourcery:inline:auto:ItemsRepositoryMock.autoMocked
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
-    var matcher: Matcher = Matcher.default
+    private var file: StaticString?
+    private var line: UInt?
+
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
+
 
 
     typealias Property = Swift.Never
@@ -39,18 +52,28 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         addInvocation(.istoredItems)
 		let perform = methodPerformValue(.istoredItems) as? () -> Void
 		perform?()
-		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.istoredItems)
-		let value = givenValue.value as? [Item]?
-		return value.orFail("stub return value not specified for storedItems(). Use given")
+		var __value: [Item]?
+		do {
+		    __value = try methodReturnValue(.istoredItems).casted()
+		} catch {
+			onFatalFailure("stub return value not specified for storedItems(). Use given")
+			Failure("stub return value not specified for storedItems(). Use given")
+		}
+		return __value
     }
 
     func storedDetails(item: Item) -> ItemDetails? {
         addInvocation(.istoredDetails__item_item(Parameter<Item>.value(item)))
 		let perform = methodPerformValue(.istoredDetails__item_item(Parameter<Item>.value(item))) as? (Item) -> Void
 		perform?(item)
-		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.istoredDetails__item_item(Parameter<Item>.value(item)))
-		let value = givenValue.value as? ItemDetails?
-		return value.orFail("stub return value not specified for storedDetails(item: Item). Use given")
+		var __value: ItemDetails?
+		do {
+		    __value = try methodReturnValue(.istoredDetails__item_item(Parameter<Item>.value(item))).casted()
+		} catch {
+			onFatalFailure("stub return value not specified for storedDetails(item: Item). Use given")
+			Failure("stub return value not specified for storedDetails(item: Item). Use given")
+		}
+		return __value
     }
 
     fileprivate enum MethodType {
@@ -86,22 +109,33 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         }
     }
 
-    struct Given {
+    class Given: StubbedMethod {
         fileprivate var method: MethodType
-        var returns: Any?
-        var `throws`: Error?
 
-        private init(method: MethodType, returns: Any?, throws: Error?) {
+        private init(method: MethodType, products: [Product]) {
             self.method = method
-            self.returns = returns
-            self.`throws` = `throws`
+            super.init(products)
         }
 
-        static func storedItems(willReturn: [Item]?) -> Given {
-            return Given(method: .istoredItems, returns: willReturn, throws: nil)
+        static func storedItems(willReturn: [Item]?...) -> Given {
+            return Given(method: .istoredItems, products: willReturn.map({ Product.return($0) }))
         }
-        static func storedDetails(item: Parameter<Item>, willReturn: ItemDetails?) -> Given {
-            return Given(method: .istoredDetails__item_item(item), returns: willReturn, throws: nil)
+        static func storedDetails(item: Parameter<Item>, willReturn: ItemDetails?...) -> Given {
+            return Given(method: .istoredDetails__item_item(item), products: willReturn.map({ Product.return($0) }))
+        }
+        static func storedItems(willProduce: (Stubber<[Item]?>) -> Void) -> Given {
+            let willReturn: [[Item]?] = []
+			let given: Given = { return Given(method: .istoredItems, products: willReturn.map({ Product.return($0) })) }()
+			let stubber = given.stub(for: ([Item]?).self)
+			willProduce(stubber)
+			return given
+        }
+        static func storedDetails(item: Parameter<Item>, willProduce: (Stubber<ItemDetails?>) -> Void) -> Given {
+            let willReturn: [ItemDetails?] = []
+			let given: Given = { return Given(method: .istoredDetails__item_item(item), products: willReturn.map({ Product.return($0) })) }()
+			let stubber = given.stub(for: (ItemDetails?).self)
+			willProduce(stubber)
+			return given
         }
     }
 
@@ -146,7 +180,6 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
 
     public func given(_ method: Given) {
         methodReturnValues.append(method)
-        methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
     public func perform(_ method: Perform) {
@@ -164,9 +197,11 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         invocations.append(call)
     }
 
-    private func methodReturnValue(_ method: MethodType) -> (value: Any?, error: Error?) {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
-        return (value: matched?.returns, error: matched?.`throws`)
+    private func methodReturnValue(_ method: MethodType) throws -> Product {
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
     }
 
     private func methodPerformValue(_ method: MethodType) -> Any? {

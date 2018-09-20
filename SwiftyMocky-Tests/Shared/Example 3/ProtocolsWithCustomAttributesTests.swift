@@ -3,7 +3,7 @@
 //  Mocky_Tests
 //
 //  Created by Andrzej Michnia on 16.11.2017.
-//  Copyright © 2017 CocoaPods. All rights reserved.
+//  Copyright © 2017 MakeAWishFoundation. All rights reserved.
 //
 
 import XCTest
@@ -20,7 +20,7 @@ enum UserVerifyError: Error {
     case tooYoung
 }
 
-class ProtocolsWithCustomAttributesTests: XCTestCase {
+class ProtocolsWithCustomAttributesTests: SwiftyTestCase {
     func test_protocol_using_tuples() {
         let mock = ProtocolWithTuplesMock()
 

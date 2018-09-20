@@ -3,7 +3,7 @@
 //  Mocky_Tests
 //
 //  Created by Andrzej Michnia on 17.11.2017.
-//  Copyright © 2017 CocoaPods. All rights reserved.
+//  Copyright © 2017 MakeAWishFoundation. All rights reserved.
 //
 
 import XCTest
@@ -16,7 +16,7 @@ import SwiftyMocky
     @testable import Mocky_Example_macOS
 #endif
 
-class ProtocolWithStaticMembersTests: XCTestCase {
+class ProtocolWithStaticMembersTests: SwiftyTestCase {
     func test_protocol_with_static() {
         // Static members are handled similar way - but instead of instance
         // you pass its type to Verify and Given calls
