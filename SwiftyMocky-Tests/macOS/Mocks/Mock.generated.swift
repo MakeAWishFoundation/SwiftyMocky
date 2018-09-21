@@ -4937,6 +4937,8 @@ class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBothMeth
     private var methodPerformValues: [Perform] = []
     var matcher: Matcher = Matcher.default
 
+    var defaultPolicy = Policy.wrap
+
     var property: String { 
 		get {	invocations.append(.property_get)
 				return __property.orFail("SimpleProtocolWithBothMethodsAndPropertiesMock - value for property was not defined") }
@@ -4956,9 +4958,14 @@ class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBothMeth
         addInvocation(.isimpleMethod)
 		let perform = methodPerformValue(.isimpleMethod) as? () -> Void
 		perform?()
-		let givenValue: (value: Any?, error: Error?) = methodReturnValue(.isimpleMethod)
-		let value = givenValue.value as? String
-		return value.orFail("stub return value not specified for simpleMethod(). Use given")
+
+        do {
+            let value = try methodReturnValue(.isimpleMethod) as? String
+            return value.orFail("stub return value not specified for simpleMethod(). Use given")
+        } catch {
+            // Throw error if method is throwable
+            Failure("stub return value not specified for simpleMethod(). Use given. Failed with \(error)")
+        }
     }
 
     fileprivate enum MethodType {
@@ -4985,19 +4992,26 @@ class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBothMeth
         }
     }
 
-    struct Given {
+    class Given {
         fileprivate var method: MethodType
-        var returns: Any?
-        var `throws`: Error?
+        var products: [Product]
+        var policy: Policy = .wrap
+        var index: Int = 0
+        var isValid: Bool { return index < products.count }
 
-        private init(method: MethodType, returns: Any?, throws: Error?) {
+        private init(method: MethodType, products: [Product]) {
             self.method = method
-            self.returns = returns
-            self.`throws` = `throws`
+            self.products = products
+            self.index = 0
         }
 
-        static func simpleMethod(willReturn: String) -> Given {
-            return Given(method: .isimpleMethod, returns: willReturn, throws: nil)
+        func getProduct(policy: Policy) -> Product {
+            defer { index = self.policy.real(policy).updated(index, with: products.count) }
+            return products[index]
+        }
+
+        static func simpleMethod(willReturn: String..., policy: Policy = .default) -> Given {
+            return Given(method: .isimpleMethod, products: willReturn.map({ Product.return($0) }))
         }
     }
 
@@ -5046,9 +5060,15 @@ class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBothMeth
         invocations.append(call)
     }
 
-    private func methodReturnValue(_ method: MethodType) -> (value: Any?, error: Error?) {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
-        return (value: matched?.returns, error: matched?.`throws`)
+    private func methodReturnValue(_ method: MethodType) throws -> Any? {
+//        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
+//        return (value: matched?.getValue(), error: matched?.`throws`?.first)
+        let matched = methodReturnValues.reversed().first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
+        guard let product = matched?.getProduct(policy: defaultPolicy) else { return nil }
+        switch product {
+        case .return(let value): return value
+        case .throw(let error): throw error
+        }
     }
 
     private func methodPerformValue(_ method: MethodType) -> Any? {

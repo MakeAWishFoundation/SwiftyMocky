@@ -169,6 +169,17 @@ class SimpleProtocolsTests: XCTestCase {
         Verify(mock, .simpleMethod())
         VerifyProperty(mock, .property)
         VerifyProperty(mock, .atLeastOnce, .property(set: .any))
+
+
+        Given(mock, .simpleMethod(willReturn: "a","b","c","d"))
+        XCTAssertEqual(mock.simpleMethod(), "a")
+        XCTAssertEqual(mock.simpleMethod(), "b")
+        XCTAssertEqual(mock.simpleMethod(), "c")
+        XCTAssertEqual(mock.simpleMethod(), "d")
+        XCTAssertEqual(mock.simpleMethod(), "a")
+        XCTAssertEqual(mock.simpleMethod(), "b")
+        XCTAssertEqual(mock.simpleMethod(), "c")
+        XCTAssertEqual(mock.simpleMethod(), "d")
     }
 
 
