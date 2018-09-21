@@ -8,6 +8,42 @@
 
 import Foundation
 
+/// Given Policy for treating sequence of events (products). For wr
+///
+/// - `default`: Use current policy specified for Mock method type
+/// - wrap: Default policy in general. When reaching end of sequence of events, index will rewind to beginning (looping)
+/// - drop: With this policy, every call drops event. When events count reaches zero, given is removed from mock.
+public enum Policy {
+    case `default`  // use mock default policy for method type
+    case wrap       // default
+    case drop
+
+    public func real(_ inherited: Policy) -> Policy {
+        switch (self, inherited) {
+        case (.default, .default): return .wrap // Special case, wrap is always default in general
+        case (.default, _): return inherited    // Use inherited for real policy if self is default
+        default: return self                    // If policy specified, use it instead of inherited
+        }
+    }
+
+    public func updated(_ index: Int, with count: Int) -> Int {
+        switch self {
+        case .wrap: return (index + 1) % count
+        case .drop: return index + 1
+        case .default: fatalError("Should not be here!")
+        }
+    }
+}
+
+/// Possible Given products. Method can (in general) either return or throw an error
+///
+/// - `return`: Return value
+/// - `throw`: Thrown error value
+public enum Product {
+    case `return`(Any)
+    case `throw`(Error)
+}
+
 /// Every generated mock implementation adopts **Mock** protocol.
 /// It defines base Mock structure and features.
 public protocol Mock: class {
