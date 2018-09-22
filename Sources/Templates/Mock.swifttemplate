@@ -412,32 +412,38 @@ import SourceryRuntime
             guard !method.isInitializer else { return "" }
             guard method.throws || !method.returnTypeName.isVoid else { return "" }
 
-            if method.parameters.isEmpty {
-                return "\n\t\tlet givenValue: (value: Any?, error: Error?) = methodReturnValue(.\(prototype))"
-            } else {
-                return "\n\t\tlet givenValue: (value: Any?, error: Error?) = methodReturnValue(.\(prototype)(\(parametersForMethodCall())))"
-            }
+            let methodType = method.parameters.isEmpty ? ".\(prototype)" : ".\(prototype)(\(parametersForMethodCall()))"
+            let returnType: String = returnsSelf ? "__Self__" : "\(TypeWrapper(method.returnTypeName).stripped)"
+
+            return
+            """
+            \n\t\tvar __value: \(returnType)
+            \t\tdo {
+            \t\t    __value = try methodReturnValue(\(methodType)).casted()
+            \t\t}\(" ")
+            """
         }
         var throwValue: String {
-            guard !method.isInitializer, method.throws else { return "" }
+            guard !method.isInitializer else { return "" }
+            guard method.throws || !method.returnTypeName.isVoid else { return "" }
+            let message = "stub return value not specified for \(method.name). Use given"
+            let noStubHandling = method.returnTypeName.isVoid ? "// do nothing" : "Failure(\"\(message)\")"
+            guard method.throws else {
+                return "catch {\n\t\t\tFailure(\"\(message)\")\n\t\t}\n"
+            }
 
-            return "\n\t\tif let error = givenValue.error { throw error }"
+            return """
+            catch MockError.notStubed {
+            \t\t    \(noStubHandling)
+            \t\t} catch {
+            \t\t    throw error
+            \t\t}
+            """
         }
         var returnValue: String {
             guard !method.isInitializer else { return "" }
             guard !method.returnTypeName.isVoid else { return "" }
-
-            let message = "stub return value not specified for \(method.name). Use given"
-            let returnType: String = {
-                if returnsSelf {
-                    return "__Self__"
-                } else {
-                    return "\(TypeWrapper(method.returnTypeName).stripped)"
-                }
-            }()
-
-            return "\n\t\tlet value = givenValue.value as? \(returnType)\n" +
-            "\t\treturn value.orFail(\"\(message)\")"
+            return "\n\t\treturn __value"
         }
         var equalCase: String {
             guard !method.isInitializer else { return "" }
@@ -567,40 +573,84 @@ import SourceryRuntime
 
         // Given
         func givenConstructorName(prefix: String = "") -> String {
-            var returnTypeString = returnsSelf ? replaceSelf : TypeWrapper(method.returnTypeName).stripped
-            if method.returnTypeName.isClosure {
-                returnTypeString = "@escaping \(returnTypeString)"
-            }
+            let returnTypeString = returnsSelf ? replaceSelf : TypeWrapper(method.returnTypeName).stripped
 
             if method.parameters.isEmpty {
-                return "static func \(method.shortName)(willReturn: \(returnTypeString)) -> \(prefix)Given"
+                return "static func \(method.shortName)(willReturn: \(returnTypeString)...) -> \(prefix)Given"
             } else {
-                return "static func \(method.shortName)(\(parametersForProxySignature()), willReturn: \(returnTypeString)) -> \(prefix)Given"
+                return "static func \(method.shortName)(\(parametersForProxySignature()), willReturn: \(returnTypeString)...) -> \(prefix)Given"
             }
         }
 
         func givenConstructorNameThrows(prefix: String = "") -> String {
             if method.parameters.isEmpty {
-                return "static func \(method.shortName)(willThrow: Error) -> \(prefix)Given"
+                return "static func \(method.shortName)(willThrow: Error...) -> \(prefix)Given"
             } else {
-                return "static func \(method.shortName)(\(parametersForProxySignature()), willThrow: Error) -> \(prefix)Given"
+                return "static func \(method.shortName)(\(parametersForProxySignature()), willThrow: Error...) -> \(prefix)Given"
             }
         }
 
         func givenConstructor(prefix: String = "") -> String {
             if method.parameters.isEmpty {
-                return "return \(prefix)Given(method: .\(prototype), returns: willReturn, throws: nil)"
+                return "return \(prefix)Given(method: .\(prototype), products: willReturn.map({ Product.return($0) }))"
             } else {
-                return "return \(prefix)Given(method: .\(prototype)(\(parametersForProxyInit())), returns: willReturn, throws: nil)"
+                return "return \(prefix)Given(method: .\(prototype)(\(parametersForProxyInit())), products: willReturn.map({ Product.return($0) }))"
             }
         }
 
         func givenConstructorThrows(prefix: String = "") -> String {
             if method.parameters.isEmpty {
-                return "return \(prefix)Given(method: .\(prototype), returns: nil, throws: willThrow)"
+                return "return \(prefix)Given(method: .\(prototype), products: willThrow.map({ Product.throw($0) }))"
             } else {
-                return "return \(prefix)Given(method: .\(prototype)(\(parametersForProxyInit())), returns: nil, throws: willThrow)"
+                return "return \(prefix)Given(method: .\(prototype)(\(parametersForProxyInit())), products: willThrow.map({ Product.throw($0) }))"
             }
+        }
+
+        // Given willProduce
+        func givenProduceConstructorName(prefix: String = "") -> String {
+            let returnTypeString = returnsSelf ? replaceSelf : TypeWrapper(method.returnTypeName).stripped
+            let produceClosure = "(Stubber<\(returnTypeString)>) -> Void"
+
+            if method.parameters.isEmpty {
+                return "static func \(method.shortName)(willProduce: \(produceClosure)) -> \(prefix)Given"
+            } else {
+                return "static func \(method.shortName)(\(parametersForProxySignature()), willProduce: \(produceClosure)) -> \(prefix)Given"
+            }
+        }
+
+        func givenProduceConstructorNameThrows(prefix: String = "") -> String {
+            let returnTypeString = returnsSelf ? replaceSelf : TypeWrapper(method.returnTypeName).stripped
+            let produceClosure = "(StubberThrows<\(returnTypeString)>) -> Void"
+
+            if method.parameters.isEmpty {
+                return "static func \(method.shortName)(willProduce: \(produceClosure)) -> \(prefix)Given"
+            } else {
+                return "static func \(method.shortName)(\(parametersForProxySignature()), willProduce: \(produceClosure)) -> \(prefix)Given"
+            }
+        }
+
+        func givenProduceConstructor(prefix: String = "") -> String {
+            let returnTypeString = returnsSelf ? replaceSelf : TypeWrapper(method.returnTypeName).stripped
+            return
+            """
+            let willReturn: [\(returnTypeString)] = []
+            \t\t\tlet given: \(prefix)Given = { \(givenConstructor(prefix: prefix)) }()
+            \t\t\tlet stubber = given.stub(for: (\(returnTypeString)).self)
+            \t\t\twillProduce(stubber)
+            \t\t\treturn given
+            """
+        }
+
+        func givenProduceConstructorThrows(prefix: String = "") -> String {
+            let returnTypeString = returnsSelf ? replaceSelf : TypeWrapper(method.returnTypeName).stripped
+            return
+            """
+            let willThrow: [Error] = []
+            \t\t\tlet given: \(prefix)Given = { \(givenConstructorThrows(prefix: prefix)) }()
+            \t\t\tlet stubber = given.stubThrows(for: (\(returnTypeString)).self)
+            \t\t\twillProduce(stubber)
+            \t\t\treturn given
+            """
         }
 
         // Verify
@@ -946,23 +996,33 @@ import SourceryRuntime
 <%_ if autoMockable { -%>
 // MARK: - <%= type.name %>
 class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["ObjcProtocol"] != nil ? " NSObject," : "" %> <%= type.name %>, Mock<%= conformsToStaticMock ? ", StaticMock" : "" %><%= genericTypesConstraints %> {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap) {
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+    }
+
 <%_ } else { -%>
 // sourcery:inline:auto:<%= type.name %>.autoMocked
 <%_ } -%>
 <%# ================================================== MAIN CLASS -%><%_ -%>
   <%# ================================================== MOCK INTERNALS -%><%_ -%>
     <%_ %><%= genericTypesTypealiases -%>
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
-    var matcher: Matcher = Matcher.default
+
     <%_ -%>
   <%# ================================================== STATIC MOCK INTERNALS -%><%_ -%>
     <%_ if conformsToStaticMock { -%>
+    static var matcher: Matcher = Matcher.default
+    static var stubbingPolicy: StubbingPolicy = .wrap
+    static var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
     static private var invocations: [StaticMethodType] = []
     static private var methodReturnValues: [StaticGiven] = []
     static private var methodPerformValues: [StaticPerform] = []
-    static var matcher: Matcher = Matcher.default
     static func clear() {
         invocations = []
         methodReturnValues = []
@@ -1068,15 +1128,12 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         }
     }
 
-    struct StaticGiven {
+    class StaticGiven: StubbedMethod {
         fileprivate var method: StaticMethodType
-        var returns: Any?
-        var `throws`: Error?
 
-        private init(method: StaticMethodType, returns: Any?, throws: Error?) {
+        private init(method: StaticMethodType, products: [Product]) {
             self.method = method
-            self.returns = returns
-            self.`throws` = `throws`
+            super.init(products)
         }
 
         <%_ for method in wrappedStaticMethodsForMethodType.filter({ !$0.method.returnTypeName.isVoid && !$0.method.isInitializer }) { -%>
@@ -1084,9 +1141,17 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
             <%= method.givenConstructor(prefix: "Static") _%>
         }
         <%_ } -%>
+        <%_ for method in wrappedStaticMethodsForMethodType.filter({ !$0.method.throws && !$0.method.rethrows && !$0.method.returnTypeName.isVoid && !$0.method.isInitializer }) { -%>
+        <%= method.givenProduceConstructorName(prefix: "Static") -%> {
+            <%= method.givenProduceConstructor(prefix: "Static") _%>
+        }
+        <%_ } -%>
         <%_ for method in wrappedStaticMethodsForMethodType.filter({ ($0.method.throws || $0.method.rethrows) && !$0.method.isInitializer }) { -%>
         <%= method.givenConstructorNameThrows(prefix: "Static") -%> {
             <%= method.givenConstructorThrows(prefix: "Static") _%>
+        }
+        <%= method.givenProduceConstructorNameThrows(prefix: "Static") -%> {
+            <%= method.givenProduceConstructorThrows(prefix: "Static") _%>
         }
         <%_  } %> <%_ -%>
     }
@@ -1153,15 +1218,12 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
     }
     <%_ } -%><%_ -%>
 
-    struct Given {
+    class Given: StubbedMethod {
         fileprivate var method: MethodType
-        var returns: Any?
-        var `throws`: Error?
 
-        private init(method: MethodType, returns: Any?, throws: Error?) {
+        private init(method: MethodType, products: [Product]) {
             self.method = method
-            self.returns = returns
-            self.`throws` = `throws`
+            super.init(products)
         }
 
         <%_ for method in wrappedMethodsForMethodType.filter({ !$0.method.returnTypeName.isVoid && !$0.method.isInitializer }) { -%>
@@ -1169,9 +1231,17 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
             <%= method.givenConstructor() _%>
         }
         <%_ } -%>
+        <%_ for method in wrappedMethodsForMethodType.filter({ !$0.method.throws && !$0.method.rethrows && !$0.method.returnTypeName.isVoid && !$0.method.isInitializer }) { -%>
+        <%= method.givenProduceConstructorName() -%> {
+            <%= method.givenProduceConstructor() _%>
+        }
+        <%_ } -%>
         <%_ for method in wrappedMethodsForMethodType.filter({ ($0.method.throws || $0.method.rethrows) && !$0.method.isInitializer }) { -%>
         <%= method.givenConstructorNameThrows() -%> {
             <%= method.givenConstructorThrows() _%>
+        }
+        <%= method.givenProduceConstructorNameThrows() -%> {
+            <%= method.givenProduceConstructorThrows() _%>
         }
         <%_  } %> <%_ -%>
     }
@@ -1204,7 +1274,6 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
 
     public func given(_ method: Given) {
         methodReturnValues.append(method)
-        methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
     public func perform(_ method: Perform) {
@@ -1230,9 +1299,11 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         invocations.append(call)
     }
 
-    private func methodReturnValue(_ method: MethodType) -> (value: Any?, error: Error?) {
-        let matched = methodReturnValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
-        return (value: matched?.returns, error: matched?.`throws`)
+    private func methodReturnValue(_ method: MethodType) throws -> Product {
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
     }
 
     private func methodPerformValue(_ method: MethodType) -> Any? {
@@ -1252,7 +1323,6 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
 
     static public func given(_ method: StaticGiven) {
         methodReturnValues.append(method)
-        methodReturnValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
     static public func perform(_ method: StaticPerform) {
@@ -1278,9 +1348,11 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         invocations.append(call)
     }
 
-    static private func methodReturnValue(_ method: StaticMethodType) -> (value: Any?, error: Error?) {
-        let matched = methodReturnValues.reversed().first { StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher)  }
-        return (value: matched?.returns, error: matched?.`throws`)
+    static private func methodReturnValue(_ method: StaticMethodType) throws -> Product {
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
     }
 
     static private func methodPerformValue(_ method: StaticMethodType) -> Any? {

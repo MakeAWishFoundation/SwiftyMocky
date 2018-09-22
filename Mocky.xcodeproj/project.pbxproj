@@ -77,6 +77,11 @@
 		CC5B61E41FCC18D0007FB209 /* ExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE351321FCC0B8200A76C4C /* ExampleTests.swift */; };
 		CC5B61E51FCC18D0007FB209 /* SampleServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE351301FCC0B8200A76C4C /* SampleServiceTests.swift */; };
 		CC5B61E61FCC18D0007FB209 /* ComplicatedServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE351311FCC0B8200A76C4C /* ComplicatedServiceTests.swift */; };
+		CCA9F816215668D800F2880B /* Stubbing.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA9F815215668D800F2880B /* Stubbing.swift */; };
+		CCA9F818215668DF00F2880B /* Policies.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA9F817215668DF00F2880B /* Policies.swift */; };
+		CCA9F81B21566B1300F2880B /* SimpleSequencingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA9F81921566AC500F2880B /* SimpleSequencingTests.swift */; };
+		CCA9F81C21566B1400F2880B /* SimpleSequencingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA9F81921566AC500F2880B /* SimpleSequencingTests.swift */; };
+		CCA9F81D21566B1500F2880B /* SimpleSequencingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA9F81921566AC500F2880B /* SimpleSequencingTests.swift */; };
 		CCAFC9F31FAF244D003F776A /* SwiftyMocky.h in Headers */ = {isa = PBXBuildFile; fileRef = CCAFC9F11FAF244D003F776A /* SwiftyMocky.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CCAFCA021FAF24EB003F776A /* Parameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAFC9FA1FAF24EB003F776A /* Parameter.swift */; };
 		CCAFCA041FAF24EB003F776A /* Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAFC9FC1FAF24EB003F776A /* Mock.swift */; };
@@ -84,6 +89,10 @@
 		CCAFCA061FAF24EB003F776A /* Mock+Assertions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAFC9FE1FAF24EB003F776A /* Mock+Assertions.swift */; };
 		CCB026A81FB4F39000ACA9F0 /* GenericAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB026A71FB4F38F00ACA9F0 /* GenericAttribute.swift */; };
 		CCBB91441FAF7D0F00B1D671 /* Mock.swifttemplate in Resources */ = {isa = PBXBuildFile; fileRef = CCAFC9F81FAF24EA003F776A /* Mock.swifttemplate */; };
+		CCDD4B232156C0A4002555AE /* XCTAssert+Override.swifttemplate in Resources */ = {isa = PBXBuildFile; fileRef = CCDD4B222156C0A4002555AE /* XCTAssert+Override.swifttemplate */; };
+		CCDD4B252156C0EB002555AE /* XCTAssert+Override.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCDD4B242156C0EB002555AE /* XCTAssert+Override.generated.swift */; };
+		CCDD4B272156C102002555AE /* XCTAssert+Override.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCDD4B262156C102002555AE /* XCTAssert+Override.generated.swift */; };
+		CCDD4B292156C10E002555AE /* XCTAssert+Override.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCDD4B282156C10E002555AE /* XCTAssert+Override.generated.swift */; };
 		CCE350E91FCC0A9400A76C4C /* NonSwiftProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE350D21FCC0A9400A76C4C /* NonSwiftProtocol.swift */; };
 		CCE350EA1FCC0A9400A76C4C /* NonSwiftProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE350D21FCC0A9400A76C4C /* NonSwiftProtocol.swift */; };
 		CCE350EB1FCC0A9400A76C4C /* ExampleProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE350D31FCC0A9400A76C4C /* ExampleProtocols.swift */; };
@@ -221,6 +230,9 @@
 		CC5B61C51FCC178F007FB209 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CC5B61C91FCC188D007FB209 /* Mock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mock.generated.swift; sourceTree = "<group>"; };
 		CC5B61CA1FCC188D007FB209 /* ItemsRepositoryMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemsRepositoryMock.swift; sourceTree = "<group>"; };
+		CCA9F815215668D800F2880B /* Stubbing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stubbing.swift; sourceTree = "<group>"; };
+		CCA9F817215668DF00F2880B /* Policies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Policies.swift; sourceTree = "<group>"; };
+		CCA9F81921566AC500F2880B /* SimpleSequencingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleSequencingTests.swift; sourceTree = "<group>"; };
 		CCAFC9EF1FAF244D003F776A /* SwiftyMocky.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyMocky.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCAFC9F11FAF244D003F776A /* SwiftyMocky.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftyMocky.h; sourceTree = "<group>"; };
 		CCAFC9F21FAF244D003F776A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -230,6 +242,10 @@
 		CCAFC9FD1FAF24EB003F776A /* Matcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matcher.swift; sourceTree = "<group>"; };
 		CCAFC9FE1FAF24EB003F776A /* Mock+Assertions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Mock+Assertions.swift"; sourceTree = "<group>"; };
 		CCB026A71FB4F38F00ACA9F0 /* GenericAttribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericAttribute.swift; sourceTree = "<group>"; };
+		CCDD4B222156C0A4002555AE /* XCTAssert+Override.swifttemplate */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "XCTAssert+Override.swifttemplate"; sourceTree = "<group>"; };
+		CCDD4B242156C0EB002555AE /* XCTAssert+Override.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTAssert+Override.generated.swift"; sourceTree = "<group>"; };
+		CCDD4B262156C102002555AE /* XCTAssert+Override.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTAssert+Override.generated.swift"; sourceTree = "<group>"; };
+		CCDD4B282156C10E002555AE /* XCTAssert+Override.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTAssert+Override.generated.swift"; sourceTree = "<group>"; };
 		CCE350D21FCC0A9400A76C4C /* NonSwiftProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NonSwiftProtocol.swift; sourceTree = "<group>"; };
 		CCE350D31FCC0A9400A76C4C /* ExampleProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleProtocols.swift; sourceTree = "<group>"; };
 		CCE350D41FCC0A9400A76C4C /* ItemsRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemsRepository.swift; sourceTree = "<group>"; };
@@ -480,6 +496,7 @@
 		CC5B61C81FCC188D007FB209 /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
+				CCDD4B242156C0EB002555AE /* XCTAssert+Override.generated.swift */,
 				CC5B61C91FCC188D007FB209 /* Mock.generated.swift */,
 				CC5B61CA1FCC188D007FB209 /* ItemsRepositoryMock.swift */,
 			);
@@ -501,6 +518,7 @@
 		CCAFC9F71FAF24EA003F776A /* Templates */ = {
 			isa = PBXGroup;
 			children = (
+				CCDD4B222156C0A4002555AE /* XCTAssert+Override.swifttemplate */,
 				CCAFC9F81FAF24EA003F776A /* Mock.swifttemplate */,
 			);
 			name = Templates;
@@ -510,6 +528,8 @@
 		CCAFC9F91FAF24EB003F776A /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				CCA9F815215668D800F2880B /* Stubbing.swift */,
+				CCA9F817215668DF00F2880B /* Policies.swift */,
 				CCAFC9FC1FAF24EB003F776A /* Mock.swift */,
 				CCAFC9FE1FAF24EB003F776A /* Mock+Assertions.swift */,
 				CCAFC9FA1FAF24EB003F776A /* Parameter.swift */,
@@ -680,6 +700,7 @@
 				CC32521A2004C217009AD6C2 /* GenericProtocolsTests.swift */,
 				CC32522220061574009AD6C2 /* SelfConstrainedProtocolTests.swift */,
 				C87B4F812153EF0700DD8AE3 /* ExpressibleByLiteralsTests.swift */,
+				CCA9F81921566AC500F2880B /* SimpleSequencingTests.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -753,6 +774,7 @@
 		CCE351591FCC0B8F00A76C4C /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
+				CCDD4B282156C10E002555AE /* XCTAssert+Override.generated.swift */,
 				CCE3515A1FCC0B8F00A76C4C /* Mock.generated.swift */,
 				CCE3515B1FCC0B8F00A76C4C /* ItemsRepositoryMock.swift */,
 			);
@@ -772,6 +794,7 @@
 		CCE351611FCC0B9700A76C4C /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
+				CCDD4B262156C102002555AE /* XCTAssert+Override.generated.swift */,
 				CCE351621FCC0B9700A76C4C /* Mock.generated.swift */,
 				CCE351631FCC0B9700A76C4C /* ItemsRepositoryMock.swift */,
 			);
@@ -1052,6 +1075,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CCDD4B232156C0A4002555AE /* XCTAssert+Override.swifttemplate in Resources */,
 				CCBB91441FAF7D0F00B1D671 /* Mock.swifttemplate in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1274,6 +1298,8 @@
 				CC32522420061574009AD6C2 /* SelfConstrainedProtocolTests.swift in Sources */,
 				C87B4F832153EF0700DD8AE3 /* ExpressibleByLiteralsTests.swift in Sources */,
 				CCE351671FCC0B9700A76C4C /* ItemsRepositoryMock.swift in Sources */,
+				CCDD4B272156C102002555AE /* XCTAssert+Override.generated.swift in Sources */,
+				CCA9F81C21566B1400F2880B /* SimpleSequencingTests.swift in Sources */,
 				CCE351491FCC0B8200A76C4C /* ProtocolsWithGenericsTests.swift in Sources */,
 				CCE351471FCC0B8200A76C4C /* ExampleTests.swift in Sources */,
 			);
@@ -1315,8 +1341,10 @@
 				CCE3514E1FCC0B8200A76C4C /* SimpleProtocolsTests.swift in Sources */,
 				CCE351421FCC0B8200A76C4C /* SampleServiceTests.swift in Sources */,
 				CCE351561FCC0B8200A76C4C /* ProtocolWithClosuresTests.swift in Sources */,
+				CCA9F81B21566B1300F2880B /* SimpleSequencingTests.swift in Sources */,
 				CC07B60820221B6700F51534 /* ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift in Sources */,
 				CCE351521FCC0B8200A76C4C /* ProtocolsWithCustomAttributesTests.swift in Sources */,
+				CCDD4B292156C10E002555AE /* XCTAssert+Override.generated.swift in Sources */,
 				CC491A251FDAB587001CAB8A /* ProtocolWithPropertiesTests.swift in Sources */,
 				CCE3514A1FCC0B8200A76C4C /* ProtocolWithInitializersTests.swift in Sources */,
 				CCE351541FCC0B8200A76C4C /* ProtocolWithThrowingMehtodsTests.swift in Sources */,
@@ -1383,6 +1411,8 @@
 				CC32522520061574009AD6C2 /* SelfConstrainedProtocolTests.swift in Sources */,
 				C87B4F842153EF0700DD8AE3 /* ExpressibleByLiteralsTests.swift in Sources */,
 				CC5B61DF1FCC18D0007FB209 /* ProtocolsWithCustomAttributesTests.swift in Sources */,
+				CCDD4B252156C0EB002555AE /* XCTAssert+Override.generated.swift in Sources */,
+				CCA9F81D21566B1500F2880B /* SimpleSequencingTests.swift in Sources */,
 				CC5B61DC1FCC18D0007FB209 /* SimpleProtocolsTests.swift in Sources */,
 				CC5B61E31FCC18D0007FB209 /* ProtocolsWithGenericsTests.swift in Sources */,
 			);
@@ -1399,6 +1429,8 @@
 				CCAFCA041FAF24EB003F776A /* Mock.swift in Sources */,
 				CCB026A81FB4F39000ACA9F0 /* GenericAttribute.swift in Sources */,
 				C841941E2153D7E700D2BBC9 /* Parameter+Literals.swift in Sources */,
+				CCA9F818215668DF00F2880B /* Policies.swift in Sources */,
+				CCA9F816215668D800F2880B /* Stubbing.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

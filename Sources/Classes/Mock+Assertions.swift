@@ -124,8 +124,8 @@ public func VerifyProperty<T: StaticMock>(_ type: T.Type, _ count: Count, _ prop
 /// - Parameters:
 ///   - object: Mock instance
 ///   - method: Method signature with wrapped parameters (Parameter<ValueType>) and return value
-public func Given<T: Mock>(_ object: T, _ method: T.Given) {
-    object.given(method)
+public func Given<T: Mock>(_ object: T, _ method: T.Given, _ policy: StubbingPolicy = .default) {
+    object.given(policy.apply(to: method))
 }
 
 /// Setup return value for static method stubs on mock type. When this static method will be called, it
@@ -142,8 +142,8 @@ public func Given<T: Mock>(_ object: T, _ method: T.Given) {
 /// - Parameters:
 ///   - object: Mock type
 ///   - method: Static method signature with wrapped parameters (Parameter<ValueType>) and return value
-public func Given<T: StaticMock>(_ type: T.Type, _ method: T.StaticGiven) {
-    type.given(method)
+public func Given<T: StaticMock>(_ type: T.Type, _ method: T.StaticGiven, _ policy: StubbingPolicy = .default) {
+    type.given(policy.apply(to: method))
 }
 
 // MARK: - Perform
@@ -203,5 +203,11 @@ public extension Optional {
     /// - Returns: Unwrapped value
     public func orFail(_ message: String = "unwrapping nil") -> Wrapped {
         return self ?? { Failure(message) }()
+    }
+}
+
+private extension StubbingPolicy {
+    func apply<T>(to method: T) -> T {
+        return ((method as? WithStubbingPolicy)?.with(self) as? T) ?? method
     }
 }
