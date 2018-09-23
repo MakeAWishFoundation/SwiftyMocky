@@ -3,7 +3,7 @@
 //  SwiftyMocky
 //
 //  Created by Andrzej Michnia on 22.09.2018.
-//  Copyright © 2018 CocoaPods. All rights reserved.
+//  Copyright © 2018 MakeAWishFoundation. All rights reserved.
 //
 
 import XCTest
@@ -16,7 +16,7 @@ import SwiftyMocky
 @testable import Mocky_Example_macOS
 #endif
 
-class SimpleSequencingTests: XCTestCase {
+class SimpleSequencingTests: SwiftyTestCase {
     override func setUp() {
         super.setUp()
     }
@@ -100,7 +100,7 @@ class SimpleSequencingTests: XCTestCase {
 
         XCTAssertThrowsError(try mock.methodThatReturnsAndThrows(param: 0), error: TestError.first)
         XCTAssertThrowsError(try mock.methodThatReturnsAndThrows(param: 0), error: TestError.second)
-        XCTAssertThrowsError(try mock.methodThatReturnsAndThrows(param: 0), error: TestError.third)
+        self.XCTAssertThrowsError(try mock.methodThatReturnsAndThrows(param: 0), error: TestError.third)
         XCTAssertNoThrow(try mock.methodThatReturnsAndThrows(param: 0))
         XCTAssertNoThrow(try mock.methodThatReturnsAndThrows(param: 0))
         XCTAssertNoThrow(try mock.methodThatReturnsAndThrows(param: 0))

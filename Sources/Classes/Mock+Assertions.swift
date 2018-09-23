@@ -192,8 +192,30 @@ public func Perform<T: StaticMock>(_ object: T.Type, _ method: T.StaticPerform) 
 /// - Returns: Never
 public func Failure(_ message: String) -> Swift.Never {
     let errorMessage = "[FATAL] \(message)!"
-    print(errorMessage)
-    fatalError(errorMessage)
+    FatalErrorUtil.fatalError(errorMessage)
+}
+
+public struct FatalErrorUtil {
+    private static var handler: (String) -> Never = {
+        print($0)
+        Swift.fatalError($0)
+    }
+    private static var defalutHandler: (String) -> Never = {
+        print($0)
+        Swift.fatalError($0)
+    }
+
+    public static func set(_ new: @escaping (String) -> Never) {
+        handler = new
+    }
+
+    public static func restore() {
+        handler = defalutHandler
+    }
+
+    public static func fatalError(_ message: String) -> Never {
+        handler(message)
+    }
 }
 
 public extension Optional {

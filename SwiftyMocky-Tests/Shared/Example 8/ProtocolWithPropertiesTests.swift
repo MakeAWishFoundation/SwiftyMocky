@@ -3,7 +3,7 @@
 //  SwiftyMocky
 //
 //  Created by Andrzej Michnia on 08.12.2017.
-//  Copyright © 2017 CocoaPods. All rights reserved.
+//  Copyright © 2017 MakeAWishFoundation. All rights reserved.
 //
 
 import XCTest
@@ -16,7 +16,7 @@ import SwiftyMocky
     @testable import Mocky_Example_macOS
 #endif
 
-class ProtocolsWithPropertiesTests: XCTestCase {
+class ProtocolsWithPropertiesTests: SwiftyTestCase {
     func test_properties_getters() {
         let mock = ProtocolWithPropoertiesMock()
 

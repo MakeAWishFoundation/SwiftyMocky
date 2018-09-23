@@ -3,7 +3,7 @@
 //  SwiftyMocky
 //
 //  Created by Andrzej Michnia on 07.12.2017.
-//  Copyright © 2017 CocoaPods. All rights reserved.
+//  Copyright © 2017 MakeAWishFoundation. All rights reserved.
 //
 
 import Foundation

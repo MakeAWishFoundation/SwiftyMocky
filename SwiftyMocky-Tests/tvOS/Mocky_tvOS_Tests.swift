@@ -3,12 +3,13 @@
 //  Mocky_tvOS_Tests
 //
 //  Created by Siarhei Fedartsou on 11/20/17.
-//  Copyright © 2017 CocoaPods. All rights reserved.
+//  Copyright © 2017 MakeAWishFoundation. All rights reserved.
 //
 
 import XCTest
+import SwiftyMocky
 
-class Mocky_tvOS_Tests: XCTestCase {
+class Mocky_tvOS_Tests: SwiftyTestCase {
     
     override func setUp() {
         super.setUp()

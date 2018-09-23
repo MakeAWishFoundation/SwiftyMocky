@@ -3,7 +3,7 @@
 //  Mocky_Tests
 //
 //  Created by Andrzej Michnia on 16.11.2017.
-//  Copyright © 2017 CocoaPods. All rights reserved.
+//  Copyright © 2017 MakeAWishFoundation. All rights reserved.
 //
 
 import XCTest
@@ -16,7 +16,7 @@ import SwiftyMocky
     @testable import Mocky_Example_macOS
 #endif
 
-class ProtocolsWithCollectionsTests: XCTestCase {
+class ProtocolsWithCollectionsTests: SwiftyTestCase {
     func test_protocol_with_array() {
         let mock = SimpleProtocolUsingCollectionsMock()
 
