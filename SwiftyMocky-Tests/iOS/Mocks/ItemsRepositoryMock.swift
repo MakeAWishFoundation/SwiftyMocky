@@ -20,6 +20,16 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
 
 
 
@@ -46,9 +56,9 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
 		do {
 		    __value = try methodReturnValue(.istoredItems).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for storedItems(). Use given")
 			Failure("stub return value not specified for storedItems(). Use given")
 		}
-
 		return __value
     }
 
@@ -60,9 +70,9 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
 		do {
 		    __value = try methodReturnValue(.istoredDetails__item_item(Parameter<Item>.value(item))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for storedDetails(item: Item). Use given")
 			Failure("stub return value not specified for storedDetails(item: Item). Use given")
 		}
-
 		return __value
     }
 

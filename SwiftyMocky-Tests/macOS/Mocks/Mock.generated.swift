@@ -38,9 +38,11 @@ import SourceryRuntime
 
 // MARK: - AMassiveTestProtocol
 class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
-    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap) {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
     }
 
     var matcher: Matcher = Matcher.default
@@ -49,6 +51,16 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
 
     static var matcher: Matcher = Matcher.default
     static var stubbingPolicy: StubbingPolicy = .wrap
@@ -115,7 +127,7 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
 		do {
 		    __value = try methodReturnValue(.smethodThatThrows).casted()
 		} catch MockError.notStubed {
-		    // do nothing
+			// do nothing
 		} catch {
 		    throw error
 		}
@@ -129,7 +141,7 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
 		do {
 		    __value = try methodReturnValue(.smethodThatReturnsAndThrows__param_param(Parameter<String>.value(param))).casted()
 		} catch MockError.notStubed {
-		    Failure("stub return value not specified for methodThatReturnsAndThrows(param: String). Use given")
+			Failure("stub return value not specified for methodThatReturnsAndThrows(param: String). Use given")
 		} catch {
 		    throw error
 		}
@@ -146,7 +158,6 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
 		} catch {
 			Failure("stub return value not specified for methodThatRethrows(param: (String) throws -> Int). Use given")
 		}
-
 		return __value
     }
 
@@ -162,7 +173,7 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
 		do {
 		    __value = try methodReturnValue(.imethodThatThrows).casted()
 		} catch MockError.notStubed {
-		    // do nothing
+			// do nothing
 		} catch {
 		    throw error
 		}
@@ -176,7 +187,8 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
 		do {
 		    __value = try methodReturnValue(.imethodThatReturnsAndThrows__param_param(Parameter<String>.value(param))).casted()
 		} catch MockError.notStubed {
-		    Failure("stub return value not specified for methodThatReturnsAndThrows(param: String). Use given")
+			onFatalFailure("stub return value not specified for methodThatReturnsAndThrows(param: String). Use given")
+			Failure("stub return value not specified for methodThatReturnsAndThrows(param: String). Use given")
 		} catch {
 		    throw error
 		}
@@ -191,9 +203,9 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
 		do {
 		    __value = try methodReturnValue(.imethodThatRethrows__param_param(Parameter<(String) throws -> Int>.any)).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for methodThatRethrows(param: (String) throws -> Int). Use given")
 			Failure("stub return value not specified for methodThatRethrows(param: (String) throws -> Int). Use given")
 		}
-
 		return __value
     }
 
@@ -517,9 +529,11 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
 
 // MARK: - AVeryAssociatedProtocol
 class AVeryAssociatedProtocolMock<TypeT1,TypeT2>: AVeryAssociatedProtocol, Mock where TypeT1: Sequence, TypeT2: Comparable, TypeT2: EmptyProtocol {
-    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap) {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
     }
 
 
@@ -532,6 +546,16 @@ class AVeryAssociatedProtocolMock<TypeT1,TypeT2>: AVeryAssociatedProtocol, Mock 
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
 
 
 
@@ -546,9 +570,9 @@ class AVeryAssociatedProtocolMock<TypeT1,TypeT2>: AVeryAssociatedProtocol, Mock 
 		do {
 		    __value = try methodReturnValue(.ifetch__for_value(Parameter<T2>.value(value))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for fetch(for value: T2). Use given")
 			Failure("stub return value not specified for fetch(for value: T2). Use given")
 		}
-
 		return __value
     }
 
@@ -649,9 +673,11 @@ class AVeryAssociatedProtocolMock<TypeT1,TypeT2>: AVeryAssociatedProtocol, Mock 
 
 // MARK: - AVeryGenericProtocol
 class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
-    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap) {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
     }
 
     var matcher: Matcher = Matcher.default
@@ -660,6 +686,16 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
 
     static var matcher: Matcher = Matcher.default
     static var stubbingPolicy: StubbingPolicy = .wrap
@@ -688,7 +724,6 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
 		} catch {
 			Failure("stub return value not specified for generic<Q>(lhs: Q, rhs: Q). Use given")
 		}
-
 		return __value
     }
 
@@ -702,7 +737,6 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
 		} catch {
 			Failure("stub return value not specified for veryConstrained<Q: Sequence>(lhs: Q, rhs: Q). Use given")
 		}
-
 		return __value
     }
 
@@ -716,9 +750,9 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
 		do {
 		    __value = try methodReturnValue(.imethodConstrained__param_param(Parameter<A>.value(param).wrapAsGeneric())).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for methodConstrained<A,B,C>(param: A). Use given")
 			Failure("stub return value not specified for methodConstrained<A,B,C>(param: A). Use given")
 		}
-
 		return __value
     }
 
@@ -938,9 +972,11 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
 
 // MARK: - AllLiteralsContainer
 class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
-    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap) {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
     }
 
     var matcher: Matcher = Matcher.default
@@ -949,6 +985,16 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
 
 
 
@@ -963,9 +1009,9 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
 		do {
 		    __value = try methodReturnValue(.imethodWithStringParameter__p_p(Parameter<String>.value(p))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for methodWithStringParameter(p: String). Use given")
 			Failure("stub return value not specified for methodWithStringParameter(p: String). Use given")
 		}
-
 		return __value
     }
 
@@ -977,9 +1023,9 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
 		do {
 		    __value = try methodReturnValue(.imethodWithOtionalStringParameter__p_p(Parameter<String?>.value(p))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for methodWithOtionalStringParameter(p: String?). Use given")
 			Failure("stub return value not specified for methodWithOtionalStringParameter(p: String?). Use given")
 		}
-
 		return __value
     }
 
@@ -991,9 +1037,9 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
 		do {
 		    __value = try methodReturnValue(.imethodWithCustomStringParameter__p_p(Parameter<CustomString>.value(p))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for methodWithCustomStringParameter(p: CustomString). Use given")
 			Failure("stub return value not specified for methodWithCustomStringParameter(p: CustomString). Use given")
 		}
-
 		return __value
     }
 
@@ -1005,9 +1051,9 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
 		do {
 		    __value = try methodReturnValue(.imethodWithCustomOptionalStringParameter__p_p(Parameter<CustomString?>.value(p))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for methodWithCustomOptionalStringParameter(p: CustomString?). Use given")
 			Failure("stub return value not specified for methodWithCustomOptionalStringParameter(p: CustomString?). Use given")
 		}
-
 		return __value
     }
 
@@ -1019,9 +1065,9 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
 		do {
 		    __value = try methodReturnValue(.imethodWithIntParameter__p_p(Parameter<Int>.value(p))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for methodWithIntParameter(p: Int). Use given")
 			Failure("stub return value not specified for methodWithIntParameter(p: Int). Use given")
 		}
-
 		return __value
     }
 
@@ -1033,9 +1079,9 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
 		do {
 		    __value = try methodReturnValue(.imethodWithCustomOptionalIntParameter__p_p(Parameter<CustomInt?>.value(p))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for methodWithCustomOptionalIntParameter(p: CustomInt?). Use given")
 			Failure("stub return value not specified for methodWithCustomOptionalIntParameter(p: CustomInt?). Use given")
 		}
-
 		return __value
     }
 
@@ -1047,9 +1093,9 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
 		do {
 		    __value = try methodReturnValue(.imethodWithBool__p_p(Parameter<Bool?>.value(p))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for methodWithBool(p: Bool?). Use given")
 			Failure("stub return value not specified for methodWithBool(p: Bool?). Use given")
 		}
-
 		return __value
     }
 
@@ -1061,9 +1107,9 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
 		do {
 		    __value = try methodReturnValue(.imethodWithFloat__p_p(Parameter<Float?>.value(p))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for methodWithFloat(p: Float?). Use given")
 			Failure("stub return value not specified for methodWithFloat(p: Float?). Use given")
 		}
-
 		return __value
     }
 
@@ -1075,9 +1121,9 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
 		do {
 		    __value = try methodReturnValue(.imethodWithDouble__p_p(Parameter<Double?>.value(p))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for methodWithDouble(p: Double?). Use given")
 			Failure("stub return value not specified for methodWithDouble(p: Double?). Use given")
 		}
-
 		return __value
     }
 
@@ -1089,9 +1135,9 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
 		do {
 		    __value = try methodReturnValue(.imethodWithArrayOfInt__p_p(Parameter<[Int]>.value(p))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for methodWithArrayOfInt(p: [Int]). Use given")
 			Failure("stub return value not specified for methodWithArrayOfInt(p: [Int]). Use given")
 		}
-
 		return __value
     }
 
@@ -1103,9 +1149,9 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
 		do {
 		    __value = try methodReturnValue(.imethodWithArrayOfOther__p_p(Parameter<[SomeClass]>.value(p))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for methodWithArrayOfOther(p: [SomeClass]). Use given")
 			Failure("stub return value not specified for methodWithArrayOfOther(p: [SomeClass]). Use given")
 		}
-
 		return __value
     }
 
@@ -1117,9 +1163,9 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
 		do {
 		    __value = try methodReturnValue(.imethodWithDict__p_p(Parameter<[String: SomeClass]>.value(p))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for methodWithDict(p: [String: SomeClass]). Use given")
 			Failure("stub return value not specified for methodWithDict(p: [String: SomeClass]). Use given")
 		}
-
 		return __value
     }
 
@@ -1452,9 +1498,11 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
 
 // MARK: - ComplicatedServiceType
 class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
-    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap) {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
     }
 
     var matcher: Matcher = Matcher.default
@@ -1463,6 +1511,16 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
 
 
     var youCouldOnlyGetThis: String { 
@@ -1488,9 +1546,9 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
 		do {
 		    __value = try methodReturnValue(.iserviceName).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for serviceName(). Use given")
 			Failure("stub return value not specified for serviceName(). Use given")
 		}
-
 		return __value
     }
 
@@ -1508,9 +1566,9 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
 		do {
 		    __value = try methodReturnValue(.igetPoint__from_point(Parameter<Point>.value(point))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for getPoint(from point: Point). Use given")
 			Failure("stub return value not specified for getPoint(from point: Point). Use given")
 		}
-
 		return __value
     }
 
@@ -1522,9 +1580,9 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
 		do {
 		    __value = try methodReturnValue(.igetPoint__from_tuple(Parameter<(Float,Float)>.value(tuple))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for getPoint(from tuple: (Float,Float)). Use given")
 			Failure("stub return value not specified for getPoint(from tuple: (Float,Float)). Use given")
 		}
-
 		return __value
     }
 
@@ -1536,9 +1594,9 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
 		do {
 		    __value = try methodReturnValue(.isimilarMethodThatDiffersOnType__value_1(Parameter<Float>.value(value))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for similarMethodThatDiffersOnType(_ value: Float). Use given")
 			Failure("stub return value not specified for similarMethodThatDiffersOnType(_ value: Float). Use given")
 		}
-
 		return __value
     }
 
@@ -1550,9 +1608,9 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
 		do {
 		    __value = try methodReturnValue(.isimilarMethodThatDiffersOnType__value_2(Parameter<Point>.value(value))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for similarMethodThatDiffersOnType(_ value: Point). Use given")
 			Failure("stub return value not specified for similarMethodThatDiffersOnType(_ value: Point). Use given")
 		}
-
 		return __value
     }
 
@@ -1570,9 +1628,9 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
 		do {
 		    __value = try methodReturnValue(.imethodWithClosures__success_function_1(Parameter<LinearFunction>.value(function))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for methodWithClosures(success function: LinearFunction). Use given")
 			Failure("stub return value not specified for methodWithClosures(success function: LinearFunction). Use given")
 		}
-
 		return __value
     }
 
@@ -1584,9 +1642,9 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
 		do {
 		    __value = try methodReturnValue(.imethodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.value(function))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?). Use given")
 			Failure("stub return value not specified for methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?). Use given")
 		}
-
 		return __value
     }
 
@@ -1844,9 +1902,11 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
 
 // MARK: - DateSortable
 class DateSortableMock: DateSortable, Mock {
-    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap) {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
     }
 
     var matcher: Matcher = Matcher.default
@@ -1855,6 +1915,16 @@ class DateSortableMock: DateSortable, Mock {
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
 
 
     var date: Date { 
@@ -1959,9 +2029,11 @@ class DateSortableMock: DateSortable, Mock {
 
 // MARK: - EmptyProtocol
 class EmptyProtocolMock: EmptyProtocol, Mock {
-    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap) {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
     }
 
     var matcher: Matcher = Matcher.default
@@ -1970,6 +2042,16 @@ class EmptyProtocolMock: EmptyProtocol, Mock {
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
 
 
 
@@ -2045,9 +2127,11 @@ class EmptyProtocolMock: EmptyProtocol, Mock {
 
 // MARK: - GenericProtocolWithTypeConstraint
 class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstraint, Mock {
-    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap) {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
     }
 
     var matcher: Matcher = Matcher.default
@@ -2056,6 +2140,16 @@ class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstraint, 
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
 
 
 
@@ -2070,9 +2164,9 @@ class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstraint, 
 		do {
 		    __value = try methodReturnValue(.idecode__typefrom_data(Parameter<T.Type>.value(type).wrapAsGeneric(), Parameter<Data>.value(data))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for decode<T: Decodable>(_ type: T.Type, from data: Data). Use given")
 			Failure("stub return value not specified for decode<T: Decodable>(_ type: T.Type, from data: Data). Use given")
 		}
-
 		return __value
     }
 
@@ -2084,9 +2178,9 @@ class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstraint, 
 		do {
 		    __value = try methodReturnValue(.itest__type(Parameter<FOO.Type>.value(type).wrapAsGeneric())).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for test<FOO>(_ type: FOO.Type). Use given")
 			Failure("stub return value not specified for test<FOO>(_ type: FOO.Type). Use given")
 		}
-
 		return __value
     }
 
@@ -2210,9 +2304,11 @@ class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstraint, 
 
 // MARK: - HistorySectionMapperType
 class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
-    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap) {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
     }
 
     var matcher: Matcher = Matcher.default
@@ -2221,6 +2317,16 @@ class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
 
 
 
@@ -2235,9 +2341,9 @@ class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
 		do {
 		    __value = try methodReturnValue(.imap__items(Parameter<[T]>.value(items).wrapAsGeneric())).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for map<T: DateSortable>(_ items: [T]). Use given")
 			Failure("stub return value not specified for map<T: DateSortable>(_ items: [T]). Use given")
 		}
-
 		return __value
     }
 
@@ -2338,9 +2444,11 @@ class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
 
 // MARK: - NonSwiftProtocol
 class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
-    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap) {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
     }
 
     var matcher: Matcher = Matcher.default
@@ -2349,6 +2457,16 @@ class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
 
 
 
@@ -2464,9 +2582,11 @@ class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
 
 // MARK: - ProtocolMethodsGenericThatDifferOnlyInReturnType
 class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGenericThatDifferOnlyInReturnType, Mock {
-    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap) {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
     }
 
     var matcher: Matcher = Matcher.default
@@ -2475,6 +2595,16 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
 
 
 
@@ -2489,9 +2619,9 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
 		do {
 		    __value = try methodReturnValue(.ifoo__bar_bar_1(Parameter<T>.value(bar).wrapAsGeneric())).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for foo<T>(bar: T). Use given")
 			Failure("stub return value not specified for foo<T>(bar: T). Use given")
 		}
-
 		return __value
     }
 
@@ -2503,9 +2633,9 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
 		do {
 		    __value = try methodReturnValue(.ifoo__bar_bar_2(Parameter<T>.value(bar).wrapAsGeneric())).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for foo<T>(bar: T). Use given")
 			Failure("stub return value not specified for foo<T>(bar: T). Use given")
 		}
-
 		return __value
     }
 
@@ -2517,9 +2647,9 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
 		do {
 		    __value = try methodReturnValue(.ifoo__bar_bar_4(Parameter<T>.value(bar).wrapAsGeneric())).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for foo<T>(bar: T). Use given")
 			Failure("stub return value not specified for foo<T>(bar: T). Use given")
 		}
-
 		return __value
     }
 
@@ -2531,9 +2661,9 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
 		do {
 		    __value = try methodReturnValue(.ifoo__bar_bar_4(Parameter<T>.value(bar).wrapAsGeneric())).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for foo<T>(bar: T). Use given")
 			Failure("stub return value not specified for foo<T>(bar: T). Use given")
 		}
-
 		return __value
     }
 
@@ -2545,9 +2675,9 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
 		do {
 		    __value = try methodReturnValue(.ifoo__bar_bar_5(Parameter<T>.value(bar).wrapAsGeneric())).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for foo<T>(bar: T). Use given")
 			Failure("stub return value not specified for foo<T>(bar: T). Use given")
 		}
-
 		return __value
     }
 
@@ -2559,9 +2689,9 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
 		do {
 		    __value = try methodReturnValue(.ifoo__bar_bar_6(Parameter<String>.value(bar))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for foo<T>(bar: String). Use given")
 			Failure("stub return value not specified for foo<T>(bar: String). Use given")
 		}
-
 		return __value
     }
 
@@ -2573,9 +2703,9 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
 		do {
 		    __value = try methodReturnValue(.ifoo__bar_bar_7(Parameter<String>.value(bar))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for foo<T>(bar: String). Use given")
 			Failure("stub return value not specified for foo<T>(bar: String). Use given")
 		}
-
 		return __value
     }
 
@@ -2587,9 +2717,9 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
 		do {
 		    __value = try methodReturnValue(.ifoo__bar_bar_9(Parameter<Bool>.value(bar))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for foo<T>(bar: Bool). Use given")
 			Failure("stub return value not specified for foo<T>(bar: Bool). Use given")
 		}
-
 		return __value
     }
 
@@ -2601,9 +2731,9 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
 		do {
 		    __value = try methodReturnValue(.ifoo__bar_bar_9(Parameter<Bool>.value(bar))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for foo<T>(bar: Bool). Use given")
 			Failure("stub return value not specified for foo<T>(bar: Bool). Use given")
 		}
-
 		return __value
     }
 
@@ -2831,9 +2961,11 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
 
 // MARK: - ProtocolMethodsThatDifferOnlyInReturnType
 class ProtocolMethodsThatDifferOnlyInReturnTypeMock: ProtocolMethodsThatDifferOnlyInReturnType, Mock {
-    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap) {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
     }
 
     var matcher: Matcher = Matcher.default
@@ -2842,6 +2974,16 @@ class ProtocolMethodsThatDifferOnlyInReturnTypeMock: ProtocolMethodsThatDifferOn
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
 
 
 
@@ -2856,9 +2998,9 @@ class ProtocolMethodsThatDifferOnlyInReturnTypeMock: ProtocolMethodsThatDifferOn
 		do {
 		    __value = try methodReturnValue(.ifoo__bar_bar_1(Parameter<String>.value(bar))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for foo(bar: String). Use given")
 			Failure("stub return value not specified for foo(bar: String). Use given")
 		}
-
 		return __value
     }
 
@@ -2870,9 +3012,9 @@ class ProtocolMethodsThatDifferOnlyInReturnTypeMock: ProtocolMethodsThatDifferOn
 		do {
 		    __value = try methodReturnValue(.ifoo__bar_bar_2(Parameter<String>.value(bar))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for foo(bar: String). Use given")
 			Failure("stub return value not specified for foo(bar: String). Use given")
 		}
-
 		return __value
     }
 
@@ -2995,9 +3137,11 @@ class ProtocolMethodsThatDifferOnlyInReturnTypeMock: ProtocolMethodsThatDifferOn
 
 // MARK: - ProtocolWithAssociatedType
 class ProtocolWithAssociatedTypeMock<TypeT>: ProtocolWithAssociatedType, Mock where TypeT: Sequence {
-    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap) {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
     }
 
 
@@ -3009,6 +3153,16 @@ class ProtocolWithAssociatedTypeMock<TypeT>: ProtocolWithAssociatedType, Mock wh
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
 
 
     var sequence: T { 
@@ -3034,9 +3188,9 @@ class ProtocolWithAssociatedTypeMock<TypeT>: ProtocolWithAssociatedType, Mock wh
 		do {
 		    __value = try methodReturnValue(.imethodWithType__t_t(Parameter<T>.value(t))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for methodWithType(t: T). Use given")
 			Failure("stub return value not specified for methodWithType(t: T). Use given")
 		}
-
 		return __value
     }
 
@@ -3148,9 +3302,11 @@ class ProtocolWithAssociatedTypeMock<TypeT>: ProtocolWithAssociatedType, Mock wh
 
 // MARK: - ProtocolWithClosures
 class ProtocolWithClosuresMock: ProtocolWithClosures, Mock {
-    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap) {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
     }
 
     var matcher: Matcher = Matcher.default
@@ -3159,6 +3315,16 @@ class ProtocolWithClosuresMock: ProtocolWithClosures, Mock {
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
 
 
 
@@ -3293,9 +3459,11 @@ class ProtocolWithClosuresMock: ProtocolWithClosures, Mock {
 
 // MARK: - ProtocolWithCustomAttributes
 class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock {
-    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap) {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
     }
 
     var matcher: Matcher = Matcher.default
@@ -3304,6 +3472,16 @@ class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock {
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
 
 
 
@@ -3318,7 +3496,7 @@ class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock {
 		do {
 		    __value = try methodReturnValue(.imethodThatTakesUser__user_user(Parameter<UserObject>.value(user))).casted()
 		} catch MockError.notStubed {
-		    // do nothing
+			// do nothing
 		} catch {
 		    throw error
 		}
@@ -3332,9 +3510,9 @@ class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock {
 		do {
 		    __value = try methodReturnValue(.imethodThatTakesArrayOfUsers__array_array(Parameter<[UserObject]>.value(array))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for methodThatTakesArrayOfUsers(array: [UserObject]). Use given")
 			Failure("stub return value not specified for methodThatTakesArrayOfUsers(array: [UserObject]). Use given")
 		}
-
 		return __value
     }
 
@@ -3457,9 +3635,11 @@ class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock {
 
 // MARK: - ProtocolWithGenericMethods
 class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
-    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap) {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
     }
 
     var matcher: Matcher = Matcher.default
@@ -3468,6 +3648,16 @@ class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
 
 
 
@@ -3482,9 +3672,9 @@ class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
 		do {
 		    __value = try methodReturnValue(.imethodWithGeneric__lhs_lhsrhs_rhs(Parameter<T>.value(lhs).wrapAsGeneric(), Parameter<T>.value(rhs).wrapAsGeneric())).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for methodWithGeneric<T>(lhs: T, rhs: T). Use given")
 			Failure("stub return value not specified for methodWithGeneric<T>(lhs: T, rhs: T). Use given")
 		}
-
 		return __value
     }
 
@@ -3496,9 +3686,9 @@ class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
 		do {
 		    __value = try methodReturnValue(.imethodWithGenericConstraint__param_param(Parameter<[U]>.value(param).wrapAsGeneric())).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for methodWithGenericConstraint<U>(param: [U]). Use given")
 			Failure("stub return value not specified for methodWithGenericConstraint<U>(param: [U]). Use given")
 		}
-
 		return __value
     }
 
@@ -3622,9 +3812,11 @@ class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
 
 // MARK: - ProtocolWithGenericMethodsNested
 class ProtocolWithGenericMethodsNestedMock: ProtocolWithGenericMethodsNested, Mock {
-    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap) {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
     }
 
     var matcher: Matcher = Matcher.default
@@ -3633,6 +3825,16 @@ class ProtocolWithGenericMethodsNestedMock: ProtocolWithGenericMethodsNested, Mo
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
 
 
 
@@ -3647,9 +3849,9 @@ class ProtocolWithGenericMethodsNestedMock: ProtocolWithGenericMethodsNested, Mo
 		do {
 		    __value = try methodReturnValue(.imethodWithGeneric__resource_resource(Parameter<Resource<T>>.value(resource).wrapAsGeneric())).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for methodWithGeneric<T>(resource: Resource<T>). Use given")
 			Failure("stub return value not specified for methodWithGeneric<T>(resource: Resource<T>). Use given")
 		}
-
 		return __value
     }
 
@@ -3750,9 +3952,11 @@ class ProtocolWithGenericMethodsNestedMock: ProtocolWithGenericMethodsNested, Mo
 
 // MARK: - ProtocolWithInitializers
 class ProtocolWithInitializersMock: ProtocolWithInitializers, Mock {
-    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap) {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
     }
 
     var matcher: Matcher = Matcher.default
@@ -3761,6 +3965,16 @@ class ProtocolWithInitializersMock: ProtocolWithInitializers, Mock {
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
 
 
     var param: Int { 
@@ -3884,9 +4098,11 @@ class ProtocolWithInitializersMock: ProtocolWithInitializers, Mock {
 
 // MARK: - ProtocolWithPropoerties
 class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
-    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap) {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
     }
 
     var matcher: Matcher = Matcher.default
@@ -3895,6 +4111,16 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
 
     static var matcher: Matcher = Matcher.default
     static var stubbingPolicy: StubbingPolicy = .wrap
@@ -4188,9 +4414,11 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
 
 // MARK: - ProtocolWithStaticMembers
 class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, StaticMock {
-    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap) {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
     }
 
     var matcher: Matcher = Matcher.default
@@ -4199,6 +4427,16 @@ class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, StaticMock
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
 
     static var matcher: Matcher = Matcher.default
     static var stubbingPolicy: StubbingPolicy = .wrap
@@ -4236,7 +4474,7 @@ class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, StaticMock
 		do {
 		    __value = try methodReturnValue(.sstaticMethod__param_param(Parameter<Int>.value(param))).casted()
 		} catch MockError.notStubed {
-		    Failure("stub return value not specified for staticMethod(param: Int). Use given")
+			Failure("stub return value not specified for staticMethod(param: Int). Use given")
 		} catch {
 		    throw error
 		}
@@ -4421,9 +4659,11 @@ class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, StaticMock
 
 // MARK: - ProtocolWithThrowingMethods
 class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
-    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap) {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
     }
 
     var matcher: Matcher = Matcher.default
@@ -4432,6 +4672,16 @@ class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
 
 
 
@@ -4446,7 +4696,7 @@ class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
 		do {
 		    __value = try methodReturnValue(.imethodThatThrows).casted()
 		} catch MockError.notStubed {
-		    // do nothing
+			// do nothing
 		} catch {
 		    throw error
 		}
@@ -4460,7 +4710,8 @@ class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
 		do {
 		    __value = try methodReturnValue(.imethodThatReturnsAndThrows__param_param(Parameter<Int>.value(param))).casted()
 		} catch MockError.notStubed {
-		    Failure("stub return value not specified for methodThatReturnsAndThrows(param: Int). Use given")
+			onFatalFailure("stub return value not specified for methodThatReturnsAndThrows(param: Int). Use given")
+			Failure("stub return value not specified for methodThatReturnsAndThrows(param: Int). Use given")
 		} catch {
 		    throw error
 		}
@@ -4588,9 +4839,11 @@ class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
 
 // MARK: - ProtocolWithTuples
 class ProtocolWithTuplesMock: ProtocolWithTuples, Mock {
-    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap) {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
     }
 
     var matcher: Matcher = Matcher.default
@@ -4599,6 +4852,16 @@ class ProtocolWithTuplesMock: ProtocolWithTuples, Mock {
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
 
 
 
@@ -4613,9 +4876,9 @@ class ProtocolWithTuplesMock: ProtocolWithTuples, Mock {
 		do {
 		    __value = try methodReturnValue(.imethodThatTakesTuple__tuple_tuple(Parameter<(String,Int)>.value(tuple))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for methodThatTakesTuple(tuple: (String,Int)). Use given")
 			Failure("stub return value not specified for methodThatTakesTuple(tuple: (String,Int)). Use given")
 		}
-
 		return __value
     }
 
@@ -4716,9 +4979,11 @@ class ProtocolWithTuplesMock: ProtocolWithTuples, Mock {
 
 // MARK: - SampleServiceType
 class SampleServiceTypeMock: SampleServiceType, Mock {
-    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap) {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
     }
 
     var matcher: Matcher = Matcher.default
@@ -4727,6 +4992,16 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
 
 
 
@@ -4741,9 +5016,9 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
 		do {
 		    __value = try methodReturnValue(.iserviceName).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for serviceName(). Use given")
 			Failure("stub return value not specified for serviceName(). Use given")
 		}
-
 		return __value
     }
 
@@ -4755,9 +5030,9 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
 		do {
 		    __value = try methodReturnValue(.igetPoint__from_point(Parameter<Point>.value(point))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for getPoint(from point: Point). Use given")
 			Failure("stub return value not specified for getPoint(from point: Point). Use given")
 		}
-
 		return __value
     }
 
@@ -4769,9 +5044,9 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
 		do {
 		    __value = try methodReturnValue(.igetPoint__from_tuple(Parameter<(Float,Float)>.value(tuple))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for getPoint(from tuple: (Float,Float)). Use given")
 			Failure("stub return value not specified for getPoint(from tuple: (Float,Float)). Use given")
 		}
-
 		return __value
     }
 
@@ -4783,9 +5058,9 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
 		do {
 		    __value = try methodReturnValue(.isimilarMethodThatDiffersOnType__value_1(Parameter<Float>.value(value))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for similarMethodThatDiffersOnType(_ value: Float). Use given")
 			Failure("stub return value not specified for similarMethodThatDiffersOnType(_ value: Float). Use given")
 		}
-
 		return __value
     }
 
@@ -4797,9 +5072,9 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
 		do {
 		    __value = try methodReturnValue(.isimilarMethodThatDiffersOnType__value_2(Parameter<Point>.value(value))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for similarMethodThatDiffersOnType(_ value: Point). Use given")
 			Failure("stub return value not specified for similarMethodThatDiffersOnType(_ value: Point). Use given")
 		}
-
 		return __value
     }
 
@@ -4817,9 +5092,9 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
 		do {
 		    __value = try methodReturnValue(.imethodWithClosures__success_function_1(Parameter<LinearFunction>.value(function))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for methodWithClosures(success function: LinearFunction). Use given")
 			Failure("stub return value not specified for methodWithClosures(success function: LinearFunction). Use given")
 		}
-
 		return __value
     }
 
@@ -4831,9 +5106,9 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
 		do {
 		    __value = try methodReturnValue(.imethodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.value(function))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?). Use given")
 			Failure("stub return value not specified for methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?). Use given")
 		}
-
 		return __value
     }
 
@@ -5071,9 +5346,11 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
 
 // MARK: - SelfConstrainedProtocol
 class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
-    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap) {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
     }
 
     var matcher: Matcher = Matcher.default
@@ -5082,6 +5359,16 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
 
     static var matcher: Matcher = Matcher.default
     static var stubbingPolicy: StubbingPolicy = .wrap
@@ -5111,7 +5398,6 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
 		} catch {
 			Failure("stub return value not specified for construct(param value: Int). Use given")
 		}
-
 		return __value
 		}
 		return _wrapped()
@@ -5126,9 +5412,9 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
 		do {
 		    __value = try methodReturnValue(.imethodReturningSelf).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for methodReturningSelf(). Use given")
 			Failure("stub return value not specified for methodReturningSelf(). Use given")
 		}
-
 		return __value
 		}
 		return _wrapped()
@@ -5142,9 +5428,9 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
 		do {
 		    __value = try methodReturnValue(.icompare__with_other(Parameter<SelfConstrainedProtocolMock>.value(other))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for compare(with other: Self). Use given")
 			Failure("stub return value not specified for compare(with other: Self). Use given")
 		}
-
 		return __value
     }
 
@@ -5157,9 +5443,9 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
 		do {
 		    __value = try methodReturnValue(.igenericMethodWithNestedSelf__param_paramsecond_secondother_other(Parameter<Int>.value(param), Parameter<T>.value(second).wrapAsGeneric(), Parameter<(SelfConstrainedProtocolMock,SelfConstrainedProtocolMock)>.value(other))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for genericMethodWithNestedSelf<T>(param: Int, second: T, other: (Self,Self)). Use given")
 			Failure("stub return value not specified for genericMethodWithNestedSelf<T>(param: Int, second: T, other: (Self,Self)). Use given")
 		}
-
 		return __value
 		}
 		return _wrapped()
@@ -5401,9 +5687,11 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
 
 // MARK: - SimpleProtocolThatInheritsOtherProtocols
 class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInheritsOtherProtocols, Mock {
-    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap) {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
     }
 
     var matcher: Matcher = Matcher.default
@@ -5412,6 +5700,16 @@ class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInheritsOt
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
 
 
     var property: String { 
@@ -5479,9 +5777,9 @@ class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInheritsOt
 		do {
 		    __value = try methodReturnValue(.isimpleMehtodThatReturns).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for simpleMehtodThatReturns(). Use given")
 			Failure("stub return value not specified for simpleMehtodThatReturns(). Use given")
 		}
-
 		return __value
     }
 
@@ -5493,9 +5791,9 @@ class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInheritsOt
 		do {
 		    __value = try methodReturnValue(.isimpleMehtodThatReturns__param_param(Parameter<String>.value(param))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for simpleMehtodThatReturns(param: String). Use given")
 			Failure("stub return value not specified for simpleMehtodThatReturns(param: String). Use given")
 		}
-
 		return __value
     }
 
@@ -5507,9 +5805,9 @@ class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInheritsOt
 		do {
 		    __value = try methodReturnValue(.isimpleMehtodThatReturns__optionalParam_optionalParam(Parameter<String?>.value(optionalParam))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for simpleMehtodThatReturns(optionalParam: String?). Use given")
 			Failure("stub return value not specified for simpleMehtodThatReturns(optionalParam: String?). Use given")
 		}
-
 		return __value
     }
 
@@ -5696,9 +5994,11 @@ class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInheritsOt
 
 // MARK: - SimpleProtocolUsingCollections
 class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
-    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap) {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
     }
 
     var matcher: Matcher = Matcher.default
@@ -5707,6 +6007,16 @@ class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
 
 
 
@@ -5721,9 +6031,9 @@ class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
 		do {
 		    __value = try methodReturnValue(.igetArray).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for getArray(). Use given")
 			Failure("stub return value not specified for getArray(). Use given")
 		}
-
 		return __value
     }
 
@@ -5735,9 +6045,9 @@ class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
 		do {
 		    __value = try methodReturnValue(.imap__array_arrayparam_param(Parameter<[String]>.value(array), Parameter<Int>.value(param))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for map(array: [String], param: Int). Use given")
 			Failure("stub return value not specified for map(array: [String], param: Int). Use given")
 		}
-
 		return __value
     }
 
@@ -5749,9 +6059,9 @@ class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
 		do {
 		    __value = try methodReturnValue(.iuse__dictionary_dictionary(Parameter<[Int: String]>.value(dictionary))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for use(dictionary: [Int: String]). Use given")
 			Failure("stub return value not specified for use(dictionary: [Int: String]). Use given")
 		}
-
 		return __value
     }
 
@@ -5763,9 +6073,9 @@ class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
 		do {
 		    __value = try methodReturnValue(.iverify__set_set(Parameter<Set<Int>>.value(set))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for verify(set: Set<Int>). Use given")
 			Failure("stub return value not specified for verify(set: Set<Int>). Use given")
 		}
-
 		return __value
     }
 
@@ -5930,9 +6240,11 @@ class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
 
 // MARK: - SimpleProtocolWithBothMethodsAndProperties
 class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBothMethodsAndProperties, Mock {
-    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap) {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
     }
 
     var matcher: Matcher = Matcher.default
@@ -5941,6 +6253,16 @@ class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBothMeth
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
 
 
     var property: String { 
@@ -5966,9 +6288,9 @@ class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBothMeth
 		do {
 		    __value = try methodReturnValue(.isimpleMethod).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for simpleMethod(). Use given")
 			Failure("stub return value not specified for simpleMethod(). Use given")
 		}
-
 		return __value
     }
 
@@ -6079,9 +6401,11 @@ class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBothMeth
 
 // MARK: - SimpleProtocolWithMethods
 class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
-    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap) {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
     }
 
     var matcher: Matcher = Matcher.default
@@ -6090,6 +6414,16 @@ class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
 
 
 
@@ -6110,9 +6444,9 @@ class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
 		do {
 		    __value = try methodReturnValue(.isimpleMehtodThatReturns).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for simpleMehtodThatReturns(). Use given")
 			Failure("stub return value not specified for simpleMehtodThatReturns(). Use given")
 		}
-
 		return __value
     }
 
@@ -6124,9 +6458,9 @@ class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
 		do {
 		    __value = try methodReturnValue(.isimpleMehtodThatReturns__param_param(Parameter<String>.value(param))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for simpleMehtodThatReturns(param: String). Use given")
 			Failure("stub return value not specified for simpleMehtodThatReturns(param: String). Use given")
 		}
-
 		return __value
     }
 
@@ -6138,9 +6472,9 @@ class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
 		do {
 		    __value = try methodReturnValue(.isimpleMehtodThatReturns__optionalParam_optionalParam(Parameter<String?>.value(optionalParam))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for simpleMehtodThatReturns(optionalParam: String?). Use given")
 			Failure("stub return value not specified for simpleMehtodThatReturns(optionalParam: String?). Use given")
 		}
-
 		return __value
     }
 
@@ -6293,9 +6627,11 @@ class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
 
 // MARK: - SimpleProtocolWithProperties
 class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock {
-    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap) {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
     }
 
     var matcher: Matcher = Matcher.default
@@ -6304,6 +6640,16 @@ class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock {
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
 
 
     var property: String { 
@@ -6468,9 +6814,11 @@ class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock {
 
 // MARK: - UserNetworkType
 class UserNetworkTypeMock: UserNetworkType, Mock {
-    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap) {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
     }
 
     var matcher: Matcher = Matcher.default
@@ -6479,6 +6827,16 @@ class UserNetworkTypeMock: UserNetworkType, Mock {
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
 
 
 
@@ -6636,9 +6994,11 @@ class UserNetworkTypeMock: UserNetworkType, Mock {
 
 // MARK: - UserStorageType
 class UserStorageTypeMock: UserStorageType, Mock {
-    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap) {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
     }
 
     var matcher: Matcher = Matcher.default
@@ -6647,6 +7007,16 @@ class UserStorageTypeMock: UserStorageType, Mock {
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
 
 
 
@@ -6661,9 +7031,9 @@ class UserStorageTypeMock: UserStorageType, Mock {
 		do {
 		    __value = try methodReturnValue(.isurname__for_name(Parameter<String>.value(name))).casted()
 		} catch {
+			onFatalFailure("stub return value not specified for surname(for name: String). Use given")
 			Failure("stub return value not specified for surname(for name: String). Use given")
 		}
-
 		return __value
     }
 

@@ -427,14 +427,20 @@ import SourceryRuntime
             guard !method.isInitializer else { return "" }
             guard method.throws || !method.returnTypeName.isVoid else { return "" }
             let message = "stub return value not specified for \(method.name). Use given"
-            let noStubHandling = method.returnTypeName.isVoid ? "// do nothing" : "Failure(\"\(message)\")"
+            let safeFailure = method.isStatic ? "" : "\t\t\tonFatalFailure(\"\(message)\")\n"
+            let noStubHandling = method.returnTypeName.isVoid ? "\t\t\t// do nothing" : "\(safeFailure)\t\t\tFailure(\"\(message)\")"
             guard method.throws else {
-                return "catch {\n\t\t\tFailure(\"\(message)\")\n\t\t}\n"
+                return
+                """
+                catch {
+                \(safeFailure)\t\t\tFailure(\"\(message)\")
+                \t\t}
+                """
             }
 
             return """
             catch MockError.notStubed {
-            \t\t    \(noStubHandling)
+            \(noStubHandling)
             \t\t} catch {
             \t\t    throw error
             \t\t}
@@ -996,9 +1002,11 @@ import SourceryRuntime
 <%_ if autoMockable { -%>
 // MARK: - <%= type.name %>
 class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["ObjcProtocol"] != nil ? " NSObject," : "" %> <%= type.name %>, Mock<%= conformsToStaticMock ? ", StaticMock" : "" %><%= genericTypesConstraints %> {
-    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap) {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
     }
 
 <%_ } else { -%>
@@ -1013,6 +1021,16 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
 
     <%_ -%>
   <%# ================================================== STATIC MOCK INTERNALS -%><%_ -%>

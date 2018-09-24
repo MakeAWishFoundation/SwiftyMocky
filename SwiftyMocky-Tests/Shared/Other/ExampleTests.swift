@@ -80,7 +80,7 @@ class ExampleTests: SwiftyTestCase {
 
         sut.fetchUser() {
             fetchExpectation.fulfill()
-            self.XCTAssertNotNil(sut.user)
+            XCTAssertNotNil(sut.user)
         }
 
         waitForExpectations(timeout: 1) { (error) in

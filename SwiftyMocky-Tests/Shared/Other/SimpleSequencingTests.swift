@@ -100,7 +100,7 @@ class SimpleSequencingTests: SwiftyTestCase {
 
         XCTAssertThrowsError(try mock.methodThatReturnsAndThrows(param: 0), error: TestError.first)
         XCTAssertThrowsError(try mock.methodThatReturnsAndThrows(param: 0), error: TestError.second)
-        self.XCTAssertThrowsError(try mock.methodThatReturnsAndThrows(param: 0), error: TestError.third)
+        XCTAssertThrowsError(try mock.methodThatReturnsAndThrows(param: 0), error: TestError.third)
         XCTAssertNoThrow(try mock.methodThatReturnsAndThrows(param: 0))
         XCTAssertNoThrow(try mock.methodThatReturnsAndThrows(param: 0))
         XCTAssertNoThrow(try mock.methodThatReturnsAndThrows(param: 0))
