@@ -198,11 +198,11 @@ public func Failure(_ message: String) -> Swift.Never {
 public struct FatalErrorUtil {
     private static var handler: (String) -> Never = {
         print($0)
-        Swift.fatalError($0)
+        exit(0)
     }
     private static var defalutHandler: (String) -> Never = {
         print($0)
-        Swift.fatalError($0)
+        exit(0)
     }
 
     public static func set(_ new: @escaping (String) -> Never) {

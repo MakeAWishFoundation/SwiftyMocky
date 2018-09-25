@@ -172,7 +172,7 @@ class ExampleTests: SwiftyTestCase {
     func test_generics() {
         let date = Date.init(timeIntervalSince1970: 321123)
         let item1 = DateSortableMock()
-        item1.date = date
+        Given(item1, .date(getter: date))
         Matcher.default.register(DateSortableMock.self) { (lhs, rhs) -> Bool in
             return lhs.date == rhs.date
         }

@@ -125,7 +125,8 @@ class SimpleProtocolsTests: SwiftyTestCase {
 
         // We should set all initial values for non optional parameters and implicitly unwrapped optional parameters
         mock.property = "test"
-        mock.propertyGetOnly = "get only ;)"
+        Given(mock, .propertyGetOnly(getter: "get only ;)"))
+        Given(mock, .propertyOptional(getter: nil))
         mock.propertyImplicit = 1
 
         VerifyProperty(mock, .atLeastOnce, .property(set: .any))
@@ -159,8 +160,8 @@ class SimpleProtocolsTests: SwiftyTestCase {
     func test_simpleProtocol_with_both() {
         let mock = SimpleProtocolWithBothMethodsAndPropertiesMock()
 
-        // We should set all initial values for non optional parameters and implicitly unwrapped optional parameters
-        mock.property = "some property"
+        // We should set all initial values for all parameters that will be used
+        Given(mock, .property(getter: "some property"))
         Given(mock, .simpleMethod(willReturn: "some return value"))
 
         XCTAssertEqual(mock.property, "some property")
@@ -168,9 +169,6 @@ class SimpleProtocolsTests: SwiftyTestCase {
 
         Verify(mock, .simpleMethod())
         VerifyProperty(mock, .property)
-        VerifyProperty(mock, .atLeastOnce, .property(set: .any))
-
-
         Given(mock, .simpleMethod(willReturn: "a","b","c","d"))
         XCTAssertEqual(mock.simpleMethod(), "a")
         XCTAssertEqual(mock.simpleMethod(), "b")
@@ -211,7 +209,8 @@ class SimpleProtocolsTests: SwiftyTestCase {
 
         // We should set all initial values for non optional parameters and implicitly unwrapped optional parameters
         mock.property = "test"
-        mock.propertyGetOnly = "get only ;)"
+        Given(mock, .propertyGetOnly(getter: "get only ;)"))
+        Given(mock, .propertyOptional(getter: nil))
         mock.propertyImplicit = 1
 
         VerifyProperty(mock, .atLeastOnce, .property(set: .any))
