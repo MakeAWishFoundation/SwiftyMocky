@@ -10,7 +10,7 @@ import Foundation
 
 /// Every generated mock implementation adopts **Mock** protocol.
 /// It defines base Mock structure and features.
-public protocol Mock: class {
+public protocol Mock: class, WithSequencingPolicy {
     associatedtype Given
     associatedtype Verify
     associatedtype Perform
@@ -69,7 +69,7 @@ public protocol Mock: class {
 
 /// Every mock, that stubs static methods, should adopt **StaticMock** protocol.
 /// It defines base StaticMock structure and features.
-public protocol StaticMock: class {
+public protocol StaticMock: class, WithStaticSequencingPolicy {
     associatedtype StaticGiven
     associatedtype StaticVerify
     associatedtype StaticPerform

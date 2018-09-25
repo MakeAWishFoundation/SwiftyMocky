@@ -2,20 +2,20 @@
 
 task :mock do
     print_info "Generating mocks - iOS"
-	sh "Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config .mocky.iOS.yml"
+    sh "Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config .mocky.iOS.yml"
     print_info "Generating mocks - tvOS"
-	sh "Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config .mocky.tvOS.yml"
+    sh "Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config .mocky.tvOS.yml"
     print_info "Generating mocks - macOS"
-	sh "Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config .mocky.macOS.yml"
+    sh "Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config .mocky.macOS.yml"
 end
 
 task :debug do
     print_info "Generating mocks - iOS - debug"
-	sh "Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config .mocky.iOS.yml --disableCache --verbose"
+    sh "Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config .mocky.iOS.yml --disableCache --verbose"
     print_info "Generating mocks - tvOS - debug"
-	sh "Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config .mocky.tvOS.yml --disableCache --verbose"
+    sh "Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config .mocky.tvOS.yml --disableCache --verbose"
     print_info "Generating mocks - macOS - debug"
-	sh "Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config .mocky.macOS.yml --disableCache --verbose"
+    sh "Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config .mocky.macOS.yml --disableCache --verbose"
 end
 
 ## [ Sourcery ] ################################################################
@@ -31,27 +31,27 @@ end
 
 desc "Install project dependencies"
 desc "In case of need, pod repo update will be invoked"
-task :pod_install do
-	begin
-		sh "pod install"
-	rescue
-	  print_info "Install failed - trying repo update"
-		sh "pod repo update"
-		sh "pod install"
-	end
+task :pods do
+    begin
+        sh "pod install"
+    rescue
+        print_info "Install failed - trying repo update"
+        sh "pod repo update"
+        sh "pod install"
+    end
 end
 
 ## [ Docs ] ####################################################################
 
 desc "Update docs"
 task :docs do
-  print_info "Updating docs"
-  sh "sourcekitten doc -- -workspace Mocky.xcworkspace -scheme SwiftyMocky > docs.json && jazzy --clean --skip-undocumented && rm docs.json"
+    print_info "Updating docs"
+    sh "sourcekitten doc -- -workspace Mocky.xcworkspace -scheme SwiftyMocky > docs.json && jazzy --clean --skip-undocumented && rm docs.json"
 end
 
 ## [ Helpers ] #################################################################
 
 def print_info(str)
-  (red,clr) = (`tput colors`.chomp.to_i >= 8) ? %W(\e[33m \e[m) : ["", ""]
-  puts red, "== #{str.chomp} ==", clr
+    (red,clr) = (`tput colors`.chomp.to_i >= 8) ? %W(\e[33m \e[m) : ["", ""]
+    puts red, "== #{str.chomp} ==", clr
 end

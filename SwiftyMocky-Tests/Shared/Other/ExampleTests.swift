@@ -3,7 +3,7 @@
 //  Mocky_Tests
 //
 //  Created by Andrzej Michnia on 25.10.2017.
-//  Copyright © 2017 CocoaPods. All rights reserved.
+//  Copyright © 2017 MakeAWishFoundation. All rights reserved.
 //
 
 import XCTest
@@ -22,7 +22,7 @@ enum TestError: Error {
     case third
 }
 
-class ExampleTests: XCTestCase {
+class ExampleTests: SwiftyTestCase {
     func testGivenExample() {
         let mock = UserStorageTypeMock()
 
@@ -172,7 +172,7 @@ class ExampleTests: XCTestCase {
     func test_generics() {
         let date = Date.init(timeIntervalSince1970: 321123)
         let item1 = DateSortableMock()
-        item1.date = date
+        Given(item1, .date(getter: date))
         Matcher.default.register(DateSortableMock.self) { (lhs, rhs) -> Bool in
             return lhs.date == rhs.date
         }

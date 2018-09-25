@@ -3,7 +3,7 @@
 //  Mocky
 //
 //  Created by Andrzej Michnia on 25.09.2017.
-//  Copyright © 2017 CocoaPods. All rights reserved.
+//  Copyright © 2017 MakeAWishFoundation. All rights reserved.
 //
 
 import XCTest
@@ -16,7 +16,7 @@ import SwiftyMocky
     @testable import Mocky_Example_macOS
 #endif
 
-class SampleServiceTests: XCTestCase {
+class SampleServiceTests: SwiftyTestCase {
 //    var sut: // somthing depending on service - add later
     var service: SampleServiceTypeMock!
 
