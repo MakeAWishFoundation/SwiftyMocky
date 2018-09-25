@@ -23,38 +23,40 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
     private var file: StaticString?
     private var line: UInt?
 
-    private func onFatalFailure(_ message: String) {
-        #if Mocky
-        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
-        XCTFail(message, file: file, line: line)
-        #endif
-    }
+    typealias PropertyStub = Given
+    typealias MethodStub = Given
 
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
 
 
     typealias Property = Swift.Never
 
 
+
+
     func storeItems(items: [Item]) {
-        addInvocation(.istoreItems__items_items(Parameter<[Item]>.value(items)))
-		let perform = methodPerformValue(.istoreItems__items_items(Parameter<[Item]>.value(items))) as? ([Item]) -> Void
+        addInvocation(.m_storeItems__items_items(Parameter<[Item]>.value(items)))
+		let perform = methodPerformValue(.m_storeItems__items_items(Parameter<[Item]>.value(items))) as? ([Item]) -> Void
 		perform?(items)
     }
 
     func storeDetails(details: ItemDetails) {
-        addInvocation(.istoreDetails__details_details(Parameter<ItemDetails>.value(details)))
-		let perform = methodPerformValue(.istoreDetails__details_details(Parameter<ItemDetails>.value(details))) as? (ItemDetails) -> Void
+        addInvocation(.m_storeDetails__details_details(Parameter<ItemDetails>.value(details)))
+		let perform = methodPerformValue(.m_storeDetails__details_details(Parameter<ItemDetails>.value(details))) as? (ItemDetails) -> Void
 		perform?(details)
     }
 
     func storedItems() -> [Item]? {
-        addInvocation(.istoredItems)
-		let perform = methodPerformValue(.istoredItems) as? () -> Void
+        addInvocation(.m_storedItems)
+		let perform = methodPerformValue(.m_storedItems) as? () -> Void
 		perform?()
 		var __value: [Item]?
 		do {
-		    __value = try methodReturnValue(.istoredItems).casted()
+		    __value = try methodReturnValue(.m_storedItems).casted()
 		} catch {
 			onFatalFailure("stub return value not specified for storedItems(). Use given")
 			Failure("stub return value not specified for storedItems(). Use given")
@@ -63,12 +65,12 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
     }
 
     func storedDetails(item: Item) -> ItemDetails? {
-        addInvocation(.istoredDetails__item_item(Parameter<Item>.value(item)))
-		let perform = methodPerformValue(.istoredDetails__item_item(Parameter<Item>.value(item))) as? (Item) -> Void
+        addInvocation(.m_storedDetails__item_item(Parameter<Item>.value(item)))
+		let perform = methodPerformValue(.m_storedDetails__item_item(Parameter<Item>.value(item))) as? (Item) -> Void
 		perform?(item)
 		var __value: ItemDetails?
 		do {
-		    __value = try methodReturnValue(.istoredDetails__item_item(Parameter<Item>.value(item))).casted()
+		    __value = try methodReturnValue(.m_storedDetails__item_item(Parameter<Item>.value(item))).casted()
 		} catch {
 			onFatalFailure("stub return value not specified for storedDetails(item: Item). Use given")
 			Failure("stub return value not specified for storedDetails(item: Item). Use given")
@@ -77,22 +79,22 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
     }
 
     fileprivate enum MethodType {
-        case istoreItems__items_items(Parameter<[Item]>)
-        case istoreDetails__details_details(Parameter<ItemDetails>)
-        case istoredItems
-        case istoredDetails__item_item(Parameter<Item>)
+        case m_storeItems__items_items(Parameter<[Item]>)
+        case m_storeDetails__details_details(Parameter<ItemDetails>)
+        case m_storedItems
+        case m_storedDetails__item_item(Parameter<Item>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.istoreItems__items_items(let lhsItems), .istoreItems__items_items(let rhsItems)):
+                case (.m_storeItems__items_items(let lhsItems), .m_storeItems__items_items(let rhsItems)):
                     guard Parameter.compare(lhs: lhsItems, rhs: rhsItems, with: matcher) else { return false } 
                     return true 
-                case (.istoreDetails__details_details(let lhsDetails), .istoreDetails__details_details(let rhsDetails)):
+                case (.m_storeDetails__details_details(let lhsDetails), .m_storeDetails__details_details(let rhsDetails)):
                     guard Parameter.compare(lhs: lhsDetails, rhs: rhsDetails, with: matcher) else { return false } 
                     return true 
-                case (.istoredItems, .istoredItems):
+                case (.m_storedItems, .m_storedItems):
                     return true 
-                case (.istoredDetails__item_item(let lhsItem), .istoredDetails__item_item(let rhsItem)):
+                case (.m_storedDetails__item_item(let lhsItem), .m_storedDetails__item_item(let rhsItem)):
                     guard Parameter.compare(lhs: lhsItem, rhs: rhsItem, with: matcher) else { return false } 
                     return true 
                 default: return false
@@ -101,10 +103,10 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
 
         func intValue() -> Int {
             switch self {
-                case let .istoreItems__items_items(p0): return p0.intValue
-                case let .istoreDetails__details_details(p0): return p0.intValue
-                case .istoredItems: return 0
-                case let .istoredDetails__item_item(p0): return p0.intValue
+                case let .m_storeItems__items_items(p0): return p0.intValue
+                case let .m_storeDetails__details_details(p0): return p0.intValue
+                case .m_storedItems: return 0
+                case let .m_storedDetails__item_item(p0): return p0.intValue
             }
         }
     }
@@ -117,22 +119,23 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
             super.init(products)
         }
 
-        static func storedItems(willReturn: [Item]?...) -> Given {
-            return Given(method: .istoredItems, products: willReturn.map({ Product.return($0) }))
+
+        static func storedItems(willReturn: [Item]?...) -> MethodStub {
+            return Given(method: .m_storedItems, products: willReturn.map({ Product.return($0) }))
         }
-        static func storedDetails(item: Parameter<Item>, willReturn: ItemDetails?...) -> Given {
-            return Given(method: .istoredDetails__item_item(item), products: willReturn.map({ Product.return($0) }))
+        static func storedDetails(item: Parameter<Item>, willReturn: ItemDetails?...) -> MethodStub {
+            return Given(method: .m_storedDetails__item_item(item), products: willReturn.map({ Product.return($0) }))
         }
-        static func storedItems(willProduce: (Stubber<[Item]?>) -> Void) -> Given {
+        static func storedItems(willProduce: (Stubber<[Item]?>) -> Void) -> MethodStub {
             let willReturn: [[Item]?] = []
-			let given: Given = { return Given(method: .istoredItems, products: willReturn.map({ Product.return($0) })) }()
+			let given: Given = { return Given(method: .m_storedItems, products: willReturn.map({ Product.return($0) })) }()
 			let stubber = given.stub(for: ([Item]?).self)
 			willProduce(stubber)
 			return given
         }
-        static func storedDetails(item: Parameter<Item>, willProduce: (Stubber<ItemDetails?>) -> Void) -> Given {
+        static func storedDetails(item: Parameter<Item>, willProduce: (Stubber<ItemDetails?>) -> Void) -> MethodStub {
             let willReturn: [ItemDetails?] = []
-			let given: Given = { return Given(method: .istoredDetails__item_item(item), products: willReturn.map({ Product.return($0) })) }()
+			let given: Given = { return Given(method: .m_storedDetails__item_item(item), products: willReturn.map({ Product.return($0) })) }()
 			let stubber = given.stub(for: (ItemDetails?).self)
 			willProduce(stubber)
 			return given
@@ -143,16 +146,16 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         fileprivate var method: MethodType
 
         static func storeItems(items: Parameter<[Item]>) -> Verify {
-            return Verify(method: .istoreItems__items_items(items))
+            return Verify(method: .m_storeItems__items_items(items))
         }
         static func storeDetails(details: Parameter<ItemDetails>) -> Verify {
-            return Verify(method: .istoreDetails__details_details(details))
+            return Verify(method: .m_storeDetails__details_details(details))
         }
         static func storedItems() -> Verify {
-            return Verify(method: .istoredItems)
+            return Verify(method: .m_storedItems)
         }
         static func storedDetails(item: Parameter<Item>) -> Verify {
-            return Verify(method: .istoredDetails__item_item(item))
+            return Verify(method: .m_storedDetails__item_item(item))
         }
     }
 
@@ -161,21 +164,17 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         var performs: Any
 
         static func storeItems(items: Parameter<[Item]>, perform: @escaping ([Item]) -> Void) -> Perform {
-            return Perform(method: .istoreItems__items_items(items), performs: perform)
+            return Perform(method: .m_storeItems__items_items(items), performs: perform)
         }
         static func storeDetails(details: Parameter<ItemDetails>, perform: @escaping (ItemDetails) -> Void) -> Perform {
-            return Perform(method: .istoreDetails__details_details(details), performs: perform)
+            return Perform(method: .m_storeDetails__details_details(details), performs: perform)
         }
         static func storedItems(perform: @escaping () -> Void) -> Perform {
-            return Perform(method: .istoredItems, performs: perform)
+            return Perform(method: .m_storedItems, performs: perform)
         }
         static func storedDetails(item: Parameter<Item>, perform: @escaping (Item) -> Void) -> Perform {
-            return Perform(method: .istoredDetails__item_item(item), performs: perform)
+            return Perform(method: .m_storedDetails__item_item(item), performs: perform)
         }
-    }
-
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
     }
 
     public func given(_ method: Given) {
@@ -196,21 +195,36 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
     }
-
     private func methodReturnValue(_ method: MethodType) throws -> Product {
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
-
     private func methodPerformValue(_ method: MethodType) -> Any? {
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
         return matched?.performs
     }
-
     private func matchingCalls(_ method: MethodType) -> [MethodType] {
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+    private func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
     }
     
 // sourcery:end
