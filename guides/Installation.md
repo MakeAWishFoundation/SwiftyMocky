@@ -40,14 +40,16 @@ Include Sources in your project, and setup [Sourcery](https://github.com/krzyszt
 Download/build Sourcery binary manually, or use prebuilt sourcery versions from: `https://github.com/MakeAWishFoundation/SwiftyMocky.wiki.git`
 
 Currentyly we support:
-- 3.1
-- 4.0
+- 4.2
+- 4.1
 - 4.0.2
+- 4.0
+- 3.1
 
 **Usage from root project dir:**
 
 ```shell
-sh get_sourcery.sh 4.0.2
+sh get_sourcery.sh 4.2
 ```
 
 **get_sourcery.sh**
@@ -60,3 +62,8 @@ echo "CLONE SOURCERY FOR $VERSION INTO $OUTPUT"
 rm -r -f "$OUTPUT"
 git clone -b "swift/$VERSION" --single-branch --depth 1 https://github.com/MakeAWishFoundation/SwiftyMocky.wiki.git "$OUTPUT"
 ```
+
+> **Note!**
+> This script is also shipped with SwiftyMocky when installing via cocoapods
+> You can use it from project root like `sh ./Pods/SwiftyMocky/get_sourcery.sh 4.2`
+> Version is optional, if you don't specify it, script will use latest supported (4.2 in that case)

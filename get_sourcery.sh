@@ -1,5 +1,5 @@
 
-[[ $# > 0 ]] && VERSION="$1" || VERSION="4.2-xcode10-beta6"
+[[ $# > 0 ]] && VERSION="$1" || VERSION="4.2"
 [[ $# > 1 ]] && OUTPUT="$2" || OUTPUT="./Pods/Sourcery/bin"
 
 echo "CLONE SOURCERY FOR $VERSION INTO $OUTPUT"
