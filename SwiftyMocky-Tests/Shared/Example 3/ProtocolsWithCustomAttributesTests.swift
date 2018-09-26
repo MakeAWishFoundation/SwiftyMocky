@@ -49,7 +49,7 @@ class ProtocolsWithCustomAttributesTests: XCTestCase {
         // Register comparing user object
         // We can use registration for Array of elements, which will compare value by value
         // Also, providing by default comparator for element type
-        Matcher.default.register([UserObject].self) { (lhs: UserObject, rhs: UserObject) -> Bool in
+        Matcher.default.register(UserObject.self) { (lhs, rhs) -> Bool in
             guard lhs.name == rhs.name else { return false }
             guard lhs.surname == rhs.surname else { return false }
             guard lhs.age == rhs.age else { return false }

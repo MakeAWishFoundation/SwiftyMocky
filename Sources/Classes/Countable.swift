@@ -36,7 +36,9 @@ public protocol Countable {
 ///       - .less(than: 2)
 ///       - .lessOrEqual(to: 1)
 public struct Count: Countable, ExpressibleByIntegerLiteral {
+    /// [Internal] Count is represented by integer literals, with type Int
     public typealias IntegerLiteralType = Int
+    /// [Internal] Matching closure
     private let match: (Int) -> Bool
 
     /// Creates new count instance, matching specific count

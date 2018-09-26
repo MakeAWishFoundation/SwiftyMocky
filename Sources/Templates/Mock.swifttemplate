@@ -567,12 +567,15 @@ import SourceryRuntime
 
         // Given
         func givenConstructorName(prefix: String = "") -> String {
-            let returnType = returnsSelf ? replaceSelf : TypeWrapper(method.returnTypeName).stripped
+            var returnTypeString = returnsSelf ? replaceSelf : TypeWrapper(method.returnTypeName).stripped
+            if method.returnTypeName.isClosure {
+                returnTypeString = "@escaping \(returnTypeString)"
+            }
 
             if method.parameters.isEmpty {
-                return "static func \(method.shortName)(willReturn: \(returnType)) -> \(prefix)Given"
+                return "static func \(method.shortName)(willReturn: \(returnTypeString)) -> \(prefix)Given"
             } else {
-                return "static func \(method.shortName)(\(parametersForProxySignature()), willReturn: \(returnType)) -> \(prefix)Given"
+                return "static func \(method.shortName)(\(parametersForProxySignature()), willReturn: \(returnTypeString)) -> \(prefix)Given"
             }
         }
 
@@ -623,10 +626,10 @@ import SourceryRuntime
         func performProxyConstructorName(prefix: String = "") -> String {
             if method.parameters.isEmpty {
                 let methodName = returnTypeMatters() ? method.shortName : "\(method.callName)\(wrapGenerics(getGenericsAmongParameters()))"
-                return "static func \(methodName)(\(returningParameter(true,false))perform: \(performProxyClosureType())) -> \(prefix)Perform"
+                return "static func \(methodName)(\(returningParameter(true,false))perform: @escaping \(performProxyClosureType())) -> \(prefix)Perform"
             } else {
                 let methodName = returnTypeMatters() ? method.shortName : "\(method.callName)\(wrapGenerics(getGenericsAmongParameters()))"
-                return "static func \(methodName)(\(parametersForProxySignature()), \(returningParameter(true,false))perform: \(performProxyClosureType())) -> \(prefix)Perform"
+                return "static func \(methodName)(\(parametersForProxySignature()), \(returningParameter(true,false))perform: @escaping \(performProxyClosureType())) -> \(prefix)Perform"
             }
         }
 

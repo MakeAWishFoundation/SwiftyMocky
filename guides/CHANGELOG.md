@@ -4,6 +4,15 @@ All changes to SwiftyMocky project will be documented in this file.
 
 -----
 
+## __2.1.0__ / 2018
+
+#### Fixed:
+* handling @escaping when converting to Any (XCode10)
+* minor improvements for XCode10 and Swift 4.2
+* updated documentation
+
+-----
+
 ## __2.0.1__ / 2018
 
 #### Fixed:

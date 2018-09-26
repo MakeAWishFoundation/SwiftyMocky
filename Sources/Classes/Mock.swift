@@ -11,9 +11,13 @@ import Foundation
 /// Every generated mock implementation adopts **Mock** protocol.
 /// It defines base Mock structure and features.
 public protocol Mock: class {
+    /// Stubbed method and property type
     associatedtype Given
+    /// Verification type
     associatedtype Verify
+    /// Perform type
     associatedtype Perform
+    /// Property accessors type
     associatedtype Property
 
     /// Registers return value for stubbed method, for specified attributes set.
@@ -70,9 +74,13 @@ public protocol Mock: class {
 /// Every mock, that stubs static methods, should adopt **StaticMock** protocol.
 /// It defines base StaticMock structure and features.
 public protocol StaticMock: class {
+    /// Stubbed method and property type
     associatedtype StaticGiven
+    /// Verification type
     associatedtype StaticVerify
+    /// Perform type
     associatedtype StaticPerform
+    /// Property accessors type
     associatedtype StaticProperty
 
     /// As verifying static members relies on static count of invocations, clear allows to 'reset' static mock internals.
@@ -128,4 +136,3 @@ public protocol StaticMock: class {
     ///   - line: for XCTest print purposes
     static func verify(property: StaticProperty, count: Count, file: StaticString, line: UInt)
 }
-
