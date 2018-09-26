@@ -25,5 +25,5 @@ target 'Mocky_Example_macOS' do
 end
 
 post_install do |installer|
-  system("rake sourcery") # use default version from rakefile
+  system("rake sourcery 4.2")
 end
