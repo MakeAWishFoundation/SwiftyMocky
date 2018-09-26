@@ -10,15 +10,21 @@ This seems to be a problem with Swift abi. Either download/build Sourcery binary
 
 Currentyly we support:
 
-- 3.1
-- 4.0
+- 4.2
+- 4.1
 - 4.0.2
+- 4.0
+- 3.1
 
 **Usage from root project dir:**
 
 ```shell
-sh get_sourcery.sh 4.0.2
+sh ./Pods/SwiftyMocky/get_sourcery.sh 4.2
 ```
+
+> **Note!**
+> This script is also shipped with SwiftyMocky when installing via cocoapods
+> Swift version is optional, if you don't specify it, script will use latest supported (4.2 in that case)
 
 **get_sourcery.sh**
 

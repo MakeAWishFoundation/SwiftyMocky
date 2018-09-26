@@ -9,6 +9,8 @@
 
 Join our community on Slack! -> [invitation link here][link-slack]
 
+Check out [guides][link-guides-contents], or full [documentation][link-docs]
+
 ## Overview
 
 **SwiftyMocky** is Lightweight, strongly typed framework for Mockito-like unit testing experience. As Swift doesn't support reflections well enough to allow building mocks in runtime, library depends on [Sourcery](https://github.com/krzysztofzablocki/Sourcery), that scans your source code and generates Swift code for you.
@@ -214,6 +216,9 @@ Every protocol in source directories, having this annotation, will be added to `
 - [ ] add unit tests for template
 - [x] support for tvOS, Linux and MacOS
 - [x] Carthage support
+- [ ] Subscripts support
+- [ ] Stub return values as sequences
+- [ ] Simple tool simplifying configuration process
 
 ## Installation
 
@@ -229,7 +234,7 @@ For [Carthage](https://github.com/Carthage/Carthage) install instructions, see f
 
 ## Current version
 
-Master branch is stabilizing, breaking changes possible in version 2.0. For more information about upcoming changes - see issues and projects section.
+Master branch is stable, minor breaking changes possible in version 3.0. For more information about upcoming changes - see issues and projects section.
 
 ## Authors
 
@@ -251,9 +256,9 @@ SwiftyMocky is available under the MIT license. See the [LICENSE][link-license] 
 
 <!-- Links based on tag -->
 
-[link-docs]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/2.0.1/docs/index.html
-[link-docs-features]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/2.0.1/docs/supported-features.html
-[link-docs-installation]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/2.0.1/docs/installation.html
+[link-docs]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/2.1.0/docs/index.html
+[link-docs-features]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/2.1.0/docs/supported-features.html
+[link-docs-installation]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/2.1.0/docs/installation.html
 
 <!-- Assets -->
 

@@ -1,4 +1,4 @@
-// Generated using Sourcery 0.13.0 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 0.15.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
 
@@ -236,13 +236,13 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
         fileprivate var method: StaticMethodType
         var performs: Any
 
-        static func methodThatThrows(perform: () -> Void) -> StaticPerform {
+        static func methodThatThrows(perform: @escaping () -> Void) -> StaticPerform {
             return StaticPerform(method: .smethodThatThrows, performs: perform)
         }
-        static func methodThatReturnsAndThrows(param: Parameter<String>, perform: (String) -> Void) -> StaticPerform {
+        static func methodThatReturnsAndThrows(param: Parameter<String>, perform: @escaping (String) -> Void) -> StaticPerform {
             return StaticPerform(method: .smethodThatReturnsAndThrows__param_param(param), performs: perform)
         }
-        static func methodThatRethrows(param: Parameter<(String) throws -> Int>, perform: ((String) throws -> Int) -> Void) -> StaticPerform {
+        static func methodThatRethrows(param: Parameter<(String) throws -> Int>, perform: @escaping ((String) throws -> Int) -> Void) -> StaticPerform {
             return StaticPerform(method: .smethodThatRethrows__param_param(param), performs: perform)
         }
     }
@@ -339,13 +339,13 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func methodThatThrows(perform: () -> Void) -> Perform {
+        static func methodThatThrows(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .imethodThatThrows, performs: perform)
         }
-        static func methodThatReturnsAndThrows(param: Parameter<String>, perform: (String) -> Void) -> Perform {
+        static func methodThatReturnsAndThrows(param: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .imethodThatReturnsAndThrows__param_param(param), performs: perform)
         }
-        static func methodThatRethrows(param: Parameter<(String) throws -> Int>, perform: ((String) throws -> Int) -> Void) -> Perform {
+        static func methodThatRethrows(param: Parameter<(String) throws -> Int>, perform: @escaping ((String) throws -> Int) -> Void) -> Perform {
             return Perform(method: .imethodThatRethrows__param_param(param), performs: perform)
         }
     }
@@ -505,7 +505,7 @@ class AVeryAssociatedProtocolMock<TypeT1,TypeT2>: AVeryAssociatedProtocol, Mock 
         fileprivate var method: MethodType
         var performs: Any
 
-        static func fetch(for value: Parameter<T2>, perform: (T2) -> Void) -> Perform {
+        static func fetch(for value: Parameter<T2>, perform: @escaping (T2) -> Void) -> Perform {
             return Perform(method: .ifetch__for_value(value), performs: perform)
         }
     }
@@ -660,10 +660,10 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
         fileprivate var method: StaticMethodType
         var performs: Any
 
-        static func generic<Q>(lhs: Parameter<Q>, rhs: Parameter<Q>, perform: (Q, Q) -> Void) -> StaticPerform {
+        static func generic<Q>(lhs: Parameter<Q>, rhs: Parameter<Q>, perform: @escaping (Q, Q) -> Void) -> StaticPerform {
             return StaticPerform(method: .sgeneric__lhs_lhsrhs_rhs(lhs.wrapAsGeneric(), rhs.wrapAsGeneric()), performs: perform)
         }
-        static func veryConstrained<Q>(lhs: Parameter<Q>, rhs: Parameter<Q>, perform: (Q, Q) -> Void) -> StaticPerform {
+        static func veryConstrained<Q>(lhs: Parameter<Q>, rhs: Parameter<Q>, perform: @escaping (Q, Q) -> Void) -> StaticPerform {
             return StaticPerform(method: .sveryConstrained__lhs_lhsrhs_rhs(lhs.wrapAsGeneric(), rhs.wrapAsGeneric()), performs: perform)
         }
     }
@@ -714,7 +714,7 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func methodConstrained<A>(param: Parameter<A>, perform: (A) -> Void) -> Perform {
+        static func methodConstrained<A>(param: Parameter<A>, perform: @escaping (A) -> Void) -> Perform {
             return Perform(method: .imethodConstrained__param_param(param.wrapAsGeneric()), performs: perform)
         }
     }
@@ -982,10 +982,10 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
         static func similarMethodThatDiffersOnType(value: Parameter<Point>, willReturn: Bool) -> Given {
             return Given(method: .isimilarMethodThatDiffersOnType__value_2(value), returns: willReturn, throws: nil)
         }
-        static func methodWithClosures(success function: Parameter<LinearFunction>, willReturn: ClosureFabric) -> Given {
+        static func methodWithClosures(success function: Parameter<LinearFunction>, willReturn: @escaping ClosureFabric) -> Given {
             return Given(method: .imethodWithClosures__success_function_1(function), returns: willReturn, throws: nil)
         }
-        static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>, willReturn: (Int) -> Void) -> Given {
+        static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>, willReturn: @escaping (Int) -> Void) -> Given {
             return Given(method: .imethodWithClosures__success_function_2(function), returns: willReturn, throws: nil)
         }
     }
@@ -1026,31 +1026,31 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func serviceName(perform: () -> Void) -> Perform {
+        static func serviceName(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .iserviceName, performs: perform)
         }
-        static func aNewWayToSayHooray(perform: () -> Void) -> Perform {
+        static func aNewWayToSayHooray(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .iaNewWayToSayHooray, performs: perform)
         }
-        static func getPoint(from point: Parameter<Point>, perform: (Point) -> Void) -> Perform {
+        static func getPoint(from point: Parameter<Point>, perform: @escaping (Point) -> Void) -> Perform {
             return Perform(method: .igetPoint__from_point(point), performs: perform)
         }
-        static func getPoint(from tuple: Parameter<(Float,Float)>, perform: ((Float,Float)) -> Void) -> Perform {
+        static func getPoint(from tuple: Parameter<(Float,Float)>, perform: @escaping ((Float,Float)) -> Void) -> Perform {
             return Perform(method: .igetPoint__from_tuple(tuple), performs: perform)
         }
-        static func similarMethodThatDiffersOnType(value: Parameter<Float>, perform: (Float) -> Void) -> Perform {
+        static func similarMethodThatDiffersOnType(value: Parameter<Float>, perform: @escaping (Float) -> Void) -> Perform {
             return Perform(method: .isimilarMethodThatDiffersOnType__value_1(value), performs: perform)
         }
-        static func similarMethodThatDiffersOnType(value: Parameter<Point>, perform: (Point) -> Void) -> Perform {
+        static func similarMethodThatDiffersOnType(value: Parameter<Point>, perform: @escaping (Point) -> Void) -> Perform {
             return Perform(method: .isimilarMethodThatDiffersOnType__value_2(value), performs: perform)
         }
-        static func methodWithTypedef(scalar: Parameter<Scalar>, perform: (Scalar) -> Void) -> Perform {
+        static func methodWithTypedef(scalar: Parameter<Scalar>, perform: @escaping (Scalar) -> Void) -> Perform {
             return Perform(method: .imethodWithTypedef__scalar(scalar), performs: perform)
         }
-        static func methodWithClosures(success function: Parameter<LinearFunction>, perform: (LinearFunction) -> Void) -> Perform {
+        static func methodWithClosures(success function: Parameter<LinearFunction>, perform: @escaping (LinearFunction) -> Void) -> Perform {
             return Perform(method: .imethodWithClosures__success_function_1(function), performs: perform)
         }
-        static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>, perform: (((Scalar,Scalar) -> Scalar)?) -> Void) -> Perform {
+        static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>, perform: @escaping (((Scalar,Scalar) -> Scalar)?) -> Void) -> Perform {
             return Perform(method: .imethodWithClosures__success_function_2(function), performs: perform)
         }
     }
@@ -1375,10 +1375,10 @@ class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstraint, 
         fileprivate var method: MethodType
         var performs: Any
 
-        static func decode<T>(type: Parameter<T.Type>, from data: Parameter<Data>, perform: (T.Type, Data) -> Void) -> Perform {
+        static func decode<T>(type: Parameter<T.Type>, from data: Parameter<Data>, perform: @escaping (T.Type, Data) -> Void) -> Perform {
             return Perform(method: .idecode__typefrom_data(type.wrapAsGeneric(), data), performs: perform)
         }
-        static func test<FOO>(type: Parameter<FOO.Type>, perform: (FOO.Type) -> Void) -> Perform {
+        static func test<FOO>(type: Parameter<FOO.Type>, perform: @escaping (FOO.Type) -> Void) -> Perform {
             return Perform(method: .itest__type(type.wrapAsGeneric()), performs: perform)
         }
     }
@@ -1488,7 +1488,7 @@ class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func map<T>(items: Parameter<[T]>, perform: ([T]) -> Void) -> Perform {
+        static func map<T>(items: Parameter<[T]>, perform: @escaping ([T]) -> Void) -> Perform {
             return Perform(method: .imap__items(items.wrapAsGeneric()), performs: perform)
         }
     }
@@ -1605,10 +1605,10 @@ class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func returnNoting(perform: () -> Void) -> Perform {
+        static func returnNoting(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .ireturnNoting, performs: perform)
         }
-        static func someMethod(perform: () -> Void) -> Perform {
+        static func someMethod(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .isomeMethod, performs: perform)
         }
     }
@@ -1857,25 +1857,25 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
         fileprivate var method: MethodType
         var performs: Any
 
-        static func foo<T>(bar: Parameter<T>, returning: String.Type, perform: (T) -> Void) -> Perform {
+        static func foo<T>(bar: Parameter<T>, returning: String.Type, perform: @escaping (T) -> Void) -> Perform {
             return Perform(method: .ifoo__bar_bar_1(bar.wrapAsGeneric()), performs: perform)
         }
-        static func foo<T>(bar: Parameter<T>, returning: Int.Type, perform: (T) -> Void) -> Perform {
+        static func foo<T>(bar: Parameter<T>, returning: Int.Type, perform: @escaping (T) -> Void) -> Perform {
             return Perform(method: .ifoo__bar_bar_2(bar.wrapAsGeneric()), performs: perform)
         }
-        static func foo<T>(bar: Parameter<T>, returning: Float.Type, perform: (T) -> Void) -> Perform {
+        static func foo<T>(bar: Parameter<T>, returning: Float.Type, perform: @escaping (T) -> Void) -> Perform {
             return Perform(method: .ifoo__bar_bar_4(bar.wrapAsGeneric()), performs: perform)
         }
-        static func foo<T>(bar: Parameter<T>, returning: Double.Type, perform: (T) -> Void) -> Perform {
+        static func foo<T>(bar: Parameter<T>, returning: Double.Type, perform: @escaping (T) -> Void) -> Perform {
             return Perform(method: .ifoo__bar_bar_5(bar.wrapAsGeneric()), performs: perform)
         }
-        static func foo<T>(bar: Parameter<String>, returning: Array<T>.Type, perform: (String) -> Void) -> Perform {
+        static func foo<T>(bar: Parameter<String>, returning: Array<T>.Type, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .ifoo__bar_bar_6(bar), performs: perform)
         }
-        static func foo<T>(bar: Parameter<String>, returning: Set<T>.Type, perform: (String) -> Void) -> Perform {
+        static func foo<T>(bar: Parameter<String>, returning: Set<T>.Type, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .ifoo__bar_bar_7(bar), performs: perform)
         }
-        static func foo<T>(bar: Parameter<Bool>, returning: T.Type, perform: (Bool) -> Void) -> Perform {
+        static func foo<T>(bar: Parameter<Bool>, returning: T.Type, perform: @escaping (Bool) -> Void) -> Perform {
             return Perform(method: .ifoo__bar_bar_9(bar), performs: perform)
         }
     }
@@ -2006,10 +2006,10 @@ class ProtocolMethodsThatDifferOnlyInReturnTypeMock: ProtocolMethodsThatDifferOn
         fileprivate var method: MethodType
         var performs: Any
 
-        static func foo(bar: Parameter<String>, returning: String.Type, perform: (String) -> Void) -> Perform {
+        static func foo(bar: Parameter<String>, returning: String.Type, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .ifoo__bar_bar_1(bar), performs: perform)
         }
-        static func foo(bar: Parameter<String>, returning: Int.Type, perform: (String) -> Void) -> Perform {
+        static func foo(bar: Parameter<String>, returning: Int.Type, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .ifoo__bar_bar_2(bar), performs: perform)
         }
     }
@@ -2140,7 +2140,7 @@ class ProtocolWithAssociatedTypeMock<TypeT>: ProtocolWithAssociatedType, Mock wh
         fileprivate var method: MethodType
         var performs: Any
 
-        static func methodWithType(t: Parameter<T>, perform: (T) -> Void) -> Perform {
+        static func methodWithType(t: Parameter<T>, perform: @escaping (T) -> Void) -> Perform {
             return Perform(method: .imethodWithType__t_t(t), performs: perform)
         }
     }
@@ -2277,13 +2277,13 @@ class ProtocolWithClosuresMock: ProtocolWithClosures, Mock {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func methodThatTakes(closure: Parameter<(Int) -> Int>, perform: ((Int) -> Int) -> Void) -> Perform {
+        static func methodThatTakes(closure: Parameter<(Int) -> Int>, perform: @escaping ((Int) -> Int) -> Void) -> Perform {
             return Perform(method: .imethodThatTakes__closure_closure(closure), performs: perform)
         }
-        static func methodThatTakesEscaping(closure: Parameter<(Int) -> Int>, perform: (@escaping (Int) -> Int) -> Void) -> Perform {
+        static func methodThatTakesEscaping(closure: Parameter<(Int) -> Int>, perform: @escaping (@escaping (Int) -> Int) -> Void) -> Perform {
             return Perform(method: .imethodThatTakesEscaping__closure_closure(closure), performs: perform)
         }
-        static func methodThatTakesCompletionBlock(completion: Parameter<(Bool,Error?) -> Void>, perform: ((Bool,Error?) -> Void) -> Void) -> Perform {
+        static func methodThatTakesCompletionBlock(completion: Parameter<(Bool,Error?) -> Void>, perform: @escaping ((Bool,Error?) -> Void) -> Void) -> Perform {
             return Perform(method: .imethodThatTakesCompletionBlock__completion_completion(completion), performs: perform)
         }
     }
@@ -2413,10 +2413,10 @@ class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func methodThatTakesUser(user: Parameter<UserObject>, perform: (UserObject) -> Void) -> Perform {
+        static func methodThatTakesUser(user: Parameter<UserObject>, perform: @escaping (UserObject) -> Void) -> Perform {
             return Perform(method: .imethodThatTakesUser__user_user(user), performs: perform)
         }
-        static func methodThatTakesArrayOfUsers(array: Parameter<[UserObject]>, perform: ([UserObject]) -> Void) -> Perform {
+        static func methodThatTakesArrayOfUsers(array: Parameter<[UserObject]>, perform: @escaping ([UserObject]) -> Void) -> Perform {
             return Perform(method: .imethodThatTakesArrayOfUsers__array_array(array), performs: perform)
         }
     }
@@ -2548,10 +2548,10 @@ class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func methodWithGeneric<T>(lhs: Parameter<T>, rhs: Parameter<T>, perform: (T, T) -> Void) -> Perform {
+        static func methodWithGeneric<T>(lhs: Parameter<T>, rhs: Parameter<T>, perform: @escaping (T, T) -> Void) -> Perform {
             return Perform(method: .imethodWithGeneric__lhs_lhsrhs_rhs(lhs.wrapAsGeneric(), rhs.wrapAsGeneric()), performs: perform)
         }
-        static func methodWithGenericConstraint<U>(param: Parameter<[U]>, perform: ([U]) -> Void) -> Perform {
+        static func methodWithGenericConstraint<U>(param: Parameter<[U]>, perform: @escaping ([U]) -> Void) -> Perform {
             return Perform(method: .imethodWithGenericConstraint__param_param(param.wrapAsGeneric()), performs: perform)
         }
     }
@@ -2661,7 +2661,7 @@ class ProtocolWithGenericMethodsNestedMock: ProtocolWithGenericMethodsNested, Mo
         fileprivate var method: MethodType
         var performs: Any
 
-        static func methodWithGeneric<T>(resource: Parameter<Resource<T>>, perform: (Resource<T>) -> Void) -> Perform {
+        static func methodWithGeneric<T>(resource: Parameter<Resource<T>>, perform: @escaping (Resource<T>) -> Void) -> Perform {
             return Perform(method: .imethodWithGeneric__resource_resource(resource.wrapAsGeneric()), performs: perform)
         }
     }
@@ -2969,7 +2969,7 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
         fileprivate var method: StaticMethodType
         var performs: Any
 
-        static func defaultEmail(set newValue: Parameter<String?>, perform: (String!) -> Void) -> StaticPerform {
+        static func defaultEmail(set newValue: Parameter<String?>, perform: @escaping (String!) -> Void) -> StaticPerform {
             return StaticPerform(method: .sdefaultEmail__set_newValue(newValue), performs: perform)
         }
     }
@@ -3038,10 +3038,10 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func name(set newValue: Parameter<String>, perform: (String) -> Void) -> Perform {
+        static func name(set newValue: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .iname__set_newValue(newValue), performs: perform)
         }
-        static func email(set: Parameter<String?>, perform: (String!) -> Void) -> Perform {
+        static func email(set: Parameter<String?>, perform: @escaping (String!) -> Void) -> Perform {
             return Perform(method: .iemail__set_set(set), performs: perform)
         }
     }
@@ -3230,7 +3230,7 @@ class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, StaticMock
         fileprivate var method: StaticMethodType
         var performs: Any
 
-        static func staticMethod(param: Parameter<Int>, perform: (Int) -> Void) -> StaticPerform {
+        static func staticMethod(param: Parameter<Int>, perform: @escaping (Int) -> Void) -> StaticPerform {
             return StaticPerform(method: .sstaticMethod__param_param(param), performs: perform)
         }
     }
@@ -3435,10 +3435,10 @@ class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func methodThatThrows(perform: () -> Void) -> Perform {
+        static func methodThatThrows(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .imethodThatThrows, performs: perform)
         }
-        static func methodThatReturnsAndThrows(param: Parameter<Int>, perform: (Int) -> Void) -> Perform {
+        static func methodThatReturnsAndThrows(param: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
             return Perform(method: .imethodThatReturnsAndThrows__param_param(param), performs: perform)
         }
     }
@@ -3548,7 +3548,7 @@ class ProtocolWithTuplesMock: ProtocolWithTuples, Mock {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func methodThatTakesTuple(tuple: Parameter<(String,Int)>, perform: ((String,Int)) -> Void) -> Perform {
+        static func methodThatTakesTuple(tuple: Parameter<(String,Int)>, perform: @escaping ((String,Int)) -> Void) -> Perform {
             return Perform(method: .imethodThatTakesTuple__tuple_tuple(tuple), performs: perform)
         }
     }
@@ -3751,10 +3751,10 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
         static func similarMethodThatDiffersOnType(value: Parameter<Point>, willReturn: Bool) -> Given {
             return Given(method: .isimilarMethodThatDiffersOnType__value_2(value), returns: willReturn, throws: nil)
         }
-        static func methodWithClosures(success function: Parameter<LinearFunction>, willReturn: ClosureFabric) -> Given {
+        static func methodWithClosures(success function: Parameter<LinearFunction>, willReturn: @escaping ClosureFabric) -> Given {
             return Given(method: .imethodWithClosures__success_function_1(function), returns: willReturn, throws: nil)
         }
-        static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>, willReturn: (Int) -> Void) -> Given {
+        static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>, willReturn: @escaping (Int) -> Void) -> Given {
             return Given(method: .imethodWithClosures__success_function_2(function), returns: willReturn, throws: nil)
         }
     }
@@ -3792,28 +3792,28 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func serviceName(perform: () -> Void) -> Perform {
+        static func serviceName(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .iserviceName, performs: perform)
         }
-        static func getPoint(from point: Parameter<Point>, perform: (Point) -> Void) -> Perform {
+        static func getPoint(from point: Parameter<Point>, perform: @escaping (Point) -> Void) -> Perform {
             return Perform(method: .igetPoint__from_point(point), performs: perform)
         }
-        static func getPoint(from tuple: Parameter<(Float,Float)>, perform: ((Float,Float)) -> Void) -> Perform {
+        static func getPoint(from tuple: Parameter<(Float,Float)>, perform: @escaping ((Float,Float)) -> Void) -> Perform {
             return Perform(method: .igetPoint__from_tuple(tuple), performs: perform)
         }
-        static func similarMethodThatDiffersOnType(value: Parameter<Float>, perform: (Float) -> Void) -> Perform {
+        static func similarMethodThatDiffersOnType(value: Parameter<Float>, perform: @escaping (Float) -> Void) -> Perform {
             return Perform(method: .isimilarMethodThatDiffersOnType__value_1(value), performs: perform)
         }
-        static func similarMethodThatDiffersOnType(value: Parameter<Point>, perform: (Point) -> Void) -> Perform {
+        static func similarMethodThatDiffersOnType(value: Parameter<Point>, perform: @escaping (Point) -> Void) -> Perform {
             return Perform(method: .isimilarMethodThatDiffersOnType__value_2(value), performs: perform)
         }
-        static func methodWithTypedef(scalar: Parameter<Scalar>, perform: (Scalar) -> Void) -> Perform {
+        static func methodWithTypedef(scalar: Parameter<Scalar>, perform: @escaping (Scalar) -> Void) -> Perform {
             return Perform(method: .imethodWithTypedef__scalar(scalar), performs: perform)
         }
-        static func methodWithClosures(success function: Parameter<LinearFunction>, perform: (LinearFunction) -> Void) -> Perform {
+        static func methodWithClosures(success function: Parameter<LinearFunction>, perform: @escaping (LinearFunction) -> Void) -> Perform {
             return Perform(method: .imethodWithClosures__success_function_1(function), performs: perform)
         }
-        static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>, perform: (((Scalar,Scalar) -> Scalar)?) -> Void) -> Perform {
+        static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>, perform: @escaping (((Scalar,Scalar) -> Scalar)?) -> Void) -> Perform {
             return Perform(method: .imethodWithClosures__success_function_2(function), performs: perform)
         }
     }
@@ -3970,7 +3970,7 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
         fileprivate var method: StaticMethodType
         var performs: Any
 
-        static func construct(param value: Parameter<Int>, perform: (Int) -> Void) -> StaticPerform {
+        static func construct(param value: Parameter<Int>, perform: @escaping (Int) -> Void) -> StaticPerform {
             return StaticPerform(method: .sconstruct__param_value(value), performs: perform)
         }
     }
@@ -4045,13 +4045,13 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func methodReturningSelf(perform: () -> Void) -> Perform {
+        static func methodReturningSelf(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .imethodReturningSelf, performs: perform)
         }
-        static func compare(with other: Parameter<SelfConstrainedProtocolMock>, perform: (SelfConstrainedProtocolMock) -> Void) -> Perform {
+        static func compare(with other: Parameter<SelfConstrainedProtocolMock>, perform: @escaping (SelfConstrainedProtocolMock) -> Void) -> Perform {
             return Perform(method: .icompare__with_other(other), performs: perform)
         }
-        static func genericMethodWithNestedSelf<T>(param: Parameter<Int>, second: Parameter<T>, other: Parameter<(SelfConstrainedProtocolMock,SelfConstrainedProtocolMock)>, perform: (Int, T, (SelfConstrainedProtocolMock,SelfConstrainedProtocolMock)) -> Void) -> Perform {
+        static func genericMethodWithNestedSelf<T>(param: Parameter<Int>, second: Parameter<T>, other: Parameter<(SelfConstrainedProtocolMock,SelfConstrainedProtocolMock)>, perform: @escaping (Int, T, (SelfConstrainedProtocolMock,SelfConstrainedProtocolMock)) -> Void) -> Perform {
             return Perform(method: .igenericMethodWithNestedSelf__param_paramsecond_secondother_other(param, second.wrapAsGeneric(), other), performs: perform)
         }
     }
@@ -4329,16 +4329,16 @@ class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInheritsOt
         fileprivate var method: MethodType
         var performs: Any
 
-        static func simpleMethod(perform: () -> Void) -> Perform {
+        static func simpleMethod(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .isimpleMethod, performs: perform)
         }
-        static func simpleMehtodThatReturns(perform: () -> Void) -> Perform {
+        static func simpleMehtodThatReturns(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .isimpleMehtodThatReturns, performs: perform)
         }
-        static func simpleMehtodThatReturns(param: Parameter<String>, perform: (String) -> Void) -> Perform {
+        static func simpleMehtodThatReturns(param: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .isimpleMehtodThatReturns__param_param(param), performs: perform)
         }
-        static func simpleMehtodThatReturns(optionalParam: Parameter<String?>, perform: (String?) -> Void) -> Perform {
+        static func simpleMehtodThatReturns(optionalParam: Parameter<String?>, perform: @escaping (String?) -> Void) -> Perform {
             return Perform(method: .isimpleMehtodThatReturns__optionalParam_optionalParam(optionalParam), performs: perform)
         }
     }
@@ -4513,16 +4513,16 @@ class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func getArray(perform: () -> Void) -> Perform {
+        static func getArray(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .igetArray, performs: perform)
         }
-        static func map(array: Parameter<[String]>, param: Parameter<Int>, perform: ([String], Int) -> Void) -> Perform {
+        static func map(array: Parameter<[String]>, param: Parameter<Int>, perform: @escaping ([String], Int) -> Void) -> Perform {
             return Perform(method: .imap__array_arrayparam_param(array, param), performs: perform)
         }
-        static func use(dictionary: Parameter<[Int: String]>, perform: ([Int: String]) -> Void) -> Perform {
+        static func use(dictionary: Parameter<[Int: String]>, perform: @escaping ([Int: String]) -> Void) -> Perform {
             return Perform(method: .iuse__dictionary_dictionary(dictionary), performs: perform)
         }
-        static func verify(set: Parameter<Set<Int>>, perform: (Set<Int>) -> Void) -> Perform {
+        static func verify(set: Parameter<Set<Int>>, perform: @escaping (Set<Int>) -> Void) -> Perform {
             return Perform(method: .iverify__set_set(set), performs: perform)
         }
     }
@@ -4649,7 +4649,7 @@ class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBothMeth
         fileprivate var method: MethodType
         var performs: Any
 
-        static func simpleMethod(perform: () -> Void) -> Perform {
+        static func simpleMethod(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .isimpleMethod, performs: perform)
         }
     }
@@ -4816,16 +4816,16 @@ class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func simpleMethod(perform: () -> Void) -> Perform {
+        static func simpleMethod(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .isimpleMethod, performs: perform)
         }
-        static func simpleMehtodThatReturns(perform: () -> Void) -> Perform {
+        static func simpleMehtodThatReturns(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .isimpleMehtodThatReturns, performs: perform)
         }
-        static func simpleMehtodThatReturns(param: Parameter<String>, perform: (String) -> Void) -> Perform {
+        static func simpleMehtodThatReturns(param: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .isimpleMehtodThatReturns__param_param(param), performs: perform)
         }
-        static func simpleMehtodThatReturns(optionalParam: Parameter<String?>, perform: (String?) -> Void) -> Perform {
+        static func simpleMehtodThatReturns(optionalParam: Parameter<String?>, perform: @escaping (String?) -> Void) -> Perform {
             return Perform(method: .isimpleMehtodThatReturns__optionalParam_optionalParam(optionalParam), performs: perform)
         }
     }
@@ -5147,16 +5147,16 @@ class UserNetworkTypeMock: UserNetworkType, Mock {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func getUser(for id: Parameter<String>, completion: Parameter<(User?) -> Void>, perform: (String, (User?) -> Void) -> Void) -> Perform {
+        static func getUser(for id: Parameter<String>, completion: Parameter<(User?) -> Void>, perform: @escaping (String, (User?) -> Void) -> Void) -> Perform {
             return Perform(method: .igetUser__for_idcompletion_completion(id, completion), performs: perform)
         }
-        static func getUserEscaping(for id: Parameter<String>, completion: Parameter<(User?,Error?) -> Void>, perform: (String, @escaping (User?,Error?) -> Void) -> Void) -> Perform {
+        static func getUserEscaping(for id: Parameter<String>, completion: Parameter<(User?,Error?) -> Void>, perform: @escaping (String, @escaping (User?,Error?) -> Void) -> Void) -> Perform {
             return Perform(method: .igetUserEscaping__for_idcompletion_completion(id, completion), performs: perform)
         }
-        static func doSomething(prop: Parameter<() -> String>, perform: (@autoclosure () -> String) -> Void) -> Perform {
+        static func doSomething(prop: Parameter<() -> String>, perform: @escaping (@autoclosure () -> String) -> Void) -> Perform {
             return Perform(method: .idoSomething__prop_prop(prop), performs: perform)
         }
-        static func testDefaultValues(value: Parameter<String>, perform: (String) -> Void) -> Perform {
+        static func testDefaultValues(value: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .itestDefaultValues__value_value(value), performs: perform)
         }
     }
@@ -5282,10 +5282,10 @@ class UserStorageTypeMock: UserStorageType, Mock {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func surname(for name: Parameter<String>, perform: (String) -> Void) -> Perform {
+        static func surname(for name: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .isurname__for_name(name), performs: perform)
         }
-        static func storeUser(name: Parameter<String>, surname: Parameter<String>, perform: (String, String) -> Void) -> Perform {
+        static func storeUser(name: Parameter<String>, surname: Parameter<String>, perform: @escaping (String, String) -> Void) -> Perform {
             return Perform(method: .istoreUser__name_namesurname_surname(name, surname), performs: perform)
         }
     }

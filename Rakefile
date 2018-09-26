@@ -21,7 +21,7 @@ end
 ## [ Sourcery ] ################################################################
 
 desc "Download prebuilt sourcery app."
-desc "Can specify version as argument (default is 4.0.2)"
+desc "Can specify version as argument (default is 4.2)"
 task :sourcery do
     ARGV.each { |a| task a.to_sym do ; end }
     sh "sh get_sourcery.sh " + ARGV[1].to_s + " " + ARGV[2].to_s
@@ -31,7 +31,7 @@ end
 
 desc "Install project dependencies"
 desc "In case of need, pod repo update will be invoked"
-task :pod_install do
+task :pods do
 	begin
 		sh "pod install"
 	rescue

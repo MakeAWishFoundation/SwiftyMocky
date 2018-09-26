@@ -11,6 +11,7 @@ import Foundation
 public class Matcher {
     /// Shared **Matcher** instance
     public static var `default` = Matcher()
+    /// [Internal] Matchers storage
     private var matchers: [(Mirror,Any)] = []
 
     /// Create new clean matcher instance.
@@ -362,4 +363,3 @@ public class Matcher {
         return { $0 == $1 }
     }
 }
-

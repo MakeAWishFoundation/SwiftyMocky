@@ -126,16 +126,16 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func storeItems(items: Parameter<[Item]>, perform: ([Item]) -> Void) -> Perform {
+        static func storeItems(items: Parameter<[Item]>, perform: @escaping ([Item]) -> Void) -> Perform {
             return Perform(method: .istoreItems__items_items(items), performs: perform)
         }
-        static func storeDetails(details: Parameter<ItemDetails>, perform: (ItemDetails) -> Void) -> Perform {
+        static func storeDetails(details: Parameter<ItemDetails>, perform: @escaping (ItemDetails) -> Void) -> Perform {
             return Perform(method: .istoreDetails__details_details(details), performs: perform)
         }
-        static func storedItems(perform: () -> Void) -> Perform {
+        static func storedItems(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .istoredItems, performs: perform)
         }
-        static func storedDetails(item: Parameter<Item>, perform: (Item) -> Void) -> Perform {
+        static func storedDetails(item: Parameter<Item>, perform: @escaping (Item) -> Void) -> Perform {
             return Perform(method: .istoredDetails__item_item(item), performs: perform)
         }
     }

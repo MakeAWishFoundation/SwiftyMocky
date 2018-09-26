@@ -1,47 +1,12 @@
 {
   "warnings": [
     {
-      "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Classes/Parameter.swift",
-      "line": 141,
-      "symbol": "Parameter.compare(lhs:rhs:with:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.static",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Classes/Parameter.swift",
-      "line": 152,
-      "symbol": "Parameter.compare(lhs:rhs:with:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.static",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Classes/Parameter.swift",
-      "line": 171,
-      "symbol": "Parameter.compare(lhs:rhs:with:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.static",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Classes/Parameter.swift",
-      "line": 204,
-      "symbol": "Parameter.wrapAsGeneric()",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Classes/Parameter.swift",
-      "line": 254,
-      "symbol": "Parameter.compare(lhs:rhs:with:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.static",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Classes/Parameter.swift",
-      "line": 282,
-      "symbol": "Parameter.compare(lhs:rhs:with:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Parameter.swift",
+      "line": 180,
+      "symbol": "Parameter.Element",
+      "symbol_kind": "source.lang.swift.decl.typealias",
       "warning": "undocumented"
     }
   ],
-  "source_directory": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky"
+  "source_directory": "/Users/amichnia/Projects/SwiftyMocky"
 }

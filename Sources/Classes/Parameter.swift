@@ -138,6 +138,13 @@ public extension Parameter {
 }
 
 public extension Parameter where ValueType: GenericAttributeType {
+    /// [Internal] Compare two parameters
+    ///
+    /// - Parameters:
+    ///   - lhs: one
+    ///   - rhs: other
+    ///   - matcher: Matcher instance used for comparison
+    /// - Returns: true if they are matching, false otherwise
     public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
         switch (lhs, rhs) {
             case (._, _): return true
@@ -149,6 +156,13 @@ public extension Parameter where ValueType: GenericAttributeType {
 }
 
 public extension Parameter where ValueType: Equatable {
+    /// [Internal] Compare two parameters
+    ///
+    /// - Parameters:
+    ///   - lhs: one
+    ///   - rhs: other
+    ///   - matcher: Matcher instance used for comparison
+    /// - Returns: true if they are matching, false otherwise
     public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
         switch (lhs, rhs) {
             case (._, _): return true
@@ -167,7 +181,13 @@ public extension Parameter where ValueType: Sequence {
 #else
     typealias Element = ValueType.Iterator.Element
 #endif
-
+    /// [Internal] Compare two parameters
+    ///
+    /// - Parameters:
+    ///   - lhs: one
+    ///   - rhs: other
+    ///   - matcher: Matcher instance used for comparison
+    /// - Returns: true if they are matching, false otherwise
     public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
         switch (lhs, rhs) {
             case (._, _): return true
@@ -201,6 +221,9 @@ public extension Parameter where ValueType: Sequence {
         }
     }
 
+    /// [Internal] Wraps as generic Parameter instance. Should not be ever called directly.
+    ///
+    /// - Returns: Wrapped parameter
     public func wrapAsGeneric() -> Parameter<GenericAttribute> {
         switch self {
             case ._:
@@ -252,6 +275,13 @@ public extension Parameter where ValueType: Sequence {
 #if swift(>=3.2)
 #if swift(>=4.1)
 public extension Parameter where ValueType: Sequence, ValueType: Equatable {
+    /// [Internal] Compare two parameters
+    ///
+    /// - Parameters:
+    ///   - lhs: one
+    ///   - rhs: other
+    ///   - matcher: Matcher instance used for comparison
+    /// - Returns: true if they are matching, false otherwise
     public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
         switch (lhs, rhs) {
         case (._, _): return true
@@ -265,6 +295,13 @@ public extension Parameter where ValueType: Sequence, ValueType: Equatable {
 }
 #else
 public extension Parameter where ValueType: Sequence, ValueType.Element: Equatable {
+    /// [Internal] Compare two parameters
+    ///
+    /// - Parameters:
+    ///   - lhs: one
+    ///   - rhs: other
+    ///   - matcher: Matcher instance used for comparison
+    /// - Returns: true if they are matching, false otherwise
     public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
         switch (lhs, rhs) {
             case (._, _): return true
@@ -293,6 +330,13 @@ public extension Parameter where ValueType: Sequence, ValueType.Element: Equatab
 }
 
 public extension Parameter where ValueType: Sequence, ValueType.Element: Equatable, ValueType: Equatable {
+    /// [Internal] Compare two parameters
+    ///
+    /// - Parameters:
+    ///   - lhs: one
+    ///   - rhs: other
+    ///   - matcher: Matcher instance used for comparison
+    /// - Returns: true if they are matching, false otherwise
     public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
         switch (lhs, rhs) {
             case (._, _): return true
@@ -307,6 +351,13 @@ public extension Parameter where ValueType: Sequence, ValueType.Element: Equatab
 #endif
 #else
 public extension Parameter where ValueType: Sequence, ValueType.Iterator.Element: Equatable {
+    /// [Internal] Compare two parameters
+    ///
+    /// - Parameters:
+    ///   - lhs: one
+    ///   - rhs: other
+    ///   - matcher: Matcher instance used for comparison
+    /// - Returns: true if they are matching, false otherwise
     public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
         switch (lhs, rhs) {
             case (._, _): return true
@@ -335,6 +386,13 @@ public extension Parameter where ValueType: Sequence, ValueType.Iterator.Element
 }
 
 public extension Parameter where ValueType: Sequence, ValueType.Iterator.Element: Equatable, ValueType: Equatable {
+    /// [Internal] Compare two parameters
+    ///
+    /// - Parameters:
+    ///   - lhs: one
+    ///   - rhs: other
+    ///   - matcher: Matcher instance used for comparison
+    /// - Returns: true if they are matching, false otherwise
     public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
         switch (lhs, rhs) {
             case (._, _): return true
