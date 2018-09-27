@@ -56,6 +56,7 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
 
     typealias PropertyStub = Given
     typealias MethodStub = Given
+    typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -371,7 +372,6 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
 			case .p_optionalClosure_set(let newValue): return newValue.intValue
             case .p_implicitelyUnwrappedClosure_get: return 0
 			case .p_implicitelyUnwrappedClosure_set(let newValue): return newValue.intValue
-
             }
         }
     }
@@ -582,6 +582,7 @@ class AVeryAssociatedProtocolMock<T1,T2>: AVeryAssociatedProtocol, Mock where T1
 
     typealias PropertyStub = Given
     typealias MethodStub = Given
+    typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -622,7 +623,6 @@ class AVeryAssociatedProtocolMock<T1,T2>: AVeryAssociatedProtocol, Mock where T1
         func intValue() -> Int {
             switch self {
             case let .m_fetch__for_value(p0): return p0.intValue
-
             }
         }
     }
@@ -736,6 +736,7 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
 
     typealias PropertyStub = Given
     typealias MethodStub = Given
+    typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -898,7 +899,6 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
         func intValue() -> Int {
             switch self {
             case let .m_methodConstrained__param_param(p0): return p0.intValue
-
             }
         }
     }
@@ -1054,6 +1054,7 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
 
     typealias PropertyStub = Given
     typealias MethodStub = Given
+    typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -1304,7 +1305,6 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
             case let .m_methodWithArrayOfInt__p_p(p0): return p0.intValue
             case let .m_methodWithArrayOfOther__p_p(p0): return p0.intValue
             case let .m_methodWithDict__p_p(p0): return p0.intValue
-
             }
         }
     }
@@ -1594,6 +1594,7 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
 
     typealias PropertyStub = Given
     typealias MethodStub = Given
+    typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -1781,7 +1782,6 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
             case let .m_methodWithClosures__success_function_1(p0): return p0.intValue
             case let .m_methodWithClosures__success_function_2(p0): return p0.intValue
             case .p_youCouldOnlyGetThis_get: return 0
-
             }
         }
     }
@@ -2010,6 +2010,7 @@ class DateSortableMock: DateSortable, Mock {
 
     typealias PropertyStub = Given
     typealias MethodStub = Given
+    typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -2043,7 +2044,6 @@ class DateSortableMock: DateSortable, Mock {
         func intValue() -> Int {
             switch self {
             case .p_date_get: return 0
-
             }
         }
     }
@@ -2148,6 +2148,7 @@ class EmptyProtocolMock: EmptyProtocol, Mock {
 
     typealias PropertyStub = Given
     typealias MethodStub = Given
+    typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -2259,6 +2260,7 @@ class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstraint, 
 
     typealias PropertyStub = Given
     typealias MethodStub = Given
+    typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -2320,7 +2322,6 @@ class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstraint, 
             switch self {
             case let .m_decode__typefrom_data(p0, p1): return p0.intValue + p1.intValue
             case let .m_test__type(p0): return p0.intValue
-
             }
         }
     }
@@ -2450,6 +2451,7 @@ class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
 
     typealias PropertyStub = Given
     typealias MethodStub = Given
+    typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -2490,7 +2492,6 @@ class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
         func intValue() -> Int {
             switch self {
             case let .m_map__items(p0): return p0.intValue
-
             }
         }
     }
@@ -2604,6 +2605,7 @@ class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
 
     typealias PropertyStub = Given
     typealias MethodStub = Given
+    typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -2646,7 +2648,6 @@ class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
             switch self {
             case .m_returnNoting: return 0
             case .m_someMethod: return 0
-
             }
         }
     }
@@ -2756,6 +2757,7 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
 
     typealias PropertyStub = Given
     typealias MethodStub = Given
+    typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -2939,7 +2941,6 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
             case let .m_foo__bar_bar_6(p0): return p0.intValue
             case let .m_foo__bar_bar_7(p0): return p0.intValue
             case let .m_foo__bar_bar_9(p0): return p0.intValue
-
             }
         }
     }
@@ -3149,6 +3150,7 @@ class ProtocolMethodsThatDifferOnlyInReturnTypeMock: ProtocolMethodsThatDifferOn
 
     typealias PropertyStub = Given
     typealias MethodStub = Given
+    typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -3209,7 +3211,6 @@ class ProtocolMethodsThatDifferOnlyInReturnTypeMock: ProtocolMethodsThatDifferOn
             switch self {
             case let .m_foo__bar_bar_1(p0): return p0.intValue
             case let .m_foo__bar_bar_2(p0): return p0.intValue
-
             }
         }
     }
@@ -3339,6 +3340,7 @@ class ProtocolWithAssociatedTypeMock<T>: ProtocolWithAssociatedType, Mock where 
 
     typealias PropertyStub = Given
     typealias MethodStub = Given
+    typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -3392,7 +3394,6 @@ class ProtocolWithAssociatedTypeMock<T>: ProtocolWithAssociatedType, Mock where 
             switch self {
             case let .m_methodWithType__t_t(p0): return p0.intValue
             case .p_sequence_get: return 0
-
             }
         }
     }
@@ -3513,6 +3514,7 @@ class ProtocolWithClosuresMock: ProtocolWithClosures, Mock {
 
     typealias PropertyStub = Given
     typealias MethodStub = Given
+    typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -3568,7 +3570,6 @@ class ProtocolWithClosuresMock: ProtocolWithClosures, Mock {
             case let .m_methodThatTakes__closure_closure(p0): return p0.intValue
             case let .m_methodThatTakesEscaping__closure_closure(p0): return p0.intValue
             case let .m_methodThatTakesCompletionBlock__completion_completion(p0): return p0.intValue
-
             }
         }
     }
@@ -3684,6 +3685,7 @@ class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock {
 
     typealias PropertyStub = Given
     typealias MethodStub = Given
+    typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -3744,7 +3746,6 @@ class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock {
             switch self {
             case let .m_methodThatTakesUser__user_user(p0): return p0.intValue
             case let .m_methodThatTakesArrayOfUsers__array_array(p0): return p0.intValue
-
             }
         }
     }
@@ -3874,6 +3875,7 @@ class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
 
     typealias PropertyStub = Given
     typealias MethodStub = Given
+    typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -3935,7 +3937,6 @@ class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
             switch self {
             case let .m_methodWithGeneric__lhs_lhsrhs_rhs(p0, p1): return p0.intValue + p1.intValue
             case let .m_methodWithGenericConstraint__param_param(p0): return p0.intValue
-
             }
         }
     }
@@ -4065,6 +4066,7 @@ class ProtocolWithGenericMethodsNestedMock: ProtocolWithGenericMethodsNested, Mo
 
     typealias PropertyStub = Given
     typealias MethodStub = Given
+    typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -4105,7 +4107,6 @@ class ProtocolWithGenericMethodsNestedMock: ProtocolWithGenericMethodsNested, Mo
         func intValue() -> Int {
             switch self {
             case let .m_methodWithGeneric__resource_resource(p0): return p0.intValue
-
             }
         }
     }
@@ -4219,6 +4220,7 @@ class ProtocolWithInitializersMock: ProtocolWithInitializers, Mock {
 
     typealias PropertyStub = Given
     typealias MethodStub = Given
+    typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -4267,7 +4269,6 @@ class ProtocolWithInitializersMock: ProtocolWithInitializers, Mock {
             switch self {
             case .p_param_get: return 0
             case .p_other_get: return 0
-
             }
         }
     }
@@ -4375,6 +4376,7 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
 
     typealias PropertyStub = Given
     typealias MethodStub = Given
+    typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -4560,7 +4562,6 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
 			case .p_name_set(let newValue): return newValue.intValue
             case .p_email_get: return 0
 			case .p_email_set(let newValue): return newValue.intValue
-
             }
         }
     }
@@ -4726,6 +4727,7 @@ class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, StaticMock
 
     typealias PropertyStub = Given
     typealias MethodStub = Given
+    typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -4987,6 +4989,7 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 
     typealias PropertyStub = Given
     typealias MethodStub = Given
+    typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -5026,22 +5029,70 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
     }
 
     subscript (_ index: Int) -> String {
-		get { onFatalFailure("Stubbing subscripts is not implemented yet."); Failure("unimplemented") }
-		set { onFatalFailure("Stubbing subscripts is not implemented yet."); Failure("unimplemented") }
+		get {
+			addInvocation(.subscript_get_index_1(Parameter<Int>.value(index)))
+			do {
+				return try methodReturnValue(.subscript_get_index_1(Parameter<Int>.value(index))).casted()
+			} catch {
+				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubmessage")
+			}
+		}
+		set {
+			addInvocation(.subscript_set_index_1(Parameter<Int>.value(index), Parameter<String>.value(newValue)))
+		}
+	}
+
+    subscript (_ x: Int, _ y: Int) -> String {
+		get {
+			addInvocation(.subscript_get_x_y(Parameter<Int>.value(x), Parameter<Int>.value(y)))
+			do {
+				return try methodReturnValue(.subscript_get_x_y(Parameter<Int>.value(x), Parameter<Int>.value(y))).casted()
+			} catch {
+				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubmessage")
+			}
+		}
+		set {
+			addInvocation(.subscript_set_x_y(Parameter<Int>.value(x), Parameter<Int>.value(y), Parameter<String>.value(newValue)))
+		}
 	}
 
     subscript (_ index: String) -> String {
-		get { onFatalFailure("Stubbing subscripts is not implemented yet."); Failure("unimplemented") }
-		set { onFatalFailure("Stubbing subscripts is not implemented yet."); Failure("unimplemented") }
+		get {
+			addInvocation(.subscript_get_index_2(Parameter<String>.value(index)))
+			do {
+				return try methodReturnValue(.subscript_get_index_2(Parameter<String>.value(index))).casted()
+			} catch {
+				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubmessage")
+			}
+		}
+		set {
+			addInvocation(.subscript_set_index_2(Parameter<String>.value(index), Parameter<String>.value(newValue)))
+		}
 	}
 
     subscript (label name: String) -> Int {
-		get { onFatalFailure("Stubbing subscripts is not implemented yet."); Failure("unimplemented") }
+		get {
+			addInvocation(.subscript_get_label_name(Parameter<String>.value(name)))
+			do {
+				return try methodReturnValue(.subscript_get_label_name(Parameter<String>.value(name))).casted()
+			} catch {
+				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubmessage")
+			}
+		}
 	}
 
     subscript (closure c: @escaping (Int) -> Void) -> Bool {
-		get { onFatalFailure("Stubbing subscripts is not implemented yet."); Failure("unimplemented") }
-		set { onFatalFailure("Stubbing subscripts is not implemented yet."); Failure("unimplemented") }
+		get {
+			addInvocation(.subscript_get_closure_c(Parameter<(Int) -> Void>.value(c)))
+			do {
+				return try methodReturnValue(.subscript_get_closure_c(Parameter<(Int) -> Void>.value(c))).casted()
+			} catch {
+				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubmessage")
+			}
+		}
+		set {
+			addInvocation(.subscript_set_closure_c(Parameter<(Int) -> Void>.value(c), Parameter<Bool>.value(newValue)))
+		}
 	}
 
     fileprivate enum MethodType {
@@ -5049,12 +5100,14 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
         case p_something_get
 		case p_something_set(Parameter<Any>)
         case subscript_get_index_1(Parameter<Int>)
-		case subscript_set_index_1(Parameter<Int>)
+		case subscript_set_index_1(Parameter<Int>, Parameter<String>)
+        case subscript_get_x_y(Parameter<Int>, Parameter<Int>)
+		case subscript_set_x_y(Parameter<Int>, Parameter<Int>, Parameter<String>)
         case subscript_get_index_2(Parameter<String>)
-		case subscript_set_index_2(Parameter<String>)
+		case subscript_set_index_2(Parameter<String>, Parameter<String>)
         case subscript_get_label_name(Parameter<String>)
         case subscript_get_closure_c(Parameter<(Int) -> Void>)
-		case subscript_set_closure_c(Parameter<(Int) -> Void>)
+		case subscript_set_closure_c(Parameter<(Int) -> Void>, Parameter<Bool>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
@@ -5063,27 +5116,35 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
                 return true 
             case (.p_something_get,.p_something_get): return true
 			case (.p_something_set(let left),.p_something_set(let right)): return Parameter<Any>.compare(lhs: left, rhs: right, with: matcher)
-            case (.subscript_get_index_1(let lhsIndex), .subscript_get_index_1(let rhsIndex)):
+            case (let .subscript_get_index_1(lhsIndex), let .subscript_get_index_1(rhsIndex)):
 				guard Parameter.compare(lhs: lhsIndex, rhs: rhsIndex, with: matcher) else { return false }
 				return true
-			case (.subscript_set_index_1(let lhsIndex), .subscript_set_index_1(let rhsIndex)):
+			case (let .subscript_set_index_1(lhsIndex, lhsDidSet), let .subscript_set_index_1(rhsIndex, rhsDidSet)):
+				guard Parameter.compare(lhs: lhsIndex, rhs: rhsIndex, with: matcher) else { return false }
+				return Parameter<String>.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher)
+            case (let .subscript_get_x_y(lhsX, lhsY), let .subscript_get_x_y(rhsX, rhsY)):
+				guard Parameter.compare(lhs: lhsX, rhs: rhsX, with: matcher) else { return false }
+				guard Parameter.compare(lhs: lhsY, rhs: rhsY, with: matcher) else { return false }
+				return true
+			case (let .subscript_set_x_y(lhsX, lhsY, lhsDidSet), let .subscript_set_x_y(rhsX, rhsY, rhsDidSet)):
+				guard Parameter.compare(lhs: lhsX, rhs: rhsX, with: matcher) else { return false }
+				guard Parameter.compare(lhs: lhsY, rhs: rhsY, with: matcher) else { return false }
+				return Parameter<String>.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher)
+            case (let .subscript_get_index_2(lhsIndex), let .subscript_get_index_2(rhsIndex)):
 				guard Parameter.compare(lhs: lhsIndex, rhs: rhsIndex, with: matcher) else { return false }
 				return true
-            case (.subscript_get_index_2(let lhsIndex), .subscript_get_index_2(let rhsIndex)):
+			case (let .subscript_set_index_2(lhsIndex, lhsDidSet), let .subscript_set_index_2(rhsIndex, rhsDidSet)):
 				guard Parameter.compare(lhs: lhsIndex, rhs: rhsIndex, with: matcher) else { return false }
-				return true
-			case (.subscript_set_index_2(let lhsIndex), .subscript_set_index_2(let rhsIndex)):
-				guard Parameter.compare(lhs: lhsIndex, rhs: rhsIndex, with: matcher) else { return false }
-				return true
-            case (.subscript_get_label_name(let lhsName), .subscript_get_label_name(let rhsName)):
+				return Parameter<String>.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher)
+            case (let .subscript_get_label_name(lhsName), let .subscript_get_label_name(rhsName)):
 				guard Parameter.compare(lhs: lhsName, rhs: rhsName, with: matcher) else { return false }
 				return true
-            case (.subscript_get_closure_c(let lhsC), .subscript_get_closure_c(let rhsC)):
+            case (let .subscript_get_closure_c(lhsC), let .subscript_get_closure_c(rhsC)):
 				guard Parameter.compare(lhs: lhsC, rhs: rhsC, with: matcher) else { return false }
 				return true
-			case (.subscript_set_closure_c(let lhsC), .subscript_set_closure_c(let rhsC)):
+			case (let .subscript_set_closure_c(lhsC, lhsDidSet), let .subscript_set_closure_c(rhsC, rhsDidSet)):
 				guard Parameter.compare(lhs: lhsC, rhs: rhsC, with: matcher) else { return false }
-				return true
+				return Parameter<Bool>.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher)
             default: return false
             }
         }
@@ -5094,9 +5155,14 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
             case .p_something_get: return 0
 			case .p_something_set(let newValue): return newValue.intValue
             case let .subscript_get_index_1(p0): return p0.intValue
-			case let .subscript_set_index_1(p0): return p0.intValue            case let .subscript_get_index_2(p0): return p0.intValue
-			case let .subscript_set_index_2(p0): return p0.intValue            case let .subscript_get_label_name(p0): return p0.intValue            case let .subscript_get_closure_c(p0): return p0.intValue
-			case let .subscript_set_closure_c(p0): return p0.intValue
+			case let .subscript_set_index_1(p0, _): return p0.intValue
+            case let .subscript_get_x_y(p0, p1): return p0.intValue + p1.intValue
+			case let .subscript_set_x_y(p0, p1, _): return p0.intValue + p1.intValue
+            case let .subscript_get_index_2(p0): return p0.intValue
+			case let .subscript_set_index_2(p0, _): return p0.intValue
+            case let .subscript_get_label_name(p0): return p0.intValue
+            case let .subscript_get_closure_c(p0): return p0.intValue
+			case let .subscript_set_closure_c(p0, _): return p0.intValue
             }
         }
     }
@@ -5122,6 +5188,21 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 			let stubber = given.stub(for: (Bool).self)
 			willProduce(stubber)
 			return given
+        }
+        static func `subscript`(index: Parameter<Int>, willReturn: String...) -> SubscriptStub {
+            return Given(method: .subscript_get_index_1(index), products: willReturn.map({ Product.return($0) }))
+        }
+        static func `subscript`(x: Parameter<Int>, y: Parameter<Int>, willReturn: String...) -> SubscriptStub {
+            return Given(method: .subscript_get_x_y(x, y), products: willReturn.map({ Product.return($0) }))
+        }
+        static func `subscript`(index: Parameter<String>, willReturn: String...) -> SubscriptStub {
+            return Given(method: .subscript_get_index_2(index), products: willReturn.map({ Product.return($0) }))
+        }
+        static func `subscript`(label name: Parameter<String>, willReturn: Int...) -> SubscriptStub {
+            return Given(method: .subscript_get_label_name(name), products: willReturn.map({ Product.return($0) }))
+        }
+        static func `subscript`(closure c: Parameter<(Int) -> Void>, willReturn: Bool...) -> SubscriptStub {
+            return Given(method: .subscript_get_closure_c(c), products: willReturn.map({ Product.return($0) }))
         }
     }
 
@@ -5217,6 +5298,7 @@ class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
 
     typealias PropertyStub = Given
     typealias MethodStub = Given
+    typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -5278,7 +5360,6 @@ class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
             switch self {
             case .m_methodThatThrows: return 0
             case let .m_methodThatReturnsAndThrows__param_param(p0): return p0.intValue
-
             }
         }
     }
@@ -5411,6 +5492,7 @@ class ProtocolWithTuplesMock: ProtocolWithTuples, Mock {
 
     typealias PropertyStub = Given
     typealias MethodStub = Given
+    typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -5451,7 +5533,6 @@ class ProtocolWithTuplesMock: ProtocolWithTuples, Mock {
         func intValue() -> Int {
             switch self {
             case let .m_methodThatTakesTuple__tuple_tuple(p0): return p0.intValue
-
             }
         }
     }
@@ -5565,6 +5646,7 @@ class ProtocolWithWhereAfterDefinitionMock<T>: ProtocolWithWhereAfterDefinition,
 
     typealias PropertyStub = Given
     typealias MethodStub = Given
+    typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -5618,7 +5700,6 @@ class ProtocolWithWhereAfterDefinitionMock<T>: ProtocolWithWhereAfterDefinition,
             switch self {
             case let .m_methodWithType__t_t(p0): return p0.intValue
             case .p_sequence_get: return 0
-
             }
         }
     }
@@ -5739,6 +5820,7 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
 
     typealias PropertyStub = Given
     typealias MethodStub = Given
+    typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -5904,7 +5986,6 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
             case let .m_methodWithTypedef__scalar(p0): return p0.intValue
             case let .m_methodWithClosures__success_function_1(p0): return p0.intValue
             case let .m_methodWithClosures__success_function_2(p0): return p0.intValue
-
             }
         }
     }
@@ -6120,6 +6201,7 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
 
     typealias PropertyStub = Given
     typealias MethodStub = Given
+    typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -6292,7 +6374,6 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
             case .m_methodReturningSelf: return 0
             case let .m_compare__with_other(p0): return p0.intValue
             case let .m_genericMethodWithNestedSelf__param_paramsecond_secondother_other(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
-
             }
         }
     }
@@ -6480,6 +6561,7 @@ class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInheritsOt
 
     typealias PropertyStub = Given
     typealias MethodStub = Given
+    typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -6644,7 +6726,6 @@ class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInheritsOt
 			case .p_propertyOptional_set(let newValue): return newValue.intValue
             case .p_propertyImplicit_get: return 0
 			case .p_propertyImplicit_set(let newValue): return newValue.intValue
-
             }
         }
     }
@@ -6815,6 +6896,7 @@ class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
 
     typealias PropertyStub = Given
     typealias MethodStub = Given
+    typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -6913,7 +6995,6 @@ class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
             case let .m_map__array_arrayparam_param(p0, p1): return p0.intValue + p1.intValue
             case let .m_use__dictionary_dictionary(p0): return p0.intValue
             case let .m_verify__set_set(p0): return p0.intValue
-
             }
         }
     }
@@ -7075,6 +7156,7 @@ class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBothMeth
 
     typealias PropertyStub = Given
     typealias MethodStub = Given
+    typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -7127,7 +7209,6 @@ class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBothMeth
             switch self {
             case .m_simpleMethod: return 0
             case .p_property_get: return 0
-
             }
         }
     }
@@ -7248,6 +7329,7 @@ class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
 
     typealias PropertyStub = Given
     typealias MethodStub = Given
+    typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -7336,7 +7418,6 @@ class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
             case .m_simpleMehtodThatReturns: return 0
             case let .m_simpleMehtodThatReturns__param_param(p0): return p0.intValue
             case let .m_simpleMehtodThatReturns__optionalParam_optionalParam(p0): return p0.intValue
-
             }
         }
     }
@@ -7488,6 +7569,7 @@ class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock {
 
     typealias PropertyStub = Given
     typealias MethodStub = Given
+    typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -7586,7 +7668,6 @@ class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock {
 			case .p_propertyOptional_set(let newValue): return newValue.intValue
             case .p_propertyImplicit_get: return 0
 			case .p_propertyImplicit_set(let newValue): return newValue.intValue
-
             }
         }
     }
@@ -7703,6 +7784,7 @@ class UserNetworkTypeMock: UserNetworkType, Mock {
 
     typealias PropertyStub = Given
     typealias MethodStub = Given
+    typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -7775,7 +7857,6 @@ class UserNetworkTypeMock: UserNetworkType, Mock {
             case let .m_getUserEscaping__for_idcompletion_completion(p0, p1): return p0.intValue + p1.intValue
             case let .m_doSomething__prop_prop(p0): return p0.intValue
             case let .m_testDefaultValues__value_value(p0): return p0.intValue
-
             }
         }
     }
@@ -7897,6 +7978,7 @@ class UserStorageTypeMock: UserStorageType, Mock {
 
     typealias PropertyStub = Given
     typealias MethodStub = Given
+    typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -7950,7 +8032,6 @@ class UserStorageTypeMock: UserStorageType, Mock {
             switch self {
             case let .m_surname__for_name(p0): return p0.intValue
             case let .m_storeUser__name_namesurname_surname(p0, p1): return p0.intValue + p1.intValue
-
             }
         }
     }

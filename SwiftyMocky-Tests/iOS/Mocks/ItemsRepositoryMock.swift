@@ -25,6 +25,7 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
 
     typealias PropertyStub = Given
     typealias MethodStub = Given
+    typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -107,7 +108,6 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
             case let .m_storeDetails__details_details(p0): return p0.intValue
             case .m_storedItems: return 0
             case let .m_storedDetails__item_item(p0): return p0.intValue
-
             }
         }
     }
