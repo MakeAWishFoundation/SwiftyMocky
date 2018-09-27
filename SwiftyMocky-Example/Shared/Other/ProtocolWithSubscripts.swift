@@ -10,10 +10,11 @@ import Foundation
 
 //sourcery: AutoMockable
 protocol ProtocolWithSubscripts {
+    func aaa(_ value: Int) -> Bool
+    var something: Any { get set }
     subscript (_ index: Int) -> String { get set }
     subscript (_ index: String) -> String { get set }
     subscript(label name: String) -> Int { get }
 //    subscript<T>(with generic: T) -> Bool { get set }
     subscript(closure c: @escaping (Int) -> Void) -> Bool { get set }
 }
-

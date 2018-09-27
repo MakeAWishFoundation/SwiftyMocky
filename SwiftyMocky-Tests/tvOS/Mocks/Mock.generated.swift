@@ -220,23 +220,22 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
         case sm_methodThatThrows
         case sm_methodThatReturnsAndThrows__param_param(Parameter<String>)
         case sm_methodThatRethrows__param_param(Parameter<(String) throws -> Int>)
-
         case p_optionalClosure_get
 		case p_optionalClosure_set(Parameter<(() -> Int)?>)
 
         static func compareParameters(lhs: StaticMethodType, rhs: StaticMethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.sm_methodThatThrows, .sm_methodThatThrows):
-                    return true 
-                case (.sm_methodThatReturnsAndThrows__param_param(let lhsParam), .sm_methodThatReturnsAndThrows__param_param(let rhsParam)):
-                    guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
-                    return true 
-                case (.sm_methodThatRethrows__param_param(let lhsParam), .sm_methodThatRethrows__param_param(let rhsParam)):
-                    guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
-                    return true 
-                case (.p_optionalClosure_get,.p_optionalClosure_get): return true
-				case (.p_optionalClosure_set(let left),.p_optionalClosure_set(let right)): return Parameter<(() -> Int)?>.compare(lhs: left, rhs: right, with: matcher)
-                default: return false
+            case (.sm_methodThatThrows, .sm_methodThatThrows):
+                return true 
+            case (.sm_methodThatReturnsAndThrows__param_param(let lhsParam), .sm_methodThatReturnsAndThrows__param_param(let rhsParam)):
+                guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
+                return true 
+            case (.sm_methodThatRethrows__param_param(let lhsParam), .sm_methodThatRethrows__param_param(let rhsParam)):
+                guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
+                return true 
+            case (.p_optionalClosure_get,.p_optionalClosure_get): return true
+			case (.p_optionalClosure_set(let left),.p_optionalClosure_set(let right)): return Parameter<(() -> Int)?>.compare(lhs: left, rhs: right, with: matcher)
+            default: return false
             }
         }
 
@@ -246,7 +245,7 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
                 case let .sm_methodThatReturnsAndThrows__param_param(p0): return p0.intValue
                 case let .sm_methodThatRethrows__param_param(p0): return p0.intValue
                 case .p_optionalClosure_get: return 0
-				case .p_optionalClosure_set(let newValue): return newValue.intValue
+			case .p_optionalClosure_set(let newValue): return newValue.intValue
             }
         }
     }
@@ -343,35 +342,36 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.m_methodThatThrows, .m_methodThatThrows):
-                    return true 
-                case (.m_methodThatReturnsAndThrows__param_param(let lhsParam), .m_methodThatReturnsAndThrows__param_param(let rhsParam)):
-                    guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
-                    return true 
-                case (.m_methodThatRethrows__param_param(let lhsParam), .m_methodThatRethrows__param_param(let rhsParam)):
-                    guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
-                    return true 
-                case (.p_nonOptionalClosure_get,.p_nonOptionalClosure_get): return true
-				case (.p_nonOptionalClosure_set(let left),.p_nonOptionalClosure_set(let right)): return Parameter<() -> Void>.compare(lhs: left, rhs: right, with: matcher)
-                case (.p_optionalClosure_get,.p_optionalClosure_get): return true
-				case (.p_optionalClosure_set(let left),.p_optionalClosure_set(let right)): return Parameter<(() -> Int)?>.compare(lhs: left, rhs: right, with: matcher)
-                case (.p_implicitelyUnwrappedClosure_get,.p_implicitelyUnwrappedClosure_get): return true
-				case (.p_implicitelyUnwrappedClosure_set(let left),.p_implicitelyUnwrappedClosure_set(let right)): return Parameter<(() -> Void)?>.compare(lhs: left, rhs: right, with: matcher)
-                default: return false
+            case (.m_methodThatThrows, .m_methodThatThrows):
+                return true 
+            case (.m_methodThatReturnsAndThrows__param_param(let lhsParam), .m_methodThatReturnsAndThrows__param_param(let rhsParam)):
+                guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
+                return true 
+            case (.m_methodThatRethrows__param_param(let lhsParam), .m_methodThatRethrows__param_param(let rhsParam)):
+                guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
+                return true 
+            case (.p_nonOptionalClosure_get,.p_nonOptionalClosure_get): return true
+			case (.p_nonOptionalClosure_set(let left),.p_nonOptionalClosure_set(let right)): return Parameter<() -> Void>.compare(lhs: left, rhs: right, with: matcher)
+            case (.p_optionalClosure_get,.p_optionalClosure_get): return true
+			case (.p_optionalClosure_set(let left),.p_optionalClosure_set(let right)): return Parameter<(() -> Int)?>.compare(lhs: left, rhs: right, with: matcher)
+            case (.p_implicitelyUnwrappedClosure_get,.p_implicitelyUnwrappedClosure_get): return true
+			case (.p_implicitelyUnwrappedClosure_set(let left),.p_implicitelyUnwrappedClosure_set(let right)): return Parameter<(() -> Void)?>.compare(lhs: left, rhs: right, with: matcher)
+            default: return false
             }
         }
 
         func intValue() -> Int {
             switch self {
-                case .m_methodThatThrows: return 0
-                case let .m_methodThatReturnsAndThrows__param_param(p0): return p0.intValue
-                case let .m_methodThatRethrows__param_param(p0): return p0.intValue
-                case .p_nonOptionalClosure_get: return 0
-				case .p_nonOptionalClosure_set(let newValue): return newValue.intValue
-                case .p_optionalClosure_get: return 0
-				case .p_optionalClosure_set(let newValue): return newValue.intValue
-                case .p_implicitelyUnwrappedClosure_get: return 0
-				case .p_implicitelyUnwrappedClosure_set(let newValue): return newValue.intValue
+            case .m_methodThatThrows: return 0
+            case let .m_methodThatReturnsAndThrows__param_param(p0): return p0.intValue
+            case let .m_methodThatRethrows__param_param(p0): return p0.intValue
+            case .p_nonOptionalClosure_get: return 0
+			case .p_nonOptionalClosure_set(let newValue): return newValue.intValue
+            case .p_optionalClosure_get: return 0
+			case .p_optionalClosure_set(let newValue): return newValue.intValue
+            case .p_implicitelyUnwrappedClosure_get: return 0
+			case .p_implicitelyUnwrappedClosure_set(let newValue): return newValue.intValue
+
             }
         }
     }
@@ -613,15 +613,16 @@ class AVeryAssociatedProtocolMock<T1,T2>: AVeryAssociatedProtocol, Mock where T1
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.m_fetch__for_value(let lhsValue), .m_fetch__for_value(let rhsValue)):
-                    guard Parameter.compare(lhs: lhsValue, rhs: rhsValue, with: matcher) else { return false } 
-                    return true 
+            case (.m_fetch__for_value(let lhsValue), .m_fetch__for_value(let rhsValue)):
+                guard Parameter.compare(lhs: lhsValue, rhs: rhsValue, with: matcher) else { return false } 
+                return true 
             }
         }
 
         func intValue() -> Int {
             switch self {
-                case let .m_fetch__for_value(p0): return p0.intValue
+            case let .m_fetch__for_value(p0): return p0.intValue
+
             }
         }
     }
@@ -807,18 +808,17 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
         case sm_generic__lhs_lhsrhs_rhs(Parameter<GenericAttribute>, Parameter<GenericAttribute>)
         case sm_veryConstrained__lhs_lhsrhs_rhs(Parameter<GenericAttribute>, Parameter<GenericAttribute>)
 
-
         static func compareParameters(lhs: StaticMethodType, rhs: StaticMethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.sm_generic__lhs_lhsrhs_rhs(let lhsLhs, let lhsRhs), .sm_generic__lhs_lhsrhs_rhs(let rhsLhs, let rhsRhs)):
-                    guard Parameter.compare(lhs: lhsLhs, rhs: rhsLhs, with: matcher) else { return false } 
-                    guard Parameter.compare(lhs: lhsRhs, rhs: rhsRhs, with: matcher) else { return false } 
-                    return true 
-                case (.sm_veryConstrained__lhs_lhsrhs_rhs(let lhsLhs, let lhsRhs), .sm_veryConstrained__lhs_lhsrhs_rhs(let rhsLhs, let rhsRhs)):
-                    guard Parameter.compare(lhs: lhsLhs, rhs: rhsLhs, with: matcher) else { return false } 
-                    guard Parameter.compare(lhs: lhsRhs, rhs: rhsRhs, with: matcher) else { return false } 
-                    return true 
-                default: return false
+            case (.sm_generic__lhs_lhsrhs_rhs(let lhsLhs, let lhsRhs), .sm_generic__lhs_lhsrhs_rhs(let rhsLhs, let rhsRhs)):
+                guard Parameter.compare(lhs: lhsLhs, rhs: rhsLhs, with: matcher) else { return false } 
+                guard Parameter.compare(lhs: lhsRhs, rhs: rhsRhs, with: matcher) else { return false } 
+                return true 
+            case (.sm_veryConstrained__lhs_lhsrhs_rhs(let lhsLhs, let lhsRhs), .sm_veryConstrained__lhs_lhsrhs_rhs(let rhsLhs, let rhsRhs)):
+                guard Parameter.compare(lhs: lhsLhs, rhs: rhsLhs, with: matcher) else { return false } 
+                guard Parameter.compare(lhs: lhsRhs, rhs: rhsRhs, with: matcher) else { return false } 
+                return true 
+            default: return false
             }
         }
 
@@ -889,15 +889,16 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.m_methodConstrained__param_param(let lhsParam), .m_methodConstrained__param_param(let rhsParam)):
-                    guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
-                    return true 
+            case (.m_methodConstrained__param_param(let lhsParam), .m_methodConstrained__param_param(let rhsParam)):
+                guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
+                return true 
             }
         }
 
         func intValue() -> Int {
             switch self {
-                case let .m_methodConstrained__param_param(p0): return p0.intValue
+            case let .m_methodConstrained__param_param(p0): return p0.intValue
+
             }
         }
     }
@@ -1249,60 +1250,61 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.m_methodWithStringParameter__p_p(let lhsP), .m_methodWithStringParameter__p_p(let rhsP)):
-                    guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
-                    return true 
-                case (.m_methodWithOtionalStringParameter__p_p(let lhsP), .m_methodWithOtionalStringParameter__p_p(let rhsP)):
-                    guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
-                    return true 
-                case (.m_methodWithCustomStringParameter__p_p(let lhsP), .m_methodWithCustomStringParameter__p_p(let rhsP)):
-                    guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
-                    return true 
-                case (.m_methodWithCustomOptionalStringParameter__p_p(let lhsP), .m_methodWithCustomOptionalStringParameter__p_p(let rhsP)):
-                    guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
-                    return true 
-                case (.m_methodWithIntParameter__p_p(let lhsP), .m_methodWithIntParameter__p_p(let rhsP)):
-                    guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
-                    return true 
-                case (.m_methodWithCustomOptionalIntParameter__p_p(let lhsP), .m_methodWithCustomOptionalIntParameter__p_p(let rhsP)):
-                    guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
-                    return true 
-                case (.m_methodWithBool__p_p(let lhsP), .m_methodWithBool__p_p(let rhsP)):
-                    guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
-                    return true 
-                case (.m_methodWithFloat__p_p(let lhsP), .m_methodWithFloat__p_p(let rhsP)):
-                    guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
-                    return true 
-                case (.m_methodWithDouble__p_p(let lhsP), .m_methodWithDouble__p_p(let rhsP)):
-                    guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
-                    return true 
-                case (.m_methodWithArrayOfInt__p_p(let lhsP), .m_methodWithArrayOfInt__p_p(let rhsP)):
-                    guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
-                    return true 
-                case (.m_methodWithArrayOfOther__p_p(let lhsP), .m_methodWithArrayOfOther__p_p(let rhsP)):
-                    guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
-                    return true 
-                case (.m_methodWithDict__p_p(let lhsP), .m_methodWithDict__p_p(let rhsP)):
-                    guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
-                    return true 
-                default: return false
+            case (.m_methodWithStringParameter__p_p(let lhsP), .m_methodWithStringParameter__p_p(let rhsP)):
+                guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
+                return true 
+            case (.m_methodWithOtionalStringParameter__p_p(let lhsP), .m_methodWithOtionalStringParameter__p_p(let rhsP)):
+                guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
+                return true 
+            case (.m_methodWithCustomStringParameter__p_p(let lhsP), .m_methodWithCustomStringParameter__p_p(let rhsP)):
+                guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
+                return true 
+            case (.m_methodWithCustomOptionalStringParameter__p_p(let lhsP), .m_methodWithCustomOptionalStringParameter__p_p(let rhsP)):
+                guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
+                return true 
+            case (.m_methodWithIntParameter__p_p(let lhsP), .m_methodWithIntParameter__p_p(let rhsP)):
+                guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
+                return true 
+            case (.m_methodWithCustomOptionalIntParameter__p_p(let lhsP), .m_methodWithCustomOptionalIntParameter__p_p(let rhsP)):
+                guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
+                return true 
+            case (.m_methodWithBool__p_p(let lhsP), .m_methodWithBool__p_p(let rhsP)):
+                guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
+                return true 
+            case (.m_methodWithFloat__p_p(let lhsP), .m_methodWithFloat__p_p(let rhsP)):
+                guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
+                return true 
+            case (.m_methodWithDouble__p_p(let lhsP), .m_methodWithDouble__p_p(let rhsP)):
+                guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
+                return true 
+            case (.m_methodWithArrayOfInt__p_p(let lhsP), .m_methodWithArrayOfInt__p_p(let rhsP)):
+                guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
+                return true 
+            case (.m_methodWithArrayOfOther__p_p(let lhsP), .m_methodWithArrayOfOther__p_p(let rhsP)):
+                guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
+                return true 
+            case (.m_methodWithDict__p_p(let lhsP), .m_methodWithDict__p_p(let rhsP)):
+                guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
+                return true 
+            default: return false
             }
         }
 
         func intValue() -> Int {
             switch self {
-                case let .m_methodWithStringParameter__p_p(p0): return p0.intValue
-                case let .m_methodWithOtionalStringParameter__p_p(p0): return p0.intValue
-                case let .m_methodWithCustomStringParameter__p_p(p0): return p0.intValue
-                case let .m_methodWithCustomOptionalStringParameter__p_p(p0): return p0.intValue
-                case let .m_methodWithIntParameter__p_p(p0): return p0.intValue
-                case let .m_methodWithCustomOptionalIntParameter__p_p(p0): return p0.intValue
-                case let .m_methodWithBool__p_p(p0): return p0.intValue
-                case let .m_methodWithFloat__p_p(p0): return p0.intValue
-                case let .m_methodWithDouble__p_p(p0): return p0.intValue
-                case let .m_methodWithArrayOfInt__p_p(p0): return p0.intValue
-                case let .m_methodWithArrayOfOther__p_p(p0): return p0.intValue
-                case let .m_methodWithDict__p_p(p0): return p0.intValue
+            case let .m_methodWithStringParameter__p_p(p0): return p0.intValue
+            case let .m_methodWithOtionalStringParameter__p_p(p0): return p0.intValue
+            case let .m_methodWithCustomStringParameter__p_p(p0): return p0.intValue
+            case let .m_methodWithCustomOptionalStringParameter__p_p(p0): return p0.intValue
+            case let .m_methodWithIntParameter__p_p(p0): return p0.intValue
+            case let .m_methodWithCustomOptionalIntParameter__p_p(p0): return p0.intValue
+            case let .m_methodWithBool__p_p(p0): return p0.intValue
+            case let .m_methodWithFloat__p_p(p0): return p0.intValue
+            case let .m_methodWithDouble__p_p(p0): return p0.intValue
+            case let .m_methodWithArrayOfInt__p_p(p0): return p0.intValue
+            case let .m_methodWithArrayOfOther__p_p(p0): return p0.intValue
+            case let .m_methodWithDict__p_p(p0): return p0.intValue
+
             }
         }
     }
@@ -1737,48 +1739,49 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.m_serviceName, .m_serviceName):
-                    return true 
-                case (.m_aNewWayToSayHooray, .m_aNewWayToSayHooray):
-                    return true 
-                case (.m_getPoint__from_point(let lhsPoint), .m_getPoint__from_point(let rhsPoint)):
-                    guard Parameter.compare(lhs: lhsPoint, rhs: rhsPoint, with: matcher) else { return false } 
-                    return true 
-                case (.m_getPoint__from_tuple(let lhsTuple), .m_getPoint__from_tuple(let rhsTuple)):
-                    guard Parameter.compare(lhs: lhsTuple, rhs: rhsTuple, with: matcher) else { return false } 
-                    return true 
-                case (.m_similarMethodThatDiffersOnType__value_1(let lhsValue), .m_similarMethodThatDiffersOnType__value_1(let rhsValue)):
-                    guard Parameter.compare(lhs: lhsValue, rhs: rhsValue, with: matcher) else { return false } 
-                    return true 
-                case (.m_similarMethodThatDiffersOnType__value_2(let lhsValue), .m_similarMethodThatDiffersOnType__value_2(let rhsValue)):
-                    guard Parameter.compare(lhs: lhsValue, rhs: rhsValue, with: matcher) else { return false } 
-                    return true 
-                case (.m_methodWithTypedef__scalar(let lhsScalar), .m_methodWithTypedef__scalar(let rhsScalar)):
-                    guard Parameter.compare(lhs: lhsScalar, rhs: rhsScalar, with: matcher) else { return false } 
-                    return true 
-                case (.m_methodWithClosures__success_function_1(let lhsFunction), .m_methodWithClosures__success_function_1(let rhsFunction)):
-                    guard Parameter.compare(lhs: lhsFunction, rhs: rhsFunction, with: matcher) else { return false } 
-                    return true 
-                case (.m_methodWithClosures__success_function_2(let lhsFunction), .m_methodWithClosures__success_function_2(let rhsFunction)):
-                    guard Parameter.compare(lhs: lhsFunction, rhs: rhsFunction, with: matcher) else { return false } 
-                    return true 
-                case (.p_youCouldOnlyGetThis_get,.p_youCouldOnlyGetThis_get): return true
-                default: return false
+            case (.m_serviceName, .m_serviceName):
+                return true 
+            case (.m_aNewWayToSayHooray, .m_aNewWayToSayHooray):
+                return true 
+            case (.m_getPoint__from_point(let lhsPoint), .m_getPoint__from_point(let rhsPoint)):
+                guard Parameter.compare(lhs: lhsPoint, rhs: rhsPoint, with: matcher) else { return false } 
+                return true 
+            case (.m_getPoint__from_tuple(let lhsTuple), .m_getPoint__from_tuple(let rhsTuple)):
+                guard Parameter.compare(lhs: lhsTuple, rhs: rhsTuple, with: matcher) else { return false } 
+                return true 
+            case (.m_similarMethodThatDiffersOnType__value_1(let lhsValue), .m_similarMethodThatDiffersOnType__value_1(let rhsValue)):
+                guard Parameter.compare(lhs: lhsValue, rhs: rhsValue, with: matcher) else { return false } 
+                return true 
+            case (.m_similarMethodThatDiffersOnType__value_2(let lhsValue), .m_similarMethodThatDiffersOnType__value_2(let rhsValue)):
+                guard Parameter.compare(lhs: lhsValue, rhs: rhsValue, with: matcher) else { return false } 
+                return true 
+            case (.m_methodWithTypedef__scalar(let lhsScalar), .m_methodWithTypedef__scalar(let rhsScalar)):
+                guard Parameter.compare(lhs: lhsScalar, rhs: rhsScalar, with: matcher) else { return false } 
+                return true 
+            case (.m_methodWithClosures__success_function_1(let lhsFunction), .m_methodWithClosures__success_function_1(let rhsFunction)):
+                guard Parameter.compare(lhs: lhsFunction, rhs: rhsFunction, with: matcher) else { return false } 
+                return true 
+            case (.m_methodWithClosures__success_function_2(let lhsFunction), .m_methodWithClosures__success_function_2(let rhsFunction)):
+                guard Parameter.compare(lhs: lhsFunction, rhs: rhsFunction, with: matcher) else { return false } 
+                return true 
+            case (.p_youCouldOnlyGetThis_get,.p_youCouldOnlyGetThis_get): return true
+            default: return false
             }
         }
 
         func intValue() -> Int {
             switch self {
-                case .m_serviceName: return 0
-                case .m_aNewWayToSayHooray: return 0
-                case let .m_getPoint__from_point(p0): return p0.intValue
-                case let .m_getPoint__from_tuple(p0): return p0.intValue
-                case let .m_similarMethodThatDiffersOnType__value_1(p0): return p0.intValue
-                case let .m_similarMethodThatDiffersOnType__value_2(p0): return p0.intValue
-                case let .m_methodWithTypedef__scalar(p0): return p0.intValue
-                case let .m_methodWithClosures__success_function_1(p0): return p0.intValue
-                case let .m_methodWithClosures__success_function_2(p0): return p0.intValue
-                case .p_youCouldOnlyGetThis_get: return 0
+            case .m_serviceName: return 0
+            case .m_aNewWayToSayHooray: return 0
+            case let .m_getPoint__from_point(p0): return p0.intValue
+            case let .m_getPoint__from_tuple(p0): return p0.intValue
+            case let .m_similarMethodThatDiffersOnType__value_1(p0): return p0.intValue
+            case let .m_similarMethodThatDiffersOnType__value_2(p0): return p0.intValue
+            case let .m_methodWithTypedef__scalar(p0): return p0.intValue
+            case let .m_methodWithClosures__success_function_1(p0): return p0.intValue
+            case let .m_methodWithClosures__success_function_2(p0): return p0.intValue
+            case .p_youCouldOnlyGetThis_get: return 0
+
             }
         }
     }
@@ -2033,14 +2036,14 @@ class DateSortableMock: DateSortable, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.p_date_get,.p_date_get): return true
-                default: return false
+            case (.p_date_get,.p_date_get): return true
             }
         }
 
         func intValue() -> Int {
             switch self {
-                case .p_date_get: return 0
+            case .p_date_get: return 0
+
             }
         }
     }
@@ -2302,21 +2305,22 @@ class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstraint, 
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.m_decode__typefrom_data(let lhsType, let lhsData), .m_decode__typefrom_data(let rhsType, let rhsData)):
-                    guard Parameter.compare(lhs: lhsType, rhs: rhsType, with: matcher) else { return false } 
-                    guard Parameter.compare(lhs: lhsData, rhs: rhsData, with: matcher) else { return false } 
-                    return true 
-                case (.m_test__type(let lhsType), .m_test__type(let rhsType)):
-                    guard Parameter.compare(lhs: lhsType, rhs: rhsType, with: matcher) else { return false } 
-                    return true 
-                default: return false
+            case (.m_decode__typefrom_data(let lhsType, let lhsData), .m_decode__typefrom_data(let rhsType, let rhsData)):
+                guard Parameter.compare(lhs: lhsType, rhs: rhsType, with: matcher) else { return false } 
+                guard Parameter.compare(lhs: lhsData, rhs: rhsData, with: matcher) else { return false } 
+                return true 
+            case (.m_test__type(let lhsType), .m_test__type(let rhsType)):
+                guard Parameter.compare(lhs: lhsType, rhs: rhsType, with: matcher) else { return false } 
+                return true 
+            default: return false
             }
         }
 
         func intValue() -> Int {
             switch self {
-                case let .m_decode__typefrom_data(p0, p1): return p0.intValue + p1.intValue
-                case let .m_test__type(p0): return p0.intValue
+            case let .m_decode__typefrom_data(p0, p1): return p0.intValue + p1.intValue
+            case let .m_test__type(p0): return p0.intValue
+
             }
         }
     }
@@ -2477,15 +2481,16 @@ class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.m_map__items(let lhsItems), .m_map__items(let rhsItems)):
-                    guard Parameter.compare(lhs: lhsItems, rhs: rhsItems, with: matcher) else { return false } 
-                    return true 
+            case (.m_map__items(let lhsItems), .m_map__items(let rhsItems)):
+                guard Parameter.compare(lhs: lhsItems, rhs: rhsItems, with: matcher) else { return false } 
+                return true 
             }
         }
 
         func intValue() -> Int {
             switch self {
-                case let .m_map__items(p0): return p0.intValue
+            case let .m_map__items(p0): return p0.intValue
+
             }
         }
     }
@@ -2629,18 +2634,19 @@ class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.m_returnNoting, .m_returnNoting):
-                    return true 
-                case (.m_someMethod, .m_someMethod):
-                    return true 
-                default: return false
+            case (.m_returnNoting, .m_returnNoting):
+                return true 
+            case (.m_someMethod, .m_someMethod):
+                return true 
+            default: return false
             }
         }
 
         func intValue() -> Int {
             switch self {
-                case .m_returnNoting: return 0
-                case .m_someMethod: return 0
+            case .m_returnNoting: return 0
+            case .m_someMethod: return 0
+
             }
         }
     }
@@ -2899,40 +2905,41 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.m_foo__bar_bar_1(let lhsBar), .m_foo__bar_bar_1(let rhsBar)):
-                    guard Parameter.compare(lhs: lhsBar, rhs: rhsBar, with: matcher) else { return false } 
-                    return true 
-                case (.m_foo__bar_bar_2(let lhsBar), .m_foo__bar_bar_2(let rhsBar)):
-                    guard Parameter.compare(lhs: lhsBar, rhs: rhsBar, with: matcher) else { return false } 
-                    return true 
-                case (.m_foo__bar_bar_4(let lhsBar), .m_foo__bar_bar_4(let rhsBar)):
-                    guard Parameter.compare(lhs: lhsBar, rhs: rhsBar, with: matcher) else { return false } 
-                    return true 
-                case (.m_foo__bar_bar_5(let lhsBar), .m_foo__bar_bar_5(let rhsBar)):
-                    guard Parameter.compare(lhs: lhsBar, rhs: rhsBar, with: matcher) else { return false } 
-                    return true 
-                case (.m_foo__bar_bar_6(let lhsBar), .m_foo__bar_bar_6(let rhsBar)):
-                    guard Parameter.compare(lhs: lhsBar, rhs: rhsBar, with: matcher) else { return false } 
-                    return true 
-                case (.m_foo__bar_bar_7(let lhsBar), .m_foo__bar_bar_7(let rhsBar)):
-                    guard Parameter.compare(lhs: lhsBar, rhs: rhsBar, with: matcher) else { return false } 
-                    return true 
-                case (.m_foo__bar_bar_9(let lhsBar), .m_foo__bar_bar_9(let rhsBar)):
-                    guard Parameter.compare(lhs: lhsBar, rhs: rhsBar, with: matcher) else { return false } 
-                    return true 
-                default: return false
+            case (.m_foo__bar_bar_1(let lhsBar), .m_foo__bar_bar_1(let rhsBar)):
+                guard Parameter.compare(lhs: lhsBar, rhs: rhsBar, with: matcher) else { return false } 
+                return true 
+            case (.m_foo__bar_bar_2(let lhsBar), .m_foo__bar_bar_2(let rhsBar)):
+                guard Parameter.compare(lhs: lhsBar, rhs: rhsBar, with: matcher) else { return false } 
+                return true 
+            case (.m_foo__bar_bar_4(let lhsBar), .m_foo__bar_bar_4(let rhsBar)):
+                guard Parameter.compare(lhs: lhsBar, rhs: rhsBar, with: matcher) else { return false } 
+                return true 
+            case (.m_foo__bar_bar_5(let lhsBar), .m_foo__bar_bar_5(let rhsBar)):
+                guard Parameter.compare(lhs: lhsBar, rhs: rhsBar, with: matcher) else { return false } 
+                return true 
+            case (.m_foo__bar_bar_6(let lhsBar), .m_foo__bar_bar_6(let rhsBar)):
+                guard Parameter.compare(lhs: lhsBar, rhs: rhsBar, with: matcher) else { return false } 
+                return true 
+            case (.m_foo__bar_bar_7(let lhsBar), .m_foo__bar_bar_7(let rhsBar)):
+                guard Parameter.compare(lhs: lhsBar, rhs: rhsBar, with: matcher) else { return false } 
+                return true 
+            case (.m_foo__bar_bar_9(let lhsBar), .m_foo__bar_bar_9(let rhsBar)):
+                guard Parameter.compare(lhs: lhsBar, rhs: rhsBar, with: matcher) else { return false } 
+                return true 
+            default: return false
             }
         }
 
         func intValue() -> Int {
             switch self {
-                case let .m_foo__bar_bar_1(p0): return p0.intValue
-                case let .m_foo__bar_bar_2(p0): return p0.intValue
-                case let .m_foo__bar_bar_4(p0): return p0.intValue
-                case let .m_foo__bar_bar_5(p0): return p0.intValue
-                case let .m_foo__bar_bar_6(p0): return p0.intValue
-                case let .m_foo__bar_bar_7(p0): return p0.intValue
-                case let .m_foo__bar_bar_9(p0): return p0.intValue
+            case let .m_foo__bar_bar_1(p0): return p0.intValue
+            case let .m_foo__bar_bar_2(p0): return p0.intValue
+            case let .m_foo__bar_bar_4(p0): return p0.intValue
+            case let .m_foo__bar_bar_5(p0): return p0.intValue
+            case let .m_foo__bar_bar_6(p0): return p0.intValue
+            case let .m_foo__bar_bar_7(p0): return p0.intValue
+            case let .m_foo__bar_bar_9(p0): return p0.intValue
+
             }
         }
     }
@@ -3188,20 +3195,21 @@ class ProtocolMethodsThatDifferOnlyInReturnTypeMock: ProtocolMethodsThatDifferOn
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.m_foo__bar_bar_1(let lhsBar), .m_foo__bar_bar_1(let rhsBar)):
-                    guard Parameter.compare(lhs: lhsBar, rhs: rhsBar, with: matcher) else { return false } 
-                    return true 
-                case (.m_foo__bar_bar_2(let lhsBar), .m_foo__bar_bar_2(let rhsBar)):
-                    guard Parameter.compare(lhs: lhsBar, rhs: rhsBar, with: matcher) else { return false } 
-                    return true 
-                default: return false
+            case (.m_foo__bar_bar_1(let lhsBar), .m_foo__bar_bar_1(let rhsBar)):
+                guard Parameter.compare(lhs: lhsBar, rhs: rhsBar, with: matcher) else { return false } 
+                return true 
+            case (.m_foo__bar_bar_2(let lhsBar), .m_foo__bar_bar_2(let rhsBar)):
+                guard Parameter.compare(lhs: lhsBar, rhs: rhsBar, with: matcher) else { return false } 
+                return true 
+            default: return false
             }
         }
 
         func intValue() -> Int {
             switch self {
-                case let .m_foo__bar_bar_1(p0): return p0.intValue
-                case let .m_foo__bar_bar_2(p0): return p0.intValue
+            case let .m_foo__bar_bar_1(p0): return p0.intValue
+            case let .m_foo__bar_bar_2(p0): return p0.intValue
+
             }
         }
     }
@@ -3372,18 +3380,19 @@ class ProtocolWithAssociatedTypeMock<T>: ProtocolWithAssociatedType, Mock where 
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.m_methodWithType__t_t(let lhsT), .m_methodWithType__t_t(let rhsT)):
-                    guard Parameter.compare(lhs: lhsT, rhs: rhsT, with: matcher) else { return false } 
-                    return true 
-                case (.p_sequence_get,.p_sequence_get): return true
-                default: return false
+            case (.m_methodWithType__t_t(let lhsT), .m_methodWithType__t_t(let rhsT)):
+                guard Parameter.compare(lhs: lhsT, rhs: rhsT, with: matcher) else { return false } 
+                return true 
+            case (.p_sequence_get,.p_sequence_get): return true
+            default: return false
             }
         }
 
         func intValue() -> Int {
             switch self {
-                case let .m_methodWithType__t_t(p0): return p0.intValue
-                case .p_sequence_get: return 0
+            case let .m_methodWithType__t_t(p0): return p0.intValue
+            case .p_sequence_get: return 0
+
             }
         }
     }
@@ -3541,24 +3550,25 @@ class ProtocolWithClosuresMock: ProtocolWithClosures, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.m_methodThatTakes__closure_closure(let lhsClosure), .m_methodThatTakes__closure_closure(let rhsClosure)):
-                    guard Parameter.compare(lhs: lhsClosure, rhs: rhsClosure, with: matcher) else { return false } 
-                    return true 
-                case (.m_methodThatTakesEscaping__closure_closure(let lhsClosure), .m_methodThatTakesEscaping__closure_closure(let rhsClosure)):
-                    guard Parameter.compare(lhs: lhsClosure, rhs: rhsClosure, with: matcher) else { return false } 
-                    return true 
-                case (.m_methodThatTakesCompletionBlock__completion_completion(let lhsCompletion), .m_methodThatTakesCompletionBlock__completion_completion(let rhsCompletion)):
-                    guard Parameter.compare(lhs: lhsCompletion, rhs: rhsCompletion, with: matcher) else { return false } 
-                    return true 
-                default: return false
+            case (.m_methodThatTakes__closure_closure(let lhsClosure), .m_methodThatTakes__closure_closure(let rhsClosure)):
+                guard Parameter.compare(lhs: lhsClosure, rhs: rhsClosure, with: matcher) else { return false } 
+                return true 
+            case (.m_methodThatTakesEscaping__closure_closure(let lhsClosure), .m_methodThatTakesEscaping__closure_closure(let rhsClosure)):
+                guard Parameter.compare(lhs: lhsClosure, rhs: rhsClosure, with: matcher) else { return false } 
+                return true 
+            case (.m_methodThatTakesCompletionBlock__completion_completion(let lhsCompletion), .m_methodThatTakesCompletionBlock__completion_completion(let rhsCompletion)):
+                guard Parameter.compare(lhs: lhsCompletion, rhs: rhsCompletion, with: matcher) else { return false } 
+                return true 
+            default: return false
             }
         }
 
         func intValue() -> Int {
             switch self {
-                case let .m_methodThatTakes__closure_closure(p0): return p0.intValue
-                case let .m_methodThatTakesEscaping__closure_closure(p0): return p0.intValue
-                case let .m_methodThatTakesCompletionBlock__completion_completion(p0): return p0.intValue
+            case let .m_methodThatTakes__closure_closure(p0): return p0.intValue
+            case let .m_methodThatTakesEscaping__closure_closure(p0): return p0.intValue
+            case let .m_methodThatTakesCompletionBlock__completion_completion(p0): return p0.intValue
+
             }
         }
     }
@@ -3720,20 +3730,21 @@ class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.m_methodThatTakesUser__user_user(let lhsUser), .m_methodThatTakesUser__user_user(let rhsUser)):
-                    guard Parameter.compare(lhs: lhsUser, rhs: rhsUser, with: matcher) else { return false } 
-                    return true 
-                case (.m_methodThatTakesArrayOfUsers__array_array(let lhsArray), .m_methodThatTakesArrayOfUsers__array_array(let rhsArray)):
-                    guard Parameter.compare(lhs: lhsArray, rhs: rhsArray, with: matcher) else { return false } 
-                    return true 
-                default: return false
+            case (.m_methodThatTakesUser__user_user(let lhsUser), .m_methodThatTakesUser__user_user(let rhsUser)):
+                guard Parameter.compare(lhs: lhsUser, rhs: rhsUser, with: matcher) else { return false } 
+                return true 
+            case (.m_methodThatTakesArrayOfUsers__array_array(let lhsArray), .m_methodThatTakesArrayOfUsers__array_array(let rhsArray)):
+                guard Parameter.compare(lhs: lhsArray, rhs: rhsArray, with: matcher) else { return false } 
+                return true 
+            default: return false
             }
         }
 
         func intValue() -> Int {
             switch self {
-                case let .m_methodThatTakesUser__user_user(p0): return p0.intValue
-                case let .m_methodThatTakesArrayOfUsers__array_array(p0): return p0.intValue
+            case let .m_methodThatTakesUser__user_user(p0): return p0.intValue
+            case let .m_methodThatTakesArrayOfUsers__array_array(p0): return p0.intValue
+
             }
         }
     }
@@ -3909,21 +3920,22 @@ class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.m_methodWithGeneric__lhs_lhsrhs_rhs(let lhsLhs, let lhsRhs), .m_methodWithGeneric__lhs_lhsrhs_rhs(let rhsLhs, let rhsRhs)):
-                    guard Parameter.compare(lhs: lhsLhs, rhs: rhsLhs, with: matcher) else { return false } 
-                    guard Parameter.compare(lhs: lhsRhs, rhs: rhsRhs, with: matcher) else { return false } 
-                    return true 
-                case (.m_methodWithGenericConstraint__param_param(let lhsParam), .m_methodWithGenericConstraint__param_param(let rhsParam)):
-                    guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
-                    return true 
-                default: return false
+            case (.m_methodWithGeneric__lhs_lhsrhs_rhs(let lhsLhs, let lhsRhs), .m_methodWithGeneric__lhs_lhsrhs_rhs(let rhsLhs, let rhsRhs)):
+                guard Parameter.compare(lhs: lhsLhs, rhs: rhsLhs, with: matcher) else { return false } 
+                guard Parameter.compare(lhs: lhsRhs, rhs: rhsRhs, with: matcher) else { return false } 
+                return true 
+            case (.m_methodWithGenericConstraint__param_param(let lhsParam), .m_methodWithGenericConstraint__param_param(let rhsParam)):
+                guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
+                return true 
+            default: return false
             }
         }
 
         func intValue() -> Int {
             switch self {
-                case let .m_methodWithGeneric__lhs_lhsrhs_rhs(p0, p1): return p0.intValue + p1.intValue
-                case let .m_methodWithGenericConstraint__param_param(p0): return p0.intValue
+            case let .m_methodWithGeneric__lhs_lhsrhs_rhs(p0, p1): return p0.intValue + p1.intValue
+            case let .m_methodWithGenericConstraint__param_param(p0): return p0.intValue
+
             }
         }
     }
@@ -4084,15 +4096,16 @@ class ProtocolWithGenericMethodsNestedMock: ProtocolWithGenericMethodsNested, Mo
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.m_methodWithGeneric__resource_resource(let lhsResource), .m_methodWithGeneric__resource_resource(let rhsResource)):
-                    guard Parameter.compare(lhs: lhsResource, rhs: rhsResource, with: matcher) else { return false } 
-                    return true 
+            case (.m_methodWithGeneric__resource_resource(let lhsResource), .m_methodWithGeneric__resource_resource(let rhsResource)):
+                guard Parameter.compare(lhs: lhsResource, rhs: rhsResource, with: matcher) else { return false } 
+                return true 
             }
         }
 
         func intValue() -> Int {
             switch self {
-                case let .m_methodWithGeneric__resource_resource(p0): return p0.intValue
+            case let .m_methodWithGeneric__resource_resource(p0): return p0.intValue
+
             }
         }
     }
@@ -4244,16 +4257,17 @@ class ProtocolWithInitializersMock: ProtocolWithInitializers, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.p_param_get,.p_param_get): return true
-                case (.p_other_get,.p_other_get): return true
-                default: return false
+            case (.p_param_get,.p_param_get): return true
+            case (.p_other_get,.p_other_get): return true
+            default: return false
             }
         }
 
         func intValue() -> Int {
             switch self {
-                case .p_param_get: return 0
-                case .p_other_get: return 0
+            case .p_param_get: return 0
+            case .p_other_get: return 0
+
             }
         }
     }
@@ -4451,7 +4465,6 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
 
     fileprivate enum StaticMethodType {
         case sm_defaultEmail__set_newValue(Parameter<String?>)
-
         case p_name_get
 		case p_name_set(Parameter<String>)
         case p_defaultEmail_get
@@ -4459,14 +4472,14 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
 
         static func compareParameters(lhs: StaticMethodType, rhs: StaticMethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.sm_defaultEmail__set_newValue(let lhsNewvalue), .sm_defaultEmail__set_newValue(let rhsNewvalue)):
-                    guard Parameter.compare(lhs: lhsNewvalue, rhs: rhsNewvalue, with: matcher) else { return false } 
-                    return true 
-                case (.p_name_get,.p_name_get): return true
-				case (.p_name_set(let left),.p_name_set(let right)): return Parameter<String>.compare(lhs: left, rhs: right, with: matcher)
-                case (.p_defaultEmail_get,.p_defaultEmail_get): return true
-				case (.p_defaultEmail_set(let left),.p_defaultEmail_set(let right)): return Parameter<String?>.compare(lhs: left, rhs: right, with: matcher)
-                default: return false
+            case (.sm_defaultEmail__set_newValue(let lhsNewvalue), .sm_defaultEmail__set_newValue(let rhsNewvalue)):
+                guard Parameter.compare(lhs: lhsNewvalue, rhs: rhsNewvalue, with: matcher) else { return false } 
+                return true 
+            case (.p_name_get,.p_name_get): return true
+			case (.p_name_set(let left),.p_name_set(let right)): return Parameter<String>.compare(lhs: left, rhs: right, with: matcher)
+            case (.p_defaultEmail_get,.p_defaultEmail_get): return true
+			case (.p_defaultEmail_set(let left),.p_defaultEmail_set(let right)): return Parameter<String?>.compare(lhs: left, rhs: right, with: matcher)
+            default: return false
             }
         }
 
@@ -4474,9 +4487,9 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
             switch self {
                 case let .sm_defaultEmail__set_newValue(p0): return p0.intValue
                 case .p_name_get: return 0
-				case .p_name_set(let newValue): return newValue.intValue
+			case .p_name_set(let newValue): return newValue.intValue
                 case .p_defaultEmail_get: return 0
-				case .p_defaultEmail_set(let newValue): return newValue.intValue
+			case .p_defaultEmail_set(let newValue): return newValue.intValue
             }
         }
     }
@@ -4525,28 +4538,29 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.m_name__set_newValue(let lhsNewvalue), .m_name__set_newValue(let rhsNewvalue)):
-                    guard Parameter.compare(lhs: lhsNewvalue, rhs: rhsNewvalue, with: matcher) else { return false } 
-                    return true 
-                case (.m_email__set_set(let lhsSet), .m_email__set_set(let rhsSet)):
-                    guard Parameter.compare(lhs: lhsSet, rhs: rhsSet, with: matcher) else { return false } 
-                    return true 
-                case (.p_name_get,.p_name_get): return true
-				case (.p_name_set(let left),.p_name_set(let right)): return Parameter<String>.compare(lhs: left, rhs: right, with: matcher)
-                case (.p_email_get,.p_email_get): return true
-				case (.p_email_set(let left),.p_email_set(let right)): return Parameter<String?>.compare(lhs: left, rhs: right, with: matcher)
-                default: return false
+            case (.m_name__set_newValue(let lhsNewvalue), .m_name__set_newValue(let rhsNewvalue)):
+                guard Parameter.compare(lhs: lhsNewvalue, rhs: rhsNewvalue, with: matcher) else { return false } 
+                return true 
+            case (.m_email__set_set(let lhsSet), .m_email__set_set(let rhsSet)):
+                guard Parameter.compare(lhs: lhsSet, rhs: rhsSet, with: matcher) else { return false } 
+                return true 
+            case (.p_name_get,.p_name_get): return true
+			case (.p_name_set(let left),.p_name_set(let right)): return Parameter<String>.compare(lhs: left, rhs: right, with: matcher)
+            case (.p_email_get,.p_email_get): return true
+			case (.p_email_set(let left),.p_email_set(let right)): return Parameter<String?>.compare(lhs: left, rhs: right, with: matcher)
+            default: return false
             }
         }
 
         func intValue() -> Int {
             switch self {
-                case let .m_name__set_newValue(p0): return p0.intValue
-                case let .m_email__set_set(p0): return p0.intValue
-                case .p_name_get: return 0
-				case .p_name_set(let newValue): return newValue.intValue
-                case .p_email_get: return 0
-				case .p_email_set(let newValue): return newValue.intValue
+            case let .m_name__set_newValue(p0): return p0.intValue
+            case let .m_email__set_set(p0): return p0.intValue
+            case .p_name_get: return 0
+			case .p_name_set(let newValue): return newValue.intValue
+            case .p_email_get: return 0
+			case .p_email_set(let newValue): return newValue.intValue
+
             }
         }
     }
@@ -4764,16 +4778,15 @@ class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, StaticMock
 
     fileprivate enum StaticMethodType {
         case sm_staticMethod__param_param(Parameter<Int>)
-
         case p_staticProperty_get
 
         static func compareParameters(lhs: StaticMethodType, rhs: StaticMethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.sm_staticMethod__param_param(let lhsParam), .sm_staticMethod__param_param(let rhsParam)):
-                    guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
-                    return true 
-                case (.p_staticProperty_get,.p_staticProperty_get): return true
-                default: return false
+            case (.sm_staticMethod__param_param(let lhsParam), .sm_staticMethod__param_param(let rhsParam)):
+                guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
+                return true 
+            case (.p_staticProperty_get,.p_staticProperty_get): return true
+            default: return false
             }
         }
 
@@ -4981,10 +4994,36 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
         self.line = line
     }
 
+    var something: Any {
+		get {	invocations.append(.p_something_get)
+				return __p_something ?? givenGetterValue(.p_something_get, "ProtocolWithSubscriptsMock - value for something was not defined") }
+		set {	invocations.append(.p_something_set(.value(newValue)))
+				__p_something = newValue }
+	}
+	private var __p_something: (Any)?
 
-    typealias Property = Swift.Never
+
+    struct Property {
+        fileprivate var method: MethodType
+        static var something: Property { return Property(method: .p_something_get) }
+		static func something(set newValue: Parameter<Any>) -> Property { return Property(method: .p_something_set(newValue)) }
+    }
 
 
+
+    func aaa(_ value: Int) -> Bool {
+        addInvocation(.m_aaa__value(Parameter<Int>.value(value)))
+		let perform = methodPerformValue(.m_aaa__value(Parameter<Int>.value(value))) as? (Int) -> Void
+		perform?(value)
+		var __value: Bool
+		do {
+		    __value = try methodReturnValue(.m_aaa__value(Parameter<Int>.value(value))).casted()
+		} catch {
+			onFatalFailure("stub return value not specified for aaa(_ value: Int). Use given")
+			Failure("stub return value not specified for aaa(_ value: Int). Use given")
+		}
+		return __value
+    }
 
     subscript (_ index: Int) -> String {
 		get { onFatalFailure("Stubbing subscripts is not implemented yet."); Failure("unimplemented") }
@@ -5005,10 +5044,61 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 		set { onFatalFailure("Stubbing subscripts is not implemented yet."); Failure("unimplemented") }
 	}
 
+    fileprivate enum MethodType {
+        case m_aaa__value(Parameter<Int>)
+        case p_something_get
+		case p_something_set(Parameter<Any>)
+        case subscript_get_index_1(Parameter<Int>)
+		case subscript_set_index_1(Parameter<Int>)
+        case subscript_get_index_2(Parameter<String>)
+		case subscript_set_index_2(Parameter<String>)
+        case subscript_get_label_name(Parameter<String>)
+        case subscript_get_closure_c(Parameter<(Int) -> Void>)
+		case subscript_set_closure_c(Parameter<(Int) -> Void>)
 
-    fileprivate struct MethodType {
-        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool { return true }
-        func intValue() -> Int { return 0 }
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+            case (.m_aaa__value(let lhsValue), .m_aaa__value(let rhsValue)):
+                guard Parameter.compare(lhs: lhsValue, rhs: rhsValue, with: matcher) else { return false } 
+                return true 
+            case (.p_something_get,.p_something_get): return true
+			case (.p_something_set(let left),.p_something_set(let right)): return Parameter<Any>.compare(lhs: left, rhs: right, with: matcher)
+            case (.subscript_get_index_1(let lhsIndex), .subscript_get_index_1(let rhsIndex)):
+				guard Parameter.compare(lhs: lhsIndex, rhs: rhsIndex, with: matcher) else { return false }
+				return true
+			case (.subscript_set_index_1(let lhsIndex), .subscript_set_index_1(let rhsIndex)):
+				guard Parameter.compare(lhs: lhsIndex, rhs: rhsIndex, with: matcher) else { return false }
+				return true
+            case (.subscript_get_index_2(let lhsIndex), .subscript_get_index_2(let rhsIndex)):
+				guard Parameter.compare(lhs: lhsIndex, rhs: rhsIndex, with: matcher) else { return false }
+				return true
+			case (.subscript_set_index_2(let lhsIndex), .subscript_set_index_2(let rhsIndex)):
+				guard Parameter.compare(lhs: lhsIndex, rhs: rhsIndex, with: matcher) else { return false }
+				return true
+            case (.subscript_get_label_name(let lhsName), .subscript_get_label_name(let rhsName)):
+				guard Parameter.compare(lhs: lhsName, rhs: rhsName, with: matcher) else { return false }
+				return true
+            case (.subscript_get_closure_c(let lhsC), .subscript_get_closure_c(let rhsC)):
+				guard Parameter.compare(lhs: lhsC, rhs: rhsC, with: matcher) else { return false }
+				return true
+			case (.subscript_set_closure_c(let lhsC), .subscript_set_closure_c(let rhsC)):
+				guard Parameter.compare(lhs: lhsC, rhs: rhsC, with: matcher) else { return false }
+				return true
+            default: return false
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+            case let .m_aaa__value(p0): return p0.intValue
+            case .p_something_get: return 0
+			case .p_something_set(let newValue): return newValue.intValue
+            case let .subscript_get_index_1(p0): return p0.intValue
+			case let .subscript_set_index_1(p0): return p0.intValue            case let .subscript_get_index_2(p0): return p0.intValue
+			case let .subscript_set_index_2(p0): return p0.intValue            case let .subscript_get_label_name(p0): return p0.intValue            case let .subscript_get_closure_c(p0): return p0.intValue
+			case let .subscript_set_closure_c(p0): return p0.intValue
+            }
+        }
     }
 
     class Given: StubbedMethod {
@@ -5019,18 +5109,37 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
             super.init(products)
         }
 
+        static func something(getter defaultValue: Any...) -> PropertyStub {
+            return Given(method: .p_something_get, products: defaultValue.map({ Product.return($0) }))
+        }
 
+        static func aaa(value: Parameter<Int>, willReturn: Bool...) -> MethodStub {
+            return Given(method: .m_aaa__value(value), products: willReturn.map({ Product.return($0) }))
+        }
+        static func aaa(value: Parameter<Int>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
+            let willReturn: [Bool] = []
+			let given: Given = { return Given(method: .m_aaa__value(value), products: willReturn.map({ Product.return($0) })) }()
+			let stubber = given.stub(for: (Bool).self)
+			willProduce(stubber)
+			return given
+        }
     }
 
     struct Verify {
         fileprivate var method: MethodType
 
+        static func aaa(value: Parameter<Int>) -> Verify {
+            return Verify(method: .m_aaa__value(value))
+        }
     }
 
     struct Perform {
         fileprivate var method: MethodType
         var performs: Any
 
+        static func aaa(value: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
+            return Perform(method: .m_aaa__value(value), performs: perform)
+        }
     }
 
     public func given(_ method: Given) {
@@ -5046,7 +5155,11 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
+
+    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(property.method)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -5152,19 +5265,20 @@ class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.m_methodThatThrows, .m_methodThatThrows):
-                    return true 
-                case (.m_methodThatReturnsAndThrows__param_param(let lhsParam), .m_methodThatReturnsAndThrows__param_param(let rhsParam)):
-                    guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
-                    return true 
-                default: return false
+            case (.m_methodThatThrows, .m_methodThatThrows):
+                return true 
+            case (.m_methodThatReturnsAndThrows__param_param(let lhsParam), .m_methodThatReturnsAndThrows__param_param(let rhsParam)):
+                guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
+                return true 
+            default: return false
             }
         }
 
         func intValue() -> Int {
             switch self {
-                case .m_methodThatThrows: return 0
-                case let .m_methodThatReturnsAndThrows__param_param(p0): return p0.intValue
+            case .m_methodThatThrows: return 0
+            case let .m_methodThatReturnsAndThrows__param_param(p0): return p0.intValue
+
             }
         }
     }
@@ -5328,15 +5442,16 @@ class ProtocolWithTuplesMock: ProtocolWithTuples, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.m_methodThatTakesTuple__tuple_tuple(let lhsTuple), .m_methodThatTakesTuple__tuple_tuple(let rhsTuple)):
-                    guard Parameter.compare(lhs: lhsTuple, rhs: rhsTuple, with: matcher) else { return false } 
-                    return true 
+            case (.m_methodThatTakesTuple__tuple_tuple(let lhsTuple), .m_methodThatTakesTuple__tuple_tuple(let rhsTuple)):
+                guard Parameter.compare(lhs: lhsTuple, rhs: rhsTuple, with: matcher) else { return false } 
+                return true 
             }
         }
 
         func intValue() -> Int {
             switch self {
-                case let .m_methodThatTakesTuple__tuple_tuple(p0): return p0.intValue
+            case let .m_methodThatTakesTuple__tuple_tuple(p0): return p0.intValue
+
             }
         }
     }
@@ -5491,18 +5606,19 @@ class ProtocolWithWhereAfterDefinitionMock<T>: ProtocolWithWhereAfterDefinition,
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.m_methodWithType__t_t(let lhsT), .m_methodWithType__t_t(let rhsT)):
-                    guard Parameter.compare(lhs: lhsT, rhs: rhsT, with: matcher) else { return false } 
-                    return true 
-                case (.p_sequence_get,.p_sequence_get): return true
-                default: return false
+            case (.m_methodWithType__t_t(let lhsT), .m_methodWithType__t_t(let rhsT)):
+                guard Parameter.compare(lhs: lhsT, rhs: rhsT, with: matcher) else { return false } 
+                return true 
+            case (.p_sequence_get,.p_sequence_get): return true
+            default: return false
             }
         }
 
         func intValue() -> Int {
             switch self {
-                case let .m_methodWithType__t_t(p0): return p0.intValue
-                case .p_sequence_get: return 0
+            case let .m_methodWithType__t_t(p0): return p0.intValue
+            case .p_sequence_get: return 0
+
             }
         }
     }
@@ -5751,43 +5867,44 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.m_serviceName, .m_serviceName):
-                    return true 
-                case (.m_getPoint__from_point(let lhsPoint), .m_getPoint__from_point(let rhsPoint)):
-                    guard Parameter.compare(lhs: lhsPoint, rhs: rhsPoint, with: matcher) else { return false } 
-                    return true 
-                case (.m_getPoint__from_tuple(let lhsTuple), .m_getPoint__from_tuple(let rhsTuple)):
-                    guard Parameter.compare(lhs: lhsTuple, rhs: rhsTuple, with: matcher) else { return false } 
-                    return true 
-                case (.m_similarMethodThatDiffersOnType__value_1(let lhsValue), .m_similarMethodThatDiffersOnType__value_1(let rhsValue)):
-                    guard Parameter.compare(lhs: lhsValue, rhs: rhsValue, with: matcher) else { return false } 
-                    return true 
-                case (.m_similarMethodThatDiffersOnType__value_2(let lhsValue), .m_similarMethodThatDiffersOnType__value_2(let rhsValue)):
-                    guard Parameter.compare(lhs: lhsValue, rhs: rhsValue, with: matcher) else { return false } 
-                    return true 
-                case (.m_methodWithTypedef__scalar(let lhsScalar), .m_methodWithTypedef__scalar(let rhsScalar)):
-                    guard Parameter.compare(lhs: lhsScalar, rhs: rhsScalar, with: matcher) else { return false } 
-                    return true 
-                case (.m_methodWithClosures__success_function_1(let lhsFunction), .m_methodWithClosures__success_function_1(let rhsFunction)):
-                    guard Parameter.compare(lhs: lhsFunction, rhs: rhsFunction, with: matcher) else { return false } 
-                    return true 
-                case (.m_methodWithClosures__success_function_2(let lhsFunction), .m_methodWithClosures__success_function_2(let rhsFunction)):
-                    guard Parameter.compare(lhs: lhsFunction, rhs: rhsFunction, with: matcher) else { return false } 
-                    return true 
-                default: return false
+            case (.m_serviceName, .m_serviceName):
+                return true 
+            case (.m_getPoint__from_point(let lhsPoint), .m_getPoint__from_point(let rhsPoint)):
+                guard Parameter.compare(lhs: lhsPoint, rhs: rhsPoint, with: matcher) else { return false } 
+                return true 
+            case (.m_getPoint__from_tuple(let lhsTuple), .m_getPoint__from_tuple(let rhsTuple)):
+                guard Parameter.compare(lhs: lhsTuple, rhs: rhsTuple, with: matcher) else { return false } 
+                return true 
+            case (.m_similarMethodThatDiffersOnType__value_1(let lhsValue), .m_similarMethodThatDiffersOnType__value_1(let rhsValue)):
+                guard Parameter.compare(lhs: lhsValue, rhs: rhsValue, with: matcher) else { return false } 
+                return true 
+            case (.m_similarMethodThatDiffersOnType__value_2(let lhsValue), .m_similarMethodThatDiffersOnType__value_2(let rhsValue)):
+                guard Parameter.compare(lhs: lhsValue, rhs: rhsValue, with: matcher) else { return false } 
+                return true 
+            case (.m_methodWithTypedef__scalar(let lhsScalar), .m_methodWithTypedef__scalar(let rhsScalar)):
+                guard Parameter.compare(lhs: lhsScalar, rhs: rhsScalar, with: matcher) else { return false } 
+                return true 
+            case (.m_methodWithClosures__success_function_1(let lhsFunction), .m_methodWithClosures__success_function_1(let rhsFunction)):
+                guard Parameter.compare(lhs: lhsFunction, rhs: rhsFunction, with: matcher) else { return false } 
+                return true 
+            case (.m_methodWithClosures__success_function_2(let lhsFunction), .m_methodWithClosures__success_function_2(let rhsFunction)):
+                guard Parameter.compare(lhs: lhsFunction, rhs: rhsFunction, with: matcher) else { return false } 
+                return true 
+            default: return false
             }
         }
 
         func intValue() -> Int {
             switch self {
-                case .m_serviceName: return 0
-                case let .m_getPoint__from_point(p0): return p0.intValue
-                case let .m_getPoint__from_tuple(p0): return p0.intValue
-                case let .m_similarMethodThatDiffersOnType__value_1(p0): return p0.intValue
-                case let .m_similarMethodThatDiffersOnType__value_2(p0): return p0.intValue
-                case let .m_methodWithTypedef__scalar(p0): return p0.intValue
-                case let .m_methodWithClosures__success_function_1(p0): return p0.intValue
-                case let .m_methodWithClosures__success_function_2(p0): return p0.intValue
+            case .m_serviceName: return 0
+            case let .m_getPoint__from_point(p0): return p0.intValue
+            case let .m_getPoint__from_tuple(p0): return p0.intValue
+            case let .m_similarMethodThatDiffersOnType__value_1(p0): return p0.intValue
+            case let .m_similarMethodThatDiffersOnType__value_2(p0): return p0.intValue
+            case let .m_methodWithTypedef__scalar(p0): return p0.intValue
+            case let .m_methodWithClosures__success_function_1(p0): return p0.intValue
+            case let .m_methodWithClosures__success_function_2(p0): return p0.intValue
+
             }
         }
     }
@@ -6096,12 +6213,11 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
     fileprivate enum StaticMethodType {
         case sm_construct__param_value(Parameter<Int>)
 
-
         static func compareParameters(lhs: StaticMethodType, rhs: StaticMethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.sm_construct__param_value(let lhsValue), .sm_construct__param_value(let rhsValue)):
-                    guard Parameter.compare(lhs: lhsValue, rhs: rhsValue, with: matcher) else { return false } 
-                    return true 
+            case (.sm_construct__param_value(let lhsValue), .sm_construct__param_value(let rhsValue)):
+                guard Parameter.compare(lhs: lhsValue, rhs: rhsValue, with: matcher) else { return false } 
+                return true 
             }
         }
 
@@ -6157,25 +6273,26 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.m_methodReturningSelf, .m_methodReturningSelf):
-                    return true 
-                case (.m_compare__with_other(let lhsOther), .m_compare__with_other(let rhsOther)):
-                    guard Parameter.compare(lhs: lhsOther, rhs: rhsOther, with: matcher) else { return false } 
-                    return true 
-                case (.m_genericMethodWithNestedSelf__param_paramsecond_secondother_other(let lhsParam, let lhsSecond, let lhsOther), .m_genericMethodWithNestedSelf__param_paramsecond_secondother_other(let rhsParam, let rhsSecond, let rhsOther)):
-                    guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
-                    guard Parameter.compare(lhs: lhsSecond, rhs: rhsSecond, with: matcher) else { return false } 
-                    guard Parameter.compare(lhs: lhsOther, rhs: rhsOther, with: matcher) else { return false } 
-                    return true 
-                default: return false
+            case (.m_methodReturningSelf, .m_methodReturningSelf):
+                return true 
+            case (.m_compare__with_other(let lhsOther), .m_compare__with_other(let rhsOther)):
+                guard Parameter.compare(lhs: lhsOther, rhs: rhsOther, with: matcher) else { return false } 
+                return true 
+            case (.m_genericMethodWithNestedSelf__param_paramsecond_secondother_other(let lhsParam, let lhsSecond, let lhsOther), .m_genericMethodWithNestedSelf__param_paramsecond_secondother_other(let rhsParam, let rhsSecond, let rhsOther)):
+                guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
+                guard Parameter.compare(lhs: lhsSecond, rhs: rhsSecond, with: matcher) else { return false } 
+                guard Parameter.compare(lhs: lhsOther, rhs: rhsOther, with: matcher) else { return false } 
+                return true 
+            default: return false
             }
         }
 
         func intValue() -> Int {
             switch self {
-                case .m_methodReturningSelf: return 0
-                case let .m_compare__with_other(p0): return p0.intValue
-                case let .m_genericMethodWithNestedSelf__param_paramsecond_secondother_other(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
+            case .m_methodReturningSelf: return 0
+            case let .m_compare__with_other(p0): return p0.intValue
+            case let .m_genericMethodWithNestedSelf__param_paramsecond_secondother_other(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
+
             }
         }
     }
@@ -6489,44 +6606,45 @@ class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInheritsOt
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.m_simpleMethod, .m_simpleMethod):
-                    return true 
-                case (.m_simpleMehtodThatReturns, .m_simpleMehtodThatReturns):
-                    return true 
-                case (.m_simpleMehtodThatReturns__param_param(let lhsParam), .m_simpleMehtodThatReturns__param_param(let rhsParam)):
-                    guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
-                    return true 
-                case (.m_simpleMehtodThatReturns__optionalParam_optionalParam(let lhsOptionalparam), .m_simpleMehtodThatReturns__optionalParam_optionalParam(let rhsOptionalparam)):
-                    guard Parameter.compare(lhs: lhsOptionalparam, rhs: rhsOptionalparam, with: matcher) else { return false } 
-                    return true 
-                case (.p_property_get,.p_property_get): return true
-				case (.p_property_set(let left),.p_property_set(let right)): return Parameter<String>.compare(lhs: left, rhs: right, with: matcher)
-                case (.p_weakProperty_get,.p_weakProperty_get): return true
-				case (.p_weakProperty_set(let left),.p_weakProperty_set(let right)): return Parameter<AnyObject?>.compare(lhs: left, rhs: right, with: matcher)
-                case (.p_propertyGetOnly_get,.p_propertyGetOnly_get): return true
-                case (.p_propertyOptional_get,.p_propertyOptional_get): return true
-				case (.p_propertyOptional_set(let left),.p_propertyOptional_set(let right)): return Parameter<Int?>.compare(lhs: left, rhs: right, with: matcher)
-                case (.p_propertyImplicit_get,.p_propertyImplicit_get): return true
-				case (.p_propertyImplicit_set(let left),.p_propertyImplicit_set(let right)): return Parameter<Int?>.compare(lhs: left, rhs: right, with: matcher)
-                default: return false
+            case (.m_simpleMethod, .m_simpleMethod):
+                return true 
+            case (.m_simpleMehtodThatReturns, .m_simpleMehtodThatReturns):
+                return true 
+            case (.m_simpleMehtodThatReturns__param_param(let lhsParam), .m_simpleMehtodThatReturns__param_param(let rhsParam)):
+                guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
+                return true 
+            case (.m_simpleMehtodThatReturns__optionalParam_optionalParam(let lhsOptionalparam), .m_simpleMehtodThatReturns__optionalParam_optionalParam(let rhsOptionalparam)):
+                guard Parameter.compare(lhs: lhsOptionalparam, rhs: rhsOptionalparam, with: matcher) else { return false } 
+                return true 
+            case (.p_property_get,.p_property_get): return true
+			case (.p_property_set(let left),.p_property_set(let right)): return Parameter<String>.compare(lhs: left, rhs: right, with: matcher)
+            case (.p_weakProperty_get,.p_weakProperty_get): return true
+			case (.p_weakProperty_set(let left),.p_weakProperty_set(let right)): return Parameter<AnyObject?>.compare(lhs: left, rhs: right, with: matcher)
+            case (.p_propertyGetOnly_get,.p_propertyGetOnly_get): return true
+            case (.p_propertyOptional_get,.p_propertyOptional_get): return true
+			case (.p_propertyOptional_set(let left),.p_propertyOptional_set(let right)): return Parameter<Int?>.compare(lhs: left, rhs: right, with: matcher)
+            case (.p_propertyImplicit_get,.p_propertyImplicit_get): return true
+			case (.p_propertyImplicit_set(let left),.p_propertyImplicit_set(let right)): return Parameter<Int?>.compare(lhs: left, rhs: right, with: matcher)
+            default: return false
             }
         }
 
         func intValue() -> Int {
             switch self {
-                case .m_simpleMethod: return 0
-                case .m_simpleMehtodThatReturns: return 0
-                case let .m_simpleMehtodThatReturns__param_param(p0): return p0.intValue
-                case let .m_simpleMehtodThatReturns__optionalParam_optionalParam(p0): return p0.intValue
-                case .p_property_get: return 0
-				case .p_property_set(let newValue): return newValue.intValue
-                case .p_weakProperty_get: return 0
-				case .p_weakProperty_set(let newValue): return newValue.intValue
-                case .p_propertyGetOnly_get: return 0
-                case .p_propertyOptional_get: return 0
-				case .p_propertyOptional_set(let newValue): return newValue.intValue
-                case .p_propertyImplicit_get: return 0
-				case .p_propertyImplicit_set(let newValue): return newValue.intValue
+            case .m_simpleMethod: return 0
+            case .m_simpleMehtodThatReturns: return 0
+            case let .m_simpleMehtodThatReturns__param_param(p0): return p0.intValue
+            case let .m_simpleMehtodThatReturns__optionalParam_optionalParam(p0): return p0.intValue
+            case .p_property_get: return 0
+			case .p_property_set(let newValue): return newValue.intValue
+            case .p_weakProperty_get: return 0
+			case .p_weakProperty_set(let newValue): return newValue.intValue
+            case .p_propertyGetOnly_get: return 0
+            case .p_propertyOptional_get: return 0
+			case .p_propertyOptional_set(let newValue): return newValue.intValue
+            case .p_propertyImplicit_get: return 0
+			case .p_propertyImplicit_set(let newValue): return newValue.intValue
+
             }
         }
     }
@@ -6773,28 +6891,29 @@ class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.m_getArray, .m_getArray):
-                    return true 
-                case (.m_map__array_arrayparam_param(let lhsArray, let lhsParam), .m_map__array_arrayparam_param(let rhsArray, let rhsParam)):
-                    guard Parameter.compare(lhs: lhsArray, rhs: rhsArray, with: matcher) else { return false } 
-                    guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
-                    return true 
-                case (.m_use__dictionary_dictionary(let lhsDictionary), .m_use__dictionary_dictionary(let rhsDictionary)):
-                    guard Parameter.compare(lhs: lhsDictionary, rhs: rhsDictionary, with: matcher) else { return false } 
-                    return true 
-                case (.m_verify__set_set(let lhsSet), .m_verify__set_set(let rhsSet)):
-                    guard Parameter.compare(lhs: lhsSet, rhs: rhsSet, with: matcher) else { return false } 
-                    return true 
-                default: return false
+            case (.m_getArray, .m_getArray):
+                return true 
+            case (.m_map__array_arrayparam_param(let lhsArray, let lhsParam), .m_map__array_arrayparam_param(let rhsArray, let rhsParam)):
+                guard Parameter.compare(lhs: lhsArray, rhs: rhsArray, with: matcher) else { return false } 
+                guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
+                return true 
+            case (.m_use__dictionary_dictionary(let lhsDictionary), .m_use__dictionary_dictionary(let rhsDictionary)):
+                guard Parameter.compare(lhs: lhsDictionary, rhs: rhsDictionary, with: matcher) else { return false } 
+                return true 
+            case (.m_verify__set_set(let lhsSet), .m_verify__set_set(let rhsSet)):
+                guard Parameter.compare(lhs: lhsSet, rhs: rhsSet, with: matcher) else { return false } 
+                return true 
+            default: return false
             }
         }
 
         func intValue() -> Int {
             switch self {
-                case .m_getArray: return 0
-                case let .m_map__array_arrayparam_param(p0, p1): return p0.intValue + p1.intValue
-                case let .m_use__dictionary_dictionary(p0): return p0.intValue
-                case let .m_verify__set_set(p0): return p0.intValue
+            case .m_getArray: return 0
+            case let .m_map__array_arrayparam_param(p0, p1): return p0.intValue + p1.intValue
+            case let .m_use__dictionary_dictionary(p0): return p0.intValue
+            case let .m_verify__set_set(p0): return p0.intValue
+
             }
         }
     }
@@ -6997,17 +7116,18 @@ class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBothMeth
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.m_simpleMethod, .m_simpleMethod):
-                    return true 
-                case (.p_property_get,.p_property_get): return true
-                default: return false
+            case (.m_simpleMethod, .m_simpleMethod):
+                return true 
+            case (.p_property_get,.p_property_get): return true
+            default: return false
             }
         }
 
         func intValue() -> Int {
             switch self {
-                case .m_simpleMethod: return 0
-                case .p_property_get: return 0
+            case .m_simpleMethod: return 0
+            case .p_property_get: return 0
+
             }
         }
     }
@@ -7196,26 +7316,27 @@ class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.m_simpleMethod, .m_simpleMethod):
-                    return true 
-                case (.m_simpleMehtodThatReturns, .m_simpleMehtodThatReturns):
-                    return true 
-                case (.m_simpleMehtodThatReturns__param_param(let lhsParam), .m_simpleMehtodThatReturns__param_param(let rhsParam)):
-                    guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
-                    return true 
-                case (.m_simpleMehtodThatReturns__optionalParam_optionalParam(let lhsOptionalparam), .m_simpleMehtodThatReturns__optionalParam_optionalParam(let rhsOptionalparam)):
-                    guard Parameter.compare(lhs: lhsOptionalparam, rhs: rhsOptionalparam, with: matcher) else { return false } 
-                    return true 
-                default: return false
+            case (.m_simpleMethod, .m_simpleMethod):
+                return true 
+            case (.m_simpleMehtodThatReturns, .m_simpleMehtodThatReturns):
+                return true 
+            case (.m_simpleMehtodThatReturns__param_param(let lhsParam), .m_simpleMehtodThatReturns__param_param(let rhsParam)):
+                guard Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher) else { return false } 
+                return true 
+            case (.m_simpleMehtodThatReturns__optionalParam_optionalParam(let lhsOptionalparam), .m_simpleMehtodThatReturns__optionalParam_optionalParam(let rhsOptionalparam)):
+                guard Parameter.compare(lhs: lhsOptionalparam, rhs: rhsOptionalparam, with: matcher) else { return false } 
+                return true 
+            default: return false
             }
         }
 
         func intValue() -> Int {
             switch self {
-                case .m_simpleMethod: return 0
-                case .m_simpleMehtodThatReturns: return 0
-                case let .m_simpleMehtodThatReturns__param_param(p0): return p0.intValue
-                case let .m_simpleMehtodThatReturns__optionalParam_optionalParam(p0): return p0.intValue
+            case .m_simpleMethod: return 0
+            case .m_simpleMehtodThatReturns: return 0
+            case let .m_simpleMehtodThatReturns__param_param(p0): return p0.intValue
+            case let .m_simpleMehtodThatReturns__optionalParam_optionalParam(p0): return p0.intValue
+
             }
         }
     }
@@ -7441,30 +7562,31 @@ class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.p_property_get,.p_property_get): return true
-				case (.p_property_set(let left),.p_property_set(let right)): return Parameter<String>.compare(lhs: left, rhs: right, with: matcher)
-                case (.p_weakProperty_get,.p_weakProperty_get): return true
-				case (.p_weakProperty_set(let left),.p_weakProperty_set(let right)): return Parameter<AnyObject?>.compare(lhs: left, rhs: right, with: matcher)
-                case (.p_propertyGetOnly_get,.p_propertyGetOnly_get): return true
-                case (.p_propertyOptional_get,.p_propertyOptional_get): return true
-				case (.p_propertyOptional_set(let left),.p_propertyOptional_set(let right)): return Parameter<Int?>.compare(lhs: left, rhs: right, with: matcher)
-                case (.p_propertyImplicit_get,.p_propertyImplicit_get): return true
-				case (.p_propertyImplicit_set(let left),.p_propertyImplicit_set(let right)): return Parameter<Int?>.compare(lhs: left, rhs: right, with: matcher)
-                default: return false
+            case (.p_property_get,.p_property_get): return true
+			case (.p_property_set(let left),.p_property_set(let right)): return Parameter<String>.compare(lhs: left, rhs: right, with: matcher)
+            case (.p_weakProperty_get,.p_weakProperty_get): return true
+			case (.p_weakProperty_set(let left),.p_weakProperty_set(let right)): return Parameter<AnyObject?>.compare(lhs: left, rhs: right, with: matcher)
+            case (.p_propertyGetOnly_get,.p_propertyGetOnly_get): return true
+            case (.p_propertyOptional_get,.p_propertyOptional_get): return true
+			case (.p_propertyOptional_set(let left),.p_propertyOptional_set(let right)): return Parameter<Int?>.compare(lhs: left, rhs: right, with: matcher)
+            case (.p_propertyImplicit_get,.p_propertyImplicit_get): return true
+			case (.p_propertyImplicit_set(let left),.p_propertyImplicit_set(let right)): return Parameter<Int?>.compare(lhs: left, rhs: right, with: matcher)
+            default: return false
             }
         }
 
         func intValue() -> Int {
             switch self {
-                case .p_property_get: return 0
-				case .p_property_set(let newValue): return newValue.intValue
-                case .p_weakProperty_get: return 0
-				case .p_weakProperty_set(let newValue): return newValue.intValue
-                case .p_propertyGetOnly_get: return 0
-                case .p_propertyOptional_get: return 0
-				case .p_propertyOptional_set(let newValue): return newValue.intValue
-                case .p_propertyImplicit_get: return 0
-				case .p_propertyImplicit_set(let newValue): return newValue.intValue
+            case .p_property_get: return 0
+			case .p_property_set(let newValue): return newValue.intValue
+            case .p_weakProperty_get: return 0
+			case .p_weakProperty_set(let newValue): return newValue.intValue
+            case .p_propertyGetOnly_get: return 0
+            case .p_propertyOptional_get: return 0
+			case .p_propertyOptional_set(let newValue): return newValue.intValue
+            case .p_propertyImplicit_get: return 0
+			case .p_propertyImplicit_set(let newValue): return newValue.intValue
+
             }
         }
     }
@@ -7629,30 +7751,31 @@ class UserNetworkTypeMock: UserNetworkType, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.m_getUser__for_idcompletion_completion(let lhsId, let lhsCompletion), .m_getUser__for_idcompletion_completion(let rhsId, let rhsCompletion)):
-                    guard Parameter.compare(lhs: lhsId, rhs: rhsId, with: matcher) else { return false } 
-                    guard Parameter.compare(lhs: lhsCompletion, rhs: rhsCompletion, with: matcher) else { return false } 
-                    return true 
-                case (.m_getUserEscaping__for_idcompletion_completion(let lhsId, let lhsCompletion), .m_getUserEscaping__for_idcompletion_completion(let rhsId, let rhsCompletion)):
-                    guard Parameter.compare(lhs: lhsId, rhs: rhsId, with: matcher) else { return false } 
-                    guard Parameter.compare(lhs: lhsCompletion, rhs: rhsCompletion, with: matcher) else { return false } 
-                    return true 
-                case (.m_doSomething__prop_prop(let lhsProp), .m_doSomething__prop_prop(let rhsProp)):
-                    guard Parameter.compare(lhs: lhsProp, rhs: rhsProp, with: matcher) else { return false } 
-                    return true 
-                case (.m_testDefaultValues__value_value(let lhsValue), .m_testDefaultValues__value_value(let rhsValue)):
-                    guard Parameter.compare(lhs: lhsValue, rhs: rhsValue, with: matcher) else { return false } 
-                    return true 
-                default: return false
+            case (.m_getUser__for_idcompletion_completion(let lhsId, let lhsCompletion), .m_getUser__for_idcompletion_completion(let rhsId, let rhsCompletion)):
+                guard Parameter.compare(lhs: lhsId, rhs: rhsId, with: matcher) else { return false } 
+                guard Parameter.compare(lhs: lhsCompletion, rhs: rhsCompletion, with: matcher) else { return false } 
+                return true 
+            case (.m_getUserEscaping__for_idcompletion_completion(let lhsId, let lhsCompletion), .m_getUserEscaping__for_idcompletion_completion(let rhsId, let rhsCompletion)):
+                guard Parameter.compare(lhs: lhsId, rhs: rhsId, with: matcher) else { return false } 
+                guard Parameter.compare(lhs: lhsCompletion, rhs: rhsCompletion, with: matcher) else { return false } 
+                return true 
+            case (.m_doSomething__prop_prop(let lhsProp), .m_doSomething__prop_prop(let rhsProp)):
+                guard Parameter.compare(lhs: lhsProp, rhs: rhsProp, with: matcher) else { return false } 
+                return true 
+            case (.m_testDefaultValues__value_value(let lhsValue), .m_testDefaultValues__value_value(let rhsValue)):
+                guard Parameter.compare(lhs: lhsValue, rhs: rhsValue, with: matcher) else { return false } 
+                return true 
+            default: return false
             }
         }
 
         func intValue() -> Int {
             switch self {
-                case let .m_getUser__for_idcompletion_completion(p0, p1): return p0.intValue + p1.intValue
-                case let .m_getUserEscaping__for_idcompletion_completion(p0, p1): return p0.intValue + p1.intValue
-                case let .m_doSomething__prop_prop(p0): return p0.intValue
-                case let .m_testDefaultValues__value_value(p0): return p0.intValue
+            case let .m_getUser__for_idcompletion_completion(p0, p1): return p0.intValue + p1.intValue
+            case let .m_getUserEscaping__for_idcompletion_completion(p0, p1): return p0.intValue + p1.intValue
+            case let .m_doSomething__prop_prop(p0): return p0.intValue
+            case let .m_testDefaultValues__value_value(p0): return p0.intValue
+
             }
         }
     }
@@ -7812,21 +7935,22 @@ class UserStorageTypeMock: UserStorageType, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.m_surname__for_name(let lhsName), .m_surname__for_name(let rhsName)):
-                    guard Parameter.compare(lhs: lhsName, rhs: rhsName, with: matcher) else { return false } 
-                    return true 
-                case (.m_storeUser__name_namesurname_surname(let lhsName, let lhsSurname), .m_storeUser__name_namesurname_surname(let rhsName, let rhsSurname)):
-                    guard Parameter.compare(lhs: lhsName, rhs: rhsName, with: matcher) else { return false } 
-                    guard Parameter.compare(lhs: lhsSurname, rhs: rhsSurname, with: matcher) else { return false } 
-                    return true 
-                default: return false
+            case (.m_surname__for_name(let lhsName), .m_surname__for_name(let rhsName)):
+                guard Parameter.compare(lhs: lhsName, rhs: rhsName, with: matcher) else { return false } 
+                return true 
+            case (.m_storeUser__name_namesurname_surname(let lhsName, let lhsSurname), .m_storeUser__name_namesurname_surname(let rhsName, let rhsSurname)):
+                guard Parameter.compare(lhs: lhsName, rhs: rhsName, with: matcher) else { return false } 
+                guard Parameter.compare(lhs: lhsSurname, rhs: rhsSurname, with: matcher) else { return false } 
+                return true 
+            default: return false
             }
         }
 
         func intValue() -> Int {
             switch self {
-                case let .m_surname__for_name(p0): return p0.intValue
-                case let .m_storeUser__name_namesurname_surname(p0, p1): return p0.intValue + p1.intValue
+            case let .m_surname__for_name(p0): return p0.intValue
+            case let .m_storeUser__name_namesurname_surname(p0, p1): return p0.intValue + p1.intValue
+
             }
         }
     }

@@ -262,6 +262,13 @@ import SourceryRuntime
         func asMethodArgument() -> String {
             return "\(parameter.argumentLabel ?? "_") \(parameter.name): \(parameter.typeName)"
         }
+        func sanitizedForEnumCaseName() -> String {
+            if let label = parameter.argumentLabel {
+                return "\(label)_\(parameter.name)"
+            } else {
+                return "\(parameter.name)"
+            }
+        }
     }
 
     class VariableWrapper {
@@ -269,6 +276,7 @@ import SourceryRuntime
         let scope: String
         var readonly: Bool { return variable.writeAccess.isEmpty }
         var privatePrototypeName: String { return "__p_\(variable.name)" }
+        var casesCount: Int { return readonly ? 1 : 2 }
 
         var getter: String {
             let message = "\(scope) - value for \(variable.name) was not defined"
@@ -348,24 +356,91 @@ import SourceryRuntime
     class SubscriptWrapper {
         let wrapped: SourceryRuntime.Subscript
         var readonly: Bool { return !wrapped.isMutable }
+        var wrappedParameters: [ParameterWrapper] { return wrapped.parameters.map { ParameterWrapper($0) } }
+        var casesCount: Int { return readonly ? 1 : 2 }
 
         let noStubmessage = "Stub return value not specified for subscript. Use given first."
         let unimplemented = "Stubbing subscripts is not implemented yet."
+
+        private static var registered: [String: Int] = [:]
+        private static var suffixes: [String: Int] = [:]
+        static func clear() -> String {
+            SubscriptWrapper.registered = [:]
+            SubscriptWrapper.suffixes = [:]
+            return ""
+        }
+        static func register(_ name: String, _ uniqueName: String) {
+            let count = SubscriptWrapper.registered[name] ?? 0
+            SubscriptWrapper.registered[name] = count + 1
+            SubscriptWrapper.suffixes[uniqueName] = count + 1
+        }
+
+        func register() {
+            SubscriptWrapper.register(registrationName("get"),uniqueName)
+            guard !readonly else { return }
+            SubscriptWrapper.register(registrationName("set"),uniqueName)
+        }
 
         init(_ wrapped: SourceryRuntime.Subscript) {
             self.wrapped = wrapped
         }
 
-        func subscriptCall() -> String {
-            let params = wrapped.parameters.map { ParameterWrapper($0).asMethodArgument() } .joined(separator: ", ")
-            return "subscript (\(params)) -> \(wrapped.returnTypeName) {\(getter)\(setter)\n\t}"
+        func registrationName(_ accessor: String) -> String {
+            return "subscript_\(accessor)_\(wrappedParameters.map({ $0.sanitizedForEnumCaseName() }).joined(separator: "_"))"
+        }
+        var shortName: String { return "subscript (\(wrappedParameters.map({ $0.asMethodArgument() }).joined(separator: ", ")))" }
+        var uniqueName: String { return "\(shortName) -> \(wrapped.returnTypeName)" }
+
+        private func nameSuffix(_ accessor: String) -> String {
+            guard let count = SubscriptWrapper.registered[registrationName(accessor)] else { return "" }
+            guard count > 1 else { return "" }
+            guard let index = SubscriptWrapper.suffixes[uniqueName] else { return "" }
+            return "_\(index)"
         }
 
-        var getter: String {
-            return "\n\t\tget { onFatalFailure(\"\(unimplemented)\"); Failure(\"unimplemented\") }"
+        func subscriptCall() -> String {
+            let getter = "\n\t\tget { onFatalFailure(\"\(unimplemented)\"); Failure(\"unimplemented\") }"
+            let setter = readonly ? "" : "\n\t\tset { onFatalFailure(\"\(unimplemented)\"); Failure(\"unimplemented\") }"
+            return "\(uniqueName) {\(getter)\(setter)\n\t}"
         }
-        var setter: String {
-            return readonly ? "" : "\n\t\tset { onFatalFailure(\"\(unimplemented)\"); Failure(\"unimplemented\") }"
+
+        func subscriptCasePrefix(_ accessor: String) -> String {
+            return "\(registrationName(accessor))\(nameSuffix(accessor))"
+        }
+        func subscriptCaseName(_ accessor: String) -> String {
+            return "\(subscriptCasePrefix(accessor))(\(parametersForMethodTypeDeclaration()))"
+        }
+        func subscriptCases() -> String {
+            return readonly ? "case \(subscriptCaseName("get"))" : "case \(subscriptCaseName("get"))\n\t\tcase \(subscriptCaseName("set"))"
+        }
+        func equalCase(_ accessor: String) -> String {
+            let lhsParams = wrapped.parameters.map { "let lhs\($0.name.capitalized)" }.joined(separator: ", ")
+            let rhsParams = wrapped.parameters.map { "let rhs\($0.name.capitalized)" }.joined(separator: ", ")
+            let comparators = wrappedParameters.map { "\t\t\t\t\($0.comparator)" }.joined(separator: "\n")
+            return "case (.\(subscriptCasePrefix(accessor))(\(lhsParams)), .\(subscriptCasePrefix(accessor))(\(rhsParams))):\n" + comparators + "\n\t\t\t\treturn true"
+        }
+        func equalCases() -> String {
+            return readonly ? equalCase("get") : "\(equalCase("get"))\n\t\t\t\(equalCase("set"))"
+        }
+        func intValueCase() -> String {
+            return readonly ? intValueCase("get") : "\(intValueCase("get"))\n\t\t\t\(intValueCase("set"))"
+        }
+        func intValueCase(_ accessor: String) -> String {
+            let params = wrappedParameters.enumerated().map { offset, _ in
+                return "p\(offset)"
+            }
+            let definitions = params.joined(separator: ", ")
+            let paramsSum = params.map({ "\($0).intValue" }).joined(separator: " + ")
+            return "case let .\(subscriptCasePrefix(accessor))(\(definitions)): return \(paramsSum)"
+        }
+
+        // Helpers
+        private func parametersForMethodTypeDeclaration() -> String {
+            // TODO: Get generics from annotations
+            let generics: [String] = [] //getGenerics()
+            return wrappedParameters.map { param in
+                return param.isGeneric(generics) ? param.genericType : param.nestedType
+            }.joined(separator: ", ")
         }
     }
 
@@ -421,9 +496,7 @@ import SourceryRuntime
             return "_\(index)"
         }
 
-        var prototype: String {
-            return "\(registrationName)\(nameSuffix)"
-        }
+        var prototype: String { return "\(registrationName)\(nameSuffix)" }
         var parameters: [ParameterWrapper] {
             return method.parameters.map { ParameterWrapper($0) }
         }
@@ -959,6 +1032,7 @@ import SourceryRuntime
         return SubscriptWrapper(wrapped)
     }
 
+    func justWrap(_ variable: SourceryRuntime.Variable) -> VariableWrapper { return wrapProperty(variable) }
     func wrapProperty(_ variable: SourceryRuntime.Variable, _ scope: String = "") -> VariableWrapper {
         return VariableWrapper(variable, scope: scope)
     }
@@ -980,12 +1054,12 @@ import SourceryRuntime
 
     func propertyMethodTypesCompare(_ variable: SourceryRuntime.Variable) -> String {
         let wrapper = VariableWrapper(variable, scope: "")
-        return "\(wrapper.propertyCaseGetCompare())" + (wrapper.readonly ? "" : "\n\t\t\t\t\(wrapper.propertyCaseSetCompare())")
+        return "\(wrapper.propertyCaseGetCompare())" + (wrapper.readonly ? "" : "\n\t\t\t\(wrapper.propertyCaseSetCompare())")
     }
 
     func propertyMethodTypesIntValue(_ variable: SourceryRuntime.Variable) -> String {
         let wrapper = VariableWrapper(variable, scope: "")
-        return "\(wrapper.propertyCaseGetIntValue())" + (wrapper.readonly ? "" : "\n\t\t\t\t\(wrapper.propertyCaseSetIntValue())")
+        return "\(wrapper.propertyCaseGetIntValue())" + (wrapper.readonly ? "" : "\n\t\t\t\(wrapper.propertyCaseSetIntValue())")
     }
 
     func propertyRegister(_ variable: SourceryRuntime.Variable) {
@@ -1140,6 +1214,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
     <%_ } %> <%_ -%>
   <%# ================================================== METHOD REGISTRATIONS -%><%_ -%>
     <%_ MethodWrapper.clear() -%>
+    <%_ SubscriptWrapper.clear() -%>
     <%_ if autoMockable { -%>
     <%_ Current.selfType = "\(type.name)Mock\(genericTypesModifier)" -%>
     <%_ } else { %>
@@ -1147,14 +1222,20 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
     <%_ } %>
     <%_ let wrappedSubscripts = allSubscripts.map(wrapSubscript) -%>
     <%_ let wrappedMethods = allMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) -%>
+    <%_ let wrappedVariables = allVariables.map(justWrap) -%>
     <%_ let wrappedMethodsForMethodType = allMethodsForMethodType.map(wrapMethod).filter({ $0.wrappedInMethodType() }) -%>
     <%_ let wrappedInitializers = allMethods.map(wrapMethod).filter({ $0.method.isInitializer }) -%>
     <%_ let wrappedStaticMethods = allStaticMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) -%>
+    <%_ let wrappedStaticVariables = allStaticVariables.map(justWrap) -%>
     <%_ let wrappedStaticMethodsForMethodType = allStaticMethodsForMethodType.map(wrapMethod).filter({ $0.wrappedInMethodType() }) -%>
     <%_ for variable in allVariables { propertyRegister(variable) } -%>
     <%_ for variable in allStaticVariables { propertyRegister(variable) } -%>
     <%_ for method in wrappedMethods { method.register() } -%>
+    <%_ for wrapped in wrappedSubscripts { wrapped.register() } -%>
     <%_ for method in wrappedStaticMethods { method.register() } -%><%_ -%>
+    <%_ let variableCasesCount: Int = wrappedVariables.reduce(0) { return $0 + $1.casesCount } -%><%_ -%>
+    <%_ let subscriptsCasesCount: Int = wrappedSubscripts.reduce(0) { return $0 + $1.casesCount } -%><%_ -%>
+    <%_ let staticVariableCasesCount: Int = wrappedStaticVariables.reduce(0) { return $0 + $1.casesCount } -%><%_ -%>
 
   <%# ================================================== STATIC STUBS -%><%_ -%>
     <%_ for method in wrappedStaticMethods { -%>
@@ -1186,22 +1267,20 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
     fileprivate enum StaticMethodType {
     <%_ for method in wrappedStaticMethodsForMethodType { -%>
         case <%= method.methodTypeDeclarationWithParameters() _%>
-    <%_  } %>
-    <%_ for variable in allStaticVariables { -%>
+    <%_  } %> <%_ for variable in allStaticVariables { -%>
         <%= propertyMethodTypes(variable) %>
     <%_ } %> <%_ %>
     <%_ -%>
         static func compareParameters(lhs: StaticMethodType, rhs: StaticMethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) { <%_ for method in wrappedStaticMethodsForMethodType { %>
-                <%= method.equalCase -%><% for parameter in method.parameters { %>
-                    <%= parameter.comparator -%> <%  } %>
-                    return true <% } %>
-                <%_ for variable in allStaticVariables { -%>
-                <%= propertyMethodTypesCompare(variable) %>
-                <%_ } %> <%_ -%>
-                <%_ if wrappedStaticMethods.count + 2 * allStaticVariables.count > 1 { -%>
-                default: return false
-                <%_ } -%>
+            <%= method.equalCase -%><% for parameter in method.parameters { %>
+                <%= parameter.comparator -%> <%  } %>
+                return true <% } %>
+            <%_ for variable in allStaticVariables { -%>
+            <%= propertyMethodTypesCompare(variable) %>
+        <%_ } %> <%_ -%> <%_ if wrappedStaticMethods.count + staticVariableCasesCount > 1 { -%>
+            default: return false
+            <%_ } -%>
             }
         }
     <%_ %>
@@ -1271,35 +1350,38 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
 
     <% } -%>
   <%# ================================================== METHOD TYPE -%><%_ -%>
-    <%_ if !wrappedMethods.isEmpty || !allVariables.isEmpty { -%>
+    <%_ if !wrappedMethods.isEmpty || !allVariables.isEmpty || !allSubscripts.isEmpty { -%>
     fileprivate enum MethodType {
     <%_ for method in wrappedMethodsForMethodType { -%>
         case <%= method.methodTypeDeclarationWithParameters() _%>
-    <%_  } -%>
-    <%_ for variable in allVariables { -%>
+    <%_  } -%> <%_ for variable in allVariables { -%>
         <%= propertyMethodTypes(variable) %>
+    <%_ } %> <%_ %> <%_ for wrapped in wrappedSubscripts { -%>
+        <%= wrapped.subscriptCases() _%>
     <%_ } %> <%_ %>
     <%_ -%>
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) { <%_ for method in wrappedMethodsForMethodType { %>
-                <%= method.equalCase -%><% for parameter in method.parameters { %>
-                    <%= parameter.comparator -%> <%  } %>
-                    return true <% } %>
-                <%_ for variable in allVariables { -%>
-                <%= propertyMethodTypesCompare(variable) %>
-                <%_ } %> <%_ -%>
-                <%_ if wrappedMethods.count + 2 * allVariables.count > 1 { -%>
-                default: return false
-                <%_ } -%>
+            <%= method.equalCase -%><% for parameter in method.parameters { %>
+                <%= parameter.comparator -%> <%  } %>
+                return true <% } %>
+            <%_ for variable in allVariables { -%>
+            <%= propertyMethodTypesCompare(variable) %>
+            <%_ } %> <%_ -%> <%_ for wrapped in wrappedSubscripts { -%>
+            <%= wrapped.equalCases() %>
+        <%_ } %> <%_ if wrappedMethods.count + variableCasesCount + subscriptsCasesCount > 1 { -%>
+            default: return false
+            <%_ } -%>
             }
         }
     <%_ %>
         func intValue() -> Int {
             switch self { <%_ for method in wrappedMethodsForMethodType { %>
-                <%= method.intValueCase -%><% } %>
-                <%_ for variable in allVariables { -%>
-                <%= propertyMethodTypesIntValue(variable) %>
-                <%_ } %> <%_ -%>
+            <%= method.intValueCase -%><% } %>
+            <%_ for variable in allVariables { -%>
+            <%= propertyMethodTypesIntValue(variable) %>
+            <%_ } %> <%_ for wrapped in wrappedSubscripts { -%>
+            <%= wrapped.intValueCase() %><%_ } %>
             }
         }
     }

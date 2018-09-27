@@ -86,27 +86,28 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-                case (.m_storeItems__items_items(let lhsItems), .m_storeItems__items_items(let rhsItems)):
-                    guard Parameter.compare(lhs: lhsItems, rhs: rhsItems, with: matcher) else { return false } 
-                    return true 
-                case (.m_storeDetails__details_details(let lhsDetails), .m_storeDetails__details_details(let rhsDetails)):
-                    guard Parameter.compare(lhs: lhsDetails, rhs: rhsDetails, with: matcher) else { return false } 
-                    return true 
-                case (.m_storedItems, .m_storedItems):
-                    return true 
-                case (.m_storedDetails__item_item(let lhsItem), .m_storedDetails__item_item(let rhsItem)):
-                    guard Parameter.compare(lhs: lhsItem, rhs: rhsItem, with: matcher) else { return false } 
-                    return true 
-                default: return false
+            case (.m_storeItems__items_items(let lhsItems), .m_storeItems__items_items(let rhsItems)):
+                guard Parameter.compare(lhs: lhsItems, rhs: rhsItems, with: matcher) else { return false } 
+                return true 
+            case (.m_storeDetails__details_details(let lhsDetails), .m_storeDetails__details_details(let rhsDetails)):
+                guard Parameter.compare(lhs: lhsDetails, rhs: rhsDetails, with: matcher) else { return false } 
+                return true 
+            case (.m_storedItems, .m_storedItems):
+                return true 
+            case (.m_storedDetails__item_item(let lhsItem), .m_storedDetails__item_item(let rhsItem)):
+                guard Parameter.compare(lhs: lhsItem, rhs: rhsItem, with: matcher) else { return false } 
+                return true 
+            default: return false
             }
         }
 
         func intValue() -> Int {
             switch self {
-                case let .m_storeItems__items_items(p0): return p0.intValue
-                case let .m_storeDetails__details_details(p0): return p0.intValue
-                case .m_storedItems: return 0
-                case let .m_storedDetails__item_item(p0): return p0.intValue
+            case let .m_storeItems__items_items(p0): return p0.intValue
+            case let .m_storeDetails__details_details(p0): return p0.intValue
+            case .m_storedItems: return 0
+            case let .m_storedDetails__item_item(p0): return p0.intValue
+
             }
         }
     }
