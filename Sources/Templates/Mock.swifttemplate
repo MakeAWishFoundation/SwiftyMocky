@@ -68,6 +68,14 @@ import SourceryRuntime
 #endif
 
 <%# ================================================== HELPERS -%><%_
+    func split(_ string: String, byFirstOccurenceOf word: String) -> (String, String) {
+        guard let wordRange = string.range(of: word) else { return (string, "") }
+        let selfRange = string.range(of: string)!
+        let before = String(string[selfRange.lowerBound..<wordRange.lowerBound])
+        let after = String(string[wordRange.upperBound..<selfRange.upperBound])
+        return (before, after)
+    }
+
     class Current {
         static var selfType: String = "Self"
     }
@@ -250,6 +258,10 @@ import SourceryRuntime
         func wrappedForCalls(_ generics: [String]) -> String {
             return isGeneric(generics) ? "\(wrappedForCall).wrapAsGeneric()" : "\(wrappedForCall)"
         }
+
+        func asMethodArgument() -> String {
+            return "\(parameter.argumentLabel ?? "_") \(parameter.name): \(parameter.typeName)"
+        }
     }
 
     class VariableWrapper {
@@ -330,6 +342,30 @@ import SourceryRuntime
 
         func givenConstructor(prefix: String = "") -> String {
             return "return \(prefix)Given(method: .\(propertyCaseGetName), products: defaultValue.map({ Product.return($0) }))"
+        }
+    }
+
+    class SubscriptWrapper {
+        let wrapped: SourceryRuntime.Subscript
+        var readonly: Bool { return !wrapped.isMutable }
+
+        let noStubmessage = "Stub return value not specified for subscript. Use given first."
+        let unimplemented = "Stubbing subscripts is not implemented yet."
+
+        init(_ wrapped: SourceryRuntime.Subscript) {
+            self.wrapped = wrapped
+        }
+
+        func subscriptCall() -> String {
+            let params = wrapped.parameters.map { ParameterWrapper($0).asMethodArgument() } .joined(separator: ", ")
+            return "subscript (\(params)) -> \(wrapped.returnTypeName) {\(getter)\(setter)\n\t}"
+        }
+
+        var getter: String {
+            return "\n\t\tget { onFatalFailure(\"\(unimplemented)\"); Failure(\"unimplemented\") }"
+        }
+        var setter: String {
+            return readonly ? "" : "\n\t\tset { onFatalFailure(\"\(unimplemented)\"); Failure(\"unimplemented\") }"
         }
     }
 
@@ -919,6 +955,10 @@ import SourceryRuntime
         return MethodWrapper(method)
     }
 
+    func wrapSubscript(_ wrapped: SourceryRuntime.Subscript) -> SubscriptWrapper {
+        return SubscriptWrapper(wrapped)
+    }
+
     func wrapProperty(_ variable: SourceryRuntime.Variable, _ scope: String = "") -> VariableWrapper {
         return VariableWrapper(variable, scope: scope)
     }
@@ -977,35 +1017,29 @@ import SourceryRuntime
     let genericTypesModifier: String = {
         guard let all = associatedTypes else { return "" }
         let joined = all.flatMap {
-            $0.replacingOccurrences(of: " ", with: "").characters.split(separator: ":").map(String.init).first
-        }.map { "Type\($0)" }
+            split($0, byFirstOccurenceOf: " where ").0.replacingOccurrences(of: " ", with: "").characters.split(separator: ":").map(String.init).first
+        }.map { "\($0)" }
         .joined(separator: ",")
         return "<\(joined)>"
-    }()
-    let genericTypesTypealiases: String = {
-        guard let all = associatedTypes else { return "" }
-        let joined = all.flatMap {
-            $0.replacingOccurrences(of: " ", with: "").characters.split(separator: ":").map(String.init).first
-        }.map { "\ttypealias \($0) = Type\($0)\n" }
-        .joined(separator: "")
-        return "\n\(joined)\n"
     }()
     let genericTypesConstraints: String = {
         guard let all = associatedTypes else { return "" }
         let constraints = all.flatMap { t -> String? in
-            let constraint = t.replacingOccurrences(of: " ", with: "").characters.split(separator: ":").map(String.init)
+            let splitted = split(t, byFirstOccurenceOf: " where ")
+            let constraint = splitted.0.replacingOccurrences(of: " ", with: "").characters.split(separator: ":").map(String.init)
             guard constraint.count == 2 else { return nil }
-
             let adopts = constraint[1].characters.split(separator: ",").map(String.init)
-
-            return adopts.map {
-                return "Type\(constraint[0]): \($0)"
-            }.joined(separator: ", ")
+            var mapped = adopts.map { "\(constraint[0]): \($0)" }
+            if !splitted.1.isEmpty {
+                mapped.append(splitted.1)
+            }
+            return mapped.joined(separator: ", ")
         }
         .joined(separator: ", ")
         guard !constraints.isEmpty else { return "" }
         return " where \(constraints)"
     }()
+    let allSubscripts = aProtocol.allSubscripts
     let allVariables = uniques(variables: aProtocol.allVariables.filter({ !$0.isStatic }))
     let containsVariables = !allVariables.isEmpty
     let allStaticVariables = uniques(variables: aProtocol.allVariables.filter({ $0.isStatic }))
@@ -1031,7 +1065,6 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
 <%_ } -%>
 <%# ================================================== MAIN CLASS -%><%_ -%>
   <%# ================================================== MOCK INTERNALS -%><%_ -%>
-    <%_ %><%= genericTypesTypealiases -%>
     var matcher: Matcher = Matcher.default
     var stubbingPolicy: StubbingPolicy = .wrap
     var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
@@ -1112,6 +1145,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
     <%_ } else { %>
     <%_ Current.selfType = "\(type.name)Mock\(genericTypesModifier)" -%>
     <%_ } %>
+    <%_ let wrappedSubscripts = allSubscripts.map(wrapSubscript) -%>
     <%_ let wrappedMethods = allMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) -%>
     <%_ let wrappedMethodsForMethodType = allMethodsForMethodType.map(wrapMethod).filter({ $0.wrappedInMethodType() }) -%>
     <%_ let wrappedInitializers = allMethods.map(wrapMethod).filter({ $0.method.isInitializer }) -%>
@@ -1141,6 +1175,10 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
     <%= method.functionPrototype _%> {
         <%= method.stubBody() _%>
     }
+
+    <%_ } -%>
+    <%_ for wrapped in wrappedSubscripts { -%>
+    <%= wrapped.subscriptCall() _%>
 
     <%_ } -%>
   <%# ================================================== STATIC METHOD TYPE -%><%_ -%>

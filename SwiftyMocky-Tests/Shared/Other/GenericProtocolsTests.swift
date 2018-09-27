@@ -62,4 +62,38 @@ class GenericProtocolsTests: SwiftyTestCase {
         XCTAssertEqual(mock.decode(CustomThing.self, from: otherData).id, 0)
         XCTAssertEqual(mock.decode(CustomThing.self, from: data).id, 1)
     }
+
+    func test_protocol_with_associated_types_and_where() {
+        let mock = ProtocolWithWhereAfterDefinitionMock<Array<Int>>()
+
+        let empty: [Int] = []
+        let array1 = [1,2,3]
+        let array2 = [2,2,2]
+
+        Given(mock, .sequence(getter: empty, array1, array2))
+
+        XCTAssertEqual(mock.sequence, empty)
+        XCTAssertEqual(mock.sequence, array1)
+        XCTAssertEqual(mock.sequence, array2)
+        XCTAssertNotEqual(mock.sequence, array2)
+
+        Given(mock, .methodWithType(t: .value(empty), willReturn: true))
+        Given(mock, .methodWithType(t: .any, willReturn: false))
+
+        XCTAssertTrue(mock.methodWithType(t: empty))
+        XCTAssertFalse(mock.methodWithType(t: array1))
+        XCTAssertFalse(mock.methodWithType(t: array2))
+
+        Given(mock, .methodWithType(t: .any, willReturn: true))
+
+        XCTAssertTrue(mock.methodWithType(t: empty))
+        XCTAssertTrue(mock.methodWithType(t: array1))
+        XCTAssertTrue(mock.methodWithType(t: array2))
+
+        Given(mock, .methodWithType(t: .value(array1), willReturn: false))
+
+        XCTAssertTrue(mock.methodWithType(t: empty))
+        XCTAssertFalse(mock.methodWithType(t: array1))
+        XCTAssertTrue(mock.methodWithType(t: array2))
+    }
 }

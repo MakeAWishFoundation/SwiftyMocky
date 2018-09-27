@@ -43,3 +43,13 @@ protocol GenericProtocolWithTypeConstraint {
     func decode<T: Decodable>(_ type: T.Type, from data: Data) -> T
     func test<FOO>(_ type: FOO.Type) -> Int
 }
+
+//sourcery: AutoMockable
+//sourcery: associatedtype = "T: Sequence where T.Element: Equatable"
+protocol ProtocolWithWhereAfterDefinition {
+    associatedtype T: Sequence where T.Element: Equatable
+
+    var sequence: T { get }
+
+    func methodWithType(t: T) -> Bool
+}

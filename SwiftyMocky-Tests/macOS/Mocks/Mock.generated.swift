@@ -563,17 +563,13 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
 }
 
 // MARK: - AVeryAssociatedProtocol
-class AVeryAssociatedProtocolMock<TypeT1,TypeT2>: AVeryAssociatedProtocol, Mock where TypeT1: Sequence, TypeT2: Comparable, TypeT2: EmptyProtocol {
+class AVeryAssociatedProtocolMock<T1,T2>: AVeryAssociatedProtocol, Mock where T1: Sequence, T2: Comparable, T2: EmptyProtocol {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
         self.file = file
         self.line = line
     }
-
-
-	typealias T1 = TypeT1
-	typealias T2 = TypeT2
 
     var matcher: Matcher = Matcher.default
     var stubbingPolicy: StubbingPolicy = .wrap
@@ -3316,16 +3312,13 @@ class ProtocolMethodsThatDifferOnlyInReturnTypeMock: ProtocolMethodsThatDifferOn
 }
 
 // MARK: - ProtocolWithAssociatedType
-class ProtocolWithAssociatedTypeMock<TypeT>: ProtocolWithAssociatedType, Mock where TypeT: Sequence {
+class ProtocolWithAssociatedTypeMock<T>: ProtocolWithAssociatedType, Mock where T: Sequence {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
         self.file = file
         self.line = line
     }
-
-
-	typealias T = TypeT
 
     var matcher: Matcher = Matcher.default
     var stubbingPolicy: StubbingPolicy = .wrap
@@ -4961,6 +4954,136 @@ class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, StaticMock
     }
 }
 
+// MARK: - ProtocolWithSubscripts
+class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    typealias PropertyStub = Given
+    typealias MethodStub = Given
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+
+
+    typealias Property = Swift.Never
+
+
+
+    subscript (_ index: Int) -> String {
+		get { onFatalFailure("Stubbing subscripts is not implemented yet."); Failure("unimplemented") }
+		set { onFatalFailure("Stubbing subscripts is not implemented yet."); Failure("unimplemented") }
+	}
+
+    subscript (_ index: String) -> String {
+		get { onFatalFailure("Stubbing subscripts is not implemented yet."); Failure("unimplemented") }
+		set { onFatalFailure("Stubbing subscripts is not implemented yet."); Failure("unimplemented") }
+	}
+
+    subscript (label name: String) -> Int {
+		get { onFatalFailure("Stubbing subscripts is not implemented yet."); Failure("unimplemented") }
+	}
+
+    subscript (closure c: @escaping (Int) -> Void) -> Bool {
+		get { onFatalFailure("Stubbing subscripts is not implemented yet."); Failure("unimplemented") }
+		set { onFatalFailure("Stubbing subscripts is not implemented yet."); Failure("unimplemented") }
+	}
+
+
+    fileprivate struct MethodType {
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool { return true }
+        func intValue() -> Int { return 0 }
+    }
+
+    class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [Product]) {
+            self.method = method
+            super.init(products)
+        }
+
+
+    }
+
+    struct Verify {
+        fileprivate var method: MethodType
+
+    }
+
+    struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> Product {
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+    private func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
+}
+
 // MARK: - ProtocolWithThrowingMethods
 class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
@@ -5270,6 +5393,179 @@ class ProtocolWithTuplesMock: ProtocolWithTuples, Mock {
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
     public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> Product {
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+    private func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
+}
+
+// MARK: - ProtocolWithWhereAfterDefinition
+class ProtocolWithWhereAfterDefinitionMock<T>: ProtocolWithWhereAfterDefinition, Mock where T: Sequence, T.Element: Equatable {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    typealias PropertyStub = Given
+    typealias MethodStub = Given
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+
+    var sequence: T {
+		get {	invocations.append(.p_sequence_get)
+				return __p_sequence ?? givenGetterValue(.p_sequence_get, "ProtocolWithWhereAfterDefinitionMock - value for sequence was not defined") }
+	}
+	private var __p_sequence: (T)?
+
+
+    struct Property {
+        fileprivate var method: MethodType
+        static var sequence: Property { return Property(method: .p_sequence_get) }
+    }
+
+
+
+    func methodWithType(t: T) -> Bool {
+        addInvocation(.m_methodWithType__t_t(Parameter<T>.value(t)))
+		let perform = methodPerformValue(.m_methodWithType__t_t(Parameter<T>.value(t))) as? (T) -> Void
+		perform?(t)
+		var __value: Bool
+		do {
+		    __value = try methodReturnValue(.m_methodWithType__t_t(Parameter<T>.value(t))).casted()
+		} catch {
+			onFatalFailure("stub return value not specified for methodWithType(t: T). Use given")
+			Failure("stub return value not specified for methodWithType(t: T). Use given")
+		}
+		return __value
+    }
+
+    fileprivate enum MethodType {
+        case m_methodWithType__t_t(Parameter<T>)
+        case p_sequence_get
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+                case (.m_methodWithType__t_t(let lhsT), .m_methodWithType__t_t(let rhsT)):
+                    guard Parameter.compare(lhs: lhsT, rhs: rhsT, with: matcher) else { return false } 
+                    return true 
+                case (.p_sequence_get,.p_sequence_get): return true
+                default: return false
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+                case let .m_methodWithType__t_t(p0): return p0.intValue
+                case .p_sequence_get: return 0
+            }
+        }
+    }
+
+    class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [Product]) {
+            self.method = method
+            super.init(products)
+        }
+
+        static func sequence(getter defaultValue: T...) -> PropertyStub {
+            return Given(method: .p_sequence_get, products: defaultValue.map({ Product.return($0) }))
+        }
+
+        static func methodWithType(t: Parameter<T>, willReturn: Bool...) -> MethodStub {
+            return Given(method: .m_methodWithType__t_t(t), products: willReturn.map({ Product.return($0) }))
+        }
+        static func methodWithType(t: Parameter<T>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
+            let willReturn: [Bool] = []
+			let given: Given = { return Given(method: .m_methodWithType__t_t(t), products: willReturn.map({ Product.return($0) })) }()
+			let stubber = given.stub(for: (Bool).self)
+			willProduce(stubber)
+			return given
+        }
+    }
+
+    struct Verify {
+        fileprivate var method: MethodType
+
+        static func methodWithType(t: Parameter<T>) -> Verify {
+            return Verify(method: .m_methodWithType__t_t(t))
+        }
+    }
+
+    struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        static func methodWithType(t: Parameter<T>, perform: @escaping (T) -> Void) -> Perform {
+            return Perform(method: .m_methodWithType__t_t(t), performs: perform)
+        }
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(property.method)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
