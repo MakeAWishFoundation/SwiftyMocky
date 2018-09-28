@@ -62,6 +62,17 @@ class SubscriptsTests: SwiftyTestCase {
     }
 
     func test_generic_subscripts() {
-        
+        let mock = ProtocolWithSubscriptsMock()
+
+        Given(mock, .subscript(with: .value([1,2,3]), willReturn: true))
+        Given(mock, .subscript(with: .any([Int].self), willReturn: false))
+        Given(mock, .subscript(with: .any([String].self), willReturn: true))
+
+        XCTAssertTrue(mock[with: [1,2,3]])
+        XCTAssertFalse(mock[with: [1,2]])
+        XCTAssertFalse(mock[with: [2,6,7,8]])
+        XCTAssertFalse(mock[with: [1]])
+        XCTAssertTrue(mock[with: [""]])
+        XCTAssertTrue(mock[with: [String]()])
     }
 }
