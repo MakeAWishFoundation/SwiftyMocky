@@ -290,15 +290,9 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
     struct StaticVerify {
         fileprivate var method: StaticMethodType
 
-        static func methodThatThrows() -> StaticVerify {
-            return StaticVerify(method: .sm_methodThatThrows)
-        }
-        static func methodThatReturnsAndThrows(param: Parameter<String>) -> StaticVerify {
-            return StaticVerify(method: .sm_methodThatReturnsAndThrows__param_param(param))
-        }
-        static func methodThatRethrows(param: Parameter<(String) throws -> Int>) -> StaticVerify {
-            return StaticVerify(method: .sm_methodThatRethrows__param_param(param))
-        }
+        static func methodThatThrows() -> StaticVerify { return StaticVerify(method: .sm_methodThatThrows)}
+        static func methodThatReturnsAndThrows(param: Parameter<String>) -> StaticVerify { return StaticVerify(method: .sm_methodThatReturnsAndThrows__param_param(param))}
+        static func methodThatRethrows(param: Parameter<(String) throws -> Int>) -> StaticVerify { return StaticVerify(method: .sm_methodThatRethrows__param_param(param))}
         static var optionalClosure: StaticVerify { return StaticVerify(method: .p_optionalClosure_get) }
 		static func optionalClosure(set newValue: Parameter<(() -> Int)?>) -> StaticVerify { return StaticVerify(method: .p_optionalClosure_set(newValue)) }
     }
@@ -839,12 +833,8 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
     struct StaticVerify {
         fileprivate var method: StaticMethodType
 
-        static func generic<Q>(lhs: Parameter<Q>, rhs: Parameter<Q>) -> StaticVerify {
-            return StaticVerify(method: .sm_generic__lhs_lhsrhs_rhs(lhs.wrapAsGeneric(), rhs.wrapAsGeneric()))
-        }
-        static func veryConstrained<Q>(lhs: Parameter<Q>, rhs: Parameter<Q>) -> StaticVerify {
-            return StaticVerify(method: .sm_veryConstrained__lhs_lhsrhs_rhs(lhs.wrapAsGeneric(), rhs.wrapAsGeneric()))
-        }
+        static func generic<Q>(lhs: Parameter<Q>, rhs: Parameter<Q>) -> StaticVerify { return StaticVerify(method: .sm_generic__lhs_lhsrhs_rhs(lhs.wrapAsGeneric(), rhs.wrapAsGeneric()))}
+        static func veryConstrained<Q>(lhs: Parameter<Q>, rhs: Parameter<Q>) -> StaticVerify { return StaticVerify(method: .sm_veryConstrained__lhs_lhsrhs_rhs(lhs.wrapAsGeneric(), rhs.wrapAsGeneric()))}
     }
 
     struct StaticPerform {
@@ -4780,13 +4770,9 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
     struct StaticVerify {
         fileprivate var method: StaticMethodType
 
-        static func defaultEmail(_ newValue: Parameter<String?>) -> StaticVerify {
-            return StaticVerify(method: .sm_defaultEmail__newValue(newValue))
-        }
+        static func defaultEmail(_ newValue: Parameter<String?>) -> StaticVerify { return StaticVerify(method: .sm_defaultEmail__newValue(newValue))}
         @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
-		static func defaultEmail(newValue: Parameter<String?>) -> StaticVerify {
-            return Verify(method: .sm_defaultEmail__newValue(newValue))
-        }
+		static func defaultEmail(newValue: Parameter<String?>) -> StaticVerify { return StaticVerify(method: .sm_defaultEmail__newValue(newValue))}
         static var name: StaticVerify { return StaticVerify(method: .p_name_get) }
 		static func name(set newValue: Parameter<String>) -> StaticVerify { return StaticVerify(method: .p_name_set(newValue)) }
         static var defaultEmail: StaticVerify { return StaticVerify(method: .p_defaultEmail_get) }
@@ -4802,7 +4788,7 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
         }
         @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
 		static func defaultEmail(newValue: Parameter<String?>, perform: @escaping (String!) -> Void) -> StaticPerform {
-            return Perform(method: .sm_defaultEmail__newValue(newValue), performs: perform)
+            return StaticPerform(method: .sm_defaultEmail__newValue(newValue), performs: perform)
         }
     }
 
@@ -5104,9 +5090,7 @@ class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, StaticMock
     struct StaticVerify {
         fileprivate var method: StaticMethodType
 
-        static func staticMethod(param: Parameter<Int>) -> StaticVerify {
-            return StaticVerify(method: .sm_staticMethod__param_param(param))
-        }
+        static func staticMethod(param: Parameter<Int>) -> StaticVerify { return StaticVerify(method: .sm_staticMethod__param_param(param))}
         static var staticProperty: StaticVerify { return StaticVerify(method: .p_staticProperty_get) }
     }
 
@@ -5537,6 +5521,13 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 		static func aaa(value: Parameter<Int>) -> Verify { return Verify(method: .m_aaa__value(value))}
         static var something: Verify { return Verify(method: .p_something_get) }
 		static func something(set newValue: Parameter<Any>) -> Verify { return Verify(method: .p_something_set(newValue)) }
+        static func `subscript`(_ index: Parameter<Int>) -> Verify { return Verify(method: .subscript_get_index_1(index))}
+        static func `subscript`(labeled index: Parameter<Int>) -> Verify { return Verify(method: .subscript_get_labeled_index(index))}
+        static func `subscript`(_ x: Parameter<Int>, _ y: Parameter<Int>) -> Verify { return Verify(method: .subscript_get_x_y(x, y))}
+        static func `subscript`(_ index: Parameter<String>) -> Verify { return Verify(method: .subscript_get_index_2(index))}
+        static func `subscript`(index: Parameter<String>) -> Verify { return Verify(method: .subscript_get_index_index(index))}
+        static func `subscript`(label name: Parameter<String>) -> Verify { return Verify(method: .subscript_get_label_name(name))}
+        static func `subscript`(closure c: Parameter<(Int) -> Void>) -> Verify { return Verify(method: .subscript_get_closure_c(c))}
     }
 
     struct Perform {
@@ -6648,9 +6639,7 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
     struct StaticVerify {
         fileprivate var method: StaticMethodType
 
-        static func construct(param value: Parameter<Int>) -> StaticVerify {
-            return StaticVerify(method: .sm_construct__param_value(value))
-        }
+        static func construct(param value: Parameter<Int>) -> StaticVerify { return StaticVerify(method: .sm_construct__param_value(value))}
     }
 
     struct StaticPerform {

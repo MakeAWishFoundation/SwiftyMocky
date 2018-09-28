@@ -504,13 +504,22 @@ import SourceryRuntime
             return "case let .\(subscriptCasePrefix(accessor))(\(definitions)): return \(paramsSum)"
         }
 
-        // given
+        // Given
         func givenConstructorName() -> String {
             let returnTypeString = returnsSelf ? replaceSelf : TypeWrapper(wrapped.returnTypeName).stripped
             return "static func `subscript`(\(parametersForProxySignature()), willReturn: \(returnTypeString)...) -> SubscriptStub"
         }
         func givenConstructor() -> String {
             return "return Given(method: .\(subscriptCasePrefix("get"))(\(parametersForProxyInit())), products: willReturn.map({ Product.return($0) }))"
+        }
+
+        // Verify
+        func verifyConstructorName() -> String {
+            let returnTypeString = returnsSelf ? replaceSelf : TypeWrapper(wrapped.returnTypeName).stripped
+            return "static func `subscript`(\(parametersForProxySignature())) -> Verify"
+        }
+        func verifyConstructor() -> String {
+            return "return Verify(method: .\(subscriptCasePrefix("get"))(\(parametersForProxyInit())))"
         }
 
         // Helpers
@@ -1377,7 +1386,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         }
         <%_ if generateOldAccessorsForStaticMethods, method.containsEmptyArgumentLabels() { -%>
         <%= method.givenConstructorName(prefix: "Static", deprecated: true) %> {
-            <%= method.givenConstructor() _%>
+            <%= method.givenConstructor(prefix: "Static") _%>
         }
         <%_ } -%>
         <%_ } -%>
@@ -1392,7 +1401,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         }
         <%_ if generateOldAccessorsForStaticMethods, method.containsEmptyArgumentLabels() { -%>
         <%= method.givenConstructorNameThrows(prefix: "Static", deprecated: true) %> {
-            <%= method.givenConstructorThrows() _%>
+            <%= method.givenConstructorThrows(prefix: "Static") _%>
         }
         <%_ } -%>
         <%= method.givenProduceConstructorNameThrows(prefix: "Static") -%> {
@@ -1405,13 +1414,9 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         fileprivate var method: StaticMethodType
 
         <%_ for method in wrappedStaticMethodsForMethodType { -%>
-        <%= method.verificationProxyConstructorName(prefix: "Static") -%> {
-            <%= method.verificationProxyConstructor(prefix: "Static") _%>
-        }
+        <%= method.verificationProxyConstructorName(prefix: "Static") -%> { <%= method.verificationProxyConstructor(prefix: "Static") _%> }
         <%_ if generateOldAccessorsForStaticMethods, method.containsEmptyArgumentLabels() { -%>
-        <%= method.verificationProxyConstructorName(prefix: "Static", deprecated: true) %> {
-            <%= method.verificationProxyConstructor() _%>
-        }
+        <%= method.verificationProxyConstructorName(prefix: "Static", deprecated: true) %> { <%= method.verificationProxyConstructor(prefix: "Static") _%> }
         <%_ } -%>
         <%_ } %> <%_ -%>
         <%_ for variable in allStaticVariables { -%>
@@ -1429,7 +1434,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         }
         <%_ if generateOldAccessorsForStaticMethods, method.containsEmptyArgumentLabels() { -%>
         <%= method.performProxyConstructorName(prefix: "Static", deprecated: true) %> {
-            <%= method.performProxyConstructor() _%>
+            <%= method.performProxyConstructor(prefix: "Static") _%>
         }
         <%_ } -%>
         <%_ } %> <%_ -%>
@@ -1540,6 +1545,9 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         <%_ } %> <%_ -%>
         <%_ for variable in allVariables { -%>
         <%= propertyTypes(variable) %>
+        <%_ } %> <%_ -%>
+        <%_ for wrapped in wrappedSubscripts { -%>
+        <%= wrapped.verifyConstructorName() -%> { <%= wrapped.verifyConstructor() _%> }
         <%_ } %> <%_ -%>
     }
 
