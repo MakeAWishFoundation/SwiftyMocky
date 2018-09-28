@@ -31,7 +31,6 @@ class GenericProtocolsTests: SwiftyTestCase {
 
     func test_base_type_constraint() {
         let mock = GenericProtocolWithTypeConstraintMock()
-
         Given(mock, .test(type: .value(Int.self), willReturn: 0))
         Given(mock, .test(type: .value(Float.self), willReturn: 1))
         Given(mock, .test(type: .value(String.self), willReturn: 2))

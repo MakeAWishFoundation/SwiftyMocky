@@ -102,15 +102,6 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
 	private var __p_implicitelyUnwrappedClosure: (() -> Void)?
 
 
-    struct Property {
-        fileprivate var method: MethodType
-        static var nonOptionalClosure: Property { return Property(method: .p_nonOptionalClosure_get) }
-		static func nonOptionalClosure(set newValue: Parameter<() -> Void>) -> Property { return Property(method: .p_nonOptionalClosure_set(newValue)) }
-        static var optionalClosure: Property { return Property(method: .p_optionalClosure_get) }
-		static func optionalClosure(set newValue: Parameter<(() -> Int)?>) -> Property { return Property(method: .p_optionalClosure_set(newValue)) }
-        static var implicitelyUnwrappedClosure: Property { return Property(method: .p_implicitelyUnwrappedClosure_get) }
-		static func implicitelyUnwrappedClosure(set newValue: Parameter<(() -> Void)?>) -> Property { return Property(method: .p_implicitelyUnwrappedClosure_set(newValue)) }
-    }
     static var optionalClosure: (() -> Int)? {
 		get {	AMassiveTestProtocolMock.invocations.append(.p_optionalClosure_get)
 				return AMassiveTestProtocolMock.__p_optionalClosure ?? givenGetterValue(.p_optionalClosure_get, "AMassiveTestProtocolMock - value for optionalClosure was not defined") }
@@ -120,11 +111,6 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
 	private static var __p_optionalClosure: (() -> Int)?
 
 
-    struct StaticProperty {
-        fileprivate var method: StaticMethodType
-        static var optionalClosure: StaticProperty { return StaticProperty(method: .p_optionalClosure_get) }
-		static func optionalClosure(set newValue: Parameter<(() -> Int)?>) -> StaticProperty { return StaticProperty(method: .p_optionalClosure_set(newValue)) }
-    }
 
 
     static func methodThatThrows() throws {
@@ -313,6 +299,8 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
         static func methodThatRethrows(param: Parameter<(String) throws -> Int>) -> StaticVerify {
             return StaticVerify(method: .sm_methodThatRethrows__param_param(param))
         }
+        static var optionalClosure: StaticVerify { return StaticVerify(method: .p_optionalClosure_get) }
+		static func optionalClosure(set newValue: Parameter<(() -> Int)?>) -> StaticVerify { return StaticVerify(method: .p_optionalClosure_set(newValue)) }
     }
 
     struct StaticPerform {
@@ -330,7 +318,8 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
         }
     }
 
-        fileprivate enum MethodType {
+    
+    fileprivate enum MethodType {
         case m_methodThatThrows
         case m_methodThatReturnsAndThrows__param_param(Parameter<String>)
         case m_methodThatRethrows__param_param(Parameter<(String) throws -> Int>)
@@ -435,15 +424,15 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
     struct Verify {
         fileprivate var method: MethodType
 
-        static func methodThatThrows() -> Verify {
-            return Verify(method: .m_methodThatThrows)
-        }
-        static func methodThatReturnsAndThrows(param: Parameter<String>) -> Verify {
-            return Verify(method: .m_methodThatReturnsAndThrows__param_param(param))
-        }
-        static func methodThatRethrows(param: Parameter<(String) throws -> Int>) -> Verify {
-            return Verify(method: .m_methodThatRethrows__param_param(param))
-        }
+        static func methodThatThrows() -> Verify { return Verify(method: .m_methodThatThrows)}
+        static func methodThatReturnsAndThrows(param: Parameter<String>) -> Verify { return Verify(method: .m_methodThatReturnsAndThrows__param_param(param))}
+        static func methodThatRethrows(param: Parameter<(String) throws -> Int>) -> Verify { return Verify(method: .m_methodThatRethrows__param_param(param))}
+        static var nonOptionalClosure: Verify { return Verify(method: .p_nonOptionalClosure_get) }
+		static func nonOptionalClosure(set newValue: Parameter<() -> Void>) -> Verify { return Verify(method: .p_nonOptionalClosure_set(newValue)) }
+        static var optionalClosure: Verify { return Verify(method: .p_optionalClosure_get) }
+		static func optionalClosure(set newValue: Parameter<(() -> Int)?>) -> Verify { return Verify(method: .p_optionalClosure_set(newValue)) }
+        static var implicitelyUnwrappedClosure: Verify { return Verify(method: .p_implicitelyUnwrappedClosure_get) }
+		static func implicitelyUnwrappedClosure(set newValue: Parameter<(() -> Void)?>) -> Verify { return Verify(method: .p_implicitelyUnwrappedClosure_set(newValue)) }
     }
 
     struct Perform {
@@ -473,11 +462,6 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
-    }
-
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let invocations = matchingCalls(property.method)
-        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -527,11 +511,6 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
     static public func verify(_ method: StaticVerify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
-    }
-
-    static public func verify(property: StaticProperty, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let invocations = matchingCalls(property.method)
-        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     static private func addInvocation(_ call: StaticMethodType) {
@@ -591,7 +570,6 @@ class AVeryAssociatedProtocolMock<T1,T2>: AVeryAssociatedProtocol, Mock where T1
     }
 
 
-    typealias Property = Swift.Never
 
 
 
@@ -608,6 +586,7 @@ class AVeryAssociatedProtocolMock<T1,T2>: AVeryAssociatedProtocol, Mock where T1
 		}
 		return __value
     }
+
 
     fileprivate enum MethodType {
         case m_fetch__for_value(Parameter<T2>)
@@ -651,9 +630,7 @@ class AVeryAssociatedProtocolMock<T1,T2>: AVeryAssociatedProtocol, Mock where T1
     struct Verify {
         fileprivate var method: MethodType
 
-        static func fetch(for value: Parameter<T2>) -> Verify {
-            return Verify(method: .m_fetch__for_value(value))
-        }
+        static func fetch(for value: Parameter<T2>) -> Verify { return Verify(method: .m_fetch__for_value(value))}
     }
 
     struct Perform {
@@ -678,7 +655,6 @@ class AVeryAssociatedProtocolMock<T1,T2>: AVeryAssociatedProtocol, Mock where T1
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -758,9 +734,7 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
     }
 
 
-    typealias Property = Swift.Never
 
-    typealias StaticProperty = Swift.Never
 
 
     static func generic<Q>(lhs: Q, rhs: Q) -> Bool where Q: Equatable {
@@ -885,7 +859,8 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
         }
     }
 
-        fileprivate enum MethodType {
+    
+    fileprivate enum MethodType {
         case m_methodConstrained__param_param(Parameter<GenericAttribute>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
@@ -927,9 +902,7 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
     struct Verify {
         fileprivate var method: MethodType
 
-        static func methodConstrained<A>(param: Parameter<A>) -> Verify {
-            return Verify(method: .m_methodConstrained__param_param(param.wrapAsGeneric()))
-        }
+        static func methodConstrained<A>(param: Parameter<A>) -> Verify { return Verify(method: .m_methodConstrained__param_param(param.wrapAsGeneric()))}
     }
 
     struct Perform {
@@ -954,7 +927,6 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -1004,7 +976,6 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
-    static public func verify(property: StaticProperty, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     static private func addInvocation(_ call: StaticMethodType) {
         invocations.append(call)
@@ -1063,7 +1034,6 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
     }
 
 
-    typealias Property = Swift.Never
 
 
 
@@ -1234,6 +1204,7 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
 		}
 		return __value
     }
+
 
     fileprivate enum MethodType {
         case m_methodWithStringParameter__p_p(Parameter<String>)
@@ -1443,42 +1414,18 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
     struct Verify {
         fileprivate var method: MethodType
 
-        static func methodWithStringParameter(p: Parameter<String>) -> Verify {
-            return Verify(method: .m_methodWithStringParameter__p_p(p))
-        }
-        static func methodWithOtionalStringParameter(p: Parameter<String?>) -> Verify {
-            return Verify(method: .m_methodWithOtionalStringParameter__p_p(p))
-        }
-        static func methodWithCustomStringParameter(p: Parameter<CustomString>) -> Verify {
-            return Verify(method: .m_methodWithCustomStringParameter__p_p(p))
-        }
-        static func methodWithCustomOptionalStringParameter(p: Parameter<CustomString?>) -> Verify {
-            return Verify(method: .m_methodWithCustomOptionalStringParameter__p_p(p))
-        }
-        static func methodWithIntParameter(p: Parameter<Int>) -> Verify {
-            return Verify(method: .m_methodWithIntParameter__p_p(p))
-        }
-        static func methodWithCustomOptionalIntParameter(p: Parameter<CustomInt?>) -> Verify {
-            return Verify(method: .m_methodWithCustomOptionalIntParameter__p_p(p))
-        }
-        static func methodWithBool(p: Parameter<Bool?>) -> Verify {
-            return Verify(method: .m_methodWithBool__p_p(p))
-        }
-        static func methodWithFloat(p: Parameter<Float?>) -> Verify {
-            return Verify(method: .m_methodWithFloat__p_p(p))
-        }
-        static func methodWithDouble(p: Parameter<Double?>) -> Verify {
-            return Verify(method: .m_methodWithDouble__p_p(p))
-        }
-        static func methodWithArrayOfInt(p: Parameter<[Int]>) -> Verify {
-            return Verify(method: .m_methodWithArrayOfInt__p_p(p))
-        }
-        static func methodWithArrayOfOther(p: Parameter<[SomeClass]>) -> Verify {
-            return Verify(method: .m_methodWithArrayOfOther__p_p(p))
-        }
-        static func methodWithDict(p: Parameter<[String: SomeClass]>) -> Verify {
-            return Verify(method: .m_methodWithDict__p_p(p))
-        }
+        static func methodWithStringParameter(p: Parameter<String>) -> Verify { return Verify(method: .m_methodWithStringParameter__p_p(p))}
+        static func methodWithOtionalStringParameter(p: Parameter<String?>) -> Verify { return Verify(method: .m_methodWithOtionalStringParameter__p_p(p))}
+        static func methodWithCustomStringParameter(p: Parameter<CustomString>) -> Verify { return Verify(method: .m_methodWithCustomStringParameter__p_p(p))}
+        static func methodWithCustomOptionalStringParameter(p: Parameter<CustomString?>) -> Verify { return Verify(method: .m_methodWithCustomOptionalStringParameter__p_p(p))}
+        static func methodWithIntParameter(p: Parameter<Int>) -> Verify { return Verify(method: .m_methodWithIntParameter__p_p(p))}
+        static func methodWithCustomOptionalIntParameter(p: Parameter<CustomInt?>) -> Verify { return Verify(method: .m_methodWithCustomOptionalIntParameter__p_p(p))}
+        static func methodWithBool(p: Parameter<Bool?>) -> Verify { return Verify(method: .m_methodWithBool__p_p(p))}
+        static func methodWithFloat(p: Parameter<Float?>) -> Verify { return Verify(method: .m_methodWithFloat__p_p(p))}
+        static func methodWithDouble(p: Parameter<Double?>) -> Verify { return Verify(method: .m_methodWithDouble__p_p(p))}
+        static func methodWithArrayOfInt(p: Parameter<[Int]>) -> Verify { return Verify(method: .m_methodWithArrayOfInt__p_p(p))}
+        static func methodWithArrayOfOther(p: Parameter<[SomeClass]>) -> Verify { return Verify(method: .m_methodWithArrayOfOther__p_p(p))}
+        static func methodWithDict(p: Parameter<[String: SomeClass]>) -> Verify { return Verify(method: .m_methodWithDict__p_p(p))}
     }
 
     struct Perform {
@@ -1536,7 +1483,6 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -1609,10 +1555,6 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
 	private var __p_youCouldOnlyGetThis: (String)?
 
 
-    struct Property {
-        fileprivate var method: MethodType
-        static var youCouldOnlyGetThis: Property { return Property(method: .p_youCouldOnlyGetThis_get) }
-    }
 
 
 
@@ -1726,6 +1668,7 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
 		return __value
     }
 
+
     fileprivate enum MethodType {
         case m_serviceName
         case m_aNewWayToSayHooray
@@ -1807,10 +1750,18 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
         static func getPoint(from tuple: Parameter<(Float,Float)>, willReturn: Point...) -> MethodStub {
             return Given(method: .m_getPoint__from_tuple(tuple), products: willReturn.map({ Product.return($0) }))
         }
-        static func similarMethodThatDiffersOnType(value: Parameter<Float>, willReturn: Bool...) -> MethodStub {
+        static func similarMethodThatDiffersOnType(_ value: Parameter<Float>, willReturn: Bool...) -> MethodStub {
             return Given(method: .m_similarMethodThatDiffersOnType__value_1(value), products: willReturn.map({ Product.return($0) }))
         }
-        static func similarMethodThatDiffersOnType(value: Parameter<Point>, willReturn: Bool...) -> MethodStub {
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func similarMethodThatDiffersOnType(value: Parameter<Float>, willReturn: Bool...) -> MethodStub {
+            return Given(method: .m_similarMethodThatDiffersOnType__value_1(value), products: willReturn.map({ Product.return($0) }))
+        }
+        static func similarMethodThatDiffersOnType(_ value: Parameter<Point>, willReturn: Bool...) -> MethodStub {
+            return Given(method: .m_similarMethodThatDiffersOnType__value_2(value), products: willReturn.map({ Product.return($0) }))
+        }
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func similarMethodThatDiffersOnType(value: Parameter<Point>, willReturn: Bool...) -> MethodStub {
             return Given(method: .m_similarMethodThatDiffersOnType__value_2(value), products: willReturn.map({ Product.return($0) }))
         }
         static func methodWithClosures(success function: Parameter<LinearFunction>, willReturn: ClosureFabric...) -> MethodStub {
@@ -1840,14 +1791,14 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
 			willProduce(stubber)
 			return given
         }
-        static func similarMethodThatDiffersOnType(value: Parameter<Float>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
+        static func similarMethodThatDiffersOnType(_ value: Parameter<Float>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
             let willReturn: [Bool] = []
 			let given: Given = { return Given(method: .m_similarMethodThatDiffersOnType__value_1(value), products: willReturn.map({ Product.return($0) })) }()
 			let stubber = given.stub(for: (Bool).self)
 			willProduce(stubber)
 			return given
         }
-        static func similarMethodThatDiffersOnType(value: Parameter<Point>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
+        static func similarMethodThatDiffersOnType(_ value: Parameter<Point>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
             let willReturn: [Bool] = []
 			let given: Given = { return Given(method: .m_similarMethodThatDiffersOnType__value_2(value), products: willReturn.map({ Product.return($0) })) }()
 			let stubber = given.stub(for: (Bool).self)
@@ -1873,33 +1824,22 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
     struct Verify {
         fileprivate var method: MethodType
 
-        static func serviceName() -> Verify {
-            return Verify(method: .m_serviceName)
-        }
-        static func aNewWayToSayHooray() -> Verify {
-            return Verify(method: .m_aNewWayToSayHooray)
-        }
-        static func getPoint(from point: Parameter<Point>) -> Verify {
-            return Verify(method: .m_getPoint__from_point(point))
-        }
-        static func getPoint(from tuple: Parameter<(Float,Float)>) -> Verify {
-            return Verify(method: .m_getPoint__from_tuple(tuple))
-        }
-        static func similarMethodThatDiffersOnType(value: Parameter<Float>) -> Verify {
-            return Verify(method: .m_similarMethodThatDiffersOnType__value_1(value))
-        }
-        static func similarMethodThatDiffersOnType(value: Parameter<Point>) -> Verify {
-            return Verify(method: .m_similarMethodThatDiffersOnType__value_2(value))
-        }
-        static func methodWithTypedef(scalar: Parameter<Scalar>) -> Verify {
-            return Verify(method: .m_methodWithTypedef__scalar(scalar))
-        }
-        static func methodWithClosures(success function: Parameter<LinearFunction>) -> Verify {
-            return Verify(method: .m_methodWithClosures__success_function_1(function))
-        }
-        static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>) -> Verify {
-            return Verify(method: .m_methodWithClosures__success_function_2(function))
-        }
+        static func serviceName() -> Verify { return Verify(method: .m_serviceName)}
+        static func aNewWayToSayHooray() -> Verify { return Verify(method: .m_aNewWayToSayHooray)}
+        static func getPoint(from point: Parameter<Point>) -> Verify { return Verify(method: .m_getPoint__from_point(point))}
+        static func getPoint(from tuple: Parameter<(Float,Float)>) -> Verify { return Verify(method: .m_getPoint__from_tuple(tuple))}
+        static func similarMethodThatDiffersOnType(_ value: Parameter<Float>) -> Verify { return Verify(method: .m_similarMethodThatDiffersOnType__value_1(value))}
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func similarMethodThatDiffersOnType(value: Parameter<Float>) -> Verify { return Verify(method: .m_similarMethodThatDiffersOnType__value_1(value))}
+        static func similarMethodThatDiffersOnType(_ value: Parameter<Point>) -> Verify { return Verify(method: .m_similarMethodThatDiffersOnType__value_2(value))}
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func similarMethodThatDiffersOnType(value: Parameter<Point>) -> Verify { return Verify(method: .m_similarMethodThatDiffersOnType__value_2(value))}
+        static func methodWithTypedef(_ scalar: Parameter<Scalar>) -> Verify { return Verify(method: .m_methodWithTypedef__scalar(scalar))}
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func methodWithTypedef(scalar: Parameter<Scalar>) -> Verify { return Verify(method: .m_methodWithTypedef__scalar(scalar))}
+        static func methodWithClosures(success function: Parameter<LinearFunction>) -> Verify { return Verify(method: .m_methodWithClosures__success_function_1(function))}
+        static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>) -> Verify { return Verify(method: .m_methodWithClosures__success_function_2(function))}
+        static var youCouldOnlyGetThis: Verify { return Verify(method: .p_youCouldOnlyGetThis_get) }
     }
 
     struct Perform {
@@ -1918,13 +1858,25 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
         static func getPoint(from tuple: Parameter<(Float,Float)>, perform: @escaping ((Float,Float)) -> Void) -> Perform {
             return Perform(method: .m_getPoint__from_tuple(tuple), performs: perform)
         }
-        static func similarMethodThatDiffersOnType(value: Parameter<Float>, perform: @escaping (Float) -> Void) -> Perform {
+        static func similarMethodThatDiffersOnType(_ value: Parameter<Float>, perform: @escaping (Float) -> Void) -> Perform {
             return Perform(method: .m_similarMethodThatDiffersOnType__value_1(value), performs: perform)
         }
-        static func similarMethodThatDiffersOnType(value: Parameter<Point>, perform: @escaping (Point) -> Void) -> Perform {
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func similarMethodThatDiffersOnType(value: Parameter<Float>, perform: @escaping (Float) -> Void) -> Perform {
+            return Perform(method: .m_similarMethodThatDiffersOnType__value_1(value), performs: perform)
+        }
+        static func similarMethodThatDiffersOnType(_ value: Parameter<Point>, perform: @escaping (Point) -> Void) -> Perform {
             return Perform(method: .m_similarMethodThatDiffersOnType__value_2(value), performs: perform)
         }
-        static func methodWithTypedef(scalar: Parameter<Scalar>, perform: @escaping (Scalar) -> Void) -> Perform {
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func similarMethodThatDiffersOnType(value: Parameter<Point>, perform: @escaping (Point) -> Void) -> Perform {
+            return Perform(method: .m_similarMethodThatDiffersOnType__value_2(value), performs: perform)
+        }
+        static func methodWithTypedef(_ scalar: Parameter<Scalar>, perform: @escaping (Scalar) -> Void) -> Perform {
+            return Perform(method: .m_methodWithTypedef__scalar(scalar), performs: perform)
+        }
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func methodWithTypedef(scalar: Parameter<Scalar>, perform: @escaping (Scalar) -> Void) -> Perform {
             return Perform(method: .m_methodWithTypedef__scalar(scalar), performs: perform)
         }
         static func methodWithClosures(success function: Parameter<LinearFunction>, perform: @escaping (LinearFunction) -> Void) -> Perform {
@@ -1947,11 +1899,6 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
-    }
-
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let invocations = matchingCalls(property.method)
-        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -2025,10 +1972,7 @@ class DateSortableMock: DateSortable, Mock {
 	private var __p_date: (Date)?
 
 
-    struct Property {
-        fileprivate var method: MethodType
-        static var date: Property { return Property(method: .p_date_get) }
-    }
+
 
 
 
@@ -2065,6 +2009,7 @@ class DateSortableMock: DateSortable, Mock {
     struct Verify {
         fileprivate var method: MethodType
 
+        static var date: Verify { return Verify(method: .p_date_get) }
     }
 
     struct Perform {
@@ -2085,11 +2030,6 @@ class DateSortableMock: DateSortable, Mock {
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
-    }
-
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let invocations = matchingCalls(property.method)
-        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -2157,7 +2097,6 @@ class EmptyProtocolMock: EmptyProtocol, Mock {
     }
 
 
-    typealias Property = Swift.Never
 
 
 
@@ -2202,7 +2141,6 @@ class EmptyProtocolMock: EmptyProtocol, Mock {
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -2269,7 +2207,6 @@ class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstraint, 
     }
 
 
-    typealias Property = Swift.Never
 
 
 
@@ -2300,6 +2237,7 @@ class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstraint, 
 		}
 		return __value
     }
+
 
     fileprivate enum MethodType {
         case m_decode__typefrom_data(Parameter<GenericAttribute>, Parameter<Data>)
@@ -2335,20 +2273,28 @@ class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstraint, 
         }
 
 
-        static func decode<T: Decodable>(type: Parameter<T.Type>, from data: Parameter<Data>, willReturn: T...) -> MethodStub {
+        static func decode<T: Decodable>(_ type: Parameter<T.Type>, from data: Parameter<Data>, willReturn: T...) -> MethodStub {
             return Given(method: .m_decode__typefrom_data(type.wrapAsGeneric(), data), products: willReturn.map({ Product.return($0) }))
         }
-        static func test<FOO>(type: Parameter<FOO.Type>, willReturn: Int...) -> MethodStub {
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func decode<T: Decodable>(type: Parameter<T.Type>, from data: Parameter<Data>, willReturn: T...) -> MethodStub {
+            return Given(method: .m_decode__typefrom_data(type.wrapAsGeneric(), data), products: willReturn.map({ Product.return($0) }))
+        }
+        static func test<FOO>(_ type: Parameter<FOO.Type>, willReturn: Int...) -> MethodStub {
             return Given(method: .m_test__type(type.wrapAsGeneric()), products: willReturn.map({ Product.return($0) }))
         }
-        static func decode<T: Decodable>(type: Parameter<T.Type>, from data: Parameter<Data>, willProduce: (Stubber<T>) -> Void) -> MethodStub {
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func test<FOO>(type: Parameter<FOO.Type>, willReturn: Int...) -> MethodStub {
+            return Given(method: .m_test__type(type.wrapAsGeneric()), products: willReturn.map({ Product.return($0) }))
+        }
+        static func decode<T: Decodable>(_ type: Parameter<T.Type>, from data: Parameter<Data>, willProduce: (Stubber<T>) -> Void) -> MethodStub {
             let willReturn: [T] = []
 			let given: Given = { return Given(method: .m_decode__typefrom_data(type.wrapAsGeneric(), data), products: willReturn.map({ Product.return($0) })) }()
 			let stubber = given.stub(for: (T).self)
 			willProduce(stubber)
 			return given
         }
-        static func test<FOO>(type: Parameter<FOO.Type>, willProduce: (Stubber<Int>) -> Void) -> MethodStub {
+        static func test<FOO>(_ type: Parameter<FOO.Type>, willProduce: (Stubber<Int>) -> Void) -> MethodStub {
             let willReturn: [Int] = []
 			let given: Given = { return Given(method: .m_test__type(type.wrapAsGeneric()), products: willReturn.map({ Product.return($0) })) }()
 			let stubber = given.stub(for: (Int).self)
@@ -2360,22 +2306,30 @@ class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstraint, 
     struct Verify {
         fileprivate var method: MethodType
 
-        static func decode<T>(type: Parameter<T.Type>, from data: Parameter<Data>) -> Verify {
-            return Verify(method: .m_decode__typefrom_data(type.wrapAsGeneric(), data))
-        }
-        static func test<FOO>(type: Parameter<FOO.Type>) -> Verify {
-            return Verify(method: .m_test__type(type.wrapAsGeneric()))
-        }
+        static func decode<T>(_ type: Parameter<T.Type>, from data: Parameter<Data>) -> Verify { return Verify(method: .m_decode__typefrom_data(type.wrapAsGeneric(), data))}
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func decode<T>(type: Parameter<T.Type>, from data: Parameter<Data>) -> Verify { return Verify(method: .m_decode__typefrom_data(type.wrapAsGeneric(), data))}
+        static func test<FOO>(_ type: Parameter<FOO.Type>) -> Verify { return Verify(method: .m_test__type(type.wrapAsGeneric()))}
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func test<FOO>(type: Parameter<FOO.Type>) -> Verify { return Verify(method: .m_test__type(type.wrapAsGeneric()))}
     }
 
     struct Perform {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func decode<T>(type: Parameter<T.Type>, from data: Parameter<Data>, perform: @escaping (T.Type, Data) -> Void) -> Perform {
+        static func decode<T>(_ type: Parameter<T.Type>, from data: Parameter<Data>, perform: @escaping (T.Type, Data) -> Void) -> Perform {
             return Perform(method: .m_decode__typefrom_data(type.wrapAsGeneric(), data), performs: perform)
         }
-        static func test<FOO>(type: Parameter<FOO.Type>, perform: @escaping (FOO.Type) -> Void) -> Perform {
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func decode<T>(type: Parameter<T.Type>, from data: Parameter<Data>, perform: @escaping (T.Type, Data) -> Void) -> Perform {
+            return Perform(method: .m_decode__typefrom_data(type.wrapAsGeneric(), data), performs: perform)
+        }
+        static func test<FOO>(_ type: Parameter<FOO.Type>, perform: @escaping (FOO.Type) -> Void) -> Perform {
+            return Perform(method: .m_test__type(type.wrapAsGeneric()), performs: perform)
+        }
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func test<FOO>(type: Parameter<FOO.Type>, perform: @escaping (FOO.Type) -> Void) -> Perform {
             return Perform(method: .m_test__type(type.wrapAsGeneric()), performs: perform)
         }
     }
@@ -2393,7 +2347,6 @@ class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstraint, 
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -2460,7 +2413,6 @@ class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
     }
 
 
-    typealias Property = Swift.Never
 
 
 
@@ -2477,6 +2429,7 @@ class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
 		}
 		return __value
     }
+
 
     fileprivate enum MethodType {
         case m_map__items(Parameter<GenericAttribute>)
@@ -2505,10 +2458,14 @@ class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
         }
 
 
-        static func map<T: DateSortable>(items: Parameter<[T]>, willReturn: [(key: String, items: [T])]...) -> MethodStub {
+        static func map<T: DateSortable>(_ items: Parameter<[T]>, willReturn: [(key: String, items: [T])]...) -> MethodStub {
             return Given(method: .m_map__items(items.wrapAsGeneric()), products: willReturn.map({ Product.return($0) }))
         }
-        static func map<T: DateSortable>(items: Parameter<[T]>, willProduce: (Stubber<[(key: String, items: [T])]>) -> Void) -> MethodStub {
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func map<T: DateSortable>(items: Parameter<[T]>, willReturn: [(key: String, items: [T])]...) -> MethodStub {
+            return Given(method: .m_map__items(items.wrapAsGeneric()), products: willReturn.map({ Product.return($0) }))
+        }
+        static func map<T: DateSortable>(_ items: Parameter<[T]>, willProduce: (Stubber<[(key: String, items: [T])]>) -> Void) -> MethodStub {
             let willReturn: [[(key: String, items: [T])]] = []
 			let given: Given = { return Given(method: .m_map__items(items.wrapAsGeneric()), products: willReturn.map({ Product.return($0) })) }()
 			let stubber = given.stub(for: ([(key: String, items: [T])]).self)
@@ -2520,16 +2477,20 @@ class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
     struct Verify {
         fileprivate var method: MethodType
 
-        static func map<T>(items: Parameter<[T]>) -> Verify {
-            return Verify(method: .m_map__items(items.wrapAsGeneric()))
-        }
+        static func map<T>(_ items: Parameter<[T]>) -> Verify { return Verify(method: .m_map__items(items.wrapAsGeneric()))}
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func map<T>(items: Parameter<[T]>) -> Verify { return Verify(method: .m_map__items(items.wrapAsGeneric()))}
     }
 
     struct Perform {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func map<T>(items: Parameter<[T]>, perform: @escaping ([T]) -> Void) -> Perform {
+        static func map<T>(_ items: Parameter<[T]>, perform: @escaping ([T]) -> Void) -> Perform {
+            return Perform(method: .m_map__items(items.wrapAsGeneric()), performs: perform)
+        }
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func map<T>(items: Parameter<[T]>, perform: @escaping ([T]) -> Void) -> Perform {
             return Perform(method: .m_map__items(items.wrapAsGeneric()), performs: perform)
         }
     }
@@ -2547,7 +2508,6 @@ class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -2614,7 +2574,6 @@ class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
     }
 
 
-    typealias Property = Swift.Never
 
 
 
@@ -2629,6 +2588,7 @@ class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
 		let perform = methodPerformValue(.m_someMethod) as? () -> Void
 		perform?()
     }
+
 
     fileprivate enum MethodType {
         case m_returnNoting
@@ -2666,12 +2626,8 @@ class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
     struct Verify {
         fileprivate var method: MethodType
 
-        static func returnNoting() -> Verify {
-            return Verify(method: .m_returnNoting)
-        }
-        static func someMethod() -> Verify {
-            return Verify(method: .m_someMethod)
-        }
+        static func returnNoting() -> Verify { return Verify(method: .m_returnNoting)}
+        static func someMethod() -> Verify { return Verify(method: .m_someMethod)}
     }
 
     struct Perform {
@@ -2699,7 +2655,6 @@ class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -2766,7 +2721,6 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
     }
 
 
-    typealias Property = Swift.Never
 
 
 
@@ -2895,6 +2849,7 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
 		}
 		return __value
     }
+
 
     fileprivate enum MethodType {
         case m_foo__bar_bar_1(Parameter<GenericAttribute>)
@@ -3029,27 +2984,13 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
     struct Verify {
         fileprivate var method: MethodType
 
-        static func foo<T>(bar: Parameter<T>, returning: String.Type) -> Verify {
-            return Verify(method: .m_foo__bar_bar_1(bar.wrapAsGeneric()))
-        }
-        static func foo<T>(bar: Parameter<T>, returning: Int.Type) -> Verify {
-            return Verify(method: .m_foo__bar_bar_2(bar.wrapAsGeneric()))
-        }
-        static func foo<T>(bar: Parameter<T>, returning: Float.Type) -> Verify {
-            return Verify(method: .m_foo__bar_bar_4(bar.wrapAsGeneric()))
-        }
-        static func foo<T>(bar: Parameter<T>, returning: Double.Type) -> Verify {
-            return Verify(method: .m_foo__bar_bar_5(bar.wrapAsGeneric()))
-        }
-        static func foo<T>(bar: Parameter<String>, returning: Array<T>.Type) -> Verify {
-            return Verify(method: .m_foo__bar_bar_6(bar))
-        }
-        static func foo<T>(bar: Parameter<String>, returning: Set<T>.Type) -> Verify {
-            return Verify(method: .m_foo__bar_bar_7(bar))
-        }
-        static func foo<T>(bar: Parameter<Bool>, returning: T.Type) -> Verify {
-            return Verify(method: .m_foo__bar_bar_9(bar))
-        }
+        static func foo<T>(bar: Parameter<T>, returning: String.Type) -> Verify { return Verify(method: .m_foo__bar_bar_1(bar.wrapAsGeneric()))}
+        static func foo<T>(bar: Parameter<T>, returning: Int.Type) -> Verify { return Verify(method: .m_foo__bar_bar_2(bar.wrapAsGeneric()))}
+        static func foo<T>(bar: Parameter<T>, returning: Float.Type) -> Verify { return Verify(method: .m_foo__bar_bar_4(bar.wrapAsGeneric()))}
+        static func foo<T>(bar: Parameter<T>, returning: Double.Type) -> Verify { return Verify(method: .m_foo__bar_bar_5(bar.wrapAsGeneric()))}
+        static func foo<T>(bar: Parameter<String>, returning: Array<T>.Type) -> Verify { return Verify(method: .m_foo__bar_bar_6(bar))}
+        static func foo<T>(bar: Parameter<String>, returning: Set<T>.Type) -> Verify { return Verify(method: .m_foo__bar_bar_7(bar))}
+        static func foo<T>(bar: Parameter<Bool>, returning: T.Type) -> Verify { return Verify(method: .m_foo__bar_bar_9(bar))}
     }
 
     struct Perform {
@@ -3092,7 +3033,6 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -3159,7 +3099,6 @@ class ProtocolMethodsThatDifferOnlyInReturnTypeMock: ProtocolMethodsThatDifferOn
     }
 
 
-    typealias Property = Swift.Never
 
 
 
@@ -3190,6 +3129,7 @@ class ProtocolMethodsThatDifferOnlyInReturnTypeMock: ProtocolMethodsThatDifferOn
 		}
 		return __value
     }
+
 
     fileprivate enum MethodType {
         case m_foo__bar_bar_1(Parameter<String>)
@@ -3249,12 +3189,8 @@ class ProtocolMethodsThatDifferOnlyInReturnTypeMock: ProtocolMethodsThatDifferOn
     struct Verify {
         fileprivate var method: MethodType
 
-        static func foo(bar: Parameter<String>, returning: String.Type) -> Verify {
-            return Verify(method: .m_foo__bar_bar_1(bar))
-        }
-        static func foo(bar: Parameter<String>, returning: Int.Type) -> Verify {
-            return Verify(method: .m_foo__bar_bar_2(bar))
-        }
+        static func foo(bar: Parameter<String>, returning: String.Type) -> Verify { return Verify(method: .m_foo__bar_bar_1(bar))}
+        static func foo(bar: Parameter<String>, returning: Int.Type) -> Verify { return Verify(method: .m_foo__bar_bar_2(bar))}
     }
 
     struct Perform {
@@ -3282,7 +3218,6 @@ class ProtocolMethodsThatDifferOnlyInReturnTypeMock: ProtocolMethodsThatDifferOn
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -3355,10 +3290,6 @@ class ProtocolWithAssociatedTypeMock<T>: ProtocolWithAssociatedType, Mock where 
 	private var __p_sequence: (T)?
 
 
-    struct Property {
-        fileprivate var method: MethodType
-        static var sequence: Property { return Property(method: .p_sequence_get) }
-    }
 
 
 
@@ -3375,6 +3306,7 @@ class ProtocolWithAssociatedTypeMock<T>: ProtocolWithAssociatedType, Mock where 
 		}
 		return __value
     }
+
 
     fileprivate enum MethodType {
         case m_methodWithType__t_t(Parameter<T>)
@@ -3425,9 +3357,8 @@ class ProtocolWithAssociatedTypeMock<T>: ProtocolWithAssociatedType, Mock where 
     struct Verify {
         fileprivate var method: MethodType
 
-        static func methodWithType(t: Parameter<T>) -> Verify {
-            return Verify(method: .m_methodWithType__t_t(t))
-        }
+        static func methodWithType(t: Parameter<T>) -> Verify { return Verify(method: .m_methodWithType__t_t(t))}
+        static var sequence: Verify { return Verify(method: .p_sequence_get) }
     }
 
     struct Perform {
@@ -3451,11 +3382,6 @@ class ProtocolWithAssociatedTypeMock<T>: ProtocolWithAssociatedType, Mock where 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
-    }
-
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let invocations = matchingCalls(property.method)
-        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -3523,7 +3449,6 @@ class ProtocolWithClosuresMock: ProtocolWithClosures, Mock {
     }
 
 
-    typealias Property = Swift.Never
 
 
 
@@ -3544,6 +3469,7 @@ class ProtocolWithClosuresMock: ProtocolWithClosures, Mock {
 		let perform = methodPerformValue(.m_methodThatTakesCompletionBlock__completion_completion(Parameter<(Bool,Error?) -> Void>.any)) as? ((Bool,Error?) -> Void) -> Void
 		perform?(completion)
     }
+
 
     fileprivate enum MethodType {
         case m_methodThatTakes__closure_closure(Parameter<(Int) -> Int>)
@@ -3588,15 +3514,9 @@ class ProtocolWithClosuresMock: ProtocolWithClosures, Mock {
     struct Verify {
         fileprivate var method: MethodType
 
-        static func methodThatTakes(closure: Parameter<(Int) -> Int>) -> Verify {
-            return Verify(method: .m_methodThatTakes__closure_closure(closure))
-        }
-        static func methodThatTakesEscaping(closure: Parameter<(Int) -> Int>) -> Verify {
-            return Verify(method: .m_methodThatTakesEscaping__closure_closure(closure))
-        }
-        static func methodThatTakesCompletionBlock(completion: Parameter<(Bool,Error?) -> Void>) -> Verify {
-            return Verify(method: .m_methodThatTakesCompletionBlock__completion_completion(completion))
-        }
+        static func methodThatTakes(closure: Parameter<(Int) -> Int>) -> Verify { return Verify(method: .m_methodThatTakes__closure_closure(closure))}
+        static func methodThatTakesEscaping(closure: Parameter<(Int) -> Int>) -> Verify { return Verify(method: .m_methodThatTakesEscaping__closure_closure(closure))}
+        static func methodThatTakesCompletionBlock(completion: Parameter<(Bool,Error?) -> Void>) -> Verify { return Verify(method: .m_methodThatTakesCompletionBlock__completion_completion(completion))}
     }
 
     struct Perform {
@@ -3627,7 +3547,224 @@ class ProtocolWithClosuresMock: ProtocolWithClosures, Mock {
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> Product {
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+    private func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
+}
+
+// MARK: - ProtocolWithConflictingMembers
+class ProtocolWithConflictingMembersMock: ProtocolWithConflictingMembers, Mock {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    typealias PropertyStub = Given
+    typealias MethodStub = Given
+    typealias SubscriptStub = Given
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+
+
+
+
+
+    func method(withLabel value: Int) -> Bool {
+        addInvocation(.m_method__withLabel_value(Parameter<Int>.value(value)))
+		let perform = methodPerformValue(.m_method__withLabel_value(Parameter<Int>.value(value))) as? (Int) -> Void
+		perform?(value)
+		var __value: Bool
+		do {
+		    __value = try methodReturnValue(.m_method__withLabel_value(Parameter<Int>.value(value))).casted()
+		} catch {
+			onFatalFailure("stub return value not specified for method(withLabel value: Int). Use given")
+			Failure("stub return value not specified for method(withLabel value: Int). Use given")
+		}
+		return __value
+    }
+
+    func method(_ value: Int) -> Bool {
+        addInvocation(.m_method__value(Parameter<Int>.value(value)))
+		let perform = methodPerformValue(.m_method__value(Parameter<Int>.value(value))) as? (Int) -> Void
+		perform?(value)
+		var __value: Bool
+		do {
+		    __value = try methodReturnValue(.m_method__value(Parameter<Int>.value(value))).casted()
+		} catch {
+			onFatalFailure("stub return value not specified for method(_ value: Int). Use given")
+			Failure("stub return value not specified for method(_ value: Int). Use given")
+		}
+		return __value
+    }
+
+    func method(value: Int) -> Bool {
+        addInvocation(.m_method__value_value(Parameter<Int>.value(value)))
+		let perform = methodPerformValue(.m_method__value_value(Parameter<Int>.value(value))) as? (Int) -> Void
+		perform?(value)
+		var __value: Bool
+		do {
+		    __value = try methodReturnValue(.m_method__value_value(Parameter<Int>.value(value))).casted()
+		} catch {
+			onFatalFailure("stub return value not specified for method(value: Int). Use given")
+			Failure("stub return value not specified for method(value: Int). Use given")
+		}
+		return __value
+    }
+
+
+    fileprivate enum MethodType {
+        case m_method__withLabel_value(Parameter<Int>)
+        case m_method__value(Parameter<Int>)
+        case m_method__value_value(Parameter<Int>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+            case (.m_method__withLabel_value(let lhsValue), .m_method__withLabel_value(let rhsValue)):
+                guard Parameter.compare(lhs: lhsValue, rhs: rhsValue, with: matcher) else { return false } 
+                return true 
+            case (.m_method__value(let lhsValue), .m_method__value(let rhsValue)):
+                guard Parameter.compare(lhs: lhsValue, rhs: rhsValue, with: matcher) else { return false } 
+                return true 
+            case (.m_method__value_value(let lhsValue), .m_method__value_value(let rhsValue)):
+                guard Parameter.compare(lhs: lhsValue, rhs: rhsValue, with: matcher) else { return false } 
+                return true 
+            default: return false
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+            case let .m_method__withLabel_value(p0): return p0.intValue
+            case let .m_method__value(p0): return p0.intValue
+            case let .m_method__value_value(p0): return p0.intValue
+            }
+        }
+    }
+
+    class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [Product]) {
+            self.method = method
+            super.init(products)
+        }
+
+
+        static func method(withLabel value: Parameter<Int>, willReturn: Bool...) -> MethodStub {
+            return Given(method: .m_method__withLabel_value(value), products: willReturn.map({ Product.return($0) }))
+        }
+        static func method(_ value: Parameter<Int>, willReturn: Bool...) -> MethodStub {
+            return Given(method: .m_method__value(value), products: willReturn.map({ Product.return($0) }))
+        }
+        static func method(value: Parameter<Int>, willReturn: Bool...) -> MethodStub {
+            return Given(method: .m_method__value_value(value), products: willReturn.map({ Product.return($0) }))
+        }
+        static func method(withLabel value: Parameter<Int>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
+            let willReturn: [Bool] = []
+			let given: Given = { return Given(method: .m_method__withLabel_value(value), products: willReturn.map({ Product.return($0) })) }()
+			let stubber = given.stub(for: (Bool).self)
+			willProduce(stubber)
+			return given
+        }
+        static func method(_ value: Parameter<Int>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
+            let willReturn: [Bool] = []
+			let given: Given = { return Given(method: .m_method__value(value), products: willReturn.map({ Product.return($0) })) }()
+			let stubber = given.stub(for: (Bool).self)
+			willProduce(stubber)
+			return given
+        }
+        static func method(value: Parameter<Int>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
+            let willReturn: [Bool] = []
+			let given: Given = { return Given(method: .m_method__value_value(value), products: willReturn.map({ Product.return($0) })) }()
+			let stubber = given.stub(for: (Bool).self)
+			willProduce(stubber)
+			return given
+        }
+    }
+
+    struct Verify {
+        fileprivate var method: MethodType
+
+        static func method(withLabel value: Parameter<Int>) -> Verify { return Verify(method: .m_method__withLabel_value(value))}
+        static func method(_ value: Parameter<Int>) -> Verify { return Verify(method: .m_method__value(value))}
+        static func method(value: Parameter<Int>) -> Verify { return Verify(method: .m_method__value_value(value))}
+    }
+
+    struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        static func method(withLabel value: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
+            return Perform(method: .m_method__withLabel_value(value), performs: perform)
+        }
+        static func method(_ value: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
+            return Perform(method: .m_method__value(value), performs: perform)
+        }
+        static func method(value: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
+            return Perform(method: .m_method__value_value(value), performs: perform)
+        }
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -3694,7 +3831,6 @@ class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock {
     }
 
 
-    typealias Property = Swift.Never
 
 
 
@@ -3725,6 +3861,7 @@ class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock {
 		}
 		return __value
     }
+
 
     fileprivate enum MethodType {
         case m_methodThatTakesUser__user_user(Parameter<UserObject>)
@@ -3784,12 +3921,8 @@ class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock {
     struct Verify {
         fileprivate var method: MethodType
 
-        static func methodThatTakesUser(user: Parameter<UserObject>) -> Verify {
-            return Verify(method: .m_methodThatTakesUser__user_user(user))
-        }
-        static func methodThatTakesArrayOfUsers(array: Parameter<[UserObject]>) -> Verify {
-            return Verify(method: .m_methodThatTakesArrayOfUsers__array_array(array))
-        }
+        static func methodThatTakesUser(user: Parameter<UserObject>) -> Verify { return Verify(method: .m_methodThatTakesUser__user_user(user))}
+        static func methodThatTakesArrayOfUsers(array: Parameter<[UserObject]>) -> Verify { return Verify(method: .m_methodThatTakesArrayOfUsers__array_array(array))}
     }
 
     struct Perform {
@@ -3817,7 +3950,167 @@ class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock {
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> Product {
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+    private func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+        XCTFail(message, file: file, line: line)
+        #endif
+    }
+}
+
+// MARK: - ProtocolWithDeprecatedMembers
+class ProtocolWithDeprecatedMembersMock: ProtocolWithDeprecatedMembers, Mock {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    typealias PropertyStub = Given
+    typealias MethodStub = Given
+    typealias SubscriptStub = Given
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+
+
+
+
+
+    func method(_ value: Int) -> Bool {
+        addInvocation(.m_method__value(Parameter<Int>.value(value)))
+		let perform = methodPerformValue(.m_method__value(Parameter<Int>.value(value))) as? (Int) -> Void
+		perform?(value)
+		var __value: Bool
+		do {
+		    __value = try methodReturnValue(.m_method__value(Parameter<Int>.value(value))).casted()
+		} catch {
+			onFatalFailure("stub return value not specified for method(_ value: Int). Use given")
+			Failure("stub return value not specified for method(_ value: Int). Use given")
+		}
+		return __value
+    }
+
+
+    fileprivate enum MethodType {
+        case m_method__value(Parameter<Int>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+            case (.m_method__value(let lhsValue), .m_method__value(let rhsValue)):
+                guard Parameter.compare(lhs: lhsValue, rhs: rhsValue, with: matcher) else { return false } 
+                return true 
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+            case let .m_method__value(p0): return p0.intValue
+            }
+        }
+    }
+
+    class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [Product]) {
+            self.method = method
+            super.init(products)
+        }
+
+
+        static func method(_ value: Parameter<Int>, willReturn: Bool...) -> MethodStub {
+            return Given(method: .m_method__value(value), products: willReturn.map({ Product.return($0) }))
+        }
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func method(value: Parameter<Int>, willReturn: Bool...) -> MethodStub {
+            return Given(method: .m_method__value(value), products: willReturn.map({ Product.return($0) }))
+        }
+        static func method(_ value: Parameter<Int>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
+            let willReturn: [Bool] = []
+			let given: Given = { return Given(method: .m_method__value(value), products: willReturn.map({ Product.return($0) })) }()
+			let stubber = given.stub(for: (Bool).self)
+			willProduce(stubber)
+			return given
+        }
+    }
+
+    struct Verify {
+        fileprivate var method: MethodType
+
+        static func method(_ value: Parameter<Int>) -> Verify { return Verify(method: .m_method__value(value))}
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func method(value: Parameter<Int>) -> Verify { return Verify(method: .m_method__value(value))}
+    }
+
+    struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        static func method(_ value: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
+            return Perform(method: .m_method__value(value), performs: perform)
+        }
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func method(value: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
+            return Perform(method: .m_method__value(value), performs: perform)
+        }
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -3884,7 +4177,6 @@ class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
     }
 
 
-    typealias Property = Swift.Never
 
 
 
@@ -3915,6 +4207,7 @@ class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
 		}
 		return __value
     }
+
 
     fileprivate enum MethodType {
         case m_methodWithGeneric__lhs_lhsrhs_rhs(Parameter<GenericAttribute>, Parameter<GenericAttribute>)
@@ -3975,12 +4268,8 @@ class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
     struct Verify {
         fileprivate var method: MethodType
 
-        static func methodWithGeneric<T>(lhs: Parameter<T>, rhs: Parameter<T>) -> Verify {
-            return Verify(method: .m_methodWithGeneric__lhs_lhsrhs_rhs(lhs.wrapAsGeneric(), rhs.wrapAsGeneric()))
-        }
-        static func methodWithGenericConstraint<U>(param: Parameter<[U]>) -> Verify {
-            return Verify(method: .m_methodWithGenericConstraint__param_param(param.wrapAsGeneric()))
-        }
+        static func methodWithGeneric<T>(lhs: Parameter<T>, rhs: Parameter<T>) -> Verify { return Verify(method: .m_methodWithGeneric__lhs_lhsrhs_rhs(lhs.wrapAsGeneric(), rhs.wrapAsGeneric()))}
+        static func methodWithGenericConstraint<U>(param: Parameter<[U]>) -> Verify { return Verify(method: .m_methodWithGenericConstraint__param_param(param.wrapAsGeneric()))}
     }
 
     struct Perform {
@@ -4008,7 +4297,6 @@ class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -4075,7 +4363,6 @@ class ProtocolWithGenericMethodsNestedMock: ProtocolWithGenericMethodsNested, Mo
     }
 
 
-    typealias Property = Swift.Never
 
 
 
@@ -4092,6 +4379,7 @@ class ProtocolWithGenericMethodsNestedMock: ProtocolWithGenericMethodsNested, Mo
 		}
 		return __value
     }
+
 
     fileprivate enum MethodType {
         case m_methodWithGeneric__resource_resource(Parameter<GenericAttribute>)
@@ -4135,9 +4423,7 @@ class ProtocolWithGenericMethodsNestedMock: ProtocolWithGenericMethodsNested, Mo
     struct Verify {
         fileprivate var method: MethodType
 
-        static func methodWithGeneric<T>(resource: Parameter<Resource<T>>) -> Verify {
-            return Verify(method: .m_methodWithGeneric__resource_resource(resource.wrapAsGeneric()))
-        }
+        static func methodWithGeneric<T>(resource: Parameter<Resource<T>>) -> Verify { return Verify(method: .m_methodWithGeneric__resource_resource(resource.wrapAsGeneric()))}
     }
 
     struct Perform {
@@ -4162,7 +4448,6 @@ class ProtocolWithGenericMethodsNestedMock: ProtocolWithGenericMethodsNested, Mo
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -4241,17 +4526,13 @@ class ProtocolWithInitializersMock: ProtocolWithInitializers, Mock {
 	private var __p_other: (String)?
 
 
-    struct Property {
-        fileprivate var method: MethodType
-        static var param: Property { return Property(method: .p_param_get) }
-        static var other: Property { return Property(method: .p_other_get) }
-    }
 
 
 
     required init(param: Int, other: String) { }
 
     required init(param: Int) { }
+
 
     fileprivate enum MethodType {
         case p_param_get
@@ -4293,6 +4574,8 @@ class ProtocolWithInitializersMock: ProtocolWithInitializers, Mock {
     struct Verify {
         fileprivate var method: MethodType
 
+        static var param: Verify { return Verify(method: .p_param_get) }
+        static var other: Verify { return Verify(method: .p_other_get) }
     }
 
     struct Perform {
@@ -4313,11 +4596,6 @@ class ProtocolWithInitializersMock: ProtocolWithInitializers, Mock {
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
-    }
-
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let invocations = matchingCalls(property.method)
-        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -4414,13 +4692,6 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
 	private var __p_email: (String)?
 
 
-    struct Property {
-        fileprivate var method: MethodType
-        static var name: Property { return Property(method: .p_name_get) }
-		static func name(set newValue: Parameter<String>) -> Property { return Property(method: .p_name_set(newValue)) }
-        static var email: Property { return Property(method: .p_email_get) }
-		static func email(set newValue: Parameter<String?>) -> Property { return Property(method: .p_email_set(newValue)) }
-    }
     static var name: String {
 		get {	ProtocolWithPropoertiesMock.invocations.append(.p_name_get)
 				return ProtocolWithPropoertiesMock.__p_name ?? givenGetterValue(.p_name_get, "ProtocolWithPropoertiesMock - value for name was not defined") }
@@ -4438,35 +4709,28 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
 	private static var __p_defaultEmail: (String)?
 
 
-    struct StaticProperty {
-        fileprivate var method: StaticMethodType
-        static var name: StaticProperty { return StaticProperty(method: .p_name_get) }
-		static func name(set newValue: Parameter<String>) -> StaticProperty { return StaticProperty(method: .p_name_set(newValue)) }
-        static var defaultEmail: StaticProperty { return StaticProperty(method: .p_defaultEmail_get) }
-		static func defaultEmail(set newValue: Parameter<String?>) -> StaticProperty { return StaticProperty(method: .p_defaultEmail_set(newValue)) }
-    }
 
 
-    static func defaultEmail(set newValue: String!) {
-        addInvocation(.sm_defaultEmail__set_newValue(Parameter<String?>.value(newValue)))
-		let perform = methodPerformValue(.sm_defaultEmail__set_newValue(Parameter<String?>.value(newValue))) as? (String!) -> Void
+    static func defaultEmail(_ newValue: String!) {
+        addInvocation(.sm_defaultEmail__newValue(Parameter<String?>.value(newValue)))
+		let perform = methodPerformValue(.sm_defaultEmail__newValue(Parameter<String?>.value(newValue))) as? (String!) -> Void
 		perform?(newValue)
     }
 
-    func name(set newValue: String) {
-        addInvocation(.m_name__set_newValue(Parameter<String>.value(newValue)))
-		let perform = methodPerformValue(.m_name__set_newValue(Parameter<String>.value(newValue))) as? (String) -> Void
+    func name(_ newValue: String) {
+        addInvocation(.m_name__newValue(Parameter<String>.value(newValue)))
+		let perform = methodPerformValue(.m_name__newValue(Parameter<String>.value(newValue))) as? (String) -> Void
 		perform?(newValue)
     }
 
-    func email(set: String!) {
-        addInvocation(.m_email__set_set(Parameter<String?>.value(set)))
-		let perform = methodPerformValue(.m_email__set_set(Parameter<String?>.value(set))) as? (String!) -> Void
-		perform?(set)
+    func email(_ newValue: String!) {
+        addInvocation(.m_email__newValue(Parameter<String?>.value(newValue)))
+		let perform = methodPerformValue(.m_email__newValue(Parameter<String?>.value(newValue))) as? (String!) -> Void
+		perform?(newValue)
     }
 
     fileprivate enum StaticMethodType {
-        case sm_defaultEmail__set_newValue(Parameter<String?>)
+        case sm_defaultEmail__newValue(Parameter<String?>)
         case p_name_get
 		case p_name_set(Parameter<String>)
         case p_defaultEmail_get
@@ -4474,7 +4738,7 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
 
         static func compareParameters(lhs: StaticMethodType, rhs: StaticMethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-            case (.sm_defaultEmail__set_newValue(let lhsNewvalue), .sm_defaultEmail__set_newValue(let rhsNewvalue)):
+            case (.sm_defaultEmail__newValue(let lhsNewvalue), .sm_defaultEmail__newValue(let rhsNewvalue)):
                 guard Parameter.compare(lhs: lhsNewvalue, rhs: rhsNewvalue, with: matcher) else { return false } 
                 return true 
             case (.p_name_get,.p_name_get): return true
@@ -4487,7 +4751,7 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
 
         func intValue() -> Int {
             switch self {
-                case let .sm_defaultEmail__set_newValue(p0): return p0.intValue
+                case let .sm_defaultEmail__newValue(p0): return p0.intValue
                 case .p_name_get: return 0
 			case .p_name_set(let newValue): return newValue.intValue
                 case .p_defaultEmail_get: return 0
@@ -4516,23 +4780,36 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
     struct StaticVerify {
         fileprivate var method: StaticMethodType
 
-        static func defaultEmail(set newValue: Parameter<String?>) -> StaticVerify {
-            return StaticVerify(method: .sm_defaultEmail__set_newValue(newValue))
+        static func defaultEmail(_ newValue: Parameter<String?>) -> StaticVerify {
+            return StaticVerify(method: .sm_defaultEmail__newValue(newValue))
         }
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func defaultEmail(newValue: Parameter<String?>) -> StaticVerify {
+            return Verify(method: .sm_defaultEmail__newValue(newValue))
+        }
+        static var name: StaticVerify { return StaticVerify(method: .p_name_get) }
+		static func name(set newValue: Parameter<String>) -> StaticVerify { return StaticVerify(method: .p_name_set(newValue)) }
+        static var defaultEmail: StaticVerify { return StaticVerify(method: .p_defaultEmail_get) }
+		static func defaultEmail(set newValue: Parameter<String?>) -> StaticVerify { return StaticVerify(method: .p_defaultEmail_set(newValue)) }
     }
 
     struct StaticPerform {
         fileprivate var method: StaticMethodType
         var performs: Any
 
-        static func defaultEmail(set newValue: Parameter<String?>, perform: @escaping (String!) -> Void) -> StaticPerform {
-            return StaticPerform(method: .sm_defaultEmail__set_newValue(newValue), performs: perform)
+        static func defaultEmail(_ newValue: Parameter<String?>, perform: @escaping (String!) -> Void) -> StaticPerform {
+            return StaticPerform(method: .sm_defaultEmail__newValue(newValue), performs: perform)
+        }
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func defaultEmail(newValue: Parameter<String?>, perform: @escaping (String!) -> Void) -> StaticPerform {
+            return Perform(method: .sm_defaultEmail__newValue(newValue), performs: perform)
         }
     }
 
-        fileprivate enum MethodType {
-        case m_name__set_newValue(Parameter<String>)
-        case m_email__set_set(Parameter<String?>)
+    
+    fileprivate enum MethodType {
+        case m_name__newValue(Parameter<String>)
+        case m_email__newValue(Parameter<String?>)
         case p_name_get
 		case p_name_set(Parameter<String>)
         case p_email_get
@@ -4540,11 +4817,11 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
-            case (.m_name__set_newValue(let lhsNewvalue), .m_name__set_newValue(let rhsNewvalue)):
+            case (.m_name__newValue(let lhsNewvalue), .m_name__newValue(let rhsNewvalue)):
                 guard Parameter.compare(lhs: lhsNewvalue, rhs: rhsNewvalue, with: matcher) else { return false } 
                 return true 
-            case (.m_email__set_set(let lhsSet), .m_email__set_set(let rhsSet)):
-                guard Parameter.compare(lhs: lhsSet, rhs: rhsSet, with: matcher) else { return false } 
+            case (.m_email__newValue(let lhsNewvalue), .m_email__newValue(let rhsNewvalue)):
+                guard Parameter.compare(lhs: lhsNewvalue, rhs: rhsNewvalue, with: matcher) else { return false } 
                 return true 
             case (.p_name_get,.p_name_get): return true
 			case (.p_name_set(let left),.p_name_set(let right)): return Parameter<String>.compare(lhs: left, rhs: right, with: matcher)
@@ -4556,8 +4833,8 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
 
         func intValue() -> Int {
             switch self {
-            case let .m_name__set_newValue(p0): return p0.intValue
-            case let .m_email__set_set(p0): return p0.intValue
+            case let .m_name__newValue(p0): return p0.intValue
+            case let .m_email__newValue(p0): return p0.intValue
             case .p_name_get: return 0
 			case .p_name_set(let newValue): return newValue.intValue
             case .p_email_get: return 0
@@ -4586,23 +4863,35 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
     struct Verify {
         fileprivate var method: MethodType
 
-        static func name(set newValue: Parameter<String>) -> Verify {
-            return Verify(method: .m_name__set_newValue(newValue))
-        }
-        static func email(set: Parameter<String?>) -> Verify {
-            return Verify(method: .m_email__set_set(set))
-        }
+        static func name(_ newValue: Parameter<String>) -> Verify { return Verify(method: .m_name__newValue(newValue))}
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func name(newValue: Parameter<String>) -> Verify { return Verify(method: .m_name__newValue(newValue))}
+        static func email(_ newValue: Parameter<String?>) -> Verify { return Verify(method: .m_email__newValue(newValue))}
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func email(newValue: Parameter<String?>) -> Verify { return Verify(method: .m_email__newValue(newValue))}
+        static var name: Verify { return Verify(method: .p_name_get) }
+		static func name(set newValue: Parameter<String>) -> Verify { return Verify(method: .p_name_set(newValue)) }
+        static var email: Verify { return Verify(method: .p_email_get) }
+		static func email(set newValue: Parameter<String?>) -> Verify { return Verify(method: .p_email_set(newValue)) }
     }
 
     struct Perform {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func name(set newValue: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
-            return Perform(method: .m_name__set_newValue(newValue), performs: perform)
+        static func name(_ newValue: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_name__newValue(newValue), performs: perform)
         }
-        static func email(set: Parameter<String?>, perform: @escaping (String!) -> Void) -> Perform {
-            return Perform(method: .m_email__set_set(set), performs: perform)
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func name(newValue: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_name__newValue(newValue), performs: perform)
+        }
+        static func email(_ newValue: Parameter<String?>, perform: @escaping (String!) -> Void) -> Perform {
+            return Perform(method: .m_email__newValue(newValue), performs: perform)
+        }
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func email(newValue: Parameter<String?>, perform: @escaping (String!) -> Void) -> Perform {
+            return Perform(method: .m_email__newValue(newValue), performs: perform)
         }
     }
 
@@ -4618,11 +4907,6 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
-    }
-
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let invocations = matchingCalls(property.method)
-        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -4672,11 +4956,6 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
     static public func verify(_ method: StaticVerify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
-    }
-
-    static public func verify(property: StaticProperty, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let invocations = matchingCalls(property.method)
-        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     static private func addInvocation(_ call: StaticMethodType) {
@@ -4749,7 +5028,6 @@ class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, StaticMock
     }
 
 
-    typealias Property = Swift.Never
     static var staticProperty: String {
 		get {	ProtocolWithStaticMembersMock.invocations.append(.p_staticProperty_get)
 				return ProtocolWithStaticMembersMock.__p_staticProperty ?? givenGetterValue(.p_staticProperty_get, "ProtocolWithStaticMembersMock - value for staticProperty was not defined") }
@@ -4757,10 +5035,6 @@ class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, StaticMock
 	private static var __p_staticProperty: (String)?
 
 
-    struct StaticProperty {
-        fileprivate var method: StaticMethodType
-        static var staticProperty: StaticProperty { return StaticProperty(method: .p_staticProperty_get) }
-    }
 
 
     static func staticMethod(param: Int) throws -> Int {
@@ -4833,6 +5107,7 @@ class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, StaticMock
         static func staticMethod(param: Parameter<Int>) -> StaticVerify {
             return StaticVerify(method: .sm_staticMethod__param_param(param))
         }
+        static var staticProperty: StaticVerify { return StaticVerify(method: .p_staticProperty_get) }
     }
 
     struct StaticPerform {
@@ -4885,7 +5160,6 @@ class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, StaticMock
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -4934,11 +5208,6 @@ class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, StaticMock
     static public func verify(_ method: StaticVerify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
-    }
-
-    static public func verify(property: StaticProperty, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let invocations = matchingCalls(property.method)
-        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     static private func addInvocation(_ call: StaticMethodType) {
@@ -5006,11 +5275,6 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 	private var __p_something: (Any)?
 
 
-    struct Property {
-        fileprivate var method: MethodType
-        static var something: Property { return Property(method: .p_something_get) }
-		static func something(set newValue: Parameter<Any>) -> Property { return Property(method: .p_something_set(newValue)) }
-    }
 
 
 
@@ -5042,6 +5306,20 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 		}
 	}
 
+    subscript (labeled index: Int) -> String {
+		get {
+			addInvocation(.subscript_get_labeled_index(Parameter<Int>.value(index)))
+			do {
+				return try methodReturnValue(.subscript_get_labeled_index(Parameter<Int>.value(index))).casted()
+			} catch {
+				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubmessage")
+			}
+		}
+		set {
+			addInvocation(.subscript_set_labeled_index(Parameter<Int>.value(index), Parameter<String>.value(newValue)))
+		}
+	}
+
     subscript (_ x: Int, _ y: Int) -> String {
 		get {
 			addInvocation(.subscript_get_x_y(Parameter<Int>.value(x), Parameter<Int>.value(y)))
@@ -5070,6 +5348,20 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 		}
 	}
 
+    subscript (index index: String) -> String {
+		get {
+			addInvocation(.subscript_get_index_index(Parameter<String>.value(index)))
+			do {
+				return try methodReturnValue(.subscript_get_index_index(Parameter<String>.value(index))).casted()
+			} catch {
+				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubmessage")
+			}
+		}
+		set {
+			addInvocation(.subscript_set_index_index(Parameter<String>.value(index), Parameter<String>.value(newValue)))
+		}
+	}
+
     subscript (label name: String) -> Int {
 		get {
 			addInvocation(.subscript_get_label_name(Parameter<String>.value(name)))
@@ -5095,16 +5387,21 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 		}
 	}
 
+
     fileprivate enum MethodType {
         case m_aaa__value(Parameter<Int>)
         case p_something_get
 		case p_something_set(Parameter<Any>)
         case subscript_get_index_1(Parameter<Int>)
 		case subscript_set_index_1(Parameter<Int>, Parameter<String>)
+        case subscript_get_labeled_index(Parameter<Int>)
+		case subscript_set_labeled_index(Parameter<Int>, Parameter<String>)
         case subscript_get_x_y(Parameter<Int>, Parameter<Int>)
 		case subscript_set_x_y(Parameter<Int>, Parameter<Int>, Parameter<String>)
         case subscript_get_index_2(Parameter<String>)
 		case subscript_set_index_2(Parameter<String>, Parameter<String>)
+        case subscript_get_index_index(Parameter<String>)
+		case subscript_set_index_index(Parameter<String>, Parameter<String>)
         case subscript_get_label_name(Parameter<String>)
         case subscript_get_closure_c(Parameter<(Int) -> Void>)
 		case subscript_set_closure_c(Parameter<(Int) -> Void>, Parameter<Bool>)
@@ -5122,6 +5419,12 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 			case (let .subscript_set_index_1(lhsIndex, lhsDidSet), let .subscript_set_index_1(rhsIndex, rhsDidSet)):
 				guard Parameter.compare(lhs: lhsIndex, rhs: rhsIndex, with: matcher) else { return false }
 				return Parameter<String>.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher)
+            case (let .subscript_get_labeled_index(lhsIndex), let .subscript_get_labeled_index(rhsIndex)):
+				guard Parameter.compare(lhs: lhsIndex, rhs: rhsIndex, with: matcher) else { return false }
+				return true
+			case (let .subscript_set_labeled_index(lhsIndex, lhsDidSet), let .subscript_set_labeled_index(rhsIndex, rhsDidSet)):
+				guard Parameter.compare(lhs: lhsIndex, rhs: rhsIndex, with: matcher) else { return false }
+				return Parameter<String>.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher)
             case (let .subscript_get_x_y(lhsX, lhsY), let .subscript_get_x_y(rhsX, rhsY)):
 				guard Parameter.compare(lhs: lhsX, rhs: rhsX, with: matcher) else { return false }
 				guard Parameter.compare(lhs: lhsY, rhs: rhsY, with: matcher) else { return false }
@@ -5134,6 +5437,12 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 				guard Parameter.compare(lhs: lhsIndex, rhs: rhsIndex, with: matcher) else { return false }
 				return true
 			case (let .subscript_set_index_2(lhsIndex, lhsDidSet), let .subscript_set_index_2(rhsIndex, rhsDidSet)):
+				guard Parameter.compare(lhs: lhsIndex, rhs: rhsIndex, with: matcher) else { return false }
+				return Parameter<String>.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher)
+            case (let .subscript_get_index_index(lhsIndex), let .subscript_get_index_index(rhsIndex)):
+				guard Parameter.compare(lhs: lhsIndex, rhs: rhsIndex, with: matcher) else { return false }
+				return true
+			case (let .subscript_set_index_index(lhsIndex, lhsDidSet), let .subscript_set_index_index(rhsIndex, rhsDidSet)):
 				guard Parameter.compare(lhs: lhsIndex, rhs: rhsIndex, with: matcher) else { return false }
 				return Parameter<String>.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher)
             case (let .subscript_get_label_name(lhsName), let .subscript_get_label_name(rhsName)):
@@ -5156,10 +5465,14 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 			case .p_something_set(let newValue): return newValue.intValue
             case let .subscript_get_index_1(p0): return p0.intValue
 			case let .subscript_set_index_1(p0, _): return p0.intValue
+            case let .subscript_get_labeled_index(p0): return p0.intValue
+			case let .subscript_set_labeled_index(p0, _): return p0.intValue
             case let .subscript_get_x_y(p0, p1): return p0.intValue + p1.intValue
 			case let .subscript_set_x_y(p0, p1, _): return p0.intValue + p1.intValue
             case let .subscript_get_index_2(p0): return p0.intValue
 			case let .subscript_set_index_2(p0, _): return p0.intValue
+            case let .subscript_get_index_index(p0): return p0.intValue
+			case let .subscript_set_index_index(p0, _): return p0.intValue
             case let .subscript_get_label_name(p0): return p0.intValue
             case let .subscript_get_closure_c(p0): return p0.intValue
 			case let .subscript_set_closure_c(p0, _): return p0.intValue
@@ -5179,24 +5492,34 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
             return Given(method: .p_something_get, products: defaultValue.map({ Product.return($0) }))
         }
 
-        static func aaa(value: Parameter<Int>, willReturn: Bool...) -> MethodStub {
+        static func aaa(_ value: Parameter<Int>, willReturn: Bool...) -> MethodStub {
             return Given(method: .m_aaa__value(value), products: willReturn.map({ Product.return($0) }))
         }
-        static func aaa(value: Parameter<Int>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func aaa(value: Parameter<Int>, willReturn: Bool...) -> MethodStub {
+            return Given(method: .m_aaa__value(value), products: willReturn.map({ Product.return($0) }))
+        }
+        static func aaa(_ value: Parameter<Int>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
             let willReturn: [Bool] = []
 			let given: Given = { return Given(method: .m_aaa__value(value), products: willReturn.map({ Product.return($0) })) }()
 			let stubber = given.stub(for: (Bool).self)
 			willProduce(stubber)
 			return given
         }
-        static func `subscript`(index: Parameter<Int>, willReturn: String...) -> SubscriptStub {
+        static func `subscript`(_ index: Parameter<Int>, willReturn: String...) -> SubscriptStub {
             return Given(method: .subscript_get_index_1(index), products: willReturn.map({ Product.return($0) }))
         }
-        static func `subscript`(x: Parameter<Int>, y: Parameter<Int>, willReturn: String...) -> SubscriptStub {
+        static func `subscript`(labeled index: Parameter<Int>, willReturn: String...) -> SubscriptStub {
+            return Given(method: .subscript_get_labeled_index(index), products: willReturn.map({ Product.return($0) }))
+        }
+        static func `subscript`(_ x: Parameter<Int>, _ y: Parameter<Int>, willReturn: String...) -> SubscriptStub {
             return Given(method: .subscript_get_x_y(x, y), products: willReturn.map({ Product.return($0) }))
         }
-        static func `subscript`(index: Parameter<String>, willReturn: String...) -> SubscriptStub {
+        static func `subscript`(_ index: Parameter<String>, willReturn: String...) -> SubscriptStub {
             return Given(method: .subscript_get_index_2(index), products: willReturn.map({ Product.return($0) }))
+        }
+        static func `subscript`(index: Parameter<String>, willReturn: String...) -> SubscriptStub {
+            return Given(method: .subscript_get_index_index(index), products: willReturn.map({ Product.return($0) }))
         }
         static func `subscript`(label name: Parameter<String>, willReturn: Int...) -> SubscriptStub {
             return Given(method: .subscript_get_label_name(name), products: willReturn.map({ Product.return($0) }))
@@ -5209,16 +5532,22 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
     struct Verify {
         fileprivate var method: MethodType
 
-        static func aaa(value: Parameter<Int>) -> Verify {
-            return Verify(method: .m_aaa__value(value))
-        }
+        static func aaa(_ value: Parameter<Int>) -> Verify { return Verify(method: .m_aaa__value(value))}
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func aaa(value: Parameter<Int>) -> Verify { return Verify(method: .m_aaa__value(value))}
+        static var something: Verify { return Verify(method: .p_something_get) }
+		static func something(set newValue: Parameter<Any>) -> Verify { return Verify(method: .p_something_set(newValue)) }
     }
 
     struct Perform {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func aaa(value: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
+        static func aaa(_ value: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
+            return Perform(method: .m_aaa__value(value), performs: perform)
+        }
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func aaa(value: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
             return Perform(method: .m_aaa__value(value), performs: perform)
         }
     }
@@ -5235,11 +5564,6 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
-    }
-
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let invocations = matchingCalls(property.method)
-        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -5307,7 +5631,6 @@ class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
     }
 
 
-    typealias Property = Swift.Never
 
 
 
@@ -5340,6 +5663,7 @@ class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
 		}
 		return __value
     }
+
 
     fileprivate enum MethodType {
         case m_methodThatThrows
@@ -5401,12 +5725,8 @@ class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
     struct Verify {
         fileprivate var method: MethodType
 
-        static func methodThatThrows() -> Verify {
-            return Verify(method: .m_methodThatThrows)
-        }
-        static func methodThatReturnsAndThrows(param: Parameter<Int>) -> Verify {
-            return Verify(method: .m_methodThatReturnsAndThrows__param_param(param))
-        }
+        static func methodThatThrows() -> Verify { return Verify(method: .m_methodThatThrows)}
+        static func methodThatReturnsAndThrows(param: Parameter<Int>) -> Verify { return Verify(method: .m_methodThatReturnsAndThrows__param_param(param))}
     }
 
     struct Perform {
@@ -5434,7 +5754,6 @@ class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -5501,7 +5820,6 @@ class ProtocolWithTuplesMock: ProtocolWithTuples, Mock {
     }
 
 
-    typealias Property = Swift.Never
 
 
 
@@ -5518,6 +5836,7 @@ class ProtocolWithTuplesMock: ProtocolWithTuples, Mock {
 		}
 		return __value
     }
+
 
     fileprivate enum MethodType {
         case m_methodThatTakesTuple__tuple_tuple(Parameter<(String,Int)>)
@@ -5561,9 +5880,7 @@ class ProtocolWithTuplesMock: ProtocolWithTuples, Mock {
     struct Verify {
         fileprivate var method: MethodType
 
-        static func methodThatTakesTuple(tuple: Parameter<(String,Int)>) -> Verify {
-            return Verify(method: .m_methodThatTakesTuple__tuple_tuple(tuple))
-        }
+        static func methodThatTakesTuple(tuple: Parameter<(String,Int)>) -> Verify { return Verify(method: .m_methodThatTakesTuple__tuple_tuple(tuple))}
     }
 
     struct Perform {
@@ -5588,7 +5905,6 @@ class ProtocolWithTuplesMock: ProtocolWithTuples, Mock {
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -5661,10 +5977,6 @@ class ProtocolWithWhereAfterDefinitionMock<T>: ProtocolWithWhereAfterDefinition,
 	private var __p_sequence: (T)?
 
 
-    struct Property {
-        fileprivate var method: MethodType
-        static var sequence: Property { return Property(method: .p_sequence_get) }
-    }
 
 
 
@@ -5681,6 +5993,7 @@ class ProtocolWithWhereAfterDefinitionMock<T>: ProtocolWithWhereAfterDefinition,
 		}
 		return __value
     }
+
 
     fileprivate enum MethodType {
         case m_methodWithType__t_t(Parameter<T>)
@@ -5731,9 +6044,8 @@ class ProtocolWithWhereAfterDefinitionMock<T>: ProtocolWithWhereAfterDefinition,
     struct Verify {
         fileprivate var method: MethodType
 
-        static func methodWithType(t: Parameter<T>) -> Verify {
-            return Verify(method: .m_methodWithType__t_t(t))
-        }
+        static func methodWithType(t: Parameter<T>) -> Verify { return Verify(method: .m_methodWithType__t_t(t))}
+        static var sequence: Verify { return Verify(method: .p_sequence_get) }
     }
 
     struct Perform {
@@ -5757,11 +6069,6 @@ class ProtocolWithWhereAfterDefinitionMock<T>: ProtocolWithWhereAfterDefinition,
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
-    }
-
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let invocations = matchingCalls(property.method)
-        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -5829,7 +6136,6 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
     }
 
 
-    typealias Property = Swift.Never
 
 
 
@@ -5937,6 +6243,7 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
 		return __value
     }
 
+
     fileprivate enum MethodType {
         case m_serviceName
         case m_getPoint__from_point(Parameter<Point>)
@@ -6008,10 +6315,18 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
         static func getPoint(from tuple: Parameter<(Float,Float)>, willReturn: Point...) -> MethodStub {
             return Given(method: .m_getPoint__from_tuple(tuple), products: willReturn.map({ Product.return($0) }))
         }
-        static func similarMethodThatDiffersOnType(value: Parameter<Float>, willReturn: Bool...) -> MethodStub {
+        static func similarMethodThatDiffersOnType(_ value: Parameter<Float>, willReturn: Bool...) -> MethodStub {
             return Given(method: .m_similarMethodThatDiffersOnType__value_1(value), products: willReturn.map({ Product.return($0) }))
         }
-        static func similarMethodThatDiffersOnType(value: Parameter<Point>, willReturn: Bool...) -> MethodStub {
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func similarMethodThatDiffersOnType(value: Parameter<Float>, willReturn: Bool...) -> MethodStub {
+            return Given(method: .m_similarMethodThatDiffersOnType__value_1(value), products: willReturn.map({ Product.return($0) }))
+        }
+        static func similarMethodThatDiffersOnType(_ value: Parameter<Point>, willReturn: Bool...) -> MethodStub {
+            return Given(method: .m_similarMethodThatDiffersOnType__value_2(value), products: willReturn.map({ Product.return($0) }))
+        }
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func similarMethodThatDiffersOnType(value: Parameter<Point>, willReturn: Bool...) -> MethodStub {
             return Given(method: .m_similarMethodThatDiffersOnType__value_2(value), products: willReturn.map({ Product.return($0) }))
         }
         static func methodWithClosures(success function: Parameter<LinearFunction>, willReturn: ClosureFabric...) -> MethodStub {
@@ -6041,14 +6356,14 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
 			willProduce(stubber)
 			return given
         }
-        static func similarMethodThatDiffersOnType(value: Parameter<Float>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
+        static func similarMethodThatDiffersOnType(_ value: Parameter<Float>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
             let willReturn: [Bool] = []
 			let given: Given = { return Given(method: .m_similarMethodThatDiffersOnType__value_1(value), products: willReturn.map({ Product.return($0) })) }()
 			let stubber = given.stub(for: (Bool).self)
 			willProduce(stubber)
 			return given
         }
-        static func similarMethodThatDiffersOnType(value: Parameter<Point>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
+        static func similarMethodThatDiffersOnType(_ value: Parameter<Point>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
             let willReturn: [Bool] = []
 			let given: Given = { return Given(method: .m_similarMethodThatDiffersOnType__value_2(value), products: willReturn.map({ Product.return($0) })) }()
 			let stubber = given.stub(for: (Bool).self)
@@ -6074,30 +6389,20 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
     struct Verify {
         fileprivate var method: MethodType
 
-        static func serviceName() -> Verify {
-            return Verify(method: .m_serviceName)
-        }
-        static func getPoint(from point: Parameter<Point>) -> Verify {
-            return Verify(method: .m_getPoint__from_point(point))
-        }
-        static func getPoint(from tuple: Parameter<(Float,Float)>) -> Verify {
-            return Verify(method: .m_getPoint__from_tuple(tuple))
-        }
-        static func similarMethodThatDiffersOnType(value: Parameter<Float>) -> Verify {
-            return Verify(method: .m_similarMethodThatDiffersOnType__value_1(value))
-        }
-        static func similarMethodThatDiffersOnType(value: Parameter<Point>) -> Verify {
-            return Verify(method: .m_similarMethodThatDiffersOnType__value_2(value))
-        }
-        static func methodWithTypedef(scalar: Parameter<Scalar>) -> Verify {
-            return Verify(method: .m_methodWithTypedef__scalar(scalar))
-        }
-        static func methodWithClosures(success function: Parameter<LinearFunction>) -> Verify {
-            return Verify(method: .m_methodWithClosures__success_function_1(function))
-        }
-        static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>) -> Verify {
-            return Verify(method: .m_methodWithClosures__success_function_2(function))
-        }
+        static func serviceName() -> Verify { return Verify(method: .m_serviceName)}
+        static func getPoint(from point: Parameter<Point>) -> Verify { return Verify(method: .m_getPoint__from_point(point))}
+        static func getPoint(from tuple: Parameter<(Float,Float)>) -> Verify { return Verify(method: .m_getPoint__from_tuple(tuple))}
+        static func similarMethodThatDiffersOnType(_ value: Parameter<Float>) -> Verify { return Verify(method: .m_similarMethodThatDiffersOnType__value_1(value))}
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func similarMethodThatDiffersOnType(value: Parameter<Float>) -> Verify { return Verify(method: .m_similarMethodThatDiffersOnType__value_1(value))}
+        static func similarMethodThatDiffersOnType(_ value: Parameter<Point>) -> Verify { return Verify(method: .m_similarMethodThatDiffersOnType__value_2(value))}
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func similarMethodThatDiffersOnType(value: Parameter<Point>) -> Verify { return Verify(method: .m_similarMethodThatDiffersOnType__value_2(value))}
+        static func methodWithTypedef(_ scalar: Parameter<Scalar>) -> Verify { return Verify(method: .m_methodWithTypedef__scalar(scalar))}
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func methodWithTypedef(scalar: Parameter<Scalar>) -> Verify { return Verify(method: .m_methodWithTypedef__scalar(scalar))}
+        static func methodWithClosures(success function: Parameter<LinearFunction>) -> Verify { return Verify(method: .m_methodWithClosures__success_function_1(function))}
+        static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>) -> Verify { return Verify(method: .m_methodWithClosures__success_function_2(function))}
     }
 
     struct Perform {
@@ -6113,13 +6418,25 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
         static func getPoint(from tuple: Parameter<(Float,Float)>, perform: @escaping ((Float,Float)) -> Void) -> Perform {
             return Perform(method: .m_getPoint__from_tuple(tuple), performs: perform)
         }
-        static func similarMethodThatDiffersOnType(value: Parameter<Float>, perform: @escaping (Float) -> Void) -> Perform {
+        static func similarMethodThatDiffersOnType(_ value: Parameter<Float>, perform: @escaping (Float) -> Void) -> Perform {
             return Perform(method: .m_similarMethodThatDiffersOnType__value_1(value), performs: perform)
         }
-        static func similarMethodThatDiffersOnType(value: Parameter<Point>, perform: @escaping (Point) -> Void) -> Perform {
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func similarMethodThatDiffersOnType(value: Parameter<Float>, perform: @escaping (Float) -> Void) -> Perform {
+            return Perform(method: .m_similarMethodThatDiffersOnType__value_1(value), performs: perform)
+        }
+        static func similarMethodThatDiffersOnType(_ value: Parameter<Point>, perform: @escaping (Point) -> Void) -> Perform {
             return Perform(method: .m_similarMethodThatDiffersOnType__value_2(value), performs: perform)
         }
-        static func methodWithTypedef(scalar: Parameter<Scalar>, perform: @escaping (Scalar) -> Void) -> Perform {
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func similarMethodThatDiffersOnType(value: Parameter<Point>, perform: @escaping (Point) -> Void) -> Perform {
+            return Perform(method: .m_similarMethodThatDiffersOnType__value_2(value), performs: perform)
+        }
+        static func methodWithTypedef(_ scalar: Parameter<Scalar>, perform: @escaping (Scalar) -> Void) -> Perform {
+            return Perform(method: .m_methodWithTypedef__scalar(scalar), performs: perform)
+        }
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+		static func methodWithTypedef(scalar: Parameter<Scalar>, perform: @escaping (Scalar) -> Void) -> Perform {
             return Perform(method: .m_methodWithTypedef__scalar(scalar), performs: perform)
         }
         static func methodWithClosures(success function: Parameter<LinearFunction>, perform: @escaping (LinearFunction) -> Void) -> Perform {
@@ -6143,7 +6460,6 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -6223,9 +6539,7 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
     }
 
 
-    typealias Property = Swift.Never
 
-    typealias StaticProperty = Swift.Never
 
 
     static func construct(param value: Int) -> Self {
@@ -6348,7 +6662,8 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
         }
     }
 
-        fileprivate enum MethodType {
+    
+    fileprivate enum MethodType {
         case m_methodReturningSelf
         case m_compare__with_other(Parameter<SelfConstrainedProtocolMock>)
         case m_genericMethodWithNestedSelf__param_paramsecond_secondother_other(Parameter<Int>, Parameter<GenericAttribute>, Parameter<(SelfConstrainedProtocolMock,SelfConstrainedProtocolMock)>)
@@ -6422,15 +6737,9 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
     struct Verify {
         fileprivate var method: MethodType
 
-        static func methodReturningSelf() -> Verify {
-            return Verify(method: .m_methodReturningSelf)
-        }
-        static func compare(with other: Parameter<SelfConstrainedProtocolMock>) -> Verify {
-            return Verify(method: .m_compare__with_other(other))
-        }
-        static func genericMethodWithNestedSelf<T>(param: Parameter<Int>, second: Parameter<T>, other: Parameter<(SelfConstrainedProtocolMock,SelfConstrainedProtocolMock)>) -> Verify {
-            return Verify(method: .m_genericMethodWithNestedSelf__param_paramsecond_secondother_other(param, second.wrapAsGeneric(), other))
-        }
+        static func methodReturningSelf() -> Verify { return Verify(method: .m_methodReturningSelf)}
+        static func compare(with other: Parameter<SelfConstrainedProtocolMock>) -> Verify { return Verify(method: .m_compare__with_other(other))}
+        static func genericMethodWithNestedSelf<T>(param: Parameter<Int>, second: Parameter<T>, other: Parameter<(SelfConstrainedProtocolMock,SelfConstrainedProtocolMock)>) -> Verify { return Verify(method: .m_genericMethodWithNestedSelf__param_paramsecond_secondother_other(param, second.wrapAsGeneric(), other))}
     }
 
     struct Perform {
@@ -6461,7 +6770,6 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -6511,7 +6819,6 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
-    static public func verify(property: StaticProperty, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     static private func addInvocation(_ call: StaticMethodType) {
         invocations.append(call)
@@ -6608,18 +6915,6 @@ class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInheritsOt
 	private var __p_propertyImplicit: (Int)?
 
 
-    struct Property {
-        fileprivate var method: MethodType
-        static var property: Property { return Property(method: .p_property_get) }
-		static func property(set newValue: Parameter<String>) -> Property { return Property(method: .p_property_set(newValue)) }
-        static var weakProperty: Property { return Property(method: .p_weakProperty_get) }
-		static func weakProperty(set newValue: Parameter<AnyObject?>) -> Property { return Property(method: .p_weakProperty_set(newValue)) }
-        static var propertyGetOnly: Property { return Property(method: .p_propertyGetOnly_get) }
-        static var propertyOptional: Property { return Property(method: .p_propertyOptional_get) }
-		static func propertyOptional(set newValue: Parameter<Int?>) -> Property { return Property(method: .p_propertyOptional_set(newValue)) }
-        static var propertyImplicit: Property { return Property(method: .p_propertyImplicit_get) }
-		static func propertyImplicit(set newValue: Parameter<Int?>) -> Property { return Property(method: .p_propertyImplicit_set(newValue)) }
-    }
 
 
 
@@ -6670,6 +6965,7 @@ class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInheritsOt
 		}
 		return __value
     }
+
 
     fileprivate enum MethodType {
         case m_simpleMethod
@@ -6789,18 +7085,19 @@ class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInheritsOt
     struct Verify {
         fileprivate var method: MethodType
 
-        static func simpleMethod() -> Verify {
-            return Verify(method: .m_simpleMethod)
-        }
-        static func simpleMehtodThatReturns() -> Verify {
-            return Verify(method: .m_simpleMehtodThatReturns)
-        }
-        static func simpleMehtodThatReturns(param: Parameter<String>) -> Verify {
-            return Verify(method: .m_simpleMehtodThatReturns__param_param(param))
-        }
-        static func simpleMehtodThatReturns(optionalParam: Parameter<String?>) -> Verify {
-            return Verify(method: .m_simpleMehtodThatReturns__optionalParam_optionalParam(optionalParam))
-        }
+        static func simpleMethod() -> Verify { return Verify(method: .m_simpleMethod)}
+        static func simpleMehtodThatReturns() -> Verify { return Verify(method: .m_simpleMehtodThatReturns)}
+        static func simpleMehtodThatReturns(param: Parameter<String>) -> Verify { return Verify(method: .m_simpleMehtodThatReturns__param_param(param))}
+        static func simpleMehtodThatReturns(optionalParam: Parameter<String?>) -> Verify { return Verify(method: .m_simpleMehtodThatReturns__optionalParam_optionalParam(optionalParam))}
+        static var property: Verify { return Verify(method: .p_property_get) }
+		static func property(set newValue: Parameter<String>) -> Verify { return Verify(method: .p_property_set(newValue)) }
+        static var weakProperty: Verify { return Verify(method: .p_weakProperty_get) }
+		static func weakProperty(set newValue: Parameter<AnyObject?>) -> Verify { return Verify(method: .p_weakProperty_set(newValue)) }
+        static var propertyGetOnly: Verify { return Verify(method: .p_propertyGetOnly_get) }
+        static var propertyOptional: Verify { return Verify(method: .p_propertyOptional_get) }
+		static func propertyOptional(set newValue: Parameter<Int?>) -> Verify { return Verify(method: .p_propertyOptional_set(newValue)) }
+        static var propertyImplicit: Verify { return Verify(method: .p_propertyImplicit_get) }
+		static func propertyImplicit(set newValue: Parameter<Int?>) -> Verify { return Verify(method: .p_propertyImplicit_set(newValue)) }
     }
 
     struct Perform {
@@ -6833,11 +7130,6 @@ class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInheritsOt
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
-    }
-
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let invocations = matchingCalls(property.method)
-        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -6905,7 +7197,6 @@ class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
     }
 
 
-    typealias Property = Swift.Never
 
 
 
@@ -6964,6 +7255,7 @@ class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
 		}
 		return __value
     }
+
 
     fileprivate enum MethodType {
         case m_getArray
@@ -7053,18 +7345,10 @@ class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
     struct Verify {
         fileprivate var method: MethodType
 
-        static func getArray() -> Verify {
-            return Verify(method: .m_getArray)
-        }
-        static func map(array: Parameter<[String]>, param: Parameter<Int>) -> Verify {
-            return Verify(method: .m_map__array_arrayparam_param(array, param))
-        }
-        static func use(dictionary: Parameter<[Int: String]>) -> Verify {
-            return Verify(method: .m_use__dictionary_dictionary(dictionary))
-        }
-        static func verify(set: Parameter<Set<Int>>) -> Verify {
-            return Verify(method: .m_verify__set_set(set))
-        }
+        static func getArray() -> Verify { return Verify(method: .m_getArray)}
+        static func map(array: Parameter<[String]>, param: Parameter<Int>) -> Verify { return Verify(method: .m_map__array_arrayparam_param(array, param))}
+        static func use(dictionary: Parameter<[Int: String]>) -> Verify { return Verify(method: .m_use__dictionary_dictionary(dictionary))}
+        static func verify(set: Parameter<Set<Int>>) -> Verify { return Verify(method: .m_verify__set_set(set))}
     }
 
     struct Perform {
@@ -7098,7 +7382,6 @@ class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -7171,10 +7454,6 @@ class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBothMeth
 	private var __p_property: (String)?
 
 
-    struct Property {
-        fileprivate var method: MethodType
-        static var property: Property { return Property(method: .p_property_get) }
-    }
 
 
 
@@ -7191,6 +7470,7 @@ class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBothMeth
 		}
 		return __value
     }
+
 
     fileprivate enum MethodType {
         case m_simpleMethod
@@ -7240,9 +7520,8 @@ class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBothMeth
     struct Verify {
         fileprivate var method: MethodType
 
-        static func simpleMethod() -> Verify {
-            return Verify(method: .m_simpleMethod)
-        }
+        static func simpleMethod() -> Verify { return Verify(method: .m_simpleMethod)}
+        static var property: Verify { return Verify(method: .p_property_get) }
     }
 
     struct Perform {
@@ -7266,11 +7545,6 @@ class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBothMeth
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
-    }
-
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let invocations = matchingCalls(property.method)
-        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -7338,7 +7612,6 @@ class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
     }
 
 
-    typealias Property = Swift.Never
 
 
 
@@ -7389,6 +7662,7 @@ class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
 		}
 		return __value
     }
+
 
     fileprivate enum MethodType {
         case m_simpleMethod
@@ -7466,18 +7740,10 @@ class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
     struct Verify {
         fileprivate var method: MethodType
 
-        static func simpleMethod() -> Verify {
-            return Verify(method: .m_simpleMethod)
-        }
-        static func simpleMehtodThatReturns() -> Verify {
-            return Verify(method: .m_simpleMehtodThatReturns)
-        }
-        static func simpleMehtodThatReturns(param: Parameter<String>) -> Verify {
-            return Verify(method: .m_simpleMehtodThatReturns__param_param(param))
-        }
-        static func simpleMehtodThatReturns(optionalParam: Parameter<String?>) -> Verify {
-            return Verify(method: .m_simpleMehtodThatReturns__optionalParam_optionalParam(optionalParam))
-        }
+        static func simpleMethod() -> Verify { return Verify(method: .m_simpleMethod)}
+        static func simpleMehtodThatReturns() -> Verify { return Verify(method: .m_simpleMehtodThatReturns)}
+        static func simpleMehtodThatReturns(param: Parameter<String>) -> Verify { return Verify(method: .m_simpleMehtodThatReturns__param_param(param))}
+        static func simpleMehtodThatReturns(optionalParam: Parameter<String?>) -> Verify { return Verify(method: .m_simpleMehtodThatReturns__optionalParam_optionalParam(optionalParam))}
     }
 
     struct Perform {
@@ -7511,7 +7777,6 @@ class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -7616,18 +7881,7 @@ class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock {
 	private var __p_propertyImplicit: (Int)?
 
 
-    struct Property {
-        fileprivate var method: MethodType
-        static var property: Property { return Property(method: .p_property_get) }
-		static func property(set newValue: Parameter<String>) -> Property { return Property(method: .p_property_set(newValue)) }
-        static var weakProperty: Property { return Property(method: .p_weakProperty_get) }
-		static func weakProperty(set newValue: Parameter<AnyObject?>) -> Property { return Property(method: .p_weakProperty_set(newValue)) }
-        static var propertyGetOnly: Property { return Property(method: .p_propertyGetOnly_get) }
-        static var propertyOptional: Property { return Property(method: .p_propertyOptional_get) }
-		static func propertyOptional(set newValue: Parameter<Int?>) -> Property { return Property(method: .p_propertyOptional_set(newValue)) }
-        static var propertyImplicit: Property { return Property(method: .p_propertyImplicit_get) }
-		static func propertyImplicit(set newValue: Parameter<Int?>) -> Property { return Property(method: .p_propertyImplicit_set(newValue)) }
-    }
+
 
 
 
@@ -7701,6 +7955,15 @@ class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock {
     struct Verify {
         fileprivate var method: MethodType
 
+        static var property: Verify { return Verify(method: .p_property_get) }
+		static func property(set newValue: Parameter<String>) -> Verify { return Verify(method: .p_property_set(newValue)) }
+        static var weakProperty: Verify { return Verify(method: .p_weakProperty_get) }
+		static func weakProperty(set newValue: Parameter<AnyObject?>) -> Verify { return Verify(method: .p_weakProperty_set(newValue)) }
+        static var propertyGetOnly: Verify { return Verify(method: .p_propertyGetOnly_get) }
+        static var propertyOptional: Verify { return Verify(method: .p_propertyOptional_get) }
+		static func propertyOptional(set newValue: Parameter<Int?>) -> Verify { return Verify(method: .p_propertyOptional_set(newValue)) }
+        static var propertyImplicit: Verify { return Verify(method: .p_propertyImplicit_get) }
+		static func propertyImplicit(set newValue: Parameter<Int?>) -> Verify { return Verify(method: .p_propertyImplicit_set(newValue)) }
     }
 
     struct Perform {
@@ -7721,11 +7984,6 @@ class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock {
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
-    }
-
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let invocations = matchingCalls(property.method)
-        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -7793,7 +8051,6 @@ class UserNetworkTypeMock: UserNetworkType, Mock {
     }
 
 
-    typealias Property = Swift.Never
 
 
 
@@ -7824,6 +8081,7 @@ class UserNetworkTypeMock: UserNetworkType, Mock {
 		let perform = methodPerformValue(.m_testDefaultValues__value_value(Parameter<String>.value(value))) as? (String) -> Void
 		perform?(value)
     }
+
 
     fileprivate enum MethodType {
         case m_getUser__for_idcompletion_completion(Parameter<String>, Parameter<(User?) -> Void>)
@@ -7875,18 +8133,10 @@ class UserNetworkTypeMock: UserNetworkType, Mock {
     struct Verify {
         fileprivate var method: MethodType
 
-        static func getUser(for id: Parameter<String>, completion: Parameter<(User?) -> Void>) -> Verify {
-            return Verify(method: .m_getUser__for_idcompletion_completion(id, completion))
-        }
-        static func getUserEscaping(for id: Parameter<String>, completion: Parameter<(User?,Error?) -> Void>) -> Verify {
-            return Verify(method: .m_getUserEscaping__for_idcompletion_completion(id, completion))
-        }
-        static func doSomething(prop: Parameter<() -> String>) -> Verify {
-            return Verify(method: .m_doSomething__prop_prop(prop))
-        }
-        static func testDefaultValues(value: Parameter<String>) -> Verify {
-            return Verify(method: .m_testDefaultValues__value_value(value))
-        }
+        static func getUser(for id: Parameter<String>, completion: Parameter<(User?) -> Void>) -> Verify { return Verify(method: .m_getUser__for_idcompletion_completion(id, completion))}
+        static func getUserEscaping(for id: Parameter<String>, completion: Parameter<(User?,Error?) -> Void>) -> Verify { return Verify(method: .m_getUserEscaping__for_idcompletion_completion(id, completion))}
+        static func doSomething(prop: Parameter<() -> String>) -> Verify { return Verify(method: .m_doSomething__prop_prop(prop))}
+        static func testDefaultValues(value: Parameter<String>) -> Verify { return Verify(method: .m_testDefaultValues__value_value(value))}
     }
 
     struct Perform {
@@ -7920,7 +8170,6 @@ class UserNetworkTypeMock: UserNetworkType, Mock {
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -7987,7 +8236,6 @@ class UserStorageTypeMock: UserStorageType, Mock {
     }
 
 
-    typealias Property = Swift.Never
 
 
 
@@ -8010,6 +8258,7 @@ class UserStorageTypeMock: UserStorageType, Mock {
 		let perform = methodPerformValue(.m_storeUser__name_namesurname_surname(Parameter<String>.value(name), Parameter<String>.value(surname))) as? (String, String) -> Void
 		perform?(name, surname)
     }
+
 
     fileprivate enum MethodType {
         case m_surname__for_name(Parameter<String>)
@@ -8060,12 +8309,8 @@ class UserStorageTypeMock: UserStorageType, Mock {
     struct Verify {
         fileprivate var method: MethodType
 
-        static func surname(for name: Parameter<String>) -> Verify {
-            return Verify(method: .m_surname__for_name(name))
-        }
-        static func storeUser(name: Parameter<String>, surname: Parameter<String>) -> Verify {
-            return Verify(method: .m_storeUser__name_namesurname_surname(name, surname))
-        }
+        static func surname(for name: Parameter<String>) -> Verify { return Verify(method: .m_surname__for_name(name))}
+        static func storeUser(name: Parameter<String>, surname: Parameter<String>) -> Verify { return Verify(method: .m_storeUser__name_namesurname_surname(name, surname))}
     }
 
     struct Perform {
@@ -8093,7 +8338,6 @@ class UserStorageTypeMock: UserStorageType, Mock {
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)

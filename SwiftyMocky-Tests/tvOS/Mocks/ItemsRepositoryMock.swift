@@ -34,7 +34,6 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
     }
 
 
-    typealias Property = Swift.Never
 
 
 
@@ -78,6 +77,7 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
 		}
 		return __value
     }
+
 
     fileprivate enum MethodType {
         case m_storeItems__items_items(Parameter<[Item]>)
@@ -146,18 +146,10 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
     struct Verify {
         fileprivate var method: MethodType
 
-        static func storeItems(items: Parameter<[Item]>) -> Verify {
-            return Verify(method: .m_storeItems__items_items(items))
-        }
-        static func storeDetails(details: Parameter<ItemDetails>) -> Verify {
-            return Verify(method: .m_storeDetails__details_details(details))
-        }
-        static func storedItems() -> Verify {
-            return Verify(method: .m_storedItems)
-        }
-        static func storedDetails(item: Parameter<Item>) -> Verify {
-            return Verify(method: .m_storedDetails__item_item(item))
-        }
+        static func storeItems(items: Parameter<[Item]>) -> Verify { return Verify(method: .m_storeItems__items_items(items))}
+        static func storeDetails(details: Parameter<ItemDetails>) -> Verify { return Verify(method: .m_storeDetails__details_details(details))}
+        static func storedItems() -> Verify { return Verify(method: .m_storedItems)}
+        static func storedDetails(item: Parameter<Item>) -> Verify { return Verify(method: .m_storedDetails__item_item(item))}
     }
 
     struct Perform {
@@ -191,7 +183,6 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)

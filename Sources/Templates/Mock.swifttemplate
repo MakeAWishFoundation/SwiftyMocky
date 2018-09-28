@@ -111,6 +111,15 @@ import SourceryRuntime
         return " where \(constraints)"
     }
 
+    // Collision management
+    func areThereCollisions(between methods: [MethodWrapper]) -> Bool {
+        let givenSet = Set<String>(methods.map({ $0.givenConstructorName(prefix: "", deprecated: true) }))
+        guard givenSet.count == methods.count else { return true } // there would be conflicts in Given
+        let verifySet = Set<String>(methods.map({ $0.verificationProxyConstructorName(prefix: "", deprecated: true) }))
+        guard verifySet.count == methods.count else { return true } // there would be conflicts in Verify
+        return false
+    }
+
     // wrappers
     class Current {
         static var selfType: String = "Self"
@@ -297,6 +306,10 @@ import SourceryRuntime
         func asMethodArgument() -> String {
             return "\(parameter.argumentLabel ?? "_") \(parameter.name): \(parameter.typeName)"
         }
+        func labelAndName() -> String {
+            let label = parameter.argumentLabel ?? "_"
+            return label != "\(parameter.name)" ? "\(label) \(parameter.name)" : label
+        }
         func sanitizedForEnumCaseName() -> String {
             if let label = parameter.argumentLabel {
                 return "\(label)_\(parameter.name)"
@@ -346,12 +359,12 @@ import SourceryRuntime
 
         func propertyGet() -> String {
             let staticModifier = variable.isStatic ? "Static" : ""
-            return "static var \(variable.name): \(staticModifier)Property { return \(staticModifier)Property(method: .\(propertyCaseGetName)) }"
+            return "static var \(variable.name): \(staticModifier)Verify { return \(staticModifier)Verify(method: .\(propertyCaseGetName)) }"
         }
 
         func propertySet() -> String {
             let staticModifier = variable.isStatic ? "Static" : ""
-            return "static func \(variable.name)(set newValue: \(nestedType)) -> \(staticModifier)Property { return \(staticModifier)Property(method: .\(propertyCaseSetName)(newValue)) }"
+            return "static func \(variable.name)(set newValue: \(nestedType)) -> \(staticModifier)Verify { return \(staticModifier)Verify(method: .\(propertyCaseSetName)(newValue)) }"
         }
 
         var propertyCaseGetName: String { return "p_\(variable.name)_get" }
@@ -393,7 +406,7 @@ import SourceryRuntime
         var casesCount: Int { return readonly ? 1 : 2 }
         var nestedType: String { return "\(TypeWrapper(wrapped.returnTypeName).nestedParameter)" }
 
-        let noStubmessage = "Stub return value not specified for subscript. Use given first."
+        private let noStubmessage = "Stub return value not specified for subscript. Use given first."
 
         private static var registered: [String: Int] = [:]
         private static var suffixes: [String: Int] = [:]
@@ -523,11 +536,7 @@ import SourceryRuntime
             return wrappedParameters.map { "\($0.wrappedForProxy(generics))" }.joined(separator: ", ")
         }
         private func parametersForProxySignature() -> String {
-            return wrappedParameters.map { p in
-                guard let argumentLabel = p.parameter.argumentLabel else { return "\(p.name): \(p.nestedType)" }
-                guard argumentLabel != p.name else { return "\(p.name): \(p.nestedType)" }
-                return "\(argumentLabel) \(p.name): \(p.nestedType)"
-            }.joined(separator: ", ")
+            return wrappedParameters.map { "\($0.labelAndName()): \($0.nestedType)" }.joined(separator: ", ")
         }
         private func parametersForMethodCall(set: Bool = false) -> String {
             let generics = getGenerics()
@@ -537,6 +546,8 @@ import SourceryRuntime
     }
 
     class MethodWrapper {
+        private let deprecatedMessage = "@available(*, deprecated, message: \"This constructor is deprecated, and will be removed in v3.1\")\n\t\t"
+
         private static var registered: [String: Int] = [:]
         private static var suffixes: [String: Int] = [:]
         private static var suffixesWithoutReturnType: [String: Int] = [:]
@@ -791,21 +802,26 @@ import SourceryRuntime
         }
 
         // Given
-        func givenConstructorName(prefix: String = "") -> String {
-            let returnTypeString = returnsSelf ? replaceSelf : TypeWrapper(method.returnTypeName).stripped
+        func containsEmptyArgumentLabels() -> Bool {
+            return parameters.contains(where: { $0.parameter.argumentLabel == nil })
+        }
 
+        func givenConstructorName(prefix: String = "", deprecated: Bool = false) -> String {
+            let annotation = deprecated ? deprecatedMessage : ""
+            let returnTypeString = returnsSelf ? replaceSelf : TypeWrapper(method.returnTypeName).stripped
             if method.parameters.isEmpty {
                 return "static func \(method.shortName)(willReturn: \(returnTypeString)...) -> \(prefix)MethodStub"
             } else {
-                return "static func \(method.shortName)(\(parametersForProxySignature()), willReturn: \(returnTypeString)...) -> \(prefix)MethodStub"
+                return "\(annotation)static func \(method.shortName)(\(parametersForProxySignature(deprecated: deprecated)), willReturn: \(returnTypeString)...) -> \(prefix)MethodStub"
             }
         }
 
-        func givenConstructorNameThrows(prefix: String = "") -> String {
+        func givenConstructorNameThrows(prefix: String = "", deprecated: Bool = false) -> String {
+            let annotation = deprecated ? deprecatedMessage : ""
             if method.parameters.isEmpty {
                 return "static func \(method.shortName)(willThrow: Error...) -> \(prefix)MethodStub"
             } else {
-                return "static func \(method.shortName)(\(parametersForProxySignature()), willThrow: Error...) -> \(prefix)MethodStub"
+                return "\(annotation)static func \(method.shortName)(\(parametersForProxySignature(deprecated: deprecated)), willThrow: Error...) -> \(prefix)MethodStub"
             }
         }
 
@@ -873,13 +889,14 @@ import SourceryRuntime
         }
 
         // Verify
-        func verificationProxyConstructorName(prefix: String = "") -> String {
+        func verificationProxyConstructorName(prefix: String = "", deprecated: Bool = false) -> String {
+            let annotation = deprecated ? deprecatedMessage : ""
             if method.parameters.isEmpty {
                 let methodName = returnTypeMatters() ? method.shortName : "\(method.callName)\(wrapGenerics(getGenericsAmongParameters()))"
                 return "static func \(methodName)(\(returningParameter(false,true))) -> \(prefix)Verify"
             } else {
                 let methodName = returnTypeMatters() ? method.shortName : "\(method.callName)\(wrapGenerics(getGenericsAmongParameters()))"
-                return "static func \(methodName)(\(parametersForProxySignature())\(returningParameter(true,true))) -> \(prefix)Verify"
+                return "\(annotation)static func \(methodName)(\(parametersForProxySignature(deprecated: deprecated))\(returningParameter(true,true))) -> \(prefix)Verify"
             }
         }
 
@@ -892,13 +909,14 @@ import SourceryRuntime
         }
 
         // Perform
-        func performProxyConstructorName(prefix: String = "") -> String {
+        func performProxyConstructorName(prefix: String = "", deprecated: Bool = false) -> String {
+            let annotation = deprecated ? deprecatedMessage : ""
             if method.parameters.isEmpty {
                 let methodName = returnTypeMatters() ? method.shortName : "\(method.callName)\(wrapGenerics(getGenericsAmongParameters()))"
                 return "static func \(methodName)(\(returningParameter(true,false))perform: @escaping \(performProxyClosureType())) -> \(prefix)Perform"
             } else {
                 let methodName = returnTypeMatters() ? method.shortName : "\(method.callName)\(wrapGenerics(getGenericsAmongParameters()))"
-                return "static func \(methodName)(\(parametersForProxySignature()), \(returningParameter(true,false))perform: @escaping \(performProxyClosureType())) -> \(prefix)Perform"
+                return "\(annotation)static func \(methodName)(\(parametersForProxySignature(deprecated: deprecated)), \(returningParameter(true,false))perform: @escaping \(performProxyClosureType())) -> \(prefix)Perform"
             }
         }
 
@@ -954,8 +972,9 @@ import SourceryRuntime
             }.joined(separator: ", ")
         }
 
-        private func parametersForProxySignature() -> String {
+        private func parametersForProxySignature(deprecated: Bool = false) -> String {
             return parameters.map { p in
+                guard deprecated else { return "\(p.labelAndName()): \(p.nestedType)" }
                 guard let argumentLabel = p.parameter.argumentLabel else { return "\(p.name): \(p.nestedType)" }
                 guard argumentLabel != p.name else { return "\(p.name): \(p.nestedType)" }
                 return "\(argumentLabel) \(p.name): \(p.nestedType)"
@@ -1246,16 +1265,6 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
     <%_ } %>
     <%_ } %> <%_ -%>
 
-    <%_ if containsVariables { -%>
-    struct Property {
-        fileprivate var method: MethodType
-        <%_ for variable in allVariables { -%>
-        <%= propertyTypes(variable) %>
-        <%_ } %> <%_ -%>
-    }
-    <%_ } else { %> <%_ -%>
-    typealias Property = Swift.Never
-    <%_ } %> <%_ -%>
   <%# ================================================== STATIC VARIABLES -%><%_ -%>
     <%_ for variable in allStaticVariables { -%>
     <%_ if autoMockable { -%>
@@ -1265,16 +1274,6 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
     <%_ } %>
     <%_ } %> <%_ -%>
 
-    <%_ if containsStaticVariables { -%>
-    struct StaticProperty {
-        fileprivate var method: StaticMethodType
-        <%_ for variable in allStaticVariables { -%>
-        <%= propertyTypes(variable) %>
-        <%_ } %> <%_ -%>
-    }
-    <%_ } else if conformsToStaticMock { %> <%_ -%>
-    typealias StaticProperty = Swift.Never
-    <%_ } %> <%_ -%>
   <%# ================================================== METHOD REGISTRATIONS -%><%_ -%>
     <%_ MethodWrapper.clear() -%>
     <%_ SubscriptWrapper.clear() -%>
@@ -1299,6 +1298,8 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
     <%_ let variableCasesCount: Int = wrappedVariables.reduce(0) { return $0 + $1.casesCount } -%><%_ -%>
     <%_ let subscriptsCasesCount: Int = wrappedSubscripts.reduce(0) { return $0 + $1.casesCount } -%><%_ -%>
     <%_ let staticVariableCasesCount: Int = wrappedStaticVariables.reduce(0) { return $0 + $1.casesCount } -%><%_ -%>
+    <%_ let generateOldAccessorsForMethods: Bool = !areThereCollisions(between: wrappedMethods) -%><%_ -%>
+    <%_ let generateOldAccessorsForStaticMethods: Bool = !areThereCollisions(between: wrappedStaticMethods) -%><%_ -%>
 
   <%# ================================================== STATIC STUBS -%><%_ -%>
     <%_ for method in wrappedStaticMethods { -%>
@@ -1374,6 +1375,11 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         <%= method.givenConstructorName(prefix: "Static") -%> {
             <%= method.givenConstructor(prefix: "Static") _%>
         }
+        <%_ if generateOldAccessorsForStaticMethods, method.containsEmptyArgumentLabels() { -%>
+        <%= method.givenConstructorName(prefix: "Static", deprecated: true) %> {
+            <%= method.givenConstructor() _%>
+        }
+        <%_ } -%>
         <%_ } -%>
         <%_ for method in wrappedStaticMethodsForMethodType.filter({ !$0.method.throws && !$0.method.rethrows && !$0.method.returnTypeName.isVoid && !$0.method.isInitializer }) { -%>
         <%= method.givenProduceConstructorName(prefix: "Static") -%> {
@@ -1384,10 +1390,15 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         <%= method.givenConstructorNameThrows(prefix: "Static") -%> {
             <%= method.givenConstructorThrows(prefix: "Static") _%>
         }
+        <%_ if generateOldAccessorsForStaticMethods, method.containsEmptyArgumentLabels() { -%>
+        <%= method.givenConstructorNameThrows(prefix: "Static", deprecated: true) %> {
+            <%= method.givenConstructorThrows() _%>
+        }
+        <%_ } -%>
         <%= method.givenProduceConstructorNameThrows(prefix: "Static") -%> {
             <%= method.givenProduceConstructorThrows(prefix: "Static") _%>
         }
-        <%_  } %> <%_ -%>
+        <%_ } %> <%_ -%>
     }
 
     struct StaticVerify {
@@ -1397,7 +1408,15 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         <%= method.verificationProxyConstructorName(prefix: "Static") -%> {
             <%= method.verificationProxyConstructor(prefix: "Static") _%>
         }
-        <%_  } %> <%_ -%>
+        <%_ if generateOldAccessorsForStaticMethods, method.containsEmptyArgumentLabels() { -%>
+        <%= method.verificationProxyConstructorName(prefix: "Static", deprecated: true) %> {
+            <%= method.verificationProxyConstructor() _%>
+        }
+        <%_ } -%>
+        <%_ } %> <%_ -%>
+        <%_ for variable in allStaticVariables { -%>
+        <%= propertyTypes(variable) %>
+        <%_ } %> <%_ -%>
     }
 
     struct StaticPerform {
@@ -1408,12 +1427,18 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         <%= method.performProxyConstructorName(prefix: "Static") -%> {
             <%= method.performProxyConstructor(prefix: "Static") _%>
         }
-        <%_  } %> <%_ -%>
+        <%_ if generateOldAccessorsForStaticMethods, method.containsEmptyArgumentLabels() { -%>
+        <%= method.performProxyConstructorName(prefix: "Static", deprecated: true) %> {
+            <%= method.performProxyConstructor() _%>
+        }
+        <%_ } -%>
+        <%_ } %> <%_ -%>
     }
 
     <% } -%>
   <%# ================================================== METHOD TYPE -%><%_ -%>
     <%_ if !wrappedMethods.isEmpty || !allVariables.isEmpty || !allSubscripts.isEmpty { -%>
+
     fileprivate enum MethodType {
     <%_ for method in wrappedMethodsForMethodType { -%>
         case <%= method.methodTypeDeclarationWithParameters() _%>
@@ -1473,6 +1498,11 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         <%= method.givenConstructorName() -%> {
             <%= method.givenConstructor() _%>
         }
+        <%_ if generateOldAccessorsForMethods, method.containsEmptyArgumentLabels() { -%>
+        <%= method.givenConstructorName(prefix: "", deprecated: true) %> {
+            <%= method.givenConstructor() _%>
+        }
+        <%_ } -%>
         <%_ } -%>
         <%_ for method in wrappedMethodsForMethodType.filter({ !$0.method.throws && !$0.method.rethrows && !$0.method.returnTypeName.isVoid && !$0.method.isInitializer }) { -%>
         <%= method.givenProduceConstructorName() -%> {
@@ -1488,20 +1518,29 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         <%= method.givenConstructorNameThrows() -%> {
             <%= method.givenConstructorThrows() _%>
         }
+        <%_ if generateOldAccessorsForMethods, method.containsEmptyArgumentLabels() { -%>
+        <%= method.givenConstructorNameThrows(prefix: "", deprecated: true) %> {
+            <%= method.givenConstructorThrows() _%>
+        }
+        <%_ } -%>
         <%= method.givenProduceConstructorNameThrows() -%> {
             <%= method.givenProduceConstructorThrows() _%>
         }
-        <%_  } %> <%_ -%>
+        <%_ } %> <%_ -%>
     }
 
     struct Verify {
         fileprivate var method: MethodType
 
         <%_ for method in wrappedMethodsForMethodType { -%>
-        <%= method.verificationProxyConstructorName() -%> {
-            <%= method.verificationProxyConstructor() _%>
-        }
-        <%_  } %> <%_ -%>
+        <%= method.verificationProxyConstructorName() -%> { <%= method.verificationProxyConstructor() _%> }
+        <%_ if generateOldAccessorsForMethods, method.containsEmptyArgumentLabels() { -%>
+        <%= method.verificationProxyConstructorName(prefix: "", deprecated: true) %> { <%= method.verificationProxyConstructor() _%> }
+        <%_ } -%>
+        <%_ } %> <%_ -%>
+        <%_ for variable in allVariables { -%>
+        <%= propertyTypes(variable) %>
+        <%_ } %> <%_ -%>
     }
 
     struct Perform {
@@ -1512,7 +1551,12 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         <%= method.performProxyConstructorName() -%> {
             <%= method.performProxyConstructor() _%>
         }
-        <%_  } %> <%_ -%>
+        <%_ if generateOldAccessorsForMethods, method.containsEmptyArgumentLabels() { -%>
+        <%= method.performProxyConstructorName(prefix: "", deprecated: true) %> {
+            <%= method.performProxyConstructor() _%>
+        }
+        <%_ } -%>
+        <%_ } %> <%_ -%>
     }
 
   <%# ================================================== MOCK METHODS -%><%_ -%>
@@ -1529,15 +1573,6 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
-    <%_ if containsVariables { -%>
-
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let invocations = matchingCalls(property.method)
-        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
-    }
-    <%_ } else { -%>
-    public func verify(property: Property, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
-    <%_ } -%>
 
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
@@ -1589,15 +1624,6 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         let invocations = matchingCalls(method.method)
         MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
-    <%_ if containsStaticVariables { -%>
-
-    static public func verify(property: StaticProperty, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let invocations = matchingCalls(property.method)
-        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(property.method)`, but was: \(invocations.count)", file: file, line: line)
-    }
-    <%_ } else { -%>
-    static public func verify(property: StaticProperty, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) { }
-    <%_ } -%>
 
     static private func addInvocation(_ call: StaticMethodType) {
         invocations.append(call)
