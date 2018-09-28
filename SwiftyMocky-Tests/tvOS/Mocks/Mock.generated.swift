@@ -5345,6 +5345,20 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 		}
 	}
 
+    subscript<T: Sequence>(with generic: T) -> Bool where T.Element: Equatable {
+		get {
+			addInvocation(.subscript_get_with_generic(Parameter<T>.value(generic).wrapAsGeneric()))
+			do {
+				return try methodReturnValue(.subscript_get_with_generic(Parameter<T>.value(generic).wrapAsGeneric())).casted()
+			} catch {
+				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubDefinedMessage")
+			}
+		}
+		set {
+			addInvocation(.subscript_set_with_generic(Parameter<T>.value(generic).wrapAsGeneric(), Parameter<Bool>.value(newValue)))
+		}
+	}
+
     subscript (closure c: @escaping (Int) -> Void) -> Bool {
 		get {
 			addInvocation(.subscript_get_closure_c(Parameter<(Int) -> Void>.value(c)))
@@ -5375,6 +5389,8 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
         case subscript_get_index_index(Parameter<String>)
 		case subscript_set_index_index(Parameter<String>, Parameter<String>)
         case subscript_get_label_name(Parameter<String>)
+        case subscript_get_with_generic(Parameter<GenericAttribute>)
+		case subscript_set_with_generic(Parameter<GenericAttribute>, Parameter<Bool>)
         case subscript_get_closure_c(Parameter<(Int) -> Void>)
 		case subscript_set_closure_c(Parameter<(Int) -> Void>, Parameter<Bool>)
 
@@ -5420,6 +5436,12 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
             case (let .subscript_get_label_name(lhsName), let .subscript_get_label_name(rhsName)):
 				guard Parameter.compare(lhs: lhsName, rhs: rhsName, with: matcher) else { return false }
 				return true
+            case (let .subscript_get_with_generic(lhsGeneric), let .subscript_get_with_generic(rhsGeneric)):
+				guard Parameter.compare(lhs: lhsGeneric, rhs: rhsGeneric, with: matcher) else { return false }
+				return true
+			case (let .subscript_set_with_generic(lhsGeneric, lhsDidSet), let .subscript_set_with_generic(rhsGeneric, rhsDidSet)):
+				guard Parameter.compare(lhs: lhsGeneric, rhs: rhsGeneric, with: matcher) else { return false }
+				return Parameter<Bool>.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher)
             case (let .subscript_get_closure_c(lhsC), let .subscript_get_closure_c(rhsC)):
 				guard Parameter.compare(lhs: lhsC, rhs: rhsC, with: matcher) else { return false }
 				return true
@@ -5446,6 +5468,8 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
             case let .subscript_get_index_index(p0): return p0.intValue
 			case let .subscript_set_index_index(p0, _): return p0.intValue
             case let .subscript_get_label_name(p0): return p0.intValue
+            case let .subscript_get_with_generic(p0): return p0.intValue
+			case let .subscript_set_with_generic(p0, _): return p0.intValue
             case let .subscript_get_closure_c(p0): return p0.intValue
 			case let .subscript_set_closure_c(p0, _): return p0.intValue
             }
@@ -5496,6 +5520,9 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
         static func `subscript`(label name: Parameter<String>, willReturn: Int...) -> SubscriptStub {
             return Given(method: .subscript_get_label_name(name), products: willReturn.map({ Product.return($0) }))
         }
+        static func `subscript`<T: Sequence>(with generic: Parameter<T>, willReturn: Bool...) -> SubscriptStub {
+            return Given(method: .subscript_get_with_generic(generic.wrapAsGeneric()), products: willReturn.map({ Product.return($0) }))
+        }
         static func `subscript`(closure c: Parameter<(Int) -> Void>, willReturn: Bool...) -> SubscriptStub {
             return Given(method: .subscript_get_closure_c(c), products: willReturn.map({ Product.return($0) }))
         }
@@ -5510,12 +5537,20 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
         static var something: Verify { return Verify(method: .p_something_get) }
 		static func something(set newValue: Parameter<Any>) -> Verify { return Verify(method: .p_something_set(newValue)) }
         static func `subscript`(_ index: Parameter<Int>) -> Verify { return Verify(method: .subscript_get_index_1(index))}
+        static func `subscript`(_ index: Parameter<Int>, set newValue: Parameter<String>) -> Verify { return Verify(method: .subscript_set_index_1(index, newValue))}
         static func `subscript`(labeled index: Parameter<Int>) -> Verify { return Verify(method: .subscript_get_labeled_index(index))}
+        static func `subscript`(labeled index: Parameter<Int>, set newValue: Parameter<String>) -> Verify { return Verify(method: .subscript_set_labeled_index(index, newValue))}
         static func `subscript`(_ x: Parameter<Int>, _ y: Parameter<Int>) -> Verify { return Verify(method: .subscript_get_x_y(x, y))}
+        static func `subscript`(_ x: Parameter<Int>, _ y: Parameter<Int>, set newValue: Parameter<String>) -> Verify { return Verify(method: .subscript_set_x_y(x, y, newValue))}
         static func `subscript`(_ index: Parameter<String>) -> Verify { return Verify(method: .subscript_get_index_2(index))}
+        static func `subscript`(_ index: Parameter<String>, set newValue: Parameter<String>) -> Verify { return Verify(method: .subscript_set_index_2(index, newValue))}
         static func `subscript`(index: Parameter<String>) -> Verify { return Verify(method: .subscript_get_index_index(index))}
+        static func `subscript`(index: Parameter<String>, set newValue: Parameter<String>) -> Verify { return Verify(method: .subscript_set_index_index(index, newValue))}
         static func `subscript`(label name: Parameter<String>) -> Verify { return Verify(method: .subscript_get_label_name(name))}
+        static func `subscript`<T: Sequence>(with generic: Parameter<T>) -> Verify { return Verify(method: .subscript_get_with_generic(generic.wrapAsGeneric()))}
+        static func `subscript`<T: Sequence>(with generic: Parameter<T>, set newValue: Parameter<Bool>) -> Verify { return Verify(method: .subscript_set_with_generic(generic.wrapAsGeneric(), newValue))}
         static func `subscript`(closure c: Parameter<(Int) -> Void>) -> Verify { return Verify(method: .subscript_get_closure_c(c))}
+        static func `subscript`(closure c: Parameter<(Int) -> Void>, set newValue: Parameter<Bool>) -> Verify { return Verify(method: .subscript_set_closure_c(c, newValue))}
     }
 
     struct Perform {

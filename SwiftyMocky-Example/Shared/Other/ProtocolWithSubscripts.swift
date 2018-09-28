@@ -18,8 +18,8 @@ protocol ProtocolWithSubscripts {
     subscript (_ index: String) -> String { get set }
     subscript (index index: String) -> String { get set }
     subscript(label name: String) -> Int { get }
-//    //sourcery: associatedtype = "T: Sequence where T.Element: Sequence"
-//    subscript<T: Sequence>(with generic: T) -> Bool where T.Element: Sequence { get set }
+    //sourcery: associatedtype = "T: Sequence"
+    subscript<T: Sequence>(with generic: T) -> Bool where T.Element: Equatable { get set }
     subscript(closure c: @escaping (Int) -> Void) -> Bool { get set }
 }
 

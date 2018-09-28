@@ -69,31 +69,34 @@ import SourceryRuntime
 
 <%# ================================================== HELPERS -%><%_
     // extracting generics constraints
-    func split(_ string: String, byFirstOccurenceOf word: String) -> (String, String) {
-        guard let wordRange = string.range(of: word) else { return (string, "") }
-        let selfRange = string.range(of: string)!
-        let before = String(string[selfRange.lowerBound..<wordRange.lowerBound])
-        let after = String(string[wordRange.upperBound..<selfRange.upperBound])
-        return (before, after)
-    }
-    func extractAssociatedTypes(from annotated: SourceryRuntime.Annotated) -> [String]? {
-        if let types = annotated.annotations["associatedtype"] as? [String] {
-            return types.reversed()
-        } else if let type = annotated.annotations["associatedtype"] as? String {
-            return [type]
-        } else {
-            return nil
+    class Helpers {
+        static func split(_ string: String, byFirstOccurenceOf word: String) -> (String, String) {
+            guard let wordRange = string.range(of: word) else { return (string, "") }
+            let selfRange = string.range(of: string)!
+            let before = String(string[selfRange.lowerBound..<wordRange.lowerBound])
+            let after = String(string[wordRange.upperBound..<selfRange.upperBound])
+            return (before, after)
         }
-    }
-    func extractGenericTypesModifier(_ associatedTypes: [String]?) -> String {
-        guard let all = associatedTypes else { return "" }
-        let joined = all.flatMap {
-            split($0, byFirstOccurenceOf: " where ").0.replacingOccurrences(of: " ", with: "").characters.split(separator: ":").map(String.init).first
-        }.map { "\($0)" }
-        .joined(separator: ",")
-        return "<\(joined)>"
-    }
-    func extractGenericTypesConstraints(_ associatedTypes: [String]?) -> String {
+        static func extractAssociatedTypes(from annotated: SourceryRuntime.Annotated) -> [String]? {
+            if let types = annotated.annotations["associatedtype"] as? [String] {
+                return types.reversed()
+            } else if let type = annotated.annotations["associatedtype"] as? String {
+                return [type]
+            } else {
+                return nil
+            }
+        }
+        static func extractGenericsList(_ associatedTypes: [String]?) -> [String] {
+            return associatedTypes?.flatMap {
+                split($0, byFirstOccurenceOf: " where ").0.replacingOccurrences(of: " ", with: "").characters.split(separator: ":").map(String.init).first
+            }.map { "\($0)" } ?? []
+        }
+        static func extractGenericTypesModifier(_ associatedTypes: [String]?) -> String {
+            let all = extractGenericsList(associatedTypes)
+            guard !all.isEmpty else { return "" }
+            return "<\(all.joined(separator: ","))>"
+        }
+        static func extractGenericTypesConstraints(_ associatedTypes: [String]?) -> String {
         guard let all = associatedTypes else { return "" }
         let constraints = all.flatMap { t -> String? in
             let splitted = split(t, byFirstOccurenceOf: " where ")
@@ -109,6 +112,7 @@ import SourceryRuntime
         .joined(separator: ", ")
         guard !constraints.isEmpty else { return "" }
         return " where \(constraints)"
+    }
     }
 
     // Collision management
@@ -411,6 +415,9 @@ import SourceryRuntime
         var wrappedParameters: [ParameterWrapper] { return wrapped.parameters.map { ParameterWrapper($0) } }
         var casesCount: Int { return readonly ? 1 : 2 }
         var nestedType: String { return "\(TypeWrapper(wrapped.returnTypeName).nestedParameter)" }
+        let associatedTypes: [String]?
+        let genericTypesList: [String]
+        let genericTypesModifier: String?
 
         private let noStubDefinedMessage = "Stub return value not specified for subscript. Use given first."
 
@@ -435,12 +442,19 @@ import SourceryRuntime
 
         init(_ wrapped: SourceryRuntime.Subscript) {
             self.wrapped = wrapped
+            associatedTypes = Helpers.extractAssociatedTypes(from: wrapped)
+            genericTypesList = Helpers.extractGenericsList(associatedTypes)
+            if let types = associatedTypes {
+                genericTypesModifier = "<\(types.joined(separator: ","))>"
+            } else {
+                genericTypesModifier = nil
+            }
         }
 
         func registrationName(_ accessor: String) -> String {
             return "subscript_\(accessor)_\(wrappedParameters.map({ $0.sanitizedForEnumCaseName() }).joined(separator: "_"))"
         }
-        var shortName: String { return "subscript (\(wrappedParameters.map({ $0.asMethodArgument() }).joined(separator: ", ")))" }
+        var shortName: String { return "subscript\(genericTypesModifier ?? " ")(\(wrappedParameters.map({ $0.asMethodArgument() }).joined(separator: ", ")))" }
         var uniqueName: String { return "\(shortName) -> \(wrapped.returnTypeName)" }
 
         private func nameSuffix(_ accessor: String) -> String {
@@ -513,27 +527,27 @@ import SourceryRuntime
         // Given
         func givenConstructorName() -> String {
             let returnTypeString = returnsSelf ? replaceSelf : TypeWrapper(wrapped.returnTypeName).stripped
-            return "static func `subscript`(\(parametersForProxySignature()), willReturn: \(returnTypeString)...) -> SubscriptStub"
+            return "static func `subscript`\(genericTypesModifier ?? "")(\(parametersForProxySignature()), willReturn: \(returnTypeString)...) -> SubscriptStub"
         }
         func givenConstructor() -> String {
             return "return Given(method: .\(subscriptCasePrefix("get"))(\(parametersForProxyInit())), products: willReturn.map({ Product.return($0) }))"
         }
 
         // Verify
-        func verifyConstructorName() -> String {
-            let returnTypeString = returnsSelf ? replaceSelf : TypeWrapper(wrapped.returnTypeName).stripped
-            return "static func `subscript`(\(parametersForProxySignature())) -> Verify"
+        func verifyConstructorName(set: Bool = false) -> String {
+            let returnTypeString = returnsSelf ? replaceSelf : nestedType
+            return "static func `subscript`\(genericTypesModifier ?? "")(\(parametersForProxySignature())\(set ? ", set newValue: \(returnTypeString)" : "")) -> Verify"
         }
-        func verifyConstructor() -> String {
-            return "return Verify(method: .\(subscriptCasePrefix("get"))(\(parametersForProxyInit())))"
+        func verifyConstructor(set: Bool = false) -> String {
+            return "return Verify(method: .\(subscriptCasePrefix(set ? "set" : "get"))(\(parametersForProxyInit(set: set))))"
+        }
+
+        // Generics
+        private func getGenerics() -> [String] {
+            return genericTypesList
         }
 
         // Helpers
-        private func getGenerics() -> [String] {
-            // TODO: Get generics from annotations
-            return []
-        }
-
         private var returnsSelf: Bool { return TypeWrapper(wrapped.returnTypeName).isSelfType }
         private var replaceSelf: String { return Current.selfType }
 
@@ -546,12 +560,13 @@ import SourceryRuntime
             guard set else { return params }
             return "\(params), \(nestedType)"
         }
-        private func parametersForProxyInit() -> String {
+        private func parametersForProxyInit(set: Bool = false) -> String {
             let generics = getGenerics()
-            return wrappedParameters.map { "\($0.wrappedForProxy(generics))" }.joined(separator: ", ")
+            let newValue = TypeWrapper(wrapped.returnTypeName).isGeneric(generics) ? "newValue.wrapAsGeneric()" : "newValue"
+            return wrappedParameters.map { "\($0.wrappedForProxy(generics))" }.joined(separator: ", ") + (set ? ", \(newValue)" : "")
         }
-        private func parametersForProxySignature() -> String {
-            return wrappedParameters.map { "\($0.labelAndName()): \($0.nestedType)" }.joined(separator: ", ")
+        private func parametersForProxySignature(set: Bool = false) -> String {
+            return wrappedParameters.map { "\($0.labelAndName()): \($0.nestedType)" }.joined(separator: ", ") + (set ? ", set newValue: \(nestedType)" : "")
         }
         private func parametersForMethodCall(set: Bool = false) -> String {
             let generics = getGenerics()
@@ -1206,9 +1221,9 @@ import SourceryRuntime
     let protocolToDecorate = types.protocols.first(where: { $0.name == (type.annotations["mock"] as? String) })
     let inlineMockable = protocolToDecorate != nil
     guard let aProtocol = autoMockable ? type : protocolToDecorate else { continue }
-    let associatedTypes: [String]? = extractAssociatedTypes(from: aProtocol)
-    let genericTypesModifier: String = extractGenericTypesModifier(associatedTypes)
-    let genericTypesConstraints: String = extractGenericTypesConstraints(associatedTypes)
+    let associatedTypes: [String]? = Helpers.extractAssociatedTypes(from: aProtocol)
+    let genericTypesModifier: String = Helpers.extractGenericTypesModifier(associatedTypes)
+    let genericTypesConstraints: String = Helpers.extractGenericTypesConstraints(associatedTypes)
     let allSubscripts = aProtocol.allSubscripts
     let allVariables = uniques(variables: aProtocol.allVariables.filter({ !$0.isStatic }))
     let containsVariables = !allVariables.isEmpty
@@ -1554,6 +1569,9 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         <%_ } %> <%_ -%>
         <%_ for wrapped in wrappedSubscripts { -%>
         <%= wrapped.verifyConstructorName() -%> { <%= wrapped.verifyConstructor() _%> }
+        <%_ if !wrapped.readonly { -%>
+        <%= wrapped.verifyConstructorName(set: true) -%> { <%= wrapped.verifyConstructor(set: true) _%> }
+        <%_ } -%>
         <%_ } %> <%_ -%>
     }
 

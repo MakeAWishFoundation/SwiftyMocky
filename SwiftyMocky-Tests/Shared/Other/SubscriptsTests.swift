@@ -61,18 +61,7 @@ class SubscriptsTests: SwiftyTestCase {
         Verify(mock, 2, .subscript(0, .any))
     }
 
-    func test_another() {
-        let object = ClassWithDeprecatedSomething()
-
-        _ = object.something
-        object.something = 2
-    }
-}
-
-class ClassWithDeprecatedSomething {
-    var something: Int {
-        get { return 0 }
-        @available(*, deprecated, message: "Setter is deprecated")
-        set { }
+    func test_generic_subscripts() {
+        
     }
 }
