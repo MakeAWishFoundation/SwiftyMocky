@@ -58,8 +58,8 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
 		do {
 		    __value = try methodReturnValue(.m_storedItems).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for storedItems(). Use given")
-			Failure("stub return value not specified for storedItems(). Use given")
+			onFatalFailure("Stub return value not specified for storedItems(). Use given")
+			Failure("Stub return value not specified for storedItems(). Use given")
 		}
 		return __value
     }
@@ -72,8 +72,8 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
 		do {
 		    __value = try methodReturnValue(.m_storedDetails__item_item(Parameter<Item>.value(item))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for storedDetails(item: Item). Use given")
-			Failure("stub return value not specified for storedDetails(item: Item). Use given")
+			onFatalFailure("Stub return value not specified for storedDetails(item: Item). Use given")
+			Failure("Stub return value not specified for storedDetails(item: Item). Use given")
 		}
 		return __value
     }

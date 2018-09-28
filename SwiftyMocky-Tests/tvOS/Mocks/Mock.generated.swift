@@ -78,35 +78,27 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
     }
 
     var nonOptionalClosure: () -> Void {
-		get {	invocations.append(.p_nonOptionalClosure_get)
-				return __p_nonOptionalClosure ?? givenGetterValue(.p_nonOptionalClosure_get, "AMassiveTestProtocolMock - value for nonOptionalClosure was not defined") }
-		set {	invocations.append(.p_nonOptionalClosure_set(.value(newValue)))
-				__p_nonOptionalClosure = newValue }
+		get {	invocations.append(.p_nonOptionalClosure_get); return __p_nonOptionalClosure ?? givenGetterValue(.p_nonOptionalClosure_get, "AMassiveTestProtocolMock - stub value for nonOptionalClosure was not defined") }
+		set {	invocations.append(.p_nonOptionalClosure_set(.value(newValue))); __p_nonOptionalClosure = newValue }
 	}
 	private var __p_nonOptionalClosure: (() -> Void)?
 
     var optionalClosure: (() -> Int)? {
-		get {	invocations.append(.p_optionalClosure_get)
-				return __p_optionalClosure ?? givenGetterValue(.p_optionalClosure_get, "AMassiveTestProtocolMock - value for optionalClosure was not defined") }
-		set {	invocations.append(.p_optionalClosure_set(.value(newValue)))
-				__p_optionalClosure = newValue }
+		get {	invocations.append(.p_optionalClosure_get); return __p_optionalClosure ?? givenGetterValue(.p_optionalClosure_get, "AMassiveTestProtocolMock - stub value for optionalClosure was not defined") }
+		set {	invocations.append(.p_optionalClosure_set(.value(newValue))); __p_optionalClosure = newValue }
 	}
 	private var __p_optionalClosure: (() -> Int)?
 
     var implicitelyUnwrappedClosure: (() -> Void)! {
-		get {	invocations.append(.p_implicitelyUnwrappedClosure_get)
-				return __p_implicitelyUnwrappedClosure ?? givenGetterValue(.p_implicitelyUnwrappedClosure_get, "AMassiveTestProtocolMock - value for implicitelyUnwrappedClosure was not defined") }
-		set {	invocations.append(.p_implicitelyUnwrappedClosure_set(.value(newValue)))
-				__p_implicitelyUnwrappedClosure = newValue }
+		get {	invocations.append(.p_implicitelyUnwrappedClosure_get); return __p_implicitelyUnwrappedClosure ?? givenGetterValue(.p_implicitelyUnwrappedClosure_get, "AMassiveTestProtocolMock - stub value for implicitelyUnwrappedClosure was not defined") }
+		set {	invocations.append(.p_implicitelyUnwrappedClosure_set(.value(newValue))); __p_implicitelyUnwrappedClosure = newValue }
 	}
 	private var __p_implicitelyUnwrappedClosure: (() -> Void)?
 
 
     static var optionalClosure: (() -> Int)? {
-		get {	AMassiveTestProtocolMock.invocations.append(.p_optionalClosure_get)
-				return AMassiveTestProtocolMock.__p_optionalClosure ?? givenGetterValue(.p_optionalClosure_get, "AMassiveTestProtocolMock - value for optionalClosure was not defined") }
-		set {	AMassiveTestProtocolMock.invocations.append(.p_optionalClosure_set(.value(newValue)))
-				AMassiveTestProtocolMock.__p_optionalClosure = newValue }
+		get {	AMassiveTestProtocolMock.invocations.append(.p_optionalClosure_get); return AMassiveTestProtocolMock.__p_optionalClosure ?? givenGetterValue(.p_optionalClosure_get, "AMassiveTestProtocolMock - stub value for optionalClosure was not defined") }
+		set {	AMassiveTestProtocolMock.invocations.append(.p_optionalClosure_set(.value(newValue))); AMassiveTestProtocolMock.__p_optionalClosure = newValue }
 	}
 	private static var __p_optionalClosure: (() -> Int)?
 
@@ -135,7 +127,7 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
 		do {
 		    __value = try methodReturnValue(.sm_methodThatReturnsAndThrows__param_param(Parameter<String>.value(param))).casted()
 		} catch MockError.notStubed {
-			Failure("stub return value not specified for methodThatReturnsAndThrows(param: String). Use given")
+			Failure("Stub return value not specified for methodThatReturnsAndThrows(param: String). Use given")
 		} catch {
 		    throw error
 		}
@@ -150,7 +142,7 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
 		do {
 		    __value = try methodReturnValue(.sm_methodThatRethrows__param_param(Parameter<(String) throws -> Int>.any)).casted()
 		} catch {
-			Failure("stub return value not specified for methodThatRethrows(param: (String) throws -> Int). Use given")
+			Failure("Stub return value not specified for methodThatRethrows(param: (String) throws -> Int). Use given")
 		}
 		return __value
     }
@@ -181,8 +173,8 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
 		do {
 		    __value = try methodReturnValue(.m_methodThatReturnsAndThrows__param_param(Parameter<String>.value(param))).casted()
 		} catch MockError.notStubed {
-			onFatalFailure("stub return value not specified for methodThatReturnsAndThrows(param: String). Use given")
-			Failure("stub return value not specified for methodThatReturnsAndThrows(param: String). Use given")
+			onFatalFailure("Stub return value not specified for methodThatReturnsAndThrows(param: String). Use given")
+			Failure("Stub return value not specified for methodThatReturnsAndThrows(param: String). Use given")
 		} catch {
 		    throw error
 		}
@@ -197,8 +189,8 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
 		do {
 		    __value = try methodReturnValue(.m_methodThatRethrows__param_param(Parameter<(String) throws -> Int>.any)).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for methodThatRethrows(param: (String) throws -> Int). Use given")
-			Failure("stub return value not specified for methodThatRethrows(param: (String) throws -> Int). Use given")
+			onFatalFailure("Stub return value not specified for methodThatRethrows(param: (String) throws -> Int). Use given")
+			Failure("Stub return value not specified for methodThatRethrows(param: (String) throws -> Int). Use given")
 		}
 		return __value
     }
@@ -575,8 +567,8 @@ class AVeryAssociatedProtocolMock<T1,T2>: AVeryAssociatedProtocol, Mock where T1
 		do {
 		    __value = try methodReturnValue(.m_fetch__for_value(Parameter<T2>.value(value))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for fetch(for value: T2). Use given")
-			Failure("stub return value not specified for fetch(for value: T2). Use given")
+			onFatalFailure("Stub return value not specified for fetch(for value: T2). Use given")
+			Failure("Stub return value not specified for fetch(for value: T2). Use given")
 		}
 		return __value
     }
@@ -739,7 +731,7 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
 		do {
 		    __value = try methodReturnValue(.sm_generic__lhs_lhsrhs_rhs(Parameter<Q>.value(lhs).wrapAsGeneric(), Parameter<Q>.value(rhs).wrapAsGeneric())).casted()
 		} catch {
-			Failure("stub return value not specified for generic<Q>(lhs: Q, rhs: Q). Use given")
+			Failure("Stub return value not specified for generic<Q>(lhs: Q, rhs: Q). Use given")
 		}
 		return __value
     }
@@ -752,7 +744,7 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
 		do {
 		    __value = try methodReturnValue(.sm_veryConstrained__lhs_lhsrhs_rhs(Parameter<Q>.value(lhs).wrapAsGeneric(), Parameter<Q>.value(rhs).wrapAsGeneric())).casted()
 		} catch {
-			Failure("stub return value not specified for veryConstrained<Q: Sequence>(lhs: Q, rhs: Q). Use given")
+			Failure("Stub return value not specified for veryConstrained<Q: Sequence>(lhs: Q, rhs: Q). Use given")
 		}
 		return __value
     }
@@ -767,8 +759,8 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
 		do {
 		    __value = try methodReturnValue(.m_methodConstrained__param_param(Parameter<A>.value(param).wrapAsGeneric())).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for methodConstrained<A,B,C>(param: A). Use given")
-			Failure("stub return value not specified for methodConstrained<A,B,C>(param: A). Use given")
+			onFatalFailure("Stub return value not specified for methodConstrained<A,B,C>(param: A). Use given")
+			Failure("Stub return value not specified for methodConstrained<A,B,C>(param: A). Use given")
 		}
 		return __value
     }
@@ -1035,8 +1027,8 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
 		do {
 		    __value = try methodReturnValue(.m_methodWithStringParameter__p_p(Parameter<String>.value(p))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for methodWithStringParameter(p: String). Use given")
-			Failure("stub return value not specified for methodWithStringParameter(p: String). Use given")
+			onFatalFailure("Stub return value not specified for methodWithStringParameter(p: String). Use given")
+			Failure("Stub return value not specified for methodWithStringParameter(p: String). Use given")
 		}
 		return __value
     }
@@ -1049,8 +1041,8 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
 		do {
 		    __value = try methodReturnValue(.m_methodWithOtionalStringParameter__p_p(Parameter<String?>.value(p))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for methodWithOtionalStringParameter(p: String?). Use given")
-			Failure("stub return value not specified for methodWithOtionalStringParameter(p: String?). Use given")
+			onFatalFailure("Stub return value not specified for methodWithOtionalStringParameter(p: String?). Use given")
+			Failure("Stub return value not specified for methodWithOtionalStringParameter(p: String?). Use given")
 		}
 		return __value
     }
@@ -1063,8 +1055,8 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
 		do {
 		    __value = try methodReturnValue(.m_methodWithCustomStringParameter__p_p(Parameter<CustomString>.value(p))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for methodWithCustomStringParameter(p: CustomString). Use given")
-			Failure("stub return value not specified for methodWithCustomStringParameter(p: CustomString). Use given")
+			onFatalFailure("Stub return value not specified for methodWithCustomStringParameter(p: CustomString). Use given")
+			Failure("Stub return value not specified for methodWithCustomStringParameter(p: CustomString). Use given")
 		}
 		return __value
     }
@@ -1077,8 +1069,8 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
 		do {
 		    __value = try methodReturnValue(.m_methodWithCustomOptionalStringParameter__p_p(Parameter<CustomString?>.value(p))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for methodWithCustomOptionalStringParameter(p: CustomString?). Use given")
-			Failure("stub return value not specified for methodWithCustomOptionalStringParameter(p: CustomString?). Use given")
+			onFatalFailure("Stub return value not specified for methodWithCustomOptionalStringParameter(p: CustomString?). Use given")
+			Failure("Stub return value not specified for methodWithCustomOptionalStringParameter(p: CustomString?). Use given")
 		}
 		return __value
     }
@@ -1091,8 +1083,8 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
 		do {
 		    __value = try methodReturnValue(.m_methodWithIntParameter__p_p(Parameter<Int>.value(p))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for methodWithIntParameter(p: Int). Use given")
-			Failure("stub return value not specified for methodWithIntParameter(p: Int). Use given")
+			onFatalFailure("Stub return value not specified for methodWithIntParameter(p: Int). Use given")
+			Failure("Stub return value not specified for methodWithIntParameter(p: Int). Use given")
 		}
 		return __value
     }
@@ -1105,8 +1097,8 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
 		do {
 		    __value = try methodReturnValue(.m_methodWithCustomOptionalIntParameter__p_p(Parameter<CustomInt?>.value(p))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for methodWithCustomOptionalIntParameter(p: CustomInt?). Use given")
-			Failure("stub return value not specified for methodWithCustomOptionalIntParameter(p: CustomInt?). Use given")
+			onFatalFailure("Stub return value not specified for methodWithCustomOptionalIntParameter(p: CustomInt?). Use given")
+			Failure("Stub return value not specified for methodWithCustomOptionalIntParameter(p: CustomInt?). Use given")
 		}
 		return __value
     }
@@ -1119,8 +1111,8 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
 		do {
 		    __value = try methodReturnValue(.m_methodWithBool__p_p(Parameter<Bool?>.value(p))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for methodWithBool(p: Bool?). Use given")
-			Failure("stub return value not specified for methodWithBool(p: Bool?). Use given")
+			onFatalFailure("Stub return value not specified for methodWithBool(p: Bool?). Use given")
+			Failure("Stub return value not specified for methodWithBool(p: Bool?). Use given")
 		}
 		return __value
     }
@@ -1133,8 +1125,8 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
 		do {
 		    __value = try methodReturnValue(.m_methodWithFloat__p_p(Parameter<Float?>.value(p))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for methodWithFloat(p: Float?). Use given")
-			Failure("stub return value not specified for methodWithFloat(p: Float?). Use given")
+			onFatalFailure("Stub return value not specified for methodWithFloat(p: Float?). Use given")
+			Failure("Stub return value not specified for methodWithFloat(p: Float?). Use given")
 		}
 		return __value
     }
@@ -1147,8 +1139,8 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
 		do {
 		    __value = try methodReturnValue(.m_methodWithDouble__p_p(Parameter<Double?>.value(p))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for methodWithDouble(p: Double?). Use given")
-			Failure("stub return value not specified for methodWithDouble(p: Double?). Use given")
+			onFatalFailure("Stub return value not specified for methodWithDouble(p: Double?). Use given")
+			Failure("Stub return value not specified for methodWithDouble(p: Double?). Use given")
 		}
 		return __value
     }
@@ -1161,8 +1153,8 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
 		do {
 		    __value = try methodReturnValue(.m_methodWithArrayOfInt__p_p(Parameter<[Int]>.value(p))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for methodWithArrayOfInt(p: [Int]). Use given")
-			Failure("stub return value not specified for methodWithArrayOfInt(p: [Int]). Use given")
+			onFatalFailure("Stub return value not specified for methodWithArrayOfInt(p: [Int]). Use given")
+			Failure("Stub return value not specified for methodWithArrayOfInt(p: [Int]). Use given")
 		}
 		return __value
     }
@@ -1175,8 +1167,8 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
 		do {
 		    __value = try methodReturnValue(.m_methodWithArrayOfOther__p_p(Parameter<[SomeClass]>.value(p))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for methodWithArrayOfOther(p: [SomeClass]). Use given")
-			Failure("stub return value not specified for methodWithArrayOfOther(p: [SomeClass]). Use given")
+			onFatalFailure("Stub return value not specified for methodWithArrayOfOther(p: [SomeClass]). Use given")
+			Failure("Stub return value not specified for methodWithArrayOfOther(p: [SomeClass]). Use given")
 		}
 		return __value
     }
@@ -1189,8 +1181,8 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
 		do {
 		    __value = try methodReturnValue(.m_methodWithDict__p_p(Parameter<[String: SomeClass]>.value(p))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for methodWithDict(p: [String: SomeClass]). Use given")
-			Failure("stub return value not specified for methodWithDict(p: [String: SomeClass]). Use given")
+			onFatalFailure("Stub return value not specified for methodWithDict(p: [String: SomeClass]). Use given")
+			Failure("Stub return value not specified for methodWithDict(p: [String: SomeClass]). Use given")
 		}
 		return __value
     }
@@ -1539,8 +1531,9 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
     }
 
     var youCouldOnlyGetThis: String {
-		get {	invocations.append(.p_youCouldOnlyGetThis_get)
-				return __p_youCouldOnlyGetThis ?? givenGetterValue(.p_youCouldOnlyGetThis_get, "ComplicatedServiceTypeMock - value for youCouldOnlyGetThis was not defined") }
+		get {	invocations.append(.p_youCouldOnlyGetThis_get); return __p_youCouldOnlyGetThis ?? givenGetterValue(.p_youCouldOnlyGetThis_get, "ComplicatedServiceTypeMock - stub value for youCouldOnlyGetThis was not defined") }
+		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
+		set {	__p_youCouldOnlyGetThis = newValue }
 	}
 	private var __p_youCouldOnlyGetThis: (String)?
 
@@ -1556,8 +1549,8 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
 		do {
 		    __value = try methodReturnValue(.m_serviceName).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for serviceName(). Use given")
-			Failure("stub return value not specified for serviceName(). Use given")
+			onFatalFailure("Stub return value not specified for serviceName(). Use given")
+			Failure("Stub return value not specified for serviceName(). Use given")
 		}
 		return __value
     }
@@ -1576,8 +1569,8 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
 		do {
 		    __value = try methodReturnValue(.m_getPoint__from_point(Parameter<Point>.value(point))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for getPoint(from point: Point). Use given")
-			Failure("stub return value not specified for getPoint(from point: Point). Use given")
+			onFatalFailure("Stub return value not specified for getPoint(from point: Point). Use given")
+			Failure("Stub return value not specified for getPoint(from point: Point). Use given")
 		}
 		return __value
     }
@@ -1590,8 +1583,8 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
 		do {
 		    __value = try methodReturnValue(.m_getPoint__from_tuple(Parameter<(Float,Float)>.value(tuple))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for getPoint(from tuple: (Float,Float)). Use given")
-			Failure("stub return value not specified for getPoint(from tuple: (Float,Float)). Use given")
+			onFatalFailure("Stub return value not specified for getPoint(from tuple: (Float,Float)). Use given")
+			Failure("Stub return value not specified for getPoint(from tuple: (Float,Float)). Use given")
 		}
 		return __value
     }
@@ -1604,8 +1597,8 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
 		do {
 		    __value = try methodReturnValue(.m_similarMethodThatDiffersOnType__value_1(Parameter<Float>.value(value))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for similarMethodThatDiffersOnType(_ value: Float). Use given")
-			Failure("stub return value not specified for similarMethodThatDiffersOnType(_ value: Float). Use given")
+			onFatalFailure("Stub return value not specified for similarMethodThatDiffersOnType(_ value: Float). Use given")
+			Failure("Stub return value not specified for similarMethodThatDiffersOnType(_ value: Float). Use given")
 		}
 		return __value
     }
@@ -1618,8 +1611,8 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
 		do {
 		    __value = try methodReturnValue(.m_similarMethodThatDiffersOnType__value_2(Parameter<Point>.value(value))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for similarMethodThatDiffersOnType(_ value: Point). Use given")
-			Failure("stub return value not specified for similarMethodThatDiffersOnType(_ value: Point). Use given")
+			onFatalFailure("Stub return value not specified for similarMethodThatDiffersOnType(_ value: Point). Use given")
+			Failure("Stub return value not specified for similarMethodThatDiffersOnType(_ value: Point). Use given")
 		}
 		return __value
     }
@@ -1638,8 +1631,8 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
 		do {
 		    __value = try methodReturnValue(.m_methodWithClosures__success_function_1(Parameter<LinearFunction>.value(function))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for methodWithClosures(success function: LinearFunction). Use given")
-			Failure("stub return value not specified for methodWithClosures(success function: LinearFunction). Use given")
+			onFatalFailure("Stub return value not specified for methodWithClosures(success function: LinearFunction). Use given")
+			Failure("Stub return value not specified for methodWithClosures(success function: LinearFunction). Use given")
 		}
 		return __value
     }
@@ -1652,8 +1645,8 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
 		do {
 		    __value = try methodReturnValue(.m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.value(function))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?). Use given")
-			Failure("stub return value not specified for methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?). Use given")
+			onFatalFailure("Stub return value not specified for methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?). Use given")
+			Failure("Stub return value not specified for methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?). Use given")
 		}
 		return __value
     }
@@ -1956,8 +1949,9 @@ class DateSortableMock: DateSortable, Mock {
     }
 
     var date: Date {
-		get {	invocations.append(.p_date_get)
-				return __p_date ?? givenGetterValue(.p_date_get, "DateSortableMock - value for date was not defined") }
+		get {	invocations.append(.p_date_get); return __p_date ?? givenGetterValue(.p_date_get, "DateSortableMock - stub value for date was not defined") }
+		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
+		set {	__p_date = newValue }
 	}
 	private var __p_date: (Date)?
 
@@ -2208,8 +2202,8 @@ class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstraint, 
 		do {
 		    __value = try methodReturnValue(.m_decode__typefrom_data(Parameter<T.Type>.value(type).wrapAsGeneric(), Parameter<Data>.value(data))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for decode<T: Decodable>(_ type: T.Type, from data: Data). Use given")
-			Failure("stub return value not specified for decode<T: Decodable>(_ type: T.Type, from data: Data). Use given")
+			onFatalFailure("Stub return value not specified for decode<T: Decodable>(_ type: T.Type, from data: Data). Use given")
+			Failure("Stub return value not specified for decode<T: Decodable>(_ type: T.Type, from data: Data). Use given")
 		}
 		return __value
     }
@@ -2222,8 +2216,8 @@ class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstraint, 
 		do {
 		    __value = try methodReturnValue(.m_test__type(Parameter<FOO.Type>.value(type).wrapAsGeneric())).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for test<FOO>(_ type: FOO.Type). Use given")
-			Failure("stub return value not specified for test<FOO>(_ type: FOO.Type). Use given")
+			onFatalFailure("Stub return value not specified for test<FOO>(_ type: FOO.Type). Use given")
+			Failure("Stub return value not specified for test<FOO>(_ type: FOO.Type). Use given")
 		}
 		return __value
     }
@@ -2414,8 +2408,8 @@ class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
 		do {
 		    __value = try methodReturnValue(.m_map__items(Parameter<[T]>.value(items).wrapAsGeneric())).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for map<T: DateSortable>(_ items: [T]). Use given")
-			Failure("stub return value not specified for map<T: DateSortable>(_ items: [T]). Use given")
+			onFatalFailure("Stub return value not specified for map<T: DateSortable>(_ items: [T]). Use given")
+			Failure("Stub return value not specified for map<T: DateSortable>(_ items: [T]). Use given")
 		}
 		return __value
     }
@@ -2722,8 +2716,8 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
 		do {
 		    __value = try methodReturnValue(.m_foo__bar_bar_1(Parameter<T>.value(bar).wrapAsGeneric())).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for foo<T>(bar: T). Use given")
-			Failure("stub return value not specified for foo<T>(bar: T). Use given")
+			onFatalFailure("Stub return value not specified for foo<T>(bar: T). Use given")
+			Failure("Stub return value not specified for foo<T>(bar: T). Use given")
 		}
 		return __value
     }
@@ -2736,8 +2730,8 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
 		do {
 		    __value = try methodReturnValue(.m_foo__bar_bar_2(Parameter<T>.value(bar).wrapAsGeneric())).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for foo<T>(bar: T). Use given")
-			Failure("stub return value not specified for foo<T>(bar: T). Use given")
+			onFatalFailure("Stub return value not specified for foo<T>(bar: T). Use given")
+			Failure("Stub return value not specified for foo<T>(bar: T). Use given")
 		}
 		return __value
     }
@@ -2750,8 +2744,8 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
 		do {
 		    __value = try methodReturnValue(.m_foo__bar_bar_4(Parameter<T>.value(bar).wrapAsGeneric())).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for foo<T>(bar: T). Use given")
-			Failure("stub return value not specified for foo<T>(bar: T). Use given")
+			onFatalFailure("Stub return value not specified for foo<T>(bar: T). Use given")
+			Failure("Stub return value not specified for foo<T>(bar: T). Use given")
 		}
 		return __value
     }
@@ -2764,8 +2758,8 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
 		do {
 		    __value = try methodReturnValue(.m_foo__bar_bar_4(Parameter<T>.value(bar).wrapAsGeneric())).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for foo<T>(bar: T). Use given")
-			Failure("stub return value not specified for foo<T>(bar: T). Use given")
+			onFatalFailure("Stub return value not specified for foo<T>(bar: T). Use given")
+			Failure("Stub return value not specified for foo<T>(bar: T). Use given")
 		}
 		return __value
     }
@@ -2778,8 +2772,8 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
 		do {
 		    __value = try methodReturnValue(.m_foo__bar_bar_5(Parameter<T>.value(bar).wrapAsGeneric())).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for foo<T>(bar: T). Use given")
-			Failure("stub return value not specified for foo<T>(bar: T). Use given")
+			onFatalFailure("Stub return value not specified for foo<T>(bar: T). Use given")
+			Failure("Stub return value not specified for foo<T>(bar: T). Use given")
 		}
 		return __value
     }
@@ -2792,8 +2786,8 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
 		do {
 		    __value = try methodReturnValue(.m_foo__bar_bar_6(Parameter<String>.value(bar))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for foo<T>(bar: String). Use given")
-			Failure("stub return value not specified for foo<T>(bar: String). Use given")
+			onFatalFailure("Stub return value not specified for foo<T>(bar: String). Use given")
+			Failure("Stub return value not specified for foo<T>(bar: String). Use given")
 		}
 		return __value
     }
@@ -2806,8 +2800,8 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
 		do {
 		    __value = try methodReturnValue(.m_foo__bar_bar_7(Parameter<String>.value(bar))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for foo<T>(bar: String). Use given")
-			Failure("stub return value not specified for foo<T>(bar: String). Use given")
+			onFatalFailure("Stub return value not specified for foo<T>(bar: String). Use given")
+			Failure("Stub return value not specified for foo<T>(bar: String). Use given")
 		}
 		return __value
     }
@@ -2820,8 +2814,8 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
 		do {
 		    __value = try methodReturnValue(.m_foo__bar_bar_9(Parameter<Bool>.value(bar))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for foo<T>(bar: Bool). Use given")
-			Failure("stub return value not specified for foo<T>(bar: Bool). Use given")
+			onFatalFailure("Stub return value not specified for foo<T>(bar: Bool). Use given")
+			Failure("Stub return value not specified for foo<T>(bar: Bool). Use given")
 		}
 		return __value
     }
@@ -2834,8 +2828,8 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
 		do {
 		    __value = try methodReturnValue(.m_foo__bar_bar_9(Parameter<Bool>.value(bar))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for foo<T>(bar: Bool). Use given")
-			Failure("stub return value not specified for foo<T>(bar: Bool). Use given")
+			onFatalFailure("Stub return value not specified for foo<T>(bar: Bool). Use given")
+			Failure("Stub return value not specified for foo<T>(bar: Bool). Use given")
 		}
 		return __value
     }
@@ -3100,8 +3094,8 @@ class ProtocolMethodsThatDifferOnlyInReturnTypeMock: ProtocolMethodsThatDifferOn
 		do {
 		    __value = try methodReturnValue(.m_foo__bar_bar_1(Parameter<String>.value(bar))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for foo(bar: String). Use given")
-			Failure("stub return value not specified for foo(bar: String). Use given")
+			onFatalFailure("Stub return value not specified for foo(bar: String). Use given")
+			Failure("Stub return value not specified for foo(bar: String). Use given")
 		}
 		return __value
     }
@@ -3114,8 +3108,8 @@ class ProtocolMethodsThatDifferOnlyInReturnTypeMock: ProtocolMethodsThatDifferOn
 		do {
 		    __value = try methodReturnValue(.m_foo__bar_bar_2(Parameter<String>.value(bar))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for foo(bar: String). Use given")
-			Failure("stub return value not specified for foo(bar: String). Use given")
+			onFatalFailure("Stub return value not specified for foo(bar: String). Use given")
+			Failure("Stub return value not specified for foo(bar: String). Use given")
 		}
 		return __value
     }
@@ -3274,8 +3268,9 @@ class ProtocolWithAssociatedTypeMock<T>: ProtocolWithAssociatedType, Mock where 
     }
 
     var sequence: T {
-		get {	invocations.append(.p_sequence_get)
-				return __p_sequence ?? givenGetterValue(.p_sequence_get, "ProtocolWithAssociatedTypeMock - value for sequence was not defined") }
+		get {	invocations.append(.p_sequence_get); return __p_sequence ?? givenGetterValue(.p_sequence_get, "ProtocolWithAssociatedTypeMock - stub value for sequence was not defined") }
+		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
+		set {	__p_sequence = newValue }
 	}
 	private var __p_sequence: (T)?
 
@@ -3291,8 +3286,8 @@ class ProtocolWithAssociatedTypeMock<T>: ProtocolWithAssociatedType, Mock where 
 		do {
 		    __value = try methodReturnValue(.m_methodWithType__t_t(Parameter<T>.value(t))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for methodWithType(t: T). Use given")
-			Failure("stub return value not specified for methodWithType(t: T). Use given")
+			onFatalFailure("Stub return value not specified for methodWithType(t: T). Use given")
+			Failure("Stub return value not specified for methodWithType(t: T). Use given")
 		}
 		return __value
     }
@@ -3614,8 +3609,8 @@ class ProtocolWithConflictingMembersMock: ProtocolWithConflictingMembers, Mock {
 		do {
 		    __value = try methodReturnValue(.m_method__withLabel_value(Parameter<Int>.value(value))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for method(withLabel value: Int). Use given")
-			Failure("stub return value not specified for method(withLabel value: Int). Use given")
+			onFatalFailure("Stub return value not specified for method(withLabel value: Int). Use given")
+			Failure("Stub return value not specified for method(withLabel value: Int). Use given")
 		}
 		return __value
     }
@@ -3628,8 +3623,8 @@ class ProtocolWithConflictingMembersMock: ProtocolWithConflictingMembers, Mock {
 		do {
 		    __value = try methodReturnValue(.m_method__value(Parameter<Int>.value(value))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for method(_ value: Int). Use given")
-			Failure("stub return value not specified for method(_ value: Int). Use given")
+			onFatalFailure("Stub return value not specified for method(_ value: Int). Use given")
+			Failure("Stub return value not specified for method(_ value: Int). Use given")
 		}
 		return __value
     }
@@ -3642,8 +3637,8 @@ class ProtocolWithConflictingMembersMock: ProtocolWithConflictingMembers, Mock {
 		do {
 		    __value = try methodReturnValue(.m_method__value_value(Parameter<Int>.value(value))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for method(value: Int). Use given")
-			Failure("stub return value not specified for method(value: Int). Use given")
+			onFatalFailure("Stub return value not specified for method(value: Int). Use given")
+			Failure("Stub return value not specified for method(value: Int). Use given")
 		}
 		return __value
     }
@@ -3846,8 +3841,8 @@ class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock {
 		do {
 		    __value = try methodReturnValue(.m_methodThatTakesArrayOfUsers__array_array(Parameter<[UserObject]>.value(array))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for methodThatTakesArrayOfUsers(array: [UserObject]). Use given")
-			Failure("stub return value not specified for methodThatTakesArrayOfUsers(array: [UserObject]). Use given")
+			onFatalFailure("Stub return value not specified for methodThatTakesArrayOfUsers(array: [UserObject]). Use given")
+			Failure("Stub return value not specified for methodThatTakesArrayOfUsers(array: [UserObject]). Use given")
 		}
 		return __value
     }
@@ -4017,8 +4012,8 @@ class ProtocolWithDeprecatedMembersMock: ProtocolWithDeprecatedMembers, Mock {
 		do {
 		    __value = try methodReturnValue(.m_method__value(Parameter<Int>.value(value))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for method(_ value: Int). Use given")
-			Failure("stub return value not specified for method(_ value: Int). Use given")
+			onFatalFailure("Stub return value not specified for method(_ value: Int). Use given")
+			Failure("Stub return value not specified for method(_ value: Int). Use given")
 		}
 		return __value
     }
@@ -4178,8 +4173,8 @@ class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
 		do {
 		    __value = try methodReturnValue(.m_methodWithGeneric__lhs_lhsrhs_rhs(Parameter<T>.value(lhs).wrapAsGeneric(), Parameter<T>.value(rhs).wrapAsGeneric())).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for methodWithGeneric<T>(lhs: T, rhs: T). Use given")
-			Failure("stub return value not specified for methodWithGeneric<T>(lhs: T, rhs: T). Use given")
+			onFatalFailure("Stub return value not specified for methodWithGeneric<T>(lhs: T, rhs: T). Use given")
+			Failure("Stub return value not specified for methodWithGeneric<T>(lhs: T, rhs: T). Use given")
 		}
 		return __value
     }
@@ -4192,8 +4187,8 @@ class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
 		do {
 		    __value = try methodReturnValue(.m_methodWithGenericConstraint__param_param(Parameter<[U]>.value(param).wrapAsGeneric())).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for methodWithGenericConstraint<U>(param: [U]). Use given")
-			Failure("stub return value not specified for methodWithGenericConstraint<U>(param: [U]). Use given")
+			onFatalFailure("Stub return value not specified for methodWithGenericConstraint<U>(param: [U]). Use given")
+			Failure("Stub return value not specified for methodWithGenericConstraint<U>(param: [U]). Use given")
 		}
 		return __value
     }
@@ -4364,8 +4359,8 @@ class ProtocolWithGenericMethodsNestedMock: ProtocolWithGenericMethodsNested, Mo
 		do {
 		    __value = try methodReturnValue(.m_methodWithGeneric__resource_resource(Parameter<Resource<T>>.value(resource).wrapAsGeneric())).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for methodWithGeneric<T>(resource: Resource<T>). Use given")
-			Failure("stub return value not specified for methodWithGeneric<T>(resource: Resource<T>). Use given")
+			onFatalFailure("Stub return value not specified for methodWithGeneric<T>(resource: Resource<T>). Use given")
+			Failure("Stub return value not specified for methodWithGeneric<T>(resource: Resource<T>). Use given")
 		}
 		return __value
     }
@@ -4504,14 +4499,16 @@ class ProtocolWithInitializersMock: ProtocolWithInitializers, Mock {
     }
 
     var param: Int {
-		get {	invocations.append(.p_param_get)
-				return __p_param ?? givenGetterValue(.p_param_get, "ProtocolWithInitializersMock - value for param was not defined") }
+		get {	invocations.append(.p_param_get); return __p_param ?? givenGetterValue(.p_param_get, "ProtocolWithInitializersMock - stub value for param was not defined") }
+		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
+		set {	__p_param = newValue }
 	}
 	private var __p_param: (Int)?
 
     var other: String {
-		get {	invocations.append(.p_other_get)
-				return __p_other ?? givenGetterValue(.p_other_get, "ProtocolWithInitializersMock - value for other was not defined") }
+		get {	invocations.append(.p_other_get); return __p_other ?? givenGetterValue(.p_other_get, "ProtocolWithInitializersMock - stub value for other was not defined") }
+		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
+		set {	__p_other = newValue }
 	}
 	private var __p_other: (String)?
 
@@ -4666,35 +4663,27 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
     }
 
     var name: String {
-		get {	invocations.append(.p_name_get)
-				return __p_name ?? givenGetterValue(.p_name_get, "ProtocolWithPropoertiesMock - value for name was not defined") }
-		set {	invocations.append(.p_name_set(.value(newValue)))
-				__p_name = newValue }
+		get {	invocations.append(.p_name_get); return __p_name ?? givenGetterValue(.p_name_get, "ProtocolWithPropoertiesMock - stub value for name was not defined") }
+		set {	invocations.append(.p_name_set(.value(newValue))); __p_name = newValue }
 	}
 	private var __p_name: (String)?
 
     var email: String? {
-		get {	invocations.append(.p_email_get)
-				return __p_email ?? givenGetterValue(.p_email_get, "ProtocolWithPropoertiesMock - value for email was not defined") }
-		set {	invocations.append(.p_email_set(.value(newValue)))
-				__p_email = newValue }
+		get {	invocations.append(.p_email_get); return __p_email ?? givenGetterValue(.p_email_get, "ProtocolWithPropoertiesMock - stub value for email was not defined") }
+		set {	invocations.append(.p_email_set(.value(newValue))); __p_email = newValue }
 	}
 	private var __p_email: (String)?
 
 
     static var name: String {
-		get {	ProtocolWithPropoertiesMock.invocations.append(.p_name_get)
-				return ProtocolWithPropoertiesMock.__p_name ?? givenGetterValue(.p_name_get, "ProtocolWithPropoertiesMock - value for name was not defined") }
-		set {	ProtocolWithPropoertiesMock.invocations.append(.p_name_set(.value(newValue)))
-				ProtocolWithPropoertiesMock.__p_name = newValue }
+		get {	ProtocolWithPropoertiesMock.invocations.append(.p_name_get); return ProtocolWithPropoertiesMock.__p_name ?? givenGetterValue(.p_name_get, "ProtocolWithPropoertiesMock - stub value for name was not defined") }
+		set {	ProtocolWithPropoertiesMock.invocations.append(.p_name_set(.value(newValue))); ProtocolWithPropoertiesMock.__p_name = newValue }
 	}
 	private static var __p_name: (String)?
 
     static var defaultEmail: String? {
-		get {	ProtocolWithPropoertiesMock.invocations.append(.p_defaultEmail_get)
-				return ProtocolWithPropoertiesMock.__p_defaultEmail ?? givenGetterValue(.p_defaultEmail_get, "ProtocolWithPropoertiesMock - value for defaultEmail was not defined") }
-		set {	ProtocolWithPropoertiesMock.invocations.append(.p_defaultEmail_set(.value(newValue)))
-				ProtocolWithPropoertiesMock.__p_defaultEmail = newValue }
+		get {	ProtocolWithPropoertiesMock.invocations.append(.p_defaultEmail_get); return ProtocolWithPropoertiesMock.__p_defaultEmail ?? givenGetterValue(.p_defaultEmail_get, "ProtocolWithPropoertiesMock - stub value for defaultEmail was not defined") }
+		set {	ProtocolWithPropoertiesMock.invocations.append(.p_defaultEmail_set(.value(newValue))); ProtocolWithPropoertiesMock.__p_defaultEmail = newValue }
 	}
 	private static var __p_defaultEmail: (String)?
 
@@ -5015,8 +5004,9 @@ class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, StaticMock
 
 
     static var staticProperty: String {
-		get {	ProtocolWithStaticMembersMock.invocations.append(.p_staticProperty_get)
-				return ProtocolWithStaticMembersMock.__p_staticProperty ?? givenGetterValue(.p_staticProperty_get, "ProtocolWithStaticMembersMock - value for staticProperty was not defined") }
+		get {	ProtocolWithStaticMembersMock.invocations.append(.p_staticProperty_get); return ProtocolWithStaticMembersMock.__p_staticProperty ?? givenGetterValue(.p_staticProperty_get, "ProtocolWithStaticMembersMock - stub value for staticProperty was not defined") }
+		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
+		set {	ProtocolWithStaticMembersMock.__p_staticProperty = newValue }
 	}
 	private static var __p_staticProperty: (String)?
 
@@ -5031,7 +5021,7 @@ class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, StaticMock
 		do {
 		    __value = try methodReturnValue(.sm_staticMethod__param_param(Parameter<Int>.value(param))).casted()
 		} catch MockError.notStubed {
-			Failure("stub return value not specified for staticMethod(param: Int). Use given")
+			Failure("Stub return value not specified for staticMethod(param: Int). Use given")
 		} catch {
 		    throw error
 		}
@@ -5251,10 +5241,8 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
     }
 
     var something: Any {
-		get {	invocations.append(.p_something_get)
-				return __p_something ?? givenGetterValue(.p_something_get, "ProtocolWithSubscriptsMock - value for something was not defined") }
-		set {	invocations.append(.p_something_set(.value(newValue)))
-				__p_something = newValue }
+		get {	invocations.append(.p_something_get); return __p_something ?? givenGetterValue(.p_something_get, "ProtocolWithSubscriptsMock - stub value for something was not defined") }
+		set {	invocations.append(.p_something_set(.value(newValue))); __p_something = newValue }
 	}
 	private var __p_something: (Any)?
 
@@ -5270,8 +5258,8 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 		do {
 		    __value = try methodReturnValue(.m_aaa__value(Parameter<Int>.value(value))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for aaa(_ value: Int). Use given")
-			Failure("stub return value not specified for aaa(_ value: Int). Use given")
+			onFatalFailure("Stub return value not specified for aaa(_ value: Int). Use given")
+			Failure("Stub return value not specified for aaa(_ value: Int). Use given")
 		}
 		return __value
     }
@@ -5282,7 +5270,7 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 			do {
 				return try methodReturnValue(.subscript_get_index_1(Parameter<Int>.value(index))).casted()
 			} catch {
-				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubmessage")
+				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubDefinedMessage")
 			}
 		}
 		set {
@@ -5296,7 +5284,7 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 			do {
 				return try methodReturnValue(.subscript_get_labeled_index(Parameter<Int>.value(index))).casted()
 			} catch {
-				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubmessage")
+				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubDefinedMessage")
 			}
 		}
 		set {
@@ -5310,7 +5298,7 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 			do {
 				return try methodReturnValue(.subscript_get_x_y(Parameter<Int>.value(x), Parameter<Int>.value(y))).casted()
 			} catch {
-				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubmessage")
+				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubDefinedMessage")
 			}
 		}
 		set {
@@ -5324,7 +5312,7 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 			do {
 				return try methodReturnValue(.subscript_get_index_2(Parameter<String>.value(index))).casted()
 			} catch {
-				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubmessage")
+				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubDefinedMessage")
 			}
 		}
 		set {
@@ -5338,7 +5326,7 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 			do {
 				return try methodReturnValue(.subscript_get_index_index(Parameter<String>.value(index))).casted()
 			} catch {
-				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubmessage")
+				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubDefinedMessage")
 			}
 		}
 		set {
@@ -5352,7 +5340,7 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 			do {
 				return try methodReturnValue(.subscript_get_label_name(Parameter<String>.value(name))).casted()
 			} catch {
-				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubmessage")
+				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubDefinedMessage")
 			}
 		}
 	}
@@ -5363,7 +5351,7 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 			do {
 				return try methodReturnValue(.subscript_get_closure_c(Parameter<(Int) -> Void>.value(c))).casted()
 			} catch {
-				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubmessage")
+				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubDefinedMessage")
 			}
 		}
 		set {
@@ -5647,8 +5635,8 @@ class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
 		do {
 		    __value = try methodReturnValue(.m_methodThatReturnsAndThrows__param_param(Parameter<Int>.value(param))).casted()
 		} catch MockError.notStubed {
-			onFatalFailure("stub return value not specified for methodThatReturnsAndThrows(param: Int). Use given")
-			Failure("stub return value not specified for methodThatReturnsAndThrows(param: Int). Use given")
+			onFatalFailure("Stub return value not specified for methodThatReturnsAndThrows(param: Int). Use given")
+			Failure("Stub return value not specified for methodThatReturnsAndThrows(param: Int). Use given")
 		} catch {
 		    throw error
 		}
@@ -5822,8 +5810,8 @@ class ProtocolWithTuplesMock: ProtocolWithTuples, Mock {
 		do {
 		    __value = try methodReturnValue(.m_methodThatTakesTuple__tuple_tuple(Parameter<(String,Int)>.value(tuple))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for methodThatTakesTuple(tuple: (String,Int)). Use given")
-			Failure("stub return value not specified for methodThatTakesTuple(tuple: (String,Int)). Use given")
+			onFatalFailure("Stub return value not specified for methodThatTakesTuple(tuple: (String,Int)). Use given")
+			Failure("Stub return value not specified for methodThatTakesTuple(tuple: (String,Int)). Use given")
 		}
 		return __value
     }
@@ -5962,8 +5950,9 @@ class ProtocolWithWhereAfterDefinitionMock<T>: ProtocolWithWhereAfterDefinition,
     }
 
     var sequence: T {
-		get {	invocations.append(.p_sequence_get)
-				return __p_sequence ?? givenGetterValue(.p_sequence_get, "ProtocolWithWhereAfterDefinitionMock - value for sequence was not defined") }
+		get {	invocations.append(.p_sequence_get); return __p_sequence ?? givenGetterValue(.p_sequence_get, "ProtocolWithWhereAfterDefinitionMock - stub value for sequence was not defined") }
+		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
+		set {	__p_sequence = newValue }
 	}
 	private var __p_sequence: (T)?
 
@@ -5979,8 +5968,8 @@ class ProtocolWithWhereAfterDefinitionMock<T>: ProtocolWithWhereAfterDefinition,
 		do {
 		    __value = try methodReturnValue(.m_methodWithType__t_t(Parameter<T>.value(t))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for methodWithType(t: T). Use given")
-			Failure("stub return value not specified for methodWithType(t: T). Use given")
+			onFatalFailure("Stub return value not specified for methodWithType(t: T). Use given")
+			Failure("Stub return value not specified for methodWithType(t: T). Use given")
 		}
 		return __value
     }
@@ -6138,8 +6127,8 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
 		do {
 		    __value = try methodReturnValue(.m_serviceName).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for serviceName(). Use given")
-			Failure("stub return value not specified for serviceName(). Use given")
+			onFatalFailure("Stub return value not specified for serviceName(). Use given")
+			Failure("Stub return value not specified for serviceName(). Use given")
 		}
 		return __value
     }
@@ -6152,8 +6141,8 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
 		do {
 		    __value = try methodReturnValue(.m_getPoint__from_point(Parameter<Point>.value(point))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for getPoint(from point: Point). Use given")
-			Failure("stub return value not specified for getPoint(from point: Point). Use given")
+			onFatalFailure("Stub return value not specified for getPoint(from point: Point). Use given")
+			Failure("Stub return value not specified for getPoint(from point: Point). Use given")
 		}
 		return __value
     }
@@ -6166,8 +6155,8 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
 		do {
 		    __value = try methodReturnValue(.m_getPoint__from_tuple(Parameter<(Float,Float)>.value(tuple))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for getPoint(from tuple: (Float,Float)). Use given")
-			Failure("stub return value not specified for getPoint(from tuple: (Float,Float)). Use given")
+			onFatalFailure("Stub return value not specified for getPoint(from tuple: (Float,Float)). Use given")
+			Failure("Stub return value not specified for getPoint(from tuple: (Float,Float)). Use given")
 		}
 		return __value
     }
@@ -6180,8 +6169,8 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
 		do {
 		    __value = try methodReturnValue(.m_similarMethodThatDiffersOnType__value_1(Parameter<Float>.value(value))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for similarMethodThatDiffersOnType(_ value: Float). Use given")
-			Failure("stub return value not specified for similarMethodThatDiffersOnType(_ value: Float). Use given")
+			onFatalFailure("Stub return value not specified for similarMethodThatDiffersOnType(_ value: Float). Use given")
+			Failure("Stub return value not specified for similarMethodThatDiffersOnType(_ value: Float). Use given")
 		}
 		return __value
     }
@@ -6194,8 +6183,8 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
 		do {
 		    __value = try methodReturnValue(.m_similarMethodThatDiffersOnType__value_2(Parameter<Point>.value(value))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for similarMethodThatDiffersOnType(_ value: Point). Use given")
-			Failure("stub return value not specified for similarMethodThatDiffersOnType(_ value: Point). Use given")
+			onFatalFailure("Stub return value not specified for similarMethodThatDiffersOnType(_ value: Point). Use given")
+			Failure("Stub return value not specified for similarMethodThatDiffersOnType(_ value: Point). Use given")
 		}
 		return __value
     }
@@ -6214,8 +6203,8 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
 		do {
 		    __value = try methodReturnValue(.m_methodWithClosures__success_function_1(Parameter<LinearFunction>.value(function))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for methodWithClosures(success function: LinearFunction). Use given")
-			Failure("stub return value not specified for methodWithClosures(success function: LinearFunction). Use given")
+			onFatalFailure("Stub return value not specified for methodWithClosures(success function: LinearFunction). Use given")
+			Failure("Stub return value not specified for methodWithClosures(success function: LinearFunction). Use given")
 		}
 		return __value
     }
@@ -6228,8 +6217,8 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
 		do {
 		    __value = try methodReturnValue(.m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.value(function))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?). Use given")
-			Failure("stub return value not specified for methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?). Use given")
+			onFatalFailure("Stub return value not specified for methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?). Use given")
+			Failure("Stub return value not specified for methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?). Use given")
 		}
 		return __value
     }
@@ -6542,7 +6531,7 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
 		do {
 		    __value = try methodReturnValue(.sm_construct__param_value(Parameter<Int>.value(value))).casted()
 		} catch {
-			Failure("stub return value not specified for construct(param value: Int). Use given")
+			Failure("Stub return value not specified for construct(param value: Int). Use given")
 		}
 		return __value
 		}
@@ -6558,8 +6547,8 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
 		do {
 		    __value = try methodReturnValue(.m_methodReturningSelf).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for methodReturningSelf(). Use given")
-			Failure("stub return value not specified for methodReturningSelf(). Use given")
+			onFatalFailure("Stub return value not specified for methodReturningSelf(). Use given")
+			Failure("Stub return value not specified for methodReturningSelf(). Use given")
 		}
 		return __value
 		}
@@ -6574,8 +6563,8 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
 		do {
 		    __value = try methodReturnValue(.m_compare__with_other(Parameter<SelfConstrainedProtocolMock>.value(other))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for compare(with other: Self). Use given")
-			Failure("stub return value not specified for compare(with other: Self). Use given")
+			onFatalFailure("Stub return value not specified for compare(with other: Self). Use given")
+			Failure("Stub return value not specified for compare(with other: Self). Use given")
 		}
 		return __value
     }
@@ -6589,8 +6578,8 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
 		do {
 		    __value = try methodReturnValue(.m_genericMethodWithNestedSelf__param_paramsecond_secondother_other(Parameter<Int>.value(param), Parameter<T>.value(second).wrapAsGeneric(), Parameter<(SelfConstrainedProtocolMock,SelfConstrainedProtocolMock)>.value(other))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for genericMethodWithNestedSelf<T>(param: Int, second: T, other: (Self,Self)). Use given")
-			Failure("stub return value not specified for genericMethodWithNestedSelf<T>(param: Int, second: T, other: (Self,Self)). Use given")
+			onFatalFailure("Stub return value not specified for genericMethodWithNestedSelf<T>(param: Int, second: T, other: (Self,Self)). Use given")
+			Failure("Stub return value not specified for genericMethodWithNestedSelf<T>(param: Int, second: T, other: (Self,Self)). Use given")
 		}
 		return __value
 		}
@@ -6866,40 +6855,33 @@ class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInheritsOt
     }
 
     var property: String {
-		get {	invocations.append(.p_property_get)
-				return __p_property ?? givenGetterValue(.p_property_get, "SimpleProtocolThatInheritsOtherProtocolsMock - value for property was not defined") }
-		set {	invocations.append(.p_property_set(.value(newValue)))
-				__p_property = newValue }
+		get {	invocations.append(.p_property_get); return __p_property ?? givenGetterValue(.p_property_get, "SimpleProtocolThatInheritsOtherProtocolsMock - stub value for property was not defined") }
+		set {	invocations.append(.p_property_set(.value(newValue))); __p_property = newValue }
 	}
 	private var __p_property: (String)?
 
     var weakProperty: AnyObject! {
-		get {	invocations.append(.p_weakProperty_get)
-				return __p_weakProperty ?? givenGetterValue(.p_weakProperty_get, "SimpleProtocolThatInheritsOtherProtocolsMock - value for weakProperty was not defined") }
-		set {	invocations.append(.p_weakProperty_set(.value(newValue)))
-				__p_weakProperty = newValue }
+		get {	invocations.append(.p_weakProperty_get); return __p_weakProperty ?? givenGetterValue(.p_weakProperty_get, "SimpleProtocolThatInheritsOtherProtocolsMock - stub value for weakProperty was not defined") }
+		set {	invocations.append(.p_weakProperty_set(.value(newValue))); __p_weakProperty = newValue }
 	}
 	private var __p_weakProperty: (AnyObject)?
 
     var propertyGetOnly: String {
-		get {	invocations.append(.p_propertyGetOnly_get)
-				return __p_propertyGetOnly ?? givenGetterValue(.p_propertyGetOnly_get, "SimpleProtocolThatInheritsOtherProtocolsMock - value for propertyGetOnly was not defined") }
+		get {	invocations.append(.p_propertyGetOnly_get); return __p_propertyGetOnly ?? givenGetterValue(.p_propertyGetOnly_get, "SimpleProtocolThatInheritsOtherProtocolsMock - stub value for propertyGetOnly was not defined") }
+		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
+		set {	__p_propertyGetOnly = newValue }
 	}
 	private var __p_propertyGetOnly: (String)?
 
     var propertyOptional: Int? {
-		get {	invocations.append(.p_propertyOptional_get)
-				return __p_propertyOptional ?? givenGetterValue(.p_propertyOptional_get, "SimpleProtocolThatInheritsOtherProtocolsMock - value for propertyOptional was not defined") }
-		set {	invocations.append(.p_propertyOptional_set(.value(newValue)))
-				__p_propertyOptional = newValue }
+		get {	invocations.append(.p_propertyOptional_get); return __p_propertyOptional ?? givenGetterValue(.p_propertyOptional_get, "SimpleProtocolThatInheritsOtherProtocolsMock - stub value for propertyOptional was not defined") }
+		set {	invocations.append(.p_propertyOptional_set(.value(newValue))); __p_propertyOptional = newValue }
 	}
 	private var __p_propertyOptional: (Int)?
 
     var propertyImplicit: Int! {
-		get {	invocations.append(.p_propertyImplicit_get)
-				return __p_propertyImplicit ?? givenGetterValue(.p_propertyImplicit_get, "SimpleProtocolThatInheritsOtherProtocolsMock - value for propertyImplicit was not defined") }
-		set {	invocations.append(.p_propertyImplicit_set(.value(newValue)))
-				__p_propertyImplicit = newValue }
+		get {	invocations.append(.p_propertyImplicit_get); return __p_propertyImplicit ?? givenGetterValue(.p_propertyImplicit_get, "SimpleProtocolThatInheritsOtherProtocolsMock - stub value for propertyImplicit was not defined") }
+		set {	invocations.append(.p_propertyImplicit_set(.value(newValue))); __p_propertyImplicit = newValue }
 	}
 	private var __p_propertyImplicit: (Int)?
 
@@ -6921,8 +6903,8 @@ class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInheritsOt
 		do {
 		    __value = try methodReturnValue(.m_simpleMehtodThatReturns).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for simpleMehtodThatReturns(). Use given")
-			Failure("stub return value not specified for simpleMehtodThatReturns(). Use given")
+			onFatalFailure("Stub return value not specified for simpleMehtodThatReturns(). Use given")
+			Failure("Stub return value not specified for simpleMehtodThatReturns(). Use given")
 		}
 		return __value
     }
@@ -6935,8 +6917,8 @@ class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInheritsOt
 		do {
 		    __value = try methodReturnValue(.m_simpleMehtodThatReturns__param_param(Parameter<String>.value(param))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for simpleMehtodThatReturns(param: String). Use given")
-			Failure("stub return value not specified for simpleMehtodThatReturns(param: String). Use given")
+			onFatalFailure("Stub return value not specified for simpleMehtodThatReturns(param: String). Use given")
+			Failure("Stub return value not specified for simpleMehtodThatReturns(param: String). Use given")
 		}
 		return __value
     }
@@ -6949,8 +6931,8 @@ class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInheritsOt
 		do {
 		    __value = try methodReturnValue(.m_simpleMehtodThatReturns__optionalParam_optionalParam(Parameter<String?>.value(optionalParam))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for simpleMehtodThatReturns(optionalParam: String?). Use given")
-			Failure("stub return value not specified for simpleMehtodThatReturns(optionalParam: String?). Use given")
+			onFatalFailure("Stub return value not specified for simpleMehtodThatReturns(optionalParam: String?). Use given")
+			Failure("Stub return value not specified for simpleMehtodThatReturns(optionalParam: String?). Use given")
 		}
 		return __value
     }
@@ -7197,8 +7179,8 @@ class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
 		do {
 		    __value = try methodReturnValue(.m_getArray).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for getArray(). Use given")
-			Failure("stub return value not specified for getArray(). Use given")
+			onFatalFailure("Stub return value not specified for getArray(). Use given")
+			Failure("Stub return value not specified for getArray(). Use given")
 		}
 		return __value
     }
@@ -7211,8 +7193,8 @@ class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
 		do {
 		    __value = try methodReturnValue(.m_map__array_arrayparam_param(Parameter<[String]>.value(array), Parameter<Int>.value(param))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for map(array: [String], param: Int). Use given")
-			Failure("stub return value not specified for map(array: [String], param: Int). Use given")
+			onFatalFailure("Stub return value not specified for map(array: [String], param: Int). Use given")
+			Failure("Stub return value not specified for map(array: [String], param: Int). Use given")
 		}
 		return __value
     }
@@ -7225,8 +7207,8 @@ class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
 		do {
 		    __value = try methodReturnValue(.m_use__dictionary_dictionary(Parameter<[Int: String]>.value(dictionary))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for use(dictionary: [Int: String]). Use given")
-			Failure("stub return value not specified for use(dictionary: [Int: String]). Use given")
+			onFatalFailure("Stub return value not specified for use(dictionary: [Int: String]). Use given")
+			Failure("Stub return value not specified for use(dictionary: [Int: String]). Use given")
 		}
 		return __value
     }
@@ -7239,8 +7221,8 @@ class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
 		do {
 		    __value = try methodReturnValue(.m_verify__set_set(Parameter<Set<Int>>.value(set))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for verify(set: Set<Int>). Use given")
-			Failure("stub return value not specified for verify(set: Set<Int>). Use given")
+			onFatalFailure("Stub return value not specified for verify(set: Set<Int>). Use given")
+			Failure("Stub return value not specified for verify(set: Set<Int>). Use given")
 		}
 		return __value
     }
@@ -7437,8 +7419,9 @@ class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBothMeth
     }
 
     var property: String {
-		get {	invocations.append(.p_property_get)
-				return __p_property ?? givenGetterValue(.p_property_get, "SimpleProtocolWithBothMethodsAndPropertiesMock - value for property was not defined") }
+		get {	invocations.append(.p_property_get); return __p_property ?? givenGetterValue(.p_property_get, "SimpleProtocolWithBothMethodsAndPropertiesMock - stub value for property was not defined") }
+		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
+		set {	__p_property = newValue }
 	}
 	private var __p_property: (String)?
 
@@ -7454,8 +7437,8 @@ class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBothMeth
 		do {
 		    __value = try methodReturnValue(.m_simpleMethod).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for simpleMethod(). Use given")
-			Failure("stub return value not specified for simpleMethod(). Use given")
+			onFatalFailure("Stub return value not specified for simpleMethod(). Use given")
+			Failure("Stub return value not specified for simpleMethod(). Use given")
 		}
 		return __value
     }
@@ -7618,8 +7601,8 @@ class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
 		do {
 		    __value = try methodReturnValue(.m_simpleMehtodThatReturns).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for simpleMehtodThatReturns(). Use given")
-			Failure("stub return value not specified for simpleMehtodThatReturns(). Use given")
+			onFatalFailure("Stub return value not specified for simpleMehtodThatReturns(). Use given")
+			Failure("Stub return value not specified for simpleMehtodThatReturns(). Use given")
 		}
 		return __value
     }
@@ -7632,8 +7615,8 @@ class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
 		do {
 		    __value = try methodReturnValue(.m_simpleMehtodThatReturns__param_param(Parameter<String>.value(param))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for simpleMehtodThatReturns(param: String). Use given")
-			Failure("stub return value not specified for simpleMehtodThatReturns(param: String). Use given")
+			onFatalFailure("Stub return value not specified for simpleMehtodThatReturns(param: String). Use given")
+			Failure("Stub return value not specified for simpleMehtodThatReturns(param: String). Use given")
 		}
 		return __value
     }
@@ -7646,8 +7629,8 @@ class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
 		do {
 		    __value = try methodReturnValue(.m_simpleMehtodThatReturns__optionalParam_optionalParam(Parameter<String?>.value(optionalParam))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for simpleMehtodThatReturns(optionalParam: String?). Use given")
-			Failure("stub return value not specified for simpleMehtodThatReturns(optionalParam: String?). Use given")
+			onFatalFailure("Stub return value not specified for simpleMehtodThatReturns(optionalParam: String?). Use given")
+			Failure("Stub return value not specified for simpleMehtodThatReturns(optionalParam: String?). Use given")
 		}
 		return __value
     }
@@ -7832,40 +7815,33 @@ class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock {
     }
 
     var property: String {
-		get {	invocations.append(.p_property_get)
-				return __p_property ?? givenGetterValue(.p_property_get, "SimpleProtocolWithPropertiesMock - value for property was not defined") }
-		set {	invocations.append(.p_property_set(.value(newValue)))
-				__p_property = newValue }
+		get {	invocations.append(.p_property_get); return __p_property ?? givenGetterValue(.p_property_get, "SimpleProtocolWithPropertiesMock - stub value for property was not defined") }
+		set {	invocations.append(.p_property_set(.value(newValue))); __p_property = newValue }
 	}
 	private var __p_property: (String)?
 
     var weakProperty: AnyObject! {
-		get {	invocations.append(.p_weakProperty_get)
-				return __p_weakProperty ?? givenGetterValue(.p_weakProperty_get, "SimpleProtocolWithPropertiesMock - value for weakProperty was not defined") }
-		set {	invocations.append(.p_weakProperty_set(.value(newValue)))
-				__p_weakProperty = newValue }
+		get {	invocations.append(.p_weakProperty_get); return __p_weakProperty ?? givenGetterValue(.p_weakProperty_get, "SimpleProtocolWithPropertiesMock - stub value for weakProperty was not defined") }
+		set {	invocations.append(.p_weakProperty_set(.value(newValue))); __p_weakProperty = newValue }
 	}
 	private var __p_weakProperty: (AnyObject)?
 
     var propertyGetOnly: String {
-		get {	invocations.append(.p_propertyGetOnly_get)
-				return __p_propertyGetOnly ?? givenGetterValue(.p_propertyGetOnly_get, "SimpleProtocolWithPropertiesMock - value for propertyGetOnly was not defined") }
+		get {	invocations.append(.p_propertyGetOnly_get); return __p_propertyGetOnly ?? givenGetterValue(.p_propertyGetOnly_get, "SimpleProtocolWithPropertiesMock - stub value for propertyGetOnly was not defined") }
+		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
+		set {	__p_propertyGetOnly = newValue }
 	}
 	private var __p_propertyGetOnly: (String)?
 
     var propertyOptional: Int? {
-		get {	invocations.append(.p_propertyOptional_get)
-				return __p_propertyOptional ?? givenGetterValue(.p_propertyOptional_get, "SimpleProtocolWithPropertiesMock - value for propertyOptional was not defined") }
-		set {	invocations.append(.p_propertyOptional_set(.value(newValue)))
-				__p_propertyOptional = newValue }
+		get {	invocations.append(.p_propertyOptional_get); return __p_propertyOptional ?? givenGetterValue(.p_propertyOptional_get, "SimpleProtocolWithPropertiesMock - stub value for propertyOptional was not defined") }
+		set {	invocations.append(.p_propertyOptional_set(.value(newValue))); __p_propertyOptional = newValue }
 	}
 	private var __p_propertyOptional: (Int)?
 
     var propertyImplicit: Int! {
-		get {	invocations.append(.p_propertyImplicit_get)
-				return __p_propertyImplicit ?? givenGetterValue(.p_propertyImplicit_get, "SimpleProtocolWithPropertiesMock - value for propertyImplicit was not defined") }
-		set {	invocations.append(.p_propertyImplicit_set(.value(newValue)))
-				__p_propertyImplicit = newValue }
+		get {	invocations.append(.p_propertyImplicit_get); return __p_propertyImplicit ?? givenGetterValue(.p_propertyImplicit_get, "SimpleProtocolWithPropertiesMock - stub value for propertyImplicit was not defined") }
+		set {	invocations.append(.p_propertyImplicit_set(.value(newValue))); __p_propertyImplicit = newValue }
 	}
 	private var __p_propertyImplicit: (Int)?
 
@@ -8236,8 +8212,8 @@ class UserStorageTypeMock: UserStorageType, Mock {
 		do {
 		    __value = try methodReturnValue(.m_surname__for_name(Parameter<String>.value(name))).casted()
 		} catch {
-			onFatalFailure("stub return value not specified for surname(for name: String). Use given")
-			Failure("stub return value not specified for surname(for name: String). Use given")
+			onFatalFailure("Stub return value not specified for surname(for name: String). Use given")
+			Failure("Stub return value not specified for surname(for name: String). Use given")
 		}
 		return __value
     }

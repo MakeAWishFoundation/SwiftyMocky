@@ -326,16 +326,22 @@ import SourceryRuntime
         var privatePrototypeName: String { return "__p_\(variable.name)" }
         var casesCount: Int { return readonly ? 1 : 2 }
 
+        let deprecatedMessage = "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value."
+        var noStubDefinedMessage: String { return "\(scope) - stub value for \(variable.name) was not defined" }
+
         var getter: String {
-            let message = "\(scope) - value for \(variable.name) was not defined"
             let staticModifier = variable.isStatic ? "\(scope)." : ""
-            let returnValue = "givenGetterValue(.\(propertyCaseGetName), \"\(message)\")"
-            return "\n\t\tget {\t\(staticModifier)invocations.append(.\(propertyCaseGetName))" + "\n\t\t\t\treturn \(staticModifier)\(privatePrototypeName) ?? \(returnValue) }"
+            let returnValue = "givenGetterValue(.\(propertyCaseGetName), \"\(noStubDefinedMessage)\")"
+            return "\n\t\tget {\t\(staticModifier)invocations.append(.\(propertyCaseGetName)); return \(staticModifier)\(privatePrototypeName) ?? \(returnValue) }"
         }
         var setter: String {
-            guard !readonly else { return "" }
             let staticModifier = variable.isStatic ? "\(scope)." : ""
-            return "\n\t\tset {\t\(staticModifier)invocations.append(.\(propertyCaseSetName)(.value(newValue)))" + "\n\t\t\t\t\(variable.isStatic ? "\(scope)." : "")\(privatePrototypeName) = newValue }"
+            if readonly {
+                let annotation = readonly ? "\n\t\t@available(*, deprecated, message: \"\(deprecatedMessage)\")" : ""
+                return "\(annotation)\n\t\tset {\t\(variable.isStatic ? "\(scope)." : "")\(privatePrototypeName) = newValue }"
+            } else {
+                return "\n\t\tset {\t\(staticModifier)invocations.append(.\(propertyCaseSetName)(.value(newValue))); \(variable.isStatic ? "\(scope)." : "")\(privatePrototypeName) = newValue }"
+            }
         }
         var prototype: String {
             let staticModifier = variable.isStatic ? "static " : ""
@@ -406,7 +412,7 @@ import SourceryRuntime
         var casesCount: Int { return readonly ? 1 : 2 }
         var nestedType: String { return "\(TypeWrapper(wrapped.returnTypeName).nestedParameter)" }
 
-        private let noStubmessage = "Stub return value not specified for subscript. Use given first."
+        private let noStubDefinedMessage = "Stub return value not specified for subscript. Use given first."
 
         private static var registered: [String: Int] = [:]
         private static var suffixes: [String: Int] = [:]
@@ -457,7 +463,7 @@ import SourceryRuntime
             "\n\t\t\tdo {" +
             "\n\t\t\t\treturn try methodReturnValue(\(method)).casted()" +
             "\n\t\t\t} catch {" +
-            "\n\t\t\t\tonFatalFailure(\"\(noStubmessage)\"); Failure(\"noStubmessage\")" +
+            "\n\t\t\t\tonFatalFailure(\"\(noStubDefinedMessage)\"); Failure(\"noStubDefinedMessage\")" +
             "\n\t\t\t}"
         }
         private func setter() -> String {
@@ -556,6 +562,7 @@ import SourceryRuntime
 
     class MethodWrapper {
         private let deprecatedMessage = "@available(*, deprecated, message: \"This constructor is deprecated, and will be removed in v3.1\")\n\t\t"
+        private var noStubDefinedMessage: String { return "Stub return value not specified for \(method.name). Use given" }
 
         private static var registered: [String: Int] = [:]
         private static var suffixes: [String: Int] = [:]
@@ -659,14 +666,13 @@ import SourceryRuntime
         var throwValue: String {
             guard !method.isInitializer else { return "" }
             guard method.throws || !method.returnTypeName.isVoid else { return "" }
-            let message = "stub return value not specified for \(method.name). Use given"
-            let safeFailure = method.isStatic ? "" : "\t\t\tonFatalFailure(\"\(message)\")\n"
-            let noStubHandling = method.returnTypeName.isVoid ? "\t\t\t// do nothing" : "\(safeFailure)\t\t\tFailure(\"\(message)\")"
+            let safeFailure = method.isStatic ? "" : "\t\t\tonFatalFailure(\"\(noStubDefinedMessage)\")\n"
+            let noStubHandling = method.returnTypeName.isVoid ? "\t\t\t// do nothing" : "\(safeFailure)\t\t\tFailure(\"\(noStubDefinedMessage)\")"
             guard method.throws else {
                 return
                 """
                 catch {
-                \(safeFailure)\t\t\tFailure(\"\(message)\")
+                \(safeFailure)\t\t\tFailure(\"\(noStubDefinedMessage)\")
                 \t\t}
                 """
             }
