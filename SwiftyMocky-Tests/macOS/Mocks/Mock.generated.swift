@@ -2084,10 +2084,49 @@ class EdgeCasesGenericsProtocolMock: EdgeCasesGenericsProtocol, Mock {
 
 
 
+    func sorted<Key, Value>(by key: Mytest<Key, Value>) {
+        addInvocation(.m_sorted__by_key(Parameter<Mytest<Key, Value>>.value(key).wrapAsGeneric()))
+		let perform = methodPerformValue(.m_sorted__by_key(Parameter<Mytest<Key, Value>>.value(key).wrapAsGeneric())) as? (Mytest<Key, Value>) -> Void
+		perform?(key)
+    }
 
-    fileprivate struct MethodType {
-        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool { return true }
-        func intValue() -> Int { return 0 }
+    func getter<K,V: Sequence,T>(swapped key: Mytest<K,V>) -> T {
+        addInvocation(.m_getter__swapped_key(Parameter<Mytest<K,V>>.value(key).wrapAsGeneric()))
+		let perform = methodPerformValue(.m_getter__swapped_key(Parameter<Mytest<K,V>>.value(key).wrapAsGeneric())) as? (Mytest<K,V>) -> Void
+		perform?(key)
+		var __value: T
+		do {
+		    __value = try methodReturnValue(.m_getter__swapped_key(Parameter<Mytest<K,V>>.value(key).wrapAsGeneric())).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for getter<K,V: Sequence,T>(swapped key: Mytest<K,V>). Use given")
+			Failure("Stub return value not specified for getter<K,V: Sequence,T>(swapped key: Mytest<K,V>). Use given")
+		}
+		return __value
+    }
+
+
+    fileprivate enum MethodType {
+        case m_sorted__by_key(Parameter<GenericAttribute>)
+        case m_getter__swapped_key(Parameter<GenericAttribute>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+            case (.m_sorted__by_key(let lhsKey), .m_sorted__by_key(let rhsKey)):
+                guard Parameter.compare(lhs: lhsKey, rhs: rhsKey, with: matcher) else { return false } 
+                return true 
+            case (.m_getter__swapped_key(let lhsKey), .m_getter__swapped_key(let rhsKey)):
+                guard Parameter.compare(lhs: lhsKey, rhs: rhsKey, with: matcher) else { return false } 
+                return true 
+            default: return false
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+            case let .m_sorted__by_key(p0): return p0.intValue
+            case let .m_getter__swapped_key(p0): return p0.intValue
+            }
+        }
     }
 
     class Given: StubbedMethod {
@@ -2099,17 +2138,35 @@ class EdgeCasesGenericsProtocolMock: EdgeCasesGenericsProtocol, Mock {
         }
 
 
+        static func getter<K,V: Sequence,T>(swapped key: Parameter<Mytest<K,V>>, willReturn: T...) -> MethodStub {
+            return Given(method: .m_getter__swapped_key(key.wrapAsGeneric()), products: willReturn.map({ Product.return($0) }))
+        }
+        static func getter<K,V: Sequence,T>(swapped key: Parameter<Mytest<K,V>>, willProduce: (Stubber<T>) -> Void) -> MethodStub {
+            let willReturn: [T] = []
+			let given: Given = { return Given(method: .m_getter__swapped_key(key.wrapAsGeneric()), products: willReturn.map({ Product.return($0) })) }()
+			let stubber = given.stub(for: (T).self)
+			willProduce(stubber)
+			return given
+        }
     }
 
     struct Verify {
         fileprivate var method: MethodType
 
+        static func sorted<Key,Value>(by key: Parameter<Mytest<Key, Value>>) -> Verify { return Verify(method: .m_sorted__by_key(key.wrapAsGeneric()))}
+        static func getter<K,V>(swapped key: Parameter<Mytest<K,V>>) -> Verify { return Verify(method: .m_getter__swapped_key(key.wrapAsGeneric()))}
     }
 
     struct Perform {
         fileprivate var method: MethodType
         var performs: Any
 
+        static func sorted<Key,Value>(by key: Parameter<Mytest<Key, Value>>, perform: @escaping (Mytest<Key, Value>) -> Void) -> Perform {
+            return Perform(method: .m_sorted__by_key(key.wrapAsGeneric()), performs: perform)
+        }
+        static func getter<K,V>(swapped key: Parameter<Mytest<K,V>>, perform: @escaping (Mytest<K,V>) -> Void) -> Perform {
+            return Perform(method: .m_getter__swapped_key(key.wrapAsGeneric()), performs: perform)
+        }
     }
 
     public func given(_ method: Given) {

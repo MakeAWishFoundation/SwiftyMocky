@@ -186,33 +186,22 @@ import SourceryRuntime
         func isGeneric(_ types: [String]) -> Bool {
             guard !type.isVoid else { return false }
 
-            func containsType(_ type: String) -> Bool {
-                return types.contains(where: {
-                    "\($0).Type" == type ||
-                    type.contains("<\($0)>") ||
-                    type.contains("<\($0).Type>")
-                })
-            }
+            return isGeneric(name: unwrapped, generics: types)
+        }
 
-            if types.contains(unwrapped) || containsType(unwrapped) {
-                return true
-            } else if let tuple = type.tuple {
-                for element in tuple.elements {
-                    guard !TypeWrapper(element.typeName).isGeneric(types) else { return true }
-                }
-            } else if let array = type.array {
-                return TypeWrapper(array.elementTypeName).isGeneric(types)
-            } else if let dictionary = type.dictionary {
-                guard !TypeWrapper(dictionary.valueTypeName).isGeneric(types) else { return true }
-                guard !TypeWrapper(dictionary.keyTypeName).isGeneric(types) else { return true }
-            } else if let closure = type.closure {
-                guard !TypeWrapper(closure.actualReturnTypeName).isGeneric(types) else { return true }
-                for parameter in closure.parameters {
-                    guard !ParameterWrapper(parameter).isGeneric(types) else { return true }
-                }
-            }
-
-            return false
+        private func isGeneric(name: String, generics: [String]) -> Bool {
+            let name = "(\(name.replacingOccurrences(of: " ", with: "")))"
+            let modifiers = "[\\?\\!]*"
+            return generics.contains(where: { generic in
+                let wrapped = "([\\(]\(generic)\(modifiers)[\\)\\.])"
+                let constraint = "([<,]\(generic)\(modifiers)[>,\\.])"
+                let arrays = "([\\[:]\(generic)\(modifiers)[\\],\\.:])"
+                let tuples = "([\\(,]\(generic)\(modifiers)[,\\.\\)])"
+                let closures = "((\\-\\>)\(generic)\(modifiers)[,\\.\\)])"
+                let pattern = "\(wrapped)|\(constraint)|\(arrays)|\(tuples)|\(closures)"
+                guard let regex = try? NSRegularExpression(pattern: pattern) else { return false }
+                return regex.firstMatch(in: name, options: [], range: NSRange(location: 0, length: (name as NSString).length)) != nil
+            })
         }
 
         func replacingSelf(unwrap: Bool = false) -> String {
