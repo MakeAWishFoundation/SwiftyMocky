@@ -6616,7 +6616,9 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+
         SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
+         SwiftyTestCase.HandleNotStubbedMocks(message: message, file: file, line: line)
         XCTFail(message, file: file, line: line)
         #endif
     }
@@ -7279,7 +7281,8 @@ class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInheritsOt
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyTestCase.onFatalFailure() // Prepare running test case that it should not continue
-        XCTFail(message, file: file, line: line)
+        SwiftyTestCase.HandleNotStubbedMocks(message: message, file: file, line: line)
+//        XCTFail(message, file: file, line: line)
         #endif
     }
 }

@@ -22,7 +22,7 @@ class SampleServiceTests: SwiftyTestCase {
 
     override func setUp() {
         super.setUp()
-
+        XCTestObservationCenter.shared.addTestObserver(TestObserver())
         service = SampleServiceTypeMock()
     }
 
@@ -41,8 +41,8 @@ class SampleServiceTests: SwiftyTestCase {
             return t0.0 == t1.0 && t0.1 == t1.1
         }
 
-        Given(service,.getPoint(from: .any(Point.self), willReturn: Point(x: 0, y: 0)))
-        Given(service,.getPoint(from: .value((0.0,0.0)), willReturn: Point(x: 1, y: 1)))
+//        Given(service,.getPoint(from: .any(Point.self), willReturn: Point(x: 0, y: 0)))
+//        Given(service,.getPoint(from: .value((0.0,0.0)), willReturn: Point(x: 1, y: 1)))
 
         let first = service.getPoint(from: Point(x: 1332, y: 1231))
         XCTAssertEqual(first.x, 0)
@@ -51,5 +51,39 @@ class SampleServiceTests: SwiftyTestCase {
         let second = service.getPoint(from: (0.0,0.0))
         XCTAssertEqual(second.x, 1)
         XCTAssertEqual(second.y, 1)
+    }
+}
+
+class TestObserver: NSObject, XCTestObservation {
+    // This init is called first thing as the test bundle starts up and before any test
+    // initialization happens
+    override init() {
+        super.init()
+        // We don't need to do any real work, other than register for callbacks
+        // when the test suite progresses.
+        // XCTestObservation keeps a strong reference to observers
+
+    }
+
+    func testCaseWillStart(_ testCase: XCTestCase) {
+
+    }
+
+    var duplicated: [String?: Int] = [:]
+
+//    func testCase(_ testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: Int) {
+//
+//        let testName = testCase.name.components(separatedBy: " ")[1].components(separatedBy: "]").first!
+//        let description = Thread.callStackSymbols.filter({ $0.contains(testName) }).last!
+//        let line = description.components(separatedBy: " + ").last!
+//        let fileLine = Int(line)!
+//        if !duplicated.contains(where: { $0.key == filePath && $0.value == lineNumber }) { // TODO: Remove that faulty logic
+//            duplicated[filePath] = lineNumber
+//            testCase.recordFailure(withDescription: description, inFile: filePath!, atLine: fileLine, expected: false)
+//        }
+//    }
+
+    func testCaseDidFinish(_ testCase: XCTestCase) {
+
     }
 }
