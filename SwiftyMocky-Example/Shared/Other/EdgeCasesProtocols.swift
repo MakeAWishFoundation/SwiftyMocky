@@ -8,7 +8,13 @@
 
 import Foundation
 
+struct Mytest<Key, Value> {
+    let value: Value
+    let key: Key
+}
+
 //sourcery: AutoMockable
 protocol EdgeCasesGenericsProtocol {
-
+    func sorted<Key, Value>(by key: Mytest<Key, Value>)
+    func getter<K,V: Sequence,T>(swapped key: Mytest<K,V>) -> T
 }
