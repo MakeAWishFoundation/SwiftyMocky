@@ -97,22 +97,22 @@ import SourceryRuntime
             return "<\(all.joined(separator: ","))>"
         }
         static func extractGenericTypesConstraints(_ associatedTypes: [String]?) -> String {
-        guard let all = associatedTypes else { return "" }
-        let constraints = all.flatMap { t -> String? in
-            let splitted = split(t, byFirstOccurenceOf: " where ")
-            let constraint = splitted.0.replacingOccurrences(of: " ", with: "").characters.split(separator: ":").map(String.init)
-            guard constraint.count == 2 else { return nil }
-            let adopts = constraint[1].characters.split(separator: ",").map(String.init)
-            var mapped = adopts.map { "\(constraint[0]): \($0)" }
-            if !splitted.1.isEmpty {
-                mapped.append(splitted.1)
+            guard let all = associatedTypes else { return "" }
+            let constraints = all.flatMap { t -> String? in
+                let splitted = split(t, byFirstOccurenceOf: " where ")
+                let constraint = splitted.0.replacingOccurrences(of: " ", with: "").characters.split(separator: ":").map(String.init)
+                guard constraint.count == 2 else { return nil }
+                let adopts = constraint[1].characters.split(separator: ",").map(String.init)
+                var mapped = adopts.map { "\(constraint[0]): \($0)" }
+                if !splitted.1.isEmpty {
+                    mapped.append(splitted.1)
+                }
+                return mapped.joined(separator: ", ")
             }
-            return mapped.joined(separator: ", ")
+            .joined(separator: ", ")
+            guard !constraints.isEmpty else { return "" }
+            return " where \(constraints)"
         }
-        .joined(separator: ", ")
-        guard !constraints.isEmpty else { return "" }
-        return " where \(constraints)"
-    }
     }
 
     // Collision management
@@ -610,13 +610,12 @@ import SourceryRuntime
                 .replacingOccurrences(of: "(", with: "__")
                 .replacingOccurrences(of: ")", with: "")
             var parametersNames = method.parameters.map { "\($0.name)" }
-
             while let range = rawName.range(of: ":"), let name = parametersNames.first {
                 parametersNames.removeFirst()
                 rawName.replaceSubrange(range, with: "_\(name)")
             }
-
             return  rawName
+            .replacingOccurrences(of: ":", with: "")
             .replacingOccurrences(of: "m*", with: "m_")
             .replacingOccurrences(of: "___", with: "__").trimmingCharacters(in: CharacterSet(charactersIn: "_"))
         }
@@ -663,15 +662,22 @@ import SourceryRuntime
                     return ""
                 }
             }()
-            let staticModifier: String = method.isStatic ? "static " : ""
 
+            let staticModifier: String = method.isStatic ? "static " : ""
             if method.isInitializer {
                 return "required \(method.name) \(throwing)"
-            }
-            else if method.returnTypeName.isVoid {
-                return "\(staticModifier)func \(method.shortName)(\(parametersForStubSignature())) \(throwing)"
+            } else if method.returnTypeName.isVoid {
+                let wherePartIfNeeded: String = {
+                    if method.returnTypeName.name.hasPrefix("Void") {
+                        let range = method.returnTypeName.name.range(of: "Void")!
+                        return "\(method.returnTypeName.name[range.upperBound...])"
+                    } else {
+                        return !method.returnTypeName.name.isEmpty ? "\(method.returnTypeName.name) " : ""
+                    }
+                }()
+                return "\(staticModifier)func \(method.shortName)\(parametersForStubSignature()) \(throwing)\(wherePartIfNeeded)"
             } else {
-                return "\(staticModifier)func \(method.shortName)(\(parametersForStubSignature())) \(throwing)-> \(method.returnTypeName.name) "
+                return "\(staticModifier)func \(method.shortName)\(parametersForStubSignature()) \(throwing)-> \(method.returnTypeName.name) "
             }
         }
         var invocation: String {
@@ -1031,11 +1037,20 @@ import SourceryRuntime
         }
 
         private func parametersForStubSignature() -> String {
-            return parameters.map { p in
-                guard let argumentLabel = p.parameter.argumentLabel else { return "_ \(p.name): \(p.justType)" }
-                guard argumentLabel != p.name else { return "\(p.name): \(p.justType)" }
-                return "\(argumentLabel) \(p.name): \(p.justType)"
-            }.joined(separator: ", ")
+            func replacing(first: String, in full: String, with other: String) -> String {
+                guard let range = full.range(of: first) else { return full }
+                return full.replacingCharacters(in: range, with: other)
+            }
+            let prefix = method.shortName
+            let full = method.name
+            let range = full.range(of: prefix)!
+            var unrefined = "\(full[range.upperBound...])"
+            parameters.map { p -> (String,String) in
+                return ("\(p.type)","\(p.justType)")
+            }.forEach {
+                unrefined = replacing(first: $0, in: unrefined, with: $1)
+            }
+            return unrefined
         }
 
         private func parametersForProxyInit() -> String {
