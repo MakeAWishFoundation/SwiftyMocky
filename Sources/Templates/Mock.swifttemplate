@@ -422,6 +422,7 @@ import SourceryRuntime
         private let noStubDefinedMessage = "Stub return value not specified for subscript. Use given first."
 
         private static var registered: [String: Int] = [:]
+        private static var namesWithoutReturnType: [String: Int] = [:]
         private static var suffixes: [String: Int] = [:]
         static func clear() -> String {
             SubscriptWrapper.registered = [:]
@@ -433,9 +434,14 @@ import SourceryRuntime
             SubscriptWrapper.registered[name] = count + 1
             SubscriptWrapper.suffixes[uniqueName] = count + 1
         }
+        static func register(short name: String) {
+            let count = SubscriptWrapper.namesWithoutReturnType[name] ?? 0
+            SubscriptWrapper.namesWithoutReturnType[name] = count + 1
+        }
 
         func register() {
             SubscriptWrapper.register(registrationName("get"),uniqueName)
+            SubscriptWrapper.register(short: shortName)
             guard !readonly else { return }
             SubscriptWrapper.register(registrationName("set"),uniqueName)
         }
@@ -482,8 +488,7 @@ import SourceryRuntime
         }
         private func setter() -> String {
             let method = ".\(subscriptCasePrefix("set"))(\(parametersForMethodCall(set: true)))"
-            return
-            "\n\t\t\taddInvocation(\(method))"
+            return "\n\t\t\taddInvocation(\(method))"
         }
 
         // method type
@@ -503,7 +508,7 @@ import SourceryRuntime
             if accessor == "set" {
                 lhsParams += ", lhsDidSet"
                 rhsParams += ", rhsDidSet"
-                comparators += "\n\t\t\t\treturn \(nestedType).compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher)"
+                comparators += "\n\t\t\t\treturn Parameter.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher)"
             } else {
                 comparators += "\n\t\t\t\treturn true"
             }
@@ -536,7 +541,8 @@ import SourceryRuntime
         // Verify
         func verifyConstructorName(set: Bool = false) -> String {
             let returnTypeString = returnsSelf ? replaceSelf : nestedType
-            return "static func `subscript`\(genericTypesModifier ?? "")(\(parametersForProxySignature())\(set ? ", set newValue: \(returnTypeString)" : "")) -> Verify"
+            let returning = set ? "" : returningParameter(true, true)
+            return "static func `subscript`\(genericTypesModifier ?? "")(\(parametersForProxySignature())\(returning)\(set ? ", set newValue: \(returnTypeString)" : "")) -> Verify"
         }
         func verifyConstructor(set: Bool = false) -> String {
             return "return Verify(method: .\(subscriptCasePrefix(set ? "set" : "get"))(\(parametersForProxyInit(set: set))))"
@@ -550,15 +556,38 @@ import SourceryRuntime
         // Helpers
         private var returnsSelf: Bool { return TypeWrapper(wrapped.returnTypeName).isSelfType }
         private var replaceSelf: String { return Current.selfType }
+        private func returnTypeStripped(type: Bool = false) -> String {
+            let returnTypeRaw = "\(wrapped.returnTypeName)"
+            var stripped: String = {
+                guard let range = returnTypeRaw.range(of: "where") else { return returnTypeRaw }
+                var stripped = returnTypeRaw
+                stripped.removeSubrange((range.lowerBound)...)
+                return stripped
+            }()
+            stripped = stripped.trimmingCharacters(in: CharacterSet(charactersIn: " "))
+            guard type else { return stripped }
+            return "(\(stripped)).Type"
+        }
+        private func returnTypeMatters() -> Bool {
+            let count = SubscriptWrapper.namesWithoutReturnType[shortName] ?? 0
+            return count > 1
+        }
 
         // params
+        private func returningParameter(_ multiple: Bool, _ front: Bool) -> String {
+            guard returnTypeMatters() else { return "" }
+            let returning: String = "returning: \(returnTypeStripped(type: true))"
+            guard multiple else { return returning }
+            return front ? ", \(returning)" : "\(returning), "
+        }
         private func parametersForMethodTypeDeclaration(set: Bool = false) -> String {
             let generics: [String] = getGenerics()
             let params = wrappedParameters.map { param in
                 return param.isGeneric(generics) ? param.genericType : param.nestedType
             }.joined(separator: ", ")
             guard set else { return params }
-            return "\(params), \(nestedType)"
+            let newValue = TypeWrapper(wrapped.returnTypeName).isGeneric(generics) ? "Parameter<GenericAttribute>" : nestedType
+            return "\(params), \(newValue)"
         }
         private func parametersForProxyInit(set: Bool = false) -> String {
             let generics = getGenerics()
@@ -571,7 +600,8 @@ import SourceryRuntime
         private func parametersForMethodCall(set: Bool = false) -> String {
             let generics = getGenerics()
             let params = wrappedParameters.map { $0.wrappedForCalls(generics) }.joined(separator: ", ")
-            return !set ? params : "\(params), \(nestedType).value(newValue)"
+            let postfix = TypeWrapper(wrapped.returnTypeName).isGeneric(generics) ? ".wrapAsGeneric()" : ""
+            return !set ? params : "\(params), \(nestedType).value(newValue)\(postfix)"
         }
     }
 
@@ -1068,7 +1098,7 @@ import SourceryRuntime
             }()
             stripped = stripped.trimmingCharacters(in: CharacterSet(charactersIn: " "))
             guard type else { return stripped }
-            return "\(stripped).Type"
+            return "(\(stripped)).Type"
         }
     }
 

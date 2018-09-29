@@ -3078,38 +3078,38 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
     struct Verify {
         fileprivate var method: MethodType
 
-        static func foo<T>(bar: Parameter<T>, returning: String.Type) -> Verify { return Verify(method: .m_foo__bar_bar_1(bar.wrapAsGeneric()))}
-        static func foo<T>(bar: Parameter<T>, returning: Int.Type) -> Verify { return Verify(method: .m_foo__bar_bar_2(bar.wrapAsGeneric()))}
-        static func foo<T>(bar: Parameter<T>, returning: Float.Type) -> Verify { return Verify(method: .m_foo__bar_bar_4(bar.wrapAsGeneric()))}
-        static func foo<T>(bar: Parameter<T>, returning: Double.Type) -> Verify { return Verify(method: .m_foo__bar_bar_5(bar.wrapAsGeneric()))}
-        static func foo<T>(bar: Parameter<String>, returning: Array<T>.Type) -> Verify { return Verify(method: .m_foo__bar_bar_6(bar))}
-        static func foo<T>(bar: Parameter<String>, returning: Set<T>.Type) -> Verify { return Verify(method: .m_foo__bar_bar_7(bar))}
-        static func foo<T>(bar: Parameter<Bool>, returning: T.Type) -> Verify { return Verify(method: .m_foo__bar_bar_9(bar))}
+        static func foo<T>(bar: Parameter<T>, returning: (String).Type) -> Verify { return Verify(method: .m_foo__bar_bar_1(bar.wrapAsGeneric()))}
+        static func foo<T>(bar: Parameter<T>, returning: (Int).Type) -> Verify { return Verify(method: .m_foo__bar_bar_2(bar.wrapAsGeneric()))}
+        static func foo<T>(bar: Parameter<T>, returning: (Float).Type) -> Verify { return Verify(method: .m_foo__bar_bar_4(bar.wrapAsGeneric()))}
+        static func foo<T>(bar: Parameter<T>, returning: (Double).Type) -> Verify { return Verify(method: .m_foo__bar_bar_5(bar.wrapAsGeneric()))}
+        static func foo<T>(bar: Parameter<String>, returning: (Array<T>).Type) -> Verify { return Verify(method: .m_foo__bar_bar_6(bar))}
+        static func foo<T>(bar: Parameter<String>, returning: (Set<T>).Type) -> Verify { return Verify(method: .m_foo__bar_bar_7(bar))}
+        static func foo<T>(bar: Parameter<Bool>, returning: (T).Type) -> Verify { return Verify(method: .m_foo__bar_bar_9(bar))}
     }
 
     struct Perform {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func foo<T>(bar: Parameter<T>, returning: String.Type, perform: @escaping (T) -> Void) -> Perform {
+        static func foo<T>(bar: Parameter<T>, returning: (String).Type, perform: @escaping (T) -> Void) -> Perform {
             return Perform(method: .m_foo__bar_bar_1(bar.wrapAsGeneric()), performs: perform)
         }
-        static func foo<T>(bar: Parameter<T>, returning: Int.Type, perform: @escaping (T) -> Void) -> Perform {
+        static func foo<T>(bar: Parameter<T>, returning: (Int).Type, perform: @escaping (T) -> Void) -> Perform {
             return Perform(method: .m_foo__bar_bar_2(bar.wrapAsGeneric()), performs: perform)
         }
-        static func foo<T>(bar: Parameter<T>, returning: Float.Type, perform: @escaping (T) -> Void) -> Perform {
+        static func foo<T>(bar: Parameter<T>, returning: (Float).Type, perform: @escaping (T) -> Void) -> Perform {
             return Perform(method: .m_foo__bar_bar_4(bar.wrapAsGeneric()), performs: perform)
         }
-        static func foo<T>(bar: Parameter<T>, returning: Double.Type, perform: @escaping (T) -> Void) -> Perform {
+        static func foo<T>(bar: Parameter<T>, returning: (Double).Type, perform: @escaping (T) -> Void) -> Perform {
             return Perform(method: .m_foo__bar_bar_5(bar.wrapAsGeneric()), performs: perform)
         }
-        static func foo<T>(bar: Parameter<String>, returning: Array<T>.Type, perform: @escaping (String) -> Void) -> Perform {
+        static func foo<T>(bar: Parameter<String>, returning: (Array<T>).Type, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_foo__bar_bar_6(bar), performs: perform)
         }
-        static func foo<T>(bar: Parameter<String>, returning: Set<T>.Type, perform: @escaping (String) -> Void) -> Perform {
+        static func foo<T>(bar: Parameter<String>, returning: (Set<T>).Type, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_foo__bar_bar_7(bar), performs: perform)
         }
-        static func foo<T>(bar: Parameter<Bool>, returning: T.Type, perform: @escaping (Bool) -> Void) -> Perform {
+        static func foo<T>(bar: Parameter<Bool>, returning: (T).Type, perform: @escaping (Bool) -> Void) -> Perform {
             return Perform(method: .m_foo__bar_bar_9(bar), performs: perform)
         }
     }
@@ -3283,18 +3283,18 @@ class ProtocolMethodsThatDifferOnlyInReturnTypeMock: ProtocolMethodsThatDifferOn
     struct Verify {
         fileprivate var method: MethodType
 
-        static func foo(bar: Parameter<String>, returning: String.Type) -> Verify { return Verify(method: .m_foo__bar_bar_1(bar))}
-        static func foo(bar: Parameter<String>, returning: Int.Type) -> Verify { return Verify(method: .m_foo__bar_bar_2(bar))}
+        static func foo(bar: Parameter<String>, returning: (String).Type) -> Verify { return Verify(method: .m_foo__bar_bar_1(bar))}
+        static func foo(bar: Parameter<String>, returning: (Int).Type) -> Verify { return Verify(method: .m_foo__bar_bar_2(bar))}
     }
 
     struct Perform {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func foo(bar: Parameter<String>, returning: String.Type, perform: @escaping (String) -> Void) -> Perform {
+        static func foo(bar: Parameter<String>, returning: (String).Type, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_foo__bar_bar_1(bar), performs: perform)
         }
-        static func foo(bar: Parameter<String>, returning: Int.Type, perform: @escaping (String) -> Void) -> Perform {
+        static func foo(bar: Parameter<String>, returning: (Int).Type, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_foo__bar_bar_2(bar), performs: perform)
         }
     }
@@ -5457,15 +5457,43 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 
     subscript<T: Sequence>(with generic: T) -> Bool where T.Element: Equatable {
 		get {
-			addInvocation(.subscript_get_with_generic(Parameter<T>.value(generic).wrapAsGeneric()))
+			addInvocation(.subscript_get_with_generic_1(Parameter<T>.value(generic).wrapAsGeneric()))
 			do {
-				return try methodReturnValue(.subscript_get_with_generic(Parameter<T>.value(generic).wrapAsGeneric())).casted()
+				return try methodReturnValue(.subscript_get_with_generic_1(Parameter<T>.value(generic).wrapAsGeneric())).casted()
 			} catch {
 				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubDefinedMessage")
 			}
 		}
 		set {
-			addInvocation(.subscript_set_with_generic(Parameter<T>.value(generic).wrapAsGeneric(), Parameter<Bool>.value(newValue)))
+			addInvocation(.subscript_set_with_generic_1(Parameter<T>.value(generic).wrapAsGeneric(), Parameter<Bool>.value(newValue)))
+		}
+	}
+
+    subscript<T: FloatingPoint>(with generic: T) -> Int where T: FloatingPoint {
+		get {
+			addInvocation(.subscript_get_with_generic_2(Parameter<T>.value(generic).wrapAsGeneric()))
+			do {
+				return try methodReturnValue(.subscript_get_with_generic_2(Parameter<T>.value(generic).wrapAsGeneric())).casted()
+			} catch {
+				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubDefinedMessage")
+			}
+		}
+		set {
+			addInvocation(.subscript_set_with_generic_2(Parameter<T>.value(generic).wrapAsGeneric(), Parameter<Int>.value(newValue)))
+		}
+	}
+
+    subscript<T>(_ i: Int, _ type: T.Type) -> T {
+		get {
+			addInvocation(.subscript_get_i_type(Parameter<Int>.value(i), Parameter<T.Type>.value(type).wrapAsGeneric()))
+			do {
+				return try methodReturnValue(.subscript_get_i_type(Parameter<Int>.value(i), Parameter<T.Type>.value(type).wrapAsGeneric())).casted()
+			} catch {
+				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubDefinedMessage")
+			}
+		}
+		set {
+			addInvocation(.subscript_set_i_type(Parameter<Int>.value(i), Parameter<T.Type>.value(type).wrapAsGeneric(), Parameter<T>.value(newValue).wrapAsGeneric()))
 		}
 	}
 
@@ -5480,6 +5508,34 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 		}
 		set {
 			addInvocation(.subscript_set_closure_c(Parameter<(Int) -> Void>.value(c), Parameter<Bool>.value(newValue)))
+		}
+	}
+
+    subscript (same same: Int) -> Bool {
+		get {
+			addInvocation(.subscript_get_same_same_1(Parameter<Int>.value(same)))
+			do {
+				return try methodReturnValue(.subscript_get_same_same_1(Parameter<Int>.value(same))).casted()
+			} catch {
+				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubDefinedMessage")
+			}
+		}
+		set {
+			addInvocation(.subscript_set_same_same_1(Parameter<Int>.value(same), Parameter<Bool>.value(newValue)))
+		}
+	}
+
+    subscript (same same: Int) -> Int {
+		get {
+			addInvocation(.subscript_get_same_same_2(Parameter<Int>.value(same)))
+			do {
+				return try methodReturnValue(.subscript_get_same_same_2(Parameter<Int>.value(same))).casted()
+			} catch {
+				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubDefinedMessage")
+			}
+		}
+		set {
+			addInvocation(.subscript_set_same_same_2(Parameter<Int>.value(same), Parameter<Int>.value(newValue)))
 		}
 	}
 
@@ -5499,10 +5555,18 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
         case subscript_get_index_index(Parameter<String>)
 		case subscript_set_index_index(Parameter<String>, Parameter<String>)
         case subscript_get_label_name(Parameter<String>)
-        case subscript_get_with_generic(Parameter<GenericAttribute>)
-		case subscript_set_with_generic(Parameter<GenericAttribute>, Parameter<Bool>)
+        case subscript_get_with_generic_1(Parameter<GenericAttribute>)
+		case subscript_set_with_generic_1(Parameter<GenericAttribute>, Parameter<Bool>)
+        case subscript_get_with_generic_2(Parameter<GenericAttribute>)
+		case subscript_set_with_generic_2(Parameter<GenericAttribute>, Parameter<Int>)
+        case subscript_get_i_type(Parameter<Int>, Parameter<GenericAttribute>)
+		case subscript_set_i_type(Parameter<Int>, Parameter<GenericAttribute>, Parameter<GenericAttribute>)
         case subscript_get_closure_c(Parameter<(Int) -> Void>)
 		case subscript_set_closure_c(Parameter<(Int) -> Void>, Parameter<Bool>)
+        case subscript_get_same_same_1(Parameter<Int>)
+		case subscript_set_same_same_1(Parameter<Int>, Parameter<Bool>)
+        case subscript_get_same_same_2(Parameter<Int>)
+		case subscript_set_same_same_2(Parameter<Int>, Parameter<Int>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
@@ -5516,13 +5580,13 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 				return true
 			case (let .subscript_set_index_1(lhsIndex, lhsDidSet), let .subscript_set_index_1(rhsIndex, rhsDidSet)):
 				guard Parameter.compare(lhs: lhsIndex, rhs: rhsIndex, with: matcher) else { return false }
-				return Parameter<String>.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher)
+				return Parameter.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher)
             case (let .subscript_get_labeled_index(lhsIndex), let .subscript_get_labeled_index(rhsIndex)):
 				guard Parameter.compare(lhs: lhsIndex, rhs: rhsIndex, with: matcher) else { return false }
 				return true
 			case (let .subscript_set_labeled_index(lhsIndex, lhsDidSet), let .subscript_set_labeled_index(rhsIndex, rhsDidSet)):
 				guard Parameter.compare(lhs: lhsIndex, rhs: rhsIndex, with: matcher) else { return false }
-				return Parameter<String>.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher)
+				return Parameter.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher)
             case (let .subscript_get_x_y(lhsX, lhsY), let .subscript_get_x_y(rhsX, rhsY)):
 				guard Parameter.compare(lhs: lhsX, rhs: rhsX, with: matcher) else { return false }
 				guard Parameter.compare(lhs: lhsY, rhs: rhsY, with: matcher) else { return false }
@@ -5530,34 +5594,60 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 			case (let .subscript_set_x_y(lhsX, lhsY, lhsDidSet), let .subscript_set_x_y(rhsX, rhsY, rhsDidSet)):
 				guard Parameter.compare(lhs: lhsX, rhs: rhsX, with: matcher) else { return false }
 				guard Parameter.compare(lhs: lhsY, rhs: rhsY, with: matcher) else { return false }
-				return Parameter<String>.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher)
+				return Parameter.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher)
             case (let .subscript_get_index_2(lhsIndex), let .subscript_get_index_2(rhsIndex)):
 				guard Parameter.compare(lhs: lhsIndex, rhs: rhsIndex, with: matcher) else { return false }
 				return true
 			case (let .subscript_set_index_2(lhsIndex, lhsDidSet), let .subscript_set_index_2(rhsIndex, rhsDidSet)):
 				guard Parameter.compare(lhs: lhsIndex, rhs: rhsIndex, with: matcher) else { return false }
-				return Parameter<String>.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher)
+				return Parameter.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher)
             case (let .subscript_get_index_index(lhsIndex), let .subscript_get_index_index(rhsIndex)):
 				guard Parameter.compare(lhs: lhsIndex, rhs: rhsIndex, with: matcher) else { return false }
 				return true
 			case (let .subscript_set_index_index(lhsIndex, lhsDidSet), let .subscript_set_index_index(rhsIndex, rhsDidSet)):
 				guard Parameter.compare(lhs: lhsIndex, rhs: rhsIndex, with: matcher) else { return false }
-				return Parameter<String>.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher)
+				return Parameter.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher)
             case (let .subscript_get_label_name(lhsName), let .subscript_get_label_name(rhsName)):
 				guard Parameter.compare(lhs: lhsName, rhs: rhsName, with: matcher) else { return false }
 				return true
-            case (let .subscript_get_with_generic(lhsGeneric), let .subscript_get_with_generic(rhsGeneric)):
+            case (let .subscript_get_with_generic_1(lhsGeneric), let .subscript_get_with_generic_1(rhsGeneric)):
 				guard Parameter.compare(lhs: lhsGeneric, rhs: rhsGeneric, with: matcher) else { return false }
 				return true
-			case (let .subscript_set_with_generic(lhsGeneric, lhsDidSet), let .subscript_set_with_generic(rhsGeneric, rhsDidSet)):
+			case (let .subscript_set_with_generic_1(lhsGeneric, lhsDidSet), let .subscript_set_with_generic_1(rhsGeneric, rhsDidSet)):
 				guard Parameter.compare(lhs: lhsGeneric, rhs: rhsGeneric, with: matcher) else { return false }
-				return Parameter<Bool>.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher)
+				return Parameter.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher)
+            case (let .subscript_get_with_generic_2(lhsGeneric), let .subscript_get_with_generic_2(rhsGeneric)):
+				guard Parameter.compare(lhs: lhsGeneric, rhs: rhsGeneric, with: matcher) else { return false }
+				return true
+			case (let .subscript_set_with_generic_2(lhsGeneric, lhsDidSet), let .subscript_set_with_generic_2(rhsGeneric, rhsDidSet)):
+				guard Parameter.compare(lhs: lhsGeneric, rhs: rhsGeneric, with: matcher) else { return false }
+				return Parameter.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher)
+            case (let .subscript_get_i_type(lhsI, lhsType), let .subscript_get_i_type(rhsI, rhsType)):
+				guard Parameter.compare(lhs: lhsI, rhs: rhsI, with: matcher) else { return false }
+				guard Parameter.compare(lhs: lhsType, rhs: rhsType, with: matcher) else { return false }
+				return true
+			case (let .subscript_set_i_type(lhsI, lhsType, lhsDidSet), let .subscript_set_i_type(rhsI, rhsType, rhsDidSet)):
+				guard Parameter.compare(lhs: lhsI, rhs: rhsI, with: matcher) else { return false }
+				guard Parameter.compare(lhs: lhsType, rhs: rhsType, with: matcher) else { return false }
+				return Parameter.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher)
             case (let .subscript_get_closure_c(lhsC), let .subscript_get_closure_c(rhsC)):
 				guard Parameter.compare(lhs: lhsC, rhs: rhsC, with: matcher) else { return false }
 				return true
 			case (let .subscript_set_closure_c(lhsC, lhsDidSet), let .subscript_set_closure_c(rhsC, rhsDidSet)):
 				guard Parameter.compare(lhs: lhsC, rhs: rhsC, with: matcher) else { return false }
-				return Parameter<Bool>.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher)
+				return Parameter.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher)
+            case (let .subscript_get_same_same_1(lhsSame), let .subscript_get_same_same_1(rhsSame)):
+				guard Parameter.compare(lhs: lhsSame, rhs: rhsSame, with: matcher) else { return false }
+				return true
+			case (let .subscript_set_same_same_1(lhsSame, lhsDidSet), let .subscript_set_same_same_1(rhsSame, rhsDidSet)):
+				guard Parameter.compare(lhs: lhsSame, rhs: rhsSame, with: matcher) else { return false }
+				return Parameter.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher)
+            case (let .subscript_get_same_same_2(lhsSame), let .subscript_get_same_same_2(rhsSame)):
+				guard Parameter.compare(lhs: lhsSame, rhs: rhsSame, with: matcher) else { return false }
+				return true
+			case (let .subscript_set_same_same_2(lhsSame, lhsDidSet), let .subscript_set_same_same_2(rhsSame, rhsDidSet)):
+				guard Parameter.compare(lhs: lhsSame, rhs: rhsSame, with: matcher) else { return false }
+				return Parameter.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher)
             default: return false
             }
         }
@@ -5578,10 +5668,18 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
             case let .subscript_get_index_index(p0): return p0.intValue
 			case let .subscript_set_index_index(p0, _): return p0.intValue
             case let .subscript_get_label_name(p0): return p0.intValue
-            case let .subscript_get_with_generic(p0): return p0.intValue
-			case let .subscript_set_with_generic(p0, _): return p0.intValue
+            case let .subscript_get_with_generic_1(p0): return p0.intValue
+			case let .subscript_set_with_generic_1(p0, _): return p0.intValue
+            case let .subscript_get_with_generic_2(p0): return p0.intValue
+			case let .subscript_set_with_generic_2(p0, _): return p0.intValue
+            case let .subscript_get_i_type(p0, p1): return p0.intValue + p1.intValue
+			case let .subscript_set_i_type(p0, p1, _): return p0.intValue + p1.intValue
             case let .subscript_get_closure_c(p0): return p0.intValue
 			case let .subscript_set_closure_c(p0, _): return p0.intValue
+            case let .subscript_get_same_same_1(p0): return p0.intValue
+			case let .subscript_set_same_same_1(p0, _): return p0.intValue
+            case let .subscript_get_same_same_2(p0): return p0.intValue
+			case let .subscript_set_same_same_2(p0, _): return p0.intValue
             }
         }
     }
@@ -5631,10 +5729,22 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
             return Given(method: .subscript_get_label_name(name), products: willReturn.map({ Product.return($0) }))
         }
         static func `subscript`<T: Sequence>(with generic: Parameter<T>, willReturn: Bool...) -> SubscriptStub {
-            return Given(method: .subscript_get_with_generic(generic.wrapAsGeneric()), products: willReturn.map({ Product.return($0) }))
+            return Given(method: .subscript_get_with_generic_1(generic.wrapAsGeneric()), products: willReturn.map({ Product.return($0) }))
+        }
+        static func `subscript`<T: FloatingPoint>(with generic: Parameter<T>, willReturn: Int...) -> SubscriptStub {
+            return Given(method: .subscript_get_with_generic_2(generic.wrapAsGeneric()), products: willReturn.map({ Product.return($0) }))
+        }
+        static func `subscript`<T>(_ i: Parameter<Int>, _ type: Parameter<T.Type>, willReturn: T...) -> SubscriptStub {
+            return Given(method: .subscript_get_i_type(i, type.wrapAsGeneric()), products: willReturn.map({ Product.return($0) }))
         }
         static func `subscript`(closure c: Parameter<(Int) -> Void>, willReturn: Bool...) -> SubscriptStub {
             return Given(method: .subscript_get_closure_c(c), products: willReturn.map({ Product.return($0) }))
+        }
+        static func `subscript`(same: Parameter<Int>, willReturn: Bool...) -> SubscriptStub {
+            return Given(method: .subscript_get_same_same_1(same), products: willReturn.map({ Product.return($0) }))
+        }
+        static func `subscript`(same: Parameter<Int>, willReturn: Int...) -> SubscriptStub {
+            return Given(method: .subscript_get_same_same_2(same), products: willReturn.map({ Product.return($0) }))
         }
     }
 
@@ -5657,10 +5767,18 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
         static func `subscript`(index: Parameter<String>) -> Verify { return Verify(method: .subscript_get_index_index(index))}
         static func `subscript`(index: Parameter<String>, set newValue: Parameter<String>) -> Verify { return Verify(method: .subscript_set_index_index(index, newValue))}
         static func `subscript`(label name: Parameter<String>) -> Verify { return Verify(method: .subscript_get_label_name(name))}
-        static func `subscript`<T: Sequence>(with generic: Parameter<T>) -> Verify { return Verify(method: .subscript_get_with_generic(generic.wrapAsGeneric()))}
-        static func `subscript`<T: Sequence>(with generic: Parameter<T>, set newValue: Parameter<Bool>) -> Verify { return Verify(method: .subscript_set_with_generic(generic.wrapAsGeneric(), newValue))}
+        static func `subscript`<T: Sequence>(with generic: Parameter<T>) -> Verify { return Verify(method: .subscript_get_with_generic_1(generic.wrapAsGeneric()))}
+        static func `subscript`<T: Sequence>(with generic: Parameter<T>, set newValue: Parameter<Bool>) -> Verify { return Verify(method: .subscript_set_with_generic_1(generic.wrapAsGeneric(), newValue))}
+        static func `subscript`<T: FloatingPoint>(with generic: Parameter<T>) -> Verify { return Verify(method: .subscript_get_with_generic_2(generic.wrapAsGeneric()))}
+        static func `subscript`<T: FloatingPoint>(with generic: Parameter<T>, set newValue: Parameter<Int>) -> Verify { return Verify(method: .subscript_set_with_generic_2(generic.wrapAsGeneric(), newValue))}
+        static func `subscript`<T>(_ i: Parameter<Int>, _ type: Parameter<T.Type>) -> Verify { return Verify(method: .subscript_get_i_type(i, type.wrapAsGeneric()))}
+        static func `subscript`<T>(_ i: Parameter<Int>, _ type: Parameter<T.Type>, set newValue: Parameter<T>) -> Verify { return Verify(method: .subscript_set_i_type(i, type.wrapAsGeneric(), newValue.wrapAsGeneric()))}
         static func `subscript`(closure c: Parameter<(Int) -> Void>) -> Verify { return Verify(method: .subscript_get_closure_c(c))}
         static func `subscript`(closure c: Parameter<(Int) -> Void>, set newValue: Parameter<Bool>) -> Verify { return Verify(method: .subscript_set_closure_c(c, newValue))}
+        static func `subscript`(same: Parameter<Int>, returning: (Bool).Type) -> Verify { return Verify(method: .subscript_get_same_same_1(same))}
+        static func `subscript`(same: Parameter<Int>, set newValue: Parameter<Bool>) -> Verify { return Verify(method: .subscript_set_same_same_1(same, newValue))}
+        static func `subscript`(same: Parameter<Int>, returning: (Int).Type) -> Verify { return Verify(method: .subscript_get_same_same_2(same))}
+        static func `subscript`(same: Parameter<Int>, set newValue: Parameter<Int>) -> Verify { return Verify(method: .subscript_set_same_same_2(same, newValue))}
     }
 
     struct Perform {
