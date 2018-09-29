@@ -188,8 +188,10 @@ public extension Parameter where ValueType: Equatable {
 
 public extension Parameter where ValueType: Sequence {
 #if swift(>=3.2)
+    /// Element
     typealias Element = ValueType.Element
 #else
+    /// Element
     typealias Element = ValueType.Iterator.Element
 #endif
     /// [Internal] Compare two parameters

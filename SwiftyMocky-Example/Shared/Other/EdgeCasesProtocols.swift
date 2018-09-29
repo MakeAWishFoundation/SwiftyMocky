@@ -18,3 +18,9 @@ protocol EdgeCasesGenericsProtocol {
     func sorted<Key, Value>(by key: Mytest<Key, Value>)
     func getter<K,V: Sequence,T>(swapped key: Mytest<K,V>) -> T
 }
+
+//sourcery: AutoMockable
+protocol FailsWithUntagged {
+    init<T>(with t: T) where T:Equatable
+    func foo<T>(_: T, bar : String) where T: Sequence // wrong formatted
+}
