@@ -24,3 +24,14 @@ protocol FailsWithUntagged {
     init<T>(with t: T) where T:Equatable
     func foo<T>(_: T, bar : String) where T: Sequence // wrong formatted
 }
+
+
+//sourcery: AutoMockable
+protocol FailsWithKeywordArguments {
+    func foo(for: String)
+    func `throw`(while: String) -> Error
+    func `return`(do while: String) -> Bool
+
+    var `throw`: Error { get set }
+    subscript (_ return: Int) -> Bool { get set }
+}
