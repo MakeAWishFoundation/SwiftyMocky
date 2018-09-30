@@ -16,7 +16,7 @@ import SwiftyMocky
     @testable import Mocky_Example_macOS
 #endif
 
-class SimpleProtocolsTests: SwiftyTestCase {
+class SimpleProtocolsTests: XCTestCase {
     func test_simpleProtocol_simpleMethod() {
         let mock = SimpleProtocolWithMethodsMock()
 

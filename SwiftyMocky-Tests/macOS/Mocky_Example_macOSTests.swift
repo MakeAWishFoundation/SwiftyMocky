@@ -10,7 +10,7 @@ import XCTest
 import SwiftyMocky
 @testable import Mocky_Example_macOS
 
-class Mocky_Example_macOSTests: SwiftyTestCase {
+class Mocky_Example_macOSTests: XCTestCase {
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.

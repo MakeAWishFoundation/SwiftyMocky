@@ -16,7 +16,7 @@ import SwiftyMocky
     @testable import Mocky_Example_macOS
 #endif
 
-class ProtocolsWithGenericsTests: SwiftyTestCase {
+class ProtocolsWithGenericsTests: XCTestCase {
     func test_protocol_with_generic_methods() {
         let mock = ProtocolWithGenericMethodsMock()
 

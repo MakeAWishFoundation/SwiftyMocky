@@ -16,7 +16,7 @@ import SwiftyMocky
     @testable import Mocky_Example_macOS
 #endif
 
-class ComplicatedServiceTests: SwiftyTestCase {
+class ComplicatedServiceTests: XCTestCase {
     //    var sut: // somthing depending on service - add later
     var service: ComplicatedServiceTypeMock!
 

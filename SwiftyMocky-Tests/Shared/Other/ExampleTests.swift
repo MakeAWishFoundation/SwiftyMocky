@@ -22,7 +22,7 @@ enum TestError: Error {
     case third
 }
 
-class ExampleTests: SwiftyTestCase {
+class ExampleTests: XCTestCase {
     func testGivenExample() {
         let mock = UserStorageTypeMock()
 

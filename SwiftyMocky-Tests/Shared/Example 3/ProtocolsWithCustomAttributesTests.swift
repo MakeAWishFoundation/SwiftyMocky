@@ -20,7 +20,7 @@ enum UserVerifyError: Error {
     case tooYoung
 }
 
-class ProtocolsWithCustomAttributesTests: SwiftyTestCase {
+class ProtocolsWithCustomAttributesTests: XCTestCase {
     func test_protocol_using_tuples() {
         let mock = ProtocolWithTuplesMock()
 

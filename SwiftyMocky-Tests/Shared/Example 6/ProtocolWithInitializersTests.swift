@@ -16,7 +16,7 @@ import SwiftyMocky
     @testable import Mocky_Example_macOS
 #endif
 
-class ProtocolWithInitializersTests: SwiftyTestCase {
+class ProtocolWithInitializersTests: XCTestCase {
     func test_protocol_with_initializers() {
         // You can use all defined initializers
         let mock1 = ProtocolWithInitializersMock(param: 1)

@@ -6,7 +6,7 @@
 //  Copyright © 2017 MakeAWishFoundation. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
 //! Project version number for SwiftyMocky.
 FOUNDATION_EXPORT double SwiftyMockyVersionNumber;
@@ -15,5 +15,4 @@ FOUNDATION_EXPORT double SwiftyMockyVersionNumber;
 FOUNDATION_EXPORT const unsigned char SwiftyMockyVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <SwiftyMocky/PublicHeader.h>
-
-
+#import <SwiftyMocky/MockySetup.h>

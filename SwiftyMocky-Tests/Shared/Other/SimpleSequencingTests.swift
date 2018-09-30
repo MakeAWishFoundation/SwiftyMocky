@@ -16,7 +16,7 @@ import SwiftyMocky
 @testable import Mocky_Example_macOS
 #endif
 
-class SimpleSequencingTests: SwiftyTestCase {
+class SimpleSequencingTests: XCTestCase {
     override func setUp() {
         super.setUp()
     }

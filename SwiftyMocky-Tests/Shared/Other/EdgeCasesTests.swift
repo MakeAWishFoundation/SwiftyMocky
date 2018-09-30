@@ -16,7 +16,7 @@ import SwiftyMocky
 @testable import Mocky_Example_macOS
 #endif
 
-class EdgeCasesTests: SwiftyTestCase {
+class EdgeCasesTests: XCTestCase {
     func test_generics_with_custom_structs() {
         let mock = EdgeCasesGenericsProtocolMock()
         Matcher.default.register(Mytest<String, [Int]>.self) { lhs, rhs in
