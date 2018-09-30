@@ -34,7 +34,6 @@
 		CC07B60820221B6700F51534 /* ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC07B60720221B6700F51534 /* ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift */; };
 		CC07B60920221B6700F51534 /* ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC07B60720221B6700F51534 /* ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift */; };
 		CC07B60A20221B6700F51534 /* ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC07B60720221B6700F51534 /* ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift */; };
-		CC22B82C2157ED2C00BCD7F2 /* SwiftyTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC22B82B2157ED2C00BCD7F2 /* SwiftyTestCase.swift */; };
 		CC3252172003CC22009AD6C2 /* Excluded.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3252162003CC22009AD6C2 /* Excluded.generated.swift */; };
 		CC3252182003CC22009AD6C2 /* Excluded.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3252162003CC22009AD6C2 /* Excluded.generated.swift */; };
 		CC3252192003CC22009AD6C2 /* Excluded.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3252162003CC22009AD6C2 /* Excluded.generated.swift */; };
@@ -105,6 +104,10 @@
 		CCC5CABD215F8A6F00D29291 /* EdgeCasesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC5CABC215F8A6F00D29291 /* EdgeCasesTests.swift */; };
 		CCC5CABE215F8A6F00D29291 /* EdgeCasesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC5CABC215F8A6F00D29291 /* EdgeCasesTests.swift */; };
 		CCC5CABF215F8A6F00D29291 /* EdgeCasesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC5CABC215F8A6F00D29291 /* EdgeCasesTests.swift */; };
+		CCC5CAD42161180D00D29291 /* SwiftyMockyTestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC5CAD22161180D00D29291 /* SwiftyMockyTestObserver.swift */; };
+		CCC5CAD52161180D00D29291 /* CustomAssertions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC5CAD32161180D00D29291 /* CustomAssertions.swift */; };
+		CCC5CAD82161183E00D29291 /* MockySetup.h in Headers */ = {isa = PBXBuildFile; fileRef = CCC5CAD62161183E00D29291 /* MockySetup.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CCC5CAD92161183E00D29291 /* MockySetup.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC5CAD72161183E00D29291 /* MockySetup.m */; };
 		CCE350E91FCC0A9400A76C4C /* NonSwiftProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE350D21FCC0A9400A76C4C /* NonSwiftProtocol.swift */; };
 		CCE350EA1FCC0A9400A76C4C /* NonSwiftProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE350D21FCC0A9400A76C4C /* NonSwiftProtocol.swift */; };
 		CCE350EB1FCC0A9400A76C4C /* ExampleProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE350D31FCC0A9400A76C4C /* ExampleProtocols.swift */; };
@@ -171,9 +174,6 @@
 		CCE351661FCC0B9700A76C4C /* Mock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE351621FCC0B9700A76C4C /* Mock.generated.swift */; };
 		CCE351671FCC0B9700A76C4C /* ItemsRepositoryMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE351631FCC0B9700A76C4C /* ItemsRepositoryMock.swift */; };
 		CCE351681FCC0B9700A76C4C /* Mocky_tvOS_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE351641FCC0B9700A76C4C /* Mocky_tvOS_Tests.swift */; };
-		E41FD99D215FB3D1005449CF /* ExamplePrincipalClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41FD99C215FB3D1005449CF /* ExamplePrincipalClass.swift */; };
-		E41FD99E215FB3D1005449CF /* ExamplePrincipalClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41FD99C215FB3D1005449CF /* ExamplePrincipalClass.swift */; };
-		E41FD99F215FB3D1005449CF /* ExamplePrincipalClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41FD99C215FB3D1005449CF /* ExamplePrincipalClass.swift */; };
 		ECBE95A379A0E9C3BE02D963 /* Pods_Mocky_Example_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAC0C2FE2E105DB67A93DC7E /* Pods_Mocky_Example_macOS.framework */; };
 /* End PBXBuildFile section */
 
@@ -229,7 +229,6 @@
 		CAC0C2FE2E105DB67A93DC7E /* Pods_Mocky_Example_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mocky_Example_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC07B601202215D500F51534 /* ProtocolMethodsThatDifferOnlyInReturnType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolMethodsThatDifferOnlyInReturnType.swift; sourceTree = "<group>"; };
 		CC07B60720221B6700F51534 /* ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift; sourceTree = "<group>"; };
-		CC22B82B2157ED2C00BCD7F2 /* SwiftyTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyTestCase.swift; sourceTree = "<group>"; };
 		CC3252162003CC22009AD6C2 /* Excluded.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Excluded.generated.swift; sourceTree = "<group>"; };
 		CC32521A2004C217009AD6C2 /* GenericProtocolsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericProtocolsTests.swift; sourceTree = "<group>"; };
 		CC32521E20051AC9009AD6C2 /* SelfConstrainedProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfConstrainedProtocol.swift; sourceTree = "<group>"; };
@@ -263,6 +262,10 @@
 		CCB026A71FB4F38F00ACA9F0 /* GenericAttribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericAttribute.swift; sourceTree = "<group>"; };
 		CCC5CAB8215EB24400D29291 /* EdgeCasesProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgeCasesProtocols.swift; sourceTree = "<group>"; };
 		CCC5CABC215F8A6F00D29291 /* EdgeCasesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgeCasesTests.swift; sourceTree = "<group>"; };
+		CCC5CAD22161180D00D29291 /* SwiftyMockyTestObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyMockyTestObserver.swift; sourceTree = "<group>"; };
+		CCC5CAD32161180D00D29291 /* CustomAssertions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAssertions.swift; sourceTree = "<group>"; };
+		CCC5CAD62161183E00D29291 /* MockySetup.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MockySetup.h; sourceTree = "<group>"; };
+		CCC5CAD72161183E00D29291 /* MockySetup.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MockySetup.m; sourceTree = "<group>"; };
 		CCE350D21FCC0A9400A76C4C /* NonSwiftProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NonSwiftProtocol.swift; sourceTree = "<group>"; };
 		CCE350D31FCC0A9400A76C4C /* ExampleProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleProtocols.swift; sourceTree = "<group>"; };
 		CCE350D41FCC0A9400A76C4C /* ItemsRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemsRepository.swift; sourceTree = "<group>"; };
@@ -309,7 +312,6 @@
 		CCE351651FCC0B9700A76C4C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D4CF1AC7A6F257BB2904DA55 /* Pods-Mocky_Tests_tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Tests_tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Tests_tvOS/Pods-Mocky_Tests_tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		E0F0B024E7EFDB2727CEE125 /* Pods-Mocky_Tests_macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Tests_macOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Tests_macOS/Pods-Mocky_Tests_macOS.release.xcconfig"; sourceTree = "<group>"; };
-		E41FD99C215FB3D1005449CF /* ExamplePrincipalClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamplePrincipalClass.swift; sourceTree = "<group>"; };
 		E467147D1ECEF4D600C7DAB3 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		E671CB0D6255BBBB2FADDA17 /* Pods-Mocky_Example_macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Example_macOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Example_macOS/Pods-Mocky_Example_macOS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -544,7 +546,10 @@
 		CCAFC9F91FAF24EB003F776A /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				CC22B82B2157ED2C00BCD7F2 /* SwiftyTestCase.swift */,
+				CCC5CAD62161183E00D29291 /* MockySetup.h */,
+				CCC5CAD72161183E00D29291 /* MockySetup.m */,
+				CCC5CAD32161180D00D29291 /* CustomAssertions.swift */,
+				CCC5CAD22161180D00D29291 /* SwiftyMockyTestObserver.swift */,
 				CCA9F815215668D800F2880B /* Stubbing.swift */,
 				CCA9F817215668DF00F2880B /* Policies.swift */,
 				CCAFC9FC1FAF24EB003F776A /* Mock.swift */,
@@ -706,7 +711,6 @@
 				CC491A221FDAB56F001CAB8A /* Example 8 */,
 				CC07B60620221B4B00F51534 /* Example 9 */,
 				CCE3512F1FCC0B8200A76C4C /* Other */,
-				E41FD99C215FB3D1005449CF /* ExamplePrincipalClass.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -829,6 +833,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CCC5CAD82161183E00D29291 /* MockySetup.h in Headers */,
 				CCAFC9F31FAF244D003F776A /* SwiftyMocky.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1014,6 +1019,7 @@
 					};
 					CCAFC9EE1FAF244D003F776A = {
 						CreatedOnToolsVersion = 9.1;
+						LastSwiftMigration = 1000;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -1322,7 +1328,6 @@
 				CC32522420061574009AD6C2 /* SelfConstrainedProtocolTests.swift in Sources */,
 				C87B4F832153EF0700DD8AE3 /* ExpressibleByLiteralsTests.swift in Sources */,
 				CCE351671FCC0B9700A76C4C /* ItemsRepositoryMock.swift in Sources */,
-				E41FD99E215FB3D1005449CF /* ExamplePrincipalClass.swift in Sources */,
 				CCA9F81C21566B1400F2880B /* SimpleSequencingTests.swift in Sources */,
 				C870665C215E5ACB00EC852B /* SubscriptsTests.swift in Sources */,
 				CCE351491FCC0B8200A76C4C /* ProtocolsWithGenericsTests.swift in Sources */,
@@ -1376,7 +1381,6 @@
 				CCC5CABD215F8A6F00D29291 /* EdgeCasesTests.swift in Sources */,
 				CCE3514A1FCC0B8200A76C4C /* ProtocolWithInitializersTests.swift in Sources */,
 				CCE351541FCC0B8200A76C4C /* ProtocolWithThrowingMehtodsTests.swift in Sources */,
-				E41FD99D215FB3D1005449CF /* ExamplePrincipalClass.swift in Sources */,
 				C8B87413215A54B1002CF376 /* PropertiesHandlingTests.swift in Sources */,
 				CCE3515D1FCC0B8F00A76C4C /* Mock.generated.swift in Sources */,
 				CCE351501FCC0B8200A76C4C /* ProtocolWithStaticMembersTests.swift in Sources */,
@@ -1445,7 +1449,6 @@
 				CC32522520061574009AD6C2 /* SelfConstrainedProtocolTests.swift in Sources */,
 				C87B4F842153EF0700DD8AE3 /* ExpressibleByLiteralsTests.swift in Sources */,
 				CC5B61DF1FCC18D0007FB209 /* ProtocolsWithCustomAttributesTests.swift in Sources */,
-				E41FD99F215FB3D1005449CF /* ExamplePrincipalClass.swift in Sources */,
 				CCA9F81D21566B1500F2880B /* SimpleSequencingTests.swift in Sources */,
 				C870665D215E5ACB00EC852B /* SubscriptsTests.swift in Sources */,
 				CC5B61DC1FCC18D0007FB209 /* SimpleProtocolsTests.swift in Sources */,
@@ -1460,10 +1463,12 @@
 				CCAFCA061FAF24EB003F776A /* Mock+Assertions.swift in Sources */,
 				CCAFCA021FAF24EB003F776A /* Parameter.swift in Sources */,
 				CCAFCA051FAF24EB003F776A /* Matcher.swift in Sources */,
-				CC22B82C2157ED2C00BCD7F2 /* SwiftyTestCase.swift in Sources */,
+				CCC5CAD42161180D00D29291 /* SwiftyMockyTestObserver.swift in Sources */,
 				CC491A1B1FD9A33F001CAB8A /* Countable.swift in Sources */,
 				CCAFCA041FAF24EB003F776A /* Mock.swift in Sources */,
 				CCB026A81FB4F39000ACA9F0 /* GenericAttribute.swift in Sources */,
+				CCC5CAD92161183E00D29291 /* MockySetup.m in Sources */,
+				CCC5CAD52161180D00D29291 /* CustomAssertions.swift in Sources */,
 				C841941E2153D7E700D2BBC9 /* Parameter+Literals.swift in Sources */,
 				CCA9F818215668DF00F2880B /* Policies.swift in Sources */,
 				CCA9F816215668D800F2880B /* Stubbing.swift in Sources */,
@@ -1925,6 +1930,7 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -1955,6 +1961,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -1967,6 +1975,7 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -1995,6 +2004,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.swiftymocky.SwiftyMocky;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";

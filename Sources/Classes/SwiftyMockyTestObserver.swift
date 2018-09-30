@@ -19,7 +19,7 @@ public class SwiftyMockyTestObserver: NSObject, XCTestObservation {
 
     /// Call this method to setup custom error handling for SwiftyMocky, that allows to gracefully handle missing stub fatal errors.
     /// May be called multiple times, recommended to set this up in Principal class for Unit test bundle, but can be also called in test case SetUp method.
-    public static func setup() {
+    @objc public static func setup() {
         setupBlock()
     }
 
