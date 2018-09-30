@@ -9,17 +9,19 @@
 import Foundation
 
 // MARK: - Stubbing Policy
-/// Given Policy for treating sequence of events (products). For wr
+/// Given Policy for treating sequence of events (products). Used to determine if stub return values should be consumed
+/// once (.drop), or reused (.wrap). Applies to sequence as well - .drop means remove from stack after using, while
+/// .wrap iterates over sequence indefinitely.
 ///
 /// - `default`: Use current policy specified for Mock method type
-/// - wrap: Default policy in general. When reaching end of sequence of events, index will rewind to beginning (looping)
-/// - drop: With this policy, every call drops event. When events count reaches zero, given is removed from mock.
+/// - `wrap`: Default policy in general. When reaching end of sequence of events, index will rewind to beginning (looping)
+/// - `drop`: With this policy, every call drops event. When events count reaches zero, given is removed from mock.
 public enum StubbingPolicy {
     case `default`  // use mock default policy for method type
     case wrap       // default
     case drop
 
-    /// Resolves used policy. If self is default, will use inherited, otherwise self
+    /// [Internal] Resolves used policy. If self is default, will use inherited, otherwise self
     ///
     /// - Parameter inherited: Inherited (usually global default) policy
     /// - Returns: Policy used. Always .wrap or .drop
@@ -31,7 +33,7 @@ public enum StubbingPolicy {
         }
     }
 
-    /// Computes new index for stubs array. For wrap will rewind if out of bounds, for drop will not.
+    /// [Internal] Computes new index for stubs array. For wrap will rewind if out of bounds, for drop will not.
     /// Default is handled as wrap.
     ///
     /// - Parameters:
@@ -46,13 +48,22 @@ public enum StubbingPolicy {
     }
 }
 
-/// Internal, used for marking that stubs have configurable policy
+/// [Internal] used for marking that stubs have configurable policy
 public protocol WithStubbingPolicy: class {
+    /// Stubbing policy
     var policy: StubbingPolicy { get set }
+    /// [Internal] with new policy
+    ///
+    /// - Parameter policy: New policy
+    /// - Returns: Self with new policy
     func with(_ policy: StubbingPolicy) -> Self
 }
 
 public extension WithStubbingPolicy {
+    /// [Internal] with new policy
+    ///
+    /// - Parameter policy: New policy
+    /// - Returns: Self with new policy
     func with(_ policy: StubbingPolicy) -> Self {
         self.policy = policy
         return self
@@ -60,14 +71,21 @@ public extension WithStubbingPolicy {
 }
 
 // MARK: - Sequencing policy
-/// Sequencing policy - in which order Given would be resolved.
+/// Sequencing policy - in which order Given would be resolved. Pleas ehve in mind that this policy is applied ONLY after
+/// first ordering (based on how explicit is stub) is done.
 ///
-/// - lastWrittenResolvedFirst: Default policy. Last given overrides previous, if they are both with same generocity level
-/// - inWritingOrder: Givens would be recalled in order of generocity, respecting writing order (first line resolved first)
+/// - `lastWrittenResolvedFirst`: Default policy. Last given overrides previous, if they are both with same generocity level
+/// - `inWritingOrder`: Givens would be recalled in order of generocity, respecting writing order (first line resolved first)
 public enum SequencingPolicy {
     case lastWrittenResolvedFirst
     case inWritingOrder
 
+    /// [Internal] Sorts stub return values / errors throw with respect to ordering rule and policy
+    ///
+    /// - Parameters:
+    ///   - array: Array to sort
+    ///   - order: Default ordering closure
+    /// - Returns: Sorted with respoect to ordering and policy
     public func sorted<T>(_ array: [T], by order: (T, T) -> Bool) -> [T] {
         switch self {
         case .lastWrittenResolvedFirst: return array.reversed().sorted(by: order)

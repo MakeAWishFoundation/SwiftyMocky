@@ -123,11 +123,12 @@ public func VerifyProperty<T: StaticMock>(_ type: T.Type, _ count: Count, _ prop
 ///     Given(mock, .do(with: .value(1), and: .any)
 ///     Given(mock, .do(with: .any, and: .value(1))
 ///     ```
-///     Method stub will return most recent one.
+///     Method stub will return the one depending on mock sequencingPolicy. By default it means most recent one.
 ///
 /// - Parameters:
 ///   - object: Mock instance
 ///   - method: Method signature with wrapped parameters (Parameter<ValueType>) and return value
+///   - policy: Stubbing policy - uses mock policy by default (which defaults to .wrap)
 public func Given<T: Mock>(_ object: T, _ method: T.Given, _ policy: StubbingPolicy = .default) {
     object.given(policy.apply(to: method))
 }
@@ -141,11 +142,12 @@ public func Given<T: Mock>(_ object: T, _ method: T.Given, _ policy: StubbingPol
 ///     Given(T.self, .do(with: .value(1), and: .any)
 ///     Given(T.self, .do(with: .any, and: .value(1))
 ///     ```
-///     Method stub will return most recent one.
+///     Method stub will return the one depending on mock sequencingPolicy. By default it means most recent one.
 ///
 /// - Parameters:
 ///   - object: Mock type
 ///   - method: Static method signature with wrapped parameters (Parameter<ValueType>) and return value
+///   - policy: Stubbing policy - uses mock policy by default (which defaults to .wrap)
 public func Given<T: StaticMock>(_ type: T.Type, _ method: T.StaticGiven, _ policy: StubbingPolicy = .default) {
     type.given(policy.apply(to: method))
 }
@@ -161,7 +163,7 @@ public func Given<T: StaticMock>(_ type: T.Type, _ method: T.StaticGiven, _ poli
 ///     Perform(mock, .do(with: .value(1), and: .any, perform: { ... }))
 ///     Perform(mock, .do(with: .any, and: .value(1), perform: { ... }))
 ///     ```
-///     Method stub will return most recent one.
+///     Method stub will return the one depending on mock sequencingPolicy. By default it means most recent one.
 ///
 /// - Parameters:
 ///   - object: Mock instance
@@ -179,7 +181,7 @@ public func Perform<T: Mock>(_ object: T, _ method: T.Perform) {
 ///     Perform(T.self, .do(with: .value(1), and: .any, perform: { ... }))
 ///     Perform(T.self, .do(with: .any, and: .value(1), perform: { ... }))
 ///     ```
-///     Method stub will return most recent one.
+///     Method stub will return the one depending on mock sequencingPolicy. By default it means most recent one.
 ///
 /// - Parameters:
 ///   - object: Mock type
@@ -190,7 +192,7 @@ public func Perform<T: StaticMock>(_ object: T.Type, _ method: T.StaticPerform) 
 
 // MARK: - Helpers
 
-/// Fails flow with given message
+/// [Internal] Fails flow with given message
 ///
 /// - Parameter message: Failure message
 /// - Returns: Never
@@ -199,24 +201,34 @@ public func Failure(_ message: String) -> Swift.Never {
     FatalErrorUtil.fatalError(errorMessage)
 }
 
+/// [Internal] Used for handling fatal errors inside library.
 public struct FatalErrorUtil {
+    /// [Internal] Handler
     private static var handler: (String) -> Never = {
         print($0)
         exit(0)
     }
+    /// [Internal] Default handler
     private static var defalutHandler: (String) -> Never = {
         print($0)
         exit(0)
     }
 
+    /// [Internal] Override handling error handler
+    ///
+    /// - Parameter new: New handler
     public static func set(_ new: @escaping (String) -> Never) {
         handler = new
     }
 
+    /// [Internal] Restores default handler
     public static func restore() {
         handler = defalutHandler
     }
 
+    /// [Internal] Perform fatal error handler
+    ///
+    /// - Parameter message: Message
     public static func fatalError(_ message: String) -> Never {
         handler(message)
     }
@@ -233,6 +245,10 @@ public extension Optional {
 }
 
 private extension StubbingPolicy {
+    /// [Internal] Apply stubbing policy
+    ///
+    /// - Parameter method: Method
+    /// - Returns: With new policy
     func apply<T>(to method: T) -> T {
         return ((method as? WithStubbingPolicy)?.with(self) as? T) ?? method
     }

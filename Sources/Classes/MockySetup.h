@@ -12,6 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface MockySetup : NSObject
 
+/**
+ [Internal] Call to setup mocky observers. There should be no need to call it directly.
+ */
 + (void) setup;
 
 @end
