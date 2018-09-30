@@ -41,8 +41,8 @@ class SampleServiceTests: XCTestCase {
             return t0.0 == t1.0 && t0.1 == t1.1
         }
 
-//        Given(service,.getPoint(from: .any(Point.self), willReturn: Point(x: 0, y: 0)))
-//        Given(service,.getPoint(from: .value((0.0,0.0)), willReturn: Point(x: 1, y: 1)))
+        Given(service,.getPoint(from: .any(Point.self), willReturn: Point(x: 0, y: 0)))
+        Given(service,.getPoint(from: .value((0.0,0.0)), willReturn: Point(x: 1, y: 1)))
 
         let first = service.getPoint(from: Point(x: 1332, y: 1231))
         XCTAssertEqual(first.x, 0)
