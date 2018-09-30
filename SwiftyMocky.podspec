@@ -45,7 +45,6 @@ Library that uses metaprogramming technique to generate mocks based on sources, 
   s.subspec 'Custom' do |custom|
       custom.source_files = 'Sources/Classes/**/*'
       custom.exclude_files = [
-          "Sources/Classes/SwiftyMockyTestObserver.swift",
           "Sources/Classes/CustomAssertions.swift"
       ]
       custom.resources = '{Sources/Templates/*,get_sourcery.sh}'

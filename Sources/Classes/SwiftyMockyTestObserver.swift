@@ -6,19 +6,17 @@
 //
 
 import Foundation
+#if Mocky
 import XCTest
 
 public class SwiftyMockyTestObserver: NSObject, XCTestObservation {
-
     private static var currentTestCase: XCTestCase?
-
     private static let setupBlock: (() -> Void) = {
         XCTestObservationCenter.shared.addTestObserver(SwiftyMockyTestObserver())
         return {}
     }()
 
     /// Call this method to setup custom error handling for SwiftyMocky, that allows to gracefully handle missing stub fatal errors.
-    /// May be called multiple times, recommended to set this up in Principal class for Unit test bundle, but can be also called in test case SetUp method.
     @objc public static func setup() {
         setupBlock()
     }
@@ -31,6 +29,12 @@ public class SwiftyMockyTestObserver: NSObject, XCTestObservation {
         SwiftyMockyTestObserver.currentTestCase = nil
     }
 
+    /// [Internal] used to notify that stub return value was not found. Do not call it directly.
+    ///
+    /// - Parameters:
+    ///   - message: Message
+    ///   - file: File
+    ///   - line: Line
     public static func handleMissingStubError(message: String, file: StaticString, line: UInt) {
         guard let testCase = SwiftyMockyTestObserver.currentTestCase else {
             XCTFail(message, file: file, line: line)
@@ -47,8 +51,7 @@ public class SwiftyMockyTestObserver: NSObject, XCTestObservation {
     }
 }
 
-fileprivate class CallStackWrapper {
-
+private class CallStackWrapper {
     func findTestCaseLine(testCase: XCTestCase) -> UInt? {
         guard
             let testName = testCase.name.components(separatedBy: " ")[1].components(separatedBy: "]").first,
@@ -57,3 +60,10 @@ fileprivate class CallStackWrapper {
         return UInt(line)
     }
 }
+#else
+public class SwiftyMockyTestObserver: NSObject {
+    @objc public static func setup() {
+        // Empty on purpose
+    }
+}
+#endif

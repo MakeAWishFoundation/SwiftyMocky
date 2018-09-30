@@ -13,13 +13,11 @@
 
 + (void)load
 {
-    NSLog(@"LOADED SWIFTY MOCKY - HELLO :)");
     [SwiftyMockyTestObserver setup];
 }
 
 + (void)setup
 {
-    NSLog(@"SWIFTY MOCK - SETUP OBSERVERS");
     [SwiftyMockyTestObserver setup];
 }
 

@@ -548,8 +548,8 @@
 			children = (
 				CCC5CAD62161183E00D29291 /* MockySetup.h */,
 				CCC5CAD72161183E00D29291 /* MockySetup.m */,
-				CCC5CAD32161180D00D29291 /* CustomAssertions.swift */,
 				CCC5CAD22161180D00D29291 /* SwiftyMockyTestObserver.swift */,
+				CCC5CAD32161180D00D29291 /* CustomAssertions.swift */,
 				CCA9F815215668D800F2880B /* Stubbing.swift */,
 				CCA9F817215668DF00F2880B /* Policies.swift */,
 				CCAFC9FC1FAF24EB003F776A /* Mock.swift */,
