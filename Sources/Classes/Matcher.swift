@@ -208,7 +208,7 @@ public class Matcher {
         matchers.append((mirror, match as Any))
     }
 
-    /// Registers comparator for type, like comparing Int.self to Int.self. These types of comparators always returns true
+    /// Registers comparator for type, like comparing Int.self to Int.self. These types of comparators always returns true. Register like: `Matcher.default.register(CustomType.Type.self)`
     ///
     /// - Parameter valueType: Type.Type.self
     public func register<T>(_ valueType: T.Type.Type) {

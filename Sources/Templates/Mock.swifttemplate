@@ -97,22 +97,22 @@ import SourceryRuntime
             return "<\(all.joined(separator: ","))>"
         }
         static func extractGenericTypesConstraints(_ associatedTypes: [String]?) -> String {
-        guard let all = associatedTypes else { return "" }
-        let constraints = all.flatMap { t -> String? in
-            let splitted = split(t, byFirstOccurenceOf: " where ")
-            let constraint = splitted.0.replacingOccurrences(of: " ", with: "").characters.split(separator: ":").map(String.init)
-            guard constraint.count == 2 else { return nil }
-            let adopts = constraint[1].characters.split(separator: ",").map(String.init)
-            var mapped = adopts.map { "\(constraint[0]): \($0)" }
-            if !splitted.1.isEmpty {
-                mapped.append(splitted.1)
+            guard let all = associatedTypes else { return "" }
+            let constraints = all.flatMap { t -> String? in
+                let splitted = split(t, byFirstOccurenceOf: " where ")
+                let constraint = splitted.0.replacingOccurrences(of: " ", with: "").characters.split(separator: ":").map(String.init)
+                guard constraint.count == 2 else { return nil }
+                let adopts = constraint[1].characters.split(separator: ",").map(String.init)
+                var mapped = adopts.map { "\(constraint[0]): \($0)" }
+                if !splitted.1.isEmpty {
+                    mapped.append(splitted.1)
+                }
+                return mapped.joined(separator: ", ")
             }
-            return mapped.joined(separator: ", ")
+            .joined(separator: ", ")
+            guard !constraints.isEmpty else { return "" }
+            return " where \(constraints)"
         }
-        .joined(separator: ", ")
-        guard !constraints.isEmpty else { return "" }
-        return " where \(constraints)"
-    }
     }
 
     // Collision management
@@ -186,33 +186,22 @@ import SourceryRuntime
         func isGeneric(_ types: [String]) -> Bool {
             guard !type.isVoid else { return false }
 
-            func containsType(_ type: String) -> Bool {
-                return types.contains(where: {
-                    "\($0).Type" == type ||
-                    type.contains("<\($0)>") ||
-                    type.contains("<\($0).Type>")
-                })
-            }
+            return isGeneric(name: unwrapped, generics: types)
+        }
 
-            if types.contains(unwrapped) || containsType(unwrapped) {
-                return true
-            } else if let tuple = type.tuple {
-                for element in tuple.elements {
-                    guard !TypeWrapper(element.typeName).isGeneric(types) else { return true }
-                }
-            } else if let array = type.array {
-                return TypeWrapper(array.elementTypeName).isGeneric(types)
-            } else if let dictionary = type.dictionary {
-                guard !TypeWrapper(dictionary.valueTypeName).isGeneric(types) else { return true }
-                guard !TypeWrapper(dictionary.keyTypeName).isGeneric(types) else { return true }
-            } else if let closure = type.closure {
-                guard !TypeWrapper(closure.actualReturnTypeName).isGeneric(types) else { return true }
-                for parameter in closure.parameters {
-                    guard !ParameterWrapper(parameter).isGeneric(types) else { return true }
-                }
-            }
-
-            return false
+        private func isGeneric(name: String, generics: [String]) -> Bool {
+            let name = "(\(name.replacingOccurrences(of: " ", with: "")))"
+            let modifiers = "[\\?\\!]*"
+            return generics.contains(where: { generic in
+                let wrapped = "([\\(]\(generic)\(modifiers)[\\)\\.])"
+                let constraint = "([<,]\(generic)\(modifiers)[>,\\.])"
+                let arrays = "([\\[:]\(generic)\(modifiers)[\\],\\.:])"
+                let tuples = "([\\(,]\(generic)\(modifiers)[,\\.\\)])"
+                let closures = "((\\-\\>)\(generic)\(modifiers)[,\\.\\)])"
+                let pattern = "\(wrapped)|\(constraint)|\(arrays)|\(tuples)|\(closures)"
+                guard let regex = try? NSRegularExpression(pattern: pattern) else { return false }
+                return regex.firstMatch(in: name, options: [], range: NSRange(location: 0, length: (name as NSString).length)) != nil
+            })
         }
 
         func replacingSelf(unwrap: Bool = false) -> String {
@@ -267,7 +256,7 @@ import SourceryRuntime
             if parameter.isClosure && !isEscaping && !isOptional {
                 return "\(nestedType).any"
             } else {
-                return "\(nestedType).value(\(name))"
+                return "\(nestedType).value(\(escapedName))"
             }
         }
         var wrappedType: String {
@@ -288,6 +277,9 @@ import SourceryRuntime
         var name: String {
             return parameter.name
         }
+        var escapedName: String {
+            return "`\(parameter.name)`"
+        }
         var comparator: String {
             return "guard Parameter.compare(lhs: lhs\(parameter.name.capitalized), rhs: rhs\(parameter.name.capitalized), with: matcher) else { return false }"
         }
@@ -301,7 +293,7 @@ import SourceryRuntime
         }
 
         func wrappedForProxy(_ generics: [String]) -> String {
-            return isGeneric(generics) ? "\(name).wrapAsGeneric()" : "\(name)"
+            return isGeneric(generics) ? "\(escapedName).wrapAsGeneric()" : "\(escapedName)"
         }
         func wrappedForCalls(_ generics: [String]) -> String {
             return isGeneric(generics) ? "\(wrappedForCall).wrapAsGeneric()" : "\(wrappedForCall)"
@@ -316,9 +308,9 @@ import SourceryRuntime
         }
         func sanitizedForEnumCaseName() -> String {
             if let label = parameter.argumentLabel {
-                return "\(label)_\(parameter.name)"
+                return "\(label)_\(parameter.name)".replacingOccurrences(of: "`", with: "")
             } else {
-                return "\(parameter.name)"
+                return "\(parameter.name)".replacingOccurrences(of: "`", with: "")
             }
         }
     }
@@ -327,7 +319,7 @@ import SourceryRuntime
         let variable: SourceryRuntime.Variable
         let scope: String
         var readonly: Bool { return variable.writeAccess.isEmpty }
-        var privatePrototypeName: String { return "__p_\(variable.name)" }
+        var privatePrototypeName: String { return "__p_\(variable.name)".replacingOccurrences(of: "`", with: "") }
         var casesCount: Int { return readonly ? 1 : 2 }
 
         let deprecatedMessage = "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value."
@@ -377,7 +369,7 @@ import SourceryRuntime
             return "static func \(variable.name)(set newValue: \(nestedType)) -> \(staticModifier)Verify { return \(staticModifier)Verify(method: .\(propertyCaseSetName)(newValue)) }"
         }
 
-        var propertyCaseGetName: String { return "p_\(variable.name)_get" }
+        var propertyCaseGetName: String { return "p_\(variable.name)_get".replacingOccurrences(of: "`", with: "") }
         func propertyCaseGet() -> String {
             return "case \(propertyCaseGetName)"
         }
@@ -388,7 +380,7 @@ import SourceryRuntime
             return "case .\(propertyCaseGetName): return 0"
         }
 
-        var propertyCaseSetName: String { return "p_\(variable.name)_set" }
+        var propertyCaseSetName: String { return "p_\(variable.name)_set".replacingOccurrences(of: "`", with: "") }
         func propertyCaseSet() -> String {
             return "case \(propertyCaseSetName)(\(nestedType))"
         }
@@ -422,6 +414,7 @@ import SourceryRuntime
         private let noStubDefinedMessage = "Stub return value not specified for subscript. Use given first."
 
         private static var registered: [String: Int] = [:]
+        private static var namesWithoutReturnType: [String: Int] = [:]
         private static var suffixes: [String: Int] = [:]
         static func clear() -> String {
             SubscriptWrapper.registered = [:]
@@ -433,9 +426,14 @@ import SourceryRuntime
             SubscriptWrapper.registered[name] = count + 1
             SubscriptWrapper.suffixes[uniqueName] = count + 1
         }
+        static func register(short name: String) {
+            let count = SubscriptWrapper.namesWithoutReturnType[name] ?? 0
+            SubscriptWrapper.namesWithoutReturnType[name] = count + 1
+        }
 
         func register() {
             SubscriptWrapper.register(registrationName("get"),uniqueName)
+            SubscriptWrapper.register(short: shortName)
             guard !readonly else { return }
             SubscriptWrapper.register(registrationName("set"),uniqueName)
         }
@@ -482,8 +480,7 @@ import SourceryRuntime
         }
         private func setter() -> String {
             let method = ".\(subscriptCasePrefix("set"))(\(parametersForMethodCall(set: true)))"
-            return
-            "\n\t\t\taddInvocation(\(method))"
+            return "\n\t\t\taddInvocation(\(method))"
         }
 
         // method type
@@ -503,7 +500,7 @@ import SourceryRuntime
             if accessor == "set" {
                 lhsParams += ", lhsDidSet"
                 rhsParams += ", rhsDidSet"
-                comparators += "\n\t\t\t\treturn \(nestedType).compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher)"
+                comparators += "\n\t\t\t\treturn Parameter.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher)"
             } else {
                 comparators += "\n\t\t\t\treturn true"
             }
@@ -536,7 +533,8 @@ import SourceryRuntime
         // Verify
         func verifyConstructorName(set: Bool = false) -> String {
             let returnTypeString = returnsSelf ? replaceSelf : nestedType
-            return "static func `subscript`\(genericTypesModifier ?? "")(\(parametersForProxySignature())\(set ? ", set newValue: \(returnTypeString)" : "")) -> Verify"
+            let returning = set ? "" : returningParameter(true, true)
+            return "static func `subscript`\(genericTypesModifier ?? "")(\(parametersForProxySignature())\(returning)\(set ? ", set newValue: \(returnTypeString)" : "")) -> Verify"
         }
         func verifyConstructor(set: Bool = false) -> String {
             return "return Verify(method: .\(subscriptCasePrefix(set ? "set" : "get"))(\(parametersForProxyInit(set: set))))"
@@ -550,15 +548,38 @@ import SourceryRuntime
         // Helpers
         private var returnsSelf: Bool { return TypeWrapper(wrapped.returnTypeName).isSelfType }
         private var replaceSelf: String { return Current.selfType }
+        private func returnTypeStripped(type: Bool = false) -> String {
+            let returnTypeRaw = "\(wrapped.returnTypeName)"
+            var stripped: String = {
+                guard let range = returnTypeRaw.range(of: "where") else { return returnTypeRaw }
+                var stripped = returnTypeRaw
+                stripped.removeSubrange((range.lowerBound)...)
+                return stripped
+            }()
+            stripped = stripped.trimmingCharacters(in: CharacterSet(charactersIn: " "))
+            guard type else { return stripped }
+            return "(\(stripped)).Type"
+        }
+        private func returnTypeMatters() -> Bool {
+            let count = SubscriptWrapper.namesWithoutReturnType[shortName] ?? 0
+            return count > 1
+        }
 
         // params
+        private func returningParameter(_ multiple: Bool, _ front: Bool) -> String {
+            guard returnTypeMatters() else { return "" }
+            let returning: String = "returning: \(returnTypeStripped(type: true))"
+            guard multiple else { return returning }
+            return front ? ", \(returning)" : "\(returning), "
+        }
         private func parametersForMethodTypeDeclaration(set: Bool = false) -> String {
             let generics: [String] = getGenerics()
             let params = wrappedParameters.map { param in
                 return param.isGeneric(generics) ? param.genericType : param.nestedType
             }.joined(separator: ", ")
             guard set else { return params }
-            return "\(params), \(nestedType)"
+            let newValue = TypeWrapper(wrapped.returnTypeName).isGeneric(generics) ? "Parameter<GenericAttribute>" : nestedType
+            return "\(params), \(newValue)"
         }
         private func parametersForProxyInit(set: Bool = false) -> String {
             let generics = getGenerics()
@@ -571,7 +592,8 @@ import SourceryRuntime
         private func parametersForMethodCall(set: Bool = false) -> String {
             let generics = getGenerics()
             let params = wrappedParameters.map { $0.wrappedForCalls(generics) }.joined(separator: ", ")
-            return !set ? params : "\(params), \(nestedType).value(newValue)"
+            let postfix = TypeWrapper(wrapped.returnTypeName).isGeneric(generics) ? ".wrapAsGeneric()" : ""
+            return !set ? params : "\(params), \(nestedType).value(newValue)\(postfix)"
         }
     }
 
@@ -591,13 +613,12 @@ import SourceryRuntime
                 .replacingOccurrences(of: "(", with: "__")
                 .replacingOccurrences(of: ")", with: "")
             var parametersNames = method.parameters.map { "\($0.name)" }
-
             while let range = rawName.range(of: ":"), let name = parametersNames.first {
                 parametersNames.removeFirst()
                 rawName.replaceSubrange(range, with: "_\(name)")
             }
-
             return  rawName
+            .replacingOccurrences(of: ":", with: "")
             .replacingOccurrences(of: "m*", with: "m_")
             .replacingOccurrences(of: "___", with: "__").trimmingCharacters(in: CharacterSet(charactersIn: "_"))
         }
@@ -630,7 +651,7 @@ import SourceryRuntime
             return "_\(index)"
         }
 
-        var prototype: String { return "\(registrationName)\(nameSuffix)" }
+        var prototype: String { return "\(registrationName)\(nameSuffix)".replacingOccurrences(of: "`", with: "") }
         var parameters: [ParameterWrapper] {
             return method.parameters.map { ParameterWrapper($0) }
         }
@@ -644,15 +665,22 @@ import SourceryRuntime
                     return ""
                 }
             }()
-            let staticModifier: String = method.isStatic ? "static " : ""
 
+            let staticModifier: String = method.isStatic ? "static " : ""
             if method.isInitializer {
                 return "required \(method.name) \(throwing)"
-            }
-            else if method.returnTypeName.isVoid {
-                return "\(staticModifier)func \(method.shortName)(\(parametersForStubSignature())) \(throwing)"
+            } else if method.returnTypeName.isVoid {
+                let wherePartIfNeeded: String = {
+                    if method.returnTypeName.name.hasPrefix("Void") {
+                        let range = method.returnTypeName.name.range(of: "Void")!
+                        return "\(method.returnTypeName.name[range.upperBound...])"
+                    } else {
+                        return !method.returnTypeName.name.isEmpty ? "\(method.returnTypeName.name) " : ""
+                    }
+                }()
+                return "\(staticModifier)func \(method.shortName)\(parametersForStubSignature()) \(throwing)\(wherePartIfNeeded)"
             } else {
-                return "\(staticModifier)func \(method.shortName)(\(parametersForStubSignature())) \(throwing)-> \(method.returnTypeName.name) "
+                return "\(staticModifier)func \(method.shortName)\(parametersForStubSignature()) \(throwing)-> \(method.returnTypeName.name) "
             }
         }
         var invocation: String {
@@ -973,7 +1001,7 @@ import SourceryRuntime
             if method.parameters.isEmpty {
                 return "perform?()"
             } else {
-                let parameters = method.parameters.map { "\($0.name)" }.joined(separator: ", ")
+                let parameters = method.parameters.map { "`\($0.name)`" }.joined(separator: ", ")
                 return "perform?(\(parameters))"
             }
         }
@@ -1005,18 +1033,27 @@ import SourceryRuntime
         private func parametersForProxySignature(deprecated: Bool = false) -> String {
             return parameters.map { p in
                 guard deprecated else { return "\(p.labelAndName()): \(p.nestedType)" }
-                guard let argumentLabel = p.parameter.argumentLabel else { return "\(p.name): \(p.nestedType)" }
-                guard argumentLabel != p.name else { return "\(p.name): \(p.nestedType)" }
-                return "\(argumentLabel) \(p.name): \(p.nestedType)"
+                guard let argumentLabel = p.parameter.argumentLabel else { return "\(p.parameter.name): \(p.nestedType)" }
+                guard argumentLabel != p.name else { return "\(p.parameter.name): \(p.nestedType)" }
+                return "\(argumentLabel) \(p.parameter.name): \(p.nestedType)"
             }.joined(separator: ", ")
         }
 
         private func parametersForStubSignature() -> String {
-            return parameters.map { p in
-                guard let argumentLabel = p.parameter.argumentLabel else { return "_ \(p.name): \(p.justType)" }
-                guard argumentLabel != p.name else { return "\(p.name): \(p.justType)" }
-                return "\(argumentLabel) \(p.name): \(p.justType)"
-            }.joined(separator: ", ")
+            func replacing(first: String, in full: String, with other: String) -> String {
+                guard let range = full.range(of: first) else { return full }
+                return full.replacingCharacters(in: range, with: other)
+            }
+            let prefix = method.shortName
+            let full = method.name
+            let range = full.range(of: prefix)!
+            var unrefined = "\(full[range.upperBound...])"
+            parameters.map { p -> (String,String) in
+                return ("\(p.type)","\(p.justType)")
+            }.forEach {
+                unrefined = replacing(first: $0, in: unrefined, with: $1)
+            }
+            return unrefined
         }
 
         private func parametersForProxyInit() -> String {
@@ -1068,7 +1105,7 @@ import SourceryRuntime
             }()
             stripped = stripped.trimmingCharacters(in: CharacterSet(charactersIn: " "))
             guard type else { return stripped }
-            return "\(stripped).Type"
+            return "(\(stripped)).Type"
         }
     }
 

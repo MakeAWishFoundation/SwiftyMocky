@@ -39,15 +39,15 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
 
 
     func storeItems(items: [Item]) {
-        addInvocation(.m_storeItems__items_items(Parameter<[Item]>.value(items)))
-		let perform = methodPerformValue(.m_storeItems__items_items(Parameter<[Item]>.value(items))) as? ([Item]) -> Void
-		perform?(items)
+        addInvocation(.m_storeItems__items_items(Parameter<[Item]>.value(`items`)))
+		let perform = methodPerformValue(.m_storeItems__items_items(Parameter<[Item]>.value(`items`))) as? ([Item]) -> Void
+		perform?(`items`)
     }
 
     func storeDetails(details: ItemDetails) {
-        addInvocation(.m_storeDetails__details_details(Parameter<ItemDetails>.value(details)))
-		let perform = methodPerformValue(.m_storeDetails__details_details(Parameter<ItemDetails>.value(details))) as? (ItemDetails) -> Void
-		perform?(details)
+        addInvocation(.m_storeDetails__details_details(Parameter<ItemDetails>.value(`details`)))
+		let perform = methodPerformValue(.m_storeDetails__details_details(Parameter<ItemDetails>.value(`details`))) as? (ItemDetails) -> Void
+		perform?(`details`)
     }
 
     func storedItems() -> [Item]? {
@@ -65,12 +65,12 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
     }
 
     func storedDetails(item: Item) -> ItemDetails? {
-        addInvocation(.m_storedDetails__item_item(Parameter<Item>.value(item)))
-		let perform = methodPerformValue(.m_storedDetails__item_item(Parameter<Item>.value(item))) as? (Item) -> Void
-		perform?(item)
+        addInvocation(.m_storedDetails__item_item(Parameter<Item>.value(`item`)))
+		let perform = methodPerformValue(.m_storedDetails__item_item(Parameter<Item>.value(`item`))) as? (Item) -> Void
+		perform?(`item`)
 		var __value: ItemDetails?
 		do {
-		    __value = try methodReturnValue(.m_storedDetails__item_item(Parameter<Item>.value(item))).casted()
+		    __value = try methodReturnValue(.m_storedDetails__item_item(Parameter<Item>.value(`item`))).casted()
 		} catch {
 			onFatalFailure("Stub return value not specified for storedDetails(item: Item). Use given")
 			Failure("Stub return value not specified for storedDetails(item: Item). Use given")
@@ -125,7 +125,7 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
             return Given(method: .m_storedItems, products: willReturn.map({ Product.return($0) }))
         }
         static func storedDetails(item: Parameter<Item>, willReturn: ItemDetails?...) -> MethodStub {
-            return Given(method: .m_storedDetails__item_item(item), products: willReturn.map({ Product.return($0) }))
+            return Given(method: .m_storedDetails__item_item(`item`), products: willReturn.map({ Product.return($0) }))
         }
         static func storedItems(willProduce: (Stubber<[Item]?>) -> Void) -> MethodStub {
             let willReturn: [[Item]?] = []
@@ -136,7 +136,7 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         }
         static func storedDetails(item: Parameter<Item>, willProduce: (Stubber<ItemDetails?>) -> Void) -> MethodStub {
             let willReturn: [ItemDetails?] = []
-			let given: Given = { return Given(method: .m_storedDetails__item_item(item), products: willReturn.map({ Product.return($0) })) }()
+			let given: Given = { return Given(method: .m_storedDetails__item_item(`item`), products: willReturn.map({ Product.return($0) })) }()
 			let stubber = given.stub(for: (ItemDetails?).self)
 			willProduce(stubber)
 			return given
@@ -146,10 +146,10 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
     struct Verify {
         fileprivate var method: MethodType
 
-        static func storeItems(items: Parameter<[Item]>) -> Verify { return Verify(method: .m_storeItems__items_items(items))}
-        static func storeDetails(details: Parameter<ItemDetails>) -> Verify { return Verify(method: .m_storeDetails__details_details(details))}
+        static func storeItems(items: Parameter<[Item]>) -> Verify { return Verify(method: .m_storeItems__items_items(`items`))}
+        static func storeDetails(details: Parameter<ItemDetails>) -> Verify { return Verify(method: .m_storeDetails__details_details(`details`))}
         static func storedItems() -> Verify { return Verify(method: .m_storedItems)}
-        static func storedDetails(item: Parameter<Item>) -> Verify { return Verify(method: .m_storedDetails__item_item(item))}
+        static func storedDetails(item: Parameter<Item>) -> Verify { return Verify(method: .m_storedDetails__item_item(`item`))}
     }
 
     struct Perform {
@@ -157,16 +157,16 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         var performs: Any
 
         static func storeItems(items: Parameter<[Item]>, perform: @escaping ([Item]) -> Void) -> Perform {
-            return Perform(method: .m_storeItems__items_items(items), performs: perform)
+            return Perform(method: .m_storeItems__items_items(`items`), performs: perform)
         }
         static func storeDetails(details: Parameter<ItemDetails>, perform: @escaping (ItemDetails) -> Void) -> Perform {
-            return Perform(method: .m_storeDetails__details_details(details), performs: perform)
+            return Perform(method: .m_storeDetails__details_details(`details`), performs: perform)
         }
         static func storedItems(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_storedItems, performs: perform)
         }
         static func storedDetails(item: Parameter<Item>, perform: @escaping (Item) -> Void) -> Perform {
-            return Perform(method: .m_storedDetails__item_item(item), performs: perform)
+            return Perform(method: .m_storedDetails__item_item(`item`), performs: perform)
         }
     }
 
