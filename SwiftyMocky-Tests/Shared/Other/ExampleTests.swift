@@ -179,8 +179,8 @@ class ExampleTests: SwiftyTestCase {
 
         let mock = HistorySectionMapperTypeMock()
 
-        Given(mock, .map(items: .any, willReturn: [(key: String, items: [DateSortableMock])]()))
-        Given(mock, .map(items: .value([item1]), willReturn: [(key: "only item", items: [item1])]))
+        Given(mock, .map(.any, willReturn: [(key: String, items: [DateSortableMock])]()))
+        Given(mock, .map(.value([item1]), willReturn: [(key: "only item", items: [item1])]))
 
         print(mock.map([DateSortableMock]()))
         print(mock.map([item1]))

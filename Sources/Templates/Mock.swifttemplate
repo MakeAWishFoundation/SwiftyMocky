@@ -256,7 +256,7 @@ import SourceryRuntime
             if parameter.isClosure && !isEscaping && !isOptional {
                 return "\(nestedType).any"
             } else {
-                return "\(nestedType).value(\(name))"
+                return "\(nestedType).value(\(escapedName))"
             }
         }
         var wrappedType: String {
@@ -277,6 +277,9 @@ import SourceryRuntime
         var name: String {
             return parameter.name
         }
+        var escapedName: String {
+            return "`\(parameter.name)`"
+        }
         var comparator: String {
             return "guard Parameter.compare(lhs: lhs\(parameter.name.capitalized), rhs: rhs\(parameter.name.capitalized), with: matcher) else { return false }"
         }
@@ -290,7 +293,7 @@ import SourceryRuntime
         }
 
         func wrappedForProxy(_ generics: [String]) -> String {
-            return isGeneric(generics) ? "\(name).wrapAsGeneric()" : "\(name)"
+            return isGeneric(generics) ? "\(escapedName).wrapAsGeneric()" : "\(escapedName)"
         }
         func wrappedForCalls(_ generics: [String]) -> String {
             return isGeneric(generics) ? "\(wrappedForCall).wrapAsGeneric()" : "\(wrappedForCall)"
@@ -305,9 +308,9 @@ import SourceryRuntime
         }
         func sanitizedForEnumCaseName() -> String {
             if let label = parameter.argumentLabel {
-                return "\(label)_\(parameter.name)"
+                return "\(label)_\(parameter.name)".replacingOccurrences(of: "`", with: "")
             } else {
-                return "\(parameter.name)"
+                return "\(parameter.name)".replacingOccurrences(of: "`", with: "")
             }
         }
     }
@@ -316,7 +319,7 @@ import SourceryRuntime
         let variable: SourceryRuntime.Variable
         let scope: String
         var readonly: Bool { return variable.writeAccess.isEmpty }
-        var privatePrototypeName: String { return "__p_\(variable.name)" }
+        var privatePrototypeName: String { return "__p_\(variable.name)".replacingOccurrences(of: "`", with: "") }
         var casesCount: Int { return readonly ? 1 : 2 }
 
         let deprecatedMessage = "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value."
@@ -366,7 +369,7 @@ import SourceryRuntime
             return "static func \(variable.name)(set newValue: \(nestedType)) -> \(staticModifier)Verify { return \(staticModifier)Verify(method: .\(propertyCaseSetName)(newValue)) }"
         }
 
-        var propertyCaseGetName: String { return "p_\(variable.name)_get" }
+        var propertyCaseGetName: String { return "p_\(variable.name)_get".replacingOccurrences(of: "`", with: "") }
         func propertyCaseGet() -> String {
             return "case \(propertyCaseGetName)"
         }
@@ -377,7 +380,7 @@ import SourceryRuntime
             return "case .\(propertyCaseGetName): return 0"
         }
 
-        var propertyCaseSetName: String { return "p_\(variable.name)_set" }
+        var propertyCaseSetName: String { return "p_\(variable.name)_set".replacingOccurrences(of: "`", with: "") }
         func propertyCaseSet() -> String {
             return "case \(propertyCaseSetName)(\(nestedType))"
         }
@@ -648,7 +651,7 @@ import SourceryRuntime
             return "_\(index)"
         }
 
-        var prototype: String { return "\(registrationName)\(nameSuffix)" }
+        var prototype: String { return "\(registrationName)\(nameSuffix)".replacingOccurrences(of: "`", with: "") }
         var parameters: [ParameterWrapper] {
             return method.parameters.map { ParameterWrapper($0) }
         }
@@ -998,7 +1001,7 @@ import SourceryRuntime
             if method.parameters.isEmpty {
                 return "perform?()"
             } else {
-                let parameters = method.parameters.map { "\($0.name)" }.joined(separator: ", ")
+                let parameters = method.parameters.map { "`\($0.name)`" }.joined(separator: ", ")
                 return "perform?(\(parameters))"
             }
         }
@@ -1030,9 +1033,9 @@ import SourceryRuntime
         private func parametersForProxySignature(deprecated: Bool = false) -> String {
             return parameters.map { p in
                 guard deprecated else { return "\(p.labelAndName()): \(p.nestedType)" }
-                guard let argumentLabel = p.parameter.argumentLabel else { return "\(p.name): \(p.nestedType)" }
-                guard argumentLabel != p.name else { return "\(p.name): \(p.nestedType)" }
-                return "\(argumentLabel) \(p.name): \(p.nestedType)"
+                guard let argumentLabel = p.parameter.argumentLabel else { return "\(p.parameter.name): \(p.nestedType)" }
+                guard argumentLabel != p.name else { return "\(p.parameter.name): \(p.nestedType)" }
+                return "\(argumentLabel) \(p.parameter.name): \(p.nestedType)"
             }.joined(separator: ", ")
         }
 
