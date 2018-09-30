@@ -16,7 +16,8 @@ import SwiftyMocky
 @testable import Mocky_Example_macOS
 #endif
 
-class PropertiesHandlingTests: SwiftyTestCase {
+class PropertiesHandlingTests: XCTestCase {
+    
     override func setUp() {
         super.setUp()
     }

@@ -16,7 +16,7 @@ import SwiftyMocky
     @testable import Mocky_Example_macOS
 #endif
 
-class ProtocolsWithCollectionsTests: SwiftyTestCase {
+class ProtocolsWithCollectionsTests: XCTestCase {
     func test_protocol_with_array() {
         let mock = SimpleProtocolUsingCollectionsMock()
 

@@ -8,37 +8,52 @@
 import Foundation
 import XCTest
 
-public class TestObserver: NSObject, XCTestObservation {
-    // This init is called first thing as the test bundle starts up and before any test
-    // initialization happens
-    public override init() {
-        super.init()
-        // We don't need to do any real work, other than register for callbacks
-        // when the test suite progresses.
-        // XCTestObservation keeps a strong reference to observers
-        XCTestObservationCenter.shared.addTestObserver(TestObserver())
+public class SwiftyMockyTestObserver: NSObject, XCTestObservation {
 
+    private static var currentTestCase: XCTestCase?
+
+    private static let setupBlock: (() -> Void) = {
+        XCTestObservationCenter.shared.addTestObserver(SwiftyMockyTestObserver())
+        return {}
+    }()
+
+    /// Call this method to setup custom error handling for SwiftyMocky, that allows to gracefully handle missing stub fatal errors.
+    /// May be called multiple times, recommended to set this up in Principal class for Unit test bundle, but can be also called in test case SetUp method.
+    public static func setup() {
+        setupBlock()
     }
 
-    func testCaseWillStart(_ testCase: XCTestCase) {
-
+    public func testCaseWillStart(_ testCase: XCTestCase) {
+        SwiftyMockyTestObserver.currentTestCase = testCase
     }
 
-    var duplicated: [String?: Int] = [:]
+    public func testCaseDidFinish(_ testCase: XCTestCase) {
+        SwiftyMockyTestObserver.currentTestCase = nil
+    }
 
-    //    func testCase(_ testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: Int) {
-    //
-    //        let testName = testCase.name.components(separatedBy: " ")[1].components(separatedBy: "]").first!
-    //        let description = Thread.callStackSymbols.filter({ $0.contains(testName) }).last!
-    //        let line = description.components(separatedBy: " + ").last!
-    //        let fileLine = Int(line)!
-    //        if !duplicated.contains(where: { $0.key == filePath && $0.value == lineNumber }) { // TODO: Remove that faulty logic
-    //            duplicated[filePath] = lineNumber
-    //            testCase.recordFailure(withDescription: description, inFile: filePath!, atLine: fileLine, expected: false)
-    //        }
-    //    }
+    public static func handleMissingStubError(message: String, file: StaticString, line: UInt) {
+        guard let testCase = SwiftyMockyTestObserver.currentTestCase else {
+            XCTFail(message, file: file, line: line)
+            return
+        }
+        let continueAfterFailure = testCase.continueAfterFailure
+        defer { testCase.continueAfterFailure = continueAfterFailure }
+        testCase.continueAfterFailure = false
+        if let failingLine = CallStackWrapper().findTestCaseLine(testCase: testCase) {
+            testCase.recordFailure(withDescription: message, inFile: file.description, atLine: Int(failingLine), expected: false)
+        } else {
+            XCTFail(message, file: file, line: line)
+        }
+    }
+}
 
-    func testCaseDidFinish(_ testCase: XCTestCase) {
+fileprivate class CallStackWrapper {
 
+    func findTestCaseLine(testCase: XCTestCase) -> UInt? {
+        guard
+            let testName = testCase.name.components(separatedBy: " ")[1].components(separatedBy: "]").first,
+            let description = Thread.callStackSymbols.filter({ $0.contains(testName) }).last,
+            let line = description.components(separatedBy: " + ").last else { return nil }
+        return UInt(line)
     }
 }

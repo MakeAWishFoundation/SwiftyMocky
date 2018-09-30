@@ -480,7 +480,7 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        ExampleTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
         #endif
     }
 
@@ -671,7 +671,7 @@ class AVeryAssociatedProtocolMock<T1,T2>: AVeryAssociatedProtocol, Mock where T1
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        ExampleTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
         #endif
     }
 }
@@ -938,7 +938,7 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        ExampleTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
         #endif
     }
 
@@ -1493,7 +1493,7 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        ExampleTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
         #endif
     }
 }
@@ -1910,7 +1910,7 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        ExampleTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
         #endif
     }
 }
@@ -2041,7 +2041,7 @@ class DateSortableMock: DateSortable, Mock {
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        ExampleTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
         #endif
     }
 }
@@ -2150,7 +2150,7 @@ class EdgeCasesGenericsProtocolMock: EdgeCasesGenericsProtocol, Mock {
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        ExampleTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
         #endif
     }
 }
@@ -2259,7 +2259,7 @@ class EmptyProtocolMock: EmptyProtocol, Mock {
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        ExampleTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
         #endif
     }
 }
@@ -2464,7 +2464,7 @@ class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstraint, 
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        ExampleTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
         #endif
     }
 }
@@ -2624,7 +2624,7 @@ class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        ExampleTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
         #endif
     }
 }
@@ -2770,7 +2770,7 @@ class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        ExampleTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
         #endif
     }
 }
@@ -3147,7 +3147,7 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        ExampleTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
         #endif
     }
 }
@@ -3331,7 +3331,7 @@ class ProtocolMethodsThatDifferOnlyInReturnTypeMock: ProtocolMethodsThatDifferOn
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        ExampleTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
         #endif
     }
 }
@@ -3496,7 +3496,7 @@ class ProtocolWithAssociatedTypeMock<T>: ProtocolWithAssociatedType, Mock where 
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        ExampleTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
         #endif
     }
 }
@@ -3659,7 +3659,7 @@ class ProtocolWithClosuresMock: ProtocolWithClosures, Mock {
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        ExampleTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
         #endif
     }
 }
@@ -3876,7 +3876,7 @@ class ProtocolWithConflictingMembersMock: ProtocolWithConflictingMembers, Mock {
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        ExampleTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
         #endif
     }
 }
@@ -4060,7 +4060,7 @@ class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock {
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        ExampleTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
         #endif
     }
 }
@@ -4220,7 +4220,7 @@ class ProtocolWithDeprecatedMembersMock: ProtocolWithDeprecatedMembers, Mock {
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        ExampleTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
         #endif
     }
 }
@@ -4405,7 +4405,7 @@ class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        ExampleTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
         #endif
     }
 }
@@ -4555,7 +4555,7 @@ class ProtocolWithGenericMethodsNestedMock: ProtocolWithGenericMethodsNested, Mo
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        ExampleTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
         #endif
     }
 }
@@ -4705,7 +4705,7 @@ class ProtocolWithInitializersMock: ProtocolWithInitializers, Mock {
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        ExampleTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
         #endif
     }
 }
@@ -5003,7 +5003,7 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        ExampleTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
         #endif
     }
 
@@ -5253,7 +5253,7 @@ class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, StaticMock
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        ExampleTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
         #endif
     }
 
@@ -5697,7 +5697,7 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        ExampleTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
         #endif
     }
 }
@@ -5885,7 +5885,7 @@ class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        ExampleTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
         #endif
     }
 }
@@ -6035,7 +6035,7 @@ class ProtocolWithTuplesMock: ProtocolWithTuples, Mock {
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        ExampleTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
         #endif
     }
 }
@@ -6200,7 +6200,7 @@ class ProtocolWithWhereAfterDefinitionMock<T>: ProtocolWithWhereAfterDefinition,
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        ExampleTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
         #endif
     }
 }
@@ -6589,7 +6589,7 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        ExampleTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
         #endif
     }
 }
@@ -6896,7 +6896,7 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        ExampleTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
         #endif
     }
 
@@ -7249,7 +7249,7 @@ class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInheritsOt
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        ExampleTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
         #endif
     }
 }
@@ -7499,7 +7499,7 @@ class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        ExampleTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
         #endif
     }
 }
@@ -7663,7 +7663,7 @@ class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBothMeth
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        ExampleTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
         #endif
     }
 }
@@ -7893,7 +7893,7 @@ class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        ExampleTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
         #endif
     }
 }
@@ -8093,7 +8093,7 @@ class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock {
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        ExampleTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
         #endif
     }
 }
@@ -8277,7 +8277,7 @@ class UserNetworkTypeMock: UserNetworkType, Mock {
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        ExampleTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
         #endif
     }
 }
@@ -8444,7 +8444,7 @@ class UserStorageTypeMock: UserStorageType, Mock {
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        ExampleTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
         #endif
     }
 }

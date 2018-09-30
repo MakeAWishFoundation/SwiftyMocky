@@ -16,7 +16,7 @@ import SwiftyMocky
     @testable import Mocky_Example_macOS
 #endif
 
-class ProtocolsWithPropertiesTests: SwiftyTestCase {
+class ProtocolsWithPropertiesTests: XCTestCase {
     func test_properties_getters() {
         let mock = ProtocolWithPropoertiesMock()
 

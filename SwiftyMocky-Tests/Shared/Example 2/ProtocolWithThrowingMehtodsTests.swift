@@ -21,7 +21,7 @@ enum SimpleTestError: Error {
     case other
 }
 
-class ProtocolWithThrowingMehtodsTests: SwiftyTestCase {
+class ProtocolWithThrowingMehtodsTests: XCTestCase {
     func test_will_throw() {
         let mock = ProtocolWithThrowingMethodsMock()
 

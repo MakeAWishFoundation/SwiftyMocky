@@ -16,7 +16,7 @@ import SwiftyMocky
     @testable import Mocky_Example_macOS
 #endif
 
-class SampleServiceTests: SwiftyTestCase {
+class SampleServiceTests: XCTestCase {
 //    var sut: // somthing depending on service - add later
     var service: SampleServiceTypeMock!
 

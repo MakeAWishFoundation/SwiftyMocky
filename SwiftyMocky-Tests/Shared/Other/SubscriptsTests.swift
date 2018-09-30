@@ -16,7 +16,7 @@ import SwiftyMocky
 @testable import Mocky_Example_macOS
 #endif
 
-class SubscriptsTests: SwiftyTestCase {
+class SubscriptsTests: XCTestCase {
     func test_basic_subscript_usage() {
         let mock = ProtocolWithSubscriptsMock()
 

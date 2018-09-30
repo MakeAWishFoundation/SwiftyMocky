@@ -13,7 +13,6 @@ class ExamplePrincipalClass: NSObject {
 
     override init() {
         super.init()
-        print("Fucking work!")
-        ExampleTestObserver.setup()
+        SwiftyMockyTestObserver.setup()
     }
 }
