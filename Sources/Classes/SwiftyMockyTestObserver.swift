@@ -50,10 +50,11 @@ public class SwiftyMockyTestObserver: NSObject, XCTestObservation {
             XCTFail(message, file: file, line: line)
             return
         }
+
         let continueAfterFailure = testCase.continueAfterFailure
         defer { testCase.continueAfterFailure = continueAfterFailure }
         testCase.continueAfterFailure = false
-        if let failingLine = CallStackWrapper().findTestCaseLine(testCase: testCase) {
+        if let failingLine = FilesExlorer().findTestCaseLine(testCase: testCase, file: file) {
             testCase.recordFailure(withDescription: message, inFile: file.description, atLine: Int(failingLine), expected: false)
         } else {
             XCTFail(message, file: file, line: line)
@@ -61,19 +62,33 @@ public class SwiftyMockyTestObserver: NSObject, XCTestObservation {
     }
 }
 
-/// [Internal] Wrapper for parsing call stack to get relevant line number
-private class CallStackWrapper {
-    /// Parses call stack symbols to get line number assigned with test
+/// [Internal] Internal dependency that looks for line of test case, that caused test failure.
+private class FilesExlorer {
+    /// Parses test case file to get line number assigned with test
     ///
     /// - Parameter testCase: Test case
+    /// - Parameter file: File we should look in
     /// - Returns: Line number or nil, if unable to find
-    func findTestCaseLine(testCase: XCTestCase) -> UInt? {
-        print(Thread.callStackSymbols)
-        guard
-            let testName = testCase.name.components(separatedBy: " ")[1].components(separatedBy: "]").first,
-            let description = Thread.callStackSymbols.filter({ $0.contains(testName) }).last,
-            let line = description.components(separatedBy: " + ").last else { return nil }
-        return UInt(line)
+    func findTestCaseLine(testCase: XCTestCase, file: StaticString) -> UInt? {
+        guard let content = getFileContent(file: file.description),
+            let methodName = getNameOfExtecutedTestCase(testCase) else { return nil }
+        let lines = content.components(separatedBy: "\n")
+        let offset = lines.enumerated().first { (index, line) -> Bool in
+            return line.contains(methodName)
+            }?.offset
+        guard let line = offset else { return nil }
+        let lineAdditionalOffset: UInt = 2 // just to show error within test case, below the name.
+        return UInt(line) + lineAdditionalOffset
+    }
+
+    private func getNameOfExtecutedTestCase(_ testCase: XCTestCase) -> String? {
+        return testCase.name.components(separatedBy: " ")[1].components(separatedBy: "]").first
+    }
+
+    private func getFileContent(file: String) -> String? {
+        // TODO: look for file encoding from file attributes
+        guard let fileData = FileManager().contents(atPath: file) else { return nil }
+        return String(data: fileData, encoding: .utf8)
     }
 }
 #else
