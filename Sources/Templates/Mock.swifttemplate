@@ -140,7 +140,7 @@ import SourceryRuntime
         }
         var stripped: String {
             if type.isImplicitlyUnwrappedOptional {
-                return type.isClosure ? "(\(unwrappedReplacingSelf))!" : "\(unwrappedReplacingSelf)!"
+                return type.isClosure ? "(\(unwrappedReplacingSelf))?" : "\(unwrappedReplacingSelf)?"
             } else if type.isOptional {
                 return type.isClosure ? "(\(unwrappedReplacingSelf))?" : "\(unwrappedReplacingSelf)?"
             } else {
@@ -268,6 +268,9 @@ import SourceryRuntime
         var justType: String {
             return "\(TypeWrapper(type).replacingSelf())"
         }
+        var justPerformType: String {
+            return "\(TypeWrapper(type).replacingSelf())".replacingOccurrences(of: "!", with: "?")
+        }
         var genericType: String {
             return "Parameter<GenericAttribute>"
         }
@@ -393,7 +396,7 @@ import SourceryRuntime
 
         // Given
         func givenConstructorName(prefix: String = "") -> String {
-            return "static func \(variable.name)(getter defaultValue: \(variable.typeName.name)...) -> \(prefix)PropertyStub"
+            return "static func \(variable.name)(getter defaultValue: \(TypeWrapper(variable.typeName).stripped)...) -> \(prefix)PropertyStub"
         }
 
         func givenConstructor(prefix: String = "") -> String {
@@ -698,13 +701,22 @@ import SourceryRuntime
             let methodType = method.parameters.isEmpty ? ".\(prototype)" : ".\(prototype)(\(parametersForMethodCall()))"
             let returnType: String = returnsSelf ? "__Self__" : "\(TypeWrapper(method.returnTypeName).stripped)"
 
-            return
-            """
-            \n\t\tvar __value: \(returnType)
-            \t\tdo {
-            \t\t    __value = try methodReturnValue(\(methodType)).casted()
-            \t\t}\(" ")
-            """
+            if method.returnTypeName.isVoid {
+                return
+                """
+                \n\t\tdo {
+                \t\t    _ = try methodReturnValue(\(methodType)).casted() as Void
+                \t\t}\(" ")
+                """
+            } else {
+                return
+                """
+                \n\t\tvar __value: \(returnType)
+                \t\tdo {
+                \t\t    __value = try methodReturnValue(\(methodType)).casted()
+                \t\t}\(" ")
+                """
+            }
         }
         var throwValue: String {
             guard !method.isInitializer else { return "" }
@@ -991,7 +1003,7 @@ import SourceryRuntime
                 return "() -> Void"
             } else {
                 let parameters = self.parameters
-                .map { "\($0.justType)" }
+                .map { "\($0.justPerformType)" }
                 .joined(separator: ", ")
                 return "(\(parameters)) -> Void"
             }

@@ -31,9 +31,9 @@ class GenericProtocolsTests: XCTestCase {
 
     func test_base_type_constraint() {
         let mock = GenericProtocolWithTypeConstraintMock()
-        Given(mock, .test(type: .value(Int.self), willReturn: 0))
-        Given(mock, .test(type: .value(Float.self), willReturn: 1))
-        Given(mock, .test(type: .value(String.self), willReturn: 2))
+        Given(mock, .test(.value(Int.self), willReturn: 0))
+        Given(mock, .test(.value(Float.self), willReturn: 1))
+        Given(mock, .test(.value(String.self), willReturn: 2))
 
         XCTAssertEqual(mock.test(Int.self), 0)
         XCTAssertEqual(mock.test(Float.self), 1)
@@ -50,10 +50,10 @@ class GenericProtocolsTests: XCTestCase {
         // Required to allow Type matching! Basic types like Int.self, Bool.self etc have already registered comparators
         Matcher.default.register(CustomThing.Type.self)
 
-        Given(mock, .decode(type: .value(Int.self), from: .any, willReturn: 0))
-        Given(mock, .decode(type: .value(Int.self), from: .value(data), willReturn: 1))
-        Given(mock, .decode(type: .any(CustomThing.Type.self), from: .any, willReturn: CustomThing(id: 0)))
-        Given(mock, .decode(type: .any(CustomThing.Type.self), from: .value(data), willReturn: CustomThing(id: 1)))
+        Given(mock, .decode(.value(Int.self), from: .any, willReturn: 0))
+        Given(mock, .decode(.value(Int.self), from: .value(data), willReturn: 1))
+        Given(mock, .decode(.any(CustomThing.Type.self), from: .any, willReturn: CustomThing(id: 0)))
+        Given(mock, .decode(.any(CustomThing.Type.self), from: .value(data), willReturn: CustomThing(id: 1)))
 
         XCTAssertEqual(mock.decode(Int.self, from: otherData), 0)
         XCTAssertEqual(mock.decode(Int.self, from: data), 1)

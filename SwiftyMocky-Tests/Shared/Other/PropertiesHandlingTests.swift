@@ -29,15 +29,15 @@ class PropertiesHandlingTests: XCTestCase {
     func test_simple_given_scenario() {
         let mock = SimpleProtocolWithBothMethodsAndPropertiesMock()
 
-        VerifyProperty(mock, .never, .property) // Verify we start with fresh counter
+        Verify(mock, .never, .property) // Verify we start with fresh counter
         Given(mock, .property(getter: "1","2","3"))
-        VerifyProperty(mock, .never, .property) // Check if given do not change count
+        Verify(mock, .never, .property) // Check if given do not change count
         XCTAssertEqual(mock.property, "1")
-        VerifyProperty(mock, 1, .property)
+        Verify(mock, 1, .property)
         XCTAssertEqual(mock.property, "2")
         XCTAssertEqual(mock.property, "3")
         XCTAssertEqual(mock.property, "1")
-        VerifyProperty(mock, 4, .property)
+        Verify(mock, 4, .property)
     }
 
     func test_property_drop_policy_fails() {
@@ -55,13 +55,13 @@ class PropertiesHandlingTests: XCTestCase {
         let mock = SimpleProtocolWithPropertiesMock(stubbing: .drop)
 
         Given(mock, .weakProperty(getter: nil), .wrap)
-        VerifyProperty(mock, .never, .weakProperty)
+        Verify(mock, .never, .weakProperty)
 
         for _ in 1...20 {
             XCTAssert(mock.weakProperty == nil)
         }
 
-        VerifyProperty(mock, 20, .weakProperty)
+        Verify(mock, 20, .weakProperty)
     }
 
     func test_property_setter_always_overrides_given() {
@@ -79,6 +79,6 @@ class PropertiesHandlingTests: XCTestCase {
         XCTAssertNotEqual(mock.property, "never here")
         XCTAssertNotEqual(mock.property, "never here")
 
-        VerifyProperty(mock, 1, .property(set: .any))
+        Verify(mock, 1, .property(set: .any))
     }
 }

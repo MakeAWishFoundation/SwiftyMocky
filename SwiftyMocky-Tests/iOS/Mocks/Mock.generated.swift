@@ -109,9 +109,8 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
         addInvocation(.sm_methodThatThrows)
 		let perform = methodPerformValue(.sm_methodThatThrows) as? () -> Void
 		perform?()
-		var __value: Void
 		do {
-		    __value = try methodReturnValue(.sm_methodThatThrows).casted()
+		    _ = try methodReturnValue(.sm_methodThatThrows).casted() as Void
 		} catch MockError.notStubed {
 			// do nothing
 		} catch {
@@ -155,9 +154,8 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
         addInvocation(.m_methodThatThrows)
 		let perform = methodPerformValue(.m_methodThatThrows) as? () -> Void
 		perform?()
-		var __value: Void
 		do {
-		    __value = try methodReturnValue(.m_methodThatThrows).casted()
+		    _ = try methodReturnValue(.m_methodThatThrows).casted() as Void
 		} catch MockError.notStubed {
 			// do nothing
 		} catch {
@@ -365,7 +363,7 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
         static func optionalClosure(getter defaultValue: (() -> Int)?...) -> PropertyStub {
             return Given(method: .p_optionalClosure_get, products: defaultValue.map({ Product.return($0) }))
         }
-        static func implicitelyUnwrappedClosure(getter defaultValue: (() -> Void)!...) -> PropertyStub {
+        static func implicitelyUnwrappedClosure(getter defaultValue: (() -> Void)?...) -> PropertyStub {
             return Given(method: .p_implicitelyUnwrappedClosure_get, products: defaultValue.map({ Product.return($0) }))
         }
 
@@ -4353,9 +4351,8 @@ class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock {
         addInvocation(.m_methodThatTakesUser__user_user(Parameter<UserObject>.value(`user`)))
 		let perform = methodPerformValue(.m_methodThatTakesUser__user_user(Parameter<UserObject>.value(`user`))) as? (UserObject) -> Void
 		perform?(`user`)
-		var __value: Void
 		do {
-		    __value = try methodReturnValue(.m_methodThatTakesUser__user_user(Parameter<UserObject>.value(`user`))).casted()
+		    _ = try methodReturnValue(.m_methodThatTakesUser__user_user(Parameter<UserObject>.value(`user`))).casted() as Void
 		} catch MockError.notStubed {
 			// do nothing
 		} catch {
@@ -5217,7 +5214,7 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
 
     static func defaultEmail(_ newValue: String!) {
         addInvocation(.sm_defaultEmail__newValue(Parameter<String?>.value(`newValue`)))
-		let perform = methodPerformValue(.sm_defaultEmail__newValue(Parameter<String?>.value(`newValue`))) as? (String!) -> Void
+		let perform = methodPerformValue(.sm_defaultEmail__newValue(Parameter<String?>.value(`newValue`))) as? (String?) -> Void
 		perform?(`newValue`)
     }
 
@@ -5229,7 +5226,7 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
 
     func email(_ newValue: String!) {
         addInvocation(.m_email__newValue(Parameter<String?>.value(`newValue`)))
-		let perform = methodPerformValue(.m_email__newValue(Parameter<String?>.value(`newValue`))) as? (String!) -> Void
+		let perform = methodPerformValue(.m_email__newValue(Parameter<String?>.value(`newValue`))) as? (String?) -> Void
 		perform?(`newValue`)
     }
 
@@ -5297,11 +5294,11 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
         fileprivate var method: StaticMethodType
         var performs: Any
 
-        static func defaultEmail(_ newValue: Parameter<String?>, perform: @escaping (String!) -> Void) -> StaticPerform {
+        static func defaultEmail(_ newValue: Parameter<String?>, perform: @escaping (String?) -> Void) -> StaticPerform {
             return StaticPerform(method: .sm_defaultEmail__newValue(`newValue`), performs: perform)
         }
         @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
-		static func defaultEmail(newValue: Parameter<String?>, perform: @escaping (String!) -> Void) -> StaticPerform {
+		static func defaultEmail(newValue: Parameter<String?>, perform: @escaping (String?) -> Void) -> StaticPerform {
             return StaticPerform(method: .sm_defaultEmail__newValue(`newValue`), performs: perform)
         }
     }
@@ -5386,11 +5383,11 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
 		static func name(newValue: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_name__newValue(`newValue`), performs: perform)
         }
-        static func email(_ newValue: Parameter<String?>, perform: @escaping (String!) -> Void) -> Perform {
+        static func email(_ newValue: Parameter<String?>, perform: @escaping (String?) -> Void) -> Perform {
             return Perform(method: .m_email__newValue(`newValue`), performs: perform)
         }
         @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
-		static func email(newValue: Parameter<String?>, perform: @escaping (String!) -> Void) -> Perform {
+		static func email(newValue: Parameter<String?>, perform: @escaping (String?) -> Void) -> Perform {
             return Perform(method: .m_email__newValue(`newValue`), performs: perform)
         }
     }
@@ -6292,9 +6289,8 @@ class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
         addInvocation(.m_methodThatThrows)
 		let perform = methodPerformValue(.m_methodThatThrows) as? () -> Void
 		perform?()
-		var __value: Void
 		do {
-		    __value = try methodReturnValue(.m_methodThatThrows).casted()
+		    _ = try methodReturnValue(.m_methodThatThrows).casted() as Void
 		} catch MockError.notStubed {
 			// do nothing
 		} catch {
@@ -7678,7 +7674,7 @@ class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInheritsOt
         static func property(getter defaultValue: String...) -> PropertyStub {
             return Given(method: .p_property_get, products: defaultValue.map({ Product.return($0) }))
         }
-        static func weakProperty(getter defaultValue: AnyObject!...) -> PropertyStub {
+        static func weakProperty(getter defaultValue: AnyObject?...) -> PropertyStub {
             return Given(method: .p_weakProperty_get, products: defaultValue.map({ Product.return($0) }))
         }
         static func propertyGetOnly(getter defaultValue: String...) -> PropertyStub {
@@ -7687,7 +7683,7 @@ class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInheritsOt
         static func propertyOptional(getter defaultValue: Int?...) -> PropertyStub {
             return Given(method: .p_propertyOptional_get, products: defaultValue.map({ Product.return($0) }))
         }
-        static func propertyImplicit(getter defaultValue: Int!...) -> PropertyStub {
+        static func propertyImplicit(getter defaultValue: Int?...) -> PropertyStub {
             return Given(method: .p_propertyImplicit_get, products: defaultValue.map({ Product.return($0) }))
         }
 
@@ -8568,7 +8564,7 @@ class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock {
         static func property(getter defaultValue: String...) -> PropertyStub {
             return Given(method: .p_property_get, products: defaultValue.map({ Product.return($0) }))
         }
-        static func weakProperty(getter defaultValue: AnyObject!...) -> PropertyStub {
+        static func weakProperty(getter defaultValue: AnyObject?...) -> PropertyStub {
             return Given(method: .p_weakProperty_get, products: defaultValue.map({ Product.return($0) }))
         }
         static func propertyGetOnly(getter defaultValue: String...) -> PropertyStub {
@@ -8577,7 +8573,7 @@ class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock {
         static func propertyOptional(getter defaultValue: Int?...) -> PropertyStub {
             return Given(method: .p_propertyOptional_get, products: defaultValue.map({ Product.return($0) }))
         }
-        static func propertyImplicit(getter defaultValue: Int!...) -> PropertyStub {
+        static func propertyImplicit(getter defaultValue: Int?...) -> PropertyStub {
             return Given(method: .p_propertyImplicit_get, products: defaultValue.map({ Product.return($0) }))
         }
 
