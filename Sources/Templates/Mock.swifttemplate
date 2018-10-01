@@ -1071,7 +1071,6 @@ import SourceryRuntime
             return " Possible fix: " + messages.joined(separator: ",")
         }
 
-
         private func parametersForStubSignature() -> String {
             func replacing(first: String, in full: String, with other: String) -> String {
                 guard let range = full.range(of: first) else { return full }

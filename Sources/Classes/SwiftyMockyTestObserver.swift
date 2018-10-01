@@ -68,6 +68,7 @@ private class CallStackWrapper {
     /// - Parameter testCase: Test case
     /// - Returns: Line number or nil, if unable to find
     func findTestCaseLine(testCase: XCTestCase) -> UInt? {
+        print(Thread.callStackSymbols)
         guard
             let testName = testCase.name.components(separatedBy: " ")[1].components(separatedBy: "]").first,
             let description = Thread.callStackSymbols.filter({ $0.contains(testName) }).last,
