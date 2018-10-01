@@ -117,9 +117,9 @@ import SourceryRuntime
 
     // Collision management
     func areThereCollisions(between methods: [MethodWrapper]) -> Bool {
-        let givenSet = Set<String>(methods.map({ $0.givenConstructorName(prefix: "", deprecated: true) }))
+        let givenSet = Set<String>(methods.map({ $0.givenConstructorName(prefix: "", deprecated: true, annotated: false) }))
         guard givenSet.count == methods.count else { return true } // there would be conflicts in Given
-        let verifySet = Set<String>(methods.map({ $0.verificationProxyConstructorName(prefix: "", deprecated: true) }))
+        let verifySet = Set<String>(methods.map({ $0.verificationProxyConstructorName(prefix: "", deprecated: true, annotated: false) }))
         guard verifySet.count == methods.count else { return true } // there would be conflicts in Verify
         return false
     }
@@ -601,7 +601,9 @@ import SourceryRuntime
     }
 
     class MethodWrapper {
-        private let deprecatedMessage = "@available(*, deprecated, message: \"This constructor is deprecated, and will be removed in v3.1\")\n\t\t"
+        private func deprecatedMessage(_ preferred: String = "") -> String {
+            return "@available(*, deprecated, message: \"This constructor is deprecated, and will be removed in v3.1\(preferred)\")\n\t\t"
+        }
         private var noStubDefinedMessage: String { return "Stub return value not specified for \(method.name). Use given" }
 
         private static var registered: [String: Int] = [:]
@@ -876,8 +878,8 @@ import SourceryRuntime
             return parameters.contains(where: { $0.parameter.argumentLabel == nil })
         }
 
-        func givenConstructorName(prefix: String = "", deprecated: Bool = false) -> String {
-            let annotation = deprecated ? deprecatedMessage : ""
+        func givenConstructorName(prefix: String = "", deprecated: Bool = false, annotated: Bool = true) -> String {
+            let annotation = annotated && deprecated ? deprecatedMessage(deprecatedParametersMessage()) : ""
             let returnTypeString = returnsSelf ? replaceSelf : TypeWrapper(method.returnTypeName).stripped
             if method.parameters.isEmpty {
                 return "static func \(method.shortName)(willReturn: \(returnTypeString)...) -> \(prefix)MethodStub"
@@ -886,8 +888,8 @@ import SourceryRuntime
             }
         }
 
-        func givenConstructorNameThrows(prefix: String = "", deprecated: Bool = false) -> String {
-            let annotation = deprecated ? deprecatedMessage : ""
+        func givenConstructorNameThrows(prefix: String = "", deprecated: Bool = false, annotated: Bool = true) -> String {
+            let annotation = annotated && deprecated ? deprecatedMessage(deprecatedParametersMessage()) : ""
             if method.parameters.isEmpty {
                 return "static func \(method.shortName)(willThrow: Error...) -> \(prefix)MethodStub"
             } else {
@@ -959,8 +961,8 @@ import SourceryRuntime
         }
 
         // Verify
-        func verificationProxyConstructorName(prefix: String = "", deprecated: Bool = false) -> String {
-            let annotation = deprecated ? deprecatedMessage : ""
+        func verificationProxyConstructorName(prefix: String = "", deprecated: Bool = false, annotated: Bool = true) -> String {
+            let annotation = annotated && deprecated ? deprecatedMessage(deprecatedParametersMessage()) : ""
             if method.parameters.isEmpty {
                 let methodName = returnTypeMatters() ? method.shortName : "\(method.callName)\(wrapGenerics(getGenericsAmongParameters()))"
                 return "static func \(methodName)(\(returningParameter(false,true))) -> \(prefix)Verify"
@@ -979,8 +981,8 @@ import SourceryRuntime
         }
 
         // Perform
-        func performProxyConstructorName(prefix: String = "", deprecated: Bool = false) -> String {
-            let annotation = deprecated ? deprecatedMessage : ""
+        func performProxyConstructorName(prefix: String = "", deprecated: Bool = false, annotated: Bool = true) -> String {
+            let annotation = annotated && deprecated ? deprecatedMessage(deprecatedParametersMessage()) : ""
             if method.parameters.isEmpty {
                 let methodName = returnTypeMatters() ? method.shortName : "\(method.callName)\(wrapGenerics(getGenericsAmongParameters()))"
                 return "static func \(methodName)(\(returningParameter(true,false))perform: @escaping \(performProxyClosureType())) -> \(prefix)Perform"
@@ -1050,6 +1052,25 @@ import SourceryRuntime
                 return "\(argumentLabel) \(p.parameter.name): \(p.nestedType)"
             }.joined(separator: ", ")
         }
+
+        private func deprecatedParametersMessage() -> String {
+            let newParams = parameters.map { p in return "\(p.parameter.argumentLabel ?? "_")" }
+            let oldParams = parameters.map { p -> String in
+                guard let argumentLabel = p.parameter.argumentLabel else { return "\(p.parameter.name)" }
+                guard argumentLabel != p.name else { return "\(p.parameter.name)" }
+                return "\(argumentLabel)"
+            }
+
+            var messages: [String] = []
+            for i in 0..<newParams.count {
+                if newParams[i] != oldParams[i] {
+                    messages.append(" remove `\(oldParams[i])` label")
+                }
+            }
+
+            return " Possible fix: " + messages.joined(separator: ",")
+        }
+
 
         private func parametersForStubSignature() -> String {
             func replacing(first: String, in full: String, with other: String) -> String {

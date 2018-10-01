@@ -1730,14 +1730,14 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
         static func similarMethodThatDiffersOnType(_ value: Parameter<Float>, willReturn: Bool...) -> MethodStub {
             return Given(method: .m_similarMethodThatDiffersOnType__value_1(`value`), products: willReturn.map({ Product.return($0) }))
         }
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `value` label")
 		static func similarMethodThatDiffersOnType(value: Parameter<Float>, willReturn: Bool...) -> MethodStub {
             return Given(method: .m_similarMethodThatDiffersOnType__value_1(`value`), products: willReturn.map({ Product.return($0) }))
         }
         static func similarMethodThatDiffersOnType(_ value: Parameter<Point>, willReturn: Bool...) -> MethodStub {
             return Given(method: .m_similarMethodThatDiffersOnType__value_2(`value`), products: willReturn.map({ Product.return($0) }))
         }
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `value` label")
 		static func similarMethodThatDiffersOnType(value: Parameter<Point>, willReturn: Bool...) -> MethodStub {
             return Given(method: .m_similarMethodThatDiffersOnType__value_2(`value`), products: willReturn.map({ Product.return($0) }))
         }
@@ -1806,13 +1806,13 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
         static func getPoint(from point: Parameter<Point>) -> Verify { return Verify(method: .m_getPoint__from_point(`point`))}
         static func getPoint(from tuple: Parameter<(Float,Float)>) -> Verify { return Verify(method: .m_getPoint__from_tuple(`tuple`))}
         static func similarMethodThatDiffersOnType(_ value: Parameter<Float>) -> Verify { return Verify(method: .m_similarMethodThatDiffersOnType__value_1(`value`))}
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `value` label")
 		static func similarMethodThatDiffersOnType(value: Parameter<Float>) -> Verify { return Verify(method: .m_similarMethodThatDiffersOnType__value_1(`value`))}
         static func similarMethodThatDiffersOnType(_ value: Parameter<Point>) -> Verify { return Verify(method: .m_similarMethodThatDiffersOnType__value_2(`value`))}
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `value` label")
 		static func similarMethodThatDiffersOnType(value: Parameter<Point>) -> Verify { return Verify(method: .m_similarMethodThatDiffersOnType__value_2(`value`))}
         static func methodWithTypedef(_ scalar: Parameter<Scalar>) -> Verify { return Verify(method: .m_methodWithTypedef__scalar(`scalar`))}
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `scalar` label")
 		static func methodWithTypedef(scalar: Parameter<Scalar>) -> Verify { return Verify(method: .m_methodWithTypedef__scalar(`scalar`))}
         static func methodWithClosures(success function: Parameter<LinearFunction>) -> Verify { return Verify(method: .m_methodWithClosures__success_function_1(`function`))}
         static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>) -> Verify { return Verify(method: .m_methodWithClosures__success_function_2(`function`))}
@@ -1838,21 +1838,21 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
         static func similarMethodThatDiffersOnType(_ value: Parameter<Float>, perform: @escaping (Float) -> Void) -> Perform {
             return Perform(method: .m_similarMethodThatDiffersOnType__value_1(`value`), performs: perform)
         }
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `value` label")
 		static func similarMethodThatDiffersOnType(value: Parameter<Float>, perform: @escaping (Float) -> Void) -> Perform {
             return Perform(method: .m_similarMethodThatDiffersOnType__value_1(`value`), performs: perform)
         }
         static func similarMethodThatDiffersOnType(_ value: Parameter<Point>, perform: @escaping (Point) -> Void) -> Perform {
             return Perform(method: .m_similarMethodThatDiffersOnType__value_2(`value`), performs: perform)
         }
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `value` label")
 		static func similarMethodThatDiffersOnType(value: Parameter<Point>, perform: @escaping (Point) -> Void) -> Perform {
             return Perform(method: .m_similarMethodThatDiffersOnType__value_2(`value`), performs: perform)
         }
         static func methodWithTypedef(_ scalar: Parameter<Scalar>, perform: @escaping (Scalar) -> Void) -> Perform {
             return Perform(method: .m_methodWithTypedef__scalar(`scalar`), performs: perform)
         }
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `scalar` label")
 		static func methodWithTypedef(scalar: Parameter<Scalar>, perform: @escaping (Scalar) -> Void) -> Perform {
             return Perform(method: .m_methodWithTypedef__scalar(`scalar`), performs: perform)
         }
@@ -2796,14 +2796,14 @@ class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstraint, 
         static func decode<T: Decodable>(_ type: Parameter<T.Type>, from data: Parameter<Data>, willReturn: T...) -> MethodStub {
             return Given(method: .m_decode__typefrom_data(`type`.wrapAsGeneric(), `data`), products: willReturn.map({ Product.return($0) }))
         }
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `type` label")
 		static func decode<T: Decodable>(type: Parameter<T.Type>, from data: Parameter<Data>, willReturn: T...) -> MethodStub {
             return Given(method: .m_decode__typefrom_data(`type`.wrapAsGeneric(), `data`), products: willReturn.map({ Product.return($0) }))
         }
         static func test<FOO>(_ type: Parameter<FOO.Type>, willReturn: Int...) -> MethodStub {
             return Given(method: .m_test__type(`type`.wrapAsGeneric()), products: willReturn.map({ Product.return($0) }))
         }
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `type` label")
 		static func test<FOO>(type: Parameter<FOO.Type>, willReturn: Int...) -> MethodStub {
             return Given(method: .m_test__type(`type`.wrapAsGeneric()), products: willReturn.map({ Product.return($0) }))
         }
@@ -2827,10 +2827,10 @@ class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstraint, 
         fileprivate var method: MethodType
 
         static func decode<T>(_ type: Parameter<T.Type>, from data: Parameter<Data>) -> Verify { return Verify(method: .m_decode__typefrom_data(`type`.wrapAsGeneric(), `data`))}
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `type` label")
 		static func decode<T>(type: Parameter<T.Type>, from data: Parameter<Data>) -> Verify { return Verify(method: .m_decode__typefrom_data(`type`.wrapAsGeneric(), `data`))}
         static func test<FOO>(_ type: Parameter<FOO.Type>) -> Verify { return Verify(method: .m_test__type(`type`.wrapAsGeneric()))}
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `type` label")
 		static func test<FOO>(type: Parameter<FOO.Type>) -> Verify { return Verify(method: .m_test__type(`type`.wrapAsGeneric()))}
     }
 
@@ -2841,14 +2841,14 @@ class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstraint, 
         static func decode<T>(_ type: Parameter<T.Type>, from data: Parameter<Data>, perform: @escaping (T.Type, Data) -> Void) -> Perform {
             return Perform(method: .m_decode__typefrom_data(`type`.wrapAsGeneric(), `data`), performs: perform)
         }
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `type` label")
 		static func decode<T>(type: Parameter<T.Type>, from data: Parameter<Data>, perform: @escaping (T.Type, Data) -> Void) -> Perform {
             return Perform(method: .m_decode__typefrom_data(`type`.wrapAsGeneric(), `data`), performs: perform)
         }
         static func test<FOO>(_ type: Parameter<FOO.Type>, perform: @escaping (FOO.Type) -> Void) -> Perform {
             return Perform(method: .m_test__type(`type`.wrapAsGeneric()), performs: perform)
         }
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `type` label")
 		static func test<FOO>(type: Parameter<FOO.Type>, perform: @escaping (FOO.Type) -> Void) -> Perform {
             return Perform(method: .m_test__type(`type`.wrapAsGeneric()), performs: perform)
         }
@@ -2980,7 +2980,7 @@ class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
         static func map<T: DateSortable>(_ items: Parameter<[T]>, willReturn: [(key: String, items: [T])]...) -> MethodStub {
             return Given(method: .m_map__items(`items`.wrapAsGeneric()), products: willReturn.map({ Product.return($0) }))
         }
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `items` label")
 		static func map<T: DateSortable>(items: Parameter<[T]>, willReturn: [(key: String, items: [T])]...) -> MethodStub {
             return Given(method: .m_map__items(`items`.wrapAsGeneric()), products: willReturn.map({ Product.return($0) }))
         }
@@ -2997,7 +2997,7 @@ class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
         fileprivate var method: MethodType
 
         static func map<T>(_ items: Parameter<[T]>) -> Verify { return Verify(method: .m_map__items(`items`.wrapAsGeneric()))}
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `items` label")
 		static func map<T>(items: Parameter<[T]>) -> Verify { return Verify(method: .m_map__items(`items`.wrapAsGeneric()))}
     }
 
@@ -3008,7 +3008,7 @@ class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
         static func map<T>(_ items: Parameter<[T]>, perform: @escaping ([T]) -> Void) -> Perform {
             return Perform(method: .m_map__items(`items`.wrapAsGeneric()), performs: perform)
         }
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `items` label")
 		static func map<T>(items: Parameter<[T]>, perform: @escaping ([T]) -> Void) -> Perform {
             return Perform(method: .m_map__items(`items`.wrapAsGeneric()), performs: perform)
         }
@@ -4575,7 +4575,7 @@ class ProtocolWithDeprecatedMembersMock: ProtocolWithDeprecatedMembers, Mock {
         static func method(_ value: Parameter<Int>, willReturn: Bool...) -> MethodStub {
             return Given(method: .m_method__value(`value`), products: willReturn.map({ Product.return($0) }))
         }
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `value` label")
 		static func method(value: Parameter<Int>, willReturn: Bool...) -> MethodStub {
             return Given(method: .m_method__value(`value`), products: willReturn.map({ Product.return($0) }))
         }
@@ -4592,7 +4592,7 @@ class ProtocolWithDeprecatedMembersMock: ProtocolWithDeprecatedMembers, Mock {
         fileprivate var method: MethodType
 
         static func method(_ value: Parameter<Int>) -> Verify { return Verify(method: .m_method__value(`value`))}
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `value` label")
 		static func method(value: Parameter<Int>) -> Verify { return Verify(method: .m_method__value(`value`))}
     }
 
@@ -4603,7 +4603,7 @@ class ProtocolWithDeprecatedMembersMock: ProtocolWithDeprecatedMembers, Mock {
         static func method(_ value: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
             return Perform(method: .m_method__value(`value`), performs: perform)
         }
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `value` label")
 		static func method(value: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
             return Perform(method: .m_method__value(`value`), performs: perform)
         }
@@ -5282,7 +5282,7 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
         fileprivate var method: StaticMethodType
 
         static func defaultEmail(_ newValue: Parameter<String?>) -> StaticVerify { return StaticVerify(method: .sm_defaultEmail__newValue(`newValue`))}
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `newValue` label")
 		static func defaultEmail(newValue: Parameter<String?>) -> StaticVerify { return StaticVerify(method: .sm_defaultEmail__newValue(`newValue`))}
         static var name: StaticVerify { return StaticVerify(method: .p_name_get) }
 		static func name(set newValue: Parameter<String>) -> StaticVerify { return StaticVerify(method: .p_name_set(newValue)) }
@@ -5297,7 +5297,7 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
         static func defaultEmail(_ newValue: Parameter<String?>, perform: @escaping (String?) -> Void) -> StaticPerform {
             return StaticPerform(method: .sm_defaultEmail__newValue(`newValue`), performs: perform)
         }
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `newValue` label")
 		static func defaultEmail(newValue: Parameter<String?>, perform: @escaping (String?) -> Void) -> StaticPerform {
             return StaticPerform(method: .sm_defaultEmail__newValue(`newValue`), performs: perform)
         }
@@ -5361,10 +5361,10 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
         fileprivate var method: MethodType
 
         static func name(_ newValue: Parameter<String>) -> Verify { return Verify(method: .m_name__newValue(`newValue`))}
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `newValue` label")
 		static func name(newValue: Parameter<String>) -> Verify { return Verify(method: .m_name__newValue(`newValue`))}
         static func email(_ newValue: Parameter<String?>) -> Verify { return Verify(method: .m_email__newValue(`newValue`))}
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `newValue` label")
 		static func email(newValue: Parameter<String?>) -> Verify { return Verify(method: .m_email__newValue(`newValue`))}
         static var name: Verify { return Verify(method: .p_name_get) }
 		static func name(set newValue: Parameter<String>) -> Verify { return Verify(method: .p_name_set(newValue)) }
@@ -5379,14 +5379,14 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
         static func name(_ newValue: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_name__newValue(`newValue`), performs: perform)
         }
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `newValue` label")
 		static func name(newValue: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_name__newValue(`newValue`), performs: perform)
         }
         static func email(_ newValue: Parameter<String?>, perform: @escaping (String?) -> Void) -> Perform {
             return Perform(method: .m_email__newValue(`newValue`), performs: perform)
         }
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `newValue` label")
 		static func email(newValue: Parameter<String?>, perform: @escaping (String?) -> Void) -> Perform {
             return Perform(method: .m_email__newValue(`newValue`), performs: perform)
         }
@@ -6109,7 +6109,7 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
         static func aaa(_ value: Parameter<Int>, willReturn: Bool...) -> MethodStub {
             return Given(method: .m_aaa__value(`value`), products: willReturn.map({ Product.return($0) }))
         }
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `value` label")
 		static func aaa(value: Parameter<Int>, willReturn: Bool...) -> MethodStub {
             return Given(method: .m_aaa__value(`value`), products: willReturn.map({ Product.return($0) }))
         }
@@ -6162,7 +6162,7 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
         fileprivate var method: MethodType
 
         static func aaa(_ value: Parameter<Int>) -> Verify { return Verify(method: .m_aaa__value(`value`))}
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `value` label")
 		static func aaa(value: Parameter<Int>) -> Verify { return Verify(method: .m_aaa__value(`value`))}
         static var something: Verify { return Verify(method: .p_something_get) }
 		static func something(set newValue: Parameter<Any>) -> Verify { return Verify(method: .p_something_set(newValue)) }
@@ -6198,7 +6198,7 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
         static func aaa(_ value: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
             return Perform(method: .m_aaa__value(`value`), performs: perform)
         }
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `value` label")
 		static func aaa(value: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
             return Perform(method: .m_aaa__value(`value`), performs: perform)
         }
@@ -6966,14 +6966,14 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
         static func similarMethodThatDiffersOnType(_ value: Parameter<Float>, willReturn: Bool...) -> MethodStub {
             return Given(method: .m_similarMethodThatDiffersOnType__value_1(`value`), products: willReturn.map({ Product.return($0) }))
         }
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `value` label")
 		static func similarMethodThatDiffersOnType(value: Parameter<Float>, willReturn: Bool...) -> MethodStub {
             return Given(method: .m_similarMethodThatDiffersOnType__value_1(`value`), products: willReturn.map({ Product.return($0) }))
         }
         static func similarMethodThatDiffersOnType(_ value: Parameter<Point>, willReturn: Bool...) -> MethodStub {
             return Given(method: .m_similarMethodThatDiffersOnType__value_2(`value`), products: willReturn.map({ Product.return($0) }))
         }
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `value` label")
 		static func similarMethodThatDiffersOnType(value: Parameter<Point>, willReturn: Bool...) -> MethodStub {
             return Given(method: .m_similarMethodThatDiffersOnType__value_2(`value`), products: willReturn.map({ Product.return($0) }))
         }
@@ -7041,13 +7041,13 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
         static func getPoint(from point: Parameter<Point>) -> Verify { return Verify(method: .m_getPoint__from_point(`point`))}
         static func getPoint(from tuple: Parameter<(Float,Float)>) -> Verify { return Verify(method: .m_getPoint__from_tuple(`tuple`))}
         static func similarMethodThatDiffersOnType(_ value: Parameter<Float>) -> Verify { return Verify(method: .m_similarMethodThatDiffersOnType__value_1(`value`))}
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `value` label")
 		static func similarMethodThatDiffersOnType(value: Parameter<Float>) -> Verify { return Verify(method: .m_similarMethodThatDiffersOnType__value_1(`value`))}
         static func similarMethodThatDiffersOnType(_ value: Parameter<Point>) -> Verify { return Verify(method: .m_similarMethodThatDiffersOnType__value_2(`value`))}
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `value` label")
 		static func similarMethodThatDiffersOnType(value: Parameter<Point>) -> Verify { return Verify(method: .m_similarMethodThatDiffersOnType__value_2(`value`))}
         static func methodWithTypedef(_ scalar: Parameter<Scalar>) -> Verify { return Verify(method: .m_methodWithTypedef__scalar(`scalar`))}
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `scalar` label")
 		static func methodWithTypedef(scalar: Parameter<Scalar>) -> Verify { return Verify(method: .m_methodWithTypedef__scalar(`scalar`))}
         static func methodWithClosures(success function: Parameter<LinearFunction>) -> Verify { return Verify(method: .m_methodWithClosures__success_function_1(`function`))}
         static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>) -> Verify { return Verify(method: .m_methodWithClosures__success_function_2(`function`))}
@@ -7069,21 +7069,21 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
         static func similarMethodThatDiffersOnType(_ value: Parameter<Float>, perform: @escaping (Float) -> Void) -> Perform {
             return Perform(method: .m_similarMethodThatDiffersOnType__value_1(`value`), performs: perform)
         }
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `value` label")
 		static func similarMethodThatDiffersOnType(value: Parameter<Float>, perform: @escaping (Float) -> Void) -> Perform {
             return Perform(method: .m_similarMethodThatDiffersOnType__value_1(`value`), performs: perform)
         }
         static func similarMethodThatDiffersOnType(_ value: Parameter<Point>, perform: @escaping (Point) -> Void) -> Perform {
             return Perform(method: .m_similarMethodThatDiffersOnType__value_2(`value`), performs: perform)
         }
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `value` label")
 		static func similarMethodThatDiffersOnType(value: Parameter<Point>, perform: @escaping (Point) -> Void) -> Perform {
             return Perform(method: .m_similarMethodThatDiffersOnType__value_2(`value`), performs: perform)
         }
         static func methodWithTypedef(_ scalar: Parameter<Scalar>, perform: @escaping (Scalar) -> Void) -> Perform {
             return Perform(method: .m_methodWithTypedef__scalar(`scalar`), performs: perform)
         }
-        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1")
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `scalar` label")
 		static func methodWithTypedef(scalar: Parameter<Scalar>, perform: @escaping (Scalar) -> Void) -> Perform {
             return Perform(method: .m_methodWithTypedef__scalar(`scalar`), performs: perform)
         }

@@ -1957,6 +1957,7 @@
 					XCTest,
 					"-weak-lswiftXCTest",
 				);
+				OTHER_SWIFT_FLAGS = "-DMocky";
 				PRODUCT_BUNDLE_IDENTIFIER = com.swiftymocky.SwiftyMocky;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -2001,6 +2002,7 @@
 					XCTest,
 					"-weak-lswiftXCTest",
 				);
+				OTHER_SWIFT_FLAGS = "-DMocky";
 				PRODUCT_BUNDLE_IDENTIFIER = com.swiftymocky.SwiftyMocky;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
