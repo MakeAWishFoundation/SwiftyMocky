@@ -76,10 +76,8 @@ private class CallStackWrapper {
     }
 }
 #else
-@available(*, unavailable, message: "Test observer is only available when using SwiftyMocky in Test target!")
 public class SwiftyMockyTestObserver: NSObject {
     /// [Internal] No setup whatsoever
-    @available(*, unavailable, message: "Test observer is only available when using SwiftyMocky in Test target!")
     @objc public static func setup() {
         // Empty on purpose
     }
