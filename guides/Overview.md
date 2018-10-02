@@ -42,6 +42,18 @@ print(mock.surname(for: "Mathew")) // Kowalsky
 print(mock.surname(for: "Joanna")) // Kowalsky
 ```
 
+In verions 3.0 we introduced sequences and policies for better control of mock behaviour.
+
+```swift
+Given(mock, .surname(for name: .any, willReturn: "Bravo", "Kowalsky", "Nguyen"))
+
+print(mock.surname(for: "Johny"))   // Bravo
+print(mock.surname(for: "Johny"))   // Kowalsky
+print(mock.surname(for: "Johny"))   // Nguyen
+print(mock.surname(for: "Johny"))   // and again Bravo
+// ...
+```
+
 ### **3. Check invocations of methods - Verify**
 
 All mocks has **verify** method (accessible both as instance method or global function), with easy to use syntax, allowing to verify, whether a method was called on mock, and how many times. It also provides convenient way to specify, whether method attributes matters (and which ones).
@@ -83,9 +95,9 @@ Verify(mockStorage, .in(range: 0...3), .storeUser(name: .value("Johny"), surname
 Verify(mockStorage, .less(than: 4), .storeUser(name: .value("Johny"), surname: .any))
 ```
 
-### **4. Check property getters and setters - VerifyProperty**
+For **Verify**, you can use **Count** to specify how many times you expect something to be triggered. **Count** can be defined as explicit value, like `1`,`2`,... or in more descriptive and flexible way, like `.never`, `more(than: 1)`, etc.
 
-From SwiftyMocky 2.0, it is possible to perform `VerifyProperty`. Syntax is very similar to plain `Verify`, with respect to whether it is get or set:
+From SwiftyMocky 3.0, it is possible to use `Given` and perform `Verify` on properties as well, with respect to whether it is get or set:
 
 ```swift
 mock.name = "Danny"
@@ -94,14 +106,16 @@ mock.name = "Joanna"
 print(mock.name)
 
 // Verify getter:
-VerifyProperty(mock, 1, .name)
+Verify(mock, 1, .name)
 // Verify setter:
-VerifyProperty(mock, 2, .name(set: .any))
-VerifyProperty(mock, 1, .name(set: .value("Danny")))
-VerifyProperty(mock, .never, .name(set: .value("Bishop")))
+Verify(mock, 2, .name(set: .any))
+Verify(mock, 1, .name(set: .value("Danny")))
+Verify(mock, .never, .name(set: .value("Bishop")))
 ```
 
-### **5. Do something when stub is called - Perform**
+The old `VerifyProperty` is now deprecated. We also deprecated using setters for readonly properties, in favour of using `Given`.
+
+### **4. Do something when stub is called - Perform**
 
 All mocks has **perform** method (accessible both as instance method or global function), with easy to use syntax, allowing to specify closure, that will be executed upon stubbed method being called.
 

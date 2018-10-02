@@ -20,7 +20,23 @@ Please have in mind, that generic methods are problematic in a lot of cases, so 
 1. AutoComplete issues for given, perform and verify: - use full `<MockName>.Given.` for getting autocomplete.
 1. Use full `.any(Value.Type)` instead of `.any`, to avoid ambiguity.
 1. Matching issues - if you are using generic parameters as `.value`, you might need to add additional comparators to `Matcher` instance. However, it should be handled for most of basic types.
-1. When working with methods like `func decode<T>(_ type: T.Type, data: Data) -> T`, it will require to register comparator for every custom `T.Type` used, like `Matcher.default.register(CustomType.Type.self)`
+1. When working with methods like `func decode<T>(_ type: T.Type, data: Data) -> T`, it will require to register comparator for every custom `T.Type` used, like `Matcher.default.register(CustomType.Type.self)` - or just use .any(Custom.self)
+
+## Protocols with generic subscripts
+
+We support generic subscript, but for now they need to annotated manually, like below:
+
+```swift
+//sourcery: AutoMockable
+public protocol ProtocolWithGenericSubscript: class {
+    //sourcery: associatedtype = "T: Sequence"
+    subscript<T: Sequence>(_ items: [T]) -> Int where T.Element: Equatable { get set }
+}
+```
+
+Annotations associatedtype should contain everything in <>, while where at the end gets autoparsed. That will generate a valid mock.
+
+Please have in mind, that generic methods are problematic in a lot of cases, so you could experience. They generally match the ones of generic method above.
 
 ## Protocols with associated types
 

@@ -173,6 +173,9 @@
               <li class="nav-group-task">
                 <a href="Classes/SwiftyMockyTestObserver.html">SwiftyMockyTestObserver</a>
               </li>
+              <li class="nav-group-task">
+                <a href="Classes/SwiftyMockyTestObserver.html">SwiftyMockyTestObserver</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -249,8 +252,31 @@
           <section class="section">
             
             <h1 id='changelog' class='heading'>Changelog</h1>
+<h2 id='all-changes-to-swiftymocky-project-will-be-documented-in-this-file' class='heading'>All changes to SwiftyMocky project will be documented in this file.</h2>
+<h2 id='strong-3-0-0-strong-2018' class='heading'><strong>3.0.0</strong> / 2018</h2>
+<h4 id='added' class='heading'>Added:</h4>
 
-<p>All changes to SwiftyMocky project will be documented in this file.</p>
+<ul>
+<li>Gracefully fail when return value is not stubbed</li>
+<li>Support for subscripts</li>
+<li>Stubbing policy, and support for recording sequence of return values</li>
+<li>Sequencing policy, which allows to change order in which stubs are processed</li>
+<li>Given for properties</li>
+</ul>
+<h4 id='deprecated' class='heading'>Deprecated:</h4>
+
+<ul>
+<li>deprecated VerifyProperty</li>
+<li>deprecated setters for readonly properties</li>
+<li>deprecated Given constructors not matching method signature (argument labels fix)</li>
+</ul>
+<h4 id='fixed' class='heading'>Fixed:</h4>
+
+<ul>
+<li>multiple generation issues, like unnamed method parameters and esaping paramters names</li>
+<li>fixed issues with generics handling, when some attributes was not recognized as genric</li>
+<li>fixed issues with names collisions for methods different only in argument labels</li>
+</ul>
 
 <hr>
 <h2 id='strong-2-1-0-strong-2018' class='heading'><strong>2.1.0</strong> / 2018</h2>

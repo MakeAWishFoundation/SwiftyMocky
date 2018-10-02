@@ -173,6 +173,9 @@
               <li class="nav-group-task">
                 <a href="Classes/SwiftyMockyTestObserver.html">SwiftyMockyTestObserver</a>
               </li>
+              <li class="nav-group-task">
+                <a href="Classes/SwiftyMockyTestObserver.html">SwiftyMockyTestObserver</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -268,8 +271,21 @@
 <li>AutoComplete issues for given, perform and verify: - use full <code>&lt;MockName&gt;.Given.</code> for getting autocomplete.</li>
 <li>Use full <code>.any(Value.Type)</code> instead of <code>.any</code>, to avoid ambiguity.</li>
 <li>Matching issues - if you are using generic parameters as <code>.value</code>, you might need to add additional comparators to <code><a href="Classes/Matcher.html">Matcher</a></code> instance. However, it should be handled for most of basic types.</li>
-<li>When working with methods like <code>func decode&lt;T&gt;(_ type: T.Type, data: Data) -&gt; T</code>, it will require to register comparator for every custom <code>T.Type</code> used, like <code>Matcher.default.register(CustomType.Type.self)</code></li>
+<li>When working with methods like <code>func decode&lt;T&gt;(_ type: T.Type, data: Data) -&gt; T</code>, it will require to register comparator for every custom <code>T.Type</code> used, like <code>Matcher.default.register(CustomType.Type.self)</code> - or just use .any(Custom.self)</li>
 </ol>
+<h2 id='protocols-with-generic-subscripts' class='heading'>Protocols with generic subscripts</h2>
+
+<p>We support generic subscript, but for now they need to annotated manually, like below:</p>
+<pre class="highlight swift"><code><span class="c1">//sourcery: AutoMockable</span>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ProtocolWithGenericSubscript</span><span class="p">:</span> <span class="kd">class</span> <span class="p">{</span>
+    <span class="c1">//sourcery: associatedtype = "T: Sequence"</span>
+    <span class="kd">subscript</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">:</span> <span class="kt">Sequence</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">items</span><span class="p">:</span> <span class="p">[</span><span class="kt">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kt">Int</span> <span class="k">where</span> <span class="kt">T</span><span class="o">.</span><span class="kt">Element</span><span class="p">:</span> <span class="kt">Equatable</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>Annotations associatedtype should contain everything in &lt;&gt;, while where at the end gets autoparsed. That will generate a valid mock.</p>
+
+<p>Please have in mind, that generic methods are problematic in a lot of cases, so you could experience. They generally match the ones of generic method above.</p>
 <h2 id='protocols-with-associated-types' class='heading'>Protocols with associated types</h2>
 
 <p>We are also supporting protocols with associated types (mock will be generated as generic class), but that requires some aditional manuall annotations:</p>

@@ -173,6 +173,9 @@
               <li class="nav-group-task">
                 <a href="Classes/SwiftyMockyTestObserver.html">SwiftyMockyTestObserver</a>
               </li>
+              <li class="nav-group-task">
+                <a href="Classes/SwiftyMockyTestObserver.html">SwiftyMockyTestObserver</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -258,6 +261,8 @@
 </code></pre>
 
 <p>Then execute <code>pod install</code></p>
+
+<p>The integration part is described in setup page.</p>
 <h2 id='2-a-href-https-github-com-carthage-carthage-carthage-a' class='heading'>2. <a href="https://github.com/Carthage/Carthage">Carthage</a>.</h2>
 
 <p>To install, add following to you Cartfile:</p>
@@ -269,18 +274,30 @@
 <p>For Carthage, few additional steps are required:</p>
 
 <ol>
-<li>Obtain <a href="https://github.com/krzysztofzablocki/Sourcery">Sourcery</a> - used to generate mocks (specify valid path in generate mock)</li>
+<li>Obtain <a href="https://github.com/krzysztofzablocki/Sourcery">Sourcery</a> - used to generate mocks (specify valid path in generate mock) - you can use <strong>get_sourcery</strong> script below</li>
 <li>Change templates path to <code>Carthage/Build/iOS/SwiftyMocky.framework/</code></li>
-<li>In your test framework <strong>add</strong> to:
+<li>In your test target <strong>add</strong> to:
 
 <ul>
 <li><strong>Other Swift Flags</strong>: <code>-DMocky</code></li>
-<li><strong>Framework Search Paths</strong>: <code>$(SRCROOT)/Carthage/Build/iOS</code></li>
 </ul></li>
+<li><p>In your test target, add SwiftyMocky to linked libraries:</p>
+
+<p><img src="../guides/assets/link-binary-with-libraries.png" alt="Link binary" title="Example - link binary"></p></li>
+<li><p>In your test target, add new copy files phase:</p>
+
+<p><img src="../guides/assets/add-new-copy-files-phase.png" alt="Link binary" title="Example - add copy files phase"></p></li>
+<li><p>Select destination to frameworks, and add SwiftyMocky:</p>
+
+<p><img src="../guides/assets/add-framework-tocopy-files-phase.png" alt="Link binary" title="Example - add SwiftyMocky to copy frameworks"></p></li>
 </ol>
+
+<p>The integration part is described in setup page.</p>
 <h2 id='3-manually' class='heading'>3. Manually.</h2>
 
 <p>Include Sources in your project, and setup <a href="https://github.com/krzysztofzablocki/Sourcery">Sourcery</a></p>
+
+<p>The integration part is described in setup page.</p>
 
 <blockquote>
 <p><strong>Important!!!</strong></p>
@@ -306,7 +323,7 @@
 </code></pre>
 
 <p><strong>get_sourcery.sh</strong></p>
-<pre class="highlight shell"><code><span class="o">[[</span> <span class="nv">$# </span><span class="o">&gt;</span> 0 <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nv">VERSION</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> <span class="o">||</span> <span class="nv">VERSION</span><span class="o">=</span><span class="s2">"4.0.2"</span>
+<pre class="highlight shell"><code><span class="o">[[</span> <span class="nv">$# </span><span class="o">&gt;</span> 0 <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nv">VERSION</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> <span class="o">||</span> <span class="nv">VERSION</span><span class="o">=</span><span class="s2">"4.2"</span>
 <span class="o">[[</span> <span class="nv">$# </span><span class="o">&gt;</span> 1 <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nv">OUTPUT</span><span class="o">=</span><span class="s2">"</span><span class="nv">$2</span><span class="s2">"</span> <span class="o">||</span> <span class="nv">OUTPUT</span><span class="o">=</span><span class="s2">"./Pods/Sourcery/bin"</span>
 
 <span class="nb">echo</span> <span class="s2">"CLONE SOURCERY FOR </span><span class="nv">$VERSION</span><span class="s2"> INTO </span><span class="nv">$OUTPUT</span><span class="s2">"</span>
@@ -319,7 +336,12 @@ git clone <span class="nt">-b</span> <span class="s2">"swift/</span><span class=
 This script is also shipped with SwiftyMocky when installing via cocoapods
 You can use it from project root like <code>sh ./Pods/SwiftyMocky/get_sourcery.sh 4.2</code>
 Version is optional, if you don&rsquo;t specify it, script will use latest supported (4.2 in that case)</p>
+
+<p><strong>Note 2!</strong>
+If you use Carthage, you should specify your custom output location for sourcery binary. Please have in mind, that script clears output dir, so don&rsquo;t point it to <code>~/</code> or something ;)</p>
 </blockquote>
+
+<!-- Assets -->
 
           </section>
         </section>

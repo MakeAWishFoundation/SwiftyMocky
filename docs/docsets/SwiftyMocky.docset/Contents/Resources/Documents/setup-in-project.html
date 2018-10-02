@@ -173,6 +173,9 @@
               <li class="nav-group-task">
                 <a href="Classes/SwiftyMockyTestObserver.html">SwiftyMockyTestObserver</a>
               </li>
+              <li class="nav-group-task">
+                <a href="Classes/SwiftyMockyTestObserver.html">SwiftyMockyTestObserver</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -258,7 +261,7 @@
     <span class="pi">-</span> <span class="s">./ExampleApp</span>
     <span class="pi">-</span> <span class="s">./ExampleAppTests</span>
 <span class="na">templates</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="s">./Pods/SwiftyMocky/Sources/Templates</span>
+  <span class="pi">-</span> <span class="s">./Pods/SwiftyMocky/Sources/Templates</span> <span class="c1"># Different for Carthage installation</span>
 <span class="na">output</span><span class="pi">:</span>
   <span class="s">./ExampleApp</span>
 <span class="na">args</span><span class="pi">:</span>
@@ -288,6 +291,11 @@
 In some cases (for example when using R.swift for assets management), there are big generated swift files involved, that can extend time of generating mocks.
 In such cases, you can exclude particular files from whole process, using <code>exclude</code> in same way as <code>include</code> in config.yml.</p>
 </blockquote>
+<h2 id='setup-sourcery-optional' class='heading'>Setup Sourcery (optional):</h2>
+
+<p>In some cases Sourcery that is downloaded with Pods installation does not match for example Swift version you are using. With cocoapods installation we ship <code>get_sourcery.sh</code> script, to override it with newer/older version of binary.</p>
+
+<p>For that case refer <q>Known Issues</q> page.</p>
 <h2 id='generate-mocks' class='heading'>Generate mocks:</h2>
 
 <ol>

@@ -173,6 +173,9 @@
               <li class="nav-group-task">
                 <a href="Classes/SwiftyMockyTestObserver.html">SwiftyMockyTestObserver</a>
               </li>
+              <li class="nav-group-task">
+                <a href="Classes/SwiftyMockyTestObserver.html">SwiftyMockyTestObserver</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -288,6 +291,16 @@
 <span class="nf">print</span><span class="p">(</span><span class="n">mock</span><span class="o">.</span><span class="nf">surname</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="s">"Mathew"</span><span class="p">))</span> <span class="c1">// Kowalsky</span>
 <span class="nf">print</span><span class="p">(</span><span class="n">mock</span><span class="o">.</span><span class="nf">surname</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="s">"Joanna"</span><span class="p">))</span> <span class="c1">// Kowalsky</span>
 </code></pre>
+
+<p>In verions 3.0 we introduced sequences and policies for better control of mock behaviour.</p>
+<pre class="highlight swift"><code><span class="kt">Given</span><span class="p">(</span><span class="n">mock</span><span class="p">,</span> <span class="o">.</span><span class="nf">surname</span><span class="p">(</span><span class="k">for</span> <span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="n">any</span><span class="p">,</span> <span class="nv">willReturn</span><span class="p">:</span> <span class="s">"Bravo"</span><span class="p">,</span> <span class="s">"Kowalsky"</span><span class="p">,</span> <span class="s">"Nguyen"</span><span class="p">))</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="n">mock</span><span class="o">.</span><span class="nf">surname</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="s">"Johny"</span><span class="p">))</span>   <span class="c1">// Bravo</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">mock</span><span class="o">.</span><span class="nf">surname</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="s">"Johny"</span><span class="p">))</span>   <span class="c1">// Kowalsky</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">mock</span><span class="o">.</span><span class="nf">surname</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="s">"Johny"</span><span class="p">))</span>   <span class="c1">// Nguyen</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">mock</span><span class="o">.</span><span class="nf">surname</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="s">"Johny"</span><span class="p">))</span>   <span class="c1">// and again Bravo</span>
+<span class="c1">// ...</span>
+</code></pre>
 <h3 id='strong-3-check-invocations-of-methods-verify-strong' class='heading'><strong>3. Check invocations of methods - Verify</strong></h3>
 
 <p>All mocks has <strong>verify</strong> method (accessible both as instance method or global function), with easy to use syntax, allowing to verify, whether a method was called on mock, and how many times. It also provides convenient way to specify, whether method attributes matters (and which ones).</p>
@@ -322,22 +335,25 @@
 <span class="kt">Verify</span><span class="p">(</span><span class="n">mockStorage</span><span class="p">,</span> <span class="o">.</span><span class="nf">in</span><span class="p">(</span><span class="nv">range</span><span class="p">:</span> <span class="mi">0</span><span class="o">...</span><span class="mi">3</span><span class="p">),</span> <span class="o">.</span><span class="nf">storeUser</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="s">"Johny"</span><span class="p">),</span> <span class="nv">surname</span><span class="p">:</span> <span class="o">.</span><span class="n">any</span><span class="p">))</span>
 <span class="kt">Verify</span><span class="p">(</span><span class="n">mockStorage</span><span class="p">,</span> <span class="o">.</span><span class="nf">less</span><span class="p">(</span><span class="nv">than</span><span class="p">:</span> <span class="mi">4</span><span class="p">),</span> <span class="o">.</span><span class="nf">storeUser</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="s">"Johny"</span><span class="p">),</span> <span class="nv">surname</span><span class="p">:</span> <span class="o">.</span><span class="n">any</span><span class="p">))</span>
 </code></pre>
-<h3 id='strong-4-check-property-getters-and-setters-verifyproperty-strong' class='heading'><strong>4. Check property getters and setters - VerifyProperty</strong></h3>
 
-<p>From SwiftyMocky 2.0, it is possible to perform <code>VerifyProperty</code>. Syntax is very similar to plain <code>Verify</code>, with respect to whether it is get or set:</p>
+<p>For <strong>Verify</strong>, you can use <strong>Count</strong> to specify how many times you expect something to be triggered. <strong>Count</strong> can be defined as explicit value, like <code>1</code>,<code>2</code>,&hellip; or in more descriptive and flexible way, like <code>.never</code>, <code>more(than: 1)</code>, etc.</p>
+
+<p>From SwiftyMocky 3.0, it is possible to use <code>Given</code> and perform <code>Verify</code> on properties as well, with respect to whether it is get or set:</p>
 <pre class="highlight swift"><code><span class="n">mock</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">"Danny"</span>
 <span class="n">mock</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">"Joanna"</span>
 
 <span class="nf">print</span><span class="p">(</span><span class="n">mock</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
 <span class="c1">// Verify getter:</span>
-<span class="kt">VerifyProperty</span><span class="p">(</span><span class="n">mock</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="kt">Verify</span><span class="p">(</span><span class="n">mock</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">.</span><span class="n">name</span><span class="p">)</span>
 <span class="c1">// Verify setter:</span>
-<span class="kt">VerifyProperty</span><span class="p">(</span><span class="n">mock</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">.</span><span class="nf">name</span><span class="p">(</span><span class="nv">set</span><span class="p">:</span> <span class="o">.</span><span class="n">any</span><span class="p">))</span>
-<span class="kt">VerifyProperty</span><span class="p">(</span><span class="n">mock</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">.</span><span class="nf">name</span><span class="p">(</span><span class="nv">set</span><span class="p">:</span> <span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="s">"Danny"</span><span class="p">)))</span>
-<span class="kt">VerifyProperty</span><span class="p">(</span><span class="n">mock</span><span class="p">,</span> <span class="o">.</span><span class="n">never</span><span class="p">,</span> <span class="o">.</span><span class="nf">name</span><span class="p">(</span><span class="nv">set</span><span class="p">:</span> <span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="s">"Bishop"</span><span class="p">)))</span>
+<span class="kt">Verify</span><span class="p">(</span><span class="n">mock</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">.</span><span class="nf">name</span><span class="p">(</span><span class="nv">set</span><span class="p">:</span> <span class="o">.</span><span class="n">any</span><span class="p">))</span>
+<span class="kt">Verify</span><span class="p">(</span><span class="n">mock</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">.</span><span class="nf">name</span><span class="p">(</span><span class="nv">set</span><span class="p">:</span> <span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="s">"Danny"</span><span class="p">)))</span>
+<span class="kt">Verify</span><span class="p">(</span><span class="n">mock</span><span class="p">,</span> <span class="o">.</span><span class="n">never</span><span class="p">,</span> <span class="o">.</span><span class="nf">name</span><span class="p">(</span><span class="nv">set</span><span class="p">:</span> <span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="s">"Bishop"</span><span class="p">)))</span>
 </code></pre>
-<h3 id='strong-5-do-something-when-stub-is-called-perform-strong' class='heading'><strong>5. Do something when stub is called - Perform</strong></h3>
+
+<p>The old <code>VerifyProperty</code> is now deprecated. We also deprecated using setters for readonly properties, in favour of using <code>Given</code>.</p>
+<h3 id='strong-4-do-something-when-stub-is-called-perform-strong' class='heading'><strong>4. Do something when stub is called - Perform</strong></h3>
 
 <p>All mocks has <strong>perform</strong> method (accessible both as instance method or global function), with easy to use syntax, allowing to specify closure, that will be executed upon stubbed method being called.</p>
 
