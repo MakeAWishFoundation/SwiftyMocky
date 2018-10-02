@@ -83,4 +83,34 @@ class EdgeCasesTests: XCTestCase {
         XCTAssertEqual(mock.getter(swapped: key4), 2)
         XCTAssertEqual(mock.getter(swapped: key4), 3)
     }
+
+    func test_no_stubbing_needed_for_methods_void() {
+        let mock = ShouldAllowNoStubDefinedMock()
+
+        mock.voidMethod("a")
+        XCTAssertNoThrow(try mock.throwingVoidMethod("b"))
+        XCTAssertNoThrow(try ShouldAllowNoStubDefinedMock.throwingVoidMethod("b"))
+    }
+
+    func test_no_stubbing_needed_for_methods_optional() {
+        let mock = ShouldAllowNoStubDefinedMock()
+
+        XCTAssertNil(mock.optionalMethod("a"))
+        XCTAssertNil(mock.optionalThrowingMethod("b"))
+        XCTAssertNil(ShouldAllowNoStubDefinedMock.optionalMethod("a"))
+        XCTAssertNil(ShouldAllowNoStubDefinedMock.optionalThrowingMethod("b"))
+    }
+
+    func test_no_stubbing_needed_for_optional_properties() {
+        let mock = ShouldAllowNoStubDefinedMock()
+
+        XCTAssertNil(mock.property)
+        XCTAssertNil(ShouldAllowNoStubDefinedMock.property)
+    }
+
+    func test_no_stubbing_needed_for_optional_subscripts() {
+        let mock = ShouldAllowNoStubDefinedMock()
+
+        XCTAssertNil(mock[0])
+    }
 }

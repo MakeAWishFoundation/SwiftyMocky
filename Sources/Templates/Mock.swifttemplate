@@ -330,7 +330,7 @@ import SourceryRuntime
 
         var getter: String {
             let staticModifier = variable.isStatic ? "\(scope)." : ""
-            let returnValue = "givenGetterValue(.\(propertyCaseGetName), \"\(noStubDefinedMessage)\")"
+            let returnValue = variable.isOptional ? "optionalGivenGetterValue(.\(propertyCaseGetName), \"\(noStubDefinedMessage)\")" : "givenGetterValue(.\(propertyCaseGetName), \"\(noStubDefinedMessage)\")"
             return "\n\t\tget {\t\(staticModifier)invocations.append(.\(propertyCaseGetName)); return \(staticModifier)\(privatePrototypeName) ?? \(returnValue) }"
         }
         var setter: String {
@@ -473,12 +473,13 @@ import SourceryRuntime
         }
         private func getter() -> String {
             let method = ".\(subscriptCasePrefix("get"))(\(parametersForMethodCall()))"
+            let noStubDefined = wrapped.returnTypeName.isOptional ? "return nil" : "onFatalFailure(\"\(noStubDefinedMessage)\"); Failure(\"noStubDefinedMessage\")"
             return
             "\n\t\t\taddInvocation(\(method))" +
             "\n\t\t\tdo {" +
             "\n\t\t\t\treturn try methodReturnValue(\(method)).casted()" +
             "\n\t\t\t} catch {" +
-            "\n\t\t\t\tonFatalFailure(\"\(noStubDefinedMessage)\"); Failure(\"noStubDefinedMessage\")" +
+            "\n\t\t\t\t\(noStubDefined)" +
             "\n\t\t\t}"
         }
         private func setter() -> String {
@@ -711,9 +712,10 @@ import SourceryRuntime
                 \t\t}\(" ")
                 """
             } else {
+                let defaultValue = method.returnTypeName.isOptional ? " = nil" : ""
                 return
                 """
-                \n\t\tvar __value: \(returnType)
+                \n\t\tvar __value: \(returnType)\(defaultValue)
                 \t\tdo {
                 \t\t    __value = try methodReturnValue(\(methodType)).casted()
                 \t\t}\(" ")
@@ -724,12 +726,13 @@ import SourceryRuntime
             guard !method.isInitializer else { return "" }
             guard method.throws || !method.returnTypeName.isVoid else { return "" }
             let safeFailure = method.isStatic ? "" : "\t\t\tonFatalFailure(\"\(noStubDefinedMessage)\")\n"
-            let noStubHandling = method.returnTypeName.isVoid ? "\t\t\t// do nothing" : "\(safeFailure)\t\t\tFailure(\"\(noStubDefinedMessage)\")"
+            // For Void and Returning optionals - we allow not stubbed case to happen, as we are still able to return
+            let noStubHandling = method.returnTypeName.isVoid || method.returnTypeName.isOptional ? "\t\t\t// do nothing" : "\(safeFailure)\t\t\tFailure(\"\(noStubDefinedMessage)\")"
             guard method.throws else {
                 return
                 """
                 catch {
-                \(safeFailure)\t\t\tFailure(\"\(noStubDefinedMessage)\")
+                \(noStubHandling)
                 \t\t}
                 """
             }
@@ -1702,6 +1705,13 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
             Failure(message)
         }
     }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
@@ -1749,6 +1759,13 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
             return try methodReturnValue(method).casted()
         } catch {
             Failure(message)
+        }
+    }
+    static private func optionalGivenGetterValue<T>(_ method: StaticMethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
         }
     }
     <%_ } -%>

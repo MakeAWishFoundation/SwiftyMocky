@@ -84,20 +84,20 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
 	private var __p_nonOptionalClosure: (() -> Void)?
 
     var optionalClosure: (() -> Int)? {
-		get {	invocations.append(.p_optionalClosure_get); return __p_optionalClosure ?? givenGetterValue(.p_optionalClosure_get, "AMassiveTestProtocolMock - stub value for optionalClosure was not defined") }
+		get {	invocations.append(.p_optionalClosure_get); return __p_optionalClosure ?? optionalGivenGetterValue(.p_optionalClosure_get, "AMassiveTestProtocolMock - stub value for optionalClosure was not defined") }
 		set {	invocations.append(.p_optionalClosure_set(.value(newValue))); __p_optionalClosure = newValue }
 	}
 	private var __p_optionalClosure: (() -> Int)?
 
     var implicitelyUnwrappedClosure: (() -> Void)! {
-		get {	invocations.append(.p_implicitelyUnwrappedClosure_get); return __p_implicitelyUnwrappedClosure ?? givenGetterValue(.p_implicitelyUnwrappedClosure_get, "AMassiveTestProtocolMock - stub value for implicitelyUnwrappedClosure was not defined") }
+		get {	invocations.append(.p_implicitelyUnwrappedClosure_get); return __p_implicitelyUnwrappedClosure ?? optionalGivenGetterValue(.p_implicitelyUnwrappedClosure_get, "AMassiveTestProtocolMock - stub value for implicitelyUnwrappedClosure was not defined") }
 		set {	invocations.append(.p_implicitelyUnwrappedClosure_set(.value(newValue))); __p_implicitelyUnwrappedClosure = newValue }
 	}
 	private var __p_implicitelyUnwrappedClosure: (() -> Void)?
 
 
     static var optionalClosure: (() -> Int)? {
-		get {	AMassiveTestProtocolMock.invocations.append(.p_optionalClosure_get); return AMassiveTestProtocolMock.__p_optionalClosure ?? givenGetterValue(.p_optionalClosure_get, "AMassiveTestProtocolMock - stub value for optionalClosure was not defined") }
+		get {	AMassiveTestProtocolMock.invocations.append(.p_optionalClosure_get); return AMassiveTestProtocolMock.__p_optionalClosure ?? optionalGivenGetterValue(.p_optionalClosure_get, "AMassiveTestProtocolMock - stub value for optionalClosure was not defined") }
 		set {	AMassiveTestProtocolMock.invocations.append(.p_optionalClosure_set(.value(newValue))); AMassiveTestProtocolMock.__p_optionalClosure = newValue }
 	}
 	private static var __p_optionalClosure: (() -> Int)?
@@ -475,6 +475,13 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
             Failure(message)
         }
     }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
@@ -520,6 +527,13 @@ class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
             return try methodReturnValue(method).casted()
         } catch {
             Failure(message)
+        }
+    }
+    static private func optionalGivenGetterValue<T>(_ method: StaticMethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
         }
     }
 }
@@ -664,6 +678,13 @@ class AVeryAssociatedProtocolMock<T1,T2>: AVeryAssociatedProtocol, Mock where T1
         } catch {
             onFatalFailure(message)
             Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
         }
     }
     private func onFatalFailure(_ message: String) {
@@ -933,6 +954,13 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
             Failure(message)
         }
     }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
@@ -978,6 +1006,13 @@ class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
             return try methodReturnValue(method).casted()
         } catch {
             Failure(message)
+        }
+    }
+    static private func optionalGivenGetterValue<T>(_ method: StaticMethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
         }
     }
 }
@@ -1488,6 +1523,13 @@ class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
             Failure(message)
         }
     }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
@@ -1905,6 +1947,13 @@ class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
             Failure(message)
         }
     }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
@@ -2034,6 +2083,13 @@ class DateSortableMock: DateSortable, Mock {
         } catch {
             onFatalFailure(message)
             Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
         }
     }
     private func onFatalFailure(_ message: String) {
@@ -2202,6 +2258,13 @@ class EdgeCasesGenericsProtocolMock: EdgeCasesGenericsProtocol, Mock {
             Failure(message)
         }
     }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
@@ -2309,6 +2372,13 @@ class EmptyProtocolMock: EmptyProtocol, Mock {
         } catch {
             onFatalFailure(message)
             Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
         }
     }
     private func onFatalFailure(_ message: String) {
@@ -2556,6 +2626,13 @@ class FailsWithKeywordArgumentsMock: FailsWithKeywordArguments, Mock {
             Failure(message)
         }
     }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
@@ -2688,6 +2765,13 @@ class FailsWithUntaggedMock: FailsWithUntagged, Mock {
         } catch {
             onFatalFailure(message)
             Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
         }
     }
     private func onFatalFailure(_ message: String) {
@@ -2895,6 +2979,13 @@ class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstraint, 
             Failure(message)
         }
     }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
@@ -3055,6 +3146,13 @@ class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
             Failure(message)
         }
     }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
@@ -3199,6 +3297,13 @@ class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
         } catch {
             onFatalFailure(message)
             Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
         }
     }
     private func onFatalFailure(_ message: String) {
@@ -3578,6 +3683,13 @@ class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGener
             Failure(message)
         }
     }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
@@ -3762,6 +3874,13 @@ class ProtocolMethodsThatDifferOnlyInReturnTypeMock: ProtocolMethodsThatDifferOn
             Failure(message)
         }
     }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
@@ -3927,6 +4046,13 @@ class ProtocolWithAssociatedTypeMock<T>: ProtocolWithAssociatedType, Mock where 
             Failure(message)
         }
     }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
@@ -4088,6 +4214,13 @@ class ProtocolWithClosuresMock: ProtocolWithClosures, Mock {
         } catch {
             onFatalFailure(message)
             Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
         }
     }
     private func onFatalFailure(_ message: String) {
@@ -4307,6 +4440,13 @@ class ProtocolWithConflictingMembersMock: ProtocolWithConflictingMembers, Mock {
             Failure(message)
         }
     }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
@@ -4490,6 +4630,13 @@ class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock {
             Failure(message)
         }
     }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
@@ -4648,6 +4795,13 @@ class ProtocolWithDeprecatedMembersMock: ProtocolWithDeprecatedMembers, Mock {
         } catch {
             onFatalFailure(message)
             Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
         }
     }
     private func onFatalFailure(_ message: String) {
@@ -4835,6 +4989,13 @@ class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
             Failure(message)
         }
     }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
@@ -4983,6 +5144,13 @@ class ProtocolWithGenericMethodsNestedMock: ProtocolWithGenericMethodsNested, Mo
         } catch {
             onFatalFailure(message)
             Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
         }
     }
     private func onFatalFailure(_ message: String) {
@@ -5135,6 +5303,13 @@ class ProtocolWithInitializersMock: ProtocolWithInitializers, Mock {
             Failure(message)
         }
     }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
@@ -5191,7 +5366,7 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
 	private var __p_name: (String)?
 
     var email: String? {
-		get {	invocations.append(.p_email_get); return __p_email ?? givenGetterValue(.p_email_get, "ProtocolWithPropoertiesMock - stub value for email was not defined") }
+		get {	invocations.append(.p_email_get); return __p_email ?? optionalGivenGetterValue(.p_email_get, "ProtocolWithPropoertiesMock - stub value for email was not defined") }
 		set {	invocations.append(.p_email_set(.value(newValue))); __p_email = newValue }
 	}
 	private var __p_email: (String)?
@@ -5204,7 +5379,7 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
 	private static var __p_name: (String)?
 
     static var defaultEmail: String? {
-		get {	ProtocolWithPropoertiesMock.invocations.append(.p_defaultEmail_get); return ProtocolWithPropoertiesMock.__p_defaultEmail ?? givenGetterValue(.p_defaultEmail_get, "ProtocolWithPropoertiesMock - stub value for defaultEmail was not defined") }
+		get {	ProtocolWithPropoertiesMock.invocations.append(.p_defaultEmail_get); return ProtocolWithPropoertiesMock.__p_defaultEmail ?? optionalGivenGetterValue(.p_defaultEmail_get, "ProtocolWithPropoertiesMock - stub value for defaultEmail was not defined") }
 		set {	ProtocolWithPropoertiesMock.invocations.append(.p_defaultEmail_set(.value(newValue))); ProtocolWithPropoertiesMock.__p_defaultEmail = newValue }
 	}
 	private static var __p_defaultEmail: (String)?
@@ -5433,6 +5608,13 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
             Failure(message)
         }
     }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
@@ -5478,6 +5660,13 @@ class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
             return try methodReturnValue(method).casted()
         } catch {
             Failure(message)
+        }
+    }
+    static private func optionalGivenGetterValue<T>(_ method: StaticMethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
         }
     }
 }
@@ -5683,6 +5872,13 @@ class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, StaticMock
             Failure(message)
         }
     }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
@@ -5728,6 +5924,13 @@ class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, StaticMock
             return try methodReturnValue(method).casted()
         } catch {
             Failure(message)
+        }
+    }
+    static private func optionalGivenGetterValue<T>(_ method: StaticMethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
         }
     }
 }
@@ -6245,6 +6448,13 @@ class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
             Failure(message)
         }
     }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
@@ -6432,6 +6642,13 @@ class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
             Failure(message)
         }
     }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
@@ -6580,6 +6797,13 @@ class ProtocolWithTuplesMock: ProtocolWithTuples, Mock {
         } catch {
             onFatalFailure(message)
             Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
         }
     }
     private func onFatalFailure(_ message: String) {
@@ -6745,6 +6969,13 @@ class ProtocolWithWhereAfterDefinitionMock<T>: ProtocolWithWhereAfterDefinition,
         } catch {
             onFatalFailure(message)
             Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
         }
     }
     private func onFatalFailure(_ message: String) {
@@ -7136,6 +7367,13 @@ class SampleServiceTypeMock: SampleServiceType, Mock {
             Failure(message)
         }
     }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
@@ -7443,6 +7681,13 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
             Failure(message)
         }
     }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
@@ -7490,6 +7735,577 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
             Failure(message)
         }
     }
+    static private func optionalGivenGetterValue<T>(_ method: StaticMethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
+}
+
+// MARK: - ShouldAllowNoStubDefined
+class ShouldAllowNoStubDefinedMock: ShouldAllowNoStubDefined, Mock, StaticMock {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    typealias PropertyStub = Given
+    typealias MethodStub = Given
+    typealias SubscriptStub = Given
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+    static var matcher: Matcher = Matcher.default
+    static var stubbingPolicy: StubbingPolicy = .wrap
+    static var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+    static private var invocations: [StaticMethodType] = []
+    static private var methodReturnValues: [StaticGiven] = []
+    static private var methodPerformValues: [StaticPerform] = []
+    typealias StaticPropertyStub = StaticGiven
+    typealias StaticMethodStub = StaticGiven
+    static func clear() {
+        invocations = []
+        methodReturnValues = []
+        methodPerformValues = []
+    }
+
+    var property: Int? {
+		get {	invocations.append(.p_property_get); return __p_property ?? optionalGivenGetterValue(.p_property_get, "ShouldAllowNoStubDefinedMock - stub value for property was not defined") }
+		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
+		set {	__p_property = newValue }
+	}
+	private var __p_property: (Int)?
+
+
+    static var property: Int? {
+		get {	ShouldAllowNoStubDefinedMock.invocations.append(.p_property_get); return ShouldAllowNoStubDefinedMock.__p_property ?? optionalGivenGetterValue(.p_property_get, "ShouldAllowNoStubDefinedMock - stub value for property was not defined") }
+		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
+		set {	ShouldAllowNoStubDefinedMock.__p_property = newValue }
+	}
+	private static var __p_property: (Int)?
+
+
+
+
+    static func voidMethod(_ key: String) {
+        addInvocation(.sm_voidMethod__key(Parameter<String>.value(`key`)))
+		let perform = methodPerformValue(.sm_voidMethod__key(Parameter<String>.value(`key`))) as? (String) -> Void
+		perform?(`key`)
+    }
+
+    static func throwingVoidMethod(_ key: String) throws {
+        addInvocation(.sm_throwingVoidMethod__key(Parameter<String>.value(`key`)))
+		let perform = methodPerformValue(.sm_throwingVoidMethod__key(Parameter<String>.value(`key`))) as? (String) -> Void
+		perform?(`key`)
+		do {
+		    _ = try methodReturnValue(.sm_throwingVoidMethod__key(Parameter<String>.value(`key`))).casted() as Void
+		} catch MockError.notStubed {
+			// do nothing
+		} catch {
+		    throw error
+		}
+    }
+
+    static func optionalMethod(_ key: String) -> Int? {
+        addInvocation(.sm_optionalMethod__key(Parameter<String>.value(`key`)))
+		let perform = methodPerformValue(.sm_optionalMethod__key(Parameter<String>.value(`key`))) as? (String) -> Void
+		perform?(`key`)
+		var __value: Int? = nil
+		do {
+		    __value = try methodReturnValue(.sm_optionalMethod__key(Parameter<String>.value(`key`))).casted()
+		} catch {
+			// do nothing
+		}
+		return __value
+    }
+
+    static func optionalThrowingMethod(_ key: String) -> Int? {
+        addInvocation(.sm_optionalThrowingMethod__key(Parameter<String>.value(`key`)))
+		let perform = methodPerformValue(.sm_optionalThrowingMethod__key(Parameter<String>.value(`key`))) as? (String) -> Void
+		perform?(`key`)
+		var __value: Int? = nil
+		do {
+		    __value = try methodReturnValue(.sm_optionalThrowingMethod__key(Parameter<String>.value(`key`))).casted()
+		} catch {
+			// do nothing
+		}
+		return __value
+    }
+
+    func voidMethod(_ key: String) {
+        addInvocation(.m_voidMethod__key(Parameter<String>.value(`key`)))
+		let perform = methodPerformValue(.m_voidMethod__key(Parameter<String>.value(`key`))) as? (String) -> Void
+		perform?(`key`)
+    }
+
+    func throwingVoidMethod(_ key: String) throws {
+        addInvocation(.m_throwingVoidMethod__key(Parameter<String>.value(`key`)))
+		let perform = methodPerformValue(.m_throwingVoidMethod__key(Parameter<String>.value(`key`))) as? (String) -> Void
+		perform?(`key`)
+		do {
+		    _ = try methodReturnValue(.m_throwingVoidMethod__key(Parameter<String>.value(`key`))).casted() as Void
+		} catch MockError.notStubed {
+			// do nothing
+		} catch {
+		    throw error
+		}
+    }
+
+    func optionalMethod(_ key: String) -> Int? {
+        addInvocation(.m_optionalMethod__key(Parameter<String>.value(`key`)))
+		let perform = methodPerformValue(.m_optionalMethod__key(Parameter<String>.value(`key`))) as? (String) -> Void
+		perform?(`key`)
+		var __value: Int? = nil
+		do {
+		    __value = try methodReturnValue(.m_optionalMethod__key(Parameter<String>.value(`key`))).casted()
+		} catch {
+			// do nothing
+		}
+		return __value
+    }
+
+    func optionalThrowingMethod(_ key: String) -> Int? {
+        addInvocation(.m_optionalThrowingMethod__key(Parameter<String>.value(`key`)))
+		let perform = methodPerformValue(.m_optionalThrowingMethod__key(Parameter<String>.value(`key`))) as? (String) -> Void
+		perform?(`key`)
+		var __value: Int? = nil
+		do {
+		    __value = try methodReturnValue(.m_optionalThrowingMethod__key(Parameter<String>.value(`key`))).casted()
+		} catch {
+			// do nothing
+		}
+		return __value
+    }
+
+    subscript (_ x: Int) -> Int? {
+		get {
+			addInvocation(.subscript_get_x(Parameter<Int>.value(`x`)))
+			do {
+				return try methodReturnValue(.subscript_get_x(Parameter<Int>.value(`x`))).casted()
+			} catch {
+				return nil
+			}
+		}
+	}
+
+    fileprivate enum StaticMethodType {
+        case sm_voidMethod__key(Parameter<String>)
+        case sm_throwingVoidMethod__key(Parameter<String>)
+        case sm_optionalMethod__key(Parameter<String>)
+        case sm_optionalThrowingMethod__key(Parameter<String>)
+        case p_property_get
+
+        static func compareParameters(lhs: StaticMethodType, rhs: StaticMethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+            case (.sm_voidMethod__key(let lhsKey), .sm_voidMethod__key(let rhsKey)):
+                guard Parameter.compare(lhs: lhsKey, rhs: rhsKey, with: matcher) else { return false } 
+                return true 
+            case (.sm_throwingVoidMethod__key(let lhsKey), .sm_throwingVoidMethod__key(let rhsKey)):
+                guard Parameter.compare(lhs: lhsKey, rhs: rhsKey, with: matcher) else { return false } 
+                return true 
+            case (.sm_optionalMethod__key(let lhsKey), .sm_optionalMethod__key(let rhsKey)):
+                guard Parameter.compare(lhs: lhsKey, rhs: rhsKey, with: matcher) else { return false } 
+                return true 
+            case (.sm_optionalThrowingMethod__key(let lhsKey), .sm_optionalThrowingMethod__key(let rhsKey)):
+                guard Parameter.compare(lhs: lhsKey, rhs: rhsKey, with: matcher) else { return false } 
+                return true 
+            case (.p_property_get,.p_property_get): return true
+            default: return false
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+                case let .sm_voidMethod__key(p0): return p0.intValue
+                case let .sm_throwingVoidMethod__key(p0): return p0.intValue
+                case let .sm_optionalMethod__key(p0): return p0.intValue
+                case let .sm_optionalThrowingMethod__key(p0): return p0.intValue
+                case .p_property_get: return 0
+            }
+        }
+    }
+
+    class StaticGiven: StubbedMethod {
+        fileprivate var method: StaticMethodType
+
+        private init(method: StaticMethodType, products: [Product]) {
+            self.method = method
+            super.init(products)
+        }
+
+        static func property(getter defaultValue: Int?...) -> StaticPropertyStub {
+            return StaticGiven(method: .p_property_get, products: defaultValue.map({ Product.return($0) }))
+        }
+
+        static func optionalMethod(_ key: Parameter<String>, willReturn: Int?...) -> StaticMethodStub {
+            return StaticGiven(method: .sm_optionalMethod__key(`key`), products: willReturn.map({ Product.return($0) }))
+        }
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `key` label")
+		static func optionalMethod(key: Parameter<String>, willReturn: Int?...) -> StaticMethodStub {
+            return StaticGiven(method: .sm_optionalMethod__key(`key`), products: willReturn.map({ Product.return($0) }))
+        }
+        static func optionalThrowingMethod(_ key: Parameter<String>, willReturn: Int?...) -> StaticMethodStub {
+            return StaticGiven(method: .sm_optionalThrowingMethod__key(`key`), products: willReturn.map({ Product.return($0) }))
+        }
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `key` label")
+		static func optionalThrowingMethod(key: Parameter<String>, willReturn: Int?...) -> StaticMethodStub {
+            return StaticGiven(method: .sm_optionalThrowingMethod__key(`key`), products: willReturn.map({ Product.return($0) }))
+        }
+        static func optionalMethod(_ key: Parameter<String>, willProduce: (Stubber<Int?>) -> Void) -> StaticMethodStub {
+            let willReturn: [Int?] = []
+			let given: StaticGiven = { return StaticGiven(method: .sm_optionalMethod__key(`key`), products: willReturn.map({ Product.return($0) })) }()
+			let stubber = given.stub(for: (Int?).self)
+			willProduce(stubber)
+			return given
+        }
+        static func optionalThrowingMethod(_ key: Parameter<String>, willProduce: (Stubber<Int?>) -> Void) -> StaticMethodStub {
+            let willReturn: [Int?] = []
+			let given: StaticGiven = { return StaticGiven(method: .sm_optionalThrowingMethod__key(`key`), products: willReturn.map({ Product.return($0) })) }()
+			let stubber = given.stub(for: (Int?).self)
+			willProduce(stubber)
+			return given
+        }
+        static func throwingVoidMethod(_ key: Parameter<String>, willThrow: Error...) -> StaticMethodStub {
+            return StaticGiven(method: .sm_throwingVoidMethod__key(`key`), products: willThrow.map({ Product.throw($0) }))
+        }
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `key` label")
+		static func throwingVoidMethod(key: Parameter<String>, willThrow: Error...) -> StaticMethodStub {
+            return StaticGiven(method: .sm_throwingVoidMethod__key(`key`), products: willThrow.map({ Product.throw($0) }))
+        }
+        static func throwingVoidMethod(_ key: Parameter<String>, willProduce: (StubberThrows<Void>) -> Void) -> StaticMethodStub {
+            let willThrow: [Error] = []
+			let given: StaticGiven = { return StaticGiven(method: .sm_throwingVoidMethod__key(`key`), products: willThrow.map({ Product.throw($0) })) }()
+			let stubber = given.stubThrows(for: (Void).self)
+			willProduce(stubber)
+			return given
+        }
+    }
+
+    struct StaticVerify {
+        fileprivate var method: StaticMethodType
+
+        static func voidMethod(_ key: Parameter<String>) -> StaticVerify { return StaticVerify(method: .sm_voidMethod__key(`key`))}
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `key` label")
+		static func voidMethod(key: Parameter<String>) -> StaticVerify { return StaticVerify(method: .sm_voidMethod__key(`key`))}
+        static func throwingVoidMethod(_ key: Parameter<String>) -> StaticVerify { return StaticVerify(method: .sm_throwingVoidMethod__key(`key`))}
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `key` label")
+		static func throwingVoidMethod(key: Parameter<String>) -> StaticVerify { return StaticVerify(method: .sm_throwingVoidMethod__key(`key`))}
+        static func optionalMethod(_ key: Parameter<String>) -> StaticVerify { return StaticVerify(method: .sm_optionalMethod__key(`key`))}
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `key` label")
+		static func optionalMethod(key: Parameter<String>) -> StaticVerify { return StaticVerify(method: .sm_optionalMethod__key(`key`))}
+        static func optionalThrowingMethod(_ key: Parameter<String>) -> StaticVerify { return StaticVerify(method: .sm_optionalThrowingMethod__key(`key`))}
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `key` label")
+		static func optionalThrowingMethod(key: Parameter<String>) -> StaticVerify { return StaticVerify(method: .sm_optionalThrowingMethod__key(`key`))}
+        static var property: StaticVerify { return StaticVerify(method: .p_property_get) }
+    }
+
+    struct StaticPerform {
+        fileprivate var method: StaticMethodType
+        var performs: Any
+
+        static func voidMethod(_ key: Parameter<String>, perform: @escaping (String) -> Void) -> StaticPerform {
+            return StaticPerform(method: .sm_voidMethod__key(`key`), performs: perform)
+        }
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `key` label")
+		static func voidMethod(key: Parameter<String>, perform: @escaping (String) -> Void) -> StaticPerform {
+            return StaticPerform(method: .sm_voidMethod__key(`key`), performs: perform)
+        }
+        static func throwingVoidMethod(_ key: Parameter<String>, perform: @escaping (String) -> Void) -> StaticPerform {
+            return StaticPerform(method: .sm_throwingVoidMethod__key(`key`), performs: perform)
+        }
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `key` label")
+		static func throwingVoidMethod(key: Parameter<String>, perform: @escaping (String) -> Void) -> StaticPerform {
+            return StaticPerform(method: .sm_throwingVoidMethod__key(`key`), performs: perform)
+        }
+        static func optionalMethod(_ key: Parameter<String>, perform: @escaping (String) -> Void) -> StaticPerform {
+            return StaticPerform(method: .sm_optionalMethod__key(`key`), performs: perform)
+        }
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `key` label")
+		static func optionalMethod(key: Parameter<String>, perform: @escaping (String) -> Void) -> StaticPerform {
+            return StaticPerform(method: .sm_optionalMethod__key(`key`), performs: perform)
+        }
+        static func optionalThrowingMethod(_ key: Parameter<String>, perform: @escaping (String) -> Void) -> StaticPerform {
+            return StaticPerform(method: .sm_optionalThrowingMethod__key(`key`), performs: perform)
+        }
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `key` label")
+		static func optionalThrowingMethod(key: Parameter<String>, perform: @escaping (String) -> Void) -> StaticPerform {
+            return StaticPerform(method: .sm_optionalThrowingMethod__key(`key`), performs: perform)
+        }
+    }
+
+    
+    fileprivate enum MethodType {
+        case m_voidMethod__key(Parameter<String>)
+        case m_throwingVoidMethod__key(Parameter<String>)
+        case m_optionalMethod__key(Parameter<String>)
+        case m_optionalThrowingMethod__key(Parameter<String>)
+        case p_property_get
+        case subscript_get_x(Parameter<Int>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+            case (.m_voidMethod__key(let lhsKey), .m_voidMethod__key(let rhsKey)):
+                guard Parameter.compare(lhs: lhsKey, rhs: rhsKey, with: matcher) else { return false } 
+                return true 
+            case (.m_throwingVoidMethod__key(let lhsKey), .m_throwingVoidMethod__key(let rhsKey)):
+                guard Parameter.compare(lhs: lhsKey, rhs: rhsKey, with: matcher) else { return false } 
+                return true 
+            case (.m_optionalMethod__key(let lhsKey), .m_optionalMethod__key(let rhsKey)):
+                guard Parameter.compare(lhs: lhsKey, rhs: rhsKey, with: matcher) else { return false } 
+                return true 
+            case (.m_optionalThrowingMethod__key(let lhsKey), .m_optionalThrowingMethod__key(let rhsKey)):
+                guard Parameter.compare(lhs: lhsKey, rhs: rhsKey, with: matcher) else { return false } 
+                return true 
+            case (.p_property_get,.p_property_get): return true
+            case (let .subscript_get_x(lhsX), let .subscript_get_x(rhsX)):
+				guard Parameter.compare(lhs: lhsX, rhs: rhsX, with: matcher) else { return false }
+				return true
+            default: return false
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+            case let .m_voidMethod__key(p0): return p0.intValue
+            case let .m_throwingVoidMethod__key(p0): return p0.intValue
+            case let .m_optionalMethod__key(p0): return p0.intValue
+            case let .m_optionalThrowingMethod__key(p0): return p0.intValue
+            case .p_property_get: return 0
+            case let .subscript_get_x(p0): return p0.intValue
+            }
+        }
+    }
+
+    class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [Product]) {
+            self.method = method
+            super.init(products)
+        }
+
+        static func property(getter defaultValue: Int?...) -> PropertyStub {
+            return Given(method: .p_property_get, products: defaultValue.map({ Product.return($0) }))
+        }
+
+        static func optionalMethod(_ key: Parameter<String>, willReturn: Int?...) -> MethodStub {
+            return Given(method: .m_optionalMethod__key(`key`), products: willReturn.map({ Product.return($0) }))
+        }
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `key` label")
+		static func optionalMethod(key: Parameter<String>, willReturn: Int?...) -> MethodStub {
+            return Given(method: .m_optionalMethod__key(`key`), products: willReturn.map({ Product.return($0) }))
+        }
+        static func optionalThrowingMethod(_ key: Parameter<String>, willReturn: Int?...) -> MethodStub {
+            return Given(method: .m_optionalThrowingMethod__key(`key`), products: willReturn.map({ Product.return($0) }))
+        }
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `key` label")
+		static func optionalThrowingMethod(key: Parameter<String>, willReturn: Int?...) -> MethodStub {
+            return Given(method: .m_optionalThrowingMethod__key(`key`), products: willReturn.map({ Product.return($0) }))
+        }
+        static func optionalMethod(_ key: Parameter<String>, willProduce: (Stubber<Int?>) -> Void) -> MethodStub {
+            let willReturn: [Int?] = []
+			let given: Given = { return Given(method: .m_optionalMethod__key(`key`), products: willReturn.map({ Product.return($0) })) }()
+			let stubber = given.stub(for: (Int?).self)
+			willProduce(stubber)
+			return given
+        }
+        static func optionalThrowingMethod(_ key: Parameter<String>, willProduce: (Stubber<Int?>) -> Void) -> MethodStub {
+            let willReturn: [Int?] = []
+			let given: Given = { return Given(method: .m_optionalThrowingMethod__key(`key`), products: willReturn.map({ Product.return($0) })) }()
+			let stubber = given.stub(for: (Int?).self)
+			willProduce(stubber)
+			return given
+        }
+        static func `subscript`(_ x: Parameter<Int>, willReturn: Int?...) -> SubscriptStub {
+            return Given(method: .subscript_get_x(`x`), products: willReturn.map({ Product.return($0) }))
+        }
+        static func throwingVoidMethod(_ key: Parameter<String>, willThrow: Error...) -> MethodStub {
+            return Given(method: .m_throwingVoidMethod__key(`key`), products: willThrow.map({ Product.throw($0) }))
+        }
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `key` label")
+		static func throwingVoidMethod(key: Parameter<String>, willThrow: Error...) -> MethodStub {
+            return Given(method: .m_throwingVoidMethod__key(`key`), products: willThrow.map({ Product.throw($0) }))
+        }
+        static func throwingVoidMethod(_ key: Parameter<String>, willProduce: (StubberThrows<Void>) -> Void) -> MethodStub {
+            let willThrow: [Error] = []
+			let given: Given = { return Given(method: .m_throwingVoidMethod__key(`key`), products: willThrow.map({ Product.throw($0) })) }()
+			let stubber = given.stubThrows(for: (Void).self)
+			willProduce(stubber)
+			return given
+        }
+    }
+
+    struct Verify {
+        fileprivate var method: MethodType
+
+        static func voidMethod(_ key: Parameter<String>) -> Verify { return Verify(method: .m_voidMethod__key(`key`))}
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `key` label")
+		static func voidMethod(key: Parameter<String>) -> Verify { return Verify(method: .m_voidMethod__key(`key`))}
+        static func throwingVoidMethod(_ key: Parameter<String>) -> Verify { return Verify(method: .m_throwingVoidMethod__key(`key`))}
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `key` label")
+		static func throwingVoidMethod(key: Parameter<String>) -> Verify { return Verify(method: .m_throwingVoidMethod__key(`key`))}
+        static func optionalMethod(_ key: Parameter<String>) -> Verify { return Verify(method: .m_optionalMethod__key(`key`))}
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `key` label")
+		static func optionalMethod(key: Parameter<String>) -> Verify { return Verify(method: .m_optionalMethod__key(`key`))}
+        static func optionalThrowingMethod(_ key: Parameter<String>) -> Verify { return Verify(method: .m_optionalThrowingMethod__key(`key`))}
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `key` label")
+		static func optionalThrowingMethod(key: Parameter<String>) -> Verify { return Verify(method: .m_optionalThrowingMethod__key(`key`))}
+        static var property: Verify { return Verify(method: .p_property_get) }
+        static func `subscript`(_ x: Parameter<Int>) -> Verify { return Verify(method: .subscript_get_x(`x`))}
+    }
+
+    struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        static func voidMethod(_ key: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_voidMethod__key(`key`), performs: perform)
+        }
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `key` label")
+		static func voidMethod(key: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_voidMethod__key(`key`), performs: perform)
+        }
+        static func throwingVoidMethod(_ key: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_throwingVoidMethod__key(`key`), performs: perform)
+        }
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `key` label")
+		static func throwingVoidMethod(key: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_throwingVoidMethod__key(`key`), performs: perform)
+        }
+        static func optionalMethod(_ key: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_optionalMethod__key(`key`), performs: perform)
+        }
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `key` label")
+		static func optionalMethod(key: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_optionalMethod__key(`key`), performs: perform)
+        }
+        static func optionalThrowingMethod(_ key: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_optionalThrowingMethod__key(`key`), performs: perform)
+        }
+        @available(*, deprecated, message: "This constructor is deprecated, and will be removed in v3.1 Possible fix:  remove `key` label")
+		static func optionalThrowingMethod(key: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_optionalThrowingMethod__key(`key`), performs: perform)
+        }
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> Product {
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+    private func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        #endif
+    }
+
+    static public func given(_ method: StaticGiven) {
+        methodReturnValues.append(method)
+    }
+
+    static public func perform(_ method: StaticPerform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    static public func verify(_ method: StaticVerify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    static private func addInvocation(_ call: StaticMethodType) {
+        invocations.append(call)
+    }
+    static private func methodReturnValue(_ method: StaticMethodType) throws -> Product {
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    static private func methodPerformValue(_ method: StaticMethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+    static private func matchingCalls(_ method: StaticMethodType) -> [StaticMethodType] {
+        return invocations.filter { StaticMethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+    static private func matchingCalls(_ method: StaticVerify) -> Int {
+        return matchingCalls(method.method).count
+    }
+    static private func givenGetterValue<T>(_ method: StaticMethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            Failure(message)
+        }
+    }
+    static private func optionalGivenGetterValue<T>(_ method: StaticMethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
 }
 
 // MARK: - SimpleProtocolThatInheritsOtherProtocols
@@ -7527,7 +8343,7 @@ class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInheritsOt
 	private var __p_property: (String)?
 
     var weakProperty: AnyObject! {
-		get {	invocations.append(.p_weakProperty_get); return __p_weakProperty ?? givenGetterValue(.p_weakProperty_get, "SimpleProtocolThatInheritsOtherProtocolsMock - stub value for weakProperty was not defined") }
+		get {	invocations.append(.p_weakProperty_get); return __p_weakProperty ?? optionalGivenGetterValue(.p_weakProperty_get, "SimpleProtocolThatInheritsOtherProtocolsMock - stub value for weakProperty was not defined") }
 		set {	invocations.append(.p_weakProperty_set(.value(newValue))); __p_weakProperty = newValue }
 	}
 	private var __p_weakProperty: (AnyObject)?
@@ -7540,13 +8356,13 @@ class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInheritsOt
 	private var __p_propertyGetOnly: (String)?
 
     var propertyOptional: Int? {
-		get {	invocations.append(.p_propertyOptional_get); return __p_propertyOptional ?? givenGetterValue(.p_propertyOptional_get, "SimpleProtocolThatInheritsOtherProtocolsMock - stub value for propertyOptional was not defined") }
+		get {	invocations.append(.p_propertyOptional_get); return __p_propertyOptional ?? optionalGivenGetterValue(.p_propertyOptional_get, "SimpleProtocolThatInheritsOtherProtocolsMock - stub value for propertyOptional was not defined") }
 		set {	invocations.append(.p_propertyOptional_set(.value(newValue))); __p_propertyOptional = newValue }
 	}
 	private var __p_propertyOptional: (Int)?
 
     var propertyImplicit: Int! {
-		get {	invocations.append(.p_propertyImplicit_get); return __p_propertyImplicit ?? givenGetterValue(.p_propertyImplicit_get, "SimpleProtocolThatInheritsOtherProtocolsMock - stub value for propertyImplicit was not defined") }
+		get {	invocations.append(.p_propertyImplicit_get); return __p_propertyImplicit ?? optionalGivenGetterValue(.p_propertyImplicit_get, "SimpleProtocolThatInheritsOtherProtocolsMock - stub value for propertyImplicit was not defined") }
 		set {	invocations.append(.p_propertyImplicit_set(.value(newValue))); __p_propertyImplicit = newValue }
 	}
 	private var __p_propertyImplicit: (Int)?
@@ -7593,12 +8409,11 @@ class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInheritsOt
         addInvocation(.m_simpleMehtodThatReturns__optionalParam_optionalParam(Parameter<String?>.value(`optionalParam`)))
 		let perform = methodPerformValue(.m_simpleMehtodThatReturns__optionalParam_optionalParam(Parameter<String?>.value(`optionalParam`))) as? (String?) -> Void
 		perform?(`optionalParam`)
-		var __value: String?
+		var __value: String? = nil
 		do {
 		    __value = try methodReturnValue(.m_simpleMehtodThatReturns__optionalParam_optionalParam(Parameter<String?>.value(`optionalParam`))).casted()
 		} catch {
-			onFatalFailure("Stub return value not specified for simpleMehtodThatReturns(optionalParam: String?). Use given")
-			Failure("Stub return value not specified for simpleMehtodThatReturns(optionalParam: String?). Use given")
+			// do nothing
 		}
 		return __value
     }
@@ -7794,6 +8609,13 @@ class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInheritsOt
         } catch {
             onFatalFailure(message)
             Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
         }
     }
     private func onFatalFailure(_ message: String) {
@@ -8046,6 +8868,13 @@ class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
             Failure(message)
         }
     }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
@@ -8210,6 +9039,13 @@ class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBothMeth
             Failure(message)
         }
     }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
@@ -8288,12 +9124,11 @@ class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
         addInvocation(.m_simpleMehtodThatReturns__optionalParam_optionalParam(Parameter<String?>.value(`optionalParam`)))
 		let perform = methodPerformValue(.m_simpleMehtodThatReturns__optionalParam_optionalParam(Parameter<String?>.value(`optionalParam`))) as? (String?) -> Void
 		perform?(`optionalParam`)
-		var __value: String?
+		var __value: String? = nil
 		do {
 		    __value = try methodReturnValue(.m_simpleMehtodThatReturns__optionalParam_optionalParam(Parameter<String?>.value(`optionalParam`))).casted()
 		} catch {
-			onFatalFailure("Stub return value not specified for simpleMehtodThatReturns(optionalParam: String?). Use given")
-			Failure("Stub return value not specified for simpleMehtodThatReturns(optionalParam: String?). Use given")
+			// do nothing
 		}
 		return __value
     }
@@ -8440,6 +9275,13 @@ class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
             Failure(message)
         }
     }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
@@ -8483,7 +9325,7 @@ class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock {
 	private var __p_property: (String)?
 
     var weakProperty: AnyObject! {
-		get {	invocations.append(.p_weakProperty_get); return __p_weakProperty ?? givenGetterValue(.p_weakProperty_get, "SimpleProtocolWithPropertiesMock - stub value for weakProperty was not defined") }
+		get {	invocations.append(.p_weakProperty_get); return __p_weakProperty ?? optionalGivenGetterValue(.p_weakProperty_get, "SimpleProtocolWithPropertiesMock - stub value for weakProperty was not defined") }
 		set {	invocations.append(.p_weakProperty_set(.value(newValue))); __p_weakProperty = newValue }
 	}
 	private var __p_weakProperty: (AnyObject)?
@@ -8496,13 +9338,13 @@ class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock {
 	private var __p_propertyGetOnly: (String)?
 
     var propertyOptional: Int? {
-		get {	invocations.append(.p_propertyOptional_get); return __p_propertyOptional ?? givenGetterValue(.p_propertyOptional_get, "SimpleProtocolWithPropertiesMock - stub value for propertyOptional was not defined") }
+		get {	invocations.append(.p_propertyOptional_get); return __p_propertyOptional ?? optionalGivenGetterValue(.p_propertyOptional_get, "SimpleProtocolWithPropertiesMock - stub value for propertyOptional was not defined") }
 		set {	invocations.append(.p_propertyOptional_set(.value(newValue))); __p_propertyOptional = newValue }
 	}
 	private var __p_propertyOptional: (Int)?
 
     var propertyImplicit: Int! {
-		get {	invocations.append(.p_propertyImplicit_get); return __p_propertyImplicit ?? givenGetterValue(.p_propertyImplicit_get, "SimpleProtocolWithPropertiesMock - stub value for propertyImplicit was not defined") }
+		get {	invocations.append(.p_propertyImplicit_get); return __p_propertyImplicit ?? optionalGivenGetterValue(.p_propertyImplicit_get, "SimpleProtocolWithPropertiesMock - stub value for propertyImplicit was not defined") }
 		set {	invocations.append(.p_propertyImplicit_set(.value(newValue))); __p_propertyImplicit = newValue }
 	}
 	private var __p_propertyImplicit: (Int)?
@@ -8638,6 +9480,13 @@ class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock {
         } catch {
             onFatalFailure(message)
             Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
         }
     }
     private func onFatalFailure(_ message: String) {
@@ -8824,6 +9673,13 @@ class UserNetworkTypeMock: UserNetworkType, Mock {
             Failure(message)
         }
     }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
     private func onFatalFailure(_ message: String) {
         #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
@@ -8989,6 +9845,13 @@ class UserStorageTypeMock: UserStorageType, Mock {
         } catch {
             onFatalFailure(message)
             Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
         }
     }
     private func onFatalFailure(_ message: String) {

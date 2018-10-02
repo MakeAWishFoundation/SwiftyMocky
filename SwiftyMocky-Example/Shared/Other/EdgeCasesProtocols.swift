@@ -35,3 +35,18 @@ protocol FailsWithKeywordArguments {
     var `throw`: Error { get set }
     subscript (_ return: Int) -> Bool { get set }
 }
+
+//sourcery: AutoMockable
+protocol ShouldAllowNoStubDefined {
+    static var property: Int? { get }
+    var property: Int? { get }
+    subscript (_ x: Int) -> Int? { get }
+    func voidMethod(_ key: String) -> Void
+    func throwingVoidMethod(_ key: String) throws -> Void
+    func optionalMethod(_ key: String) -> Int?
+    func optionalThrowingMethod(_ key: String) -> Int?
+    static func voidMethod(_ key: String) -> Void
+    static func throwingVoidMethod(_ key: String) throws -> Void
+    static func optionalMethod(_ key: String) -> Int?
+    static func optionalThrowingMethod(_ key: String) -> Int?
+}

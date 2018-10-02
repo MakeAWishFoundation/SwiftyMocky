@@ -54,12 +54,11 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         addInvocation(.m_storedItems)
 		let perform = methodPerformValue(.m_storedItems) as? () -> Void
 		perform?()
-		var __value: [Item]?
+		var __value: [Item]? = nil
 		do {
 		    __value = try methodReturnValue(.m_storedItems).casted()
 		} catch {
-			onFatalFailure("Stub return value not specified for storedItems(). Use given")
-			Failure("Stub return value not specified for storedItems(). Use given")
+			// do nothing
 		}
 		return __value
     }
@@ -68,12 +67,11 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         addInvocation(.m_storedDetails__item_item(Parameter<Item>.value(`item`)))
 		let perform = methodPerformValue(.m_storedDetails__item_item(Parameter<Item>.value(`item`))) as? (Item) -> Void
 		perform?(`item`)
-		var __value: ItemDetails?
+		var __value: ItemDetails? = nil
 		do {
 		    __value = try methodReturnValue(.m_storedDetails__item_item(Parameter<Item>.value(`item`))).casted()
 		} catch {
-			onFatalFailure("Stub return value not specified for storedDetails(item: Item). Use given")
-			Failure("Stub return value not specified for storedDetails(item: Item). Use given")
+			// do nothing
 		}
 		return __value
     }
@@ -209,6 +207,13 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         } catch {
             onFatalFailure(message)
             Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
         }
     }
     private func onFatalFailure(_ message: String) {
