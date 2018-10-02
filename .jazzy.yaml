@@ -23,6 +23,18 @@ custom_categories:
       - Known issues
       - CHANGELOG
 
+  - name: Global methods
+    children:
+      - Given(_:_:_:)
+      - Perform(_:_:)
+      - Verify(_:_:file:line:)
+      - Verify(_:_:_:file:line:)
+
+  - name: Configuration
+    children:
+      - StubbingPolicy
+      - SequencingPolicy
+
   - name: Types
     children:
       - Mock
@@ -31,17 +43,15 @@ custom_categories:
       - Matcher
       - Countable
       - Count
-
-  - name: Global methods
-    children:
-      - Given(_:_:)
-      - Perform(_:_:)
-      - Verify(_:_:file:line:)
-      - Verify(_:_:_:file:line:)
-      - VerifyProperty(_:_:file:line:)
-      - VerifyProperty(_:_:_:file:line:)
+      - Stubber<ReturnedValue>
+      - StubberThrows<ReturnedValue>
 
   - name: Generics
     children:
       - GenericAttribute
       - GenericAttributeType
+
+  - name: Deprecated
+    children:
+      - VerifyProperty(_:_:file:line:)
+      - VerifyProperty(_:_:_:file:line:)

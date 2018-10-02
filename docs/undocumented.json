@@ -1,10 +1,59 @@
 {
   "warnings": [
     {
-      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Parameter.swift",
-      "line": 180,
-      "symbol": "Parameter.Element",
-      "symbol_kind": "source.lang.swift.decl.typealias",
+      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Policies.swift",
+      "line": 20,
+      "symbol": "StubbingPolicy.default",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Policies.swift",
+      "line": 21,
+      "symbol": "StubbingPolicy.wrap",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Policies.swift",
+      "line": 22,
+      "symbol": "StubbingPolicy.drop",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Policies.swift",
+      "line": 80,
+      "symbol": "SequencingPolicy.lastWrittenResolvedFirst",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Policies.swift",
+      "line": 81,
+      "symbol": "SequencingPolicy.inWritingOrder",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Stubbing.swift",
+      "line": 15,
+      "symbol": "MockError.notStubed",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Stubbing.swift",
+      "line": 23,
+      "symbol": "Product.return(_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Stubbing.swift",
+      "line": 24,
+      "symbol": "Product.throw(_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     }
   ],

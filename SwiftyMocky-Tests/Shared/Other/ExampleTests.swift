@@ -3,7 +3,7 @@
 //  Mocky_Tests
 //
 //  Created by Andrzej Michnia on 25.10.2017.
-//  Copyright © 2017 CocoaPods. All rights reserved.
+//  Copyright © 2017 MakeAWishFoundation. All rights reserved.
 //
 
 import XCTest
@@ -172,15 +172,15 @@ class ExampleTests: XCTestCase {
     func test_generics() {
         let date = Date.init(timeIntervalSince1970: 321123)
         let item1 = DateSortableMock()
-        item1.date = date
+        Given(item1, .date(getter: date))
         Matcher.default.register(DateSortableMock.self) { (lhs, rhs) -> Bool in
             return lhs.date == rhs.date
         }
 
         let mock = HistorySectionMapperTypeMock()
 
-        Given(mock, .map(items: .any, willReturn: [(key: String, items: [DateSortableMock])]()))
-        Given(mock, .map(items: .value([item1]), willReturn: [(key: "only item", items: [item1])]))
+        Given(mock, .map(.any, willReturn: [(key: String, items: [DateSortableMock])]()))
+        Given(mock, .map(.value([item1]), willReturn: [(key: "only item", items: [item1])]))
 
         print(mock.map([DateSortableMock]()))
         print(mock.map([item1]))

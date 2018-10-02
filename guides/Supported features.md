@@ -24,7 +24,7 @@ Support for stubbing protocol members:
     - [x] that throws
     - [x] that rethrows
 - [x] stubbing static methods
-- [ ] stubbing generic methods
+- [x] stubbing generic methods
     - [x] constrained to protocol conformance
     - [x] with 'T.Type' attributes
     - [x] constrained to Self type
@@ -33,7 +33,7 @@ Support for stubbing protocol members:
     - [x] static variables
     - [x] optional
     - [x] implicitly unwrapped optional
-- [ ] stubbing subscripts - **Not possible at the moment!**
+- [x] stubbing subscripts - **for generic subscripts manual annotation needed**
 - [x] handling associated types - **done by annotations**
 - [x] handling conformances in associated types
 - [x] wrapping method attributes as Parameter

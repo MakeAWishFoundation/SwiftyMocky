@@ -3,7 +3,7 @@
 //  Mocky
 //
 //  Created by Andrzej Michnia on 25.09.2017.
-//  Copyright © 2017 CocoaPods. All rights reserved.
+//  Copyright © 2017 MakeAWishFoundation. All rights reserved.
 //
 
 import XCTest
@@ -53,3 +53,5 @@ class SampleServiceTests: XCTestCase {
         XCTAssertEqual(second.y, 1)
     }
 }
+
+

@@ -28,8 +28,9 @@ public func Verify<T: Mock>(_ object: T, _ method: T.Verify, file: StaticString 
 ///   - property: Property name, get or set with wrapped newValue (`Parameter`)
 ///   - file: for XCTest print purposes
 ///   - line: for XCTest print purposes
-public func VerifyProperty<T: Mock>(_ object: T, _ property: T.Property, file: StaticString = #file, line: UInt = #line) {
-    object.verify(property: property, count: .moreOrEqual(to: 1), file: file, line: line)
+@available(*, deprecated, message: "Use Verify instead!")
+public func VerifyProperty<T: Mock>(_ object: T, _ property: T.Verify, file: StaticString = #file, line: UInt = #line) {
+    object.verify(property, count: .moreOrEqual(to: 1), file: file, line: line)
 }
 
 // MARK: - At least once static member called
@@ -52,8 +53,9 @@ public func Verify<T: StaticMock>(_ type: T.Type, _ method: T.StaticVerify, file
 ///   - property: Property name, get or set with wrapped newValue (`Parameter`)
 ///   - file: for XCTest print purposes
 ///   - line: for XCTest print purposes
-public func VerifyProperty<T: StaticMock>(_ object: T.Type, _ property: T.StaticProperty, file: StaticString = #file, line: UInt = #line) {
-    T.verify(property: property, count: .moreOrEqual(to: 1), file: file, line: line)
+@available(*, deprecated, message: "Use Verify instead!")
+public func VerifyProperty<T: StaticMock>(_ object: T.Type, _ property: T.StaticVerify, file: StaticString = #file, line: UInt = #line) {
+    T.verify(property, count: .moreOrEqual(to: 1), file: file, line: line)
 }
 
 // MARK: - Instance member called with explicit count
@@ -78,8 +80,9 @@ public func Verify<T: Mock>(_ object: T, _ count: Count, _ method: T.Verify, fil
 ///   - method: Property name, get or set with wrapped newValue (`Parameter`)
 ///   - file: for XCTest print purposes
 ///   - line: for XCTest print purposes
-public func VerifyProperty<T: Mock>(_ object: T, _ count: Count, _ property: T.Property, file: StaticString = #file, line: UInt = #line) {
-    object.verify(property: property, count: count, file: file, line: line)
+@available(*, deprecated, message: "Use Verify instead!")
+public func VerifyProperty<T: Mock>(_ object: T, _ count: Count, _ property: T.Verify, file: StaticString = #file, line: UInt = #line) {
+    object.verify(property, count: count, file: file, line: line)
 }
 
 // MARK: - Static member called with explicit count
@@ -104,8 +107,9 @@ public func Verify<T: StaticMock>(_ type: T.Type, _ count: Count, _ method: T.St
 ///   - method: Static property name, get or set with wrapped newValue (`Parameter`)
 ///   - file: for XCTest print purposes
 ///   - line: for XCTest print purposes
-public func VerifyProperty<T: StaticMock>(_ type: T.Type, _ count: Count, _ property: T.StaticProperty, file: StaticString = #file, line: UInt = #line) {
-    T.verify(property: property, count: count, file: file, line: line)
+@available(*, deprecated, message: "Use Verify instead!")
+public func VerifyProperty<T: StaticMock>(_ type: T.Type, _ count: Count, _ property: T.StaticVerify, file: StaticString = #file, line: UInt = #line) {
+    T.verify(property, count: count, file: file, line: line)
 }
 
 // MARK: - Given
@@ -119,13 +123,14 @@ public func VerifyProperty<T: StaticMock>(_ type: T.Type, _ count: Count, _ prop
 ///     Given(mock, .do(with: .value(1), and: .any)
 ///     Given(mock, .do(with: .any, and: .value(1))
 ///     ```
-///     Method stub will return most recent one.
+///     Method stub will return the one depending on mock sequencingPolicy. By default it means most recent one.
 ///
 /// - Parameters:
 ///   - object: Mock instance
 ///   - method: Method signature with wrapped parameters (Parameter<ValueType>) and return value
-public func Given<T: Mock>(_ object: T, _ method: T.Given) {
-    object.given(method)
+///   - policy: Stubbing policy - uses mock policy by default (which defaults to .wrap)
+public func Given<T: Mock>(_ object: T, _ method: T.Given, _ policy: StubbingPolicy = .default) {
+    object.given(policy.apply(to: method))
 }
 
 /// Setup return value for static method stubs on mock type. When this static method will be called, it
@@ -137,13 +142,14 @@ public func Given<T: Mock>(_ object: T, _ method: T.Given) {
 ///     Given(T.self, .do(with: .value(1), and: .any)
 ///     Given(T.self, .do(with: .any, and: .value(1))
 ///     ```
-///     Method stub will return most recent one.
+///     Method stub will return the one depending on mock sequencingPolicy. By default it means most recent one.
 ///
 /// - Parameters:
 ///   - object: Mock type
 ///   - method: Static method signature with wrapped parameters (Parameter<ValueType>) and return value
-public func Given<T: StaticMock>(_ type: T.Type, _ method: T.StaticGiven) {
-    type.given(method)
+///   - policy: Stubbing policy - uses mock policy by default (which defaults to .wrap)
+public func Given<T: StaticMock>(_ type: T.Type, _ method: T.StaticGiven, _ policy: StubbingPolicy = .default) {
+    type.given(policy.apply(to: method))
 }
 
 // MARK: - Perform
@@ -157,7 +163,7 @@ public func Given<T: StaticMock>(_ type: T.Type, _ method: T.StaticGiven) {
 ///     Perform(mock, .do(with: .value(1), and: .any, perform: { ... }))
 ///     Perform(mock, .do(with: .any, and: .value(1), perform: { ... }))
 ///     ```
-///     Method stub will return most recent one.
+///     Method stub will return the one depending on mock sequencingPolicy. By default it means most recent one.
 ///
 /// - Parameters:
 ///   - object: Mock instance
@@ -175,7 +181,7 @@ public func Perform<T: Mock>(_ object: T, _ method: T.Perform) {
 ///     Perform(T.self, .do(with: .value(1), and: .any, perform: { ... }))
 ///     Perform(T.self, .do(with: .any, and: .value(1), perform: { ... }))
 ///     ```
-///     Method stub will return most recent one.
+///     Method stub will return the one depending on mock sequencingPolicy. By default it means most recent one.
 ///
 /// - Parameters:
 ///   - object: Mock type
@@ -186,14 +192,46 @@ public func Perform<T: StaticMock>(_ object: T.Type, _ method: T.StaticPerform) 
 
 // MARK: - Helpers
 
-/// Fails flow with given message
+/// [Internal] Fails flow with given message
 ///
 /// - Parameter message: Failure message
 /// - Returns: Never
 public func Failure(_ message: String) -> Swift.Never {
     let errorMessage = "[FATAL] \(message)!"
-    print(errorMessage)
-    fatalError(errorMessage)
+    FatalErrorUtil.fatalError(errorMessage)
+}
+
+/// [Internal] Used for handling fatal errors inside library.
+public struct FatalErrorUtil {
+    /// [Internal] Handler
+    private static var handler: (String) -> Never = {
+        print($0)
+        exit(0)
+    }
+    /// [Internal] Default handler
+    private static var defalutHandler: (String) -> Never = {
+        print($0)
+        exit(0)
+    }
+
+    /// [Internal] Override handling error handler
+    ///
+    /// - Parameter new: New handler
+    public static func set(_ new: @escaping (String) -> Never) {
+        handler = new
+    }
+
+    /// [Internal] Restores default handler
+    public static func restore() {
+        handler = defalutHandler
+    }
+
+    /// [Internal] Perform fatal error handler
+    ///
+    /// - Parameter message: Message
+    public static func fatalError(_ message: String) -> Never {
+        handler(message)
+    }
 }
 
 public extension Optional {
@@ -203,5 +241,15 @@ public extension Optional {
     /// - Returns: Unwrapped value
     public func orFail(_ message: String = "unwrapping nil") -> Wrapped {
         return self ?? { Failure(message) }()
+    }
+}
+
+private extension StubbingPolicy {
+    /// [Internal] Apply stubbing policy
+    ///
+    /// - Parameter method: Method
+    /// - Returns: With new policy
+    func apply<T>(to method: T) -> T {
+        return ((method as? WithStubbingPolicy)?.with(self) as? T) ?? method
     }
 }
