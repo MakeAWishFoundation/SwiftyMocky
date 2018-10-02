@@ -54,11 +54,18 @@ public class SwiftyMockyTestObserver: NSObject, XCTestObservation {
         let continueAfterFailure = testCase.continueAfterFailure
         defer { testCase.continueAfterFailure = continueAfterFailure }
         testCase.continueAfterFailure = false
-        if let failingLine = FilesExlorer().findTestCaseLine(testCase: testCase, file: file) {
+        let methodName = getNameOfExtecutedTestCase(testCase)
+        if let name = methodName, let failingLine = FilesExlorer().findTestCaseLine(for: name, file: file) {
             testCase.recordFailure(withDescription: message, inFile: file.description, atLine: Int(failingLine), expected: false)
+        } else if let name = methodName {
+            XCTFail("\(name) - \(message)", file: file, line: line)
         } else {
             XCTFail(message, file: file, line: line)
         }
+    }
+
+    private static func getNameOfExtecutedTestCase(_ testCase: XCTestCase) -> String? {
+        return testCase.name.components(separatedBy: " ")[1].components(separatedBy: "]").first
     }
 }
 
@@ -69,26 +76,23 @@ private class FilesExlorer {
     /// - Parameter testCase: Test case
     /// - Parameter file: File we should look in
     /// - Returns: Line number or nil, if unable to find
-    func findTestCaseLine(testCase: XCTestCase, file: StaticString) -> UInt? {
-        guard let content = getFileContent(file: file.description),
-            let methodName = getNameOfExtecutedTestCase(testCase) else { return nil }
+    func findTestCaseLine(for methodName: String, file: StaticString) -> UInt? {
+        guard let content = getFileContent(file: file.description) else {
+            return nil
+        }
         let lines = content.components(separatedBy: "\n")
         let offset = lines.enumerated().first { (index, line) -> Bool in
             return line.contains(methodName)
-            }?.offset
+        }?.offset
         guard let line = offset else { return nil }
         let lineAdditionalOffset: UInt = 2 // just to show error within test case, below the name.
         return UInt(line) + lineAdditionalOffset
     }
 
-    private func getNameOfExtecutedTestCase(_ testCase: XCTestCase) -> String? {
-        return testCase.name.components(separatedBy: " ")[1].components(separatedBy: "]").first
-    }
-
     private func getFileContent(file: String) -> String? {
         // TODO: look for file encoding from file attributes
         guard let fileData = FileManager().contents(atPath: file) else { return nil }
-        return String(data: fileData, encoding: .utf8)
+        return String(data: fileData, encoding: .utf8) ?? String(data: fileData, encoding: .utf16)
     }
 }
 #else
