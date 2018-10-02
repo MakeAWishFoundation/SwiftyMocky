@@ -1,6 +1,27 @@
 # Changelog
 
 All changes to SwiftyMocky project will be documented in this file.
+-----
+
+## __3.0.0__ / 2018
+
+#### Added:
+* Parameters handling values expressible by literals, are now also expressible by literals
+* Gracefully fail when return value is not stubbed
+* Support for subscripts
+* Stubbing policy, and support for recording sequence of return values
+* Sequencing policy, which allows to change order in which stubs are processed
+* Given for properties
+
+#### Deprecated:
+* deprecated VerifyProperty
+* deprecated setters for readonly properties
+* deprecated Given constructors not matching method signature (argument labels fix)
+
+#### Fixed:
+* multiple generation issues, like unnamed method parameters and esaping paramters names
+* fixed issues with generics handling, when some attributes was not recognized as genric
+* fixed issues with names collisions for methods different only in argument labels
 
 -----
 

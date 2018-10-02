@@ -3,7 +3,7 @@
 //  Mocky_Tests
 //
 //  Created by Andrzej Michnia on 17.11.2017.
-//  Copyright © 2017 CocoaPods. All rights reserved.
+//  Copyright © 2017 MakeAWishFoundation. All rights reserved.
 //
 
 import XCTest
@@ -37,7 +37,7 @@ class ProtocolsWithGenericsTests: XCTestCase {
 
     func test_protocol_with_associated_types() {
         let mock = ProtocolWithAssociatedTypeMock<[Int]>()
-        mock.sequence = [1,2,3]
+        Given(mock, .sequence(getter: [1,2,3]))
 
         // There is autocomplete issue, so in order to get autocomplete for all available methods
         // Use full <MockName>.Given. ... syntax

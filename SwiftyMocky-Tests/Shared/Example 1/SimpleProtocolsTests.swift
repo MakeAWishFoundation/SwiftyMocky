@@ -3,7 +3,7 @@
 //  Mocky_Tests
 //
 //  Created by Andrzej Michnia on 16.11.2017.
-//  Copyright © 2017 CocoaPods. All rights reserved.
+//  Copyright © 2017 MakeAWishFoundation. All rights reserved.
 //
 
 import XCTest
@@ -117,19 +117,20 @@ class SimpleProtocolsTests: XCTestCase {
 
         // Can use explicit values, or Count convenience static members as Count
         // Check property getters invocations
-        VerifyProperty(mock, 0, .property)
+        Verify(mock, 0, .property)
 
-        VerifyProperty(mock, .never, .property)
+        Verify(mock, .never, .property)
         // Check property setters invocations
-        VerifyProperty(mock, .never, .property(set: .any))
+        Verify(mock, .never, .property(set: .any))
 
         // We should set all initial values for non optional parameters and implicitly unwrapped optional parameters
         mock.property = "test"
-        mock.propertyGetOnly = "get only ;)"
+        Given(mock, .propertyGetOnly(getter: "get only ;)"))
+        Given(mock, .propertyOptional(getter: nil))
         mock.propertyImplicit = 1
 
-        VerifyProperty(mock, .atLeastOnce, .property(set: .any))
-        VerifyProperty(mock, .atLeastOnce, .property(set: .value("test")))
+        Verify(mock, .atLeastOnce, .property(set: .any))
+        Verify(mock, .atLeastOnce, .property(set: .value("test")))
 
         XCTAssertEqual(mock.property, "test")
         XCTAssertEqual(mock.propertyGetOnly, "get only ;)")
@@ -142,41 +143,46 @@ class SimpleProtocolsTests: XCTestCase {
         for i in 1...3 {
             mock.propertyOptional = i
         }
-        VerifyProperty(mock, 3, .propertyOptional(set: .any)) // Verify setter called exactly 3 times
-        VerifyProperty(mock, .more(than: 2), .propertyOptional(set: .any))
-        VerifyProperty(mock, .never, .propertyOptional(set: .value(0)))
+        Verify(mock, 3, .propertyOptional(set: .any)) // Verify setter called exactly 3 times
+        Verify(mock, .more(than: 2), .propertyOptional(set: .any))
+        Verify(mock, .never, .propertyOptional(set: .value(0)))
 
         // Verify using mathcing
         mock.propertyImplicit = 2
         mock.propertyImplicit = 5
         mock.propertyImplicit = 7
         // Verify, that for given mock, with specific count, property get or set was called (with attributes matching)
-        VerifyProperty(mock, .less(than: 2), .propertyImplicit(set: .matching({ $0! < 2 })))
-        VerifyProperty(mock, .moreOrEqual(to: 4), .propertyImplicit(set: .matching({ $0! > 0 })))
+        Verify(mock, .less(than: 2), .propertyImplicit(set: .matching({ $0! < 2 })))
+        Verify(mock, .moreOrEqual(to: 4), .propertyImplicit(set: .matching({ $0! > 0 })))
         XCTAssertEqual(mock.propertyImplicit, 7)
     }
 
     func test_simpleProtocol_with_both() {
         let mock = SimpleProtocolWithBothMethodsAndPropertiesMock()
 
-        // We should set all initial values for non optional parameters and implicitly unwrapped optional parameters
-        mock.property = "some property"
+        // We should set all initial values for all parameters that will be used
+        Given(mock, .property(getter: "some property"))
         Given(mock, .simpleMethod(willReturn: "some return value"))
 
         XCTAssertEqual(mock.property, "some property")
         XCTAssertEqual(mock.simpleMethod(), "some return value")
 
         Verify(mock, .simpleMethod())
-        VerifyProperty(mock, .property)
-        VerifyProperty(mock, .atLeastOnce, .property(set: .any))
+        Verify(mock, .property)
+        Given(mock, .simpleMethod(willReturn: "a","b","c","d"))
+        XCTAssertEqual(mock.simpleMethod(), "a")
+        XCTAssertEqual(mock.simpleMethod(), "b")
+        XCTAssertEqual(mock.simpleMethod(), "c")
+        XCTAssertEqual(mock.simpleMethod(), "d")
+        XCTAssertEqual(mock.simpleMethod(), "a")
+        XCTAssertEqual(mock.simpleMethod(), "b")
+        XCTAssertEqual(mock.simpleMethod(), "c")
+        XCTAssertEqual(mock.simpleMethod(), "d")
     }
 
 
     func test_simpleProtocol_that_inherits() {
         let mock = SimpleProtocolThatInheritsOtherProtocolsMock()
-
-        XCTAssert(mock is SimpleProtocolWithProperties)
-        XCTAssert(mock is SimpleProtocolWithMethods)
 
         Verify(mock, 0, .simpleMethod()) // Should be 0
 
@@ -192,19 +198,20 @@ class SimpleProtocolsTests: XCTestCase {
 
         // Can use explicit values, or Count convenience static members as Count
         // Check property getters invocations
-        VerifyProperty(mock, 0, .property)
+        Verify(mock, 0, .property)
 
-        VerifyProperty(mock, .never, .property)
+        Verify(mock, .never, .property)
         // Check property setters invocations
-        VerifyProperty(mock, .never, .property(set: .any))
+        Verify(mock, .never, .property(set: .any))
 
         // We should set all initial values for non optional parameters and implicitly unwrapped optional parameters
         mock.property = "test"
-        mock.propertyGetOnly = "get only ;)"
+        Given(mock, .propertyGetOnly(getter: "get only ;)"))
+        Given(mock, .propertyOptional(getter: nil))
         mock.propertyImplicit = 1
 
-        VerifyProperty(mock, .atLeastOnce, .property(set: .any))
-        VerifyProperty(mock, .atLeastOnce, .property(set: .value("test")))
+        Verify(mock, .atLeastOnce, .property(set: .any))
+        Verify(mock, .atLeastOnce, .property(set: .value("test")))
 
         XCTAssertEqual(mock.property, "test")
         XCTAssertEqual(mock.propertyGetOnly, "get only ;)")
@@ -217,17 +224,17 @@ class SimpleProtocolsTests: XCTestCase {
         for i in 1...3 {
             mock.propertyOptional = i
         }
-        VerifyProperty(mock, 3, .propertyOptional(set: .any)) // Verify setter called exactly 3 times
-        VerifyProperty(mock, .more(than: 2), .propertyOptional(set: .any))
-        VerifyProperty(mock, .never, .propertyOptional(set: .value(0)))
+        Verify(mock, 3, .propertyOptional(set: .any)) // Verify setter called exactly 3 times
+        Verify(mock, .more(than: 2), .propertyOptional(set: .any))
+        Verify(mock, .never, .propertyOptional(set: .value(0)))
 
         // Verify using mathcing
         mock.propertyImplicit = 2
         mock.propertyImplicit = 5
         mock.propertyImplicit = 7
         // Verify, that for given mock, with specific count, property get or set was called (with attributes matching)
-        VerifyProperty(mock, .less(than: 2), .propertyImplicit(set: .matching({ $0! < 2 })))
-        VerifyProperty(mock, .moreOrEqual(to: 4), .propertyImplicit(set: .matching({ $0! > 0 })))
+        Verify(mock, .less(than: 2), .propertyImplicit(set: .matching({ $0! < 2 })))
+        Verify(mock, .moreOrEqual(to: 4), .propertyImplicit(set: .matching({ $0! > 0 })))
         XCTAssertEqual(mock.propertyImplicit, 7)
     }
 }

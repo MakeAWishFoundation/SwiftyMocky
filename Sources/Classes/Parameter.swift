@@ -46,13 +46,24 @@ public enum Parameter<ValueType> {
 }
 
 // MARK: - Order
+public extension Parameter where ValueType: GenericAttributeType {
+    /// Used for invocations sorting purpose.
+    public var intValue: Int {
+        switch self {
+        case ._: return 0
+        case let .value(generic): return generic.intValue
+        case .matching: return 1
+        }
+    }
+}
+
 public extension Parameter {
     /// Used for invocations sorting purpose.
     public var intValue: Int {
         switch self {
-            case ._: return 0
-            case .value: return 1
-            case .matching: return 1
+        case ._: return 0
+        case .value: return 1
+        case .matching: return 1
         }
     }
 }
@@ -72,17 +83,17 @@ public extension Parameter {
     /// - Returns: true, if first is matching second
     public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
         switch (lhs, rhs) {
-            case (._, _): return true
-            case (_, ._): return true
-            case (.matching(let match), .value(let value)): return match(value)
-            case (.value(let value), .matching(let match)): return match(value)
-            case (.value(let lhsValue), .value(let rhsValue)):
-                guard let compare = matcher.comparator(for: ValueType.self) else {
-                    print("[FATAL] No registered matcher comparator for \(String(describing: ValueType.self))")
-                    fatalError("No registered comparators for \(String(describing: ValueType.self))")
-                }
-                return compare(lhsValue,rhsValue)
-            default: return false
+        case (._, _): return true
+        case (_, ._): return true
+        case (.matching(let match), .value(let value)): return match(value)
+        case (.value(let value), .matching(let match)): return match(value)
+        case (.value(let lhsValue), .value(let rhsValue)):
+            guard let compare = matcher.comparator(for: ValueType.self) else {
+                print("[FATAL] No registered matcher comparator for \(String(describing: ValueType.self))")
+                Failure("No registered comparators for \(String(describing: ValueType.self))")
+            }
+            return compare(lhsValue,rhsValue)
+        default: return false
         }
     }
 
@@ -91,48 +102,48 @@ public extension Parameter {
     /// - Returns: Wrapped parameter
     public func wrapAsGeneric() -> Parameter<GenericAttribute> {
         switch self {
-            case ._:
-                let attribute = GenericAttribute(Mirror(reflecting: ValueType.self), { (l, r, m) -> Bool in
-                    guard let lv = l as? Mirror else { return false }
-                    if let rv = r as? Mirror {
-                        return lv.subjectType == rv.subjectType
-                    } else if let _ = r as? ValueType {
-                        return true // .any comparing .value or .matching
-                    } else {
-                        return false
-                    }
-                })
-                return Parameter<GenericAttribute>.value(attribute)
-            case let .value(value):
-                let attribute = GenericAttribute(value, { (l, r, m) -> Bool in
-                    guard let lv = l as? ValueType  else { return false }
-                    if let rv = r as? ValueType {
-                        let lhs = Parameter<ValueType>.value(lv)
-                        let rhs = Parameter<ValueType>.value(rv)
-                        return Parameter<ValueType>.compare(lhs: lhs, rhs: rhs, with: m)
-                    } else if let rv = r as? ((ValueType) -> Bool) {
-                        return rv(lv)
-                    } else if let rv = r as? Mirror {
-                        return Mirror(reflecting: ValueType.self).subjectType == rv.subjectType
-                    } else {
-                        return false
-                    }
-                })
-                return Parameter<GenericAttribute>.value(attribute)
-            case let .matching(match):
-                let attribute = GenericAttribute(match, { (l, r, m) -> Bool in
-                    guard let lv = l as? ((ValueType) -> Bool)  else { return false }
-                    if let rv = r as? ValueType {
-                        let lhs = Parameter<ValueType>.matching(lv)
-                        let rhs = Parameter<ValueType>.value(rv)
-                        return Parameter<ValueType>.compare(lhs: lhs, rhs: rhs, with: m)
-                    } else if let rv = r as? Mirror {
-                        return Mirror(reflecting: ValueType.self).subjectType == rv.subjectType
-                    } else {
-                        return false
-                    }
-                })
-                return Parameter<GenericAttribute>.value(attribute)
+        case ._:
+            let attribute = GenericAttribute(Mirror(reflecting: ValueType.self), intValue, { (l, r, m) -> Bool in
+                guard let lv = l as? Mirror else { return false }
+                if let rv = r as? Mirror {
+                    return lv.subjectType == rv.subjectType
+                } else if let _ = r as? ValueType {
+                    return true // .any comparing .value or .matching
+                } else {
+                    return false
+                }
+            })
+            return Parameter<GenericAttribute>.value(attribute)
+        case let .value(value):
+            let attribute = GenericAttribute(value, intValue, { (l, r, m) -> Bool in
+                guard let lv = l as? ValueType  else { return false }
+                if let rv = r as? ValueType {
+                    let lhs = Parameter<ValueType>.value(lv)
+                    let rhs = Parameter<ValueType>.value(rv)
+                    return Parameter<ValueType>.compare(lhs: lhs, rhs: rhs, with: m)
+                } else if let rv = r as? ((ValueType) -> Bool) {
+                    return rv(lv)
+                } else if let rv = r as? Mirror {
+                    return Mirror(reflecting: ValueType.self).subjectType == rv.subjectType
+                } else {
+                    return false
+                }
+            })
+            return Parameter<GenericAttribute>.value(attribute)
+        case let .matching(match):
+            let attribute = GenericAttribute(match, intValue, { (l, r, m) -> Bool in
+                guard let lv = l as? ((ValueType) -> Bool)  else { return false }
+                if let rv = r as? ValueType {
+                    let lhs = Parameter<ValueType>.matching(lv)
+                    let rhs = Parameter<ValueType>.value(rv)
+                    return Parameter<ValueType>.compare(lhs: lhs, rhs: rhs, with: m)
+                } else if let rv = r as? Mirror {
+                    return Mirror(reflecting: ValueType.self).subjectType == rv.subjectType
+                } else {
+                    return false
+                }
+            })
+            return Parameter<GenericAttribute>.value(attribute)
         }
     }
 }
@@ -147,10 +158,10 @@ public extension Parameter where ValueType: GenericAttributeType {
     /// - Returns: true if they are matching, false otherwise
     public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
         switch (lhs, rhs) {
-            case (._, _): return true
-            case (_, ._): return true
-            case (.value(let lhsGeneric), .value(let rhsGeneric)): return lhsGeneric.compare(lhsGeneric.value,rhsGeneric.value,matcher)
-            default: return false
+        case (._, _): return true
+        case (_, ._): return true
+        case (.value(let lhsGeneric), .value(let rhsGeneric)): return lhsGeneric.compare(lhsGeneric.value,rhsGeneric.value,matcher)
+        default: return false
         }
     }
 }
@@ -165,20 +176,22 @@ public extension Parameter where ValueType: Equatable {
     /// - Returns: true if they are matching, false otherwise
     public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
         switch (lhs, rhs) {
-            case (._, _): return true
-            case (_, ._): return true
-            case (.matching(let match), .value(let value)): return match(value)
-            case (.value(let value), .matching(let match)): return match(value)
-            case let (.value(left), .value(right)): return left == right
-            default: return false
+        case (._, _): return true
+        case (_, ._): return true
+        case (.matching(let match), .value(let value)): return match(value)
+        case (.value(let value), .matching(let match)): return match(value)
+        case let (.value(left), .value(right)): return left == right
+        default: return false
         }
     }
 }
 
 public extension Parameter where ValueType: Sequence {
 #if swift(>=3.2)
+    /// Element
     typealias Element = ValueType.Element
 #else
+    /// Element
     typealias Element = ValueType.Iterator.Element
 #endif
     /// [Internal] Compare two parameters
@@ -190,34 +203,34 @@ public extension Parameter where ValueType: Sequence {
     /// - Returns: true if they are matching, false otherwise
     public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
         switch (lhs, rhs) {
-            case (._, _): return true
-            case (_, ._): return true
-            case (.matching(let match), .value(let value)): return match(value)
-            case (.value(let value), .matching(let match)): return match(value)
-            case (.value(let lhsSequence), .value(let rhsSequence)):
-                let leftArray = lhsSequence.map { $0 }
-                let rightArray = rhsSequence.map { $0 }
+        case (._, _): return true
+        case (_, ._): return true
+        case (.matching(let match), .value(let value)): return match(value)
+        case (.value(let value), .matching(let match)): return match(value)
+        case (.value(let lhsSequence), .value(let rhsSequence)):
+            let leftArray = lhsSequence.map { $0 }
+            let rightArray = rhsSequence.map { $0 }
 
-                guard leftArray.count == rightArray.count else { return false }
+            guard leftArray.count == rightArray.count else { return false }
 
-                let values = (0..<leftArray.count)
-                .map { i -> (Element, Element) in
-                    return ((leftArray[i]),(rightArray[i]))
+            let values = (0..<leftArray.count)
+            .map { i -> (Element, Element) in
+                return ((leftArray[i]),(rightArray[i]))
+            }
+
+            guard let comparator = matcher.comparator(for: Element.self) else {
+                print("[FATAL] No registered matcher comparator for \(Element.self)")
+                Failure("Not registered comparator for \(Element.self)")
+            }
+
+            for (left,right) in values {
+                guard comparator(left, right) else {
+                    return false
                 }
+            }
 
-                guard let comparator = matcher.comparator(for: Element.self) else {
-                    print("[FATAL] No registered matcher comparator for \(Element.self)")
-                    fatalError("Not registered comparator for \(Element.self)")
-                }
-
-                for (left,right) in values {
-                    guard comparator(left, right) else {
-                        return false
-                    }
-                }
-
-                return true
-            default: return false
+            return true
+        default: return false
         }
     }
 
@@ -226,48 +239,48 @@ public extension Parameter where ValueType: Sequence {
     /// - Returns: Wrapped parameter
     public func wrapAsGeneric() -> Parameter<GenericAttribute> {
         switch self {
-            case ._:
-                let attribute = GenericAttribute(Mirror(reflecting: ValueType.self), { (l, r, m) -> Bool in
-                    guard let lv = l as? Mirror else { return false }
-                    if let rv = r as? Mirror {
-                        return lv.subjectType == rv.subjectType
-                    } else if let _ = r as? ValueType {
-                        return true // .any comparing .value
-                    } else {
-                        return false
-                    }
-                })
-                return Parameter<GenericAttribute>.value(attribute)
-            case let .value(value):
-                let attribute = GenericAttribute(value, { (l, r, m) -> Bool in
-                    guard let lv = l as? ValueType  else { return false }
-                    if let rv = r as? ValueType {
-                        let lhs = Parameter<ValueType>.value(lv)
-                        let rhs = Parameter<ValueType>.value(rv)
-                        return Parameter<ValueType>.compare(lhs: lhs, rhs: rhs, with: m)
-                    } else if let rv = r as? ((ValueType) -> Bool) {
-                        return rv(lv)
-                    } else if let rv = r as? Mirror {
-                        return Mirror(reflecting: ValueType.self).subjectType == rv.subjectType
-                    } else {
-                        return false
-                    }
-                })
-                return Parameter<GenericAttribute>.value(attribute)
-            case let .matching(match):
-                let attribute = GenericAttribute(match, { (l, r, m) -> Bool in
-                    guard let lv = l as? ((ValueType) -> Bool)  else { return false }
-                    if let rv = r as? ValueType {
-                        let lhs = Parameter<ValueType>.matching(lv)
-                        let rhs = Parameter<ValueType>.value(rv)
-                        return Parameter<ValueType>.compare(lhs: lhs, rhs: rhs, with: m)
-                    } else if let rv = r as? Mirror {
-                        return Mirror(reflecting: ValueType.self).subjectType == rv.subjectType
-                    } else {
-                        return false
-                    }
-                })
-                return Parameter<GenericAttribute>.value(attribute)
+        case ._:
+            let attribute = GenericAttribute(Mirror(reflecting: ValueType.self), intValue, { (l, r, m) -> Bool in
+                guard let lv = l as? Mirror else { return false }
+                if let rv = r as? Mirror {
+                    return lv.subjectType == rv.subjectType
+                } else if let _ = r as? ValueType {
+                    return true // .any comparing .value
+                } else {
+                    return false
+                }
+            })
+            return Parameter<GenericAttribute>.value(attribute)
+        case let .value(value):
+            let attribute = GenericAttribute(value, intValue, { (l, r, m) -> Bool in
+                guard let lv = l as? ValueType  else { return false }
+                if let rv = r as? ValueType {
+                    let lhs = Parameter<ValueType>.value(lv)
+                    let rhs = Parameter<ValueType>.value(rv)
+                    return Parameter<ValueType>.compare(lhs: lhs, rhs: rhs, with: m)
+                } else if let rv = r as? ((ValueType) -> Bool) {
+                    return rv(lv)
+                } else if let rv = r as? Mirror {
+                    return Mirror(reflecting: ValueType.self).subjectType == rv.subjectType
+                } else {
+                    return false
+                }
+            })
+            return Parameter<GenericAttribute>.value(attribute)
+        case let .matching(match):
+            let attribute = GenericAttribute(match, intValue, { (l, r, m) -> Bool in
+                guard let lv = l as? ((ValueType) -> Bool)  else { return false }
+                if let rv = r as? ValueType {
+                    let lhs = Parameter<ValueType>.matching(lv)
+                    let rhs = Parameter<ValueType>.value(rv)
+                    return Parameter<ValueType>.compare(lhs: lhs, rhs: rhs, with: m)
+                } else if let rv = r as? Mirror {
+                    return Mirror(reflecting: ValueType.self).subjectType == rv.subjectType
+                } else {
+                    return false
+                }
+            })
+            return Parameter<GenericAttribute>.value(attribute)
         }
     }
 }
@@ -304,27 +317,27 @@ public extension Parameter where ValueType: Sequence, ValueType.Element: Equatab
     /// - Returns: true if they are matching, false otherwise
     public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
         switch (lhs, rhs) {
-            case (._, _): return true
-            case (_, ._): return true
-            case (.matching(let match), .value(let value)): return match(value)
-            case (.value(let value), .matching(let match)): return match(value)
-            case (.value(let lhsSequence), .value(let rhsSequence)):
-                let leftArray = lhsSequence.map { $0 }
-                let rightArray = rhsSequence.map { $0 }
+        case (._, _): return true
+        case (_, ._): return true
+        case (.matching(let match), .value(let value)): return match(value)
+        case (.value(let value), .matching(let match)): return match(value)
+        case (.value(let lhsSequence), .value(let rhsSequence)):
+            let leftArray = lhsSequence.map { $0 }
+            let rightArray = rhsSequence.map { $0 }
 
-                guard leftArray.count == rightArray.count else { return false }
+            guard leftArray.count == rightArray.count else { return false }
 
-                let values = (0..<leftArray.count)
-                .map { i -> (ValueType.Element, ValueType.Element) in
-                    return ((leftArray[i]),(rightArray[i]))
-                }
+            let values = (0..<leftArray.count)
+            .map { i -> (ValueType.Element, ValueType.Element) in
+                return ((leftArray[i]),(rightArray[i]))
+            }
 
-                for (left,right) in values {
-                    guard left == right else { return false }
-                }
+            for (left,right) in values {
+                guard left == right else { return false }
+            }
 
-                return true
-            default: return false
+            return true
+        default: return false
         }
     }
 }
@@ -339,12 +352,12 @@ public extension Parameter where ValueType: Sequence, ValueType.Element: Equatab
     /// - Returns: true if they are matching, false otherwise
     public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
         switch (lhs, rhs) {
-            case (._, _): return true
-            case (_, ._): return true
-            case (.matching(let match), .value(let value)): return match(value)
-            case (.value(let value), .matching(let match)): return match(value)
-            case let (.value(left), .value(right)): return left == right
-            default: return false
+        case (._, _): return true
+        case (_, ._): return true
+        case (.matching(let match), .value(let value)): return match(value)
+        case (.value(let value), .matching(let match)): return match(value)
+        case let (.value(left), .value(right)): return left == right
+        default: return false
         }
     }
 }
@@ -360,27 +373,27 @@ public extension Parameter where ValueType: Sequence, ValueType.Iterator.Element
     /// - Returns: true if they are matching, false otherwise
     public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
         switch (lhs, rhs) {
-            case (._, _): return true
-            case (_, ._): return true
-            case (.matching(let match), .value(let value)): return match(value)
-            case (.value(let value), .matching(let match)): return match(value)
-            case (.value(let lhsSequence), .value(let rhsSequence)):
-                let leftArray = lhsSequence.map { $0 }
-                let rightArray = rhsSequence.map { $0 }
+        case (._, _): return true
+        case (_, ._): return true
+        case (.matching(let match), .value(let value)): return match(value)
+        case (.value(let value), .matching(let match)): return match(value)
+        case (.value(let lhsSequence), .value(let rhsSequence)):
+            let leftArray = lhsSequence.map { $0 }
+            let rightArray = rhsSequence.map { $0 }
 
-                guard leftArray.count == rightArray.count else { return false }
+            guard leftArray.count == rightArray.count else { return false }
 
-                let values = (0..<leftArray.count)
-                .map { i -> (ValueType.Iterator.Element, ValueType.Iterator.Element) in
-                    return ((leftArray[i]),(rightArray[i]))
-                }
+            let values = (0..<leftArray.count)
+            .map { i -> (ValueType.Iterator.Element, ValueType.Iterator.Element) in
+                return ((leftArray[i]),(rightArray[i]))
+            }
 
-                for (left,right) in values {
-                    guard left == right else { return false }
-                }
+            for (left,right) in values {
+                guard left == right else { return false }
+            }
 
-                return true
-            default: return false
+            return true
+        default: return false
         }
     }
 }
@@ -395,12 +408,12 @@ public extension Parameter where ValueType: Sequence, ValueType.Iterator.Element
     /// - Returns: true if they are matching, false otherwise
     public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
         switch (lhs, rhs) {
-            case (._, _): return true
-            case (_, ._): return true
-            case (.matching(let match), .value(let value)): return match(value)
-            case (.value(let value), .matching(let match)): return match(value)
-            case let (.value(left), .value(right)): return left == right
-            default: return false
+        case (._, _): return true
+        case (_, ._): return true
+        case (.matching(let match), .value(let value)): return match(value)
+        case (.value(let value), .matching(let match)): return match(value)
+        case let (.value(left), .value(right)): return left == right
+        default: return false
         }
     }
 }

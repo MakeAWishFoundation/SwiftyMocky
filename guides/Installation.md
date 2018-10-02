@@ -11,6 +11,8 @@ pod "SwiftyMocky"
 
 Then execute `pod install`
 
+The integration part is described in setup page.
+
 ## 2. [Carthage](https://github.com/Carthage/Carthage).
 To install, add following to you Cartfile:
 
@@ -22,14 +24,28 @@ Then execute `carthage update`
 
 For Carthage, few additional steps are required:
 
-1. Obtain [Sourcery](https://github.com/krzysztofzablocki/Sourcery) - used to generate mocks (specify valid path in generate mock)
+1. Obtain [Sourcery](https://github.com/krzysztofzablocki/Sourcery) - used to generate mocks (specify valid path in generate mock) - you can use **get_sourcery** script below
 2. Change templates path to `Carthage/Build/iOS/SwiftyMocky.framework/`
-3. In your test framework **add** to:
+3. In your test target **add** to:
   - **Other Swift Flags**: `-DMocky`
-  - **Framework Search Paths**: `$(SRCROOT)/Carthage/Build/iOS`
+4. In your test target, add SwiftyMocky to linked libraries:
+
+    ![Link binary][example-link]
+
+5. In your test target, add new copy files phase:
+
+    ![Link binary][example-add]
+
+6. Select destination to frameworks, and add SwiftyMocky:
+
+    ![Link binary][example-copy]
+
+The integration part is described in setup page.
 
 ## 3. Manually.
 Include Sources in your project, and setup [Sourcery](https://github.com/krzysztofzablocki/Sourcery)
+
+The integration part is described in setup page.
 
 > **Important!!!**
 >
@@ -55,7 +71,7 @@ sh get_sourcery.sh 4.2
 **get_sourcery.sh**
 
 ```shell
-[[ $# > 0 ]] && VERSION="$1" || VERSION="4.0.2"
+[[ $# > 0 ]] && VERSION="$1" || VERSION="4.2"
 [[ $# > 1 ]] && OUTPUT="$2" || OUTPUT="./Pods/Sourcery/bin"
 
 echo "CLONE SOURCERY FOR $VERSION INTO $OUTPUT"
@@ -67,3 +83,12 @@ git clone -b "swift/$VERSION" --single-branch --depth 1 https://github.com/MakeA
 > This script is also shipped with SwiftyMocky when installing via cocoapods
 > You can use it from project root like `sh ./Pods/SwiftyMocky/get_sourcery.sh 4.2`
 > Version is optional, if you don't specify it, script will use latest supported (4.2 in that case)
+
+> **Note 2!**
+> If you use Carthage, you should specify your custom output location for sourcery binary. Please have in mind, that script clears output dir, so don't point it to `~/` or something ;)
+
+<!-- Assets -->
+
+[example-link]: ../guides/assets/link-binary-with-libraries.png "Example - link binary"
+[example-add]: ../guides/assets/add-new-copy-files-phase.png "Example - add copy files phase"
+[example-copy]: ../guides/assets/add-framework-tocopy-files-phase.png "Example - add SwiftyMocky to copy frameworks"

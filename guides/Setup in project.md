@@ -10,7 +10,7 @@ sources:
     - ./ExampleApp
     - ./ExampleAppTests
 templates:
-  - ./Pods/SwiftyMocky/Sources/Templates
+  - ./Pods/SwiftyMocky/Sources/Templates # Different for Carthage installation
 output:
   ./ExampleApp
 args:
@@ -36,6 +36,12 @@ args:
 > ** Please note!**
 > In some cases (for example when using R.swift for assets management), there are big generated swift files involved, that can extend time of generating mocks.
 > In such cases, you can exclude particular files from whole process, using `exclude` in same way as `include` in config.yml.
+
+## Setup Sourcery (optional):
+
+In some cases Sourcery that is downloaded with Pods installation does not match for example Swift version you are using. With cocoapods installation we ship `get_sourcery.sh` script, to override it with newer/older version of binary.
+
+For that case refer "Known Issues" page.
 
 ## Generate mocks:
 

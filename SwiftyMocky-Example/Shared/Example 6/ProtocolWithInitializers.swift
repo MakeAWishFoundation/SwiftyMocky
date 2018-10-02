@@ -3,7 +3,7 @@
 //  Mocky_Example
 //
 //  Created by Andrzej Michnia on 17.11.2017.
-//  Copyright © 2017 CocoaPods. All rights reserved.
+//  Copyright © 2017 MakeAWishFoundation. All rights reserved.
 //
 
 import Foundation

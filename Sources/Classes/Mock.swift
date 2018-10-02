@@ -17,8 +17,6 @@ public protocol Mock: class {
     associatedtype Verify
     /// Perform type
     associatedtype Perform
-    /// Property accessors type
-    associatedtype Property
 
     /// Registers return value for stubbed method, for specified attributes set.
     ///
@@ -60,15 +58,6 @@ public protocol Mock: class {
     ///   - file: for XCTest print purposes
     ///   - line: for XCTest print purposes
     func verify(_ method: Verify, count: Count, file: StaticString, line: UInt)
-
-    /// Verifies, that given property stub was called exact number of times.
-    ///
-    /// - Parameters:
-    ///   - property: property with get or set (with newValueParameter<ValueType>)
-    ///   - count: Number of invocations
-    ///   - file: for XCTest print purposes
-    ///   - line: for XCTest print purposes
-    func verify(property: Property, count: Count, file: StaticString, line: UInt)
 }
 
 /// Every mock, that stubs static methods, should adopt **StaticMock** protocol.
@@ -80,8 +69,6 @@ public protocol StaticMock: class {
     associatedtype StaticVerify
     /// Perform type
     associatedtype StaticPerform
-    /// Property accessors type
-    associatedtype StaticProperty
 
     /// As verifying static members relies on static count of invocations, clear allows to 'reset' static mock internals.
     static func clear()
@@ -126,13 +113,4 @@ public protocol StaticMock: class {
     ///   - file: for XCTest print purposes
     ///   - line: for XCTest print purposes
     static func verify(_ method: StaticVerify, count: Count, file: StaticString, line: UInt)
-
-    /// Verifies, that given property stub was called exact number of times.
-    ///
-    /// - Parameters:
-    ///   - property: property with get or set (with newValueParameter<ValueType>)
-    ///   - count: Number of invocations
-    ///   - file: for XCTest print purposes
-    ///   - line: for XCTest print purposes
-    static func verify(property: StaticProperty, count: Count, file: StaticString, line: UInt)
 }

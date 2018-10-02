@@ -3,7 +3,7 @@
 //  Mocky_Tests
 //
 //  Created by Andrzej Michnia on 17.11.2017.
-//  Copyright © 2017 CocoaPods. All rights reserved.
+//  Copyright © 2017 MakeAWishFoundation. All rights reserved.
 //
 
 import XCTest
@@ -22,8 +22,7 @@ class ProtocolWithStaticMembersTests: XCTestCase {
         // you pass its type to Verify and Given calls
 
         // Static properties should be set with default values - same as with instance ones
-        ProtocolWithStaticMembersMock.staticProperty = "value"
-
+        Given(ProtocolWithStaticMembersMock.self, .staticProperty(getter: "value"))
         Given(ProtocolWithStaticMembersMock.self, .staticMethod(param: .value(0), willReturn: 1))
         Given(ProtocolWithStaticMembersMock.self, .staticMethod(param: .value(1), willReturn: 2))
         Given(ProtocolWithStaticMembersMock.self, .staticMethod(param: .any, willThrow: SimpleTestError.failure))
