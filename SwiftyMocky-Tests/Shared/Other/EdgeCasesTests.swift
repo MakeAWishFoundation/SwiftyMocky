@@ -3,7 +3,7 @@
 //  Mocky
 //
 //  Created by Andrzej Michnia on 29.09.2018.
-//  Copyright © 2018 CocoaPods. All rights reserved.
+//  Copyright © 2018 MakeAWishFoundation. All rights reserved.
 //
 
 import XCTest
