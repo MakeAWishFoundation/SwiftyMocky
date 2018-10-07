@@ -47,7 +47,7 @@ For that case refer "Known Issues" page.
 
 We know that Sourcery is a powerful tool and you are likely to use it already. You can easily integrate SwiftyMocky with your project with keeping all already written templates working.
 
-All you have to do is add path (note that path can be different for Carthage/manual installation) to SwiftyMocky templates in your `sourcery.yaml` file:
+All you have to do is add path (note that path can be different for Carthage/manual installation) to SwiftyMocky templates in your `sourcery.yml` file:
 
 ```yaml
 sources:
