@@ -296,6 +296,33 @@ In such cases, you can exclude particular files from whole process, using <code>
 <p>In some cases Sourcery that is downloaded with Pods installation does not match for example Swift version you are using. With cocoapods installation we ship <code>get_sourcery.sh</code> script, to override it with newer/older version of binary.</p>
 
 <p>For that case refer <q>Known Issues</q> page.</p>
+<h2 id='setup-for-sourcery-users-alternative-to-mocky-yml' class='heading'>Setup for Sourcery users (alternative to mocky.yml):</h2>
+
+<p>We know that Sourcery is a powerful tool and you are likely to use it already. You can easily integrate SwiftyMocky with your project with keeping all already written templates working.</p>
+
+<p>All you have to do is add path (note that path can be different for Carthage/manual installation) to SwiftyMocky templates in your <code>sourcery.yaml</code> file:</p>
+<pre class="highlight yaml"><code><span class="na">sources</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">./ExampleApp</span>
+    <span class="pi">-</span> <span class="s">./ExampleAppTests</span>
+<span class="na">templates</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">&lt;templates path&gt;</span> <span class="c1"># Path to already written Sourcery templates</span>
+    <span class="pi">-</span> <span class="s">./Pods/SwiftyMocky/Sources/Templates</span> <span class="c1"># &lt;- SwiftyMocky templates</span>
+<span class="na">output</span><span class="pi">:</span>
+    <span class="s">./ExampleApp</span>
+<span class="na">args</span><span class="pi">:</span>
+  <span class="na">testable</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">ExampleApp</span>
+  <span class="na">import</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">RxSwift</span>
+    <span class="pi">-</span> <span class="s">RxBlocking</span>
+  <span class="na">excludedSwiftLintRules</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">force_cast</span>
+    <span class="pi">-</span> <span class="s">function_body_length</span>
+    <span class="pi">-</span> <span class="s">line_length</span>
+    <span class="pi">-</span> <span class="s">vertical_whitespace</span>
+</code></pre>
+
+<p>You can use all arguments (like <code>testable</code>, <code>import</code>, etc.) in the same way as in <code>mocky.yaml</code>, under <code>args</code> key.</p>
 <h2 id='generate-mocks' class='heading'>Generate mocks:</h2>
 
 <ol>
