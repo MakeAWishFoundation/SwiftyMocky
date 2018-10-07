@@ -1,6 +1,11 @@
-
 <%# ================================================== SwiftLint -%><%_ -%>
 <%_ if let rules = arguments["excludedSwiftLintRules"] as? [String] { -%>
+    <%_ for rule in rules { -%>
+    <%_ %>//swiftlint:disable <%= rule %>
+    <%_ } -%>
+<%_ } -%>
+<%# ================================================== SwiftLint (aggregated arguments) -%><%_ -%>
+<%_ if let swiftyMockyArgs = arguments["swiftyMocky"] as? [String: Any], let rules = swiftyMockyArgs["excludedSwiftLintRules"] as? [String] { -%>
     <%_ for rule in rules { -%>
     <%_ %>//swiftlint:disable <%= rule %>
     <%_ } -%>
@@ -8,7 +13,7 @@
 
 #if MockyCustom
 import SwiftyMocky
-<%# ================================================== IMPORTS InAPP -%><%_ -%>
+    <%# ================================================== IMPORTS InAPP -%><%_ -%>
     <%_ if let imported = arguments["import"] as? String { -%>
         <%_ %>import <%= imported %>
     <%_ } -%>
@@ -23,6 +28,25 @@ import SwiftyMocky
     <%_ if let alltested = arguments["testable"] as? [String] { -%>
         <%_ for tested in alltested { -%>
             <%_ %>@testable import <%= tested %>
+        <%_ } -%>
+    <%_ } -%>
+    <%# ================================================== IMPORTS InAPP (aggregated arguments) -%><%_ -%>
+    <%_ if let swiftyMockyArgs = arguments["swiftyMocky"] as? [String: Any] { -%>
+        <%_ if let imported = swiftyMockyArgs["import"] as? String { -%>
+            <%_ %>import <%= imported %>
+        <%_ } -%>
+        <%_ if let allImported = swiftyMockyArgs["import"] as? [String] { -%>
+            <%_ for imported in allImported { -%>
+                <%_ %>import <%= imported %>
+            <%_ } -%>
+        <%_ } -%>
+        <%_ if let testable = swiftyMockyArgs["testable"] as? String {  -%>
+            <%_ %>@testable import <%= testable %>
+        <%_  } -%>
+            <%_ if let allTestable = swiftyMockyArgs["testable"] as? [String] { -%>
+                <%_ for testable in allTestable { -%>
+            <%_ %>@testable import <%= testable %>
+            <%_ } -%>
         <%_ } -%>
     <%_ } -%>
 
@@ -41,7 +65,7 @@ import SwiftyMocky
 #elseif Mocky
 import SwiftyMocky
 import XCTest
-<%# ================================================== IMPORTS -%><%_ -%>
+    <%# ================================================== IMPORTS -%><%_ -%>
     <%_ if let imported = arguments["import"] as? String { -%>
         <%_ %>import <%= imported %>
     <%_ } -%>
@@ -56,6 +80,25 @@ import XCTest
     <%_ if let alltested = arguments["testable"] as? [String] { -%>
         <%_ for tested in alltested { -%>
             <%_ %>@testable import <%= tested %>
+        <%_ } -%>
+    <%_ } -%>
+    <%# ================================================== IMPORTS (aggregated arguments) -%><%_ -%>
+    <%_ if let swiftyMockyArgs = arguments["swiftyMocky"] as? [String: Any] { -%>
+        <%_ if let imported = swiftyMockyArgs["import"] as? String { -%>
+            <%_ %>import <%= imported %>
+        <%_ } -%>
+        <%_ if let allImported = swiftyMockyArgs["import"] as? [String] { -%>
+            <%_ for imported in allImported { -%>
+                <%_ %>import <%= imported %>
+            <%_ } -%>
+        <%_ } -%>
+        <%_ if let testable = swiftyMockyArgs["testable"] as? String {  -%>
+            <%_ %>@testable import <%= testable %>
+        <%_  } -%>
+            <%_ if let allTestable = swiftyMockyArgs["testable"] as? [String] { -%>
+                <%_ for testable in allTestable { -%>
+            <%_ %>@testable import <%= testable %>
+            <%_ } -%>
         <%_ } -%>
     <%_ } -%>
 
