@@ -8,8 +8,8 @@
 #if MockyCustom
 import SwiftyMocky
 <%# ================================================== IMPORTS InAPP -%><%_ -%>
-    <%_ for import in projectImports(arguments) { -%>
-        <%_ %><%= import %>
+    <%_ for projectImport in projectImports(arguments) { -%>
+        <%_ %><%= projectImport %>
     <%_ } -%>
 
     public final class MockyAssertion {
@@ -28,8 +28,8 @@ import SwiftyMocky
 import SwiftyMocky
 import XCTest
 <%# ================================================== IMPORTS -%><%_ -%>
-    <%_ for import in projectImports(arguments) { -%>
-        <%_ %><%= import %>
+    <%_ for projectImport in projectImports(arguments) { -%>
+        <%_ %><%= projectImport %>
     <%_ } -%>
 
     func MockyAssert(_ expression: @autoclosure () -> Bool, _ message: @autoclosure () -> String = "Verification failed", file: StaticString = #file, line: UInt = #line) {
