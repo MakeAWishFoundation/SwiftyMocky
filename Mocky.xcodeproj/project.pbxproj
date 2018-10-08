@@ -313,6 +313,14 @@
 		D4CF1AC7A6F257BB2904DA55 /* Pods-Mocky_Tests_tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Tests_tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Tests_tvOS/Pods-Mocky_Tests_tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		E0F0B024E7EFDB2727CEE125 /* Pods-Mocky_Tests_macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Tests_macOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Tests_macOS/Pods-Mocky_Tests_macOS.release.xcconfig"; sourceTree = "<group>"; };
 		E467147D1ECEF4D600C7DAB3 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		E47681D8216B6A3200C3F736 /* TemplateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateHelper.swift; sourceTree = "<group>"; };
+		E47681D9216B6B7A00C3F736 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		E47681DB216B6BA100C3F736 /* TypeWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeWrapper.swift; sourceTree = "<group>"; };
+		E47681DC216B6BC700C3F736 /* Current.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Current.swift; sourceTree = "<group>"; };
+		E47681DD216B6BF100C3F736 /* ParameterWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterWrapper.swift; sourceTree = "<group>"; };
+		E47681DE216B6C0D00C3F736 /* VariableWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VariableWrapper.swift; sourceTree = "<group>"; };
+		E47681DF216B6C3200C3F736 /* SubscriptWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptWrapper.swift; sourceTree = "<group>"; };
+		E47681E0216B6CA700C3F736 /* MethodWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MethodWrapper.swift; sourceTree = "<group>"; };
 		E671CB0D6255BBBB2FADDA17 /* Pods-Mocky_Example_macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Example_macOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Example_macOS/Pods-Mocky_Example_macOS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -538,6 +546,14 @@
 			isa = PBXGroup;
 			children = (
 				CCAFC9F81FAF24EA003F776A /* Mock.swifttemplate */,
+				E47681D8216B6A3200C3F736 /* TemplateHelper.swift */,
+				E47681D9216B6B7A00C3F736 /* Helpers.swift */,
+				E47681DB216B6BA100C3F736 /* TypeWrapper.swift */,
+				E47681DC216B6BC700C3F736 /* Current.swift */,
+				E47681DD216B6BF100C3F736 /* ParameterWrapper.swift */,
+				E47681DE216B6C0D00C3F736 /* VariableWrapper.swift */,
+				E47681DF216B6C3200C3F736 /* SubscriptWrapper.swift */,
+				E47681E0216B6CA700C3F736 /* MethodWrapper.swift */,
 			);
 			name = Templates;
 			path = Sources/Templates;
