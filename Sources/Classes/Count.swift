@@ -7,118 +7,99 @@
 
 import Foundation
 
-/// Count object. Use it for all Verify features, when checking how many times something happened.
+/// Count enum. Use it for all Verify features, when checking how many times something happened.
 ///
 /// There are three ways of using it:
 ///   1. Explicit literal - you can pass 0, 1, 2 ... to verify exact number
-///   2. Using init with closure, to specify matching rule like:
-///      ```
-///      Count() { return ... }
-///      ```
+///   2. Using predefined .custom, to specify custom matching rule.
 ///   3. Using one of predefined rules, for example:
-///       - .never
 ///       - .atLeastOnce
-///       - .in(range: 0...3)
-///       - .in(range: 1..<3)
-///       - .in(range: 7...)
-///       - .more(than: 2)
-///       - .moreOrEqual(to: 3)
+///       - .exactly(1)
+///       - .from(2, to: 4)
 ///       - .less(than: 2)
 ///       - .lessOrEqual(to: 1)
-public struct Count: ExpressibleByIntegerLiteral {
+///       - .more(than: 2)
+///       - .moreOrEqual(to: 3)
+///       - .never
+public enum Count: ExpressibleByIntegerLiteral {
+
+    public typealias CustomMatchingClosure = ( _ value: Int ) -> Bool
+
     /// [Internal] Count is represented by integer literals, with type Int
     public typealias IntegerLiteralType = Int
-    /// [Internal] Matching closure
-    private let match: (Int) -> Bool
+
+    case atLeastOnce
+    case custom(CustomMatchingClosure)
+    case exactly(Int)
+    case from(Int, to: Int)
+    case less(than: Int)
+    case lessOrEqual(to: Int)
+    case more(than: Int)
+    case moreOrEqual(to: Int)
+    case never
 
     /// Creates new count instance, matching specific count
     ///
     /// - Parameter value: Exact count value
     public init(integerLiteral value: IntegerLiteralType) {
-        self.match = { value.matches($0) }
-    }
-
-    /// Creates new count instance, with given way of checking, whether count is right or not
-    ///
-    /// - Parameter match: Count matching closure
-    public init(match: @escaping (Int) -> Bool) {
-        self.match = match
+        self = .exactly(value)
     }
 }
 
-public extension Count {
-    /// Count should be exactly 0
-    public static var never: Count { return 0 }
+// MARK: - CustomStringConvertible
+extension Count: CustomStringConvertible {
 
-    /// Count should be 1 or more
-    public static var atLeastOnce: Count {
-        return moreOrEqual(to: 1)
-    }
-
-    /// Count should be within given range
-    ///
-    /// - Parameter range: Valid range
-    /// - Returns: Count instance
-    public static func `in`(range: CountableRange<Int>) -> Count {
-        return Count() { range.contains(Int($0)) }
-    }
-
-    /// Count should be within given range
-    ///
-    /// - Parameter range: Valid range
-    /// - Returns: Count instance
-    public static func `in`(range: CountableClosedRange<Int>) -> Count {
-        return Count() { range.contains(Int($0)) }
-    }
-
-    /// Count should be within given range
-    ///
-    /// - Parameter range: Valid range
-    /// - Returns: Count instance
-    public static func `in`(range: CountablePartialRangeFrom<Int>) -> Count {
-        return Count() { range.contains(Int($0)) }
-    }
-
-    /// Count should be more than given one
-    ///
-    /// - Parameter than: Everything bigger than that is enough
-    /// - Returns: Count instance
-    public static func more(than: Int) -> Count {
-        return Count() { $0 > than }
-    }
-
-    /// Count should be more or equal to given one
-    ///
-    /// - Parameter to: Everything that is more or equal is enough
-    /// - Returns: Count instance
-    public static func moreOrEqual(to: Int) -> Count {
-        return Count() { $0 >= to }
-    }
-
-    /// Count should be less than given one
-    ///
-    /// - Parameter than: Everyting less is enough
-    /// - Returns: Count instance
-    public static func less(than: Int) -> Count {
-        return Count() { $0 < than }
-    }
-
-    /// Count should be less or equal to given one
-    ///
-    /// - Parameter to: Everything equal or less is enough
-    /// - Returns: Count instance
-    public static func lessOrEqual(to: Int) -> Count {
-        return Count() { $0 <= to }
+    public var description: String {
+        switch self {
+        case .atLeastOnce:
+            return "at least 1"
+        case .custom:
+            return "custom"
+        case .exactly(let value):
+            return "exactly \(value)"
+        case .from(let lowerBound, let upperBound):
+            return "from \(lowerBound) to \(upperBound)"
+        case .less(let value):
+            return "less than \(value)"
+        case .lessOrEqual(let value):
+            return "less than or equal to \(value)"
+        case .more(let value):
+            return "more than \(value)"
+        case .moreOrEqual(let value):
+            return "more than or equal to \(value)"
+        case .never:
+            return "none"
+        }
     }
 }
 
 // MARK: - Countable
 extension Count: Countable {
+
     /// Returns whether given count matches countable case.
     ///
     /// - Parameter count: Given count
     /// - Returns: true, if it is within boundaries, false otherwise
     public func matches(_ count: Int) -> Bool {
-        return match(count)
+        switch self {
+        case .atLeastOnce:
+            return count >= 1
+        case .custom(let matchingRule):
+            return matchingRule(count)
+        case .exactly(let value):
+            return count == value
+        case .from(let lowerBound, to: let upperBound):
+            return count >= lowerBound && count <= upperBound
+        case .less(let value):
+            return count < value
+        case .lessOrEqual(let value):
+            return count <= value
+        case .more(let value):
+            return count > value
+        case .moreOrEqual(let value):
+            return count >= value
+        case .never:
+            return count == 0
+        }
     }
 }
