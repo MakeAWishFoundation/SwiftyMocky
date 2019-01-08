@@ -4,12 +4,37 @@
 <%_ for rule in swiftLintRules(arguments) { -%>
     <%_ %><%= rule %>
 <%_ } -%>
+<%# ================================================== SwiftLint (aggregated arguments) -%><%_ -%>
+<%_ if let swiftyMockyArgs = arguments["swiftyMocky"] as? [String: Any], let rules = swiftyMockyArgs["excludedSwiftLintRules"] as? [String] { -%>
+    <%_ for rule in rules { -%>
+    <%_ %>//swiftlint:disable <%= rule %>
+    <%_ } -%>
+<%_ } -%>
 
 #if MockyCustom
 import SwiftyMocky
 <%# ================================================== IMPORTS InAPP -%><%_ -%>
     <%_ for projectImport in projectImports(arguments) { -%>
         <%_ %><%= projectImport %>
+    <%_ } -%>
+    <%# ================================================== IMPORTS InAPP (aggregated arguments) -%><%_ -%>
+    <%_ if let swiftyMockyArgs = arguments["swiftyMocky"] as? [String: Any] { -%>
+        <%_ if let imported = swiftyMockyArgs["import"] as? String { -%>
+            <%_ %>import <%= imported %>
+        <%_ } -%>
+        <%_ if let allImported = swiftyMockyArgs["import"] as? [String] { -%>
+            <%_ for imported in allImported { -%>
+                <%_ %>import <%= imported %>
+            <%_ } -%>
+        <%_ } -%>
+        <%_ if let testable = swiftyMockyArgs["testable"] as? String {  -%>
+            <%_ %>@testable import <%= testable %>
+        <%_  } -%>
+            <%_ if let allTestable = swiftyMockyArgs["testable"] as? [String] { -%>
+                <%_ for testable in allTestable { -%>
+            <%_ %>@testable import <%= testable %>
+            <%_ } -%>
+        <%_ } -%>
     <%_ } -%>
 
     public final class MockyAssertion {
@@ -442,7 +467,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -499,7 +524,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
 
     static public func verify(_ method: StaticVerify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expeced: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
     }
 
     static private func addInvocation(_ call: StaticMethodType) {
