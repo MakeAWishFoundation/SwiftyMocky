@@ -9,9 +9,6 @@
 import Foundation
 
 protocol ItemsRepository {
-    func storeItems(items: [Item])
-    func storeDetails(details: ItemDetails)
-    func storedItems() -> [Item]?
     func storedDetails(item: Item) -> ItemDetails?
 }
 
