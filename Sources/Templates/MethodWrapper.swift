@@ -22,18 +22,23 @@ class MethodWrapper {
 
     private var registrationName: String {
         var rawName = (method.isStatic ? "sm*\(method.selectorName)" : "m*\(method.selectorName)")
-            .replacingOccurrences(of: "_", with: "")
-            .replacingOccurrences(of: "(", with: "__")
-            .replacingOccurrences(of: ")", with: "")
+        .replacingOccurrences(of: "_", with: "")
+        .replacingOccurrences(of: "(", with: "__")
+        .replacingOccurrences(of: ")", with: "")
+
         var parametersNames = method.parameters.map { "\($0.name)" }
+
         while let range = rawName.range(of: ":"), let name = parametersNames.first {
             parametersNames.removeFirst()
             rawName.replaceSubrange(range, with: "_\(name)")
         }
+
+        let trimSet = CharacterSet(charactersIn: "_")
+
         return  rawName
-            .replacingOccurrences(of: ":", with: "")
-            .replacingOccurrences(of: "m*", with: "m_")
-            .replacingOccurrences(of: "___", with: "__").trimmingCharacters(in: CharacterSet(charactersIn: "_"))
+        .replacingOccurrences(of: ":", with: "")
+        .replacingOccurrences(of: "m*", with: "m_")
+        .replacingOccurrences(of: "___", with: "__").trimmingCharacters(in: trimSet)
     }
     private var uniqueName: String {
         var rawName = (method.isStatic ? "sm_\(method.selectorName)" : "m_\(method.selectorName)")
@@ -64,7 +69,9 @@ class MethodWrapper {
         return "_\(index)"
     }
 
-    var prototype: String { return "\(registrationName)\(nameSuffix)".replacingOccurrences(of: "`", with: "") }
+    var prototype: String {
+        return "\(registrationName)\(nameSuffix)".replacingOccurrences(of: "`", with: "")
+    }
     var parameters: [ParameterWrapper] {
         return method.parameters.map { ParameterWrapper($0) }
     }
@@ -112,16 +119,14 @@ class MethodWrapper {
         let returnType: String = returnsSelf ? "__Self__" : "\(TypeWrapper(method.returnTypeName).stripped)"
 
         if method.returnTypeName.isVoid {
-            return
-            """
+            return """
             \n\t\tdo {
             \t\t    _ = try methodReturnValue(\(methodType)).casted() as Void
             \t\t}\(" ")
             """
         } else {
             let defaultValue = method.returnTypeName.isOptional ? " = nil" : ""
-            return
-            """
+            return """
             \n\t\tvar __value: \(returnType)\(defaultValue)
             \t\tdo {
             \t\t    __value = try methodReturnValue(\(methodType)).casted()
@@ -136,8 +141,7 @@ class MethodWrapper {
         // For Void and Returning optionals - we allow not stubbed case to happen, as we are still able to return
         let noStubHandling = method.returnTypeName.isVoid || method.returnTypeName.isOptional ? "\t\t\t// do nothing" : "\(safeFailure)\t\t\tFailure(\"\(noStubDefinedMessage)\")"
         guard method.throws else {
-            return
-            """
+            return """
             catch {
             \(noStubHandling)
             \t\t}
@@ -155,10 +159,12 @@ class MethodWrapper {
     var returnValue: String {
         guard !method.isInitializer else { return "" }
         guard !method.returnTypeName.isVoid else { return "" }
+
         return "\n\t\treturn __value"
     }
     var equalCase: String {
         guard !method.isInitializer else { return "" }
+
         if method.parameters.isEmpty {
             return "case (.\(prototype), .\(prototype)):"
         } else {
@@ -183,7 +189,9 @@ class MethodWrapper {
     var returnsSelf: Bool {
         return !method.returnTypeName.isVoid && TypeWrapper(method.returnTypeName).isSelfType
     }
-    var replaceSelf: String { return Current.selfType }
+    var replaceSelf: String {
+        return Current.selfType
+    }
 
     init(_ method: SourceryRuntime.Method) {
         self.method = method
@@ -291,6 +299,7 @@ class MethodWrapper {
     func givenConstructorName(prefix: String = "", deprecated: Bool = false, annotated: Bool = true) -> String {
         let annotation = annotated && deprecated ? deprecatedMessage(deprecatedParametersMessage()) : ""
         let returnTypeString = returnsSelf ? replaceSelf : TypeWrapper(method.returnTypeName).stripped
+
         if method.parameters.isEmpty {
             return "static func \(method.shortName)(willReturn: \(returnTypeString)...) -> \(prefix)MethodStub"
         } else {
@@ -348,8 +357,7 @@ class MethodWrapper {
 
     func givenProduceConstructor(prefix: String = "") -> String {
         let returnTypeString = returnsSelf ? replaceSelf : TypeWrapper(method.returnTypeName).stripped
-        return
-        """
+        return """
         let willReturn: [\(returnTypeString)] = []
         \t\t\tlet given: \(prefix)Given = { \(givenConstructor(prefix: prefix)) }()
         \t\t\tlet stubber = given.stub(for: (\(returnTypeString)).self)
@@ -360,8 +368,7 @@ class MethodWrapper {
 
     func givenProduceConstructorThrows(prefix: String = "") -> String {
         let returnTypeString = returnsSelf ? replaceSelf : TypeWrapper(method.returnTypeName).stripped
-        return
-        """
+        return """
         let willThrow: [Error] = []
         \t\t\tlet given: \(prefix)Given = { \(givenConstructorThrows(prefix: prefix)) }()
         \t\t\tlet stubber = given.stubThrows(for: (\(returnTypeString)).self)
@@ -373,12 +380,18 @@ class MethodWrapper {
     // Verify
     func verificationProxyConstructorName(prefix: String = "", deprecated: Bool = false, annotated: Bool = true) -> String {
         let annotation = annotated && deprecated ? deprecatedMessage(deprecatedParametersMessage()) : ""
+        let methodName = returnTypeMatters() ? method.shortName : "\(method.callName)\(wrapGenerics(getGenericsAmongParameters()))"
+        let genericConstrains: String = {
+            let constraints = getGenericsConstraints()
+            guard !constraints.isEmpty else { return "" }
+
+            return " where \(constraints.joined(separator:", "))"
+        }()
+
         if method.parameters.isEmpty {
-            let methodName = returnTypeMatters() ? method.shortName : "\(method.callName)\(wrapGenerics(getGenericsAmongParameters()))"
-            return "static func \(methodName)(\(returningParameter(false,true))) -> \(prefix)Verify"
+            return "static func \(methodName)(\(returningParameter(false,true))) -> \(prefix)Verify\(genericConstrains)"
         } else {
-            let methodName = returnTypeMatters() ? method.shortName : "\(method.callName)\(wrapGenerics(getGenericsAmongParameters()))"
-            return "\(annotation)static func \(methodName)(\(parametersForProxySignature(deprecated: deprecated))\(returningParameter(true,true))) -> \(prefix)Verify"
+            return "\(annotation)static func \(methodName)(\(parametersForProxySignature(deprecated: deprecated))\(returningParameter(true,true))) -> \(prefix)Verify\(genericConstrains)"
         }
     }
 
@@ -393,12 +406,18 @@ class MethodWrapper {
     // Perform
     func performProxyConstructorName(prefix: String = "", deprecated: Bool = false, annotated: Bool = true) -> String {
         let annotation = annotated && deprecated ? deprecatedMessage(deprecatedParametersMessage()) : ""
+        let methodName = returnTypeMatters() ? method.shortName : "\(method.callName)\(wrapGenerics(getGenericsAmongParameters()))"
+        let genericConstrains: String = {
+            let constraints = getGenericsConstraints()
+            guard !constraints.isEmpty else { return "" }
+
+            return " where \(constraints.joined(separator:", "))"
+        }()
+
         if method.parameters.isEmpty {
-            let methodName = returnTypeMatters() ? method.shortName : "\(method.callName)\(wrapGenerics(getGenericsAmongParameters()))"
-            return "static func \(methodName)(\(returningParameter(true,false))perform: @escaping \(performProxyClosureType())) -> \(prefix)Perform"
+            return "static func \(methodName)(\(returningParameter(true,false))perform: @escaping \(performProxyClosureType())) -> \(prefix)Perform\(genericConstrains)"
         } else {
-            let methodName = returnTypeMatters() ? method.shortName : "\(method.callName)\(wrapGenerics(getGenericsAmongParameters()))"
-            return "\(annotation)static func \(methodName)(\(parametersForProxySignature(deprecated: deprecated)), \(returningParameter(true,false))perform: @escaping \(performProxyClosureType())) -> \(prefix)Perform"
+            return "\(annotation)static func \(methodName)(\(parametersForProxySignature(deprecated: deprecated)), \(returningParameter(true,false))perform: @escaping \(performProxyClosureType())) -> \(prefix)Perform\(genericConstrains)"
         }
     }
 
@@ -443,12 +462,12 @@ class MethodWrapper {
 
     // Helpers
     private func parametersForMethodCall() -> String {
-        let generics = getGenerics()
+        let generics = getGenericsWithoutConstraints()
         return parameters.map { $0.wrappedForCalls(generics) }.joined(separator: ", ")
     }
 
     private func parametersForMethodTypeDeclaration() -> String {
-        let generics = getGenerics()
+        let generics = getGenericsWithoutConstraints()
         return parameters.map { param in
             return param.isGeneric(generics) ? param.genericType : param.nestedType
             }.joined(separator: ", ")
@@ -499,7 +518,7 @@ class MethodWrapper {
     }
 
     private func parametersForProxyInit() -> String {
-        let generics = getGenerics()
+        let generics = getGenericsWithoutConstraints()
         return parameters.map { "\($0.wrappedForProxy(generics))" }.joined(separator: ", ")
     }
 
@@ -507,7 +526,10 @@ class MethodWrapper {
         return method.shortName.contains("<") && method.shortName.contains(">")
     }
 
-    private func getGenerics() -> [String] {
+    /// Returns list of generics used in method signature, without their constraints (like [T,U,V])
+    ///
+    /// - Returns: Array of strings, where each strings represent generic name
+    private func getGenericsWithoutConstraints() -> [String] {
         let name = method.shortName
         guard let start = name.index(of: "<"), let end = name.index(of: ">") else { return [] }
 
@@ -519,8 +541,23 @@ class MethodWrapper {
         return parts.map { stripGenPart(part: $0) }
     }
 
+    /// Returns list of generic constraintes from method signature. Does only contain stuff between '<' and '>'
+    ///
+    /// - Returns: Array of strings, like ["T: Codable", "U: Whatever"]
+    private func getGenericsConstraints() -> [String] {
+        let name = method.shortName
+        guard let start = name.index(of: "<"), let end = name.index(of: ">") else { return [] }
+
+        var genPart = name[start...end]
+        genPart.removeFirst()
+        genPart.removeLast()
+
+        let parts = genPart.replacingOccurrences(of: " ", with: "").characters.split(separator: ",").map(String.init)
+        return parts.filter { $0.contains(":") }
+    }
+
     private func getGenericsAmongParameters() -> [String] {
-        return getGenerics().filter {
+        return getGenericsWithoutConstraints().filter {
             for param in self.parameters {
                 if param.isGeneric([$0]) { return true }
             }
