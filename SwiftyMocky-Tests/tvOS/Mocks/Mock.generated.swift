@@ -26,6 +26,7 @@ import SwiftyMocky
 #elseif Mocky
 import SwiftyMocky
 import XCTest
+@testable import Mocky_Example_tvOS
 
     func MockyAssert(_ expression: @autoclosure () -> Bool, _ message: @autoclosure () -> String = "Verification failed", file: StaticString = #file, line: UInt = #line) {
         XCTAssert(expression(), message(), file: file, line: line)
