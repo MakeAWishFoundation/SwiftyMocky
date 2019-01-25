@@ -1,13 +1,3 @@
-//
-//  TemplateHelper.swift
-//  Mocky
-//
-//  Created by przemyslaw.wosko on 08/10/2018.
-//  Copyright © 2018 CocoaPods. All rights reserved.
-//
-
-import SourceryRuntime
-
 // Collision management
 func areThereCollisions(between methods: [MethodWrapper]) -> Bool {
     let givenSet = Set<String>(methods.map({ $0.givenConstructorName(prefix: "", deprecated: true, annotated: false) }))

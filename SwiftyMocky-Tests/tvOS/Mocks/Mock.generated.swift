@@ -2,7 +2,7 @@
 // DO NOT EDIT
 
 
-//swiftlint:disable force_cast
+%# ================================================== SwiftLint -%>//swiftlint:disable force_cast
 //swiftlint:disable function_body_length
 //swiftlint:disable line_length
 //swiftlint:disable vertical_whitespace

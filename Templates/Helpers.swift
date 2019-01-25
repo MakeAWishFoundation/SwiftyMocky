@@ -1,13 +1,3 @@
-//
-//  Helpers.swift
-//  SwiftyMocky
-//
-//  Created by przemyslaw.wosko on 08/10/2018.
-//  Copyright © 2018 CocoaPods. All rights reserved.
-//
-
-import SourceryRuntime
-
 class Helpers {
     static func split(_ string: String, byFirstOccurenceOf word: String) -> (String, String) {
         guard let wordRange = string.range(of: word) else { return (string, "") }

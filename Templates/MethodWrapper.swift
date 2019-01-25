@@ -1,13 +1,3 @@
-//
-//  MethodWrapper.swift
-//  Mocky
-//
-//  Created by przemyslaw.wosko on 08/10/2018.
-//  Copyright © 2018 CocoaPods. All rights reserved.
-//
-
-import SourceryRuntime
-
 class MethodWrapper {
     private func deprecatedMessage(_ preferred: String = "") -> String {
         return "@available(*, deprecated, message: \"This constructor is deprecated, and will be removed in v3.1\(preferred)\")\n\t\t"
