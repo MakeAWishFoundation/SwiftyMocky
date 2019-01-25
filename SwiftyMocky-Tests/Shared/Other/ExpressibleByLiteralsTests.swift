@@ -152,6 +152,7 @@ class ExpressibleByLiteralsTests: XCTestCase {
         Verify(mock, 1, .methodWithBool(p: true))
         Verify(mock, 1, .methodWithBool(p: false))
         Verify(mock, 3, .methodWithBool(p: .any))
+        Verify(mock, 2, .methodWithBool(p: .notNil))
     }
 
     func test_float_literals() {
