@@ -43,6 +43,16 @@ class SelfConstrainedProtocolTests: XCTestCase {
     }
 
     func test_self_constrained_when_throwing() {
-        
+        let mock = SelfConstrainedProtocolMock()
+
+        Matcher.default.register(SelfConstrainedProtocolMock.self) { (a, b) -> Bool in
+            return a === b
+        }
+
+        Given(mock, .configure(with: "throw", willThrow: TestError.first))
+        Given(mock, .configure(with: "notthrow", willReturn: mock))
+
+        XCTAssertNoThrow(try mock.configure(with: "notthrow"))
+        XCTAssertThrowsError(try mock.configure(with: "throw"))
     }
 }

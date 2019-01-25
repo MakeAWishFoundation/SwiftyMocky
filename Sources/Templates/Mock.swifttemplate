@@ -36,7 +36,7 @@ func stringArray(fromArguments arguments: [String: Any], forKey key: String) -> 
     }
 }
 _%>
-%# ================================================== SwiftLint -%><%_ -%>
+<%# ================================================== SwiftLint -%><%_ -%>
 <%_ for rule in swiftLintRules(arguments) { -%>
     <%_ %><%= rule %>
 <%_ } -%>
