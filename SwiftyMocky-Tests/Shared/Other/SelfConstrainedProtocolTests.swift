@@ -41,4 +41,8 @@ class SelfConstrainedProtocolTests: XCTestCase {
         XCTAssertTrue(mock.compare(with: mock))
         XCTAssertFalse(mock.compare(with: other))
     }
+
+    func test_self_constrained_when_throwing() {
+        
+    }
 }

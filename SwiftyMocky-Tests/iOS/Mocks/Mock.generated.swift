@@ -7802,6 +7802,25 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
 		return _wrapped()
     }
 
+    func configure(with secret: String) throws -> Self {
+        func _wrapped<__Self__>() throws -> __Self__ {
+		addInvocation(.m_configure__with_secret(Parameter<String>.value(`secret`)))
+		let perform = methodPerformValue(.m_configure__with_secret(Parameter<String>.value(`secret`))) as? (String) -> Void
+		perform?(`secret`)
+		var __value: __Self__
+		do {
+		    __value = try methodReturnValue(.m_configure__with_secret(Parameter<String>.value(`secret`))).casted()
+		} catch MockError.notStubed {
+			onFatalFailure("Stub return value not specified for configure(with secret: String). Use given")
+			Failure("Stub return value not specified for configure(with secret: String). Use given")
+		} catch {
+		    throw error
+		}
+		return __value
+		}
+		return try _wrapped()
+    }
+
     fileprivate enum StaticMethodType {
         case sm_construct__param_value(Parameter<Int>)
 
@@ -7861,6 +7880,7 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
         case m_methodReturningSelf
         case m_compare__with_other(Parameter<SelfConstrainedProtocolMock>)
         case m_genericMethodWithNestedSelf__param_paramsecond_secondother_other(Parameter<Int>, Parameter<GenericAttribute>, Parameter<(SelfConstrainedProtocolMock,SelfConstrainedProtocolMock)>)
+        case m_configure__with_secret(Parameter<String>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
@@ -7874,6 +7894,9 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
                 guard Parameter.compare(lhs: lhsSecond, rhs: rhsSecond, with: matcher) else { return false } 
                 guard Parameter.compare(lhs: lhsOther, rhs: rhsOther, with: matcher) else { return false } 
                 return true 
+            case (.m_configure__with_secret(let lhsSecret), .m_configure__with_secret(let rhsSecret)):
+                guard Parameter.compare(lhs: lhsSecret, rhs: rhsSecret, with: matcher) else { return false } 
+                return true 
             default: return false
             }
         }
@@ -7883,6 +7906,7 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
             case .m_methodReturningSelf: return 0
             case let .m_compare__with_other(p0): return p0.intValue
             case let .m_genericMethodWithNestedSelf__param_paramsecond_secondother_other(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
+            case let .m_configure__with_secret(p0): return p0.intValue
             }
         }
     }
@@ -7905,6 +7929,9 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
         static func genericMethodWithNestedSelf<T>(param: Parameter<Int>, second: Parameter<T>, other: Parameter<(SelfConstrainedProtocolMock,SelfConstrainedProtocolMock)>, willReturn: SelfConstrainedProtocolMock...) -> MethodStub {
             return Given(method: .m_genericMethodWithNestedSelf__param_paramsecond_secondother_other(`param`, `second`.wrapAsGeneric(), `other`), products: willReturn.map({ Product.return($0) }))
         }
+        static func configure(with secret: Parameter<String>, willReturn: SelfConstrainedProtocolMock...) -> MethodStub {
+            return Given(method: .m_configure__with_secret(`secret`), products: willReturn.map({ Product.return($0) }))
+        }
         static func methodReturningSelf(willProduce: (Stubber<SelfConstrainedProtocolMock>) -> Void) -> MethodStub {
             let willReturn: [SelfConstrainedProtocolMock] = []
 			let given: Given = { return Given(method: .m_methodReturningSelf, products: willReturn.map({ Product.return($0) })) }()
@@ -7926,6 +7953,16 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
 			willProduce(stubber)
 			return given
         }
+        static func configure(with secret: Parameter<String>, willThrow: Error...) -> MethodStub {
+            return Given(method: .m_configure__with_secret(`secret`), products: willThrow.map({ Product.throw($0) }))
+        }
+        static func configure(with secret: Parameter<String>, willProduce: (StubberThrows<SelfConstrainedProtocolMock>) -> Void) -> MethodStub {
+            let willThrow: [Error] = []
+			let given: Given = { return Given(method: .m_configure__with_secret(`secret`), products: willThrow.map({ Product.throw($0) })) }()
+			let stubber = given.stubThrows(for: (SelfConstrainedProtocolMock).self)
+			willProduce(stubber)
+			return given
+        }
     }
 
     struct Verify {
@@ -7934,6 +7971,7 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
         static func methodReturningSelf() -> Verify { return Verify(method: .m_methodReturningSelf)}
         static func compare(with other: Parameter<SelfConstrainedProtocolMock>) -> Verify { return Verify(method: .m_compare__with_other(`other`))}
         static func genericMethodWithNestedSelf<T>(param: Parameter<Int>, second: Parameter<T>, other: Parameter<(SelfConstrainedProtocolMock,SelfConstrainedProtocolMock)>) -> Verify { return Verify(method: .m_genericMethodWithNestedSelf__param_paramsecond_secondother_other(`param`, `second`.wrapAsGeneric(), `other`))}
+        static func configure(with secret: Parameter<String>) -> Verify { return Verify(method: .m_configure__with_secret(`secret`))}
     }
 
     struct Perform {
@@ -7948,6 +7986,9 @@ class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
         }
         static func genericMethodWithNestedSelf<T>(param: Parameter<Int>, second: Parameter<T>, other: Parameter<(SelfConstrainedProtocolMock,SelfConstrainedProtocolMock)>, perform: @escaping (Int, T, (SelfConstrainedProtocolMock,SelfConstrainedProtocolMock)) -> Void) -> Perform {
             return Perform(method: .m_genericMethodWithNestedSelf__param_paramsecond_secondother_other(`param`, `second`.wrapAsGeneric(), `other`), performs: perform)
+        }
+        static func configure(with secret: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_configure__with_secret(`secret`), performs: perform)
         }
     }
 

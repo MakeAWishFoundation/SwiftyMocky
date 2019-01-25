@@ -271,7 +271,7 @@ class MethodWrapper {
             }
         }()
 
-        return "func _wrapped<__Self__>() -> __Self__ {\n"
+        return "func _wrapped<__Self__>() \(throwing)-> __Self__ {\n"
     }
 
     func wrappedStubPostfix() -> String {
@@ -279,10 +279,10 @@ class MethodWrapper {
             return ""
         }
 
-        let throwing: Bool = method.throws || method.rethrows
+        let throwing: String = (method.throws || method.rethrows) ? "try ": ""
 
         return "\n\t\t}"
-            + "\n\t\treturn _wrapped()"
+            + "\n\t\treturn \(throwing)_wrapped()"
     }
 
     // Method Type
