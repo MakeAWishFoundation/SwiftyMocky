@@ -29,6 +29,7 @@ public enum Count: ExpressibleByIntegerLiteral {
     public typealias IntegerLiteralType = Int
 
     case atLeastOnce
+    case once
     case custom(CustomMatchingClosure)
     case exactly(Int)
     case from(Int, to: Int)
@@ -53,6 +54,8 @@ extension Count: CustomStringConvertible {
         switch self {
         case .atLeastOnce:
             return "at least 1"
+        case .once:
+            return "once"
         case .custom:
             return "custom"
         case .exactly(let value):
@@ -84,6 +87,8 @@ extension Count: Countable {
         switch self {
         case .atLeastOnce:
             return count >= 1
+        case .once:
+            return count == 1
         case .custom(let matchingRule):
             return matchingRule(count)
         case .exactly(let value):
