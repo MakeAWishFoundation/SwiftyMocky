@@ -1,13 +1,3 @@
-//
-//  MethodWrapper.swift
-//  Mocky
-//
-//  Created by przemyslaw.wosko on 08/10/2018.
-//  Copyright © 2018 CocoaPods. All rights reserved.
-//
-
-import SourceryRuntime
-
 class MethodWrapper {
     private func deprecatedMessage(_ preferred: String = "") -> String {
         return "@available(*, deprecated, message: \"This constructor is deprecated, and will be removed in v3.1\(preferred)\")\n\t\t"
@@ -271,7 +261,7 @@ class MethodWrapper {
             }
         }()
 
-        return "func _wrapped<__Self__>() -> __Self__ {\n"
+        return "func _wrapped<__Self__>() \(throwing)-> __Self__ {\n"
     }
 
     func wrappedStubPostfix() -> String {
@@ -279,10 +269,10 @@ class MethodWrapper {
             return ""
         }
 
-        let throwing: Bool = method.throws || method.rethrows
+        let throwing: String = (method.throws || method.rethrows) ? "try ": ""
 
         return "\n\t\t}"
-            + "\n\t\treturn _wrapped()"
+            + "\n\t\treturn \(throwing)_wrapped()"
     }
 
     // Method Type
