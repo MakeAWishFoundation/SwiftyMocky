@@ -1,0 +1,492 @@
+<%# ================================================== SETUP -%><%_ -%>
+<%_ var all = types.all
+    all += types.protocols.map { $0 } -%>
+
+<%_ for type in all { -%><%_ -%>
+<%_ let autoMockable: Bool = type.inheritedTypes.contains("AutoMockable") || type.annotations["AutoMockable"] != nil
+    let protocolToDecorate = types.protocols.first(where: { $0.name == (type.annotations["mock"] as? String) })
+    let inlineMockable = protocolToDecorate != nil
+    guard let aProtocol = autoMockable ? type : protocolToDecorate else { continue }
+    let associatedTypes: [String]? = Helpers.extractAssociatedTypes(from: aProtocol)
+    let genericTypesModifier: String = Helpers.extractGenericTypesModifier(associatedTypes)
+    let genericTypesConstraints: String = Helpers.extractGenericTypesConstraints(associatedTypes)
+    let allSubscripts = aProtocol.allSubscripts
+    let allVariables = uniques(variables: aProtocol.allVariables.filter({ !$0.isStatic }))
+    let containsVariables = !allVariables.isEmpty
+    let allStaticVariables = uniques(variables: aProtocol.allVariables.filter({ $0.isStatic }))
+    let containsStaticVariables = !allStaticVariables.isEmpty
+    let allMethods = uniques(methods: aProtocol.allMethods.filter({ !$0.isStatic }))
+    let allMethodsForMethodType = uniquesWithoutGenericConstraints(methods: aProtocol.allMethods.filter({ !$0.isStatic }))
+    let allStaticMethods = uniques(methods: aProtocol.allMethods.filter({ $0.isStatic }))
+    let allStaticMethodsForMethodType = uniquesWithoutGenericConstraints(methods: aProtocol.allMethods.filter({ $0.isStatic }))
+    let conformsToStaticMock = !allStaticMethods.isEmpty || !allStaticVariables.isEmpty
+    let conformsToMock = !allMethods.isEmpty || !allVariables.isEmpty -%><%_ -%><%_ -%>
+<%_ if autoMockable { -%>
+// MARK: - <%= type.name %>
+class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["ObjcProtocol"] != nil ? " NSObject," : "" %> <%= type.name %>, Mock<%= conformsToStaticMock ? ", StaticMock" : "" %><%= genericTypesConstraints %> {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+<%_ } else { -%>
+// sourcery:inline:auto:<%= type.name %>.autoMocked
+<%_ } -%>
+<%# ================================================== MAIN CLASS -%><%_ -%>
+  <%# ================================================== MOCK INTERNALS -%><%_ -%>
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    typealias PropertyStub = Given
+    typealias MethodStub = Given
+    typealias SubscriptStub = Given
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+    <%_ -%>
+  <%# ================================================== STATIC MOCK INTERNALS -%><%_ -%>
+    <%_ if conformsToStaticMock { -%>
+    static var matcher: Matcher = Matcher.default
+    static var stubbingPolicy: StubbingPolicy = .wrap
+    static var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+    static private var invocations: [StaticMethodType] = []
+    static private var methodReturnValues: [StaticGiven] = []
+    static private var methodPerformValues: [StaticPerform] = []
+    typealias StaticPropertyStub = StaticGiven
+    typealias StaticMethodStub = StaticGiven
+    static func clear() {
+        invocations = []
+        methodReturnValues = []
+        methodPerformValues = []
+    }
+    <%_  } -%>
+
+  <%# ================================================== VARIABLES -%><%_ -%>
+    <%_ for variable in allVariables { -%>
+    <%_ if autoMockable { -%>
+    <%= stubProperty(variable,"\(type.name)Mock") %>
+    <%_ } else { %>
+    <%= stubProperty(variable,"\(type.name)") %>
+    <%_ } %>
+    <%_ } %> <%_ -%>
+
+  <%# ================================================== STATIC VARIABLES -%><%_ -%>
+    <%_ for variable in allStaticVariables { -%>
+    <%_ if autoMockable { -%>
+    <%= stubProperty(variable,"\(type.name)Mock") %>
+    <%_ } else { %>
+    <%= stubProperty(variable,"\(type.name)") %>
+    <%_ } %>
+    <%_ } %> <%_ -%>
+
+  <%# ================================================== METHOD REGISTRATIONS -%><%_ -%>
+    <%_ MethodWrapper.clear() -%>
+    <%_ SubscriptWrapper.clear() -%>
+    <%_ if autoMockable { -%>
+    <%_ Current.selfType = "\(type.name)Mock\(genericTypesModifier)" -%>
+    <%_ } else { %>
+    <%_ Current.selfType = "\(type.name)Mock\(genericTypesModifier)" -%>
+    <%_ } %>
+    <%_ let wrappedSubscripts = allSubscripts.map(wrapSubscript) -%>
+    <%_ let wrappedMethods = allMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) -%>
+    <%_ let wrappedVariables = allVariables.map(justWrap) -%>
+    <%_ let wrappedMethodsForMethodType = allMethodsForMethodType.map(wrapMethod).filter({ $0.wrappedInMethodType() }) -%>
+    <%_ let wrappedInitializers = allMethods.map(wrapMethod).filter({ $0.method.isInitializer }) -%>
+    <%_ let wrappedStaticMethods = allStaticMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) -%>
+    <%_ let wrappedStaticVariables = allStaticVariables.map(justWrap) -%>
+    <%_ let wrappedStaticMethodsForMethodType = allStaticMethodsForMethodType.map(wrapMethod).filter({ $0.wrappedInMethodType() }) -%>
+    <%_ for variable in allVariables { propertyRegister(variable) } -%>
+    <%_ for variable in allStaticVariables { propertyRegister(variable) } -%>
+    <%_ for method in wrappedMethods { method.register() } -%>
+    <%_ for wrapped in wrappedSubscripts { wrapped.register() } -%>
+    <%_ for method in wrappedStaticMethods { method.register() } -%><%_ -%>
+    <%_ let variableCasesCount: Int = wrappedVariables.reduce(0) { return $0 + $1.casesCount } -%><%_ -%>
+    <%_ let subscriptsCasesCount: Int = wrappedSubscripts.reduce(0) { return $0 + $1.casesCount } -%><%_ -%>
+    <%_ let staticVariableCasesCount: Int = wrappedStaticVariables.reduce(0) { return $0 + $1.casesCount } -%><%_ -%>
+    <%_ let generateOldAccessorsForMethods: Bool = !areThereCollisions(between: wrappedMethods) -%><%_ -%>
+    <%_ let generateOldAccessorsForStaticMethods: Bool = !areThereCollisions(between: wrappedStaticMethods) -%><%_ -%>
+
+  <%# ================================================== STATIC STUBS -%><%_ -%>
+    <%_ for method in wrappedStaticMethods { -%>
+    <%= method.functionPrototype _%> {
+        <%= method.stubBody() _%>
+    }
+
+    <%_ } %><%_ -%>
+    <%_ -%>
+  <%# ================================================== INITIALIZERS -%><%_ -%>
+    <%_ for method in wrappedInitializers { -%>
+    <%= method.functionPrototype _%> { }
+
+    <%_ } -%><%_ -%>
+    <%_ -%><%_ -%>
+  <%# ================================================== STUBS -%><%_ -%>
+    <%_ for method in wrappedMethods { -%>
+    <%= method.functionPrototype _%> {
+        <%= method.stubBody() _%>
+    }
+
+    <%_ } -%>
+    <%_ for wrapped in wrappedSubscripts { -%>
+    <%= wrapped.subscriptCall() _%>
+
+    <%_ } -%>
+  <%# ================================================== STATIC METHOD TYPE -%><%_ -%>
+    <%_ if conformsToStaticMock { -%>
+    fileprivate enum StaticMethodType {
+    <%_ for method in wrappedStaticMethodsForMethodType { -%>
+        case <%= method.methodTypeDeclarationWithParameters() _%>
+    <%_  } %> <%_ for variable in allStaticVariables { -%>
+        <%= propertyMethodTypes(variable) %>
+    <%_ } %> <%_ %>
+    <%_ -%>
+        static func compareParameters(lhs: StaticMethodType, rhs: StaticMethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) { <%_ for method in wrappedStaticMethodsForMethodType { %>
+            <%= method.equalCase -%><% for parameter in method.parameters { %>
+                <%= parameter.comparator -%> <%  } %>
+                return true <% } %>
+            <%_ for variable in allStaticVariables { -%>
+            <%= propertyMethodTypesCompare(variable) %>
+        <%_ } %> <%_ -%> <%_ if wrappedStaticMethods.count + staticVariableCasesCount > 1 { -%>
+            default: return false
+            <%_ } -%>
+            }
+        }
+    <%_ %>
+        func intValue() -> Int {
+            switch self { <%_ for method in wrappedStaticMethodsForMethodType { %>
+                <%= method.intValueCase -%><% } %>
+                <%_ for variable in allStaticVariables { -%>
+                <%= propertyMethodTypesIntValue(variable) %>
+                <%_ } %> <%_ -%>
+            }
+        }
+    }
+
+    class StaticGiven: StubbedMethod {
+        fileprivate var method: StaticMethodType
+
+        private init(method: StaticMethodType, products: [Product]) {
+            self.method = method
+            super.init(products)
+        }
+
+        <%_ for variable in allStaticVariables { -%>
+        <%= wrapProperty(variable).givenConstructorName(prefix: "Static") -%> {
+            <%= wrapProperty(variable).givenConstructor(prefix: "Static") _%>
+        }
+        <%_ } %> <%_ %>
+        <%_ for method in wrappedStaticMethodsForMethodType.filter({ !$0.method.returnTypeName.isVoid && !$0.method.isInitializer }) { -%>
+        <%= method.givenConstructorName(prefix: "Static") -%> {
+            <%= method.givenConstructor(prefix: "Static") _%>
+        }
+        <%_ if generateOldAccessorsForStaticMethods, method.containsEmptyArgumentLabels() { -%>
+        <%= method.givenConstructorName(prefix: "Static", deprecated: true) %> {
+            <%= method.givenConstructor(prefix: "Static") _%>
+        }
+        <%_ } -%>
+        <%_ } -%>
+        <%_ for method in wrappedStaticMethodsForMethodType.filter({ !$0.method.throws && !$0.method.rethrows && !$0.method.returnTypeName.isVoid && !$0.method.isInitializer }) { -%>
+        <%= method.givenProduceConstructorName(prefix: "Static") -%> {
+            <%= method.givenProduceConstructor(prefix: "Static") _%>
+        }
+        <%_ } -%>
+        <%_ for method in wrappedStaticMethodsForMethodType.filter({ ($0.method.throws || $0.method.rethrows) && !$0.method.isInitializer }) { -%>
+        <%= method.givenConstructorNameThrows(prefix: "Static") -%> {
+            <%= method.givenConstructorThrows(prefix: "Static") _%>
+        }
+        <%_ if generateOldAccessorsForStaticMethods, method.containsEmptyArgumentLabels() { -%>
+        <%= method.givenConstructorNameThrows(prefix: "Static", deprecated: true) %> {
+            <%= method.givenConstructorThrows(prefix: "Static") _%>
+        }
+        <%_ } -%>
+        <%= method.givenProduceConstructorNameThrows(prefix: "Static") -%> {
+            <%= method.givenProduceConstructorThrows(prefix: "Static") _%>
+        }
+        <%_ } %> <%_ -%>
+    }
+
+    struct StaticVerify {
+        fileprivate var method: StaticMethodType
+
+        <%_ for method in wrappedStaticMethodsForMethodType { -%>
+        <%= method.verificationProxyConstructorName(prefix: "Static") -%> { <%= method.verificationProxyConstructor(prefix: "Static") _%> }
+        <%_ if generateOldAccessorsForStaticMethods, method.containsEmptyArgumentLabels() { -%>
+        <%= method.verificationProxyConstructorName(prefix: "Static", deprecated: true) %> { <%= method.verificationProxyConstructor(prefix: "Static") _%> }
+        <%_ } -%>
+        <%_ } %> <%_ -%>
+        <%_ for variable in allStaticVariables { -%>
+        <%= propertyTypes(variable) %>
+        <%_ } %> <%_ -%>
+    }
+
+    struct StaticPerform {
+        fileprivate var method: StaticMethodType
+        var performs: Any
+
+        <%_ for method in wrappedStaticMethodsForMethodType { -%>
+        <%= method.performProxyConstructorName(prefix: "Static") -%> {
+            <%= method.performProxyConstructor(prefix: "Static") _%>
+        }
+        <%_ if generateOldAccessorsForStaticMethods, method.containsEmptyArgumentLabels() { -%>
+        <%= method.performProxyConstructorName(prefix: "Static", deprecated: true) %> {
+            <%= method.performProxyConstructor(prefix: "Static") _%>
+        }
+        <%_ } -%>
+        <%_ } %> <%_ -%>
+    }
+
+    <% } -%>
+  <%# ================================================== METHOD TYPE -%><%_ -%>
+    <%_ if !wrappedMethods.isEmpty || !allVariables.isEmpty || !allSubscripts.isEmpty { -%>
+
+    fileprivate enum MethodType {
+    <%_ for method in wrappedMethodsForMethodType { -%>
+        case <%= method.methodTypeDeclarationWithParameters() _%>
+    <%_  } -%> <%_ for variable in allVariables { -%>
+        <%= propertyMethodTypes(variable) %>
+    <%_ } %> <%_ %> <%_ for wrapped in wrappedSubscripts { -%>
+        <%= wrapped.subscriptCases() _%>
+    <%_ } %> <%_ %>
+    <%_ -%>
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) { <%_ for method in wrappedMethodsForMethodType { %>
+            <%= method.equalCase -%><% for parameter in method.parameters { %>
+                <%= parameter.comparator -%> <%  } %>
+                return true <% } %>
+            <%_ for variable in allVariables { -%>
+            <%= propertyMethodTypesCompare(variable) %>
+            <%_ } %> <%_ -%> <%_ for wrapped in wrappedSubscripts { -%>
+            <%= wrapped.equalCases() %>
+        <%_ } %> <%_ if wrappedMethods.count + variableCasesCount + subscriptsCasesCount > 1 { -%>
+            default: return false
+            <%_ } -%>
+            }
+        }
+    <%_ %>
+        func intValue() -> Int {
+            switch self { <%_ for method in wrappedMethodsForMethodType { %>
+            <%= method.intValueCase -%><% } %>
+            <%_ for variable in allVariables { -%>
+            <%= propertyMethodTypesIntValue(variable) %>
+            <%_ } %> <%_ for wrapped in wrappedSubscripts { -%>
+            <%= wrapped.intValueCase() %>
+            <%_ } -%>
+            }
+        }
+    }
+    <%_ } else { %>
+    fileprivate struct MethodType {
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool { return true }
+        func intValue() -> Int { return 0 }
+    }
+    <%_ } -%><%_ -%>
+
+    class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [Product]) {
+            self.method = method
+            super.init(products)
+        }
+
+        <%_ for variable in allVariables { -%>
+        <%= wrapProperty(variable).givenConstructorName() -%> {
+            <%= wrapProperty(variable).givenConstructor() _%>
+        }
+        <%_ } %> <%_ %>
+        <%_ for method in wrappedMethodsForMethodType.filter({ !$0.method.returnTypeName.isVoid && !$0.method.isInitializer }) { -%>
+        <%= method.givenConstructorName() -%> {
+            <%= method.givenConstructor() _%>
+        }
+        <%_ if generateOldAccessorsForMethods, method.containsEmptyArgumentLabels() { -%>
+        <%= method.givenConstructorName(prefix: "", deprecated: true) %> {
+            <%= method.givenConstructor() _%>
+        }
+        <%_ } -%>
+        <%_ } -%>
+        <%_ for method in wrappedMethodsForMethodType.filter({ !$0.method.throws && !$0.method.rethrows && !$0.method.returnTypeName.isVoid && !$0.method.isInitializer }) { -%>
+        <%= method.givenProduceConstructorName() -%> {
+            <%= method.givenProduceConstructor() _%>
+        }
+        <%_ } -%>
+        <%_ for wrapped in wrappedSubscripts { -%>
+        <%= wrapped.givenConstructorName() -%> {
+            <%= wrapped.givenConstructor() _%>
+        }
+        <%_ } -%>
+        <%_ for method in wrappedMethodsForMethodType.filter({ ($0.method.throws || $0.method.rethrows) && !$0.method.isInitializer }) { -%>
+        <%= method.givenConstructorNameThrows() -%> {
+            <%= method.givenConstructorThrows() _%>
+        }
+        <%_ if generateOldAccessorsForMethods, method.containsEmptyArgumentLabels() { -%>
+        <%= method.givenConstructorNameThrows(prefix: "", deprecated: true) %> {
+            <%= method.givenConstructorThrows() _%>
+        }
+        <%_ } -%>
+        <%= method.givenProduceConstructorNameThrows() -%> {
+            <%= method.givenProduceConstructorThrows() _%>
+        }
+        <%_ } %> <%_ -%>
+    }
+
+    struct Verify {
+        fileprivate var method: MethodType
+
+        <%_ for method in wrappedMethodsForMethodType { -%>
+        <%= method.verificationProxyConstructorName() -%> { <%= method.verificationProxyConstructor() _%> }
+        <%_ if generateOldAccessorsForMethods, method.containsEmptyArgumentLabels() { -%>
+        <%= method.verificationProxyConstructorName(prefix: "", deprecated: true) %> { <%= method.verificationProxyConstructor() _%> }
+        <%_ } -%>
+        <%_ } %> <%_ -%>
+        <%_ for variable in allVariables { -%>
+        <%= propertyTypes(variable) %>
+        <%_ } %> <%_ -%>
+        <%_ for wrapped in wrappedSubscripts { -%>
+        <%= wrapped.verifyConstructorName() -%> { <%= wrapped.verifyConstructor() _%> }
+        <%_ if !wrapped.readonly { -%>
+        <%= wrapped.verifyConstructorName(set: true) -%> { <%= wrapped.verifyConstructor(set: true) _%> }
+        <%_ } -%>
+        <%_ } %> <%_ -%>
+    }
+
+    struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        <%_ for method in wrappedMethodsForMethodType { -%>
+        <%= method.performProxyConstructorName() -%> {
+            <%= method.performProxyConstructor() _%>
+        }
+        <%_ if generateOldAccessorsForMethods, method.containsEmptyArgumentLabels() { -%>
+        <%= method.performProxyConstructorName(prefix: "", deprecated: true) %> {
+            <%= method.performProxyConstructor() _%>
+        }
+        <%_ } -%>
+        <%_ } %> <%_ -%>
+    }
+
+  <%# ================================================== MOCK METHODS -%><%_ -%>
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> Product {
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+    private func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        #endif
+    }
+  <%# ================================================== STATIC MOCK METHODS -%><%_ -%>
+    <%_ if conformsToStaticMock { -%>
+
+    static public func given(_ method: StaticGiven) {
+        methodReturnValues.append(method)
+    }
+
+    static public func perform(_ method: StaticPerform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    static public func verify(_ method: StaticVerify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    static private func addInvocation(_ call: StaticMethodType) {
+        invocations.append(call)
+    }
+    static private func methodReturnValue(_ method: StaticMethodType) throws -> Product {
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    static private func methodPerformValue(_ method: StaticMethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+    static private func matchingCalls(_ method: StaticMethodType) -> [StaticMethodType] {
+        return invocations.filter { StaticMethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+    static private func matchingCalls(_ method: StaticVerify) -> Int {
+        return matchingCalls(method.method).count
+    }
+    static private func givenGetterValue<T>(_ method: StaticMethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            Failure(message)
+        }
+    }
+    static private func optionalGivenGetterValue<T>(_ method: StaticMethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
+    <%_ } -%>
+<%_ if autoMockable { -%>
+}
+
+<%_ } else { -%>
+// sourcery:end
+<%_ } -%>
+<% } -%>

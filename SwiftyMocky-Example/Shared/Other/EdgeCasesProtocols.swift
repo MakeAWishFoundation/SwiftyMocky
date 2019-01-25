@@ -8,6 +8,25 @@
 
 import Foundation
 
+// MARK: - Issue 240 - generating mocks when attributes depends on generic constraints and other attributes associated types
+
+protocol StringConvertibleType { }
+
+//sourcery: AutoMockable
+//sourcery: associatedtype = "ValueType: StringConvertibleType"
+protocol ProtocolWithAssociatedType2 {
+    associatedtype ValueType: StringConvertibleType
+    var property: String { get }
+}
+
+//sourcery: AutoMockable
+protocol AnotherProtocol {
+    func doSomething<T: ProtocolWithAssociatedType2>(type: T) -> T.ValueType?
+    func doSomething2<T: ProtocolWithAssociatedType2>(type: T, withValue: T.ValueType?)
+}
+
+// MARK: - Edge case for generics
+
 struct Mytest<Key, Value> {
     let value: Value
     let key: Key
@@ -19,12 +38,16 @@ protocol EdgeCasesGenericsProtocol {
     func getter<K,V: Sequence,T>(swapped key: Mytest<K,V>) -> T
 }
 
+// MARK: - Failing because of untagged attribute
+
 //sourcery: AutoMockable
 protocol FailsWithUntagged {
     init<T>(with t: T) where T:Equatable
     func foo<T>(_: T, bar : String) where T: Sequence // wrong formatted
 }
 
+
+// MARK: - Issue when names are escaped with backtick
 
 //sourcery: AutoMockable
 protocol FailsWithKeywordArguments {
@@ -35,6 +58,8 @@ protocol FailsWithKeywordArguments {
     var `throw`: Error { get set }
     subscript (_ return: Int) -> Bool { get set }
 }
+
+// MARK: - Should allow no stub
 
 //sourcery: AutoMockable
 protocol ShouldAllowNoStubDefined {

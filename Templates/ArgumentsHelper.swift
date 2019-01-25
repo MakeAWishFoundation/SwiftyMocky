@@ -1,13 +1,3 @@
-//
-//  ArgumentsHelper.swift
-//  Mocky
-//
-//  Created by przemyslaw.wosko on 08/10/2018.
-//  Copyright © 2018 CocoaPods. All rights reserved.
-//
-
-import SourceryRuntime
-
 func swiftLintRules(_ arguments: [String: Any]) -> [String] {
     return stringArray(fromArguments: arguments, forKey: "excludedSwiftLintRules").map { rule in
         return "//swiftlint:disable \(rule)"
@@ -18,12 +8,12 @@ func projectImports(_ arguments: [String: Any]) -> [String] {
     return imports(arguments) + testableImports(arguments)
 }
 
-fileprivate func imports(_ arguments: [String: Any]) -> [String] {
+func imports(_ arguments: [String: Any]) -> [String] {
     return stringArray(fromArguments: arguments, forKey: "import")
         .map { return "import \($0)" }
 }
 
-fileprivate func testableImports(_ arguments: [String: Any]) -> [String] {
+func testableImports(_ arguments: [String: Any]) -> [String] {
     return stringArray(fromArguments: arguments, forKey: "testable")
         .map { return "@testable import \($0)" }
 }
@@ -44,4 +34,3 @@ func stringArray(fromArguments arguments: [String: Any], forKey key: String) -> 
         return []
     }
 }
-

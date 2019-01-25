@@ -45,6 +45,26 @@ public enum Parameter<ValueType> {
     }
 }
 
+// MARK: - Optionality checks
+public protocol OptionalType: ExpressibleByNilLiteral {
+    var isNotNil: Bool { get }
+}
+
+extension Optional: OptionalType {
+    public var isNotNil: Bool {
+        switch self {
+        case .some: return true
+        case .none: return false
+        }
+    }
+}
+
+public extension Parameter where ValueType: OptionalType {
+    public static var notNil: Parameter<ValueType> {
+        return Parameter.matching { $0.isNotNil }
+    }
+}
+
 // MARK: - Order
 public extension Parameter where ValueType: GenericAttributeType {
     /// Used for invocations sorting purpose.
