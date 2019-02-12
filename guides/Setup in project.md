@@ -43,6 +43,36 @@ In some cases Sourcery that is downloaded with Pods installation does not match 
 
 For that case refer "Known Issues" page.
 
+## Setup for Sourcery users (alternative to mocky.yml):
+
+We know that Sourcery is a powerful tool and you are likely to use it already. You can easily integrate SwiftyMocky with your project with keeping all already written templates working.
+
+All you have to do is add path (note that path can be different for Carthage/manual installation) to SwiftyMocky templates in your `sourcery.yml` file:
+
+```yaml
+sources:
+    - ./ExampleApp
+    - ./ExampleAppTests
+templates:
+    - <templates path> # Path to already written Sourcery templates
+    - ./Pods/SwiftyMocky/Sources/Templates # <- SwiftyMocky templates
+output:
+    ./ExampleApp
+args:
+  testable:
+    - ExampleApp
+  import:
+    - RxSwift
+    - RxBlocking
+  excludedSwiftLintRules:
+    - force_cast
+    - function_body_length
+    - line_length
+    - vertical_whitespace
+```
+
+You can use all arguments (like `testable`, `import`, etc.) in the same way as in `mocky.yaml`, under `args` key.
+
 ## Generate mocks:
 
 1. **manually**: by triggering:

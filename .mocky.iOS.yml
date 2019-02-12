@@ -10,10 +10,11 @@ templates:
 output:
   ./SwiftyMocky-Tests/iOS/Mocks
 args:
-  testable:
-    - Mocky_Example_iOS
-  excludedSwiftLintRules:
-    - force_cast
-    - function_body_length
-    - line_length
-    - vertical_whitespace
+  swiftyMocky:   
+    testable:
+      - Mocky_Example_iOS
+    excludedSwiftLintRules:
+      - force_cast
+      - function_body_length
+      - line_length
+      - vertical_whitespace

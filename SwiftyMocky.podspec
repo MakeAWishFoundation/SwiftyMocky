@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'SwiftyMocky'
-  s.version          = '3.0.0'
+  s.version          = '3.1.0'
   s.summary          = 'Unit testing library for Swift, with mock generation. Adds a set of handy methods, simplifying testing.'
   s.description      = <<-DESC
 Library that uses metaprogramming technique to generate mocks based on sources, that makes testing for Swift Mockito-like.
@@ -22,7 +22,7 @@ Library that uses metaprogramming technique to generate mocks based on sources, 
 
   s.ios.deployment_target = '8.0'
   s.tvos.deployment_target = '9.0'
-  s.macos.deployment_target = '10.9'
+  s.macos.deployment_target = '10.10'
   s.default_subspec  = "Core"
   s.preserve_paths = '*'
 

@@ -14,4 +14,5 @@ protocol SelfConstrainedProtocol {
     static func construct(param value: Int) -> Self
     func compare(with other: Self) -> Bool
     func genericMethodWithNestedSelf<T>(param: Int, second: T, other: (Self,Self)) -> Self
+    func configure(with secret: String) throws -> Self
 }

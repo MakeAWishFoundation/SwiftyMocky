@@ -84,6 +84,8 @@ args:
 + **import**: all additional imports, external libraries etc. to be placed in Mock.generated
 + **excludedSwiftLintRules**: if using swift SwiftLint.
 
+If you are already using [Sourcery](https://github.com/krzysztofzablocki/Sourcery) with your own templates and you have configured `sourcery.yml` file, you can extend it to add support for SwiftyMocky. Click [here][link-guides-installation] for details.
+
 ## Generate mocks:
 
 1. **manually**: by triggering:
@@ -252,7 +254,7 @@ Changelog is available [here][link-changelog]
 
 ## Current version
 
-As we value stability, there should be no breaking changes in version 3.0.0. Nevertheless, we explicitly marked some parts as deprecated, as they will be removed in version 3.1.x. The main reason is because we want to simplify and unify mocking experience.
+As we value stability, there should be no breaking changes in version 3.1.0. Nevertheless, we explicitly marked some parts as deprecated, as they will be removed in version 3.2.x. The main reason is because we want to simplify and unify mocking experience.
 
 ## Authors
 

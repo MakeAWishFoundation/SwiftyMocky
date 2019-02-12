@@ -18,6 +18,29 @@ task :debug do
     sh "Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config .mocky.macOS.yml --disableCache --verbose"
 end
 
+## [ Tools ] ###################################################################
+
+task :template do
+    print_info "Re-Generating main template from parts"
+    destination = "../Sources/Templates/Mock.swifttemplate"
+    sh "rm -rf #{destination}"
+    sh "cd ./Templates && echo \"<%_\" > #{destination}"
+    sh "cd ./Templates && cat ArgumentsHelper.swift >> #{destination}"
+    sh "cd ./Templates && echo \"_%>\" >> #{destination}"
+    sh "cd ./Templates && cat Header.swifttemplate >> #{destination}"
+    sh "cd ./Templates && echo \"<%_\" >> #{destination}"
+    sh "cd ./Templates && cat Current.swift >> #{destination}"
+    sh "cd ./Templates && cat TemplateHelper.swift >> #{destination}"
+    sh "cd ./Templates && cat Helpers.swift >> #{destination}"
+    sh "cd ./Templates && cat ParameterWrapper.swift >> #{destination}"
+    sh "cd ./Templates && cat TypeWrapper.swift >> #{destination}"
+    sh "cd ./Templates && cat MethodWrapper.swift >> #{destination}"
+    sh "cd ./Templates && cat SubscriptWrapper.swift >> #{destination}"
+    sh "cd ./Templates && cat VariableWrapper.swift >> #{destination}"
+    sh "cd ./Templates && echo \"_%>\" >> #{destination}"
+    sh "cd ./Templates && cat Main.swifttemplate >> #{destination}"
+end
+
 ## [ Sourcery ] ################################################################
 
 desc "Download prebuilt sourcery app."

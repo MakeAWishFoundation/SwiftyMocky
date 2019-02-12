@@ -9,11 +9,11 @@
 import XCTest
 import SwiftyMocky
 #if os(iOS)
-    @testable import Mocky_Example_iOS
+@testable import Mocky_Example_iOS
 #elseif os(tvOS)
-    @testable import Mocky_Example_tvOS
+@testable import Mocky_Example_tvOS
 #elseif os(macOS)
-    @testable import Mocky_Example_macOS
+@testable import Mocky_Example_macOS
 #endif
 
 class ProtocolsWithPropertiesTests: XCTestCase {
@@ -31,9 +31,7 @@ class ProtocolsWithPropertiesTests: XCTestCase {
             XCTAssertEqual(mock.name, "danny_13")
         }
 
-        Verify(mock, .in(range: 10..<20), .name)
-        Verify(mock, .in(range: 10...20), .name)
-        Verify(mock, .in(range: 10...), .name)
+        Verify(mock, .from(10, to: 20), .name)
     }
 
     func test_properties_setters() {
@@ -49,9 +47,7 @@ class ProtocolsWithPropertiesTests: XCTestCase {
         }
 
         Verify(mock, .atLeastOnce, .name(set: .value("danny_1")))
-        Verify(mock, .in(range: 10..<20), .name(set: .any))
-        Verify(mock, .in(range: 10...20), .name(set: .any))
-        Verify(mock, .in(range: 10...), .name(set: .any))
+        Verify(mock, .from(10, to: 20), .name(set: .any))
     }
 
     func test_static_properties_getters() {
@@ -69,9 +65,7 @@ class ProtocolsWithPropertiesTests: XCTestCase {
             XCTAssertEqual(mock.name, "danny_13")
         }
 
-        Verify(mock, .in(range: 10..<20), .name)
-        Verify(mock, .in(range: 10...20), .name)
-        Verify(mock, .in(range: 10...), .name)
+        Verify(mock, .from(10, to: 20), .name)
     }
 
     func test_static_properties_setters() {
@@ -88,8 +82,6 @@ class ProtocolsWithPropertiesTests: XCTestCase {
         }
 
         Verify(mock, .atLeastOnce, .name(set: .value("danny_1")))
-        Verify(mock, .in(range: 10..<20), .name(set: .any))
-        Verify(mock, .in(range: 10...20), .name(set: .any))
-        Verify(mock, .in(range: 10...), .name(set: .any))
+        Verify(mock, .from(10, to: 20), .name(set: .any))
     }
 }
