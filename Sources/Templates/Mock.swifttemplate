@@ -63,14 +63,6 @@ import SwiftyMocky
                 <%_ %>import <%= imported %>
             <%_ } -%>
         <%_ } -%>
-        <%_ if let testable = swiftyMockyArgs["testable"] as? String {  -%>
-            <%_ %>@testable import <%= testable %>
-        <%_  } -%>
-            <%_ if let allTestable = swiftyMockyArgs["testable"] as? [String] { -%>
-                <%_ for testable in allTestable { -%>
-            <%_ %>@testable import <%= testable %>
-            <%_ } -%>
-        <%_ } -%>
     <%_ } -%>
 
     public final class MockyAssertion {
