@@ -76,9 +76,9 @@ class MethodWrapper {
             }
         }()
 
-        let staticModifier: String = method.isStatic ? "static " : ""
+        let staticModifier: String = method.isStatic ? "public static " : "open "
         if method.isInitializer {
-            return "required \(method.name) \(throwing)"
+            return "public required \(method.name) \(throwing)"
         } else if method.returnTypeName.isVoid {
             let wherePartIfNeeded: String = {
                 if method.returnTypeName.name.hasPrefix("Void") {
@@ -187,7 +187,7 @@ class MethodWrapper {
         self.method = method
     }
 
-    static func clear() -> String {
+    public static func clear() -> String {
         MethodWrapper.registered = [:]
         MethodWrapper.suffixes = [:]
         MethodWrapper.suffixesWithoutReturnType = [:]
@@ -291,18 +291,18 @@ class MethodWrapper {
         let returnTypeString = returnsSelf ? replaceSelf : TypeWrapper(method.returnTypeName).stripped
 
         if method.parameters.isEmpty {
-            return "static func \(method.shortName)(willReturn: \(returnTypeString)...) -> \(prefix)MethodStub"
+            return "public static func \(method.shortName)(willReturn: \(returnTypeString)...) -> \(prefix)MethodStub"
         } else {
-            return "\(annotation)static func \(method.shortName)(\(parametersForProxySignature(deprecated: deprecated)), willReturn: \(returnTypeString)...) -> \(prefix)MethodStub"
+            return "\(annotation)public static func \(method.shortName)(\(parametersForProxySignature(deprecated: deprecated)), willReturn: \(returnTypeString)...) -> \(prefix)MethodStub"
         }
     }
 
     func givenConstructorNameThrows(prefix: String = "", deprecated: Bool = false, annotated: Bool = true) -> String {
         let annotation = annotated && deprecated ? deprecatedMessage(deprecatedParametersMessage()) : ""
         if method.parameters.isEmpty {
-            return "static func \(method.shortName)(willThrow: Error...) -> \(prefix)MethodStub"
+            return "public static func \(method.shortName)(willThrow: Error...) -> \(prefix)MethodStub"
         } else {
-            return "\(annotation)static func \(method.shortName)(\(parametersForProxySignature(deprecated: deprecated)), willThrow: Error...) -> \(prefix)MethodStub"
+            return "\(annotation)public static func \(method.shortName)(\(parametersForProxySignature(deprecated: deprecated)), willThrow: Error...) -> \(prefix)MethodStub"
         }
     }
 
@@ -328,9 +328,9 @@ class MethodWrapper {
         let produceClosure = "(Stubber<\(returnTypeString)>) -> Void"
 
         if method.parameters.isEmpty {
-            return "static func \(method.shortName)(willProduce: \(produceClosure)) -> \(prefix)MethodStub"
+            return "public static func \(method.shortName)(willProduce: \(produceClosure)) -> \(prefix)MethodStub"
         } else {
-            return "static func \(method.shortName)(\(parametersForProxySignature()), willProduce: \(produceClosure)) -> \(prefix)MethodStub"
+            return "public static func \(method.shortName)(\(parametersForProxySignature()), willProduce: \(produceClosure)) -> \(prefix)MethodStub"
         }
     }
 
@@ -339,9 +339,9 @@ class MethodWrapper {
         let produceClosure = "(StubberThrows<\(returnTypeString)>) -> Void"
 
         if method.parameters.isEmpty {
-            return "static func \(method.shortName)(willProduce: \(produceClosure)) -> \(prefix)MethodStub"
+            return "public static func \(method.shortName)(willProduce: \(produceClosure)) -> \(prefix)MethodStub"
         } else {
-            return "static func \(method.shortName)(\(parametersForProxySignature()), willProduce: \(produceClosure)) -> \(prefix)MethodStub"
+            return "public static func \(method.shortName)(\(parametersForProxySignature()), willProduce: \(produceClosure)) -> \(prefix)MethodStub"
         }
     }
 
@@ -379,9 +379,9 @@ class MethodWrapper {
         }()
 
         if method.parameters.isEmpty {
-            return "static func \(methodName)(\(returningParameter(false,true))) -> \(prefix)Verify\(genericConstrains)"
+            return "public static func \(methodName)(\(returningParameter(false,true))) -> \(prefix)Verify\(genericConstrains)"
         } else {
-            return "\(annotation)static func \(methodName)(\(parametersForProxySignature(deprecated: deprecated))\(returningParameter(true,true))) -> \(prefix)Verify\(genericConstrains)"
+            return "\(annotation)public static func \(methodName)(\(parametersForProxySignature(deprecated: deprecated))\(returningParameter(true,true))) -> \(prefix)Verify\(genericConstrains)"
         }
     }
 
@@ -405,9 +405,9 @@ class MethodWrapper {
         }()
 
         if method.parameters.isEmpty {
-            return "static func \(methodName)(\(returningParameter(true,false))perform: @escaping \(performProxyClosureType())) -> \(prefix)Perform\(genericConstrains)"
+            return "public static func \(methodName)(\(returningParameter(true,false))perform: @escaping \(performProxyClosureType())) -> \(prefix)Perform\(genericConstrains)"
         } else {
-            return "\(annotation)static func \(methodName)(\(parametersForProxySignature(deprecated: deprecated)), \(returningParameter(true,false))perform: @escaping \(performProxyClosureType())) -> \(prefix)Perform\(genericConstrains)"
+            return "\(annotation)public static func \(methodName)(\(parametersForProxySignature(deprecated: deprecated)), \(returningParameter(true,false))perform: @escaping \(performProxyClosureType())) -> \(prefix)Perform\(genericConstrains)"
         }
     }
 

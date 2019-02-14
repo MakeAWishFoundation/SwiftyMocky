@@ -13,7 +13,7 @@ class SubscriptWrapper {
     private static var registered: [String: Int] = [:]
     private static var namesWithoutReturnType: [String: Int] = [:]
     private static var suffixes: [String: Int] = [:]
-    static func clear() -> String {
+    public static func clear() -> String {
         SubscriptWrapper.registered = [:]
         SubscriptWrapper.suffixes = [:]
         return ""
@@ -49,7 +49,7 @@ class SubscriptWrapper {
     func registrationName(_ accessor: String) -> String {
         return "subscript_\(accessor)_\(wrappedParameters.map({ $0.sanitizedForEnumCaseName() }).joined(separator: "_"))"
     }
-    var shortName: String { return "subscript\(genericTypesModifier ?? " ")(\(wrappedParameters.map({ $0.asMethodArgument() }).joined(separator: ", ")))" }
+    var shortName: String { return "public subscript\(genericTypesModifier ?? " ")(\(wrappedParameters.map({ $0.asMethodArgument() }).joined(separator: ", ")))" }
     var uniqueName: String { return "\(shortName) -> \(wrapped.returnTypeName)" }
 
     private func nameSuffix(_ accessor: String) -> String {
@@ -122,7 +122,7 @@ class SubscriptWrapper {
     // Given
     func givenConstructorName() -> String {
         let returnTypeString = returnsSelf ? replaceSelf : TypeWrapper(wrapped.returnTypeName).stripped
-        return "static func `subscript`\(genericTypesModifier ?? "")(\(parametersForProxySignature()), willReturn: \(returnTypeString)...) -> SubscriptStub"
+        return "public static func `subscript`\(genericTypesModifier ?? "")(\(parametersForProxySignature()), willReturn: \(returnTypeString)...) -> SubscriptStub"
     }
     func givenConstructor() -> String {
         return "return Given(method: .\(subscriptCasePrefix("get"))(\(parametersForProxyInit())), products: willReturn.map({ Product.return($0) }))"
@@ -132,7 +132,7 @@ class SubscriptWrapper {
     func verifyConstructorName(set: Bool = false) -> String {
         let returnTypeString = returnsSelf ? replaceSelf : nestedType
         let returning = set ? "" : returningParameter(true, true)
-        return "static func `subscript`\(genericTypesModifier ?? "")(\(parametersForProxySignature())\(returning)\(set ? ", set newValue: \(returnTypeString)" : "")) -> Verify"
+        return "public static func `subscript`\(genericTypesModifier ?? "")(\(parametersForProxySignature())\(returning)\(set ? ", set newValue: \(returnTypeString)" : "")) -> Verify"
     }
     func verifyConstructor(set: Bool = false) -> String {
         return "return Verify(method: .\(subscriptCasePrefix(set ? "set" : "get"))(\(parametersForProxyInit(set: set))))"

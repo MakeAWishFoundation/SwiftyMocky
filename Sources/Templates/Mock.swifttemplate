@@ -580,9 +580,9 @@ class MethodWrapper {
             }
         }()
 
-        let staticModifier: String = method.isStatic ? "static " : ""
+        let staticModifier: String = method.isStatic ? "public static " : "open "
         if method.isInitializer {
-            return "required \(method.name) \(throwing)"
+            return "public required \(method.name) \(throwing)"
         } else if method.returnTypeName.isVoid {
             let wherePartIfNeeded: String = {
                 if method.returnTypeName.name.hasPrefix("Void") {
@@ -691,7 +691,7 @@ class MethodWrapper {
         self.method = method
     }
 
-    static func clear() -> String {
+    public static func clear() -> String {
         MethodWrapper.registered = [:]
         MethodWrapper.suffixes = [:]
         MethodWrapper.suffixesWithoutReturnType = [:]
@@ -795,18 +795,18 @@ class MethodWrapper {
         let returnTypeString = returnsSelf ? replaceSelf : TypeWrapper(method.returnTypeName).stripped
 
         if method.parameters.isEmpty {
-            return "static func \(method.shortName)(willReturn: \(returnTypeString)...) -> \(prefix)MethodStub"
+            return "public static func \(method.shortName)(willReturn: \(returnTypeString)...) -> \(prefix)MethodStub"
         } else {
-            return "\(annotation)static func \(method.shortName)(\(parametersForProxySignature(deprecated: deprecated)), willReturn: \(returnTypeString)...) -> \(prefix)MethodStub"
+            return "\(annotation)public static func \(method.shortName)(\(parametersForProxySignature(deprecated: deprecated)), willReturn: \(returnTypeString)...) -> \(prefix)MethodStub"
         }
     }
 
     func givenConstructorNameThrows(prefix: String = "", deprecated: Bool = false, annotated: Bool = true) -> String {
         let annotation = annotated && deprecated ? deprecatedMessage(deprecatedParametersMessage()) : ""
         if method.parameters.isEmpty {
-            return "static func \(method.shortName)(willThrow: Error...) -> \(prefix)MethodStub"
+            return "public static func \(method.shortName)(willThrow: Error...) -> \(prefix)MethodStub"
         } else {
-            return "\(annotation)static func \(method.shortName)(\(parametersForProxySignature(deprecated: deprecated)), willThrow: Error...) -> \(prefix)MethodStub"
+            return "\(annotation)public static func \(method.shortName)(\(parametersForProxySignature(deprecated: deprecated)), willThrow: Error...) -> \(prefix)MethodStub"
         }
     }
 
@@ -832,9 +832,9 @@ class MethodWrapper {
         let produceClosure = "(Stubber<\(returnTypeString)>) -> Void"
 
         if method.parameters.isEmpty {
-            return "static func \(method.shortName)(willProduce: \(produceClosure)) -> \(prefix)MethodStub"
+            return "public static func \(method.shortName)(willProduce: \(produceClosure)) -> \(prefix)MethodStub"
         } else {
-            return "static func \(method.shortName)(\(parametersForProxySignature()), willProduce: \(produceClosure)) -> \(prefix)MethodStub"
+            return "public static func \(method.shortName)(\(parametersForProxySignature()), willProduce: \(produceClosure)) -> \(prefix)MethodStub"
         }
     }
 
@@ -843,9 +843,9 @@ class MethodWrapper {
         let produceClosure = "(StubberThrows<\(returnTypeString)>) -> Void"
 
         if method.parameters.isEmpty {
-            return "static func \(method.shortName)(willProduce: \(produceClosure)) -> \(prefix)MethodStub"
+            return "public static func \(method.shortName)(willProduce: \(produceClosure)) -> \(prefix)MethodStub"
         } else {
-            return "static func \(method.shortName)(\(parametersForProxySignature()), willProduce: \(produceClosure)) -> \(prefix)MethodStub"
+            return "public static func \(method.shortName)(\(parametersForProxySignature()), willProduce: \(produceClosure)) -> \(prefix)MethodStub"
         }
     }
 
@@ -883,9 +883,9 @@ class MethodWrapper {
         }()
 
         if method.parameters.isEmpty {
-            return "static func \(methodName)(\(returningParameter(false,true))) -> \(prefix)Verify\(genericConstrains)"
+            return "public static func \(methodName)(\(returningParameter(false,true))) -> \(prefix)Verify\(genericConstrains)"
         } else {
-            return "\(annotation)static func \(methodName)(\(parametersForProxySignature(deprecated: deprecated))\(returningParameter(true,true))) -> \(prefix)Verify\(genericConstrains)"
+            return "\(annotation)public static func \(methodName)(\(parametersForProxySignature(deprecated: deprecated))\(returningParameter(true,true))) -> \(prefix)Verify\(genericConstrains)"
         }
     }
 
@@ -909,9 +909,9 @@ class MethodWrapper {
         }()
 
         if method.parameters.isEmpty {
-            return "static func \(methodName)(\(returningParameter(true,false))perform: @escaping \(performProxyClosureType())) -> \(prefix)Perform\(genericConstrains)"
+            return "public static func \(methodName)(\(returningParameter(true,false))perform: @escaping \(performProxyClosureType())) -> \(prefix)Perform\(genericConstrains)"
         } else {
-            return "\(annotation)static func \(methodName)(\(parametersForProxySignature(deprecated: deprecated)), \(returningParameter(true,false))perform: @escaping \(performProxyClosureType())) -> \(prefix)Perform\(genericConstrains)"
+            return "\(annotation)public static func \(methodName)(\(parametersForProxySignature(deprecated: deprecated)), \(returningParameter(true,false))perform: @escaping \(performProxyClosureType())) -> \(prefix)Perform\(genericConstrains)"
         }
     }
 
@@ -1096,7 +1096,7 @@ class SubscriptWrapper {
     private static var registered: [String: Int] = [:]
     private static var namesWithoutReturnType: [String: Int] = [:]
     private static var suffixes: [String: Int] = [:]
-    static func clear() -> String {
+    public static func clear() -> String {
         SubscriptWrapper.registered = [:]
         SubscriptWrapper.suffixes = [:]
         return ""
@@ -1132,7 +1132,7 @@ class SubscriptWrapper {
     func registrationName(_ accessor: String) -> String {
         return "subscript_\(accessor)_\(wrappedParameters.map({ $0.sanitizedForEnumCaseName() }).joined(separator: "_"))"
     }
-    var shortName: String { return "subscript\(genericTypesModifier ?? " ")(\(wrappedParameters.map({ $0.asMethodArgument() }).joined(separator: ", ")))" }
+    var shortName: String { return "public subscript\(genericTypesModifier ?? " ")(\(wrappedParameters.map({ $0.asMethodArgument() }).joined(separator: ", ")))" }
     var uniqueName: String { return "\(shortName) -> \(wrapped.returnTypeName)" }
 
     private func nameSuffix(_ accessor: String) -> String {
@@ -1205,7 +1205,7 @@ class SubscriptWrapper {
     // Given
     func givenConstructorName() -> String {
         let returnTypeString = returnsSelf ? replaceSelf : TypeWrapper(wrapped.returnTypeName).stripped
-        return "static func `subscript`\(genericTypesModifier ?? "")(\(parametersForProxySignature()), willReturn: \(returnTypeString)...) -> SubscriptStub"
+        return "public static func `subscript`\(genericTypesModifier ?? "")(\(parametersForProxySignature()), willReturn: \(returnTypeString)...) -> SubscriptStub"
     }
     func givenConstructor() -> String {
         return "return Given(method: .\(subscriptCasePrefix("get"))(\(parametersForProxyInit())), products: willReturn.map({ Product.return($0) }))"
@@ -1215,7 +1215,7 @@ class SubscriptWrapper {
     func verifyConstructorName(set: Bool = false) -> String {
         let returnTypeString = returnsSelf ? replaceSelf : nestedType
         let returning = set ? "" : returningParameter(true, true)
-        return "static func `subscript`\(genericTypesModifier ?? "")(\(parametersForProxySignature())\(returning)\(set ? ", set newValue: \(returnTypeString)" : "")) -> Verify"
+        return "public static func `subscript`\(genericTypesModifier ?? "")(\(parametersForProxySignature())\(returning)\(set ? ", set newValue: \(returnTypeString)" : "")) -> Verify"
     }
     func verifyConstructor(set: Bool = false) -> String {
         return "return Verify(method: .\(subscriptCasePrefix(set ? "set" : "get"))(\(parametersForProxyInit(set: set))))"
@@ -1304,7 +1304,7 @@ class VariableWrapper {
     var prototype: String {
         let staticModifier = variable.isStatic ? "static " : ""
 
-        return "\(staticModifier)var \(variable.name): \(variable.typeName.name) {" +
+        return "public \(staticModifier)var \(variable.name): \(variable.typeName.name) {" +
             "\(getter)" +
             "\(setter)" +
         "\n\t}"
@@ -1323,12 +1323,12 @@ class VariableWrapper {
 
     func propertyGet() -> String {
         let staticModifier = variable.isStatic ? "Static" : ""
-        return "static var \(variable.name): \(staticModifier)Verify { return \(staticModifier)Verify(method: .\(propertyCaseGetName)) }"
+        return "public static var \(variable.name): \(staticModifier)Verify { return \(staticModifier)Verify(method: .\(propertyCaseGetName)) }"
     }
 
     func propertySet() -> String {
         let staticModifier = variable.isStatic ? "Static" : ""
-        return "static func \(variable.name)(set newValue: \(nestedType)) -> \(staticModifier)Verify { return \(staticModifier)Verify(method: .\(propertyCaseSetName)(newValue)) }"
+        return "public static func \(variable.name)(set newValue: \(nestedType)) -> \(staticModifier)Verify { return \(staticModifier)Verify(method: .\(propertyCaseSetName)(newValue)) }"
     }
 
     var propertyCaseGetName: String { return "p_\(variable.name)_get".replacingOccurrences(of: "`", with: "") }
@@ -1355,7 +1355,7 @@ class VariableWrapper {
 
     // Given
     func givenConstructorName(prefix: String = "") -> String {
-        return "static func \(variable.name)(getter defaultValue: \(TypeWrapper(variable.typeName).stripped)...) -> \(prefix)PropertyStub"
+        return "public static func \(variable.name)(getter defaultValue: \(TypeWrapper(variable.typeName).stripped)...) -> \(prefix)PropertyStub"
     }
 
     func givenConstructor(prefix: String = "") -> String {
@@ -1388,7 +1388,7 @@ _%>
     let conformsToMock = !allMethods.isEmpty || !allVariables.isEmpty -%><%_ -%><%_ -%>
 <%_ if autoMockable { -%>
 // MARK: - <%= type.name %>
-class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["ObjcProtocol"] != nil ? " NSObject," : "" %> <%= type.name %>, Mock<%= conformsToStaticMock ? ", StaticMock" : "" %><%= genericTypesConstraints %> {
+open class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["ObjcProtocol"] != nil ? " NSObject," : "" %> <%= type.name %>, Mock<%= conformsToStaticMock ? ", StaticMock" : "" %><%= genericTypesConstraints %> {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
@@ -1410,9 +1410,9 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
     private var file: StaticString?
     private var line: UInt?
 
-    typealias PropertyStub = Given
-    typealias MethodStub = Given
-    typealias SubscriptStub = Given
+    public typealias PropertyStub = Given
+    public typealias MethodStub = Given
+    public typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -1428,9 +1428,9 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
     static private var invocations: [StaticMethodType] = []
     static private var methodReturnValues: [StaticGiven] = []
     static private var methodPerformValues: [StaticPerform] = []
-    typealias StaticPropertyStub = StaticGiven
-    typealias StaticMethodStub = StaticGiven
-    static func clear() {
+    public typealias StaticPropertyStub = StaticGiven
+    public typealias StaticMethodStub = StaticGiven
+    public static func clear() {
         invocations = []
         methodReturnValues = []
         methodPerformValues = []
@@ -1539,7 +1539,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         }
     }
 
-    class StaticGiven: StubbedMethod {
+    open class StaticGiven: StubbedMethod {
         fileprivate var method: StaticMethodType
 
         private init(method: StaticMethodType, products: [Product]) {
@@ -1582,7 +1582,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         <%_ } %> <%_ -%>
     }
 
-    struct StaticVerify {
+    public struct StaticVerify {
         fileprivate var method: StaticMethodType
 
         <%_ for method in wrappedStaticMethodsForMethodType { -%>
@@ -1596,7 +1596,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         <%_ } %> <%_ -%>
     }
 
-    struct StaticPerform {
+    public struct StaticPerform {
         fileprivate var method: StaticMethodType
         var performs: Any
 
@@ -1658,7 +1658,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
     }
     <%_ } -%><%_ -%>
 
-    class Given: StubbedMethod {
+    open class Given: StubbedMethod {
         fileprivate var method: MethodType
 
         private init(method: MethodType, products: [Product]) {
@@ -1706,7 +1706,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         <%_ } %> <%_ -%>
     }
 
-    struct Verify {
+    public struct Verify {
         fileprivate var method: MethodType
 
         <%_ for method in wrappedMethodsForMethodType { -%>
@@ -1726,7 +1726,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         <%_ } %> <%_ -%>
     }
 
-    struct Perform {
+    public struct Perform {
         fileprivate var method: MethodType
         var performs: Any
 
