@@ -39,6 +39,7 @@ Library that uses metaprogramming technique to generate mocks based on sources, 
         'OTHER_LDFLAGS' => '$(inherited) -weak-lswiftXCTest -Xlinker -no_application_extension',
         'OTHER_SWIFT_FLAGS' => '$(inherited) -suppress-warnings',
         'FRAMEWORK_SEARCH_PATHS' => '$(inherited) "$(PLATFORM_DIR)/Developer/Library/Frameworks"',
+        'DEFINES_MODULE' => 'YES'
       }
   end
 

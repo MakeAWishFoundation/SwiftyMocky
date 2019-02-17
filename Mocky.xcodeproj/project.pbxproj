@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		11FBFCC02B6A0DBAEDCE69B6 /* Pods_Mocky_Tests_tvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DEF35862B6B7BD5A9E5D413 /* Pods_Mocky_Tests_tvOS.framework */; };
-		353CEB7070C07F74BB28B178 /* Pods_Mocky_Tests_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E7EFB95E35789BC282586EC /* Pods_Mocky_Tests_iOS.framework */; };
-		61B65D431C6E4154C44B6B1D /* Pods_Mocky_Example_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D435D6B1D3850EB6C36B69E /* Pods_Mocky_Example_iOS.framework */; };
-		6A629255223ACC1B05F1B6D7 /* Pods_Mocky_Tests_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 835A7223A01A944E0F3E0BCF /* Pods_Mocky_Tests_macOS.framework */; };
-		7D1174B528873ECD259B355C /* Pods_Mocky_Example_tvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 356426D9A4F6925FCD6469A5 /* Pods_Mocky_Example_tvOS.framework */; };
+		1D5310CA3DE7147ACC9E7E26 /* Pods_Mocky_Tests_tvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64EF60CBE53D81700C87FB82 /* Pods_Mocky_Tests_tvOS.framework */; };
+		5CB0B098232DC176CC9CACD8 /* Pods_Mocky_Example_tvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9C9BECF310A1D4EDD384137 /* Pods_Mocky_Example_tvOS.framework */; };
+		66087FEBDA538F4C138743F2 /* Pods_Mocky_Example_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A4B259245C7FB13CDFFCEC0 /* Pods_Mocky_Example_iOS.framework */; };
+		7C10E4406673B3B3B7474E2C /* Pods_Mocky_Tests_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94B5EFCCD4E35E7C80D1E560 /* Pods_Mocky_Tests_macOS.framework */; };
 		AD487E872180A3CA005B74ED /* Count.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD487E862180A3CA005B74ED /* Count.swift */; };
+		BB4F9E470E0BD27A959C97EB /* Pods_Mocky_Tests_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9592625386F952AE07781D57 /* Pods_Mocky_Tests_iOS.framework */; };
 		C83B2422215BDA870032BCF3 /* ProtocolWithSubscripts.swift in Sources */ = {isa = PBXBuildFile; fileRef = C83B2421215BDA870032BCF3 /* ProtocolWithSubscripts.swift */; };
 		C83B2423215BDA870032BCF3 /* ProtocolWithSubscripts.swift in Sources */ = {isa = PBXBuildFile; fileRef = C83B2421215BDA870032BCF3 /* ProtocolWithSubscripts.swift */; };
 		C83B2424215BDA870032BCF3 /* ProtocolWithSubscripts.swift in Sources */ = {isa = PBXBuildFile; fileRef = C83B2421215BDA870032BCF3 /* ProtocolWithSubscripts.swift */; };
@@ -29,6 +29,7 @@
 		C8B87413215A54B1002CF376 /* PropertiesHandlingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B87412215A54B1002CF376 /* PropertiesHandlingTests.swift */; };
 		C8B87414215A54B1002CF376 /* PropertiesHandlingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B87412215A54B1002CF376 /* PropertiesHandlingTests.swift */; };
 		C8B87415215A54B1002CF376 /* PropertiesHandlingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B87412215A54B1002CF376 /* PropertiesHandlingTests.swift */; };
+		CA7F06FB19E540DE2083EE80 /* Pods_Mocky_Example_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4960EAA67C2E0980248C6B94 /* Pods_Mocky_Example_macOS.framework */; };
 		CC07B603202215F600F51534 /* ProtocolMethodsThatDifferOnlyInReturnType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC07B601202215D500F51534 /* ProtocolMethodsThatDifferOnlyInReturnType.swift */; };
 		CC07B604202215F600F51534 /* ProtocolMethodsThatDifferOnlyInReturnType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC07B601202215D500F51534 /* ProtocolMethodsThatDifferOnlyInReturnType.swift */; };
 		CC07B605202215F700F51534 /* ProtocolMethodsThatDifferOnlyInReturnType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC07B601202215D500F51534 /* ProtocolMethodsThatDifferOnlyInReturnType.swift */; };
@@ -175,7 +176,6 @@
 		CCE351661FCC0B9700A76C4C /* Mock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE351621FCC0B9700A76C4C /* Mock.generated.swift */; };
 		CCE351671FCC0B9700A76C4C /* ItemsRepositoryMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE351631FCC0B9700A76C4C /* ItemsRepositoryMock.swift */; };
 		CCE351681FCC0B9700A76C4C /* Mocky_tvOS_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE351641FCC0B9700A76C4C /* Mocky_tvOS_Tests.swift */; };
-		ECBE95A379A0E9C3BE02D963 /* Pods_Mocky_Example_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAC0C2FE2E105DB67A93DC7E /* Pods_Mocky_Example_macOS.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -204,21 +204,22 @@
 
 /* Begin PBXFileReference section */
 		246A92EED69C0F4A7DB30FEC /* Pods-Mocky_Example_macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Example_macOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Example_macOS/Pods-Mocky_Example_macOS.release.xcconfig"; sourceTree = "<group>"; };
-		356426D9A4F6925FCD6469A5 /* Pods_Mocky_Example_tvOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mocky_Example_tvOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2A4B259245C7FB13CDFFCEC0 /* Pods_Mocky_Example_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mocky_Example_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		44584DB014A47595C33FBF7B /* Pods-Mocky_Tests_macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Tests_macOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Tests_macOS/Pods-Mocky_Tests_macOS.debug.xcconfig"; sourceTree = "<group>"; };
 		47EB3B0E1FC3562B00905329 /* Mocky_Example_tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mocky_Example_tvOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		47EB3B211FC356B000905329 /* Mocky_Tests_tvOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Mocky_Tests_tvOS.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4960EAA67C2E0980248C6B94 /* Pods_Mocky_Example_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mocky_Example_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A18BEE608FDDA6D1B72681A /* Pods-Mocky_Example_tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Example_tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Example_tvOS/Pods-Mocky_Example_tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		5ABA0D357F98DC923C090E09 /* Pods-Mocky_Tests_iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Tests_iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Tests_iOS/Pods-Mocky_Tests_iOS.release.xcconfig"; sourceTree = "<group>"; };
-		5DEF35862B6B7BD5A9E5D413 /* Pods_Mocky_Tests_tvOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mocky_Tests_tvOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		5E7EFB95E35789BC282586EC /* Pods_Mocky_Tests_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mocky_Tests_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD01AFB9204008FA782 /* Mocky_Example_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mocky_Example_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACE51AFB9204008FA782 /* Mocky_Tests_iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Mocky_Tests_iOS.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		64EF60CBE53D81700C87FB82 /* Pods_Mocky_Tests_tvOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mocky_Tests_tvOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7194340B3CD91B825FCB78FB /* Pods-Mocky_Example_iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Example_iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Example_iOS/Pods-Mocky_Example_iOS.release.xcconfig"; sourceTree = "<group>"; };
 		7A9B02B1C24E9AC79ABF999C /* Pods-Mocky_Example_iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Example_iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Example_iOS/Pods-Mocky_Example_iOS.debug.xcconfig"; sourceTree = "<group>"; };
-		835A7223A01A944E0F3E0BCF /* Pods_Mocky_Tests_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mocky_Tests_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DDEF4635180A969B16362F7 /* Pods-Mocky_Tests_iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Tests_iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Tests_iOS/Pods-Mocky_Tests_iOS.debug.xcconfig"; sourceTree = "<group>"; };
-		9D435D6B1D3850EB6C36B69E /* Pods_Mocky_Example_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mocky_Example_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		94B5EFCCD4E35E7C80D1E560 /* Pods_Mocky_Tests_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mocky_Tests_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9592625386F952AE07781D57 /* Pods_Mocky_Tests_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mocky_Tests_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A9C9BECF310A1D4EDD384137 /* Pods_Mocky_Example_tvOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mocky_Example_tvOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAEE52510F67C7DF13FF8AF2 /* Pods-Mocky_Example_tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Example_tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Example_tvOS/Pods-Mocky_Example_tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		AD487E862180A3CA005B74ED /* Count.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Count.swift; sourceTree = "<group>"; };
 		BCB5C12EDA17046011396E79 /* Pods-Mocky_Tests_tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Tests_tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Tests_tvOS/Pods-Mocky_Tests_tvOS.debug.xcconfig"; sourceTree = "<group>"; };
@@ -241,7 +242,6 @@
 		C8EF7B8321FB423A00AFA545 /* VariableWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VariableWrapper.swift; sourceTree = "<group>"; };
 		C8EF7B8421FB423A00AFA545 /* MethodWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MethodWrapper.swift; sourceTree = "<group>"; };
 		C8EF7B8521FB429700AFA545 /* Rakefile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Rakefile; sourceTree = "<group>"; };
-		CAC0C2FE2E105DB67A93DC7E /* Pods_Mocky_Example_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mocky_Example_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC07B601202215D500F51534 /* ProtocolMethodsThatDifferOnlyInReturnType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolMethodsThatDifferOnlyInReturnType.swift; sourceTree = "<group>"; };
 		CC07B60720221B6700F51534 /* ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift; sourceTree = "<group>"; };
 		CC3252162003CC22009AD6C2 /* Excluded.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Excluded.generated.swift; sourceTree = "<group>"; };
@@ -336,7 +336,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7D1174B528873ECD259B355C /* Pods_Mocky_Example_tvOS.framework in Frameworks */,
+				5CB0B098232DC176CC9CACD8 /* Pods_Mocky_Example_tvOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -344,7 +344,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				11FBFCC02B6A0DBAEDCE69B6 /* Pods_Mocky_Tests_tvOS.framework in Frameworks */,
+				1D5310CA3DE7147ACC9E7E26 /* Pods_Mocky_Tests_tvOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -352,7 +352,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				61B65D431C6E4154C44B6B1D /* Pods_Mocky_Example_iOS.framework in Frameworks */,
+				66087FEBDA538F4C138743F2 /* Pods_Mocky_Example_iOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -360,7 +360,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				353CEB7070C07F74BB28B178 /* Pods_Mocky_Tests_iOS.framework in Frameworks */,
+				BB4F9E470E0BD27A959C97EB /* Pods_Mocky_Tests_iOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -368,7 +368,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ECBE95A379A0E9C3BE02D963 /* Pods_Mocky_Example_macOS.framework in Frameworks */,
+				CA7F06FB19E540DE2083EE80 /* Pods_Mocky_Example_macOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -376,7 +376,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6A629255223ACC1B05F1B6D7 /* Pods_Mocky_Tests_macOS.framework in Frameworks */,
+				7C10E4406673B3B3B7474E2C /* Pods_Mocky_Tests_macOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -446,12 +446,12 @@
 			isa = PBXGroup;
 			children = (
 				E467147D1ECEF4D600C7DAB3 /* XCTest.framework */,
-				9D435D6B1D3850EB6C36B69E /* Pods_Mocky_Example_iOS.framework */,
-				356426D9A4F6925FCD6469A5 /* Pods_Mocky_Example_tvOS.framework */,
-				5E7EFB95E35789BC282586EC /* Pods_Mocky_Tests_iOS.framework */,
-				5DEF35862B6B7BD5A9E5D413 /* Pods_Mocky_Tests_tvOS.framework */,
-				CAC0C2FE2E105DB67A93DC7E /* Pods_Mocky_Example_macOS.framework */,
-				835A7223A01A944E0F3E0BCF /* Pods_Mocky_Tests_macOS.framework */,
+				2A4B259245C7FB13CDFFCEC0 /* Pods_Mocky_Example_iOS.framework */,
+				4960EAA67C2E0980248C6B94 /* Pods_Mocky_Example_macOS.framework */,
+				A9C9BECF310A1D4EDD384137 /* Pods_Mocky_Example_tvOS.framework */,
+				9592625386F952AE07781D57 /* Pods_Mocky_Tests_iOS.framework */,
+				94B5EFCCD4E35E7C80D1E560 /* Pods_Mocky_Tests_macOS.framework */,
+				64EF60CBE53D81700C87FB82 /* Pods_Mocky_Tests_tvOS.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -904,7 +904,7 @@
 				47EB3B1D1FC356B000905329 /* Sources */,
 				47EB3B1E1FC356B000905329 /* Frameworks */,
 				47EB3B1F1FC356B000905329 /* Resources */,
-				DA3C100A0954E7A49C599292 /* [CP] Embed Pods Frameworks */,
+				AD7A661328510B0F8FC3B8C0 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -942,7 +942,7 @@
 				607FACE11AFB9204008FA782 /* Sources */,
 				607FACE21AFB9204008FA782 /* Frameworks */,
 				607FACE31AFB9204008FA782 /* Resources */,
-				EFA0ACDDC65F6D5BFDD32897 /* [CP] Embed Pods Frameworks */,
+				3D56EA4D1952660D5E9DFB22 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -980,7 +980,7 @@
 				CC5B61A51FCC16F8007FB209 /* Sources */,
 				CC5B61A61FCC16F8007FB209 /* Frameworks */,
 				CC5B61A71FCC16F8007FB209 /* Resources */,
-				D5844BA5AA1A78C1D2690B50 /* [CP] Embed Pods Frameworks */,
+				44142757B38ABCA8B35C72D0 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1167,6 +1167,50 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		3D56EA4D1952660D5E9DFB22 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_iOS/Pods-Mocky_Tests_iOS-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/SwiftyMocky-iOS/SwiftyMocky.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyMocky.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_iOS/Pods-Mocky_Tests_iOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		44142757B38ABCA8B35C72D0 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_macOS/Pods-Mocky_Tests_macOS-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/SwiftyMocky-macOS/SwiftyMocky.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyMocky.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_macOS/Pods-Mocky_Tests_macOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		52CEFF50E2B6E659CB5C4FF2 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1221,6 +1265,28 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		AD7A661328510B0F8FC3B8C0 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_tvOS/Pods-Mocky_Tests_tvOS-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/SwiftyMocky-tvOS/SwiftyMocky.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyMocky.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_tvOS/Pods-Mocky_Tests_tvOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		BD34BA0BED4C085F8CC18492 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1239,42 +1305,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D5844BA5AA1A78C1D2690B50 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_macOS/Pods-Mocky_Tests_macOS-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/SwiftyMocky-macOS/SwiftyMocky.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyMocky.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_macOS/Pods-Mocky_Tests_macOS-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		DA3C100A0954E7A49C599292 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_tvOS/Pods-Mocky_Tests_tvOS-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/SwiftyMocky-tvOS/SwiftyMocky.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyMocky.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_tvOS/Pods-Mocky_Tests_tvOS-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		DE3AD6663F4906C8FE24B15A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1291,24 +1321,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		EFA0ACDDC65F6D5BFDD32897 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_iOS/Pods-Mocky_Tests_iOS-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/SwiftyMocky-iOS/SwiftyMocky.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyMocky.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_iOS/Pods-Mocky_Tests_iOS-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
