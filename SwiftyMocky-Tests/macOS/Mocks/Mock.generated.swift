@@ -9,7 +9,6 @@
 
 #if MockyCustom
 import SwiftyMocky
-@testable import Mocky_Example_macOS
 
     public final class MockyAssertion {
         public static var handler: ((Bool, String, StaticString, UInt) -> Void)?

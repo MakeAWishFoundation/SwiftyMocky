@@ -1245,7 +1245,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Mocky_Tests_macOS/Pods-Mocky_Tests_macOS-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_macOS/Pods-Mocky_Tests_macOS-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/SwiftyMocky-macOS/SwiftyMocky.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -1254,7 +1254,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Mocky_Tests_macOS/Pods-Mocky_Tests_macOS-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_macOS/Pods-Mocky_Tests_macOS-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		DA3C100A0954E7A49C599292 /* [CP] Embed Pods Frameworks */ = {
@@ -1263,7 +1263,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Mocky_Tests_tvOS/Pods-Mocky_Tests_tvOS-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_tvOS/Pods-Mocky_Tests_tvOS-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/SwiftyMocky-tvOS/SwiftyMocky.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -1272,7 +1272,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Mocky_Tests_tvOS/Pods-Mocky_Tests_tvOS-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_tvOS/Pods-Mocky_Tests_tvOS-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		DE3AD6663F4906C8FE24B15A /* [CP] Check Pods Manifest.lock */ = {
@@ -1299,7 +1299,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Mocky_Tests_iOS/Pods-Mocky_Tests_iOS-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_iOS/Pods-Mocky_Tests_iOS-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/SwiftyMocky-iOS/SwiftyMocky.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -1308,7 +1308,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Mocky_Tests_iOS/Pods-Mocky_Tests_iOS-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_iOS/Pods-Mocky_Tests_iOS-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
