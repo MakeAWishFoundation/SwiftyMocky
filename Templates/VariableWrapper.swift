@@ -25,7 +25,7 @@ class VariableWrapper {
     var prototype: String {
         let staticModifier = variable.isStatic ? "static " : ""
 
-        return "\(staticModifier)var \(variable.name): \(variable.typeName.name) {" +
+        return "public \(staticModifier)var \(variable.name): \(variable.typeName.name) {" +
             "\(getter)" +
             "\(setter)" +
         "\n\t}"
@@ -44,12 +44,12 @@ class VariableWrapper {
 
     func propertyGet() -> String {
         let staticModifier = variable.isStatic ? "Static" : ""
-        return "static var \(variable.name): \(staticModifier)Verify { return \(staticModifier)Verify(method: .\(propertyCaseGetName)) }"
+        return "public static var \(variable.name): \(staticModifier)Verify { return \(staticModifier)Verify(method: .\(propertyCaseGetName)) }"
     }
 
     func propertySet() -> String {
         let staticModifier = variable.isStatic ? "Static" : ""
-        return "static func \(variable.name)(set newValue: \(nestedType)) -> \(staticModifier)Verify { return \(staticModifier)Verify(method: .\(propertyCaseSetName)(newValue)) }"
+        return "public static func \(variable.name)(set newValue: \(nestedType)) -> \(staticModifier)Verify { return \(staticModifier)Verify(method: .\(propertyCaseSetName)(newValue)) }"
     }
 
     var propertyCaseGetName: String { return "p_\(variable.name)_get".replacingOccurrences(of: "`", with: "") }
@@ -76,7 +76,7 @@ class VariableWrapper {
 
     // Given
     func givenConstructorName(prefix: String = "") -> String {
-        return "static func \(variable.name)(getter defaultValue: \(TypeWrapper(variable.typeName).stripped)...) -> \(prefix)PropertyStub"
+        return "public static func \(variable.name)(getter defaultValue: \(TypeWrapper(variable.typeName).stripped)...) -> \(prefix)PropertyStub"
     }
 
     func givenConstructor(prefix: String = "") -> String {

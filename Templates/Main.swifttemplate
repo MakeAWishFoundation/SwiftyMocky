@@ -23,7 +23,7 @@
     let conformsToMock = !allMethods.isEmpty || !allVariables.isEmpty -%><%_ -%><%_ -%>
 <%_ if autoMockable { -%>
 // MARK: - <%= type.name %>
-class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["ObjcProtocol"] != nil ? " NSObject," : "" %> <%= type.name %>, Mock<%= conformsToStaticMock ? ", StaticMock" : "" %><%= genericTypesConstraints %> {
+open class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["ObjcProtocol"] != nil ? " NSObject," : "" %> <%= type.name %>, Mock<%= conformsToStaticMock ? ", StaticMock" : "" %><%= genericTypesConstraints %> {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         self.sequencingPolicy = sequencingPolicy
         self.stubbingPolicy = stubbingPolicy
@@ -45,9 +45,9 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
     private var file: StaticString?
     private var line: UInt?
 
-    typealias PropertyStub = Given
-    typealias MethodStub = Given
-    typealias SubscriptStub = Given
+    public typealias PropertyStub = Given
+    public typealias MethodStub = Given
+    public typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -63,9 +63,9 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
     static private var invocations: [StaticMethodType] = []
     static private var methodReturnValues: [StaticGiven] = []
     static private var methodPerformValues: [StaticPerform] = []
-    typealias StaticPropertyStub = StaticGiven
-    typealias StaticMethodStub = StaticGiven
-    static func clear() {
+    public typealias StaticPropertyStub = StaticGiven
+    public typealias StaticMethodStub = StaticGiven
+    public static func clear() {
         invocations = []
         methodReturnValues = []
         methodPerformValues = []
@@ -174,7 +174,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         }
     }
 
-    class StaticGiven: StubbedMethod {
+    open class StaticGiven: StubbedMethod {
         fileprivate var method: StaticMethodType
 
         private init(method: StaticMethodType, products: [Product]) {
@@ -217,7 +217,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         <%_ } %> <%_ -%>
     }
 
-    struct StaticVerify {
+    public struct StaticVerify {
         fileprivate var method: StaticMethodType
 
         <%_ for method in wrappedStaticMethodsForMethodType { -%>
@@ -231,7 +231,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         <%_ } %> <%_ -%>
     }
 
-    struct StaticPerform {
+    public struct StaticPerform {
         fileprivate var method: StaticMethodType
         var performs: Any
 
@@ -293,7 +293,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
     }
     <%_ } -%><%_ -%>
 
-    class Given: StubbedMethod {
+    open class Given: StubbedMethod {
         fileprivate var method: MethodType
 
         private init(method: MethodType, products: [Product]) {
@@ -341,7 +341,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         <%_ } %> <%_ -%>
     }
 
-    struct Verify {
+    public struct Verify {
         fileprivate var method: MethodType
 
         <%_ for method in wrappedMethodsForMethodType { -%>
@@ -361,7 +361,7 @@ class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["Objc
         <%_ } %> <%_ -%>
     }
 
-    struct Perform {
+    public struct Perform {
         fileprivate var method: MethodType
         var performs: Any
 

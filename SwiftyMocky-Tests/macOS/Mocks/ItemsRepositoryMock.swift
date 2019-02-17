@@ -23,9 +23,9 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
     private var file: StaticString?
     private var line: UInt?
 
-    typealias PropertyStub = Given
-    typealias MethodStub = Given
-    typealias SubscriptStub = Given
+    public typealias PropertyStub = Given
+    public typealias MethodStub = Given
+    public typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -38,19 +38,19 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
 
 
 
-    func storeItems(items: [Item]) {
+    open func storeItems(items: [Item]) {
         addInvocation(.m_storeItems__items_items(Parameter<[Item]>.value(`items`)))
 		let perform = methodPerformValue(.m_storeItems__items_items(Parameter<[Item]>.value(`items`))) as? ([Item]) -> Void
 		perform?(`items`)
     }
 
-    func storeDetails(details: ItemDetails) {
+    open func storeDetails(details: ItemDetails) {
         addInvocation(.m_storeDetails__details_details(Parameter<ItemDetails>.value(`details`)))
 		let perform = methodPerformValue(.m_storeDetails__details_details(Parameter<ItemDetails>.value(`details`))) as? (ItemDetails) -> Void
 		perform?(`details`)
     }
 
-    func storedItems() -> [Item]? {
+    open func storedItems() -> [Item]? {
         addInvocation(.m_storedItems)
 		let perform = methodPerformValue(.m_storedItems) as? () -> Void
 		perform?()
@@ -63,7 +63,7 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
 		return __value
     }
 
-    func storedDetails(item: Item) -> ItemDetails? {
+    open func storedDetails(item: Item) -> ItemDetails? {
         addInvocation(.m_storedDetails__item_item(Parameter<Item>.value(`item`)))
 		let perform = methodPerformValue(.m_storedDetails__item_item(Parameter<Item>.value(`item`))) as? (Item) -> Void
 		perform?(`item`)
@@ -110,7 +110,7 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         }
     }
 
-    class Given: StubbedMethod {
+    open class Given: StubbedMethod {
         fileprivate var method: MethodType
 
         private init(method: MethodType, products: [Product]) {
@@ -119,20 +119,20 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         }
 
 
-        static func storedItems(willReturn: [Item]?...) -> MethodStub {
+        public static func storedItems(willReturn: [Item]?...) -> MethodStub {
             return Given(method: .m_storedItems, products: willReturn.map({ Product.return($0) }))
         }
-        static func storedDetails(item: Parameter<Item>, willReturn: ItemDetails?...) -> MethodStub {
+        public static func storedDetails(item: Parameter<Item>, willReturn: ItemDetails?...) -> MethodStub {
             return Given(method: .m_storedDetails__item_item(`item`), products: willReturn.map({ Product.return($0) }))
         }
-        static func storedItems(willProduce: (Stubber<[Item]?>) -> Void) -> MethodStub {
+        public static func storedItems(willProduce: (Stubber<[Item]?>) -> Void) -> MethodStub {
             let willReturn: [[Item]?] = []
 			let given: Given = { return Given(method: .m_storedItems, products: willReturn.map({ Product.return($0) })) }()
 			let stubber = given.stub(for: ([Item]?).self)
 			willProduce(stubber)
 			return given
         }
-        static func storedDetails(item: Parameter<Item>, willProduce: (Stubber<ItemDetails?>) -> Void) -> MethodStub {
+        public static func storedDetails(item: Parameter<Item>, willProduce: (Stubber<ItemDetails?>) -> Void) -> MethodStub {
             let willReturn: [ItemDetails?] = []
 			let given: Given = { return Given(method: .m_storedDetails__item_item(`item`), products: willReturn.map({ Product.return($0) })) }()
 			let stubber = given.stub(for: (ItemDetails?).self)
@@ -141,29 +141,29 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         }
     }
 
-    struct Verify {
+    public struct Verify {
         fileprivate var method: MethodType
 
-        static func storeItems(items: Parameter<[Item]>) -> Verify { return Verify(method: .m_storeItems__items_items(`items`))}
-        static func storeDetails(details: Parameter<ItemDetails>) -> Verify { return Verify(method: .m_storeDetails__details_details(`details`))}
-        static func storedItems() -> Verify { return Verify(method: .m_storedItems)}
-        static func storedDetails(item: Parameter<Item>) -> Verify { return Verify(method: .m_storedDetails__item_item(`item`))}
+        public static func storeItems(items: Parameter<[Item]>) -> Verify { return Verify(method: .m_storeItems__items_items(`items`))}
+        public static func storeDetails(details: Parameter<ItemDetails>) -> Verify { return Verify(method: .m_storeDetails__details_details(`details`))}
+        public static func storedItems() -> Verify { return Verify(method: .m_storedItems)}
+        public static func storedDetails(item: Parameter<Item>) -> Verify { return Verify(method: .m_storedDetails__item_item(`item`))}
     }
 
-    struct Perform {
+    public struct Perform {
         fileprivate var method: MethodType
         var performs: Any
 
-        static func storeItems(items: Parameter<[Item]>, perform: @escaping ([Item]) -> Void) -> Perform {
+        public static func storeItems(items: Parameter<[Item]>, perform: @escaping ([Item]) -> Void) -> Perform {
             return Perform(method: .m_storeItems__items_items(`items`), performs: perform)
         }
-        static func storeDetails(details: Parameter<ItemDetails>, perform: @escaping (ItemDetails) -> Void) -> Perform {
+        public static func storeDetails(details: Parameter<ItemDetails>, perform: @escaping (ItemDetails) -> Void) -> Perform {
             return Perform(method: .m_storeDetails__details_details(`details`), performs: perform)
         }
-        static func storedItems(perform: @escaping () -> Void) -> Perform {
+        public static func storedItems(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_storedItems, performs: perform)
         }
-        static func storedDetails(item: Parameter<Item>, perform: @escaping (Item) -> Void) -> Perform {
+        public static func storedDetails(item: Parameter<Item>, perform: @escaping (Item) -> Void) -> Perform {
             return Perform(method: .m_storedDetails__item_item(`item`), performs: perform)
         }
     }
