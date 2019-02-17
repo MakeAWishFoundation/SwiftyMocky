@@ -55,13 +55,8 @@ import SwiftyMocky
     <%_ } -%>
     <%# ============================ IMPORTS InAPP (aggregated arguments) -%><%_ -%>
     <%_ if let swiftyMockyArgs = arguments["swiftyMocky"] as? [String: Any] { -%>
-        <%_ if let imported = swiftyMockyArgs["import"] as? String { -%>
-            <%_ %>import <%= imported %>
-        <%_ } -%>
-        <%_ if let allImported = swiftyMockyArgs["import"] as? [String] { -%>
-            <%_ for imported in allImported { -%>
-                <%_ %>import <%= imported %>
-            <%_ } -%>
+        <%_ for projectImport in imports(swiftyMockyArgs) { -%>
+            <%_ %><%= projectImport %>
         <%_ } -%>
     <%_ } -%>
 
@@ -86,21 +81,8 @@ import XCTest
     <%_ } -%>
     <%# ============================ IMPORTS InAPP (aggregated arguments) -%><%_ -%>
     <%_ if let swiftyMockyArgs = arguments["swiftyMocky"] as? [String: Any] { -%>
-        <%_ if let imported = swiftyMockyArgs["import"] as? String { -%>
-            <%_ %>import <%= imported %>
-        <%_ } -%>
-        <%_ if let allImported = swiftyMockyArgs["import"] as? [String] { -%>
-            <%_ for imported in allImported { -%>
-                <%_ %>import <%= imported %>
-            <%_ } -%>
-        <%_ } -%>
-        <%_ if let testable = swiftyMockyArgs["testable"] as? String {  -%>
-            <%_ %>@testable import <%= testable %>
-        <%_  } -%>
-        <%_ if let allTestable = swiftyMockyArgs["testable"] as? [String] { -%>
-            <%_ for testable in allTestable { -%>
-                <%_ %>@testable import <%= testable %>
-            <%_ } -%>
+        <%_ for projectImport in projectImports(swiftyMockyArgs) { -%>
+            <%_ %><%= projectImport %>
         <%_ } -%>
     <%_ } -%>
 
@@ -930,7 +912,9 @@ class MethodWrapper {
         if method.parameters.isEmpty {
             return "perform?()"
         } else {
-            let parameters = method.parameters.map { "`\($0.name)`" }.joined(separator: ", ")
+            let parameters = method.parameters
+                .map { "\($0.inout ? "&" : "")`\($0.name)`" }
+                .joined(separator: ", ")
             return "perform?(\(parameters))"
         }
     }

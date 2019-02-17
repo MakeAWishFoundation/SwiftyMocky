@@ -434,7 +434,9 @@ class MethodWrapper {
         if method.parameters.isEmpty {
             return "perform?()"
         } else {
-            let parameters = method.parameters.map { "`\($0.name)`" }.joined(separator: ", ")
+            let parameters = method.parameters
+                .map { "\($0.inout ? "&" : "")`\($0.name)`" }
+                .joined(separator: ", ")
             return "perform?(\(parameters))"
         }
     }
