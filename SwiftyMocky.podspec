@@ -43,25 +43,32 @@ Library that uses metaprogramming technique to generate mocks based on sources, 
       }
   end
 
-  s.subspec 'Custom' do |custom|
-    custom.source_files = 'Sources/Classes/**/*'
-    custom.exclude_files = [
-      "Sources/Classes/CustomAssertions.swift"
-    ]
-    custom.resources = '{Sources/Templates/*,get_sourcery.sh}'
-    custom.xcconfig = { 'OTHER_SWIFT_FLAGS' => '-DMockyCustom' }
-    custom.frameworks = 'Foundation'
-    custom.dependency 'Sourcery'
+  s.subspec 'StaticLibrary' do |spec|
+    spec.dependency 'SwiftyMocky/Core'
+    spec.pod_target_xcconfig = {
+      'GCC_PREPROCESSOR_DEFINITIONS' => 'STATIC_LIBRARY=1',
+    }
   end
 
-  s.subspec 'Prototyping' do |custom|
-    custom.source_files = 'Sources/Classes/**/*'
-    custom.exclude_files = [
+  s.subspec 'Custom' do |spec|
+    spec.source_files = 'Sources/Classes/**/*'
+    spec.exclude_files = [
       "Sources/Classes/CustomAssertions.swift"
     ]
-    custom.resources = '{Sources/Templates/*,get_sourcery.sh}'
-    custom.xcconfig = { 'OTHER_SWIFT_FLAGS' => '-DMockyCustom' }
-    custom.frameworks = 'Foundation'
-    custom.dependency 'Sourcery'
+    spec.resources = '{Sources/Templates/*,get_sourcery.sh}'
+    spec.xcconfig = { 'OTHER_SWIFT_FLAGS' => '-DMockyCustom' }
+    spec.frameworks = 'Foundation'
+    spec.dependency 'Sourcery'
+  end
+
+  s.subspec 'Prototyping' do |spec|
+    spec.source_files = 'Sources/Classes/**/*'
+    spec.exclude_files = [
+      "Sources/Classes/CustomAssertions.swift"
+    ]
+    spec.resources = '{Sources/Templates/*,get_sourcery.sh}'
+    spec.xcconfig = { 'OTHER_SWIFT_FLAGS' => '-DMockyCustom' }
+    spec.frameworks = 'Foundation'
+    spec.dependency 'Sourcery'
   end
 end
