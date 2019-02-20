@@ -7,12 +7,7 @@
 //
 
 #import "MockySetup.h"
-
-#ifdef STATIC_LIBRARY
-#import "SwiftyMocky-Swift.h"
-#else
 #import <SwiftyMocky/SwiftyMocky-Swift.h>
-#endif
 
 @implementation MockySetup
 

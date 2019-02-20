@@ -25,6 +25,7 @@ Library that uses metaprogramming technique to generate mocks based on sources, 
   s.macos.deployment_target = '10.10'
   s.default_subspec  = "Core"
   s.preserve_paths = '*'
+  s.swift_version = '3.1'
 
   s.subspec 'Core' do |core|
     core.source_files = 'Sources/Classes/**/*'
@@ -40,20 +41,23 @@ Library that uses metaprogramming technique to generate mocks based on sources, 
         'OTHER_SWIFT_FLAGS' => '$(inherited) -suppress-warnings',
         'FRAMEWORK_SEARCH_PATHS' => '$(inherited) "$(PLATFORM_DIR)/Developer/Library/Frameworks"',
         'DEFINES_MODULE' => 'YES'
-      }
+    }
+    core.user_target_xcconfig = { 'FRAMEWORK_SEARCH_PATHS' => '$(PLATFORM_DIR)/Developer/Library/Frameworks' }
   end
 
   s.subspec 'StaticLibrary' do |spec|
     spec.dependency 'SwiftyMocky/Core'
-    spec.pod_target_xcconfig = {
-      'GCC_PREPROCESSOR_DEFINITIONS' => 'STATIC_LIBRARY=1',
-    }
+    spec.exclude_files = [
+        "Sources/Classes/MockySetup.{h,m}",
+    ]
   end
 
   s.subspec 'Custom' do |spec|
     spec.source_files = 'Sources/Classes/**/*'
     spec.exclude_files = [
-      "Sources/Classes/CustomAssertions.swift"
+        "Sources/Classes/CustomAssertions.swift",
+        "Sources/Classes/SwiftyMockyTestObserver.swift",
+        "Sources/Classes/MockySetup.{h,m}",
     ]
     spec.resources = '{Sources/Templates/*,get_sourcery.sh}'
     spec.xcconfig = { 'OTHER_SWIFT_FLAGS' => '-DMockyCustom' }
@@ -64,7 +68,9 @@ Library that uses metaprogramming technique to generate mocks based on sources, 
   s.subspec 'Prototyping' do |spec|
     spec.source_files = 'Sources/Classes/**/*'
     spec.exclude_files = [
-      "Sources/Classes/CustomAssertions.swift"
+      "Sources/Classes/CustomAssertions.swift",
+      "Sources/Classes/SwiftyMockyTestObserver.swift",
+      "Sources/Classes/MockySetup.{h,m}",
     ]
     spec.resources = '{Sources/Templates/*,get_sourcery.sh}'
     spec.xcconfig = { 'OTHER_SWIFT_FLAGS' => '-DMockyCustom' }
