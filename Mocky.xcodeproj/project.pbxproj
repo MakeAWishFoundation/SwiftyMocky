@@ -182,6 +182,8 @@
 		CCE351661FCC0B9700A76C4C /* Mock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE351621FCC0B9700A76C4C /* Mock.generated.swift */; };
 		CCE351671FCC0B9700A76C4C /* ItemsRepositoryMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE351631FCC0B9700A76C4C /* ItemsRepositoryMock.swift */; };
 		CCE351681FCC0B9700A76C4C /* Mocky_tvOS_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE351641FCC0B9700A76C4C /* Mocky_tvOS_Tests.swift */; };
+		E4AE45B922240BFE00CF3D25 /* ProtocolWithGenericsAndConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AE45B822240BFE00CF3D25 /* ProtocolWithGenericsAndConstraints.swift */; };
+		E4AE45BB22240CB800CF3D25 /* ProtocolWithGenericsAndConstraintsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AE45BA22240CB800CF3D25 /* ProtocolWithGenericsAndConstraintsTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -336,6 +338,8 @@
 		D4CF1AC7A6F257BB2904DA55 /* Pods-Mocky_Tests_tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Tests_tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Tests_tvOS/Pods-Mocky_Tests_tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		E0F0B024E7EFDB2727CEE125 /* Pods-Mocky_Tests_macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Tests_macOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Tests_macOS/Pods-Mocky_Tests_macOS.release.xcconfig"; sourceTree = "<group>"; };
 		E467147D1ECEF4D600C7DAB3 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		E4AE45B822240BFE00CF3D25 /* ProtocolWithGenericsAndConstraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolWithGenericsAndConstraints.swift; sourceTree = "<group>"; };
+		E4AE45BA22240CB800CF3D25 /* ProtocolWithGenericsAndConstraintsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolWithGenericsAndConstraintsTests.swift; sourceTree = "<group>"; };
 		E671CB0D6255BBBB2FADDA17 /* Pods-Mocky_Example_macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Example_macOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Example_macOS/Pods-Mocky_Example_macOS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -657,6 +661,7 @@
 			isa = PBXGroup;
 			children = (
 				CCE350D81FCC0A9400A76C4C /* ProtocolsWithGenerics.swift */,
+				E4AE45B822240BFE00CF3D25 /* ProtocolWithGenericsAndConstraints.swift */,
 			);
 			path = "Example 7";
 			sourceTree = "<group>";
@@ -783,6 +788,7 @@
 			isa = PBXGroup;
 			children = (
 				CCE351341FCC0B8200A76C4C /* ProtocolsWithGenericsTests.swift */,
+				E4AE45BA22240CB800CF3D25 /* ProtocolWithGenericsAndConstraintsTests.swift */,
 			);
 			path = "Example 7";
 			sourceTree = "<group>";
@@ -1185,7 +1191,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_iOS/Pods-Mocky_Tests_iOS-frameworks.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-Mocky_Tests_iOS/Pods-Mocky_Tests_iOS-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/SwiftyMocky-iOS/SwiftyMocky.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -1196,7 +1202,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_iOS/Pods-Mocky_Tests_iOS-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Mocky_Tests_iOS/Pods-Mocky_Tests_iOS-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		44142757B38ABCA8B35C72D0 /* [CP] Embed Pods Frameworks */ = {
@@ -1207,7 +1213,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_macOS/Pods-Mocky_Tests_macOS-frameworks.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-Mocky_Tests_macOS/Pods-Mocky_Tests_macOS-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/SwiftyMocky-macOS/SwiftyMocky.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -1218,7 +1224,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_macOS/Pods-Mocky_Tests_macOS-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Mocky_Tests_macOS/Pods-Mocky_Tests_macOS-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		52CEFF50E2B6E659CB5C4FF2 /* [CP] Check Pods Manifest.lock */ = {
@@ -1283,7 +1289,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_tvOS/Pods-Mocky_Tests_tvOS-frameworks.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-Mocky_Tests_tvOS/Pods-Mocky_Tests_tvOS-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/SwiftyMocky-tvOS/SwiftyMocky.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -1294,7 +1300,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_tvOS/Pods-Mocky_Tests_tvOS-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Mocky_Tests_tvOS/Pods-Mocky_Tests_tvOS-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		BD34BA0BED4C085F8CC18492 /* [CP] Check Pods Manifest.lock */ = {
@@ -1455,6 +1461,7 @@
 				CCE351481FCC0B8200A76C4C /* ProtocolsWithGenericsTests.swift in Sources */,
 				CCE351461FCC0B8200A76C4C /* ExampleTests.swift in Sources */,
 				CC542E6422198EB900691F24 /* InoutParameterTests.swift in Sources */,
+				E4AE45BB22240CB800CF3D25 /* ProtocolWithGenericsAndConstraintsTests.swift in Sources */,
 				CC32522320061574009AD6C2 /* SelfConstrainedProtocolTests.swift in Sources */,
 				C87B4F822153EF0700DD8AE3 /* ExpressibleByLiteralsTests.swift in Sources */,
 				CC32521B2004C217009AD6C2 /* GenericProtocolsTests.swift in Sources */,
@@ -1536,6 +1543,7 @@
 				CC491A1B1FD9A33F001CAB8A /* Countable.swift in Sources */,
 				CCAFCA041FAF24EB003F776A /* Mock.swift in Sources */,
 				CCB026A81FB4F39000ACA9F0 /* GenericAttribute.swift in Sources */,
+				E4AE45B922240BFE00CF3D25 /* ProtocolWithGenericsAndConstraints.swift in Sources */,
 				CCC5CAD92161183E00D29291 /* MockySetup.m in Sources */,
 				CCC5CAD52161180D00D29291 /* CustomAssertions.swift in Sources */,
 				C841941E2153D7E700D2BBC9 /* Parameter+Literals.swift in Sources */,
