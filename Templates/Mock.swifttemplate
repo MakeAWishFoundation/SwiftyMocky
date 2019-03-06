@@ -274,7 +274,7 @@ open class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations[
     class StaticGiven: StubbedMethod {
         fileprivate var method: StaticMethodType
 
-        private init(method: StaticMethodType, products: [Product]) {
+        private init(method: StaticMethodType, products: [StubProduct]) {
             self.method = method
             super.init(products)
         }
@@ -393,7 +393,7 @@ open class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations[
     class Given: StubbedMethod {
         fileprivate var method: MethodType
 
-        private init(method: MethodType, products: [Product]) {
+        private init(method: MethodType, products: [StubProduct]) {
             self.method = method
             super.init(products)
         }
@@ -492,7 +492,7 @@ open class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations[
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
     }
-    private func methodReturnValue(_ method: MethodType) throws -> Product {
+    private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
@@ -549,7 +549,7 @@ open class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations[
     static private func addInvocation(_ call: StaticMethodType) {
         invocations.append(call)
     }
-    static private func methodReturnValue(_ method: StaticMethodType) throws -> Product {
+    static private func methodReturnValue(_ method: StaticMethodType) throws -> StubProduct {
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }

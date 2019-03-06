@@ -113,28 +113,28 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
     open class Given: StubbedMethod {
         fileprivate var method: MethodType
 
-        private init(method: MethodType, products: [Product]) {
+        private init(method: MethodType, products: [StubProduct]) {
             self.method = method
             super.init(products)
         }
 
 
         public static func storedItems(willReturn: [Item]?...) -> MethodStub {
-            return Given(method: .m_storedItems, products: willReturn.map({ Product.return($0) }))
+            return Given(method: .m_storedItems, products: willReturn.map({ StubProduct.return($0) }))
         }
         public static func storedDetails(item: Parameter<Item>, willReturn: ItemDetails?...) -> MethodStub {
-            return Given(method: .m_storedDetails__item_item(`item`), products: willReturn.map({ Product.return($0) }))
+            return Given(method: .m_storedDetails__item_item(`item`), products: willReturn.map({ StubProduct.return($0) }))
         }
         public static func storedItems(willProduce: (Stubber<[Item]?>) -> Void) -> MethodStub {
             let willReturn: [[Item]?] = []
-			let given: Given = { return Given(method: .m_storedItems, products: willReturn.map({ Product.return($0) })) }()
+			let given: Given = { return Given(method: .m_storedItems, products: willReturn.map({ StubProduct.return($0) })) }()
 			let stubber = given.stub(for: ([Item]?).self)
 			willProduce(stubber)
 			return given
         }
         public static func storedDetails(item: Parameter<Item>, willProduce: (Stubber<ItemDetails?>) -> Void) -> MethodStub {
             let willReturn: [ItemDetails?] = []
-			let given: Given = { return Given(method: .m_storedDetails__item_item(`item`), products: willReturn.map({ Product.return($0) })) }()
+			let given: Given = { return Given(method: .m_storedDetails__item_item(`item`), products: willReturn.map({ StubProduct.return($0) })) }()
 			let stubber = given.stub(for: (ItemDetails?).self)
 			willProduce(stubber)
 			return given
@@ -185,7 +185,7 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
     private func addInvocation(_ call: MethodType) {
         invocations.append(call)
     }
-    private func methodReturnValue(_ method: MethodType) throws -> Product {
+    private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }

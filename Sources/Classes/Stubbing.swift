@@ -19,7 +19,7 @@ public enum MockError: Error {
 ///
 /// - `return`: Return value
 /// - `throw`: Thrown error value
-public enum Product {
+public enum StubProduct {
     case `return`(Any?)
     case `throw`(Error)
 
@@ -42,14 +42,14 @@ open class StubbedMethod: WithStubbingPolicy {
     /// [Internal] Stubbing policy. By default uses parent mock policy
     public var policy: StubbingPolicy = .default
     /// [Internal] Array of stub return values
-    private var products: [Product]
+    private var products: [StubProduct]
     /// [Internal] Index of next retutn value. Can be out of bounds.
     private var index: Int = 0
 
     /// [Internal] Creates new method init with given products.
     ///
     /// - Parameter products: All stub return values
-    public init(_ products: [Product]) {
+    public init(_ products: [StubProduct]) {
         self.products = products
         self.index = 0
     }
@@ -57,8 +57,8 @@ open class StubbedMethod: WithStubbingPolicy {
     /// [Internal] Get next product, with respect to self.policy and inherited policy
     ///
     /// - Parameter policy: Inherited policy
-    /// - Returns: Product from products array
-    public func getProduct(policy: StubbingPolicy) -> Product {
+    /// - Returns: StubProduct from products array
+    public func getProduct(policy: StubbingPolicy) -> StubProduct {
         defer { index = self.policy.real(policy).updated(index, with: products.count) }
         return products[index]
     }
@@ -82,7 +82,7 @@ open class StubbedMethod: WithStubbingPolicy {
     /// Appends new product to products array
     ///
     /// - Parameter product: New stub return value (or error thrown) to append
-    fileprivate func append(_ product: Product) {
+    fileprivate func append(_ product: StubProduct) {
         products.append(product)
     }
 }

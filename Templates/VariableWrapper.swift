@@ -80,6 +80,6 @@ class VariableWrapper {
     }
 
     func givenConstructor(prefix: String = "") -> String {
-        return "return \(prefix)Given(method: .\(propertyCaseGetName), products: defaultValue.map({ Product.return($0) }))"
+        return "return \(prefix)Given(method: .\(propertyCaseGetName), products: defaultValue.map({ StubProduct.return($0) }))"
     }
 }
