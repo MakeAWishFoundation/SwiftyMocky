@@ -15,11 +15,7 @@ public class SwiftyMockyTestObserver: NSObject, XCTestObservation {
     private static var currentTestCase: XCTestCase?
     /// [Internal] Setup observing once
     private static let setupBlock: (() -> Void) = {
-        #if swift(>=4.0)
         XCTestObservationCenter.shared.addTestObserver(SwiftyMockyTestObserver())
-        #else
-        XCTestObservationCenter.shared().addTestObserver(SwiftyMockyTestObserver())
-        #endif
         return {}
     }()
 
@@ -60,11 +56,7 @@ public class SwiftyMockyTestObserver: NSObject, XCTestObservation {
         testCase.continueAfterFailure = false
         let methodName = getNameOfExtecutedTestCase(testCase)
         if let name = methodName, let failingLine = FilesExlorer().findTestCaseLine(for: name, file: file) {
-            #if swift(>=4.0)
             testCase.recordFailure(withDescription: message, inFile: file.description, atLine: Int(failingLine), expected: false)
-            #else
-            testCase.recordFailure(withDescription: message, inFile: file.description, atLine: failingLine, expected: false)
-            #endif
         } else if let name = methodName {
             XCTFail("\(name) - \(message)", file: file, line: line)
         } else {
@@ -73,11 +65,7 @@ public class SwiftyMockyTestObserver: NSObject, XCTestObservation {
     }
 
     private static func getNameOfExtecutedTestCase(_ testCase: XCTestCase) -> String? {
-        #if swift(>=4.0)
         return testCase.name.components(separatedBy: " ")[1].components(separatedBy: "]").first
-        #else
-        return testCase.name?.components(separatedBy: " ")[1].components(separatedBy: "]").first
-        #endif
     }
 }
 
