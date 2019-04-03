@@ -60,7 +60,7 @@ extension Optional: OptionalType {
 }
 
 public extension Parameter where ValueType: OptionalType {
-    public static var notNil: Parameter<ValueType> {
+    static var notNil: Parameter<ValueType> {
         return Parameter.matching { $0.isNotNil }
     }
 }
@@ -68,7 +68,7 @@ public extension Parameter where ValueType: OptionalType {
 // MARK: - Order
 public extension Parameter where ValueType: GenericAttributeType {
     /// Used for invocations sorting purpose.
-    public var intValue: Int {
+    var intValue: Int {
         switch self {
         case ._: return 0
         case let .value(generic): return generic.intValue
@@ -79,7 +79,7 @@ public extension Parameter where ValueType: GenericAttributeType {
 
 public extension Parameter {
     /// Used for invocations sorting purpose.
-    public var intValue: Int {
+    var intValue: Int {
         switch self {
         case ._: return 0
         case .value: return 1
@@ -101,7 +101,7 @@ public extension Parameter {
     ///   - rhs: Second parameter
     ///   - matcher: Matcher instance
     /// - Returns: true, if first is matching second
-    public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
+    static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
         switch (lhs, rhs) {
         case (._, _): return true
         case (_, ._): return true
@@ -120,7 +120,7 @@ public extension Parameter {
     /// [Internal] Wraps as generic Parameter instance. Should not be ever called directly.
     ///
     /// - Returns: Wrapped parameter
-    public func wrapAsGeneric() -> Parameter<GenericAttribute> {
+    func wrapAsGeneric() -> Parameter<GenericAttribute> {
         switch self {
         case ._:
             let attribute = GenericAttribute(Mirror(reflecting: ValueType.self), intValue, { (l, r, m) -> Bool in
@@ -176,7 +176,7 @@ public extension Parameter where ValueType: GenericAttributeType {
     ///   - rhs: other
     ///   - matcher: Matcher instance used for comparison
     /// - Returns: true if they are matching, false otherwise
-    public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
+    static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
         switch (lhs, rhs) {
         case (._, _): return true
         case (_, ._): return true
@@ -194,7 +194,7 @@ public extension Parameter where ValueType: Sequence, ValueType: Equatable {
     ///   - rhs: other
     ///   - matcher: Matcher instance used for comparison
     /// - Returns: true if they are matching, false otherwise
-    public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
+    static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
         switch (lhs, rhs) {
         case (._, _): return true
         case (_, ._): return true
@@ -214,7 +214,7 @@ public extension Parameter where ValueType: Sequence, ValueType.Element: Equatab
     ///   - rhs: other
     ///   - matcher: Matcher instance used for comparison
     /// - Returns: true if they are matching, false otherwise
-    public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
+    static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
         switch (lhs, rhs) {
         case (._, _): return true
         case (_, ._): return true
@@ -249,7 +249,7 @@ public extension Parameter where ValueType: Sequence, ValueType.Element: Equatab
     ///   - rhs: other
     ///   - matcher: Matcher instance used for comparison
     /// - Returns: true if they are matching, false otherwise
-    public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
+    static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
         switch (lhs, rhs) {
         case (._, _): return true
         case (_, ._): return true
@@ -271,7 +271,7 @@ public extension Parameter where ValueType: Sequence {
     ///   - rhs: other
     ///   - matcher: Matcher instance used for comparison
     /// - Returns: true if they are matching, false otherwise
-    public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
+    static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
         switch (lhs, rhs) {
         case (._, _): return true
         case (_, ._): return true
@@ -307,7 +307,7 @@ public extension Parameter where ValueType: Sequence {
     /// [Internal] Wraps as generic Parameter instance. Should not be ever called directly.
     ///
     /// - Returns: Wrapped parameter
-    public func wrapAsGeneric() -> Parameter<GenericAttribute> {
+    func wrapAsGeneric() -> Parameter<GenericAttribute> {
         switch self {
         case ._:
             let attribute = GenericAttribute(Mirror(reflecting: ValueType.self), intValue, { (l, r, m) -> Bool in
@@ -363,7 +363,7 @@ public extension Parameter where ValueType: Equatable {
     ///   - rhs: other
     ///   - matcher: Matcher instance used for comparison
     /// - Returns: true if they are matching, false otherwise
-    public static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
+    static func compare(lhs: Parameter<ValueType>, rhs: Parameter<ValueType>, with matcher: Matcher) -> Bool {
         switch (lhs, rhs) {
         case (._, _): return true
         case (_, ._): return true

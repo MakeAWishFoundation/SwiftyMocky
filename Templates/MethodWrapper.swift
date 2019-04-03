@@ -308,9 +308,9 @@ class MethodWrapper {
 
     func givenConstructor(prefix: String = "") -> String {
         if method.parameters.isEmpty {
-            return "return \(prefix)Given(method: .\(prototype), products: willReturn.map({ StubProduct.return($0) }))"
+            return "return \(prefix)Given(method: .\(prototype), products: willReturn.map({ StubProduct.return($0 as Any) }))"
         } else {
-            return "return \(prefix)Given(method: .\(prototype)(\(parametersForProxyInit())), products: willReturn.map({ StubProduct.return($0) }))"
+            return "return \(prefix)Given(method: .\(prototype)(\(parametersForProxyInit())), products: willReturn.map({ StubProduct.return($0 as Any) }))"
         }
     }
 

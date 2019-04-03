@@ -180,7 +180,6 @@ class SimpleProtocolsTests: XCTestCase {
         XCTAssertEqual(mock.simpleMethod(), "d")
     }
 
-
     func test_simpleProtocol_that_inherits() {
         let mock = SimpleProtocolThatInheritsOtherProtocolsMock()
 

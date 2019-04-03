@@ -114,8 +114,8 @@ open class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations[
     <%_ let variableCasesCount: Int = wrappedVariables.reduce(0) { return $0 + $1.casesCount } -%><%_ -%>
     <%_ let subscriptsCasesCount: Int = wrappedSubscripts.reduce(0) { return $0 + $1.casesCount } -%><%_ -%>
     <%_ let staticVariableCasesCount: Int = wrappedStaticVariables.reduce(0) { return $0 + $1.casesCount } -%><%_ -%>
-    <%_ let generateOldAccessorsForMethods: Bool = !areThereCollisions(between: wrappedMethods) -%><%_ -%>
-    <%_ let generateOldAccessorsForStaticMethods: Bool = !areThereCollisions(between: wrappedStaticMethods) -%><%_ -%>
+    <%_ let generateOldAccessorsForMethods: Bool = false -%><%_ -%>
+    <%_ let generateOldAccessorsForStaticMethods: Bool = false -%><%_ -%>
 
   <%# ================================================== STATIC STUBS -%><%_ -%>
     <%_ for method in wrappedStaticMethods { -%>

@@ -239,7 +239,7 @@ public extension Optional {
     ///
     /// - Parameter message: Failure message
     /// - Returns: Unwrapped value
-    public func orFail(_ message: String = "unwrapping nil") -> Wrapped {
+    func orFail(_ message: String = "unwrapping nil") -> Wrapped {
         return self ?? { Failure(message) }()
     }
 }

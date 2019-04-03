@@ -125,7 +125,7 @@ class SubscriptWrapper {
         return "public static func `subscript`\(genericTypesModifier ?? "")(\(parametersForProxySignature()), willReturn: \(returnTypeString)...) -> SubscriptStub"
     }
     func givenConstructor() -> String {
-        return "return Given(method: .\(subscriptCasePrefix("get"))(\(parametersForProxyInit())), products: willReturn.map({ StubProduct.return($0) }))"
+        return "return Given(method: .\(subscriptCasePrefix("get"))(\(parametersForProxyInit())), products: willReturn.map({ StubProduct.return($0 as Any) }))"
     }
 
     // Verify

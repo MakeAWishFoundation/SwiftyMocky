@@ -20,7 +20,7 @@ public enum MockError: Error {
 /// - `return`: Return value
 /// - `throw`: Thrown error value
 public enum StubProduct {
-    case `return`(Any?)
+    case `return`(Any)
     case `throw`(Error)
 
     /// [Internal] If self is returns, and nested value can be casted to T, returns value. Can fail (fatalError)

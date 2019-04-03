@@ -50,7 +50,9 @@ class GenericProtocolsTests: XCTestCase {
         // Required to allow Type matching! Basic types like Int.self, Bool.self etc have already registered comparators
         Matcher.default.register(CustomThing.Type.self)
 
-        Given(mock, .decode(type: .value(Int.self), from: .any, willReturn: 0))
+        // Deprecated become unavailable
+//        Given(mock, .decode(type: .value(Int.self), from: .any, willReturn: 0))
+        Given(mock, .decode(.value(Int.self), from: .any, willReturn: 0))
         Given(mock, .decode(.value(Int.self), from: .value(data), willReturn: 1))
         Given(mock, .decode(.any(CustomThing.Type.self), from: .any, willReturn: CustomThing(id: 0)))
         Given(mock, .decode(.any(CustomThing.Type.self), from: .value(data), willReturn: CustomThing(id: 1)))

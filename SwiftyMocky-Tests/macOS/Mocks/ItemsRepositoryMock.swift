@@ -120,21 +120,21 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
 
 
         public static func storedItems(willReturn: [Item]?...) -> MethodStub {
-            return Given(method: .m_storedItems, products: willReturn.map({ StubProduct.return($0) }))
+            return Given(method: .m_storedItems, products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func storedDetails(item: Parameter<Item>, willReturn: ItemDetails?...) -> MethodStub {
-            return Given(method: .m_storedDetails__item_item(`item`), products: willReturn.map({ StubProduct.return($0) }))
+            return Given(method: .m_storedDetails__item_item(`item`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func storedItems(willProduce: (Stubber<[Item]?>) -> Void) -> MethodStub {
             let willReturn: [[Item]?] = []
-			let given: Given = { return Given(method: .m_storedItems, products: willReturn.map({ StubProduct.return($0) })) }()
+			let given: Given = { return Given(method: .m_storedItems, products: willReturn.map({ StubProduct.return($0 as Any) })) }()
 			let stubber = given.stub(for: ([Item]?).self)
 			willProduce(stubber)
 			return given
         }
         public static func storedDetails(item: Parameter<Item>, willProduce: (Stubber<ItemDetails?>) -> Void) -> MethodStub {
             let willReturn: [ItemDetails?] = []
-			let given: Given = { return Given(method: .m_storedDetails__item_item(`item`), products: willReturn.map({ StubProduct.return($0) })) }()
+			let given: Given = { return Given(method: .m_storedDetails__item_item(`item`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
 			let stubber = given.stub(for: (ItemDetails?).self)
 			willProduce(stubber)
 			return given
