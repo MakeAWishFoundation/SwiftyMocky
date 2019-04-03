@@ -13,7 +13,7 @@
     <a title="Known issues  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">SwiftyMocky Docs</a> (95% documented)</p>
+        <p><a href="index.html">SwiftyMocky Docs</a> (89% documented)</p>
         <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -87,10 +87,10 @@
                 <a href="Global methods.html#/s:11SwiftyMocky6Verify__4file4lineyxm_06StaticC0Qzs0F6StringVSutAA0F4MockRzlF">Verify(_:_:file:line:)</a>
               </li>
               <li class="nav-group-task">
-                <a href="Global methods.html#/s:11SwiftyMocky6Verify___4file4lineyx_AA5CountVABQzs12StaticStringVSutAA4MockRzlF">Verify(_:_:_:file:line:)</a>
+                <a href="Global methods.html#/s:11SwiftyMocky6Verify___4file4lineyx_AA5CountOABQzs12StaticStringVSutAA4MockRzlF">Verify(_:_:_:file:line:)</a>
               </li>
               <li class="nav-group-task">
-                <a href="Global methods.html#/s:11SwiftyMocky6Verify___4file4lineyxm_AA5CountV06StaticC0Qzs0G6StringVSutAA0G4MockRzlF">Verify(_:_:_:file:line:)</a>
+                <a href="Global methods.html#/s:11SwiftyMocky6Verify___4file4lineyxm_AA5CountO06StaticC0Qzs0G6StringVSutAA0G4MockRzlF">Verify(_:_:_:file:line:)</a>
               </li>
             </ul>
           </li>
@@ -124,7 +124,13 @@
                 <a href="Protocols/Countable.html">Countable</a>
               </li>
               <li class="nav-group-task">
-                <a href="Structs/Count.html">Count</a>
+                <a href="Enums/Count.html">Count</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Stubber.html">Stubber</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/StubberThrows.html">StubberThrows</a>
               </li>
             </ul>
           </li>
@@ -149,10 +155,10 @@
                 <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty__4file4lineyxm_06StaticC0Qzs0G6StringVSutAA0G4MockRzlF">VerifyProperty(_:_:file:line:)</a>
               </li>
               <li class="nav-group-task">
-                <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty___4file4lineyx_AA5CountV0C0Qzs12StaticStringVSutAA4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
+                <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty___4file4lineyx_AA5CountO0C0Qzs12StaticStringVSutAA4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
               </li>
               <li class="nav-group-task">
-                <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty___4file4lineyxm_AA5CountV06StaticC0Qzs0H6StringVSutAA0H4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
+                <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty___4file4lineyxm_AA5CountO06StaticC0Qzs0H6StringVSutAA0H4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
               </li>
             </ul>
           </li>
@@ -185,7 +191,7 @@
                 <a href="Other Enums.html#/s:11SwiftyMocky9MockErrorO">MockError</a>
               </li>
               <li class="nav-group-task">
-                <a href="Enums/Product.html">Product</a>
+                <a href="Enums/StubProduct.html">StubProduct</a>
               </li>
             </ul>
           </li>
@@ -237,12 +243,6 @@
               <li class="nav-group-task">
                 <a href="Structs/FatalErrorUtil.html">FatalErrorUtil</a>
               </li>
-              <li class="nav-group-task">
-                <a href="Structs/Stubber.html">Stubber</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Structs/StubberThrows.html">StubberThrows</a>
-              </li>
             </ul>
           </li>
         </ul>
@@ -263,30 +263,32 @@
 <p>Currentyly we support:</p>
 
 <ul>
+<li>5.0</li>
 <li>4.2</li>
 <li>4.1</li>
 <li>4.0.2</li>
 <li>4.0</li>
-<li>3.1</li>
 </ul>
 
 <p><strong>Usage from root project dir:</strong></p>
-<pre class="highlight shell"><code>sh ./Pods/SwiftyMocky/get_sourcery.sh 4.2
+<pre class="highlight shell"><code>sh get_sourcery.sh <span class="c"># Will download 5.0 by default</span>
+sh get_sourcery.sh 5.0 <span class="c"># or 4.2, if you use Xcode 10.1</span>
 </code></pre>
 
 <blockquote>
 <p><strong>Note!</strong>
 This script is also shipped with SwiftyMocky when installing via cocoapods
-Swift version is optional, if you don&rsquo;t specify it, script will use latest supported (4.2 in that case)</p>
+Swift version is optional, if you don&rsquo;t specify it, script will use latest supported (5.0 in that case)</p>
 </blockquote>
 
 <p><strong>get_sourcery.sh</strong></p>
-<pre class="highlight shell"><code><span class="o">[[</span> <span class="nv">$# </span>&gt; 0 <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nv">VERSION</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> <span class="o">||</span> <span class="nv">VERSION</span><span class="o">=</span><span class="s2">"4.2"</span>
-<span class="o">[[</span> <span class="nv">$# </span>&gt; 1 <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nv">OUTPUT</span><span class="o">=</span><span class="s2">"</span><span class="nv">$2</span><span class="s2">"</span> <span class="o">||</span> <span class="nv">OUTPUT</span><span class="o">=</span><span class="s2">"./Pods/Sourcery/bin"</span>
+<pre class="highlight shell"><code><span class="o">[[</span> <span class="nv">$# </span><span class="o">&gt;</span> 0 <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nv">VERSION</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> <span class="o">||</span> <span class="nv">VERSION</span><span class="o">=</span><span class="s2">"5.0"</span>
+<span class="o">[[</span> <span class="nv">$# </span><span class="o">&gt;</span> 1 <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nv">OUTPUT</span><span class="o">=</span><span class="s2">"</span><span class="nv">$2</span><span class="s2">"</span> <span class="o">||</span> <span class="nv">OUTPUT</span><span class="o">=</span><span class="s2">"./Pods/Sourcery/bin"</span>
+<span class="nv">SOURCERY_VERSION</span><span class="o">=</span><span class="s2">"0.16.0"</span> <span class="c"># The version of Sourcery that is associated with this SwiftyMocky version</span>
 
-<span class="nb">echo</span> <span class="s2">"CLONE SOURCERY FOR </span><span class="nv">$VERSION</span><span class="s2"> INTO </span><span class="nv">$OUTPUT</span><span class="s2">"</span>
-rm -r -f <span class="s2">"</span><span class="nv">$OUTPUT</span><span class="s2">"</span>
-git clone -b <span class="s2">"swift/</span><span class="nv">$VERSION</span><span class="s2">"</span> --single-branch --depth 1 https://github.com/MakeAWishFoundation/SwiftyMocky.wiki.git <span class="s2">"</span><span class="nv">$OUTPUT</span><span class="s2">"</span>
+<span class="nb">echo</span> <span class="s2">"CLONE SOURCERY </span><span class="nv">$SOURCERY_VERSION</span><span class="s2"> FOR Swift </span><span class="nv">$VERSION</span><span class="s2"> INTO </span><span class="nv">$OUTPUT</span><span class="s2">"</span>
+<span class="nb">rm</span> <span class="nt">-r</span> <span class="nt">-f</span> <span class="s2">"</span><span class="nv">$OUTPUT</span><span class="s2">"</span>
+git clone <span class="nt">-b</span> <span class="s2">"sourcery/</span><span class="nv">$SOURCERY_VERSION</span><span class="s2">-swift</span><span class="nv">$VERSION</span><span class="s2">"</span> <span class="nt">--single-branch</span> <span class="nt">--depth</span> 1 https://github.com/MakeAWishFoundation/SwiftyMocky.wiki.git <span class="s2">"</span><span class="nv">$OUTPUT</span><span class="s2">"</span>
 </code></pre>
 <h2 id='2-matcher-fatal-error-for-equatable-sequence-types' class='heading'>2. Matcher [FATAL] error for Equatable / Sequence types</h2>
 
@@ -303,7 +305,7 @@ git clone -b <span class="s2">"swift/</span><span class="nv">$VERSION</span><spa
         </section>
         <section id="footer">
           <p>Copyright © 2017 MakeAWishFoundation. All rights reserved.</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.5</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>

@@ -14,7 +14,7 @@
     <a title="Deprecated  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">SwiftyMocky Docs</a> (95% documented)</p>
+        <p><a href="index.html">SwiftyMocky Docs</a> (89% documented)</p>
         <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -88,10 +88,10 @@
                 <a href="Global methods.html#/s:11SwiftyMocky6Verify__4file4lineyxm_06StaticC0Qzs0F6StringVSutAA0F4MockRzlF">Verify(_:_:file:line:)</a>
               </li>
               <li class="nav-group-task">
-                <a href="Global methods.html#/s:11SwiftyMocky6Verify___4file4lineyx_AA5CountVABQzs12StaticStringVSutAA4MockRzlF">Verify(_:_:_:file:line:)</a>
+                <a href="Global methods.html#/s:11SwiftyMocky6Verify___4file4lineyx_AA5CountOABQzs12StaticStringVSutAA4MockRzlF">Verify(_:_:_:file:line:)</a>
               </li>
               <li class="nav-group-task">
-                <a href="Global methods.html#/s:11SwiftyMocky6Verify___4file4lineyxm_AA5CountV06StaticC0Qzs0G6StringVSutAA0G4MockRzlF">Verify(_:_:_:file:line:)</a>
+                <a href="Global methods.html#/s:11SwiftyMocky6Verify___4file4lineyxm_AA5CountO06StaticC0Qzs0G6StringVSutAA0G4MockRzlF">Verify(_:_:_:file:line:)</a>
               </li>
             </ul>
           </li>
@@ -125,7 +125,13 @@
                 <a href="Protocols/Countable.html">Countable</a>
               </li>
               <li class="nav-group-task">
-                <a href="Structs/Count.html">Count</a>
+                <a href="Enums/Count.html">Count</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Stubber.html">Stubber</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/StubberThrows.html">StubberThrows</a>
               </li>
             </ul>
           </li>
@@ -150,10 +156,10 @@
                 <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty__4file4lineyxm_06StaticC0Qzs0G6StringVSutAA0G4MockRzlF">VerifyProperty(_:_:file:line:)</a>
               </li>
               <li class="nav-group-task">
-                <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty___4file4lineyx_AA5CountV0C0Qzs12StaticStringVSutAA4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
+                <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty___4file4lineyx_AA5CountO0C0Qzs12StaticStringVSutAA4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
               </li>
               <li class="nav-group-task">
-                <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty___4file4lineyxm_AA5CountV06StaticC0Qzs0H6StringVSutAA0H4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
+                <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty___4file4lineyxm_AA5CountO06StaticC0Qzs0H6StringVSutAA0H4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
               </li>
             </ul>
           </li>
@@ -186,7 +192,7 @@
                 <a href="Other Enums.html#/s:11SwiftyMocky9MockErrorO">MockError</a>
               </li>
               <li class="nav-group-task">
-                <a href="Enums/Product.html">Product</a>
+                <a href="Enums/StubProduct.html">StubProduct</a>
               </li>
             </ul>
           </li>
@@ -237,12 +243,6 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Structs/FatalErrorUtil.html">FatalErrorUtil</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Structs/Stubber.html">Stubber</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Structs/StubberThrows.html">StubberThrows</a>
               </li>
             </ul>
           </li>
@@ -455,9 +455,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:11SwiftyMocky14VerifyProperty___4file4lineyx_AA5CountV0C0Qzs12StaticStringVSutAA4MockRzlF"></a>
+                    <a name="/s:11SwiftyMocky14VerifyProperty___4file4lineyx_AA5CountO0C0Qzs12StaticStringVSutAA4MockRzlF"></a>
                     <a name="//apple_ref/swift/Function/VerifyProperty(_:_:_:file:line:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:11SwiftyMocky14VerifyProperty___4file4lineyx_AA5CountV0C0Qzs12StaticStringVSutAA4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
+                    <a class="token" href="#/s:11SwiftyMocky14VerifyProperty___4file4lineyx_AA5CountO0C0Qzs12StaticStringVSutAA4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -473,7 +473,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@available(*, deprecated, message: "Use Verify instead!")</span>
-<span class="kd">public</span> <span class="kd">func</span> <span class="kt">VerifyProperty</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">object</span><span class="p">:</span> <span class="kt">T</span><span class="p">,</span> <span class="n">_</span> <span class="nv">count</span><span class="p">:</span> <span class="kt"><a href="Structs/Count.html">Count</a></span><span class="p">,</span> <span class="n">_</span> <span class="nv">property</span><span class="p">:</span> <span class="kt">T</span><span class="o">.</span><span class="kt">Verify</span><span class="p">,</span> <span class="nv">file</span><span class="p">:</span> <span class="kt">StaticString</span> <span class="o">=</span> <span class="kd">#file</span><span class="p">,</span> <span class="nv">line</span><span class="p">:</span> <span class="kt">UInt</span> <span class="o">=</span> <span class="kd">#line</span><span class="p">)</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt"><a href="Protocols/Mock.html">Mock</a></span></code></pre>
+<span class="kd">public</span> <span class="kd">func</span> <span class="kt">VerifyProperty</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">object</span><span class="p">:</span> <span class="kt">T</span><span class="p">,</span> <span class="n">_</span> <span class="nv">count</span><span class="p">:</span> <span class="kt"><a href="Enums/Count.html">Count</a></span><span class="p">,</span> <span class="n">_</span> <span class="nv">property</span><span class="p">:</span> <span class="kt">T</span><span class="o">.</span><span class="kt">Verify</span><span class="p">,</span> <span class="nv">file</span><span class="p">:</span> <span class="kt">StaticString</span> <span class="o">=</span> <span class="kd">#file</span><span class="p">,</span> <span class="nv">line</span><span class="p">:</span> <span class="kt">UInt</span> <span class="o">=</span> <span class="kd">#line</span><span class="p">)</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt"><a href="Protocols/Mock.html">Mock</a></span></code></pre>
 
                         </div>
                       </div>
@@ -561,9 +561,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:11SwiftyMocky14VerifyProperty___4file4lineyxm_AA5CountV06StaticC0Qzs0H6StringVSutAA0H4MockRzlF"></a>
+                    <a name="/s:11SwiftyMocky14VerifyProperty___4file4lineyxm_AA5CountO06StaticC0Qzs0H6StringVSutAA0H4MockRzlF"></a>
                     <a name="//apple_ref/swift/Function/VerifyProperty(_:_:_:file:line:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:11SwiftyMocky14VerifyProperty___4file4lineyxm_AA5CountV06StaticC0Qzs0H6StringVSutAA0H4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
+                    <a class="token" href="#/s:11SwiftyMocky14VerifyProperty___4file4lineyxm_AA5CountO06StaticC0Qzs0H6StringVSutAA0H4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -579,7 +579,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@available(*, deprecated, message: "Use Verify instead!")</span>
-<span class="kd">public</span> <span class="kd">func</span> <span class="kt">VerifyProperty</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">type</span><span class="p">:</span> <span class="kt">T</span><span class="o">.</span><span class="k">Type</span><span class="p">,</span> <span class="n">_</span> <span class="nv">count</span><span class="p">:</span> <span class="kt"><a href="Structs/Count.html">Count</a></span><span class="p">,</span> <span class="n">_</span> <span class="nv">property</span><span class="p">:</span> <span class="kt">T</span><span class="o">.</span><span class="kt">StaticVerify</span><span class="p">,</span> <span class="nv">file</span><span class="p">:</span> <span class="kt">StaticString</span> <span class="o">=</span> <span class="kd">#file</span><span class="p">,</span> <span class="nv">line</span><span class="p">:</span> <span class="kt">UInt</span> <span class="o">=</span> <span class="kd">#line</span><span class="p">)</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt"><a href="Protocols/StaticMock.html">StaticMock</a></span></code></pre>
+<span class="kd">public</span> <span class="kd">func</span> <span class="kt">VerifyProperty</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">type</span><span class="p">:</span> <span class="kt">T</span><span class="o">.</span><span class="k">Type</span><span class="p">,</span> <span class="n">_</span> <span class="nv">count</span><span class="p">:</span> <span class="kt"><a href="Enums/Count.html">Count</a></span><span class="p">,</span> <span class="n">_</span> <span class="nv">property</span><span class="p">:</span> <span class="kt">T</span><span class="o">.</span><span class="kt">StaticVerify</span><span class="p">,</span> <span class="nv">file</span><span class="p">:</span> <span class="kt">StaticString</span> <span class="o">=</span> <span class="kd">#file</span><span class="p">,</span> <span class="nv">line</span><span class="p">:</span> <span class="kt">UInt</span> <span class="o">=</span> <span class="kd">#line</span><span class="p">)</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt"><a href="Protocols/StaticMock.html">StaticMock</a></span></code></pre>
 
                         </div>
                       </div>
@@ -659,7 +659,7 @@
         </section>
         <section id="footer">
           <p>Copyright © 2017 MakeAWishFoundation. All rights reserved.</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.5</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>

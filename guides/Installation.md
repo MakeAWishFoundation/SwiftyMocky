@@ -56,33 +56,35 @@ The integration part is described in setup page.
 Download/build Sourcery binary manually, or use prebuilt sourcery versions from: `https://github.com/MakeAWishFoundation/SwiftyMocky.wiki.git`
 
 Currentyly we support:
+- 5.0
 - 4.2
 - 4.1
 - 4.0.2
 - 4.0
-- 3.1
 
 **Usage from root project dir:**
 
 ```shell
-sh get_sourcery.sh 4.2
+sh get_sourcery.sh # Will download 5.0 by default
+sh get_sourcery.sh 5.0 # or 4.2, if you use Xcode 10.1
 ```
 
 **get_sourcery.sh**
 
 ```shell
-[[ $# > 0 ]] && VERSION="$1" || VERSION="4.2"
+[[ $# > 0 ]] && VERSION="$1" || VERSION="5.0"
 [[ $# > 1 ]] && OUTPUT="$2" || OUTPUT="./Pods/Sourcery/bin"
+SOURCERY_VERSION="0.16.0" # The version of Sourcery that is associated with this SwiftyMocky version
 
-echo "CLONE SOURCERY FOR $VERSION INTO $OUTPUT"
+echo "CLONE SOURCERY $SOURCERY_VERSION FOR Swift $VERSION INTO $OUTPUT"
 rm -r -f "$OUTPUT"
-git clone -b "swift/$VERSION" --single-branch --depth 1 https://github.com/MakeAWishFoundation/SwiftyMocky.wiki.git "$OUTPUT"
+git clone -b "sourcery/$SOURCERY_VERSION-swift$VERSION" --single-branch --depth 1 https://github.com/MakeAWishFoundation/SwiftyMocky.wiki.git "$OUTPUT"
 ```
 
 > **Note!**
 > This script is also shipped with SwiftyMocky when installing via cocoapods
 > You can use it from project root like `sh ./Pods/SwiftyMocky/get_sourcery.sh 4.2`
-> Version is optional, if you don't specify it, script will use latest supported (4.2 in that case)
+> Version is optional, if you don't specify it, script will use latest supported (5.0 in that case)
 
 > **Note 2!**
 > If you use Carthage, you should specify your custom output location for sourcery binary. Please have in mind, that script clears output dir, so don't point it to `~/` or something ;)

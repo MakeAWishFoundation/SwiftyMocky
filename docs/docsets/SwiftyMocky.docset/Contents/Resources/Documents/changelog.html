@@ -13,7 +13,7 @@
     <a title="CHANGELOG  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">SwiftyMocky Docs</a> (95% documented)</p>
+        <p><a href="index.html">SwiftyMocky Docs</a> (89% documented)</p>
         <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -87,10 +87,10 @@
                 <a href="Global methods.html#/s:11SwiftyMocky6Verify__4file4lineyxm_06StaticC0Qzs0F6StringVSutAA0F4MockRzlF">Verify(_:_:file:line:)</a>
               </li>
               <li class="nav-group-task">
-                <a href="Global methods.html#/s:11SwiftyMocky6Verify___4file4lineyx_AA5CountVABQzs12StaticStringVSutAA4MockRzlF">Verify(_:_:_:file:line:)</a>
+                <a href="Global methods.html#/s:11SwiftyMocky6Verify___4file4lineyx_AA5CountOABQzs12StaticStringVSutAA4MockRzlF">Verify(_:_:_:file:line:)</a>
               </li>
               <li class="nav-group-task">
-                <a href="Global methods.html#/s:11SwiftyMocky6Verify___4file4lineyxm_AA5CountV06StaticC0Qzs0G6StringVSutAA0G4MockRzlF">Verify(_:_:_:file:line:)</a>
+                <a href="Global methods.html#/s:11SwiftyMocky6Verify___4file4lineyxm_AA5CountO06StaticC0Qzs0G6StringVSutAA0G4MockRzlF">Verify(_:_:_:file:line:)</a>
               </li>
             </ul>
           </li>
@@ -124,7 +124,13 @@
                 <a href="Protocols/Countable.html">Countable</a>
               </li>
               <li class="nav-group-task">
-                <a href="Structs/Count.html">Count</a>
+                <a href="Enums/Count.html">Count</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Stubber.html">Stubber</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/StubberThrows.html">StubberThrows</a>
               </li>
             </ul>
           </li>
@@ -149,10 +155,10 @@
                 <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty__4file4lineyxm_06StaticC0Qzs0G6StringVSutAA0G4MockRzlF">VerifyProperty(_:_:file:line:)</a>
               </li>
               <li class="nav-group-task">
-                <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty___4file4lineyx_AA5CountV0C0Qzs12StaticStringVSutAA4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
+                <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty___4file4lineyx_AA5CountO0C0Qzs12StaticStringVSutAA4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
               </li>
               <li class="nav-group-task">
-                <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty___4file4lineyxm_AA5CountV06StaticC0Qzs0H6StringVSutAA0H4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
+                <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty___4file4lineyxm_AA5CountO06StaticC0Qzs0H6StringVSutAA0H4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
               </li>
             </ul>
           </li>
@@ -185,7 +191,7 @@
                 <a href="Other Enums.html#/s:11SwiftyMocky9MockErrorO">MockError</a>
               </li>
               <li class="nav-group-task">
-                <a href="Enums/Product.html">Product</a>
+                <a href="Enums/StubProduct.html">StubProduct</a>
               </li>
             </ul>
           </li>
@@ -237,12 +243,6 @@
               <li class="nav-group-task">
                 <a href="Structs/FatalErrorUtil.html">FatalErrorUtil</a>
               </li>
-              <li class="nav-group-task">
-                <a href="Structs/Stubber.html">Stubber</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Structs/StubberThrows.html">StubberThrows</a>
-              </li>
             </ul>
           </li>
         </ul>
@@ -252,7 +252,41 @@
           <section class="section">
             
             <h1 id='changelog' class='heading'>Changelog</h1>
-<h2 id='all-changes-to-swiftymocky-project-will-be-documented-in-this-file' class='heading'>All changes to SwiftyMocky project will be documented in this file.</h2>
+
+<p>All changes to SwiftyMocky project will be documented in this file.</p>
+
+<hr>
+<h2 id='strong-3-2-0-strong-2019' class='heading'><strong>3.2.0</strong> / 2019</h2>
+<h4 id='added' class='heading'>Added:</h4>
+
+<ul>
+<li>Fixed issues with naming, as internal name <code>Product</code> tend to conflict with Mocked classes</li>
+<li>Swift 5.0 support, fixes for optional types casting</li>
+<li>Integrated Sourcery 0.16.0, fixed issues resulting in breaking with newest Sourcery</li>
+</ul>
+<h4 id='removed' class='heading'>Removed:</h4>
+
+<ul>
+<li><strong>No more support for Swift 3.x</strong></li>
+<li>All Given methods, that were marked as <code>deprecated</code> in SwiftyMocky 3.x, are now __unavailable)).</li>
+</ul>
+
+<hr>
+<h2 id='strong-3-1-0-strong-2019' class='heading'><strong>3.1.0</strong> / 2019</h2>
+<h4 id='added' class='heading'>Added:</h4>
+
+<ul>
+<li>Convenience <code>Count.once</code> as syntactic sugar for <code>1</code> for <code>Verify</code></li>
+<li>Proper integration with projects that already use Sourcery (@laxmorek)</li>
+</ul>
+<h4 id='fixed' class='heading'>Fixed:</h4>
+
+<ul>
+<li>Fixed generating mocks for methods that are throwing, and returning Self in the same time</li>
+<li>Fixed associated types protocols generation, when methods generic constrained</li>
+</ul>
+
+<hr>
 <h2 id='strong-3-0-0-strong-2018' class='heading'><strong>3.0.0</strong> / 2018</h2>
 <h4 id='added' class='heading'>Added:</h4>
 
@@ -304,7 +338,7 @@
 
 <ul>
 <li>Support <code>Verify</code> for properties</li>
-<li><code><a href="Structs/Count.html">Count</a></code> object, for easier specification of expected <code>Verify</code> results</li>
+<li><code><a href="Enums/Count.html">Count</a></code> object, for easier specification of expected <code>Verify</code> results</li>
 <li><code><a href="Enums/Parameter.html">Parameter</a></code> case <code>.matching</code>, allowing to specify custom rules for matching</li>
 <li>Exclude sources documentation</li>
 <li>Protocol &lsquo;inheritance&rsquo; test</li>
@@ -407,7 +441,7 @@
         </section>
         <section id="footer">
           <p>Copyright © 2017 MakeAWishFoundation. All rights reserved.</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.5</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>

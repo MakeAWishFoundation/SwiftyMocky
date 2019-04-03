@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>StubbingPolicy Enumeration Reference</title>
+    <title>Count Enumeration Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,8 +10,8 @@
     
   </head>
   <body>
-    <a name="//apple_ref/swift/Enum/StubbingPolicy" class="dashAnchor"></a>
-    <a title="StubbingPolicy Enumeration Reference"></a>
+    <a name="//apple_ref/swift/Enum/Count" class="dashAnchor"></a>
+    <a title="Count Enumeration Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html">SwiftyMocky Docs</a> (89% documented)</p>
@@ -22,7 +22,7 @@
       <p id="breadcrumbs">
         <a href="../index.html">SwiftyMocky Reference</a>
         <img id="carat" src="../img/carat.png" />
-        StubbingPolicy Enumeration Reference
+        Count Enumeration Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -251,22 +251,33 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>StubbingPolicy</h1>
+            <h1>Count</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">StubbingPolicy</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">Count</span> <span class="p">:</span> <span class="kt">ExpressibleByIntegerLiteral</span></code></pre>
 
                 </div>
               </div>
-            <p>Given Policy for treating sequence of events (products). Used to determine if stub return values should be consumed
-once (.drop), or reused (.wrap). Applies to sequence as well - .drop means remove from stack after using, while
-.wrap iterates over sequence indefinitely.</p>
+            <p>Count enum. Use it for all Verify features, when checking how many times something happened.</p>
+
+<p>There are three ways of using it:</p>
+
+<ol>
+<li>Explicit literal - you can pass 0, 1, 2 &hellip; to verify exact number</li>
+<li>Using predefined .custom, to specify custom matching rule.</li>
+<li>Using one of predefined rules, for example:
 
 <ul>
-<li><code>default</code>: Use current policy specified for Mock method type</li>
-<li><code>wrap</code>: Default policy in general. When reaching end of sequence of events, index will rewind to beginning (looping)</li>
-<li><code>drop</code>: With this policy, every call drops event. When events count reaches zero, given is removed from mock.</li>
-</ul>
+<li>.atLeastOnce</li>
+<li>.exactly(1)</li>
+<li>.from(2, to: 4)</li>
+<li>.less(than: 2)</li>
+<li>.lessOrEqual(to: 1)</li>
+<li>.more(than: 2)</li>
+<li>.moreOrEqual(to: 3)</li>
+<li>.never</li>
+</ul></li>
+</ol>
 
           </section>
           <section class="section task-group-section">
@@ -275,9 +286,9 @@ once (.drop), or reused (.wrap). Applies to sequence as well - .drop means remov
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:11SwiftyMocky14StubbingPolicyO4realyA2CF"></a>
-                    <a name="//apple_ref/swift/Method/real(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:11SwiftyMocky14StubbingPolicyO4realyA2CF">real(_:)</a>
+                    <a name="/s:11SwiftyMocky5CountO18IntegerLiteralTypea"></a>
+                    <a name="//apple_ref/swift/Alias/IntegerLiteralType" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky5CountO18IntegerLiteralTypea">IntegerLiteralType</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -285,39 +296,16 @@ once (.drop), or reused (.wrap). Applies to sequence as well - .drop means remov
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>[Internal] Resolves used policy. If self is default, will use inherited, otherwise self</p>
+                        <p>[Internal] Count is represented by integer literals, with type Int</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">real</span><span class="p">(</span><span class="n">_</span> <span class="nv">inherited</span><span class="p">:</span> <span class="kt">StubbingPolicy</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">StubbingPolicy</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">IntegerLiteralType</span> <span class="o">=</span> <span class="kt">Int</span></code></pre>
 
                         </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>inherited</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>Inherited (usually global default) policy</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>Policy used. Always .wrap or .drop</p>
                       </div>
                     </section>
                   </div>
@@ -325,9 +313,9 @@ once (.drop), or reused (.wrap). Applies to sequence as well - .drop means remov
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:11SwiftyMocky14StubbingPolicyO7updated_4withS2i_SitF"></a>
-                    <a name="//apple_ref/swift/Method/updated(_:with:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:11SwiftyMocky14StubbingPolicyO7updated_4withS2i_SitF">updated(_:with:)</a>
+                    <a name="/s:11SwiftyMocky5CountO14integerLiteralACSi_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(integerLiteral:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky5CountO14integerLiteralACSi_tcfc">init(integerLiteral:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -335,15 +323,14 @@ once (.drop), or reused (.wrap). Applies to sequence as well - .drop means remov
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>[Internal] Computes new index for stubs array. For wrap will rewind if out of bounds, for drop will not.
-Default is handled as wrap.</p>
+                        <p>Creates new count instance, matching specific count</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">updated</span><span class="p">(</span><span class="n">_</span> <span class="nv">index</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="n">with</span> <span class="nv">count</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Int</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">integerLiteral</span> <span class="nv">value</span><span class="p">:</span> <span class="kt"><a href="../Enums/Count.html#/s:11SwiftyMocky5CountO18IntegerLiteralTypea">IntegerLiteralType</a></span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -354,15 +341,97 @@ Default is handled as wrap.</p>
                             <tr>
                               <td>
                                 <code>
-                                <em>index</em>
+                                <em>value</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>Index of current element</p>
+                                  <p>Exact count value</p>
                                 </div>
                               </td>
                             </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/CustomStringConvertible"></a>
+                <a name="//apple_ref/swift/Section/CustomStringConvertible" class="dashAnchor"></a>
+                <a href="#/CustomStringConvertible">
+                  <h3 class="section-name">CustomStringConvertible</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:s23CustomStringConvertibleP11descriptionSSvp"></a>
+                    <a name="//apple_ref/swift/Property/description" class="dashAnchor"></a>
+                    <a class="token" href="#/s:s23CustomStringConvertibleP11descriptionSSvp">description</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">description</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Countable"></a>
+                <a name="//apple_ref/swift/Section/Countable" class="dashAnchor"></a>
+                <a href="#/Countable">
+                  <h3 class="section-name">Countable</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky5CountO7matchesySbSiF"></a>
+                    <a name="//apple_ref/swift/Method/matches(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky5CountO7matchesySbSiF">matches(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns whether given count matches countable case.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">matches</span><span class="p">(</span><span class="n">_</span> <span class="nv">count</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
                             <tr>
                               <td>
                                 <code>
@@ -371,7 +440,7 @@ Default is handled as wrap.</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>Number of elements</p>
+                                  <p>Given count</p>
                                 </div>
                               </td>
                             </tr>
@@ -380,7 +449,7 @@ Default is handled as wrap.</p>
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>New index</p>
+                        <p>true, if it is within boundaries, false otherwise</p>
                       </div>
                     </section>
                   </div>

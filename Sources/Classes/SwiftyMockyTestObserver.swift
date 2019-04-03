@@ -64,6 +64,10 @@ public class SwiftyMockyTestObserver: NSObject, XCTestObservation {
         }
     }
 
+    /// [Internal] Geting name of current test
+    ///
+    /// - Parameter testCase: Test case
+    /// - Returns: Name
     private static func getNameOfExtecutedTestCase(_ testCase: XCTestCase) -> String? {
         return testCase.name.components(separatedBy: " ")[1].components(separatedBy: "]").first
     }
@@ -96,6 +100,7 @@ private class FilesExlorer {
     }
 }
 #else
+/// Used for observing tests and handling internal library errors.
 public class SwiftyMockyTestObserver: NSObject {
     /// [Internal] No setup whatsoever
     @objc public static func setup() {

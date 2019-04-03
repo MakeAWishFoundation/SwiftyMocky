@@ -43,8 +43,8 @@ custom_categories:
       - Matcher
       - Countable
       - Count
-      - Stubber<ReturnedValue>
-      - StubberThrows<ReturnedValue>
+      - Stubber
+      - StubberThrows
 
   - name: Generics
     children:
