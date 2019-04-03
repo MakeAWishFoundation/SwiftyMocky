@@ -29,5 +29,5 @@ target 'Mocky_Example_macOS' do
 end
 
 post_install do |installer|
-  system("rake sourcery 4.2")
+  system("rake sourcery")
 end

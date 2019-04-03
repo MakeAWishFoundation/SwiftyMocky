@@ -37,11 +37,11 @@ func stringArray(fromArguments arguments: [String: Any], forKey key: String) -> 
 }
 _%>
 <%# ================================================== SwiftLint -%><%_ -%>
-<%_ for rule in swiftLintRules(arguments) { -%>
+<%_ for rule in swiftLintRules(argument) { -%>
     <%_ %><%= rule %>
 <%_ } -%>
-<%# ================================================== SwiftLint (aggregated arguments) -%><%_ -%>
-<%_ if let swiftyMockyArgs = arguments["swiftyMocky"] as? [String: Any], let rules = swiftyMockyArgs["excludedSwiftLintRules"] as? [String] { -%>
+<%# ================================================== SwiftLint (aggregated argument) -%><%_ -%>
+<%_ if let swiftyMockyArgs = argument["swiftyMocky"] as? [String: Any], let rules = swiftyMockyArgs["excludedSwiftLintRules"] as? [String] { -%>
     <%_ for rule in rules { -%>
     <%_ %>//swiftlint:disable <%= rule %>
     <%_ } -%>
@@ -50,11 +50,11 @@ _%>
 #if MockyCustom
 import SwiftyMocky
 <%# ================================================== IMPORTS InAPP -%><%_ -%>
-    <%_ for projectImport in projectImports(arguments) { -%>
+    <%_ for projectImport in projectImports(argument) { -%>
         <%_ %><%= projectImport %>
     <%_ } -%>
-    <%# ============================ IMPORTS InAPP (aggregated arguments) -%><%_ -%>
-    <%_ if let swiftyMockyArgs = arguments["swiftyMocky"] as? [String: Any] { -%>
+    <%# ============================ IMPORTS InAPP (aggregated argument) -%><%_ -%>
+    <%_ if let swiftyMockyArgs = argument["swiftyMocky"] as? [String: Any] { -%>
         <%_ for projectImport in imports(swiftyMockyArgs) { -%>
             <%_ %><%= projectImport %>
         <%_ } -%>
@@ -76,11 +76,11 @@ import SwiftyMocky
 import SwiftyMocky
 import XCTest
 <%# ================================================== IMPORTS -%><%_ -%>
-    <%_ for projectImport in projectImports(arguments) { -%>
+    <%_ for projectImport in projectImports(argument) { -%>
         <%_ %><%= projectImport %>
     <%_ } -%>
-    <%# ============================ IMPORTS InAPP (aggregated arguments) -%><%_ -%>
-    <%_ if let swiftyMockyArgs = arguments["swiftyMocky"] as? [String: Any] { -%>
+    <%# ============================ IMPORTS InAPP (aggregated argument) -%><%_ -%>
+    <%_ if let swiftyMockyArgs = argument["swiftyMocky"] as? [String: Any] { -%>
         <%_ for projectImport in projectImports(swiftyMockyArgs) { -%>
             <%_ %><%= projectImport %>
         <%_ } -%>

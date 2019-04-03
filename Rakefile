@@ -41,6 +41,10 @@ task :template do
     sh "cd ./Templates && cat Main.swifttemplate >> #{destination}"
 end
 
+task :xcode do
+    sh "open Mocky.xcworkspace"
+end
+
 ## [ Sourcery ] ################################################################
 
 desc "Download prebuilt sourcery app."

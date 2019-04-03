@@ -238,7 +238,6 @@
 		C8EF7B7921FB423A00AFA545 /* TemplateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateHelper.swift; sourceTree = "<group>"; };
 		C8EF7B7A21FB423A00AFA545 /* ParameterWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterWrapper.swift; sourceTree = "<group>"; };
 		C8EF7B7B21FB423A00AFA545 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
-		C8EF7B7C21FB423A00AFA545 /* Mock.swifttemplate */ = {isa = PBXFileReference; lastKnownFileType = text; path = Mock.swifttemplate; sourceTree = "<group>"; };
 		C8EF7B7D21FB423A00AFA545 /* Header.swifttemplate */ = {isa = PBXFileReference; lastKnownFileType = text; path = Header.swifttemplate; sourceTree = "<group>"; };
 		C8EF7B7E21FB423A00AFA545 /* Main.swifttemplate */ = {isa = PBXFileReference; lastKnownFileType = text; path = Main.swifttemplate; sourceTree = "<group>"; };
 		C8EF7B7F21FB423A00AFA545 /* TypeWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeWrapper.swift; sourceTree = "<group>"; };
@@ -497,7 +496,6 @@
 				C8EF7B8021FB423A00AFA545 /* SubscriptWrapper.swift */,
 				C8EF7B8321FB423A00AFA545 /* VariableWrapper.swift */,
 				C8EF7B7E21FB423A00AFA545 /* Main.swifttemplate */,
-				C8EF7B7C21FB423A00AFA545 /* Mock.swifttemplate */,
 			);
 			path = Templates;
 			sourceTree = "<group>";
@@ -1079,6 +1077,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
