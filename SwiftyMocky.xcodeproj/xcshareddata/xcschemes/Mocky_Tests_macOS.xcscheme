@@ -14,10 +14,24 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "47EB3B201FC356B000905329"
-               BuildableName = "Mocky_Tests_tvOS.xctest"
-               BlueprintName = "Mocky_Tests_tvOS"
-               ReferencedContainer = "container:Mocky.xcodeproj">
+               BlueprintIdentifier = "CC5B61A81FCC16F8007FB209"
+               BuildableName = "Mocky_Tests_macOS.xctest"
+               BlueprintName = "Mocky_Tests_macOS"
+               ReferencedContainer = "container:SwiftyMocky.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "CC5B61971FCC16F7007FB209"
+               BuildableName = "Mocky_Example_macOS.app"
+               BlueprintName = "Mocky_Example_macOS"
+               ReferencedContainer = "container:SwiftyMocky.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -32,20 +46,20 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "47EB3B201FC356B000905329"
-               BuildableName = "Mocky_Tests_tvOS.xctest"
-               BlueprintName = "Mocky_Tests_tvOS"
-               ReferencedContainer = "container:Mocky.xcodeproj">
+               BlueprintIdentifier = "CC5B61A81FCC16F8007FB209"
+               BuildableName = "Mocky_Tests_macOS.xctest"
+               BlueprintName = "Mocky_Tests_macOS"
+               ReferencedContainer = "container:SwiftyMocky.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "47EB3B201FC356B000905329"
-            BuildableName = "Mocky_Tests_tvOS.xctest"
-            BlueprintName = "Mocky_Tests_tvOS"
-            ReferencedContainer = "container:Mocky.xcodeproj">
+            BlueprintIdentifier = "CC5B61A81FCC16F8007FB209"
+            BuildableName = "Mocky_Tests_macOS.xctest"
+            BlueprintName = "Mocky_Tests_macOS"
+            ReferencedContainer = "container:SwiftyMocky.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -64,10 +78,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "47EB3B201FC356B000905329"
-            BuildableName = "Mocky_Tests_tvOS.xctest"
-            BlueprintName = "Mocky_Tests_tvOS"
-            ReferencedContainer = "container:Mocky.xcodeproj">
+            BlueprintIdentifier = "CC5B61A81FCC16F8007FB209"
+            BuildableName = "Mocky_Tests_macOS.xctest"
+            BlueprintName = "Mocky_Tests_macOS"
+            ReferencedContainer = "container:SwiftyMocky.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -79,6 +93,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "CC5B61A81FCC16F8007FB209"
+            BuildableName = "Mocky_Tests_macOS.xctest"
+            BlueprintName = "Mocky_Tests_macOS"
+            ReferencedContainer = "container:SwiftyMocky.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
