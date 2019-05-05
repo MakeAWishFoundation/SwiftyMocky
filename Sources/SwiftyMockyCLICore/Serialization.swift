@@ -3,74 +3,13 @@ import Yams
 import PathKit
 import Commander
 import xcodeproj
+import Crayon
+
+public var defaultSourceryCommand = "mint run krzysztofzablocki/Sourcery@0.16.1 sourcery"
 
 public class VerifyConfigCommand {
     init(config: Path) {
 
-    }
-}
-
-public class ReadSourceryConfigurationCommand {
-
-    let config: Path
-
-    public init(config: Path) {
-        self.config = config
-    }
-
-    public func run() throws {
-        let yaml = try String(contentsOfFile: config.absolute().string)
-        print(yaml)
-        let configuration: LegacyConfiguration = try YAMLDecoder().decode(from: yaml)
-        print(configuration)
-    }
-}
-
-public class ProjectSetup {
-
-    private let project: XcodeProj
-    private let path: Path
-    public var encoding: String.Encoding = .utf8
-
-    public init(project input: Path, at root: Path) throws {
-        if input.string.isEmpty {
-            let projectsPaths = root.glob("*.xcodeproj")
-            guard let projectPath = projectsPaths.first else { throw Error.projectNotFound }
-            guard projectsPaths.count == 1 else { throw Error.multipleProjects }
-
-            print("Found project at \(projectPath)")
-            path = projectPath
-        } else {
-            if input.string.hasSuffix("/") {
-                path = root + Path(String(input.string.dropLast()))
-            } else {
-                path = root + input
-            }
-        }
-        project = try XcodeProj(path: path)
-    }
-
-    public enum Error: Swift.Error {
-        case targetNotFound
-        case projectNotFound
-        case multipleProjects
-        case internalFailure
-        case writingError
-    }
-
-    public func findTestTargets() throws -> [PBXTarget] {
-        print("Scanning project...")
-        let testTargets = project.pbxproj.allUnitTestTargets
-        guard !testTargets.isEmpty else {
-            throw Error.targetNotFound
-        }
-
-        return testTargets
-    }
-
-    public func selected(target: PBXTarget) throws {
-        print("Selected: \(target.name)")
-        target.dependencies.forEach { print("    \($0.name ?? "?")") }
     }
 }
 
@@ -84,7 +23,7 @@ public class TestCommand {
 
     public func run() throws {
         let configuration = Mockfile(
-            sourceryCommand: "mint run krzysztofzablocki/Sourcery@0.16.1 sourcery",
+            sourceryCommand: nil,
             contents: [
                 "iOS": Mock(
                     sources: Mock.Sources(
@@ -101,7 +40,7 @@ public class TestCommand {
                     testable: [
                         "Mocky_Example_iOS"
                     ],
-                    imports: [
+                    import: [
                         // None
                     ]
                 )
@@ -121,18 +60,34 @@ public class TestCommand {
     }
 }
 
+public class ReadSourceryConfigurationCommand {
+
+    let config: Path
+
+    public init(config: Path) {
+        self.config = config
+    }
+
+    public func run() throws {
+        let yaml = try String(contentsOfFile: config.absolute().string)
+        print(yaml)
+        let configuration: LegacyConfiguration = try YAMLDecoder().decode(from: yaml)
+        print(configuration)
+    }
+}
+
 // MARK: - Mockfile Configuration
 
 @dynamicMemberLookup
 struct Mockfile: Codable {
 
-    var sourceryCommand: String
+    var sourceryCommand: String?
     var allMocks: [Mock] { return contents.values.map { $0 } }
     var allMembers: [String] { return contents.keys.map { $0 } }
 
     private var contents: [String: Mock]
 
-    init(sourceryCommand: String, contents: [String: Mock]) {
+    init(sourceryCommand: String?, contents: [String: Mock]) {
         self.sourceryCommand = sourceryCommand
         self.contents = contents
     }
@@ -161,7 +116,15 @@ struct Mockfile: Codable {
         }
     }
 
-    subscript(dynamicMember member: String) -> Mock? { return contents[member] }
+    subscript(dynamicMember member: String) -> Mock? {
+        get { return contents[member] }
+        set {
+            guard let newValue = newValue else {
+                contents.removeValue(forKey: member); return
+            }
+            contents[member] = newValue
+        }
+    }
 }
 
 extension Mockfile {
@@ -200,7 +163,7 @@ struct Mock: Codable {
     var sources: Sources
     var output: String
     var testable: [String]
-    var imports: [String]
+    var `import`: [String]
 
     struct Sources: Codable {
         var include: [String]
@@ -257,5 +220,83 @@ extension PBXProj {
     }
     var allUITestTargets: [PBXTarget] {
         return allTargets.filter { $0.productType == .uiTestBundle }
+    }
+}
+
+extension PBXTarget {
+
+    /// Local path (relative to project root) for info plist file
+    ///
+    /// - Returns: Project root relative Info.plist path
+    func infoPlistPath() -> Path? {
+        guard let config = buildConfigurationList?.buildConfigurations.first else {
+            return nil
+        }
+        guard let path = config.buildSettings["INFOPLIST_FILE"] as? String else {
+            return nil
+        }
+
+        return Path(path)
+    }
+
+    /// Local path (relative to project root) for directory enclosing info plist file
+    ///
+    /// - Returns: Project root relative Info.plist enclosing directory path
+    func infoPlistEnclosingDirectory() -> Path? {
+        guard let path = infoPlistPath() else { return nil }
+        return Path(components: path.components.dropLast())
+    }
+
+    func commonSourcesEnclosingFolder() -> Path? {
+        guard let sources = try? sourceFiles() else { return nil }
+
+        let paths = sources.compactMap { file -> Path? in
+            return file.relativePath()
+        }
+
+        return paths.commonPrefix()
+    }
+
+    func defaultSourcesFolder() -> Path {
+        guard let path = commonSourcesEnclosingFolder() else { return Path(".") }
+        return path
+    }
+}
+
+extension PBXFileElement {
+    func relativePath() -> Path? {
+        guard let path = self.path else { return nil }
+
+        if let parentPath = self.parent?.relativePath() {
+            return parentPath + Path(path)
+        } else {
+            return Path(path)
+        }
+    }
+}
+
+extension Array where Element == Path {
+    func commonPrefix() -> Path? {
+        guard let first = self.first else { return nil }
+
+        return self.reduce(first, { (result, current) -> Path in
+            return result.commonPrefix(with: current)
+        })
+    }
+}
+
+extension Path {
+    func commonPrefix(with other: Path) -> Path {
+        var common = [String]()
+        var lhs = self.components
+        var rhs = other.components
+
+        while !lhs.isEmpty, !rhs.isEmpty, rhs.first == lhs.first {
+            common.append(lhs.first!)
+            lhs.removeFirst()
+            rhs.removeFirst()
+        }
+
+        return Path(components: common)
     }
 }

@@ -75,35 +75,14 @@ Group { main in
                 project: Path(path),
                 at: pwd
             )
-            let targets = try project.findTestTargets()
-            let numbers = targets.enumerated()
-                .map { "\($0.0 + 1)" }
-                .joined(separator: ",")
+            // 1. Verify if there is already a Mockfile
+            // 2. Migrate if needed
+            // 3. New Setup
 
-            repeat {
-                let targetsOverview = targets
-                    .map { $0.name }
-                    .enumerated()
-                    .map { "  \($0 + 1)) \($1)" }
-                    .joined(separator: "\n")
-
-                print("Found targets: ")
-                print(targetsOverview)
-                print("\n")
-
-                var option: Int?
-                repeat {
-                    print("Select target: (\(numbers)):")
-                    option = readLine()?.intValue
-                } while(option == nil || option! <= 0 || option! > targets.count)
-
-                let selected = option! - 1
-
-                try project.selected(target: targets[selected])
-            } while (true)
+            try project.initializeNewMockfile()
 
         } catch {
-            print("Failed!!! Error: \(error)")
+            print(crayon.bold.red.on("Error: \(error)"))
         }
     }
 }
