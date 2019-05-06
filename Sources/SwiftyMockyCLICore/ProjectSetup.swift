@@ -66,11 +66,12 @@ public class ProjectSetup {
 
     var defaultOutputName: Path { return Path("Mock.generated.swift") }
 
+    public var mockfileExists: Bool { return mockfile.existis }
+
     private let project: XcodeProj
     private let path: Path
     private let root: Path
     private let mockfile: MockfileSetup
-
     private var policy: AddingPolicy = .addOnly
 
     // MARK: - Lifecycle
@@ -99,11 +100,8 @@ public class ProjectSetup {
 
     // MARK: - Actions
 
-    public func initializeNewMockfile() throws {
+    public func initializeAsANewMockfile() throws {
         print("Initializing new Mockfile at \(root)")
-        if mockfile.existis {
-            print("❕ Mockfile already exists.")
-        }
         let targets = try findTestTargets()
         print("✅ Found \(targets.count) unit test bundles:")
 
@@ -275,6 +273,12 @@ class MockfileSetup {
             mockfile = Mockfile(sourceryCommand: nil, contents: [:])
             existis = false
         }
+    }
+
+    init(path: Path, mockfile: Mockfile) {
+        self.path = path
+        self.mockfile = mockfile
+        self.existis = true
     }
 
     func save() throws {

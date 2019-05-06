@@ -46,7 +46,6 @@ protocol FailsWithUntagged {
     func foo<T>(_: T, bar : String) where T: Sequence // wrong formatted
 }
 
-
 // MARK: - Issue when names are escaped with backtick
 
 //sourcery: AutoMockable

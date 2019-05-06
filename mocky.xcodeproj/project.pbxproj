@@ -33,6 +33,7 @@
 
 /* Begin PBXBuildFile section */
 		C8C651FF227F7AC000B6E7A8 /* ProjectSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C651FD227F7AAD00B6E7A8 /* ProjectSetup.swift */; };
+		C8C65201228055C600B6E7A8 /* XCodeProj+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C65200228055C600B6E7A8 /* XCodeProj+Extensions.swift */; };
 		OBJ_229 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_202 /* Document.swift */; };
 		OBJ_230 /* Element.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_203 /* Element.swift */; };
 		OBJ_231 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_204 /* Error.swift */; };
@@ -89,8 +90,8 @@
 		OBJ_357 /* ShellOut.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "ShellOut::ShellOut::Product" /* ShellOut.framework */; };
 		OBJ_375 /* GenerateCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* GenerateCommand.swift */; };
 		OBJ_376 /* InspectCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* InspectCommand.swift */; };
-		OBJ_377 /* Serialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* Serialization.swift */; };
-		OBJ_378 /* ShellOut+Arguments.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* ShellOut+Arguments.swift */; };
+		OBJ_377 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* Models.swift */; };
+		OBJ_378 /* ShellOut+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* ShellOut+Extensions.swift */; };
 		OBJ_380 /* Yams.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Yams::Yams::Product" /* Yams.framework */; };
 		OBJ_381 /* CYaml.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Yams::CYaml::Product" /* CYaml.framework */; };
 		OBJ_382 /* xcodeproj.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "xcodeproj::xcodeproj::Product" /* xcodeproj.framework */; };
@@ -458,6 +459,7 @@
 /* Begin PBXFileReference section */
 		"AEXML::AEXML::Product" /* AEXML.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AEXML.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8C651FD227F7AAD00B6E7A8 /* ProjectSetup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectSetup.swift; sourceTree = "<group>"; };
+		C8C65200228055C600B6E7A8 /* XCodeProj+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCodeProj+Extensions.swift"; sourceTree = "<group>"; };
 		"Commander::Commander::Product" /* Commander.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Commander.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Crayon::Crayon::Product" /* Crayon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crayon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_100 /* Dictionary+Enumerate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Enumerate.swift"; sourceTree = "<group>"; };
@@ -488,7 +490,7 @@
 		OBJ_127 /* PBXContainerItemProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PBXContainerItemProxy.swift; sourceTree = "<group>"; };
 		OBJ_128 /* PBXFileElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PBXFileElement.swift; sourceTree = "<group>"; };
 		OBJ_129 /* PBXFileReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PBXFileReference.swift; sourceTree = "<group>"; };
-		OBJ_13 /* Serialization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Serialization.swift; sourceTree = "<group>"; };
+		OBJ_13 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		OBJ_130 /* PBXGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PBXGroup.swift; sourceTree = "<group>"; };
 		OBJ_131 /* PBXSourceTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PBXSourceTree.swift; sourceTree = "<group>"; };
 		OBJ_132 /* PBXVariantGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PBXVariantGroup.swift; sourceTree = "<group>"; };
@@ -498,7 +500,7 @@
 		OBJ_137 /* PBXObjectReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PBXObjectReference.swift; sourceTree = "<group>"; };
 		OBJ_138 /* PBXObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PBXObjects.swift; sourceTree = "<group>"; };
 		OBJ_139 /* PBXOutputSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PBXOutputSettings.swift; sourceTree = "<group>"; };
-		OBJ_14 /* ShellOut+Arguments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShellOut+Arguments.swift"; sourceTree = "<group>"; };
+		OBJ_14 /* ShellOut+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShellOut+Extensions.swift"; sourceTree = "<group>"; };
 		OBJ_140 /* PBXProj.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PBXProj.swift; sourceTree = "<group>"; };
 		OBJ_141 /* PBXProjEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PBXProjEncoder.swift; sourceTree = "<group>"; };
 		OBJ_142 /* PBXProject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PBXProject.swift; sourceTree = "<group>"; };
@@ -759,11 +761,12 @@
 		OBJ_10 /* SwiftyMockyCLICore */ = {
 			isa = PBXGroup;
 			children = (
+				C8C651FD227F7AAD00B6E7A8 /* ProjectSetup.swift */,
 				OBJ_11 /* GenerateCommand.swift */,
 				OBJ_12 /* InspectCommand.swift */,
-				OBJ_13 /* Serialization.swift */,
-				C8C651FD227F7AAD00B6E7A8 /* ProjectSetup.swift */,
-				OBJ_14 /* ShellOut+Arguments.swift */,
+				OBJ_13 /* Models.swift */,
+				C8C65200228055C600B6E7A8 /* XCodeProj+Extensions.swift */,
+				OBJ_14 /* ShellOut+Extensions.swift */,
 			);
 			name = SwiftyMockyCLICore;
 			path = Sources/SwiftyMockyCLICore;
@@ -1831,11 +1834,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				C8C65201228055C600B6E7A8 /* XCodeProj+Extensions.swift in Sources */,
 				OBJ_375 /* GenerateCommand.swift in Sources */,
 				OBJ_376 /* InspectCommand.swift in Sources */,
 				C8C651FF227F7AC000B6E7A8 /* ProjectSetup.swift in Sources */,
-				OBJ_377 /* Serialization.swift in Sources */,
-				OBJ_378 /* ShellOut+Arguments.swift in Sources */,
+				OBJ_377 /* Models.swift in Sources */,
+				OBJ_378 /* ShellOut+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
