@@ -24,7 +24,7 @@ struct Messages {
     }
     struct Doctor {
         static let description = "run to inspect status of SwiftyMocky setup"
-    }
+    } 
 }
 
 func handle(_ error: Error) {
@@ -53,7 +53,7 @@ Group() { main in
                         - cancel, and setup manually
                     """)
                 // Read option
-                print("Do you want to continue?")
+                print(crayon.bold.on("\nDo you want to continue?"))
                 switch BoolOption.select() {
                 case .yes:
                     break  // Continue flow
@@ -63,7 +63,7 @@ Group() { main in
             }
 
             if migration.migrationPossible() {
-                print("✅ Migration possible.")
+                print("✅  Migration possible.")
                 print("""
                     Existing SwiftyMocky yml configurations found.
                     Available options:
@@ -71,7 +71,7 @@ Group() { main in
                         - setup as new
                     """)
                 // Read option
-                print("Do you want to migrate?")
+                print(crayon.bold.on("\nDo you want to migrate?"))
                 switch BoolOption.select() {
                 case .yes:
                     try migration.migrate()

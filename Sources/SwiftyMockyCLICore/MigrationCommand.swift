@@ -55,9 +55,10 @@ public class MigrationCommand {
         }
 
         try mockfile.save()
-        print("✅ 🎉 " + crayon.bold.on("Migration completed!"))
+        print("\n✅  🎉  " + crayon.bold.on("Migration completed!"))
 
         // Ask for removing old configuration files
+        print("\n⚠️  " + crayon.bold.on("Do you want to remove old configurations?"))
         switch BoolOption.select() {
         case .yes: try removeLegacyConfigurations()
         case .no: break
