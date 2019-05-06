@@ -5,64 +5,9 @@ import Commander
 import xcodeproj
 import Crayon
 
-enum AddingPolicy {
-    case addOnly
-    case cancel
-    case override
-    case skipOverriding
-}
+// MARK: - Project Setup
 
-enum AddingOption: String {
-    case add
-    case cancel
-    case override
-
-    var title: String {
-        switch self {
-        case .add:
-            return crayon.underline.on("A") + "dd missing"
-        case .cancel:
-            return crayon.underline.on("C") + "ancel"
-        case .override:
-            return crayon.underline.on("O") + "verride"
-        }
-    }
-
-    var policy: AddingPolicy {
-        switch self {
-        case .add: return .skipOverriding
-        case .cancel: return .cancel
-        case .override: return .override
-        }
-    }
-
-    init?(rawValue: String) {
-        switch rawValue {
-        case "A", "a", "Add", "add":
-            self = .add
-        case "C", "c", "Cancel", "cancel":
-            self = .cancel
-        case "O", "o", "Override", "override":
-            self = .override
-        default:
-            return nil
-        }
-    }
-
-    static func select(from options: [AddingOption]) -> AddingOption {
-        let optionsString = options.map { $0.title }.joined(separator: ", ")
-        let message = "Please choose one of possible actions: (\(optionsString))"
-
-        var option: AddingOption?
-        repeat {
-            print(message)
-            option = AddingOption(rawValue: readLine() ?? "")
-        } while option == nil
-        return option!
-    }
-}
-
-public class ProjectSetup {
+public class ProjectSetupCommand {
 
     var defaultOutputName: Path { return Path("Mock.generated.swift") }
 
@@ -72,6 +17,7 @@ public class ProjectSetup {
     private let path: Path
     private let root: Path
     private let mockfile: MockfileSetup
+    private let generate: GenerateCommand
     private var policy: AddingPolicy = .addOnly
 
     // MARK: - Lifecycle
@@ -96,6 +42,7 @@ public class ProjectSetup {
 
         project = try XcodeProj(path: path)
         mockfile = try MockfileSetup(path: root + "Mockfile")
+        generate = GenerateCommand(root: root, mockfile: mockfile.mockfile)
     }
 
     // MARK: - Actions
@@ -106,15 +53,15 @@ public class ProjectSetup {
         print("✅ Found \(targets.count) unit test bundles:")
 
         let targetsOverview = targets
-            .map { (name: $0.name, exists: mockfile.isSetup(target: $0)) }
-            .enumerated()
-            .map {
-                let prefix = "\($1.exists ? "❕":"☑️ ") \($0 + 1))"
-                let infix = "\(crayon.bold.on($1.name))"
-                let suffix = "\($1.exists ? " - already defined" : "")"
-                return "\(prefix) \(infix) \(suffix)"
-            }
-            .joined(separator: "\n")
+        .map { (name: $0.name, exists: mockfile.isSetup(target: $0)) }
+        .enumerated()
+        .map {
+            let prefix = "\($1.exists ? "❕":"☑️ ") \($0 + 1))"
+            let infix = "\(crayon.bold.on($1.name))"
+            let suffix = "\($1.exists ? " - already defined" : "")"
+            return "\(prefix) \(infix) \(suffix)"
+        }
+        .joined(separator: "\n")
         print(targetsOverview)
 
         guard !targets.isEmpty else {
@@ -128,39 +75,47 @@ public class ProjectSetup {
         // Read user action if needed
         switch (needsOverride, needsAddNewMock) {
         case (true, true):
-            policy = AddingOption.select(from: [
+            var options = (1...targets.count).map { AddingOption.only($0) }
+            options.append(contentsOf: [
                 .add,
                 .override,
                 .cancel
-            ]).policy
+            ])
+            policy = AddingOption.select(from: options).policy
         case (true, false):
-            policy = AddingOption.select(from: [
+            var options = (1...targets.count).map { AddingOption.only($0) }
+            options.append(contentsOf: [
                 .override,
                 .cancel
-            ]).policy
+                ])
+            policy = AddingOption.select(from: options).policy
         default:
             break
         }
 
         // Cancel if needed
-        guard policy != .cancel else {
+        if case .cancel = policy {
             return
         }
 
-        // This will create new configurations
-        try overrideMockConfigurations()
+        // This will create new configurations or override existing
+        try initializeBasedOnPolicy()
         try save()
     }
 
-    public func overrideMockConfigurations() throws {
+    public func initializeBasedOnPolicy() throws {
         let targets = try findTestTargets()
-        try targets.forEach { target in
+        try targets.enumerated().forEach { offset, target in
             let exists = mockfile.isSetup(target: target)
             switch (policy, exists) {
             case (.override, _):
                 try initializeMock(for: target, force: true)
             case (.skipOverriding, true):
                 return
+            case (.onlyOverride(let index), _):
+                if (offset + 1) == index {
+                    try initializeMock(for: target, force: true)
+                }
             default:
                 try initializeMock(for: target)
             }
@@ -169,9 +124,13 @@ public class ProjectSetup {
 
     public func initializeMock(for target: PBXTarget, force: Bool = false) throws {
         if mockfile.isSetup(target: target) {
-            print("\(crayon.bold.on(target.name)) - overriding Mock configuration...")
+            print(crayon.bg(.darkGreen).on(
+                "\(crayon.bold.white.on(target.name)) - overriding Mock configuration...")
+            )
         } else {
-            print("\(crayon.bold.on(target.name)) - adding Mock configuration...")
+            print(crayon.bg(.darkGreen).on(
+                "\(crayon.bold.white.on(target.name)) - adding Mock configuration...")
+            )
         }
 
         let output = "./" + defaultOutput(for: target).string
@@ -190,15 +149,16 @@ public class ProjectSetup {
             throw Error.overrideWarning
         }
 
-        let config = Mock(
+        var config = Mock(
             sources: Mock.Sources(
-                include: [sources],
+                include: [sources].sorted(),
                 exclude: nil
             ),
             output: output,
-            testable: testable,
-            import: imports
+            testable: testable.sorted(),
+            import: imports.sorted()
         )
+        try generate.updateImports(into: &config)
 
         mockfile.add(mock: config, for: target.name)
     }
@@ -254,46 +214,5 @@ public class ProjectSetup {
         case internalFailure
         case writingError
         case overrideWarning
-    }
-}
-
-class MockfileSetup {
-
-    var mockfile: Mockfile
-    let path: Path
-    let existis: Bool
-
-    init(path: Path) throws {
-        self.path = path
-
-        if let yaml: String = try? path.read() {
-            mockfile = try YAMLDecoder().decode(from: yaml)
-            existis = true
-        } else {
-            mockfile = Mockfile(sourceryCommand: nil, contents: [:])
-            existis = false
-        }
-    }
-
-    init(path: Path, mockfile: Mockfile) {
-        self.path = path
-        self.mockfile = mockfile
-        self.existis = true
-    }
-
-    func save() throws {
-        try path.write(try YAMLEncoder().encode(mockfile))
-    }
-
-    func isSetup(target: PBXTarget) -> Bool {
-        return mockfile.allMembers.contains(target.name)
-    }
-
-    func add(mock: Mock, for name: String) {
-        mockfile[dynamicMember: name] = mock
-    }
-
-    func remove(for name: String) {
-        mockfile[dynamicMember: name] = nil
     }
 }

@@ -31,17 +31,25 @@ public class GenerateCommand {
         self.mockfile = try Mockfile(path: mockfilePath)
     }
 
+    init(root: Path, mockfile: Mockfile, sourcery: Path = defaultSourceryCommand) {
+        self.root = root
+        self.sourcery = sourcery
+        self.temp = Temp(root: root)
+        self.mockfilePath = root + "Mockfile"
+        self.mockfile = mockfile
+    }
+
     // MARK: - Actions
 
     public func generate(disableCache: Bool = false, verbose: Bool = false) throws {
         // Create temporary build directory
-        try temp.createDir()
+        try temp.createDirIfNeeded()
 
         // Generate mocks for every Mock
         try mockfile.allMembers.forEach { key in
             guard let mock = mockfile[dynamicMember: key] else { return }
 
-            print(crayon.bold.bgBlue.whiteBright.on("Processing mock: \(key) ..."))
+            print(crayon.bold.bg(.darkGreen).whiteBright.on("Processing mock: \(key) ..."))
             try generate(mock, disableCache, verbose)
         }
 
@@ -91,21 +99,21 @@ public class GenerateCommand {
 
     func updateImports(into mockfile: inout Mockfile) throws {
         // Create temporary build directory
-        try temp.createDir()
+        try temp.createDirIfNeeded()
 
         try mockfile.allMembers.forEach { key in
             guard var mock = mockfile[dynamicMember: key] else { return }
 
-            print(crayon.bold.bgBlue.whiteBright.on("Extracting imports from mock: \(key) ..."))
+            print(crayon.bold.bg(.darkGreen).whiteBright.on("Extracting imports from mock: \(key) ..."))
             try updateImports(into: &mock)
             mockfile[dynamicMember: key] = mock
         }
-
-        // Cleanup
-        try cleanup()
     }
 
     func updateImports(into mock: inout Mock) throws {
+        // Create temporary build directory
+        try temp.createDirIfNeeded()
+
         let typesFilePath = temp.tempDirectory + Path("types.yaml")
         try? typesFilePath.delete()
         let config = mock.configuration(template: typesTemplate)
@@ -145,47 +153,8 @@ public class GenerateCommand {
 
         print(crayon.bold.on("  -> Found \(imports.count) import statements."))
         mock.import = imports
-    }
 
-}
-
-class Temp {
-
-    var tempDirectory: Path { return root + Path(".mocky") }
-    var tempConfig: Path { return root + Path(".mocky/.config.yml.tmp") }
-
-    private let root: Path
-
-    init(root: Path) {
-        self.root = root
-    }
-
-    func createDir() throws {
-        try? tempDirectory.delete()
-        try tempDirectory.mkdir()
-    }
-
-    func create(config: LegacyConfiguration, output: String? = nil) throws {
-        let includes = config.sources.include.map { ".\($0)" }
-        let excludes = config.sources.exclude?.map { ".\($0)" }
-        let templates = config.templates
-        let updatedConfig = LegacyConfiguration(
-            sources: Mock.Sources(
-                include: includes,
-                exclude: excludes
-            ),
-            templates: templates,
-            output: output ?? ("." + config.output),
-            args: config.args
-        )
-        try? tempConfig.delete()
-        let yaml: String = try YAMLEncoder().encode(updatedConfig)
-        try tempConfig.write(yaml)
-    }
-
-    func cleanup() throws {
-        try? tempDirectory.delete()
-        try? tempConfig.delete()
+        try cleanup()
     }
 }
 
