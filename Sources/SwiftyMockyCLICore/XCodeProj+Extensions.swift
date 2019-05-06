@@ -82,6 +82,11 @@ extension Array where Element == Path {
 }
 
 extension Path {
+
+    func removingLastComponent() -> Path {
+        return Path(components: components.dropLast())
+    }
+
     func commonPrefix(with other: Path) -> Path {
         var common = [String]()
         var lhs = self.components

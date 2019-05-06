@@ -4,8 +4,10 @@ import PathKit
 import SwiftyMockyCLICore
 import Crayon
 
+let ver = "v0.0.2"
+
 print(crayon.bold.on("╔════════════════════════╗"))
-print(crayon.bold.on("║ SwiftyMocky CLI v0.0.1 ║"))
+print(crayon.bold.on("║ SwiftyMocky CLI \(ver) ║"))
 print(crayon.bold.on("╚════════════════════════╝"))
 print("")
 
