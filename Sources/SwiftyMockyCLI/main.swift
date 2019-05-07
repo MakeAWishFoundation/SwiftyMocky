@@ -115,8 +115,7 @@ Group() { main in
         }
     }
 
-    main.command(
-        "generate",
+    main.command("generate",
         Flag("disableCache", default: false, description: "Disables cache"),
         Flag("verbose", default: false, description: "Additional output"),
         description: Messages.Generate.description

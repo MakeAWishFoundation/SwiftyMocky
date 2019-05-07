@@ -5,7 +5,7 @@ import Commander
 import Yams
 import Crayon
 
-public var mockyCommand = Path("mocky")
+public var tool = Path("mocky")
 public var defaultSourceryCommand = Path("mint run krzysztofzablocki/Sourcery@0.16.1 sourcery")
 
 public class GenerateCommand {
@@ -23,18 +23,13 @@ public class GenerateCommand {
     private var mockTemplate: Path { return root + Path("Sources/Templates/Mock.swifttemplate") }
     private var typesTemplate: Path { return root + Path("Sources/Templates/AllTypes.swifttemplate") }
     #else
-    private var mockTemplate: Path { return enclosing + Path("Templates/Mock.swifttemplate") }
-    private var typesTemplate: Path { return enclosing + Path("Templates/AllTypes.swifttemplate") }
+    private var mockTemplate: Path { return resourcesPath + Path("Templates/Mock.swifttemplate") }
+    private var typesTemplate: Path { return resourcesPath + Path("Templates/AllTypes.swifttemplate") }
     #endif
 
-    private var enclosing: Path {
-        do {
-            let real = try (Path(Bundle.main.bundlePath) + mockyCommand).symlinkDestination()
-            return real.removingLastComponent()
-        } catch {
-            print("Failed to desymbolicate path... assuming there is no symlink to follow")
-            return Path(Bundle.main.bundlePath)
-        }
+    var bundlePath = Path(Bundle.main.bundlePath)
+    var resourcesPath: Path {
+        return (try? (bundlePath + tool).symlinkDestination())?.removingLastComponent() ?? bundlePath
     }
 
     // MARK: - Lifecycle
