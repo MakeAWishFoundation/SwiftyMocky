@@ -7,17 +7,17 @@ import Crayon
 
 // MARK: - Project Setup
 
-public class ProjectSetupCommand {
+var defaultOutputName: Path { return Path("Mock.generated.swift") }
 
-    var defaultOutputName: Path { return Path("Mock.generated.swift") }
+public class ProjectSetupController {
 
     public var mockfileExists: Bool { return mockfile.existis }
-
-    private let project: XcodeProj
+    public let project: XcodeProj
+    
     private let path: Path
     private let root: Path
     private let mockfile: MockfileSetup
-    private let generate: GenerateCommand
+    private let generate: GenerationController
     private var policy: AddingPolicy = .addOnly
 
     // MARK: - Lifecycle
@@ -25,24 +25,10 @@ public class ProjectSetupCommand {
     public init(project name: Path, at root: Path) throws {
         self.root = root
 
-        if name.string.isEmpty {
-            let projectsPaths = root.glob("*.xcodeproj")
-            guard let projectPath = projectsPaths.first else { throw Error.projectNotFound }
-            guard projectsPaths.count == 1 else { throw Error.multipleProjects }
-
-            print("Found project at \(projectPath)")
-            path = projectPath
-        } else {
-            if name.string.hasSuffix("/") {
-                path = root + Path(String(name.string.dropLast()))
-            } else {
-                path = root + name
-            }
-        }
-
+        path = try ProjectPathOption.select(project: name, at: root)
         project = try XcodeProj(path: path)
         mockfile = try MockfileSetup(path: root + "Mockfile")
-        generate = GenerateCommand(root: root, mockfile: mockfile.mockfile)
+        generate = GenerationController(root: root, mockfile: mockfile.mockfile, project: project)
     }
 
     // MARK: - Actions
@@ -53,19 +39,20 @@ public class ProjectSetupCommand {
         print("✅ Found \(targets.count) unit test bundles:")
 
         let targetsOverview = targets
-        .map { (name: $0.name, exists: mockfile.isSetup(target: $0)) }
+        .map { (name: $0.name, mockName: mockfile.firstMockFor(target: $0)) }
         .enumerated()
         .map {
-            let prefix = "\($1.exists ? "❕":"☑️ ") \($0 + 1))"
+            let exists = $1.mockName != nil
+            let prefix = "\(exists ? "❕":"☑️ ") \($0 + 1))"
             let infix = "\(crayon.bold.on($1.name))"
-            let suffix = "\($1.exists ? " - already defined" : "")"
+            let suffix = "\(exists ? " - already defined in \'\($1.mockName!)\'" : "")"
             return "\(prefix) \(infix) \(suffix)"
         }
         .joined(separator: "\n")
         print(targetsOverview)
 
         guard !targets.isEmpty else {
-            throw Error.targetNotFound
+            throw MockyError.targetNotFound
         }
 
         // Check if any further action needed
@@ -133,6 +120,8 @@ public class ProjectSetupCommand {
             )
         }
 
+        print(" -> Targets set to: \(crayon.bold.on(target.name))")
+
         let output = "./" + defaultOutput(for: target).string
         print(" -> Default output set to: \(crayon.bold.on(output))")
 
@@ -146,7 +135,7 @@ public class ProjectSetupCommand {
         print(" -> Default testable module: \(crayon.bold.on(imports.joined(separator: ",")))")
 
         guard force || !mockfile.isSetup(target: target) else {
-            throw Error.overrideWarning
+            throw MockyError.overrideWarning
         }
 
         var config = Mock(
@@ -155,6 +144,7 @@ public class ProjectSetupCommand {
                 exclude: nil
             ),
             output: output,
+            targets: [target.name],
             testable: testable.sorted(),
             import: imports.sorted()
         )
@@ -174,7 +164,7 @@ public class ProjectSetupCommand {
     private func findTestTargets() throws -> [PBXTarget] {
         let testTargets = project.pbxproj.allUnitTestTargets
         guard !testTargets.isEmpty else {
-            throw Error.targetNotFound
+            throw MockyError.targetNotFound
         }
 
         return testTargets
@@ -205,14 +195,23 @@ public class ProjectSetupCommand {
         return target.dependencies.compactMap { $0.target?.name }
     }
 
-    // MARK: - Defines
+}
 
-    public enum Error: Swift.Error {
-        case targetNotFound
-        case projectNotFound
-        case multipleProjects
-        case internalFailure
-        case writingError
-        case overrideWarning
-    }
+// MARK: - Defines
+
+enum AddingPolicy {
+    case addOnly
+    case cancel
+    case override
+    case skipOverriding
+    case onlyOverride(Int)
+}
+
+public enum MockyError: Swift.Error {
+    case targetNotFound
+    case projectNotFound
+    case multipleProjects
+    case internalFailure
+    case writingError
+    case overrideWarning
 }

@@ -35,7 +35,13 @@ class MockfileSetup {
     }
 
     func isSetup(target: PBXTarget) -> Bool {
-        return mockfile.allMembers.contains(target.name)
+        return mockfile.allMocks.contains(where: { $0.targets.contains(target.name) })
+    }
+
+    func firstMockFor(target: PBXTarget) -> String? {
+        return mockfile.allMembers.first(where: {
+            mockfile[dynamicMember: $0]?.targets.contains(target.name) ?? false
+        })
     }
 
     func add(mock: Mock, for name: String) {

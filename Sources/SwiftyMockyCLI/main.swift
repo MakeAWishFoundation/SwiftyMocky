@@ -6,9 +6,9 @@ import Crayon
 
 let ver = "v0.0.2"
 
-print(crayon.bold.on("╔════════════════════════╗"))
-print(crayon.bold.on("║ SwiftyMocky CLI \(ver) ║"))
-print(crayon.bold.on("╚════════════════════════╝"))
+print(crayon.bold.on("╔═════════════════════════════╗"))
+print(crayon.bold.on("║ SwiftyMocky CLI \(ver) BETA ║"))
+print(crayon.bold.on("╚═════════════════════════════╝"))
 print("")
 
 struct Messages {
@@ -40,11 +40,11 @@ Group() { main in
         let path = parser.remainder.last ?? ""
 
         do {
-            let project = try ProjectSetupCommand(
+            let project = try ProjectSetupController(
                 project: Path(path),
                 at: pwd
             )
-            let migration = try MigrationCommand(root: pwd)
+            let migration = try MigrationController(root: pwd, project: project.project)
 
             // 1. Verify if there is already a Mockfile
             if project.mockfileExists {
@@ -90,7 +90,7 @@ Group() { main in
 
     main.command("migrate", description: Messages.Migrate.description) {
         do {
-            let setup = try MigrationCommand(root: pwd)
+            let setup = try MigrationController(root: pwd)
 
             guard setup.migrationPossible() else {
                 print(crayon.red.bold.on(
@@ -108,7 +108,7 @@ Group() { main in
     main.command("autoimport", description: Messages.Autoimport.description) {
         do {
             print(pwd)
-            let command = try GenerateCommand(root: pwd)
+            let command = try GenerationController(root: pwd)
             try command.updateAllImports()
         } catch {
             handle(error)
@@ -125,7 +125,7 @@ Group() { main in
         // 2. Generate using legacy yml configs
         do {
             print(pwd)
-            let command = try GenerateCommand(root: pwd)
+            let command = try GenerationController(root: pwd)
             try command.generate(disableCache: disableCache, verbose: verbose)
         } catch {
             handle(error)
@@ -134,6 +134,7 @@ Group() { main in
 
     main.command("doctor", description: Messages.Doctor.description) {
         // TODO: Add doctor feature
+        print("Doctor is WIP")
     }
 }
 .run()

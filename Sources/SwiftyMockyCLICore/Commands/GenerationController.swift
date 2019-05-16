@@ -4,15 +4,17 @@ import PathKit
 import Commander
 import Yams
 import Crayon
+import xcodeproj
 
 public var tool = Path("mocky")
 public var defaultSourceryCommand = Path("mint run krzysztofzablocki/Sourcery@0.16.1 sourcery")
 
-public class GenerateCommand {
+public class GenerationController {
 
     private let root: Path
+    private var project: XcodeProj?
     private let sourcery: Path
-    private let temp: Temp
+    private let temp: WorkingDirectory
     private var mockfile: Mockfile
     private let mockfilePath: Path
 
@@ -34,20 +36,22 @@ public class GenerateCommand {
 
     // MARK: - Lifecycle
 
-    public init(root: Path, sourcery: Path = defaultSourceryCommand) throws {
+    public init(root: Path, project: XcodeProj? = nil, sourcery: Path = defaultSourceryCommand) throws {
         self.root = root
         self.sourcery = sourcery
-        self.temp = Temp(root: root)
+        self.temp = WorkingDirectory(root: root)
         self.mockfilePath = root + "Mockfile"
         self.mockfile = try Mockfile(path: mockfilePath)
+        self.project = project
     }
 
-    init(root: Path, mockfile: Mockfile, sourcery: Path = defaultSourceryCommand) {
+    init(root: Path, mockfile: Mockfile, project: XcodeProj? = nil, sourcery: Path = defaultSourceryCommand) {
         self.root = root
         self.sourcery = sourcery
-        self.temp = Temp(root: root)
+        self.temp = WorkingDirectory(root: root)
         self.mockfilePath = root + "Mockfile"
         self.mockfile = mockfile
+        self.project = project
     }
 
     // MARK: - Actions

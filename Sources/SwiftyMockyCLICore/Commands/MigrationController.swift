@@ -7,20 +7,31 @@ import Crayon
 
 // MARK: - Migration
 
-public class MigrationCommand {
+public class MigrationController {
 
     public var mockfileExists: Bool { return mockfile.existis }
 
     private let root: Path
+    private var project: XcodeProj
     private let mockfile: MockfileSetup
-    private let generate: GenerateCommand
+    private let generate: GenerationController
 
     // MARK: - Lifecycle
 
-    public init(root: Path) throws {
+    public init(root: Path, projectName name: Path = "") throws {
         self.root = root
+
+        let path = try ProjectPathOption.select(project: name, at: root)
+        project = try XcodeProj(path: path)
         mockfile = try MockfileSetup(path: root + "Mockfile")
-        generate = GenerateCommand(root: root, mockfile: mockfile.mockfile)
+        generate = GenerationController(root: root, mockfile: mockfile.mockfile, project: project)
+    }
+
+    public init(root: Path, project: XcodeProj) throws {
+        self.root = root
+        self.project = project
+        self.mockfile = try MockfileSetup(path: root + "Mockfile")
+        self.generate = GenerationController(root: root, mockfile: mockfile.mockfile, project: project)
     }
 
     // MARK: - Actions
@@ -50,7 +61,9 @@ public class MigrationCommand {
         print("Found \(configurations.count) existing configuration files")
 
         configurations.forEach { (config, name) in
-            let mock = Mock(config: config)
+            var mock = Mock(config: config)
+            mock.targets = project.targets(for: Path(mock.output))
+            // find targets
             mockfile.add(mock: mock, for: name)
         }
 
@@ -71,5 +84,29 @@ public class MigrationCommand {
         try root.children().filter { LegacyConfiguration(path: $0) != nil }.forEach {
             try $0.delete()
         }
+    }
+}
+
+private extension XcodeProj {
+    func targets(for file: Path) -> [String] {
+        return pbxproj.allUnitTestTargets
+            .filter { $0.contains(file) }
+            .map { $0.name }
+    }
+}
+
+private extension PBXTarget {
+    func contains(_ file: Path) -> Bool {
+        let outputFile = file.string.hasSuffix(".swift") ? file : file + defaultOutputName
+
+        return (try? sourceFiles().contains { element in
+            guard let source = try element.fullPath(sourceRoot: Path("")) else { return false }
+            if source == outputFile {
+                print(crayon.green.bold.on("FOUND: \(outputFile)"))
+            } else {
+                print(crayon.red.on(" \(source) =/= \(outputFile)"))
+            }
+            return source == outputFile
+        }) ?? false
     }
 }

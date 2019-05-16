@@ -17,6 +17,7 @@ extension PBXProj {
     var allUITestTargets: [PBXTarget] {
         return allTargets.filter { $0.productType == .uiTestBundle }
     }
+
 }
 
 extension PBXTarget {
@@ -57,6 +58,7 @@ extension PBXTarget {
         guard let path = commonSourcesEnclosingFolder() else { return Path(".") }
         return path
     }
+
 }
 
 extension PBXFileElement {
