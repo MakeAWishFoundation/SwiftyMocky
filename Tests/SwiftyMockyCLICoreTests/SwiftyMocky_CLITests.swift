@@ -12,7 +12,7 @@ final class SwiftyMocky_CLITests: XCTestCase {
             return
         }
 
-        let fooBinary = productsDirectory.appendingPathComponent("SwiftyMocky_CLI")
+        let fooBinary = productsDirectory.appendingPathComponent("swiftymocky")
 
         let process = Process()
         process.executableURL = fooBinary
