@@ -64,11 +64,20 @@ public class MigrationController {
         configurations.forEach { (config, name) in
             var mock = Mock(config: config)
             mock.targets = project.targets(for: Path(mock.output))
+            // File pointing path
             mock.output = {
                 if mock.output.hasSuffix(".swift") {
                     return mock.output
                 } else {
                     return (Path(mock.output) + "Mock.generated.swift").string
+                }
+            }()
+            // Should contain relative or absolute path
+            mock.output = {
+                if mock.output.hasPrefix("/") || mock.output.hasPrefix(".") {
+                    return mock.output
+                } else {
+                    return "./\(mock.output)"
                 }
             }()
             mockfile.add(mock: mock, for: name)

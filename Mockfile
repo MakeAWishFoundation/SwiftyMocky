@@ -13,9 +13,9 @@ sourceryCommand: null
   testable:
   - Mocky_Example_iOS
   import:
+  - CoreGraphics
   - Foundation
   - UIKit
-  - CoreGraphics
 .mocky.macOS:
   sources:
     include:
@@ -24,7 +24,7 @@ sourceryCommand: null
     - ./SwiftyMocky-Tests/macOS
     exclude:
     - ./SwiftyMocky-Example/Shared/Other/Excluded.generated.swift
-  output: SwiftyMocky-Tests/macOS/Mocks/Mock.generated.swift
+  output: ./SwiftyMocky-Tests/macOS/Mocks/Mock.generated.swift
   targets:
   - Mocky_Tests_macOS
   testable:
@@ -39,7 +39,7 @@ sourceryCommand: null
     - ./SwiftyMocky-Tests/tvOS
     exclude:
     - ./SwiftyMocky-Example/Shared/Other/Excluded.generated.swift
-  output: SwiftyMocky-Tests/tvOS/Mocks/Mock.generated.swift
+  output: ./SwiftyMocky-Tests/tvOS/Mocks/Mock.generated.swift
   targets:
   - Mocky_Tests_tvOS
   testable:

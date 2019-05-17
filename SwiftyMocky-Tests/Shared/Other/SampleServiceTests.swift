@@ -17,7 +17,7 @@ import SwiftyMocky
 #endif
 
 class SampleServiceTests: XCTestCase {
-//    var sut: // somthing depending on service - add later
+
     var service: SampleServiceTypeMock!
 
     override func setUp() {
@@ -53,5 +53,3 @@ class SampleServiceTests: XCTestCase {
         XCTAssertEqual(second.y, 1)
     }
 }
-
-

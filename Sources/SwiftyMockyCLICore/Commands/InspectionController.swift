@@ -97,6 +97,7 @@ public class InspectionController {
 
         // 1. Output exists
         verifyOutputExists(for: mock)
+        verifyOutputRelativeToMockfile(for: mock)
 
         Message.subheader("Targets:")
         // 2. Target exists
@@ -128,6 +129,8 @@ public class InspectionController {
 
         // 4. Sources folders exists
         verifySourcesFoldersExists(for: mock)
+
+        Message.subheader("Imports:")
         // 5. Testable modules defined
         verifyTestableModulesDefined(for: mock)
         // 6. Imports defined
@@ -144,6 +147,12 @@ public class InspectionController {
 
         Message.warning("Output file \'\(output.abbreviate())\' does not exist")
         Message.hint("Output file would be auto generated upon running \'swiftymocky generate\'")
+    }
+
+    func verifyOutputRelativeToMockfile(for mock: Mock) {
+        guard !mock.output.hasPrefix("./") else { return }
+
+        Message.warning("Output file should be relative to Mockfile™ and start with \'./\'")
     }
 
     func verifyTargetsExists(for mock: Mock) -> Bool {
@@ -166,13 +175,20 @@ public class InspectionController {
 
     func verifyTargetsIncludeOutput(for mock: Mock) -> Bool {
         guard !mock.targets.isEmpty else { return false }
+        let path: String = {
+            if mock.output.hasPrefix("./") {
+                return Path(components: Path(mock.output).components.dropFirst().map({ $0 })).string
+            } else {
+                return mock.output
+            }
+        }()
 
         let allTargetsContainsOutput = project.pbxproj.allUnitTestTargets.reduce(into: true) { result, target in
             guard mock.targets.contains(target.name) else { return }
 
             do {
                 let includes = try result && target.sourceFiles().contains(where: { file in
-                    return file.relativePath()?.string == mock.output
+                    return file.relativePath()?.string == path
                 })
                 if !includes {
                     Message.nok("Target \'\(target.name)\' does not include \'\(mock.output)\' file!")

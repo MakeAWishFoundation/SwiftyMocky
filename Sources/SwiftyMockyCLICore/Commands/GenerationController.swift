@@ -34,7 +34,7 @@ public class GenerationController {
         self.mockfile = mockfile
     }
 
-    // MARK: - Actions
+    // MARK: - Generation
 
     public func generate(disableCache: Bool = false, verbose: Bool = false) throws {
         // Create temporary build directory
@@ -52,6 +52,27 @@ public class GenerationController {
         // Cleanup
         try cleanup()
     }
+
+    private func generate(_ mock: Mock, _ disableCache: Bool, _ verbose: Bool) throws {
+        let generateMocks = mock.configuration(template: temp.template)
+        try temp.create(config: generateMocks)
+        var arguments = [String]()
+
+        arguments += Arg(temp.config.string, name: "--config")
+        arguments += Arg(disableCache, name: "--disableCache")
+        arguments += Arg(verbose, name: "--verbose")
+
+        try shellOut(
+            to: sourcery.string,
+            arguments: arguments,
+            at: root.string,
+            outputHandle: outputHandle
+        )
+
+        Message.success("Generation done.")
+    }
+
+    // MARK: - Auto Imports
 
     public func updateAllImports() throws {
         try updateImports(into: &mockfile)
@@ -72,25 +93,6 @@ public class GenerationController {
         let setup = MockfileSetup(path: mockfilePath, mockfile: mockfile)
         try setup.save()
         Message.success("Imports updated.")
-    }
-
-    private func generate(_ mock: Mock, _ disableCache: Bool, _ verbose: Bool) throws {
-        let generateMocks = mock.configuration(template: temp.template)
-        try temp.create(config: generateMocks)
-        var arguments = [String]()
-
-        arguments += Arg(temp.config.string, name: "--config")
-        arguments += Arg(disableCache, name: "--disableCache")
-        arguments += Arg(verbose, name: "--verbose")
-
-        try shellOut(
-            to: sourcery.string,
-            arguments: arguments,
-            at: root.string,
-            outputHandle: outputHandle
-        )
-
-        Message.success("Generation done.")
     }
 
     private func cleanup() throws {
@@ -160,7 +162,7 @@ public class GenerationController {
 
         Message.infoPoint("Found \(imports.count) import statements.")
 
-        mock.import = imports
+        mock.import = imports.sorted()
 
         Message.unindent()
 

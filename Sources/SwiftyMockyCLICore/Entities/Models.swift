@@ -49,6 +49,13 @@ extension Mock {
     }
 
     func configuration(template: Path) -> LegacyConfiguration {
+        let output: String = {
+            if self.output.hasPrefix("./") {
+                return self.output
+            } else {
+                return "./\(self.output)"
+            }
+        }()
         return LegacyConfiguration(
             sources: sources,
             templates: [template.string],
