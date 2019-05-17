@@ -1,7 +1,7 @@
 import XCTest
 
-import SwiftyMocky_CLITests
+import SwiftyMockyCLICoreTests
 
 var tests = [XCTestCaseEntry]()
-tests += SwiftyMocky_CLITests.allTests()
+tests += SwiftyMockyCLICoreTests.allTests()
 XCTMain(tests)

@@ -17,11 +17,10 @@ let package = Package(
         .package(url: "https://github.com/jpsim/Yams.git", from: "2.0.0"),
     ],
     targets: [
-        // .target(
-        //     name: "SwiftyMocky",
-        //     path: "./Sources/Classes",
-        //     dependencies: [
-        //     ]),
+        .target(
+            name: "SwiftyMocky",
+            path: "./Sources/Classes"
+            ),
         .target(
             name: "SwiftyMockyCLI",
             dependencies: [
@@ -39,6 +38,9 @@ let package = Package(
             ]),
         .testTarget(
             name: "SwiftyMockyCLICoreTests",
-            dependencies: ["SwiftyMockyCLICore"]),
+            dependencies: [
+                "SwiftyMockyCLICore",
+                "SwiftyMocky"
+            ]),
     ]
 )

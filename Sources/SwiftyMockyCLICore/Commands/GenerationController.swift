@@ -58,9 +58,14 @@ public class GenerationController {
         try temp.create(config: generateMocks)
         var arguments = [String]()
 
-        arguments += Arg(temp.config.string, name: "--config")
-        arguments += Arg(disableCache, name: "--disableCache")
-        arguments += Arg(verbose, name: "--verbose")
+        arguments += ["--config", temp.config.string]
+        
+        if disableCache {
+            arguments += ["--disableCache"]
+        }
+        if verbose {
+            arguments += ["--verbose"]
+        }
 
         try shellOut(
             to: sourcery.string,
@@ -126,7 +131,7 @@ public class GenerationController {
 
         var arguments = [String]()
 
-        arguments += Arg(temp.config.string, name: "--config")
+        arguments += ["--config", temp.config.string]
 
         try shellOut(
             to: sourcery.string,
