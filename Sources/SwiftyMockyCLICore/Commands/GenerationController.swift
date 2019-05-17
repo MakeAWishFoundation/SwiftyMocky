@@ -6,9 +6,6 @@ import Yams
 import Crayon
 import xcodeproj
 
-public var tool = Path("mocky")
-public var defaultSourceryCommand = Path("mint run krzysztofzablocki/Sourcery@0.16.1 sourcery")
-
 public class GenerationController {
 
     private let root: Path
@@ -30,12 +27,12 @@ public class GenerationController {
 
     var bundlePath = Path(Bundle.main.bundlePath)
     var resourcesPath: Path {
-        return (try? (bundlePath + tool).symlinkDestination())?.removingLastComponent() ?? bundlePath
+        return (try? (bundlePath + kSwiftyMockyCommand).symlinkDestination())?.removingLastComponent() ?? bundlePath
     }
 
     // MARK: - Lifecycle
 
-    public init(root: Path, sourcery: Path = defaultSourceryCommand) throws {
+    public init(root: Path, sourcery: Path = kDefaultSourceryCommand) throws {
         self.root = root
         self.sourcery = sourcery
         self.temp = WorkingDirectory(root: root)
@@ -43,7 +40,7 @@ public class GenerationController {
         self.mockfile = try Mockfile(path: mockfilePath)
     }
 
-    init(root: Path, mockfile: Mockfile, sourcery: Path = defaultSourceryCommand) {
+    init(root: Path, mockfile: Mockfile, sourcery: Path = kDefaultSourceryCommand) {
         self.root = root
         self.sourcery = sourcery
         self.temp = WorkingDirectory(root: root)

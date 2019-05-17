@@ -12,13 +12,14 @@ public extension SelectableOption where RawValue == String {
 
     static func message(from options: [Self]) -> String {
         let optionsString = options.map { $0.title }.joined(separator: ", ")
-        return "\n> Please choose one of possible actions: (\(optionsString))"
+        return "> Please choose one of possible actions: (\(optionsString))"
     }
 
     static func select(from options: [Self]) -> Self {
         var option: Self?
         repeat {
-            Message.info(message(from: options))
+            Message.empty()
+            Message.subheader(message(from: options))
             option = Self(rawValue: readLine() ?? "")
         } while option == nil
         return option!

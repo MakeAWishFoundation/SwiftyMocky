@@ -85,6 +85,7 @@ Group() { main in
             } else {
                 try project.initializeAsANewMockfile()
             }
+            Message.empty()
         } catch {
             handle(error)
         }
@@ -100,6 +101,7 @@ Group() { main in
             }
 
             try setup.migrate()
+            Message.empty()
         } catch {
             handle(error)
         }
@@ -142,7 +144,10 @@ Group() { main in
 
         do {
             let inspector = try InspectionController(project: Path(projectPath), at: pwd)
+
+            inspector.inspectTools()
             inspector.inspectMockfile()
+            Message.empty()
         } catch {
             handle(error)
         }

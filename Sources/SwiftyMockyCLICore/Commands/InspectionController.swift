@@ -1,9 +1,6 @@
 import Foundation
 import ShellOut
 import PathKit
-import Commander
-import Yams
-import Crayon
 import xcodeproj
 
 public class InspectionController {
@@ -17,22 +14,40 @@ public class InspectionController {
         self.root = root
     }
 
-    // MARK: - Sourcery
+    // MARK: - Tools
+
+    public func inspectTools() {
+        Message.header("Inspecting tools dependencies:")
+        Message.indent()
+
+        if verify(command: "which mint") {
+            Message.success("Mint available")
+        } else {
+            Message.warning("Mint unavailable")
+            Message.hint("Mint is designated tool for working with SwiftyMocky. We strongly reccomend to install it via \'brew install mint\'")
+        }
+
+        inspectSourcery()
+        Message.unindent()
+    }
 
     public func inspectSourcery() {
+        let mintAvailable = verify(command: "which mint")
+        let sourceryAvailable = verify(command: "which sourcery")
 
-    }
-
-    func verifyMint() {
-
-    }
-
-    func verifySourceryCommandExists() {
-
-    }
-
-    func verifyCustomSourceryCommand() {
-
+        switch (sourceryAvailable, mintAvailable) {
+        case (_, true):
+            Message.success("Sourcery is available through Mint")
+            guard !verifyMintHasMatchingSourceryVersion() else { return }
+            Message.warning("Mint does not yet have matching Sourcery version installed.")
+            Message.hint("Required Sourcery version would be installed upon first generation. It might take a bit more time")
+        case (true, false):
+            Message.warning("Custom Sourcery installation detected")
+            Message.hint("Compatibility issues might arise. Please assure correct path/command to Sourcery is specified in the \'Mockfile\'.")
+        default:
+            Message.failure("Sourcery dependency missing!")
+            Message.resolutions("Install mint (e.x. via brew)", "Install sourcery and update field in \'Mockfile\'")
+        }
     }
 
     // MARK: - Mockfile
@@ -138,5 +153,26 @@ public class InspectionController {
 
     func fetchMockfile() -> Mockfile? {
         return try? Mockfile(path: root + "Mockfile")
+    }
+}
+
+func verify(command: String) -> Bool {
+    do {
+        try shellOut(to: command)
+        return true
+    } catch {
+        return false
+    }
+}
+
+func verifyMintHasMatchingSourceryVersion() -> Bool {
+    do {
+        let list = try shellOut(to: "mint list")
+            .replacingOccurrences(of: " ", with: "")
+            .replacingOccurrences(of: "\n", with: "")
+            .replacingOccurrences(of: "-", with: "@")
+        return list.contains(kSourceryVersion)
+    } catch {
+        return false
     }
 }

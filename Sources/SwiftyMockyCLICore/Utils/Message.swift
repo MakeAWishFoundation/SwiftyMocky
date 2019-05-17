@@ -2,13 +2,13 @@ import Foundation
 import Crayon
 
 public enum Message {
-
+    public static var indentString = "  "
     private static var indentCount = 0
     private static var count = 0
 
     private static var indentation: String {
         guard indentCount > 0 else { return "" }
-        return (1...indentCount).map { _ in return "\t" }.joined()
+        return (1...indentCount).map { _ in return indentString }.joined()
     }
 
     // MARK: - Indentation
@@ -38,6 +38,7 @@ public enum Message {
     }
 
     public static func header(_ message: String) {
+        empty()
         count += 1
         just("\(crayon.bold.on("\(count). \(message)"))")
     }
@@ -70,11 +71,15 @@ public enum Message {
         just("⚠️  \(crayon.bold.yellow.on(message))")
     }
 
-    public static func resolutions(_ messages: String...) {
+    public static func resolutions(_ messages: String..., title: String = "Possible solutions:") {
         indent()
-        just("\(crayon.underline.gray.on("Possible solutions:"))")
+        just("\(crayon.underline.gray.on(title))")
         messages.forEach { just("\(crayon.gray.on(" - \($0)"))") }
         unindent()
+    }
+
+    public static func hint(_ message: String) {
+        just("\(crayon.underline.gray.on(message))")
     }
 
     // MARK: - Misc
