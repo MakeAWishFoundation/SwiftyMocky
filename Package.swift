@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "mocky",
     products: [
-        .executable(name: "mocky", targets: ["SwiftyMockyCLI"]),
+        .executable(name: "swiftymocky", targets: ["SwiftyMockyCLI"]),
     ],
     dependencies: [
         .package(url: "https://github.com/JohnSundell/ShellOut.git", from: "2.0.0"),

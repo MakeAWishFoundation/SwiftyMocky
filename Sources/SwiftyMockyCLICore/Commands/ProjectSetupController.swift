@@ -35,7 +35,7 @@ public class ProjectSetupController {
 
     public func initializeAsANewMockfile() throws {
         Message.list()
-        Message.header("Initializing new Mockfile at \(root)")
+        Message.header("Initializing new Mockfile™ at \(root)")
 
         let targets = try findTestTargets()
         Message.success("Found \(targets.count) unit test bundles:")
@@ -155,7 +155,7 @@ public class ProjectSetupController {
     public func save() throws {
         Message.just("Saving mockfile...")
         try mockfile.save()
-        Message.success("Mockfile saved.")
+        Message.success("Mockfile™ saved.")
     }
 
     // MARK: - Helpers

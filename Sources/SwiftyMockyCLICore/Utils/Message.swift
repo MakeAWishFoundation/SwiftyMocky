@@ -60,7 +60,10 @@ public enum Message {
     }
 
     public static func ok(_ message: String) {
-        just("    \(crayon.greenBright.on(message))")
+        just("\(crayon.greenBright.on(" +  \(message)"))")
+    }
+    public static func nok(_ message: String) {
+        just("\(crayon.red.on(" -  \(message)"))")
     }
 
     public static func failure(_ message: String) {
@@ -72,6 +75,10 @@ public enum Message {
     }
 
     public static func resolutions(_ messages: String..., title: String = "Possible solutions:") {
+        resolutions(array: messages, title: title)
+    }
+
+    public static func resolutions(array messages: [String], title: String = "Possible solutions:") {
         indent()
         just("\(crayon.underline.gray.on(title))")
         messages.forEach { just("\(crayon.gray.on(" - \($0)"))") }

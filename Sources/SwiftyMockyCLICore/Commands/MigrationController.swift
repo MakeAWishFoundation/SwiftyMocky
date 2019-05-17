@@ -37,9 +37,9 @@ public class MigrationController {
     // MARK: - Actions
 
     public func save() throws {
-        Message.just("Saving mockfile...")
+        Message.just("Saving Mockfile™...")
         try mockfile.save()
-        Message.success("Mockfile saved.")
+        Message.success("Mockfile™ saved.")
     }
 
     public func migrationPossible() -> Bool {
@@ -50,7 +50,7 @@ public class MigrationController {
         guard migrationPossible() else { return }
 
         Message.list()
-        Message.header("Migrating existing configuration to a new Mockfile at \'\(root)/Mockfile\'")
+        Message.header("Migrating existing configuration to a new Mockfile™ at \'\(root)/Mockfile\'")
 
         let configurations: [(LegacyConfiguration, String)] = try root
         .children()
@@ -64,7 +64,13 @@ public class MigrationController {
         configurations.forEach { (config, name) in
             var mock = Mock(config: config)
             mock.targets = project.targets(for: Path(mock.output))
-            // find targets
+            mock.output = {
+                if mock.output.hasSuffix(".swift") {
+                    return mock.output
+                } else {
+                    return (Path(mock.output) + "Mock.generated.swift").string
+                }
+            }()
             mockfile.add(mock: mock, for: name)
         }
 

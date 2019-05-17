@@ -8,9 +8,20 @@ public struct ProjectPathOption: RawRepresentable, SelectableOption {
     private static var projects: [Path] = []
 
     public var rawValue: String
-    public var title: String { return Path(rawValue).lastComponentWithoutExtension }
+    public var title: String {
+        if rawValue == ProjectPathOption.projects.first?.string {
+            return "\(crayon.underline.on("\(Path(rawValue).lastComponentWithoutExtension)"))"
+        }
+        return Path(rawValue).lastComponentWithoutExtension
+    }
 
     public init?(rawValue: RawValue) {
+        guard !ProjectPathOption.projects.isEmpty else { return nil }
+        guard !rawValue.isEmpty else {
+            self.rawValue = ProjectPathOption.projects.first!.string
+            return
+        }
+
         let matching = ProjectPathOption.projects.filter { $0.lastComponent.hasPrefix(rawValue) }
         guard !matching.isEmpty else {
             Message.warning("No project with that name!")

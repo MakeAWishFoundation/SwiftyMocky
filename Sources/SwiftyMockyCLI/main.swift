@@ -11,7 +11,7 @@ struct Messages {
         static let description = "if more than one xcodeproj in directory, add a selected project path: mocky setup <project>.xcodeproj"
     }
     struct Migrate {
-        static let description = "migrate existing SwiftyMocky yml configurations into Mockfile"
+        static let description = "migrate existing SwiftyMocky yml configurations into Mockfile™"
         static let noConfigurations = "No migration possible, not found any legacy yml configuration files in this directory."
     }
     struct Autoimport {
@@ -46,7 +46,7 @@ Group() { main in
 
             // 1. Verify if there is already a Mockfile
             if project.mockfileExists {
-                Message.warning("Mockfile already exists.")
+                Message.warning("Mockfile™ already exists.")
                 Message.just("""
                     Available options:
                         - continue (you will be prompted about overriding)
