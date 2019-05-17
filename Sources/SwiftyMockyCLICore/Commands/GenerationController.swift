@@ -16,20 +16,6 @@ public class GenerationController {
 
     private let outputHandle = ProxyFileHandle()
 
-    // TODO: This is temporary solution, use global resources path
-    #if DEBUG
-    private var mockTemplate: Path { return root + Path("Sources/Templates/Mock.swifttemplate") }
-    private var typesTemplate: Path { return root + Path("Sources/Templates/AllTypes.swifttemplate") }
-    #else
-    private var mockTemplate: Path { return resourcesPath + Path("Templates/Mock.swifttemplate") }
-    private var typesTemplate: Path { return resourcesPath + Path("Templates/AllTypes.swifttemplate") }
-    #endif
-
-    var bundlePath = Path(Bundle.main.bundlePath)
-    var resourcesPath: Path {
-        return (try? (bundlePath + kSwiftyMockyCommand).symlinkDestination())?.removingLastComponent() ?? bundlePath
-    }
-
     // MARK: - Lifecycle
 
     public init(root: Path, sourcery: Path = kDefaultSourceryCommand) throws {
@@ -53,6 +39,7 @@ public class GenerationController {
     public func generate(disableCache: Bool = false, verbose: Bool = false) throws {
         // Create temporary build directory
         try temp.createDirIfNeeded()
+        try Assets.swifttemplate.mock.write(to: temp.template)
 
         // Generate mocks for every Mock
         try mockfile.allMembers.forEach { key in
@@ -88,11 +75,11 @@ public class GenerationController {
     }
 
     private func generate(_ mock: Mock, _ disableCache: Bool, _ verbose: Bool) throws {
-        let generateMocks = mock.configuration(template: mockTemplate)
+        let generateMocks = mock.configuration(template: temp.template)
         try temp.create(config: generateMocks)
         var arguments = [String]()
 
-        arguments += Arg(temp.tempConfig.string, name: "--config")
+        arguments += Arg(temp.config.string, name: "--config")
         arguments += Arg(disableCache, name: "--disableCache")
         arguments += Arg(verbose, name: "--verbose")
 
@@ -128,15 +115,16 @@ public class GenerationController {
     func updateImports(into mock: inout Mock) throws {
         // Create temporary build directory
         try temp.createDirIfNeeded()
+        try Assets.swifttemplate.allTypes.write(to: temp.template)
 
-        let typesFilePath = temp.tempDirectory + Path("types.yaml")
+        let typesFilePath = temp.path + Path("types.yaml")
         try? typesFilePath.delete()
-        let config = mock.configuration(template: typesTemplate)
+        let config = mock.configuration(template: temp.template)
         try temp.create(config: config, output: typesFilePath.absolute().string)
 
         var arguments = [String]()
 
-        arguments += Arg(temp.tempConfig.string, name: "--config")
+        arguments += Arg(temp.config.string, name: "--config")
 
         try shellOut(
             to: sourcery.string,

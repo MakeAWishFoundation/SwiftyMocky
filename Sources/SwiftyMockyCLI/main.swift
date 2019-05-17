@@ -152,5 +152,18 @@ Group() { main in
             handle(error)
         }
     }
+
+    #if DEBUG
+    main.command("encode") { (file: String, output: String) in
+        let filePath = Path(file)
+        guard filePath.exists, filePath.isFile else { return }
+
+        let data: Data = try! filePath.read()
+        let encoded = data.base64EncodedString()
+        let outputPath = pwd + output
+        try! outputPath.write(encoded)
+        print("Done")
+    }
+    #endif
 }
 .run()
