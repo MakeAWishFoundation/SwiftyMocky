@@ -13,14 +13,16 @@ public struct ProjectPathOption: RawRepresentable, SelectableOption {
     public init?(rawValue: RawValue) {
         let matching = ProjectPathOption.projects.filter { $0.lastComponent.hasPrefix(rawValue) }
         guard !matching.isEmpty else {
-            print(crayon.red.on("No project with that name!"))
+            Message.warning("No project with that name!")
             return nil
         }
         guard matching.count == 1 else {
-            let list = matching
-                .map { "\t - \($0.string)" }
-                .joined(separator: "\n")
-            print(crayon.red.on("Project name ambigious! Found: \n\(list)"))
+            Message.warning("Project name ambigious! Found:")
+            Message.indent()
+            matching.forEach { path in
+                Message.infoPoint("\(path)")
+            }
+            Message.unindent()
             return nil
         }
         self.rawValue = matching[0].string
@@ -38,11 +40,14 @@ public struct ProjectPathOption: RawRepresentable, SelectableOption {
         guard paths.count > 1 else { return paths[0] }
         ProjectPathOption.projects = paths
 
-        print(crayon.yellow.bold.on("Several projects found! Choose xcodeproj file."))
+        Message.warning("Several projects found! Choose xcodeproj file.")
 
         let options = paths.map { ProjectPathOption($0.string) }
         let selected = Path(select(from: options).rawValue)
-        print(crayon.bold.on("\nSelected: \(selected.lastComponent)\n"))
+
+        Message.empty()
+        Message.subheader("Selected: \(selected.lastComponent)\n")
+        
         return selected
     }
 }

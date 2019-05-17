@@ -18,28 +18,28 @@ public class MigrationController {
 
     // MARK: - Lifecycle
 
-    public init(root: Path, projectName name: Path = "") throws {
+    public init(project name: Path, at root: Path) throws {
         self.root = root
 
         let path = try ProjectPathOption.select(project: name, at: root)
         project = try XcodeProj(path: path)
         mockfile = try MockfileSetup(path: root + "Mockfile")
-        generate = GenerationController(root: root, mockfile: mockfile.mockfile, project: project)
+        generate = GenerationController(root: root, mockfile: mockfile.mockfile)
     }
 
-    public init(root: Path, project: XcodeProj) throws {
+    public init(project: XcodeProj, at root: Path) throws {
         self.root = root
         self.project = project
         self.mockfile = try MockfileSetup(path: root + "Mockfile")
-        self.generate = GenerationController(root: root, mockfile: mockfile.mockfile, project: project)
+        self.generate = GenerationController(root: root, mockfile: mockfile.mockfile)
     }
 
     // MARK: - Actions
 
     public func save() throws {
-        print("Saving mockfile...")
+        Message.just("Saving mockfile...")
         try mockfile.save()
-        print("✅ Mockfile saved.")
+        Message.success("Mockfile saved.")
     }
 
     public func migrationPossible() -> Bool {
@@ -49,16 +49,17 @@ public class MigrationController {
     public func migrate() throws {
         guard migrationPossible() else { return }
 
-        print("Migrating existing configuration to a new Mockfile at \(root)")
+        Message.list()
+        Message.header("Migrating existing configuration to a new Mockfile at \'\(root)/Mockfile\'")
 
         let configurations: [(LegacyConfiguration, String)] = try root
-            .children()
-            .compactMap { path in
-                guard let config = LegacyConfiguration(path: path) else { return nil }
-                return (config: config, name: path.lastComponentWithoutExtension)
+        .children()
+        .compactMap { path in
+            guard let config = LegacyConfiguration(path: path) else { return nil }
+            return (config: config, name: path.lastComponentWithoutExtension)
         }
 
-        print("Found \(configurations.count) existing configuration files")
+        Message.infoPoint("Found \(configurations.count) existing configuration files")
 
         configurations.forEach { (config, name) in
             var mock = Mock(config: config)
@@ -68,10 +69,14 @@ public class MigrationController {
         }
 
         try mockfile.save()
-        print("\n✅  🎉  " + crayon.bold.on("Migration completed!"))
+
+        Message.empty()
+        Message.success("Migration completed! 🎉")
 
         // Ask for removing old configuration files
-        print("\n⚠️  " + crayon.bold.on("Do you want to remove old configurations?"))
+        Message.empty()
+        Message.warning("Do you want to remove old configurations?")
+
         switch BoolOption.select() {
         case .yes: try removeLegacyConfigurations()
         case .no: break
@@ -101,11 +106,6 @@ private extension PBXTarget {
 
         return (try? sourceFiles().contains { element in
             guard let source = try element.fullPath(sourceRoot: Path("")) else { return false }
-            if source == outputFile {
-                print(crayon.green.bold.on("FOUND: \(outputFile)"))
-            } else {
-                print(crayon.red.on(" \(source) =/= \(outputFile)"))
-            }
             return source == outputFile
         }) ?? false
     }

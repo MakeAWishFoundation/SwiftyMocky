@@ -18,7 +18,7 @@ public extension SelectableOption where RawValue == String {
     static func select(from options: [Self]) -> Self {
         var option: Self?
         repeat {
-            print(message(from: options))
+            Message.info(message(from: options))
             option = Self(rawValue: readLine() ?? "")
         } while option == nil
         return option!

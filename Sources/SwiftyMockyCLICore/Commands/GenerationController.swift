@@ -12,7 +12,6 @@ public var defaultSourceryCommand = Path("mint run krzysztofzablocki/Sourcery@0.
 public class GenerationController {
 
     private let root: Path
-    private var project: XcodeProj?
     private let sourcery: Path
     private let temp: WorkingDirectory
     private var mockfile: Mockfile
@@ -36,22 +35,20 @@ public class GenerationController {
 
     // MARK: - Lifecycle
 
-    public init(root: Path, project: XcodeProj? = nil, sourcery: Path = defaultSourceryCommand) throws {
+    public init(root: Path, sourcery: Path = defaultSourceryCommand) throws {
         self.root = root
         self.sourcery = sourcery
         self.temp = WorkingDirectory(root: root)
         self.mockfilePath = root + "Mockfile"
         self.mockfile = try Mockfile(path: mockfilePath)
-        self.project = project
     }
 
-    init(root: Path, mockfile: Mockfile, project: XcodeProj? = nil, sourcery: Path = defaultSourceryCommand) {
+    init(root: Path, mockfile: Mockfile, sourcery: Path = defaultSourceryCommand) {
         self.root = root
         self.sourcery = sourcery
         self.temp = WorkingDirectory(root: root)
         self.mockfilePath = root + "Mockfile"
         self.mockfile = mockfile
-        self.project = project
     }
 
     // MARK: - Actions
@@ -64,7 +61,7 @@ public class GenerationController {
         try mockfile.allMembers.forEach { key in
             guard let mock = mockfile[dynamicMember: key] else { return }
 
-            print(crayon.bold.bg(.darkGreen).whiteBright.on("Processing mock: \(key) ..."))
+            Message.actionHeader("Processing mock: \(key) ...")
             try generate(mock, disableCache, verbose)
         }
 
@@ -76,20 +73,21 @@ public class GenerationController {
         try updateImports(into: &mockfile)
         let setup = MockfileSetup(path: mockfilePath, mockfile: mockfile)
         try setup.save()
+        Message.success("Imports updated.")
     }
 
     public func updateImports(forMockNamed name: String) throws {
-        guard var mock = mockfile[dynamicMember: name] else { return }
+        guard var mock = mockfile[dynamicMember: name] else {
+            throw MockyError.targetNotFound
+        }
 
+        Message.actionHeader("Extracting imports from mock: \(name) ...")
         try updateImports(into: &mock)
         mockfile[dynamicMember: name] = mock
 
         let setup = MockfileSetup(path: mockfilePath, mockfile: mockfile)
         try setup.save()
-    }
-
-    public func cleanup() throws {
-        try temp.cleanup()
+        Message.success("Imports updated.")
     }
 
     private func generate(_ mock: Mock, _ disableCache: Bool, _ verbose: Bool) throws {
@@ -107,7 +105,12 @@ public class GenerationController {
             at: root.string,
             outputHandle: outputHandle
         )
-        print(crayon.bold.on("... Done."))
+
+        Message.success("Generation done.")
+    }
+
+    private func cleanup() throws {
+        try temp.cleanup()
     }
 
     // MARK: - Extraction
@@ -119,7 +122,7 @@ public class GenerationController {
         try mockfile.allMembers.forEach { key in
             guard var mock = mockfile[dynamicMember: key] else { return }
 
-            print(crayon.bold.bg(.darkGreen).whiteBright.on("Extracting imports from mock: \(key) ..."))
+            Message.actionHeader("Extracting imports from mock: \(key) ...")
             try updateImports(into: &mock)
             mockfile[dynamicMember: key] = mock
         }
@@ -151,12 +154,16 @@ public class GenerationController {
             let types: [String]
         }
 
+        Message.indent()
+
         let list: TypesList = try YAMLDecoder().decode(from: resultsYaml)
         let types = list.types
-        print(crayon.bold.on("  -> Found \(types.count) types."))
+
+        Message.infoPoint("Found \(types.count) types.")
 
         let files = try root.files(for: mock.sources)
-        print(crayon.bold.on("  -> Found \(files.count) files to scan."))
+
+        Message.infoPoint("Found \(files.count) files to scan.")
 
         let importsSet: Set<String> = files.reduce(into: Set()) { result, path in
             guard let contents: String = try? path.read() else { return }
@@ -166,8 +173,11 @@ public class GenerationController {
         }
         let imports = importsSet.map { $0 }
 
-        print(crayon.bold.on("  -> Found \(imports.count) import statements."))
+        Message.infoPoint("Found \(imports.count) import statements.")
+
         mock.import = imports
+
+        Message.unindent()
 
         try cleanup()
     }
@@ -227,7 +237,7 @@ private extension String {
                 String(text[Range($0.range, in: text)!])
             }
         } catch let error {
-            print("invalid regex: \(error.localizedDescription)")
+            Message.failure("invalid regex: \(error.localizedDescription)")
             return []
         }
     }

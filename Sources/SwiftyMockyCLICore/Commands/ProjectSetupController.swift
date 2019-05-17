@@ -28,28 +28,31 @@ public class ProjectSetupController {
         path = try ProjectPathOption.select(project: name, at: root)
         project = try XcodeProj(path: path)
         mockfile = try MockfileSetup(path: root + "Mockfile")
-        generate = GenerationController(root: root, mockfile: mockfile.mockfile, project: project)
+        generate = GenerationController(root: root, mockfile: mockfile.mockfile)
     }
 
     // MARK: - Actions
 
     public func initializeAsANewMockfile() throws {
-        print("Initializing new Mockfile at \(root)")
-        let targets = try findTestTargets()
-        print("✅ Found \(targets.count) unit test bundles:")
+        Message.list()
+        Message.header("Initializing new Mockfile at \(root)")
 
-        let targetsOverview = targets
+        let targets = try findTestTargets()
+        Message.success("Found \(targets.count) unit test bundles:")
+        Message.indent()
+
+        targets
         .map { (name: $0.name, mockName: mockfile.firstMockFor(target: $0)) }
         .enumerated()
-        .map {
+        .forEach {
             let exists = $1.mockName != nil
             let prefix = "\(exists ? "❕":"☑️ ") \($0 + 1))"
             let infix = "\(crayon.bold.on($1.name))"
             let suffix = "\(exists ? " - already defined in \'\($1.mockName!)\'" : "")"
-            return "\(prefix) \(infix) \(suffix)"
+            Message.just("\(prefix) \(infix) \(suffix)")
         }
-        .joined(separator: "\n")
-        print(targetsOverview)
+
+        Message.unindent()
 
         guard !targets.isEmpty else {
             throw MockyError.targetNotFound
@@ -111,28 +114,24 @@ public class ProjectSetupController {
 
     public func initializeMock(for target: PBXTarget, force: Bool = false) throws {
         if mockfile.isSetup(target: target) {
-            print(crayon.bg(.darkGreen).on(
-                "\(crayon.bold.white.on(target.name)) - overriding Mock configuration...")
-            )
+            Message.actionHeader("\(target.name) - overriding Mock configuration...")
         } else {
-            print(crayon.bg(.darkGreen).on(
-                "\(crayon.bold.white.on(target.name)) - adding Mock configuration...")
-            )
+            Message.actionHeader("\(target.name) - adding Mock configuration...")
         }
 
-        print(" -> Targets set to: \(crayon.bold.on(target.name))")
+        Message.infoPoint("Targets set to: \(crayon.bold.on(target.name))")
 
         let output = "./" + defaultOutput(for: target).string
-        print(" -> Default output set to: \(crayon.bold.on(output))")
+        Message.infoPoint("Default output set to: \(crayon.bold.on(output))")
 
         let sources = "./" + defaultSources(for: target).string
-        print(" -> Default sources directory: \(crayon.bold.on(sources))")
+        Message.infoPoint("Default sources directory: \(crayon.bold.on(sources))")
 
         let testable = defaultTestable(for: target)
-        print(" -> Default testable module: \(crayon.bold.on(testable.joined(separator: ",")))")
+        Message.infoPoint("Default testable module: \(crayon.bold.on(testable.joined(separator: ",")))")
 
         let imports = defaultImports(for: target)
-        print(" -> Default testable module: \(crayon.bold.on(imports.joined(separator: ",")))")
+        Message.infoPoint("Default testable module: \(crayon.bold.on(imports.joined(separator: ",")))")
 
         guard force || !mockfile.isSetup(target: target) else {
             throw MockyError.overrideWarning
@@ -154,9 +153,9 @@ public class ProjectSetupController {
     }
 
     public func save() throws {
-        print("Saving mockfile...")
+        Message.just("Saving mockfile...")
         try mockfile.save()
-        print("✅ Mockfile saved.")
+        Message.success("Mockfile saved.")
     }
 
     // MARK: - Helpers

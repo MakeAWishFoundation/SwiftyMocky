@@ -6,16 +6,17 @@ import xcodeproj
 
 // MARK: - Mock configuration
 
-struct Mock: Codable {
+struct Mock {
     var sources: Sources
     var output: String
     var targets: [String]
     var testable: [String]
     var `import`: [String]
-
 }
 
-extension Mock {
+// MARK: - Codable
+
+extension Mock: Codable {
     enum CodingKeys: String, CodingKey {
         case sources
         case output
@@ -35,7 +36,10 @@ extension Mock {
     }
 }
 
+// MARK: - Mock config and Sources
+
 extension Mock {
+
     init(config: LegacyConfiguration) {
         self.sources = config.sources.sorted()
         self.output = config.output
@@ -70,7 +74,7 @@ extension Mock {
     }
 }
 
-// MARK: - Legacy
+// MARK: - Legacy configuration
 
 /// Sourcery configuration - yaml file
 struct LegacyConfiguration: Codable {
