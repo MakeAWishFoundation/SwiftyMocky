@@ -38,9 +38,9 @@ extension MockConfiguration: Codable {
 
 // MARK: - MockConfiguration config and Sources
 
-extension MockConfiguration {
+public extension MockConfiguration {
 
-    public init(config: LegacyConfiguration) {
+    init(config: LegacyConfiguration) {
         self.sources = config.sources.sorted()
         self.output = config.output
         self.testable = (config.args?.testable ?? config.args?.swiftyMocky?.testable ?? []).sorted()
@@ -48,7 +48,7 @@ extension MockConfiguration {
         self.targets = [] // TODO: Resolve targets
     }
 
-    public func configuration(template: Path) -> LegacyConfiguration {
+    func configuration(template: Path) -> LegacyConfiguration {
         let output: String = {
             if self.output.hasPrefix("./") {
                 return self.output
@@ -71,7 +71,7 @@ extension MockConfiguration {
         )
     }
 
-    public struct Sources: Codable {
+    struct Sources: Codable {
         var include: [String]
         var exclude: [String]?
 
@@ -108,7 +108,7 @@ public extension LegacyConfiguration {
 
 public extension LegacyConfiguration {
 
-    public struct Arguments: Codable {
+    struct Arguments: Codable {
         public var swiftyMocky: Configuration?
 
         // Legacy from very old version of swifty mocky, needs for migration
@@ -116,7 +116,7 @@ public extension LegacyConfiguration {
         public var testable: [String]?
     }
 
-    public struct Configuration: Codable {
+    struct Configuration: Codable {
         public var `import`: [String]?
         public var testable: [String]?
     }
