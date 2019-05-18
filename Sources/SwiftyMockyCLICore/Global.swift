@@ -4,3 +4,12 @@ import PathKit
 public var kSwiftyMockyCommand = Path("mocky")
 public var kSourceryVersion = "Sourcery@0.16.1"
 public var kDefaultSourceryCommand = Path("mint run krzysztofzablocki/\(kSourceryVersion) sourcery")
+
+public protocol GenerationCommand: AutoMockable {
+
+    func generate(disableCache: Bool, verbose: Bool) throws
+    func updateAllImports() throws
+    func updateImports(forMockNamed name: String) throws
+}
+
+public protocol AutoMockable {}

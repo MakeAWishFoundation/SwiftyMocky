@@ -28,7 +28,7 @@ class WorkingDirectory {
         let excludes = config.sources.exclude?.map { ".\($0)" }
         let templates = config.templates
         let updatedConfig = LegacyConfiguration(
-            sources: Mock.Sources(
+            sources: MockConfiguration.Sources(
                 include: includes,
                 exclude: excludes
             ),

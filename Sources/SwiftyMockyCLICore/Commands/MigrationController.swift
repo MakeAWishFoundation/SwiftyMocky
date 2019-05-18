@@ -62,7 +62,7 @@ public class MigrationController {
         Message.infoPoint("Found \(configurations.count) existing configuration files")
 
         configurations.forEach { (config, name) in
-            var mock = Mock(config: config)
+            var mock = MockConfiguration(config: config)
             mock.targets = project.targets(for: Path(mock.output))
             // File pointing path
             mock.output = {

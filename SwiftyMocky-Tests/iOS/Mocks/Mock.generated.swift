@@ -22,20 +22,23 @@ import UIKit
 
         handler(expression(), message(), file, line)
     }
-#elseif Mocky
-import SwiftyMocky
+#else
+#if canImport(XCTest)
 import XCTest
+#endif
+import SwiftyMocky
 import CoreGraphics
 import Foundation
 import UIKit
 @testable import Mocky_Example_iOS
 
     func MockyAssert(_ expression: @autoclosure () -> Bool, _ message: @autoclosure () -> String = "Verification failed", file: StaticString = #file, line: UInt = #line) {
+        #if canImport(XCTest)
         XCTAssert(expression(), message(), file: file, line: line)
+        #else 
+        assert(expression(), "\(message()), file: \(file), line: \(line)")
+        #endif
     }
-#else
-import Sourcery
-import SourceryRuntime
 #endif
 
 // MARK: - AMassiveTestProtocol

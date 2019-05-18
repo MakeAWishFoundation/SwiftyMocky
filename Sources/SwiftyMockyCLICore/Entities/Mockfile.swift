@@ -44,7 +44,7 @@ class MockfileSetup {
         })
     }
 
-    func add(mock: Mock, for name: String) {
+    func add(mock: MockConfiguration, for name: String) {
         mockfile[dynamicMember: name] = mock
     }
 
@@ -56,34 +56,34 @@ class MockfileSetup {
 // MARK: - Mockfile
 
 @dynamicMemberLookup
-struct Mockfile: Codable {
+public struct Mockfile: Codable {
 
     var sourceryCommand: String?
-    var allMocks: [Mock] { return contents.values.map { $0 } }
+    var allMocks: [MockConfiguration] { return contents.values.map { $0 } }
     var allMembers: [String] { return contents.keys.map { $0 } }
 
-    private var contents: [String: Mock]
+    private var contents: [String: MockConfiguration]
 
     // MARK: - Lifecycle
 
-    init(sourceryCommand: String?, contents: [String: Mock]) {
+    public init(sourceryCommand: String?, contents: [String: MockConfiguration]) {
         self.sourceryCommand = sourceryCommand
         self.contents = contents
     }
 
-    init(path: Path) throws {
+    public init(path: Path) throws {
         let yaml: String = try path.read()
         self = try YAMLDecoder().decode(from: yaml)
     }
 
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         sourceryCommand = try container.decode(.sourceryCommand)
         contents = [:]
 
         container.allKeys.forEach { key in
-            guard let mock = try? container.decode(Mock.self, forKey: key) else {
+            guard let mock = try? container.decode(MockConfiguration.self, forKey: key) else {
                 return
             }
 
@@ -93,7 +93,7 @@ struct Mockfile: Codable {
 
     // MARK: - Dynamic lookup
 
-    subscript(dynamicMember member: String) -> Mock? {
+    subscript(dynamicMember member: String) -> MockConfiguration? {
         get { return contents[member] }
         set {
             guard let newValue = newValue else {
@@ -105,7 +105,7 @@ struct Mockfile: Codable {
 
     // MARK: - Coding
 
-    func encode(to encoder: Encoder) throws {
+    public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
         try container.encode(sourceryCommand, forKey: .sourceryCommand)
@@ -114,20 +114,20 @@ struct Mockfile: Codable {
         }
     }
 
-    enum CodingKeys: CodingKey {
+    public enum CodingKeys: CodingKey {
 
         case sourceryCommand
         case mock(named: String)
 
-        var stringValue: String {
+        public var stringValue: String {
             switch self {
             case .sourceryCommand: return "sourceryCommand"
             case .mock(named: let name): return name
             }
         }
-        var intValue: Int? { return nil }
+        public var intValue: Int? { return nil }
 
-        init?(stringValue: String) {
+        public init?(stringValue: String) {
             switch stringValue {
             case CodingKeys.sourceryCommand.stringValue:
                 self = .sourceryCommand
@@ -136,7 +136,7 @@ struct Mockfile: Codable {
             }
         }
 
-        init?(intValue: Int) {
+        public init?(intValue: Int) {
             return nil
         }
     }

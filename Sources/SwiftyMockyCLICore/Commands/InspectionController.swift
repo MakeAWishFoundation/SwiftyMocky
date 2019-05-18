@@ -88,9 +88,9 @@ public class InspectionController {
         }
     }
 
-    // MARK: - Linting Mock
+    // MARK: - Linting MockConfiguration
 
-    func lint(_ mock: Mock, named name: String) {
+    func lint(_ mock: MockConfiguration, named name: String) {
         // Print mock info
         Message.header("Linting \'\(name)\' mock:")
         Message.indent()
@@ -139,7 +139,7 @@ public class InspectionController {
         Message.unindent()
     }
 
-    func verifyOutputExists(for mock: Mock) {
+    func verifyOutputExists(for mock: MockConfiguration) {
         let output = root + mock.output
         guard !output.exists else {
             return Message.success("Output file exists")
@@ -149,13 +149,13 @@ public class InspectionController {
         Message.hint("Output file would be auto generated upon running \'swiftymocky generate\'")
     }
 
-    func verifyOutputRelativeToMockfile(for mock: Mock) {
+    func verifyOutputRelativeToMockfile(for mock: MockConfiguration) {
         guard !mock.output.hasPrefix("./") else { return }
 
         Message.warning("Output file should be relative to Mockfile™ and start with \'./\'")
     }
 
-    func verifyTargetsExists(for mock: Mock) -> Bool {
+    func verifyTargetsExists(for mock: MockConfiguration) -> Bool {
         guard !mock.targets.isEmpty else {
             Message.warning("Mock does not define targets")
             Message.hint("This is not an error, but lack of match between mock and targets will result in \'setup\' misbehaving as well as reduced info messages accuracy.")
@@ -163,6 +163,10 @@ public class InspectionController {
         }
 
         let allTargetsExists = mock.targets.reduce(into: true) { result, targetName in
+            guard !targetName.hasPrefix("Package.swift/") else { 
+                return Message.hint("Omitting target, linting SPM not yet supported")
+            }
+
             let found = project.pbxproj.allUnitTestTargets.contains(where: { $0.name == targetName })
             if !found {
                 Message.nok("Mock specified \'\(targetName)\' target which does not seem to exist.")
@@ -173,7 +177,7 @@ public class InspectionController {
         return allTargetsExists
     }
 
-    func verifyTargetsIncludeOutput(for mock: Mock) -> Bool {
+    func verifyTargetsIncludeOutput(for mock: MockConfiguration) -> Bool {
         guard !mock.targets.isEmpty else { return false }
         let path: String = {
             if mock.output.hasPrefix("./") {
@@ -202,7 +206,7 @@ public class InspectionController {
         return allTargetsContainsOutput
     }
 
-    func verifySourcesFoldersExists(for mock: Mock) {
+    func verifySourcesFoldersExists(for mock: MockConfiguration) {
         Message.subheader("Sources:")
         let includes = mock.sources.include.map { Path($0) }.reduce(into: true) { result, path in
             guard !path.exists else { return }
@@ -226,7 +230,7 @@ public class InspectionController {
         }
     }
 
-    func verifyTestableModulesDefined(for mock: Mock) {
+    func verifyTestableModulesDefined(for mock: MockConfiguration) {
         if !mock.testable.isEmpty {
             Message.success("Testable imports are defined")
         } else {
@@ -239,7 +243,7 @@ public class InspectionController {
         }
     }
 
-    func verifyImportsDefined(for mock: Mock) {
+    func verifyImportsDefined(for mock: MockConfiguration) {
         if !mock.import.isEmpty {
             Message.success("Imports are defined")
         } else {

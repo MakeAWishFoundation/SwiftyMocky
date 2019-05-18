@@ -111,7 +111,7 @@ Group() { main in
         let mockName = parser.remainder.last
 
         do {
-            let command = try GenerationController(root: pwd)
+            let command = try Instance.factory.resolveGenerationCommand(root: pwd)
             if let name = mockName {
                 try command.updateImports(forMockNamed: name)
             } else {
@@ -132,7 +132,7 @@ Group() { main in
         // 2. Generate using legacy yml configs
         do {
             Message.info("Running at: \(pwd)")
-            let command = try GenerationController(root: pwd)
+            let command = try Instance.factory.resolveGenerationCommand(root: pwd)
             try command.generate(disableCache: disableCache, verbose: verbose)
         } catch {
             handle(error)

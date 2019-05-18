@@ -6,7 +6,7 @@ import Yams
 import Crayon
 import xcodeproj
 
-public class GenerationController {
+final class GenerationController: GenerationCommand {
 
     private let root: Path
     private let sourcery: Path
@@ -18,7 +18,7 @@ public class GenerationController {
 
     // MARK: - Lifecycle
 
-    public init(root: Path, sourcery: Path = kDefaultSourceryCommand) throws {
+    init(root: Path, sourcery: Path = kDefaultSourceryCommand) throws {
         self.root = root
         self.sourcery = sourcery
         self.temp = WorkingDirectory(root: root)
@@ -36,12 +36,12 @@ public class GenerationController {
 
     // MARK: - Generation
 
-    public func generate(disableCache: Bool = false, verbose: Bool = false) throws {
+    func generate(disableCache: Bool = false, verbose: Bool = false) throws {
         // Create temporary build directory
         try temp.createDirIfNeeded()
         try Assets.swifttemplate.mock.write(to: temp.template)
 
-        // Generate mocks for every Mock
+        // Generate mocks for every MockConfiguration
         try mockfile.allMembers.forEach { key in
             guard let mock = mockfile[dynamicMember: key] else { return }
 
@@ -53,7 +53,7 @@ public class GenerationController {
         try cleanup()
     }
 
-    private func generate(_ mock: Mock, _ disableCache: Bool, _ verbose: Bool) throws {
+    func generate(_ mock: MockConfiguration, _ disableCache: Bool, _ verbose: Bool) throws {
         let generateMocks = mock.configuration(template: temp.template)
         try temp.create(config: generateMocks)
         var arguments = [String]()
@@ -79,14 +79,14 @@ public class GenerationController {
 
     // MARK: - Auto Imports
 
-    public func updateAllImports() throws {
+    func updateAllImports() throws {
         try updateImports(into: &mockfile)
         let setup = MockfileSetup(path: mockfilePath, mockfile: mockfile)
         try setup.save()
         Message.success("Imports updated.")
     }
 
-    public func updateImports(forMockNamed name: String) throws {
+    func updateImports(forMockNamed name: String) throws {
         guard var mock = mockfile[dynamicMember: name] else {
             throw MockyError.targetNotFound
         }
@@ -100,7 +100,7 @@ public class GenerationController {
         Message.success("Imports updated.")
     }
 
-    private func cleanup() throws {
+    func cleanup() throws {
         try temp.cleanup()
     }
 
@@ -119,7 +119,7 @@ public class GenerationController {
         }
     }
 
-    func updateImports(into mock: inout Mock) throws {
+    func updateImports(into mock: inout MockConfiguration) throws {
         // Create temporary build directory
         try temp.createDirIfNeeded()
         try Assets.swifttemplate.allTypes.write(to: temp.template)
@@ -177,7 +177,7 @@ public class GenerationController {
 
 private extension Path {
 
-    func files(for sources: Mock.Sources) throws -> [Path] {
+    func files(for sources: MockConfiguration.Sources) throws -> [Path] {
         var files = [Path]()
         let includes: [Path] = sources.include.map { Path($0) }
         let excludes: [Path] = sources.exclude?.map { Path($0) } ?? []

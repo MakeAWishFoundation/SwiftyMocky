@@ -137,8 +137,8 @@ public class ProjectSetupController {
             throw MockyError.overrideWarning
         }
 
-        var config = Mock(
-            sources: Mock.Sources(
+        var config = MockConfiguration(
+            sources: MockConfiguration.Sources(
                 include: [sources].sorted(),
                 exclude: nil
             ),

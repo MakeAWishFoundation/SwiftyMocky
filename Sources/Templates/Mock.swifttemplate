@@ -72,9 +72,11 @@ import SwiftyMocky
 
         handler(expression(), message(), file, line)
     }
-#elseif Mocky
-import SwiftyMocky
+#else
+#if canImport(XCTest)
 import XCTest
+#endif
+import SwiftyMocky
 <%# ================================================== IMPORTS -%><%_ -%>
     <%_ for projectImport in projectImports(argument) { -%>
         <%_ %><%= projectImport %>
@@ -87,11 +89,12 @@ import XCTest
     <%_ } -%>
 
     func MockyAssert(_ expression: @autoclosure () -> Bool, _ message: @autoclosure () -> String = "Verification failed", file: StaticString = #file, line: UInt = #line) {
+        #if canImport(XCTest)
         XCTAssert(expression(), message(), file: file, line: line)
+        #else 
+        assert(expression(), "\(message()), file: \(file), line: \(line)")
+        #endif
     }
-#else
-import Sourcery
-import SourceryRuntime
 #endif
 <%_
 class Current {

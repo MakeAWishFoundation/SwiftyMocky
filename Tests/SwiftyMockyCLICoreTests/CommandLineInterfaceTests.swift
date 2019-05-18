@@ -1,8 +1,35 @@
 import XCTest
 import class Foundation.Bundle
+import SwiftyMocky
 
-final class SwiftyMockyCLICoreTests: XCTestCase {
+final class CommandLineInterfaceTests: XCTestCase {
     
+    // MARK: - Properties
+
+    static var allTests = [
+        ("testExample", testExample),
+    ]
+
+    /// Returns path to the built products directory.
+    var productsDirectory: URL {
+        #if os(macOS)
+        for bundle in Bundle.allBundles where bundle.bundlePath.hasSuffix(".xctest") {
+            return bundle.bundleURL.deletingLastPathComponent()
+        }
+        fatalError("couldn't find the products directory")
+        #else
+        return Bundle.main.bundleURL
+        #endif
+    }
+
+    // MARK: - Lifecycle
+
+    override func setUp() {
+        super.setUp()
+    }
+
+    // MARK: - Tests
+
     func testExample() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct
@@ -30,19 +57,4 @@ final class SwiftyMockyCLICoreTests: XCTestCase {
         XCTAssertEqual(output, "Hello, world!\n")
     }
 
-    /// Returns path to the built products directory.
-    var productsDirectory: URL {
-      #if os(macOS)
-        for bundle in Bundle.allBundles where bundle.bundlePath.hasSuffix(".xctest") {
-            return bundle.bundleURL.deletingLastPathComponent()
-        }
-        fatalError("couldn't find the products directory")
-      #else
-        return Bundle.main.bundleURL
-      #endif
-    }
-
-    static var allTests = [
-        ("testExample", testExample),
-    ]
 }

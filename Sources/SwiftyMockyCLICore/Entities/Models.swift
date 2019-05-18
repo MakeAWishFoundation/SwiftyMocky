@@ -4,20 +4,20 @@ import PathKit
 import Commander
 import xcodeproj
 
-// MARK: - Mock configuration
+// MARK: - MockConfiguration configuration
 
-struct Mock {
-    var sources: Sources
-    var output: String
-    var targets: [String]
-    var testable: [String]
-    var `import`: [String]
+public struct MockConfiguration {
+    public var sources: Sources
+    public var output: String
+    public var targets: [String]
+    public var testable: [String]
+    public var `import`: [String]
 }
 
 // MARK: - Codable
 
-extension Mock: Codable {
-    enum CodingKeys: String, CodingKey {
+extension MockConfiguration: Codable {
+    public enum CodingKeys: String, CodingKey {
         case sources
         case output
         case targets
@@ -25,7 +25,7 @@ extension Mock: Codable {
         case `import` = "import"
     }
 
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         sources = try container.decode(.sources)
@@ -36,11 +36,11 @@ extension Mock: Codable {
     }
 }
 
-// MARK: - Mock config and Sources
+// MARK: - MockConfiguration config and Sources
 
-extension Mock {
+extension MockConfiguration {
 
-    init(config: LegacyConfiguration) {
+    public init(config: LegacyConfiguration) {
         self.sources = config.sources.sorted()
         self.output = config.output
         self.testable = (config.args?.testable ?? config.args?.swiftyMocky?.testable ?? []).sorted()
@@ -48,7 +48,7 @@ extension Mock {
         self.targets = [] // TODO: Resolve targets
     }
 
-    func configuration(template: Path) -> LegacyConfiguration {
+    public func configuration(template: Path) -> LegacyConfiguration {
         let output: String = {
             if self.output.hasPrefix("./") {
                 return self.output
@@ -71,7 +71,7 @@ extension Mock {
         )
     }
 
-    struct Sources: Codable {
+    public struct Sources: Codable {
         var include: [String]
         var exclude: [String]?
 
@@ -84,15 +84,15 @@ extension Mock {
 // MARK: - Legacy configuration
 
 /// Sourcery configuration - yaml file
-struct LegacyConfiguration: Codable {
+public struct LegacyConfiguration: Codable {
 
-    var sources: Mock.Sources
-    var templates: [String]
-    var output: String
-    var args: Arguments?
+    public var sources: MockConfiguration.Sources
+    public var templates: [String]
+    public var output: String
+    public var args: Arguments?
 }
 
-extension LegacyConfiguration {
+public extension LegacyConfiguration {
 
     init?(path: Path) {
         guard let contents: String = try? path.read() else {
@@ -106,18 +106,18 @@ extension LegacyConfiguration {
     }
 }
 
-extension LegacyConfiguration {
+public extension LegacyConfiguration {
 
-    struct Arguments: Codable {
-        var swiftyMocky: Configuration?
+    public struct Arguments: Codable {
+        public var swiftyMocky: Configuration?
 
         // Legacy from very old version of swifty mocky, needs for migration
-        var `import`: [String]?
-        var testable: [String]?
+        public var `import`: [String]?
+        public var testable: [String]?
     }
 
-    struct Configuration: Codable {
-        var `import`: [String]?
-        var testable: [String]?
+    public struct Configuration: Codable {
+        public var `import`: [String]?
+        public var testable: [String]?
     }
 }

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-#if Mocky
+#if canImport(XCTest)
 import XCTest
 
 /// Used for observing tests and handling internal library errors.

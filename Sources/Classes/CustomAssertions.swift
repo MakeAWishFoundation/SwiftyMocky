@@ -6,6 +6,7 @@
 //  Copyright © 2018 MakeAWishFoundation. All rights reserved.
 //
 
+#if canImport(XCTest)
 import XCTest
 
 /// Allows to verify if error was thrown, and if it is of given type.
@@ -39,3 +40,4 @@ public func XCTAssertThrowsError<T, E>(_ expression: @autoclosure () throws -> T
         XCTAssertTrue((errorThrown as? E) == error, typeMessage, file: file, line: line)
     }
 }
+#endif
