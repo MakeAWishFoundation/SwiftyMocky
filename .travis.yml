@@ -1,27 +1,59 @@
-language: objective-c
-
-os: osx
-language: generic
+language: swift
 sudo: required
-dist: trusty
-osx_image: xcode10
+
+env:
+  global:
+    - SWIFT_BRANCH=swift-4.2-branch
+    - SWIFT_VERSION=swift-4.2-DEVELOPMENT-SNAPSHOT-2018-05-30-a
+
+matrix:
+  include:
+    # - os: osx
+    #   language: swift
+    #   osx_image: xcode9
+    #   env: 
+
+    - os: osx
+      language: objective-c
+      osx_image: xcode10
+      dist: trusty
+
+    # - os: osx
+    #   language: swift
+    #   osx_image: xcode10.2
+    
+    # - os: linux
+    #   language: generic
+    #   dist: trusty
+    #   sudo: required
+    #   install:
+    #     - sudo apt-get install clang libicu-dev
+    #     - mkdir swift
+    #     - curl https://swift.org/builds/$SWIFT_BRANCH/ubuntu1404/$SWIFT_VERSION/$SWIFT_VERSION-ubuntu14.04.tar.gz -s | tar xz -C swift &> /dev/null
+    #     - export PATH="$(pwd)/swift/$SWIFT_VERSION-ubuntu14.04/usr/bin:$PATH"
+    #   script:
+    #     - swift package update
+    #     - swift test
 
 notifications:
   #slack: // TODO:
   email: false
 
-install:
-  - if [ `uname` == "Linux" ] ; then
-        curl -sL https://gist.github.com/kylef/5c0475ff02b7c7671d2a/raw/621ef9b29bbb852fdfd2e10ed147b321d792c1e4/swiftenv-install.sh | bash ;
-    fi
-
 script:
-  # - 'if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then bash certs.sh; fi' # certs for macos app
-  - rake pods
-  - rake mock
-  # - 'if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then fastlane mac test; fi' # unable to run macos tests on CI now - turning off on CI
-  - fastlane ios test
-  - fastlane tvos test
+  - sh "swift --version"
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then 
+      pod repo update
+      rake pods
+      rake mock
+      fastlane ios test
+      fastlane tvos test
+      fastlane mac package
+    fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then 
+      swift build
+      rake mock
+      swift test
+    fi
 
 after_success:
   - sleep 5 # workaround https://github.com/travis-ci/travis-ci/issues/4725

@@ -33,7 +33,7 @@ Library that uses metaprogramming technique to generate mocks based on sources, 
     core.xcconfig = { 'OTHER_SWIFT_FLAGS' => '-DMocky' }
     core.frameworks = 'Foundation'
     core.weak_framework = "XCTest"
-    core.dependency 'Sourcery', '> 0.16'
+    core.dependency 'Sourcery', '>= 0.16'
     core.pod_target_xcconfig = {
         'APPLICATION_EXTENSION_API_ONLY' => 'YES',
         'ENABLE_BITCODE' => 'NO',
