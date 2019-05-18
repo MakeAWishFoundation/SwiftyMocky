@@ -1,58 +1,51 @@
-sudo: required
-
 env:
   global:
-    - SWIFT_BRANCH=swift-4.2-branch
-    - SWIFT_VERSION=swift-4.2-DEVELOPMENT-SNAPSHOT-2018-05-30-a
+    - SWIFT_BRANCH=swift-5.0-release
+    - SWIFT_VERSION=swift-5.0-RELEASE
 
 matrix:
   include:
-    # - os: osx
-    #   language: swift
-    #   osx_image: xcode10
-    #   dist: trusty
-
+    - os: osx
+      language: swift
+      osx_image: xcode10
     # - os: osx
     #   language: swift
     #   osx_image: xcode9
-    #   env: 
-
     # - os: osx
     #   language: swift
     #   osx_image: xcode10.2
     
-    - os: linux
-      dist: trusty
-      language: generic
-      install:
-        - sudo apt-get install clang libicu-dev
-        - mkdir swift
-        - curl https://swift.org/builds/$SWIFT_BRANCH/ubuntu1404/$SWIFT_VERSION/$SWIFT_VERSION-ubuntu14.04.tar.gz -s | tar xz -C swift &> /dev/null
-        - export PATH="$(pwd)/swift/$SWIFT_VERSION-ubuntu14.04/usr/bin:$PATH"
+    # For now, Sourcery does not work on linux
+    # - os: linux
+    #   dist: trusty
+    #   sudo: required
+    #   language: generic
+    #   install:
+    #     - sudo apt-get install clang libicu-dev
+    #     - mkdir swift
+    #     - curl https://swift.org/builds/$SWIFT_BRANCH/ubuntu1404/$SWIFT_VERSION/$SWIFT_VERSION-ubuntu14.04.tar.gz -s | tar xz -C swift &> /dev/null
+    #     - export PATH="$(pwd)/swift/$SWIFT_VERSION-ubuntu14.04/usr/bin:$PATH"
+    #     - git clone https://github.com/yonaskolb/Mint.git
+    #     - cd Mint && swift run mint install yonaskolb/mint
 
 notifications:
   email: false
 
-before_install:
-  - 'if [ "$TRAVIS_OS_NAME" = "osx" ]; then echo "OSX PRE-INSTALL STEP"; pod repo update; fi'
-
 install:
-  - 'if [ "$TRAVIS_OS_NAME" = "osx" ]; then echo "OSX INSTALL STEP"; rake pods; fi'
+  - 'if [ "$TRAVIS_OS_NAME" = "osx" ]; then rake pods; brew install mint; fi'
 
 script:
   - swift --version
   - 'if [ "$TRAVIS_OS_NAME" = "osx" ]; then 
-      echo "OSX SCRIPTS";
-      rake pods;
+      swift build;
+      swift run swiftymocky generate;
+      swift test;
       rake mock;
       fastlane ios test;
       fastlane tvos test;
-      fastlane mac package;
     fi'
   - 'if [ "$TRAVIS_OS_NAME" = "linux" ]; then 
-      echo "LINUX SCRIPTS";
-      swift package update;
+      swift build;
+      swift run swiftymocky generate;
+      swift test;
     fi'
-
-after_success:
-  - sleep 5 # workaround https://github.com/travis-ci/travis-ci/issues/4725

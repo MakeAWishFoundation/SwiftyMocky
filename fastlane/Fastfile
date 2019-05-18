@@ -21,10 +21,4 @@ platform :mac do
     lane :test do
         scan(scheme: "Mocky_Tests_macOS")
     end
-
-    desc "Verify package"
-    lane :package do
-        sh "swift build"
-        sh "swift test"
-    end
 end
