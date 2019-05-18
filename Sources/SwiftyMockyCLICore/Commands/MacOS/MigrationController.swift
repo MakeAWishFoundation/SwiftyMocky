@@ -13,7 +13,7 @@ public class MigrationController {
 
     private let root: Path
     private var project: XcodeProj
-    private let mockfile: MockfileSetup
+    private let mockfile: MockfileInteractor
     private let generate: GenerationController
 
     // MARK: - Lifecycle
@@ -23,14 +23,14 @@ public class MigrationController {
 
         let path = try ProjectPathOption.select(project: name, at: root)
         project = try XcodeProj(path: path)
-        mockfile = try MockfileSetup(path: root + "Mockfile")
+        mockfile = try MockfileInteractor(path: root + "Mockfile")
         generate = GenerationController(root: root, mockfile: mockfile.mockfile)
     }
 
     public init(project: XcodeProj, at root: Path) throws {
         self.root = root
         self.project = project
-        self.mockfile = try MockfileSetup(path: root + "Mockfile")
+        self.mockfile = try MockfileInteractor(path: root + "Mockfile")
         self.generate = GenerationController(root: root, mockfile: mockfile.mockfile)
     }
 

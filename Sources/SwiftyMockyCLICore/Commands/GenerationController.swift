@@ -4,7 +4,6 @@ import PathKit
 import Commander
 import Yams
 import Crayon
-import xcodeproj
 
 final class GenerationController: GenerationCommand {
 
@@ -81,7 +80,7 @@ final class GenerationController: GenerationCommand {
 
     func updateAllImports() throws {
         try updateImports(into: &mockfile)
-        let setup = MockfileSetup(path: mockfilePath, mockfile: mockfile)
+        let setup = MockfileInteractor(path: mockfilePath, mockfile: mockfile)
         try setup.save()
         Message.success("Imports updated.")
     }
@@ -95,7 +94,7 @@ final class GenerationController: GenerationCommand {
         try updateImports(into: &mock)
         mockfile[dynamicMember: name] = mock
 
-        let setup = MockfileSetup(path: mockfilePath, mockfile: mockfile)
+        let setup = MockfileInteractor(path: mockfilePath, mockfile: mockfile)
         try setup.save()
         Message.success("Imports updated.")
     }

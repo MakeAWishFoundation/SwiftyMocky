@@ -13,3 +13,12 @@ public protocol GenerationCommand: AutoMockable {
 }
 
 public protocol AutoMockable {}
+
+public enum MockyError: Swift.Error {
+    case targetNotFound
+    case projectNotFound
+    case multipleProjects
+    case internalFailure
+    case writingError
+    case overrideWarning
+}

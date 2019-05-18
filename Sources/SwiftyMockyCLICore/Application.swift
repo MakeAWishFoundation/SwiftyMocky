@@ -19,6 +19,17 @@ public class Application {
 
     // MARK: - Commands
 
+    public func generate(disableCache: Bool, verbose: Bool) {
+        do {
+            Message.info("Running at: \(pwd)")
+            let command = try Instance.factory.resolveGenerationCommand(root: pwd)
+            try command.generate(disableCache: disableCache, verbose: verbose)
+        } catch {
+            handle(error)
+        }
+    }
+
+    #if os(macOS)
     public func setup(project path: String?) {
         let projectPath = path ?? ""
 
@@ -115,16 +126,6 @@ public class Application {
         }
     }
 
-    public func generate(disableCache: Bool, verbose: Bool) {
-        do {
-            Message.info("Running at: \(pwd)")
-            let command = try Instance.factory.resolveGenerationCommand(root: pwd)
-            try command.generate(disableCache: disableCache, verbose: verbose)
-        } catch {
-            handle(error)
-        }
-    }
-
     public func doctor(project path: String?) {
         let projectPath = path ?? ""
 
@@ -138,6 +139,7 @@ public class Application {
             handle(error)
         }
     }
+    #endif
 
     public func encode(file: String, output: String) {
         let filePath = Path(file)

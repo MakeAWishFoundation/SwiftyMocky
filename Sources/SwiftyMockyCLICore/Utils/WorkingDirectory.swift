@@ -1,8 +1,6 @@
 import Foundation
-import Yams
 import PathKit
-import Commander
-import xcodeproj
+import Yams
 
 // MARK: - Temporary directory
 

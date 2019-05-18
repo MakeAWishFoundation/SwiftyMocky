@@ -1,6 +1,18 @@
 import Foundation
 import Crayon
 
+// MARK: - Setup policy
+
+enum AddingPolicy {
+    case addOnly
+    case cancel
+    case override
+    case skipOverriding
+    case onlyOverride(Int)
+}
+
+// MARK: - Selectable option
+
 enum AddingOption: RawRepresentable, SelectableOption {
     typealias RawValue = String
 

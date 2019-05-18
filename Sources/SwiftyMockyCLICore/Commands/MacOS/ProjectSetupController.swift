@@ -16,7 +16,7 @@ public class ProjectSetupController {
     
     private let path: Path
     private let root: Path
-    private let mockfile: MockfileSetup
+    private let mockfile: MockfileInteractor
     private let generate: GenerationController
     private var policy: AddingPolicy = .addOnly
 
@@ -27,7 +27,7 @@ public class ProjectSetupController {
 
         path = try ProjectPathOption.select(project: name, at: root)
         project = try XcodeProj(path: path)
-        mockfile = try MockfileSetup(path: root + "Mockfile")
+        mockfile = try MockfileInteractor(path: root + "Mockfile")
         generate = GenerationController(root: root, mockfile: mockfile.mockfile)
     }
 
@@ -194,23 +194,4 @@ public class ProjectSetupController {
         return target.dependencies.compactMap { $0.target?.name }
     }
 
-}
-
-// MARK: - Defines
-
-enum AddingPolicy {
-    case addOnly
-    case cancel
-    case override
-    case skipOverriding
-    case onlyOverride(Int)
-}
-
-public enum MockyError: Swift.Error {
-    case targetNotFound
-    case projectNotFound
-    case multipleProjects
-    case internalFailure
-    case writingError
-    case overrideWarning
 }

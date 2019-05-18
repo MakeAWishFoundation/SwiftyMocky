@@ -9,6 +9,15 @@ Message.swiftyMockyLabel("v\(application.version)")
 
 Group() { main in
 
+    main.command("generate",
+                 Flag("disableCache", default: false, description: "Disables cache"),
+                 Flag("verbose", default: false, description: "Additional output"),
+                 description: Messages.Generate.description
+    ) { (disableCache: Bool, verbose: Bool) in
+        application.generate(disableCache: disableCache, verbose: verbose)
+    }
+
+    #if os(macOS)
     main.command("setup", description: Messages.Setup.description) { (parser: ArgumentParser) in
         application.setup(project: parser.remainder.last)
     }
@@ -24,14 +33,7 @@ Group() { main in
     main.command("doctor", description: Messages.Doctor.description) { (parser: ArgumentParser) in
         application.doctor(project: parser.remainder.last)
     }
-
-    main.command("generate",
-                 Flag("disableCache", default: false, description: "Disables cache"),
-                 Flag("verbose", default: false, description: "Additional output"),
-                 description: Messages.Generate.description
-    ) { (disableCache: Bool, verbose: Bool) in
-        application.generate(disableCache: disableCache, verbose: verbose)
-    }
+    #endif
 
     #if DEBUG
     main.command("encode") { (file: String, output: String) in
