@@ -3,19 +3,21 @@
 
 import PackageDescription
 
+#if !os(Linux)
 let package = Package(
-    name: "mocky",
+    name: "SwiftyMocky",
     products: [
         .executable(name: "swiftymocky", targets: ["SwiftyMockyCLI"]),
         .library(name: "SwiftyMocky", targets: ["SwiftyMocky"]),
     ],
     dependencies: [
         .package(url: "https://github.com/JohnSundell/ShellOut.git", from: "2.0.0"),
-        .package(url: "https://github.com/tuist/xcodeproj.git", .upToNextMajor(from: "6.5.0")),
-        .package(url: "https://github.com/jianstm/Crayon", from: "0.0.1"),
+        .package(url: "https://github.com/tuist/xcodeproj.git", from: "6.5.0"),
+        .package(url: "https://github.com/jianstm/Crayon", from: "0.0.3"),
         .package(url: "https://github.com/kylef/Commander", from: "0.8.0"),
-        .package(url: "https://github.com/kylef/PathKit", from: "0.0.1"),
+        .package(url: "https://github.com/kylef/PathKit", from: "0.9.0"),
         .package(url: "https://github.com/jpsim/Yams.git", from: "2.0.0"),
+        // .package(url: "https://github.com/krzysztofzablocki/Sourcery.git", from: "0.16.0"),
     ],
     targets: [
         .target(
@@ -45,3 +47,48 @@ let package = Package(
             ]),
     ]
 )
+#else
+let package = Package(
+    name: "SwiftyMocky",
+    products: [
+        .executable(name: "swiftymocky", targets: ["SwiftyMockyCLI"]),
+        .library(name: "SwiftyMocky", targets: ["SwiftyMocky"]),
+    ],
+    dependencies: [
+        .package(url: "https://github.com/JohnSundell/ShellOut.git", from: "2.0.0"),
+        // .package(url: "https://github.com/tuist/xcodeproj.git", from: "6.5.0"),
+        .package(url: "https://github.com/jianstm/Crayon", from: "0.0.1"),
+        .package(url: "https://github.com/kylef/Commander", from: "0.8.0"),
+        .package(url: "https://github.com/kylef/PathKit", from: "0.0.1"),
+        .package(url: "https://github.com/jpsim/Yams.git", from: "2.0.0"),
+        // .package(url: "https://github.com/krzysztofzablocki/Sourcery.git", from: "0.16.0"),
+    ],
+    targets: [
+        .target(
+            name: "SwiftyMocky",
+            path: "./Sources/Classes"
+            ),
+        .target(
+            name: "SwiftyMockyCLI",
+            dependencies: [
+                "Commander",
+                "SwiftyMockyCLICore"
+            ]),
+        .target(
+            name: "SwiftyMockyCLICore",
+            dependencies: [
+                "ShellOut",
+                "Crayon",
+                // "xcodeproj",
+                "PathKit",
+                "Yams",
+            ]),
+        .testTarget(
+            name: "SwiftyMockyCLICoreTests",
+            dependencies: [
+                "SwiftyMockyCLICore",
+                "SwiftyMocky"
+            ]),
+    ]
+)
+#endif
