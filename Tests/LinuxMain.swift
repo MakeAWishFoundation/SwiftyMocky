@@ -1,5 +1,4 @@
 import XCTest
-
 import SwiftyMockyCLICoreTests
 
 var tests = [XCTestCaseEntry]()

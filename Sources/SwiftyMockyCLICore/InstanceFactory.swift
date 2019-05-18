@@ -5,13 +5,11 @@ public enum Instance {
     public internal(set) static var factory: InstanceFactory = InstanceFactoryConcrete()
 }
 
-public protocol InstanceFactory: AutoMockable {
+public protocol InstanceFactory: class, AutoMockable {
 
     // MARK: - Generation
     func resolveGenerationCommand(root: Path) throws -> GenerationCommand
     func resolveGenerationCommand(root: Path, mockfile: Mockfile) -> GenerationCommand
-
-    
 }
 
 public class InstanceFactoryConcrete: InstanceFactory {
