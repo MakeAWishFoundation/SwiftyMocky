@@ -7,10 +7,12 @@ public class InspectionController {
 
     private let root: Path
     private var project: XcodeProj
+    private let projectPath: Path
 
     public init(project name: Path, at root: Path) throws {
         let path = try ProjectPathOption.select(project: name, at: root)
         self.project = try XcodeProj(path: path)
+        self.projectPath = path
         self.root = root
     }
 
@@ -55,6 +57,7 @@ public class InspectionController {
     public func inspectMockfile() {
         Message.header("Inspecting Mockfile:")
         Message.indent()
+        inspectMigration()
         guard let mockfile = fetchMockfile() else {
             Message.failure("Mockfile does not exist!")
             Message.resolutions(
@@ -67,6 +70,17 @@ public class InspectionController {
         Message.success("Mockfile exists")
 
         lint(mockfile)
+    }
+
+    public func inspectMigration() {
+        let setup = try? MigrationController(
+            project: projectPath,
+            at: root
+        )
+
+        guard setup?.migrationPossible() ?? false else { return }
+        
+        Message.warning("Detected legacy configuration. Please consider migrating to Mockfile")
     }
 
     func lint(_ mockfile: Mockfile) {

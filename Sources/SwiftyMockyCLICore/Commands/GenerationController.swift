@@ -19,18 +19,18 @@ final class GenerationController: GenerationCommand {
 
     init(root: Path, sourcery: Path = kDefaultSourceryCommand) throws {
         self.root = root
-        self.sourcery = sourcery
         self.temp = WorkingDirectory(root: root)
         self.mockfilePath = root + "Mockfile"
         self.mockfile = try Mockfile(path: mockfilePath)
+        self.sourcery = Path(mockfile.sourceryCommand ?? sourcery.string)
     }
 
     init(root: Path, mockfile: Mockfile, sourcery: Path = kDefaultSourceryCommand) {
         self.root = root
-        self.sourcery = sourcery
         self.temp = WorkingDirectory(root: root)
         self.mockfilePath = root + "Mockfile"
         self.mockfile = mockfile
+        self.sourcery = Path(mockfile.sourceryCommand ?? sourcery.string)
     }
 
     // MARK: - Generation

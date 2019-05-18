@@ -8,12 +8,12 @@ matrix:
     - os: osx
       language: swift
       osx_image: xcode10
-    # - os: osx
-    #   language: swift
-    #   osx_image: xcode9
-    # - os: osx
-    #   language: swift
-    #   osx_image: xcode10.2
+    - os: osx
+      language: swift
+      osx_image: xcode9
+    - os: osx
+      language: swift
+      osx_image: xcode10.2
     
     # For now, Sourcery does not work on linux
     # - os: linux
