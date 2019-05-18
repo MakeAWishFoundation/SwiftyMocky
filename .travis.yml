@@ -8,52 +8,52 @@ env:
 
 matrix:
   include:
-    # - os: osx
-    #   language: swift
-    #   osx_image: xcode9
-    #   env: 
-
     - os: osx
-      language: objective-c
       osx_image: xcode10
       dist: trusty
 
     # - os: osx
     #   language: swift
+    #   osx_image: xcode9
+    #   env: 
+
+    # - os: osx
+    #   language: swift
     #   osx_image: xcode10.2
     
-    # - os: linux
-    #   language: generic
-    #   dist: trusty
-    #   sudo: required
-    #   install:
-    #     - sudo apt-get install clang libicu-dev
-    #     - mkdir swift
-    #     - curl https://swift.org/builds/$SWIFT_BRANCH/ubuntu1404/$SWIFT_VERSION/$SWIFT_VERSION-ubuntu14.04.tar.gz -s | tar xz -C swift &> /dev/null
-    #     - export PATH="$(pwd)/swift/$SWIFT_VERSION-ubuntu14.04/usr/bin:$PATH"
-    #   script:
-    #     - swift package update
-    #     - swift test
+  - os: linux
+    language: generic
+    dist: trusty
+    sudo: required
+    install:
+      - sudo apt-get install clang libicu-dev
+      - mkdir swift
+      - curl https://swift.org/builds/$SWIFT_BRANCH/ubuntu1404/$SWIFT_VERSION/$SWIFT_VERSION-ubuntu14.04.tar.gz -s | tar xz -C swift &> /dev/null
+      - export PATH="$(pwd)/swift/$SWIFT_VERSION-ubuntu14.04/usr/bin:$PATH"
+    script:
+      - swift build
+      - swift test
 
 notifications:
   #slack: // TODO:
   email: false
 
+before_install:
+  - 'if [ "$TRAVIS_OS_NAME" = "osx" ]; then echo "OSX PRE-INSTALL STEP"; pod repo update; fi'
+
+install:
+  - 'if [ "$TRAVIS_OS_NAME" = "osx" ]; then echo "OSX INSTALL STEP"; rake pods; fi'
+
 script:
-  - sh "swift --version"
-  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then 
-      pod repo update
-      rake pods
-      rake mock
-      fastlane ios test
-      fastlane tvos test
-      fastlane mac package
-    fi
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then 
-      swift build
-      rake mock
-      swift test
-    fi
+  - swift --version
+  - 'if [ "$TRAVIS_OS_NAME" = "osx" ]; then 
+      echo "OSX SCRIPTS";
+      rake pods;
+      rake mock;
+      fastlane ios test;
+      fastlane tvos test;
+      fastlane mac package;
+    fi'
 
 after_success:
   - sleep 5 # workaround https://github.com/travis-ci/travis-ci/issues/4725
