@@ -117,7 +117,7 @@ class EdgeCasesTests: XCTestCase {
     func test_autoclosures_flow() {
         let mock = FailsWithAutoClosureOnSwift5Mock()
         Given(mock, .connect(.any, willReturn: true))
-        Perform(mock, .connect(.any, perform: { closure in
+        Perform(mock, .connect(.any, perform: { (closure: () -> String) in
             XCTAssert(closure() == "Test123")
         }))
 

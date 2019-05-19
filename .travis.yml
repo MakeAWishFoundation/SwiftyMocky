@@ -15,7 +15,6 @@ matrix:
         - swift --version
         - swift build -c release
         - sleep 1
-        - ./.build/x86_64-apple-macosx10.10/release/swiftymocky
         - ./.build/x86_64-apple-macosx10.10/release/swiftymocky doctor
         - ./.build/x86_64-apple-macosx10.10/release/swiftymocky generate
         - swift test
