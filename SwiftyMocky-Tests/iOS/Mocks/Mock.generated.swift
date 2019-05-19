@@ -2310,7 +2310,7 @@ open class EdgeCasesGenericsProtocolMock: EdgeCasesGenericsProtocol, Mock {
 		perform?(`key`)
     }
 
-    open func getter<K,V: Sequence,T>(swapped key: Mytest<K,V>) -> T {
+    open func getter<K,V: Sequence,T:Equatable>(swapped key: Mytest<K,V>) -> T {
         addInvocation(.m_getter__swapped_key(Parameter<Mytest<K,V>>.value(`key`).wrapAsGeneric()))
 		let perform = methodPerformValue(.m_getter__swapped_key(Parameter<Mytest<K,V>>.value(`key`).wrapAsGeneric())) as? (Mytest<K,V>) -> Void
 		perform?(`key`)
@@ -2318,8 +2318,8 @@ open class EdgeCasesGenericsProtocolMock: EdgeCasesGenericsProtocol, Mock {
 		do {
 		    __value = try methodReturnValue(.m_getter__swapped_key(Parameter<Mytest<K,V>>.value(`key`).wrapAsGeneric())).casted()
 		} catch {
-			onFatalFailure("Stub return value not specified for getter<K,V: Sequence,T>(swapped key: Mytest<K,V>). Use given")
-			Failure("Stub return value not specified for getter<K,V: Sequence,T>(swapped key: Mytest<K,V>). Use given")
+			onFatalFailure("Stub return value not specified for getter<K,V: Sequence,T:Equatable>(swapped key: Mytest<K,V>). Use given")
+			Failure("Stub return value not specified for getter<K,V: Sequence,T:Equatable>(swapped key: Mytest<K,V>). Use given")
 		}
 		return __value
     }
@@ -2358,10 +2358,10 @@ open class EdgeCasesGenericsProtocolMock: EdgeCasesGenericsProtocol, Mock {
         }
 
 
-        public static func getter<K,V: Sequence,T>(swapped key: Parameter<Mytest<K,V>>, willReturn: T...) -> MethodStub {
+        public static func getter<K,V: Sequence,T:Equatable>(swapped key: Parameter<Mytest<K,V>>, willReturn: T...) -> MethodStub {
             return Given(method: .m_getter__swapped_key(`key`.wrapAsGeneric()), products: willReturn.map({ Product.return($0) }))
         }
-        public static func getter<K,V: Sequence,T>(swapped key: Parameter<Mytest<K,V>>, willProduce: (Stubber<T>) -> Void) -> MethodStub {
+        public static func getter<K,V: Sequence,T:Equatable>(swapped key: Parameter<Mytest<K,V>>, willProduce: (Stubber<T>) -> Void) -> MethodStub {
             let willReturn: [T] = []
 			let given: Given = { return Given(method: .m_getter__swapped_key(`key`.wrapAsGeneric()), products: willReturn.map({ Product.return($0) })) }()
 			let stubber = given.stub(for: (T).self)

@@ -369,14 +369,7 @@ class MethodWrapper {
 
     // Verify
     func verificationProxyConstructorName(prefix: String = "", deprecated: Bool = false, annotated: Bool = true) -> String {
-        let annotation = annotated && deprecated ? deprecatedMessage(deprecatedParametersMessage()) : ""
-        let methodName = returnTypeMatters() ? method.shortName : "\(method.callName)\(wrapGenerics(getGenericsAmongParameters()))"
-        let genericConstrains: String = {
-            let constraints = getGenericsConstraints()
-            guard !constraints.isEmpty else { return "" }
-
-            return " where \(constraints.joined(separator:", "))"
-        }()
+        let (annotation, methodName, genericConstrains) = methodInfo(deprecated, annotated)
 
         if method.parameters.isEmpty {
             return "public static func \(methodName)(\(returningParameter(false,true))) -> \(prefix)Verify\(genericConstrains)"
@@ -395,14 +388,7 @@ class MethodWrapper {
 
     // Perform
     func performProxyConstructorName(prefix: String = "", deprecated: Bool = false, annotated: Bool = true) -> String {
-        let annotation = annotated && deprecated ? deprecatedMessage(deprecatedParametersMessage()) : ""
-        let methodName = returnTypeMatters() ? method.shortName : "\(method.callName)\(wrapGenerics(getGenericsAmongParameters()))"
-        let genericConstrains: String = {
-            let constraints = getGenericsConstraints()
-            guard !constraints.isEmpty else { return "" }
-
-            return " where \(constraints.joined(separator:", "))"
-        }()
+        let (annotation, methodName, genericConstrains) = methodInfo(deprecated, annotated)
 
         if method.parameters.isEmpty {
             return "public static func \(methodName)(\(returningParameter(true,false))perform: @escaping \(performProxyClosureType())) -> \(prefix)Perform\(genericConstrains)"
@@ -536,7 +522,7 @@ class MethodWrapper {
     /// Returns list of generic constraintes from method signature. Does only contain stuff between '<' and '>'
     ///
     /// - Returns: Array of strings, like ["T: Codable", "U: Whatever"]
-    private func getGenericsConstraints() -> [String] {
+    private func getGenericsConstraints(_ generics: [String]) -> [String] {
         let name = method.shortName
         guard let start = name.index(of: "<"), let end = name.index(of: ">") else { return [] }
 
@@ -545,7 +531,10 @@ class MethodWrapper {
         genPart.removeLast()
 
         let parts = genPart.replacingOccurrences(of: " ", with: "").characters.split(separator: ",").map(String.init)
-        return parts.filter { $0.contains(":") }
+        return parts.filter {
+            let components = $0.components(separatedBy: ":")
+            return components.count == 2 && generics.contains(components[0])
+        }
     }
 
     private func getGenericsAmongParameters() -> [String] {
@@ -577,5 +566,19 @@ class MethodWrapper {
         stripped = stripped.trimmingCharacters(in: CharacterSet(charactersIn: " "))
         guard type else { return stripped }
         return "(\(stripped)).Type"
+    }
+
+    private func methodInfo(_ deprecated: Bool, _ annotated: Bool)
+        -> (annotation: String, methodName: String, genericConstrains: String) {
+            let generics = getGenericsAmongParameters()
+            let annotation = annotated && deprecated ? deprecatedMessage(deprecatedParametersMessage()) : ""
+            let methodName = returnTypeMatters() ? method.shortName : "\(method.callName)\(wrapGenerics(generics))"
+            let genericConstrains: String = {
+                let constraints = getGenericsConstraints(generics)
+                guard !constraints.isEmpty else { return "" }
+
+                return " where \(constraints.joined(separator: ", "))"
+            }()
+            return (annotation, methodName, genericConstrains)
     }
 }

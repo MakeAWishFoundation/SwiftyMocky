@@ -35,7 +35,7 @@ struct Mytest<Key, Value> {
 //sourcery: AutoMockable
 protocol EdgeCasesGenericsProtocol {
     func sorted<Key, Value>(by key: Mytest<Key, Value>)
-    func getter<K,V: Sequence,T>(swapped key: Mytest<K,V>) -> T
+    func getter<K,V: Sequence,T: Equatable>(swapped key: Mytest<K,V>) -> T
 }
 
 // MARK: - Failing because of untagged attribute
