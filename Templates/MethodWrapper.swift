@@ -9,6 +9,11 @@ class MethodWrapper {
     private static var suffixesWithoutReturnType: [String: Int] = [:]
 
     let method: SourceryRuntime.Method
+    var accessModifier: String {
+        guard !method.isStatic else { return "public static" }
+        guard !returnsGenericConstrainedToSelf else { return "public" }
+        return "open"
+    }
 
     private var registrationName: String {
         var rawName = (method.isStatic ? "sm*\(method.selectorName)" : "m*\(method.selectorName)")
@@ -76,7 +81,7 @@ class MethodWrapper {
             }
         }()
 
-        let staticModifier: String = method.isStatic ? "public static " : "open "
+        let staticModifier: String = "\(accessModifier) "
         if method.isInitializer {
             return "public required \(method.name) \(throwing)"
         } else if method.returnTypeName.isVoid {
@@ -89,6 +94,8 @@ class MethodWrapper {
                 }
             }()
             return "\(staticModifier)func \(method.shortName)\(parametersForStubSignature()) \(throwing)\(wherePartIfNeeded)"
+        } else if returnsGenericConstrainedToSelf {
+            return "\(staticModifier)func \(method.shortName)\(parametersForStubSignature()) \(throwing)-> \(returnTypeReplacingSelf) "
         } else {
             return "\(staticModifier)func \(method.shortName)\(parametersForStubSignature()) \(throwing)-> \(method.returnTypeName.name) "
         }
@@ -177,8 +184,44 @@ class MethodWrapper {
     }
 
     var returnsSelf: Bool {
+        guard !returnsGenericConstrainedToSelf else { return true }
         return !method.returnTypeName.isVoid && TypeWrapper(method.returnTypeName).isSelfType
     }
+    var returnsGenericConstrainedToSelf: Bool {
+        let returnType = "\(method.returnTypeName.name)".replacingOccurrences(of: " ", with: "")
+        // Generics,  like Myclass<Self, Q>
+        guard !returnType.contains("<Self>") else { return true }
+        guard !returnType.contains("<Self,") else { return true }
+        guard !returnType.contains(",Self>") else { return true }
+        guard !returnType.contains(",Self,") else { return true }
+        // Generics Literals like [Self: Int] etc
+        guard !returnType.contains("[Self]") else { return true }
+        guard !returnType.contains(":Self]") else { return true }
+        guard !returnType.contains("[Self:") else { return true }
+        return false
+    }
+    var returnTypeReplacingSelf: String {
+        return "\(method.returnTypeName.name) "
+            .replacingOccurrences(of: "<Self>", with: "<\(replaceSelf)>")
+            .replacingOccurrences(of: "<Self ", with: "<\(replaceSelf) ")
+            .replacingOccurrences(of: "<Self,", with: "<\(replaceSelf),")
+            .replacingOccurrences(of: " Self>", with: " \(replaceSelf)>")
+            .replacingOccurrences(of: ",Self>", with: ",\(replaceSelf)>")
+            // literals
+            .replacingOccurrences(of: "[Self]", with: "[\(replaceSelf)]")
+            // right
+            .replacingOccurrences(of: "[Self ", with: "[\(replaceSelf) ")
+            .replacingOccurrences(of: "[Self,", with: "[\(replaceSelf),")
+            .replacingOccurrences(of: "[Self:", with: "[\(replaceSelf):")
+            // left
+            .replacingOccurrences(of: " Self]", with: " \(replaceSelf)]")
+            .replacingOccurrences(of: ",Self]", with: ",\(replaceSelf)]")
+            .replacingOccurrences(of: ":Self]", with: ":\(replaceSelf)]")
+            // unknown
+            .replacingOccurrences(of: " Self ", with: " \(replaceSelf) ")
+    }
+
+
     var replaceSelf: String {
         return Current.selfType
     }

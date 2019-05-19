@@ -81,3 +81,11 @@ protocol ShouldAllowNoStubDefined {
 protocol FailsWithAutoClosureOnSwift5 {
     func connect(_ token: @autoclosure () -> String) -> Bool
 }
+
+// MARK: - Generics with Self
+
+//sourcery: AutoMockable
+protocol FailsWithReturnedTypeBeingGenericOfSelf: class {
+    func methodWillReturnSelfTypedArray() -> Array<Self>
+    func methodWillReturnSelfTypedArray2() -> [Self]
+}
