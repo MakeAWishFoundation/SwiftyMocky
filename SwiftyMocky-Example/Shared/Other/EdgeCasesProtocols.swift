@@ -88,4 +88,9 @@ protocol FailsWithAutoClosureOnSwift5 {
 protocol FailsWithReturnedTypeBeingGenericOfSelf: class {
     func methodWillReturnSelfTypedArray() -> Array<Self>
     func methodWillReturnSelfTypedArray2() -> [Self]
+    func methodWillReturnSelfTypedCustom() -> CustomGeneric<Self>
+}
+
+struct CustomGeneric<T> {
+    let t: T
 }

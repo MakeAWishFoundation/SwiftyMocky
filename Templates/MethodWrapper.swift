@@ -331,7 +331,11 @@ class MethodWrapper {
 
     func givenConstructorName(prefix: String = "", deprecated: Bool = false, annotated: Bool = true) -> String {
         let annotation = annotated && deprecated ? deprecatedMessage(deprecatedParametersMessage()) : ""
-        let returnTypeString = returnsSelf ? replaceSelf : TypeWrapper(method.returnTypeName).stripped
+        let returnTypeString: String = {
+            guard !returnsGenericConstrainedToSelf else { return returnTypeReplacingSelf }
+            guard !returnsSelf else { return replaceSelf }
+            return TypeWrapper(method.returnTypeName).stripped
+        }()
 
         if method.parameters.isEmpty {
             return "public static func \(method.shortName)(willReturn: \(returnTypeString)...) -> \(prefix)MethodStub"

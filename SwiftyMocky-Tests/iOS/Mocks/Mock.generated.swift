@@ -3028,16 +3028,36 @@ public final class FailsWithReturnedTypeBeingGenericOfSelfMock: FailsWithReturne
 		return _wrapped()
     }
 
+    public func methodWillReturnSelfTypedCustom() -> CustomGeneric<FailsWithReturnedTypeBeingGenericOfSelfMock>  {
+        func _wrapped<__Self__>() -> __Self__ {
+		addInvocation(.m_methodWillReturnSelfTypedCustom)
+		let perform = methodPerformValue(.m_methodWillReturnSelfTypedCustom) as? () -> Void
+		perform?()
+		var __value: __Self__
+		do {
+		    __value = try methodReturnValue(.m_methodWillReturnSelfTypedCustom).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for methodWillReturnSelfTypedCustom(). Use given")
+			Failure("Stub return value not specified for methodWillReturnSelfTypedCustom(). Use given")
+		}
+		return __value
+		}
+		return _wrapped()
+    }
+
 
     fileprivate enum MethodType {
         case m_methodWillReturnSelfTypedArray
         case m_methodWillReturnSelfTypedArray2
+        case m_methodWillReturnSelfTypedCustom
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
             case (.m_methodWillReturnSelfTypedArray, .m_methodWillReturnSelfTypedArray):
                 return true 
             case (.m_methodWillReturnSelfTypedArray2, .m_methodWillReturnSelfTypedArray2):
+                return true 
+            case (.m_methodWillReturnSelfTypedCustom, .m_methodWillReturnSelfTypedCustom):
                 return true 
             default: return false
             }
@@ -3047,6 +3067,7 @@ public final class FailsWithReturnedTypeBeingGenericOfSelfMock: FailsWithReturne
             switch self {
             case .m_methodWillReturnSelfTypedArray: return 0
             case .m_methodWillReturnSelfTypedArray2: return 0
+            case .m_methodWillReturnSelfTypedCustom: return 0
             }
         }
     }
@@ -3060,11 +3081,14 @@ public final class FailsWithReturnedTypeBeingGenericOfSelfMock: FailsWithReturne
         }
 
 
-        public static func methodWillReturnSelfTypedArray(willReturn: FailsWithReturnedTypeBeingGenericOfSelfMock...) -> MethodStub {
+        public static func methodWillReturnSelfTypedArray(willReturn: Array<FailsWithReturnedTypeBeingGenericOfSelfMock> ...) -> MethodStub {
             return Given(method: .m_methodWillReturnSelfTypedArray, products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func methodWillReturnSelfTypedArray2(willReturn: FailsWithReturnedTypeBeingGenericOfSelfMock...) -> MethodStub {
+        public static func methodWillReturnSelfTypedArray2(willReturn: [FailsWithReturnedTypeBeingGenericOfSelfMock] ...) -> MethodStub {
             return Given(method: .m_methodWillReturnSelfTypedArray2, products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func methodWillReturnSelfTypedCustom(willReturn: CustomGeneric<FailsWithReturnedTypeBeingGenericOfSelfMock> ...) -> MethodStub {
+            return Given(method: .m_methodWillReturnSelfTypedCustom, products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func methodWillReturnSelfTypedArray(willProduce: (Stubber<FailsWithReturnedTypeBeingGenericOfSelfMock>) -> Void) -> MethodStub {
             let willReturn: [FailsWithReturnedTypeBeingGenericOfSelfMock] = []
@@ -3080,6 +3104,13 @@ public final class FailsWithReturnedTypeBeingGenericOfSelfMock: FailsWithReturne
 			willProduce(stubber)
 			return given
         }
+        public static func methodWillReturnSelfTypedCustom(willProduce: (Stubber<FailsWithReturnedTypeBeingGenericOfSelfMock>) -> Void) -> MethodStub {
+            let willReturn: [FailsWithReturnedTypeBeingGenericOfSelfMock] = []
+			let given: Given = { return Given(method: .m_methodWillReturnSelfTypedCustom, products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (FailsWithReturnedTypeBeingGenericOfSelfMock).self)
+			willProduce(stubber)
+			return given
+        }
     }
 
     public struct Verify {
@@ -3087,6 +3118,7 @@ public final class FailsWithReturnedTypeBeingGenericOfSelfMock: FailsWithReturne
 
         public static func methodWillReturnSelfTypedArray() -> Verify { return Verify(method: .m_methodWillReturnSelfTypedArray)}
         public static func methodWillReturnSelfTypedArray2() -> Verify { return Verify(method: .m_methodWillReturnSelfTypedArray2)}
+        public static func methodWillReturnSelfTypedCustom() -> Verify { return Verify(method: .m_methodWillReturnSelfTypedCustom)}
     }
 
     public struct Perform {
@@ -3098,6 +3130,9 @@ public final class FailsWithReturnedTypeBeingGenericOfSelfMock: FailsWithReturne
         }
         public static func methodWillReturnSelfTypedArray2(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_methodWillReturnSelfTypedArray2, performs: perform)
+        }
+        public static func methodWillReturnSelfTypedCustom(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_methodWillReturnSelfTypedCustom, performs: perform)
         }
     }
 
