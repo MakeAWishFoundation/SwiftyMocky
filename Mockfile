@@ -1,0 +1,60 @@
+sourceryCommand: null
+mocky.iOS:
+  sources:
+    include:
+    - ./SwiftyMocky-Example/Shared
+    - ./SwiftyMocky-Example/iOS
+    - ./SwiftyMocky-Tests/iOS
+    exclude:
+    - ./SwiftyMocky-Example/Shared/Other/Excluded.generated.swift
+  output: ./SwiftyMocky-Tests/iOS/Mocks/Mock.generated.swift
+  targets:
+  - Mocky_Tests_iOS
+  testable:
+  - Mocky_Example_iOS
+  import:
+  - CoreGraphics
+  - Foundation
+  - UIKit
+mocky.macOS:
+  sources:
+    include:
+    - ./SwiftyMocky-Example/Shared
+    - ./SwiftyMocky-Example/macOS
+    - ./SwiftyMocky-Tests/macOS
+    exclude:
+    - ./SwiftyMocky-Example/Shared/Other/Excluded.generated.swift
+  output: ./SwiftyMocky-Tests/macOS/Mocks/Mock.generated.swift
+  targets:
+  - Mocky_Tests_macOS
+  testable:
+  - Mocky_Example_macOS
+  import:
+  - Foundation
+mocky.tvOS:
+  sources:
+    include:
+    - ./SwiftyMocky-Example/Shared
+    - ./SwiftyMocky-Example/tvOS
+    - ./SwiftyMocky-Tests/tvOS
+    exclude:
+    - ./SwiftyMocky-Example/Shared/Other/Excluded.generated.swift
+  output: ./SwiftyMocky-Tests/tvOS/Mocks/Mock.generated.swift
+  targets:
+  - Mocky_Tests_tvOS
+  testable:
+  - Mocky_Example_tvOS
+  import:
+  - Foundation
+cli.core.tests:
+  sources:
+    include:
+    - ./Sources/SwiftyMockyCLICore
+  output: ./Tests/SwiftyMockyCLICoreTests/Mock.generated.swift
+  targets:
+  - Package.swift/SwiftyMockyCLICore
+  testable:
+  - SwiftyMockyCLICore
+  import:
+  - Foundation
+  - PathKit

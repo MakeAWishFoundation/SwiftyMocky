@@ -1,0 +1,48 @@
+import Foundation
+import PathKit
+
+public enum Assets {
+
+    public enum AllTypes {
+        public static let swifttemplate: AssetFile = Files.allTypes
+    }
+    
+    public enum MockConfiguration {
+        public static let swifttemplate: AssetFile = Files.mock
+    }
+
+    public enum swifttemplate {
+        public static let allTypes: AssetFile = Files.allTypes
+        public static let mock: AssetFile = Files.mock
+    }
+}
+
+public protocol AssetFile {
+
+    var name: String { get }
+    var data: Data { get }
+
+    func write(to path: Path) throws
+}
+
+private struct File: AssetFile {
+
+    let name: String
+    let contents: String
+    var data: Data { return Data(base64Encoded: contents) ?? Data() }
+
+    func write(to path: Path) throws {
+        try path.write(data)
+    }
+}
+
+private enum Files {
+    static let allTypes = File(
+        name: "AllTypes.swifttemplate",
+        contents: "{{ AllTypes.swifttemplate }}"
+    )
+    static let mock = File(
+        name: "Mock.swifttemplate",
+        contents: "{{ Mock.swifttemplate }}"
+    )
+}

@@ -35,7 +35,7 @@ struct Mytest<Key, Value> {
 //sourcery: AutoMockable
 protocol EdgeCasesGenericsProtocol {
     func sorted<Key, Value>(by key: Mytest<Key, Value>)
-    func getter<K,V: Sequence,T>(swapped key: Mytest<K,V>) -> T
+    func getter<K,V: Sequence,T: Equatable>(swapped key: Mytest<K,V>) -> T
 }
 
 // MARK: - Failing because of untagged attribute
@@ -45,7 +45,6 @@ protocol FailsWithUntagged {
     init<T>(with t: T) where T:Equatable
     func foo<T>(_: T, bar : String) where T: Sequence // wrong formatted
 }
-
 
 // MARK: - Issue when names are escaped with backtick
 
@@ -74,4 +73,26 @@ protocol ShouldAllowNoStubDefined {
     static func throwingVoidMethod(_ key: String) throws -> Void
     static func optionalMethod(_ key: String) -> Int?
     static func optionalThrowingMethod(_ key: String) -> Int?
+}
+
+// MARK: - Autoclosure issues
+
+//sourcery: AutoMockable
+protocol FailsWithAutoClosureOnSwift5 {
+    func connect(_ token: @autoclosure () -> String) -> Bool
+}
+
+// MARK: - Generics with Self
+
+//sourcery: AutoMockable
+protocol FailsWithReturnedTypeBeingGenericOfSelf: class {
+    func methodWillReturnSelfTypedArray() -> Array<Self>
+    func methodWillReturnSelfTypedArray2() -> [Self]
+    func methodWillReturnSelfTypedCustom() -> CustomGeneric<Self>
+    func test(value: Self) -> Bool
+    func insanetTest(value: CustomGeneric<[Self]>) -> Bool
+}
+
+struct CustomGeneric<T> {
+    let t: T
 }

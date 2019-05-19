@@ -1,0 +1,9 @@
+types:
+<%_ var all = types.all
+    all += types.protocols.map { $0 } -%>
+<%_ for type in all { -%><%_ -%>
+  <%_ let autoMockable: Bool = type.inheritedTypes.contains("AutoMockable") || type.annotations["AutoMockable"] != nil -%>
+  <%_ if autoMockable { -%>
+    - <%= type.name %>
+  <%_ } -%>
+<%_ } -%>

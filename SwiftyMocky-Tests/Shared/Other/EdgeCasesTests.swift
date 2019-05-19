@@ -113,4 +113,34 @@ class EdgeCasesTests: XCTestCase {
 
         XCTAssertNil(mock[0])
     }
+
+    func test_autoclosures_flow() {
+        let mock = FailsWithAutoClosureOnSwift5Mock()
+        Given(mock, .connect(.any, willReturn: true))
+        Perform(mock, .connect(.any, perform: { (closure: () -> String) in
+            XCTAssert(closure() == "Test123")
+        }))
+
+        XCTAssert(mock.connect("Test123"))
+    }
+
+    func test_protocol_constrained_to_self_within_generic() {
+        let mock = FailsWithReturnedTypeBeingGenericOfSelfMock()
+
+        Given(mock, .methodWillReturnSelfTypedArray(willReturn: [mock]))
+        XCTAssertEqual(mock.methodWillReturnSelfTypedArray().count, 1)
+        Verify(mock, .methodWillReturnSelfTypedArray())
+
+        Given(mock, .methodWillReturnSelfTypedArray2(willReturn: [mock, mock]))
+        XCTAssertEqual(mock.methodWillReturnSelfTypedArray2().count, 2)
+        Verify(mock, .methodWillReturnSelfTypedArray2())
+
+        let custom = CustomGeneric(t: mock)
+        Given(mock, .methodWillReturnSelfTypedCustom(willProduce: { stubber in
+            stubber.return(custom)
+            stubber.return(custom)
+        }))
+        XCTAssert(mock.methodWillReturnSelfTypedCustom().t === mock)
+        Verify(mock, .methodWillReturnSelfTypedCustom())
+    }
 }

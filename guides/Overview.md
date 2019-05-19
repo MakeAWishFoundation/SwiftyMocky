@@ -2,16 +2,24 @@
 
 ## Overview
 
-**SwiftyMocky** is Lightweight, strongly typed framework for Mockito-like unit testing experience. As Swift doesn't support reflections well enough to allow building mocks in runtime, library depends on [Sourcery](https://github.com/krzysztofzablocki/Sourcery), that scans your source code and generates Swift code for you.
+**SwiftyMocky** is Lightweight, strongly typed framework for Mockito-like unit testing experience. As Swift doesn't support reflections well enough to allow building mocks in runtime, the library depends on [Sourcery](https://github.com/krzysztofzablocki/Sourcery), that scans your source code and generates Swift code for you.
 
 The idea of **SwiftyMokcy** is to mock Swift protocols. The main features are:
 
- - easy syntax, utilizing full power of auto-complete, which makes writing test easier and faster
- - mock implementations generation
- - a way to specify what mock will return (given)
- - possibility to specify different return values for different attributes
- - verify, whether a method was called on mock or not
- - check method invocations with specified attributes
+ - easy syntax, utilizing the full power of auto-complete, which makes writing test more comfortable and faster
+- mock implementations generation
+- a way to specify what mock should return (given)
+- possibility to specify different return values for different attributes
+- verify, whether a method was called on mock or not
+- check method invocations with specified attributes
+
+## Installation and Setup
+
+From version 3.3.0 we are providing SwiftyMocky CLI. 
+
+It will help you setup **Mockfile**, and verify current setup.
+
+## Usage
 
 ### **1. Generating mocks implementations:**
 

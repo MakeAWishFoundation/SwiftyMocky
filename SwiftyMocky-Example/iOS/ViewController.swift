@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreGraphics
 
 class ViewController: UIViewController {
 
@@ -22,3 +23,4 @@ class ViewController: UIViewController {
 
 }
 
+protocol TestAutoImport: AutoMockable { }

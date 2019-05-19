@@ -1,27 +1,55 @@
-language: objective-c
+env:
+  global:
+    - SWIFT_BRANCH=swift-5.0-release
+    - SWIFT_VERSION=swift-5.0-RELEASE
 
-os: osx
-language: generic
-sudo: required
-dist: trusty
-osx_image: xcode10
+matrix:
+  include:
+    - os: osx
+      language: swift
+      osx_image: xcode10
+      install:
+        - rake pods
+        - brew install mint
+      script:
+        - swift --version
+        - swift build -c release
+        - sleep 1
+        - ./.build/x86_64-apple-macosx10.10/release/swiftymocky doctor
+        - ./.build/x86_64-apple-macosx10.10/release/swiftymocky generate
+        - swift test
+        - fastlane ios test
+        - rake mock # legacy mock generation
+        - fastlane tvos test
+
+    - os: osx
+      language: swift
+      osx_image: xcode10.2
+      install:
+        - rake pods
+        - brew install mint
+      script:
+        - swift --version
+        - swift build -c release
+        - swift run -c release --skip-build --skip-update swiftymocky doctor
+        - swift run -c release --skip-build --skip-update swiftymocky generate
+        - swift test
+        - fastlane ios test
+        - rake mock # legacy mock generation
+        - fastlane tvos test
+    
+    # For now, Sourcery does not work on linux, so commented it out
+    # - os: linux
+    #   dist: trusty
+    #   sudo: required
+    #   language: generic
+    #   install:
+    #     - sudo apt-get install clang libicu-dev
+    #     - mkdir swift
+    #     - curl https://swift.org/builds/$SWIFT_BRANCH/ubuntu1404/$SWIFT_VERSION/$SWIFT_VERSION-ubuntu14.04.tar.gz -s | tar xz -C swift &> /dev/null
+    #     - export PATH="$(pwd)/swift/$SWIFT_VERSION-ubuntu14.04/usr/bin:$PATH"
+    #     - git clone https://github.com/yonaskolb/Mint.git
+    #     - cd Mint && swift run mint install yonaskolb/mint
 
 notifications:
-  #slack: // TODO:
   email: false
-
-install:
-  - if [ `uname` == "Linux" ] ; then
-        curl -sL https://gist.github.com/kylef/5c0475ff02b7c7671d2a/raw/621ef9b29bbb852fdfd2e10ed147b321d792c1e4/swiftenv-install.sh | bash ;
-    fi
-
-script:
-  # - 'if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then bash certs.sh; fi' # certs for macos app
-  - rake pods
-  - rake mock
-  # - 'if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then fastlane mac test; fi' # unable to run macos tests on CI now - turning off on CI
-  - fastlane ios test
-  - fastlane tvos test
-
-after_success:
-  - sleep 5 # workaround https://github.com/travis-ci/travis-ci/issues/4725
