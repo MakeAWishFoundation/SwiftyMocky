@@ -45,14 +45,42 @@ final class GenerationController: GenerationCommand {
             guard let mock = mockfile[dynamicMember: key] else { return }
 
             Message.actionHeader("Processing mock: \(key) ...")
-            try generate(mock, disableCache, verbose)
+            try generate(mock, disableCache, verbose, false)
         }
 
         // Cleanup
         try cleanup()
     }
 
-    func generate(_ mock: MockConfiguration, _ disableCache: Bool, _ verbose: Bool) throws {
+    func generate(mockName: String, disableCache: Bool, verbose: Bool, watch: Bool) throws {
+        // Create temporary build directory
+        try temp.createDirIfNeeded()
+        try Assets.swifttemplate.mock.write(to: temp.template)
+
+        // Cleanup
+        defer { try? cleanup() }
+
+        // Generate mocks for every MockConfiguration
+        guard let mock = mockfile[dynamicMember: mockName] else {
+            throw MockyError.mockNotFound
+        }
+
+        if watch {
+            Message.actionHeader("Watching mock: \(mockName) ...")
+        } else {
+            Message.actionHeader("Processing mock: \(mockName) ...")
+        }
+
+        do { 
+            try generate(mock, disableCache, verbose, watch) 
+            try cleanup()
+        } catch {
+            try? cleanup()
+            throw error
+        }
+    }
+
+    func generate(_ mock: MockConfiguration, _ disableCache: Bool, _ verbose: Bool, _ watch: Bool) throws {
         let generateMocks = mock.configuration(template: temp.template)
         try temp.create(config: generateMocks)
         var arguments = [String]()
@@ -64,6 +92,9 @@ final class GenerationController: GenerationCommand {
         }
         if verbose {
             arguments += ["--verbose"]
+        }
+        if watch {
+            arguments += ["--watch"]
         }
 
         try shellOut(

@@ -13,7 +13,11 @@ The idea of **SwiftyMokcy** is to mock Swift protocols. The main features are:
 - verify, whether a method was called on mock or not
 - check method invocations with specified attributes
 
+## Installation and Setup
 
+From version 3.3.0 we are providing SwiftyMocky CLI. 
+
+It will help you setup **Mockfile**, and verify current setup.
 
 ## Usage
 

@@ -9,12 +9,54 @@ Message.swiftyMockyLabel("v\(application.version)")
 
 Group() { main in
 
-    main.command("generate",
-                 Flag("disableCache", default: false, description: "Disables cache"),
-                 Flag("verbose", default: false, description: "Additional output"),
-                 description: Messages.Generate.description
-    ) { (disableCache: Bool, verbose: Bool) in
-        application.generate(disableCache: disableCache, verbose: verbose)
+    // MARK: - Properties
+
+    let verbose = Flag("verbose", flag: "v", description: Messages.Generate.verbose)
+    let disableCache = Flag("disableCache", description: Messages.Generate.disableCache)
+    let watch = Flag("watch", flag: "w", description: Messages.Generate.watcher)
+
+    // MARK: - Commands
+
+    main.command("init") {
+        application.initialize()
+    }
+
+    main.command("generate", description: Messages.Generate.description) { (parser: ArgumentParser) in
+        let isVerbose = try verbose.parse(parser)
+        let isCacheDisabled = try disableCache.parse(parser)
+        let isWatched = try watch.parse(parser)
+
+        if let named = parser.remainder.last {
+            application.generate(
+                mock: named,
+                disableCache:
+                isCacheDisabled,
+                verbose: isVerbose,
+                watch: isWatched
+            )
+        } else {
+            application.generate(
+                disableCache: isCacheDisabled,
+                verbose: isVerbose
+            )
+        }
+    }
+
+    main.command("watch", description: Messages.Generate.watcher) { (parser: ArgumentParser) in
+        let isVerbose = try verbose.parse(parser)
+        let isCacheDisabled = try disableCache.parse(parser)
+
+        guard let named = parser.remainder.last else {
+            return Message.failure("No mock name specified")
+        }
+
+        application.generate(
+            mock: named,
+            disableCache:
+            isCacheDisabled,
+            verbose: isVerbose,
+            watch: true
+        )
     }
 
     #if os(macOS)
@@ -36,10 +78,6 @@ Group() { main in
     #endif
 
     #if DEBUG
-    main.command("encode") { (file: String, output: String) in
-        application.encode(file: file, output: output)
-    }
-    
     main.command("assetize") {
         let pwd = Path(ProcessInfo.processInfo.environment["PWD"] ?? "")
         application.assetizeTemplates(
