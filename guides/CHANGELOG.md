@@ -4,6 +4,20 @@ All changes to SwiftyMocky project will be documented in this file.
 
 -----
 
+## __3.3.0__ / 2019
+
+#### Added:
+* Added SwiftyMocky CLI, simplifying setup and providing `doctor` feature
+* Added support for Swift Package Manager (SPM)
+* New configuration file for working with multiple targets - `Mockfile`
+* Fixed redundant constraints for methods with stripped generics (@tarbayev)
+#### Removed:
+* dropped Swift 4.0, SwiftyMocky now requires Swift 4.1+
+
+-----
+
+-----
+
 ## __3.2.0__ / 2019
 
 #### Added:

@@ -151,4 +151,30 @@ public class Application {
         try! outputPath.write(encoded)
         Message.success("Done")
     }
+
+    public func assetizeTemplates(templates: Path, template: Path, output: Path) {
+        let allTypesName = "AllTypes.swifttemplate"
+        let allTypesPlaceholder = "{{ \(allTypesName) }}"
+        let allTypesTemplate = templates + allTypesName
+        let allTypesContent = encoded(allTypesTemplate)
+        Message.success("Encoded all types template")
+
+        let mockName = "Mock.swifttemplate"
+        let mockPlaceholder = "{{ \(mockName) }}"
+        let mockTemplate = templates + mockName
+        let mockContent = encoded(mockTemplate)
+        Message.success("Encoded mock template")
+        
+        Message.info("Writing assets to `\(output)` ...")
+        var assetsContents: String = try! template.read()
+        assetsContents = assetsContents.replacingOccurrences(of: allTypesPlaceholder, with: allTypesContent)
+        assetsContents = assetsContents.replacingOccurrences(of: mockPlaceholder, with: mockContent)
+        try! output.write(assetsContents)
+        Message.success("Done")
+    }
+
+    private func encoded(_ file: Path) -> String {
+        let data: Data = try! file.read()
+        return data.base64EncodedString()
+    }
 }

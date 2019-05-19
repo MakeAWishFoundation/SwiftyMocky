@@ -74,3 +74,10 @@ protocol ShouldAllowNoStubDefined {
     static func optionalMethod(_ key: String) -> Int?
     static func optionalThrowingMethod(_ key: String) -> Int?
 }
+
+// MARK: - Autoclosure issues
+
+//sourcery: AutoMockable
+protocol FailsWithAutoClosureOnSwift5 {
+    func connect(_ token: @autoclosure () -> String) -> Bool
+}

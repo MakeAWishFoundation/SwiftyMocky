@@ -421,7 +421,11 @@ class MethodWrapper {
             return "perform?()"
         } else {
             let parameters = method.parameters
-                .map { "\($0.inout ? "&" : "")`\($0.name)`" }
+                .map { p in
+                    let wrapped = ParameterWrapper(p)
+                    let isAutolosure = wrapped.justType.hasPrefix("@autoclosure")
+                    return "\(p.inout ? "&" : "")`\(p.name)`\(isAutolosure ? "()" : "")"
+                }
                 .joined(separator: ", ")
             return "perform?(\(parameters))"
         }

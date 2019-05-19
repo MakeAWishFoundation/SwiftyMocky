@@ -39,6 +39,15 @@ Group() { main in
     main.command("encode") { (file: String, output: String) in
         application.encode(file: file, output: output)
     }
+    
+    main.command("assetize") {
+        let pwd = Path(ProcessInfo.processInfo.environment["PWD"] ?? "")
+        application.assetizeTemplates(
+            templates: pwd + "Sources/Templates", 
+            template: pwd + "Templates/Assets.template", 
+            output: pwd + "Sources/SwiftyMockyCLICore/Assets/Assets.swift"
+        )
+    }
     #endif
 }
 .run()
