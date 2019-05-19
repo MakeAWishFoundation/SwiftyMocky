@@ -7,15 +7,46 @@ matrix:
   include:
     - os: osx
       language: swift
-      osx_image: xcode10
+      osx_image: xcode9
+      install:
+        - pod repo update
+        - rake pods
+      script:
+        - rake mock
+        - fastlane ios test
+        - fastlane tvos test
+
     - os: osx
       language: swift
-      osx_image: xcode9
+      osx_image: xcode10
+      install:
+        - rake pods
+        - brew install mint
+      script:
+        - swift build
+        - swift run swiftymocky doctor
+        - swift run swiftymocky generate
+        - swift test
+        - fastlane ios test
+        - rake mock
+        - fastlane tvos test
+
     - os: osx
       language: swift
       osx_image: xcode10.2
+      install:
+        - rake pods
+        - brew install mint
+      script:
+        - swift build
+        - swift run swiftymocky doctor
+        - swift run swiftymocky generate
+        - swift test
+        - fastlane ios test
+        - rake mock
+        - fastlane tvos test
     
-    # For now, Sourcery does not work on linux
+    # For now, Sourcery does not work on linux, so commented out
     # - os: linux
     #   dist: trusty
     #   sudo: required
@@ -30,22 +61,3 @@ matrix:
 
 notifications:
   email: false
-
-install:
-  - 'if [ "$TRAVIS_OS_NAME" = "osx" ]; then rake pods; brew install mint; fi'
-
-script:
-  - swift --version
-  - 'if [ "$TRAVIS_OS_NAME" = "osx" ]; then 
-      swift build;
-      swift run swiftymocky generate;
-      swift test;
-      rake mock;
-      fastlane ios test;
-      fastlane tvos test;
-    fi'
-  - 'if [ "$TRAVIS_OS_NAME" = "linux" ]; then 
-      swift build;
-      swift run swiftymocky generate;
-      swift test;
-    fi'
