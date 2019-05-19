@@ -7,18 +7,6 @@ matrix:
   include:
     - os: osx
       language: swift
-      osx_image: xcode9.3
-      install:
-        - pod repo update
-        - pod install
-      script:
-        - swift --version
-        - rake mock
-        - fastlane ios test
-        - fastlane tvos test
-
-    - os: osx
-      language: swift
       osx_image: xcode10
       install:
         - rake pods
@@ -30,7 +18,7 @@ matrix:
         - swift run swiftymocky generate
         - swift test
         - fastlane ios test
-        - rake mock
+        - rake mock # legacy mock generation
         - fastlane tvos test
 
     - os: osx
@@ -38,7 +26,8 @@ matrix:
       osx_image: xcode10.2
       install:
         - rake pods
-        - brew install mint
+        - git clone https://github.com/yonaskolb/Mint.git
+        - cd Mint && swift run mint install yonaskolb/mint
       script:
         - swift --version
         - swift build
@@ -46,7 +35,7 @@ matrix:
         - swift run swiftymocky generate
         - swift test
         - fastlane ios test
-        - rake mock
+        - rake mock # legacy mock generation
         - fastlane tvos test
     
     # For now, Sourcery does not work on linux, so commented out
