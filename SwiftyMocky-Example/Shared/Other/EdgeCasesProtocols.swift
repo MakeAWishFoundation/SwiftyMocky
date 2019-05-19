@@ -89,6 +89,8 @@ protocol FailsWithReturnedTypeBeingGenericOfSelf: class {
     func methodWillReturnSelfTypedArray() -> Array<Self>
     func methodWillReturnSelfTypedArray2() -> [Self]
     func methodWillReturnSelfTypedCustom() -> CustomGeneric<Self>
+    func test(value: Self) -> Bool
+    func insanetTest(value: CustomGeneric<[Self]>) -> Bool
 }
 
 struct CustomGeneric<T> {

@@ -136,7 +136,10 @@ class EdgeCasesTests: XCTestCase {
         Verify(mock, .methodWillReturnSelfTypedArray2())
 
         let custom = CustomGeneric(t: mock)
-        Given(mock, .methodWillReturnSelfTypedCustom(willReturn: custom))
+        Given(mock, .methodWillReturnSelfTypedCustom(willProduce: { stubber in
+            stubber.return(custom)
+            stubber.return(custom)
+        }))
         XCTAssert(mock.methodWillReturnSelfTypedCustom().t === mock)
         Verify(mock, .methodWillReturnSelfTypedCustom())
     }

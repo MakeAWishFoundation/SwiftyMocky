@@ -109,8 +109,8 @@ class TypeWrapper {
             let throwing = closure.throws ? "throws " : ""
             let value = "(\(inner)) \(throwing)-> \(returnType)"
             return value
+        } else {
+            return (unwrap ? self.unwrapped : "\(type)")
         }
-
-        return unwrap ? self.unwrapped : "\(type)"
     }
 }

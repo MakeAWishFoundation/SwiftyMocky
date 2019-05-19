@@ -3045,11 +3045,41 @@ public final class FailsWithReturnedTypeBeingGenericOfSelfMock: FailsWithReturne
 		return _wrapped()
     }
 
+    open func test(value: FailsWithReturnedTypeBeingGenericOfSelfMock) -> Bool {
+        addInvocation(.m_test__value_value(Parameter<FailsWithReturnedTypeBeingGenericOfSelfMock>.value(`value`)))
+		let perform = methodPerformValue(.m_test__value_value(Parameter<FailsWithReturnedTypeBeingGenericOfSelfMock>.value(`value`))) as? (FailsWithReturnedTypeBeingGenericOfSelfMock) -> Void
+		perform?(`value`)
+		var __value: Bool
+		do {
+		    __value = try methodReturnValue(.m_test__value_value(Parameter<FailsWithReturnedTypeBeingGenericOfSelfMock>.value(`value`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for test(value: FailsWithReturnedTypeBeingGenericOfSelfMock). Use given")
+			Failure("Stub return value not specified for test(value: FailsWithReturnedTypeBeingGenericOfSelfMock). Use given")
+		}
+		return __value
+    }
+
+    open func insanetTest(value: CustomGeneric<[FailsWithReturnedTypeBeingGenericOfSelfMock]>) -> Bool {
+        addInvocation(.m_insanetTest__value_value(Parameter<CustomGeneric<[FailsWithReturnedTypeBeingGenericOfSelfMock]>>.value(`value`)))
+		let perform = methodPerformValue(.m_insanetTest__value_value(Parameter<CustomGeneric<[FailsWithReturnedTypeBeingGenericOfSelfMock]>>.value(`value`))) as? (CustomGeneric<[FailsWithReturnedTypeBeingGenericOfSelfMock]>) -> Void
+		perform?(`value`)
+		var __value: Bool
+		do {
+		    __value = try methodReturnValue(.m_insanetTest__value_value(Parameter<CustomGeneric<[FailsWithReturnedTypeBeingGenericOfSelfMock]>>.value(`value`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for insanetTest(value: CustomGeneric<[FailsWithReturnedTypeBeingGenericOfSelfMock]>). Use given")
+			Failure("Stub return value not specified for insanetTest(value: CustomGeneric<[FailsWithReturnedTypeBeingGenericOfSelfMock]>). Use given")
+		}
+		return __value
+    }
+
 
     fileprivate enum MethodType {
         case m_methodWillReturnSelfTypedArray
         case m_methodWillReturnSelfTypedArray2
         case m_methodWillReturnSelfTypedCustom
+        case m_test__value_value(Parameter<FailsWithReturnedTypeBeingGenericOfSelfMock>)
+        case m_insanetTest__value_value(Parameter<CustomGeneric<[FailsWithReturnedTypeBeingGenericOfSelfMock]>>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
@@ -3058,6 +3088,12 @@ public final class FailsWithReturnedTypeBeingGenericOfSelfMock: FailsWithReturne
             case (.m_methodWillReturnSelfTypedArray2, .m_methodWillReturnSelfTypedArray2):
                 return true 
             case (.m_methodWillReturnSelfTypedCustom, .m_methodWillReturnSelfTypedCustom):
+                return true 
+            case (.m_test__value_value(let lhsValue), .m_test__value_value(let rhsValue)):
+                guard Parameter.compare(lhs: lhsValue, rhs: rhsValue, with: matcher) else { return false } 
+                return true 
+            case (.m_insanetTest__value_value(let lhsValue), .m_insanetTest__value_value(let rhsValue)):
+                guard Parameter.compare(lhs: lhsValue, rhs: rhsValue, with: matcher) else { return false } 
                 return true 
             default: return false
             }
@@ -3068,6 +3104,8 @@ public final class FailsWithReturnedTypeBeingGenericOfSelfMock: FailsWithReturne
             case .m_methodWillReturnSelfTypedArray: return 0
             case .m_methodWillReturnSelfTypedArray2: return 0
             case .m_methodWillReturnSelfTypedCustom: return 0
+            case let .m_test__value_value(p0): return p0.intValue
+            case let .m_insanetTest__value_value(p0): return p0.intValue
             }
         }
     }
@@ -3090,24 +3128,44 @@ public final class FailsWithReturnedTypeBeingGenericOfSelfMock: FailsWithReturne
         public static func methodWillReturnSelfTypedCustom(willReturn: CustomGeneric<FailsWithReturnedTypeBeingGenericOfSelfMock> ...) -> MethodStub {
             return Given(method: .m_methodWillReturnSelfTypedCustom, products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func methodWillReturnSelfTypedArray(willProduce: (Stubber<FailsWithReturnedTypeBeingGenericOfSelfMock>) -> Void) -> MethodStub {
-            let willReturn: [FailsWithReturnedTypeBeingGenericOfSelfMock] = []
+        public static func test(value: Parameter<FailsWithReturnedTypeBeingGenericOfSelfMock>, willReturn: Bool...) -> MethodStub {
+            return Given(method: .m_test__value_value(`value`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func insanetTest(value: Parameter<CustomGeneric<[FailsWithReturnedTypeBeingGenericOfSelfMock]>>, willReturn: Bool...) -> MethodStub {
+            return Given(method: .m_insanetTest__value_value(`value`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func methodWillReturnSelfTypedArray(willProduce: (Stubber<Array<FailsWithReturnedTypeBeingGenericOfSelfMock> >) -> Void) -> MethodStub {
+            let willReturn: [Array<FailsWithReturnedTypeBeingGenericOfSelfMock> ] = []
 			let given: Given = { return Given(method: .m_methodWillReturnSelfTypedArray, products: willReturn.map({ StubProduct.return($0 as Any) })) }()
-			let stubber = given.stub(for: (FailsWithReturnedTypeBeingGenericOfSelfMock).self)
+			let stubber = given.stub(for: (Array<FailsWithReturnedTypeBeingGenericOfSelfMock> ).self)
 			willProduce(stubber)
 			return given
         }
-        public static func methodWillReturnSelfTypedArray2(willProduce: (Stubber<FailsWithReturnedTypeBeingGenericOfSelfMock>) -> Void) -> MethodStub {
-            let willReturn: [FailsWithReturnedTypeBeingGenericOfSelfMock] = []
+        public static func methodWillReturnSelfTypedArray2(willProduce: (Stubber<[FailsWithReturnedTypeBeingGenericOfSelfMock] >) -> Void) -> MethodStub {
+            let willReturn: [[FailsWithReturnedTypeBeingGenericOfSelfMock] ] = []
 			let given: Given = { return Given(method: .m_methodWillReturnSelfTypedArray2, products: willReturn.map({ StubProduct.return($0 as Any) })) }()
-			let stubber = given.stub(for: (FailsWithReturnedTypeBeingGenericOfSelfMock).self)
+			let stubber = given.stub(for: ([FailsWithReturnedTypeBeingGenericOfSelfMock] ).self)
 			willProduce(stubber)
 			return given
         }
-        public static func methodWillReturnSelfTypedCustom(willProduce: (Stubber<FailsWithReturnedTypeBeingGenericOfSelfMock>) -> Void) -> MethodStub {
-            let willReturn: [FailsWithReturnedTypeBeingGenericOfSelfMock] = []
+        public static func methodWillReturnSelfTypedCustom(willProduce: (Stubber<CustomGeneric<FailsWithReturnedTypeBeingGenericOfSelfMock> >) -> Void) -> MethodStub {
+            let willReturn: [CustomGeneric<FailsWithReturnedTypeBeingGenericOfSelfMock> ] = []
 			let given: Given = { return Given(method: .m_methodWillReturnSelfTypedCustom, products: willReturn.map({ StubProduct.return($0 as Any) })) }()
-			let stubber = given.stub(for: (FailsWithReturnedTypeBeingGenericOfSelfMock).self)
+			let stubber = given.stub(for: (CustomGeneric<FailsWithReturnedTypeBeingGenericOfSelfMock> ).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func test(value: Parameter<FailsWithReturnedTypeBeingGenericOfSelfMock>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
+            let willReturn: [Bool] = []
+			let given: Given = { return Given(method: .m_test__value_value(`value`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (Bool).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func insanetTest(value: Parameter<CustomGeneric<[FailsWithReturnedTypeBeingGenericOfSelfMock]>>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
+            let willReturn: [Bool] = []
+			let given: Given = { return Given(method: .m_insanetTest__value_value(`value`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (Bool).self)
 			willProduce(stubber)
 			return given
         }
@@ -3119,6 +3177,8 @@ public final class FailsWithReturnedTypeBeingGenericOfSelfMock: FailsWithReturne
         public static func methodWillReturnSelfTypedArray() -> Verify { return Verify(method: .m_methodWillReturnSelfTypedArray)}
         public static func methodWillReturnSelfTypedArray2() -> Verify { return Verify(method: .m_methodWillReturnSelfTypedArray2)}
         public static func methodWillReturnSelfTypedCustom() -> Verify { return Verify(method: .m_methodWillReturnSelfTypedCustom)}
+        public static func test(value: Parameter<FailsWithReturnedTypeBeingGenericOfSelfMock>) -> Verify { return Verify(method: .m_test__value_value(`value`))}
+        public static func insanetTest(value: Parameter<CustomGeneric<[FailsWithReturnedTypeBeingGenericOfSelfMock]>>) -> Verify { return Verify(method: .m_insanetTest__value_value(`value`))}
     }
 
     public struct Perform {
@@ -3133,6 +3193,12 @@ public final class FailsWithReturnedTypeBeingGenericOfSelfMock: FailsWithReturne
         }
         public static func methodWillReturnSelfTypedCustom(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_methodWillReturnSelfTypedCustom, performs: perform)
+        }
+        public static func test(value: Parameter<FailsWithReturnedTypeBeingGenericOfSelfMock>, perform: @escaping (FailsWithReturnedTypeBeingGenericOfSelfMock) -> Void) -> Perform {
+            return Perform(method: .m_test__value_value(`value`), performs: perform)
+        }
+        public static func insanetTest(value: Parameter<CustomGeneric<[FailsWithReturnedTypeBeingGenericOfSelfMock]>>, perform: @escaping (CustomGeneric<[FailsWithReturnedTypeBeingGenericOfSelfMock]>) -> Void) -> Perform {
+            return Perform(method: .m_insanetTest__value_value(`value`), performs: perform)
         }
     }
 
@@ -8260,8 +8326,8 @@ open class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMoc
 		do {
 		    __value = try methodReturnValue(.m_compare__with_other(Parameter<SelfConstrainedProtocolMock>.value(`other`))).casted()
 		} catch {
-			onFatalFailure("Stub return value not specified for compare(with other: Self). Use given")
-			Failure("Stub return value not specified for compare(with other: Self). Use given")
+			onFatalFailure("Stub return value not specified for compare(with other: SelfConstrainedProtocolMock). Use given")
+			Failure("Stub return value not specified for compare(with other: SelfConstrainedProtocolMock). Use given")
 		}
 		return __value
     }
@@ -8275,8 +8341,8 @@ open class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMoc
 		do {
 		    __value = try methodReturnValue(.m_genericMethodWithNestedSelf__param_paramsecond_secondother_other(Parameter<Int>.value(`param`), Parameter<T>.value(`second`).wrapAsGeneric(), Parameter<(SelfConstrainedProtocolMock,SelfConstrainedProtocolMock)>.value(`other`))).casted()
 		} catch {
-			onFatalFailure("Stub return value not specified for genericMethodWithNestedSelf<T>(param: Int, second: T, other: (Self,Self)). Use given")
-			Failure("Stub return value not specified for genericMethodWithNestedSelf<T>(param: Int, second: T, other: (Self,Self)). Use given")
+			onFatalFailure("Stub return value not specified for genericMethodWithNestedSelf<T>(param: Int, second: T, other: (SelfConstrainedProtocolMock,SelfConstrainedProtocolMock)). Use given")
+			Failure("Stub return value not specified for genericMethodWithNestedSelf<T>(param: Int, second: T, other: (SelfConstrainedProtocolMock,SelfConstrainedProtocolMock)). Use given")
 		}
 		return __value
 		}

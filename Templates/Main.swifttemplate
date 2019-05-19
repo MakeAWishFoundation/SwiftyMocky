@@ -17,7 +17,7 @@
     let containsStaticVariables = !allStaticVariables.isEmpty
     let allMethods = uniques(methods: aProtocol.allMethods.filter({ !$0.isStatic }))
     let accessModifier: String = {
-        let selfConstrained = allMethods.map(wrapMethod).contains(where: { $0.returnsGenericConstrainedToSelf })
+        let selfConstrained = allMethods.map(wrapMethod).contains(where: { $0.returnsGenericConstrainedToSelf || $0.parametersContainsSelf })
         return selfConstrained ? "public final" : "open"
     }()
     let allMethodsForMethodType = uniquesWithoutGenericConstraints(methods: aProtocol.allMethods.filter({ !$0.isStatic }))
