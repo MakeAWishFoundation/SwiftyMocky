@@ -39,20 +39,6 @@ Runs all the tests
 fastlane mac test
 ```
 Runs all the tests
-### mac package
-```
-fastlane mac package
-```
-Verify package
-
-----
-
-## linux
-### linux test
-```
-fastlane linux test
-```
-Runs all the tests
 
 ----
 

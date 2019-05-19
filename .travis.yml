@@ -9,8 +9,8 @@ matrix:
       language: swift
       osx_image: xcode9
       install:
-        - pod repo update
-        - rake pods
+        - mkdir -p ./Pods/Sourcery/bin
+        - rake sourcery
       script:
         - rake mock
         - fastlane ios test
