@@ -293,8 +293,22 @@ func verifyMintHasMatchingSourceryVersion() -> Bool {
             .replacingOccurrences(of: " ", with: "")
             .replacingOccurrences(of: "\n", with: "")
             .replacingOccurrences(of: "-", with: "@")
-        return list.contains(kSourceryVersion)
+        return list.containsGroup(for: "Sourcery([0-9\\.\\*@]*)@\(kSourceryVersion)")
     } catch {
         return false
+    }
+}
+
+private extension String {
+    func containsGroup(for regex: String) -> Bool {
+        let text = self
+        do {
+            let regex = try NSRegularExpression(pattern: regex)
+            let results = regex.matches(in: text, range: NSRange(text.startIndex..., in: text))
+            return !results.isEmpty
+        } catch let error {
+            Message.failure("invalid regex: \(error.localizedDescription)")
+            return false
+        }
     }
 }
