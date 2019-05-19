@@ -4,8 +4,9 @@
 import PackageDescription
 
 #if os(macOS)
+/// MacOS swiftymocky mackage
 let package = Package(
-   name: "mocky",
+   name: "swiftymocky",
    products: [
        .executable(name: "swiftymocky", targets: ["SwiftyMockyCLI"]),
        .library(name: "SwiftyMocky", targets: ["SwiftyMocky"]),
@@ -47,8 +48,9 @@ let package = Package(
    ]
 )
 #else
+/// Linux package. For now not really usable, until sourcery would be available too
 let package = Package(
-    name: "mocky",
+    name: "swiftymocky",
     products: [
         .executable(name: "swiftymocky", targets: ["SwiftyMockyCLI"]),
         .library(name: "SwiftyMocky", targets: ["SwiftyMocky"]),

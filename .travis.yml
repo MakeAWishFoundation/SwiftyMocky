@@ -5,21 +5,21 @@ env:
 
 matrix:
   include:
-    - os: osx
-      language: swift
-      osx_image: xcode10
-      install:
-        - rake pods
-        - brew install mint
-      script:
-        - swift --version
-        - swift build
-        - swift run swiftymocky doctor
-        - swift run swiftymocky generate
-        - swift test
-        - fastlane ios test
-        - rake mock # legacy mock generation
-        - fastlane tvos test
+    # - os: osx
+    #   language: swift
+    #   osx_image: xcode10
+    #   install:
+    #     - rake pods
+    #     - brew install mint
+    #   script:
+    #     - swift --version
+    #     - swift build -c release
+    #     - swift run -c release --skip-build --skip-update swiftymocky doctor
+    #     - swift run -c release --skip-build --skip-update swiftymocky generate
+    #     - swift test
+    #     - fastlane ios test
+    #     - rake mock # legacy mock generation
+    #     - fastlane tvos test
 
     - os: osx
       language: swift
@@ -30,9 +30,9 @@ matrix:
         - cd Mint && swift run mint install yonaskolb/mint
       script:
         - swift --version
-        - swift build
-        - swift run swiftymocky doctor
-        - swift run swiftymocky generate
+        - swift build -c release
+        - swift run -c release --skip-build --skip-update swiftymocky doctor
+        - swift run -c release --skip-build --skip-update swiftymocky generate
         - swift test
         - fastlane ios test
         - rake mock # legacy mock generation
