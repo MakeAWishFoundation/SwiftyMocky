@@ -38,18 +38,21 @@ matrix:
         - rake mock # legacy mock generation
         - fastlane tvos test
     
-    # For now, Sourcery does not work on linux, so commented it out
-    # - os: linux
-    #   dist: trusty
-    #   sudo: required
-    #   language: generic
-    #   install:
-    #     - sudo apt-get install clang libicu-dev
-    #     - mkdir swift
-    #     - curl https://swift.org/builds/$SWIFT_BRANCH/ubuntu1404/$SWIFT_VERSION/$SWIFT_VERSION-ubuntu14.04.tar.gz -s | tar xz -C swift &> /dev/null
-    #     - export PATH="$(pwd)/swift/$SWIFT_VERSION-ubuntu14.04/usr/bin:$PATH"
-    #     - git clone https://github.com/yonaskolb/Mint.git
-    #     - cd Mint && swift run mint install yonaskolb/mint
+    For now, Sourcery does not work on linux, so commented it out
+    - os: linux
+      dist: trusty
+      sudo: required
+      language: generic
+      install:
+        - sudo apt-get install clang libicu-dev
+        - mkdir swift
+        - curl https://swift.org/builds/$SWIFT_BRANCH/ubuntu1404/$SWIFT_VERSION/$SWIFT_VERSION-ubuntu14.04.tar.gz -s | tar xz -C swift &> /dev/null
+        - export PATH="$(pwd)/swift/$SWIFT_VERSION-ubuntu14.04/usr/bin:$PATH"
+        # - git clone https://github.com/yonaskolb/Mint.git
+        # - cd Mint && swift run mint install yonaskolb/mint
+      script:
+        - swift --version
+        - swift test
 
 notifications:
   email: false
