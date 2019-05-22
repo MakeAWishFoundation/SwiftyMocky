@@ -9,7 +9,12 @@ public class Application {
     public let version = "0.0.3"
     public var pwd = Path(ProcessInfo.processInfo.environment["PWD"] ?? "")
     public var handle: (Error) -> Void = { error in
-        Message.failure("Error: \(error)")
+        switch error {
+        case let error as MockyError:
+            Message.failure("Error: \(error)")
+        default:
+            Message.failure("Error: \(error)")
+        }
         exit(1)
     }
 

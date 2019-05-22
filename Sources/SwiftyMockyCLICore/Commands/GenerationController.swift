@@ -5,6 +5,14 @@ import Commander
 import Yams
 import Crayon
 
+public protocol GenerationCommand: AutoMockable {
+
+    func generate(disableCache: Bool, verbose: Bool) throws
+    func generate(mockName: String, disableCache: Bool, verbose: Bool, watch: Bool) throws
+    func updateAllImports() throws
+    func updateImports(forMockNamed name: String) throws
+}
+
 final class GenerationController: GenerationCommand {
 
     private let root: Path

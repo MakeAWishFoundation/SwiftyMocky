@@ -86,6 +86,19 @@ open class GenerationCommandMock: GenerationCommand, Mock {
 		}
     }
 
+    open func generate(mockName: String, disableCache: Bool, verbose: Bool, watch: Bool) throws {
+        addInvocation(.m_generate__mockName_mockNamedisableCache_disableCacheverbose_verbosewatch_watch(Parameter<String>.value(`mockName`), Parameter<Bool>.value(`disableCache`), Parameter<Bool>.value(`verbose`), Parameter<Bool>.value(`watch`)))
+		let perform = methodPerformValue(.m_generate__mockName_mockNamedisableCache_disableCacheverbose_verbosewatch_watch(Parameter<String>.value(`mockName`), Parameter<Bool>.value(`disableCache`), Parameter<Bool>.value(`verbose`), Parameter<Bool>.value(`watch`))) as? (String, Bool, Bool, Bool) -> Void
+		perform?(`mockName`, `disableCache`, `verbose`, `watch`)
+		do {
+		    _ = try methodReturnValue(.m_generate__mockName_mockNamedisableCache_disableCacheverbose_verbosewatch_watch(Parameter<String>.value(`mockName`), Parameter<Bool>.value(`disableCache`), Parameter<Bool>.value(`verbose`), Parameter<Bool>.value(`watch`))).casted() as Void
+		} catch MockError.notStubed {
+			// do nothing
+		} catch {
+		    throw error
+		}
+    }
+
     open func updateAllImports() throws {
         addInvocation(.m_updateAllImports)
 		let perform = methodPerformValue(.m_updateAllImports) as? () -> Void
@@ -115,6 +128,7 @@ open class GenerationCommandMock: GenerationCommand, Mock {
 
     fileprivate enum MethodType {
         case m_generate__disableCache_disableCacheverbose_verbose(Parameter<Bool>, Parameter<Bool>)
+        case m_generate__mockName_mockNamedisableCache_disableCacheverbose_verbosewatch_watch(Parameter<String>, Parameter<Bool>, Parameter<Bool>, Parameter<Bool>)
         case m_updateAllImports
         case m_updateImports__forMockNamed_name(Parameter<String>)
 
@@ -123,6 +137,12 @@ open class GenerationCommandMock: GenerationCommand, Mock {
             case (.m_generate__disableCache_disableCacheverbose_verbose(let lhsDisablecache, let lhsVerbose), .m_generate__disableCache_disableCacheverbose_verbose(let rhsDisablecache, let rhsVerbose)):
                 guard Parameter.compare(lhs: lhsDisablecache, rhs: rhsDisablecache, with: matcher) else { return false } 
                 guard Parameter.compare(lhs: lhsVerbose, rhs: rhsVerbose, with: matcher) else { return false } 
+                return true 
+            case (.m_generate__mockName_mockNamedisableCache_disableCacheverbose_verbosewatch_watch(let lhsMockname, let lhsDisablecache, let lhsVerbose, let lhsWatch), .m_generate__mockName_mockNamedisableCache_disableCacheverbose_verbosewatch_watch(let rhsMockname, let rhsDisablecache, let rhsVerbose, let rhsWatch)):
+                guard Parameter.compare(lhs: lhsMockname, rhs: rhsMockname, with: matcher) else { return false } 
+                guard Parameter.compare(lhs: lhsDisablecache, rhs: rhsDisablecache, with: matcher) else { return false } 
+                guard Parameter.compare(lhs: lhsVerbose, rhs: rhsVerbose, with: matcher) else { return false } 
+                guard Parameter.compare(lhs: lhsWatch, rhs: rhsWatch, with: matcher) else { return false } 
                 return true 
             case (.m_updateAllImports, .m_updateAllImports):
                 return true 
@@ -136,6 +156,7 @@ open class GenerationCommandMock: GenerationCommand, Mock {
         func intValue() -> Int {
             switch self {
             case let .m_generate__disableCache_disableCacheverbose_verbose(p0, p1): return p0.intValue + p1.intValue
+            case let .m_generate__mockName_mockNamedisableCache_disableCacheverbose_verbosewatch_watch(p0, p1, p2, p3): return p0.intValue + p1.intValue + p2.intValue + p3.intValue
             case .m_updateAllImports: return 0
             case let .m_updateImports__forMockNamed_name(p0): return p0.intValue
             }
@@ -157,6 +178,16 @@ open class GenerationCommandMock: GenerationCommand, Mock {
         public static func generate(disableCache: Parameter<Bool>, verbose: Parameter<Bool>, willProduce: (StubberThrows<Void>) -> Void) -> MethodStub {
             let willThrow: [Error] = []
 			let given: Given = { return Given(method: .m_generate__disableCache_disableCacheverbose_verbose(`disableCache`, `verbose`), products: willThrow.map({ StubProduct.throw($0) })) }()
+			let stubber = given.stubThrows(for: (Void).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func generate(mockName: Parameter<String>, disableCache: Parameter<Bool>, verbose: Parameter<Bool>, watch: Parameter<Bool>, willThrow: Error...) -> MethodStub {
+            return Given(method: .m_generate__mockName_mockNamedisableCache_disableCacheverbose_verbosewatch_watch(`mockName`, `disableCache`, `verbose`, `watch`), products: willThrow.map({ StubProduct.throw($0) }))
+        }
+        public static func generate(mockName: Parameter<String>, disableCache: Parameter<Bool>, verbose: Parameter<Bool>, watch: Parameter<Bool>, willProduce: (StubberThrows<Void>) -> Void) -> MethodStub {
+            let willThrow: [Error] = []
+			let given: Given = { return Given(method: .m_generate__mockName_mockNamedisableCache_disableCacheverbose_verbosewatch_watch(`mockName`, `disableCache`, `verbose`, `watch`), products: willThrow.map({ StubProduct.throw($0) })) }()
 			let stubber = given.stubThrows(for: (Void).self)
 			willProduce(stubber)
 			return given
@@ -187,6 +218,7 @@ open class GenerationCommandMock: GenerationCommand, Mock {
         fileprivate var method: MethodType
 
         public static func generate(disableCache: Parameter<Bool>, verbose: Parameter<Bool>) -> Verify { return Verify(method: .m_generate__disableCache_disableCacheverbose_verbose(`disableCache`, `verbose`))}
+        public static func generate(mockName: Parameter<String>, disableCache: Parameter<Bool>, verbose: Parameter<Bool>, watch: Parameter<Bool>) -> Verify { return Verify(method: .m_generate__mockName_mockNamedisableCache_disableCacheverbose_verbosewatch_watch(`mockName`, `disableCache`, `verbose`, `watch`))}
         public static func updateAllImports() -> Verify { return Verify(method: .m_updateAllImports)}
         public static func updateImports(forMockNamed name: Parameter<String>) -> Verify { return Verify(method: .m_updateImports__forMockNamed_name(`name`))}
     }
@@ -197,6 +229,9 @@ open class GenerationCommandMock: GenerationCommand, Mock {
 
         public static func generate(disableCache: Parameter<Bool>, verbose: Parameter<Bool>, perform: @escaping (Bool, Bool) -> Void) -> Perform {
             return Perform(method: .m_generate__disableCache_disableCacheverbose_verbose(`disableCache`, `verbose`), performs: perform)
+        }
+        public static func generate(mockName: Parameter<String>, disableCache: Parameter<Bool>, verbose: Parameter<Bool>, watch: Parameter<Bool>, perform: @escaping (String, Bool, Bool, Bool) -> Void) -> Perform {
+            return Perform(method: .m_generate__mockName_mockNamedisableCache_disableCacheverbose_verbosewatch_watch(`mockName`, `disableCache`, `verbose`, `watch`), performs: perform)
         }
         public static func updateAllImports(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_updateAllImports, performs: perform)

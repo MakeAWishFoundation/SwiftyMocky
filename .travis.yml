@@ -38,7 +38,7 @@ matrix:
         - rake mock # legacy mock generation
         - fastlane tvos test
     
-    For now, Sourcery does not work on linux, so commented it out
+    # For now, Sourcery does not work on linux, so commented it out
     - os: linux
       dist: trusty
       sudo: required
