@@ -15,10 +15,12 @@ custom_categories:
       - Supported features
       - Installation
       - Setup in project
+      - Mockfile
+      - Command Line Interface
       - Matcher support for not Equatable
       - Handling Generics
       - Examples
-      - Custom Subspec
+      - Legacy
       - Add XCode generate action
       - Known issues
       - CHANGELOG

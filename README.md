@@ -8,11 +8,33 @@
 ![Mint compatible](https://img.shields.io/badge/🌱%20Mint-compatible-brightgreen.svg)
 ![SPM compatible](https://img.shields.io/badge/SPM-compatible-orange.svg?style=flat&logo=swift)
 
-# ![logo][logo] SwiftyMocky
+# ![logo][logo]
 
 Join our community on Slack! -> [invitation link here][link-slack]
 
 Check out [guides][link-guides-contents], or full [documentation][link-docs]
+
+## Table of contents
+
+1. [Overview](#overview)
+1. [Current version](#current-version)
+1. [Getting started:](#getting-started)
+    1. [Installing SiwftyMocky CLI](#installation)
+    1. [Integrating SwiftyMocky runtime into test target](#integration)
+    1. [Generate mocks](#generation)
+1. [Usage:](#usage)
+    1. [Marking protocols to be mocked](#mock-annotate)
+    1. [Stubbing return values for mock methods - Given](#given)
+    1. [Check invocations of methods, subscripts and properties - Verify](#verify)
+    1. [Take action when a stubbed method is called - Perform](#perform)
+1. [Documentation](#guides)
+    1. [All supported Features](#features)
+    1. [Examples of usage](#examples)
+    1. [Roadmap](#roadmap)
+    1. [Authors](#authors)
+    1. [License](#license)
+
+<a name="overview"></a>
 
 ## Overview
 
@@ -30,6 +52,16 @@ The idea of **SwiftyMocky** is to automatically mock Swift protocols. The main f
  - check method invocations with specified attributes
  - it works with real device
 
+<a name="current-version"></a>
+
+## Current version
+
+We consider current version as stable. We are moving toward using the new [Mockfile][link-guides-mockfile] but the previous configuration format would be still supported, until SwiftyMocky 4.0. Library works with Swift **4.1, 4.2, 5.0**  and  Sourcery 0.16.0.
+
+While it is technically possible to integrate SwiftyMocky on Linux targets, there is no Mock generation feature there yet.
+
+<a name="getting-started"></a>
+
 ## Getting started
 
 To start working with **SwiftyMocky** you need to:
@@ -37,6 +69,8 @@ To start working with **SwiftyMocky** you need to:
 1. Install **CLI**
 2. Integrate **SwiftyMocky** runtime library
 3. Generate Mocks and add to your test target
+
+<a name="installation"></a>
 
 ### 1. Installing SwiftyMocky CLI:
 
@@ -47,9 +81,11 @@ To start working with **SwiftyMocky** you need to:
 > mint install MakeAWishFoundation/SwiftyMocky
 ```
 
-### 2. Integrate SwiftyMocky runtime into test target:
+<a name="integration"></a>
 
-**CocoaPods**: 
+### 2. Integrating SwiftyMocky runtime into test target:
+
+**[CocoaPods](http://cocoapods.org)**: 
 
 SwiftyMocky is available through [CocoaPods](http://cocoapods.org). To install it, simply add the following line to your Podfile:
 
@@ -57,15 +93,17 @@ SwiftyMocky is available through [CocoaPods](http://cocoapods.org). To install i
 pod "SwiftyMocky"
 ```
 
-**Carthage**: 
+**[Carthage](https://github.com/Carthage/Carthage)**: 
 
 For [Carthage](https://github.com/Carthage/Carthage) install instructions, see full [documentation][link-docs-installation].
+
+<a name="generation"></a>
 
 ### 3. Generate mocks
 
 [Annotate your protocols](#mock-annotate) that are going to be mocked, making them adopt `AutoMockable` protocol, or adding annotation comment above their definition in the source code.
 
-Mocks are generated from your project root directory, based on configuration inside [Mockfile][link-guides-mockfile].
+Mocks are generated from your project root directory, based on configuration inside [Mockfile][link-guides-mockfile]. 
 
 ```bash
 > swiftymocky setup     # if you don't have a Mockfile yet
@@ -73,13 +111,17 @@ Mocks are generated from your project root directory, based on configuration ins
 > swiftymocky generate  # generate mocks
 ```
 
+More informations about [CLI][link-guides-cli] and [mock generation][link-guides-cli-generate]
+
 If you don't want to migrate to our **CLI** and prefer to use "raw" Sourcery, please refer [to this section in documentation][link-guides-cli-legacy].
+
+<a name="usage"></a>
 
 # Usage
 
 <a name="mock-annotate"></a>
 
-## Marking protocols to be mocked
+## 1.Marking protocols to be mocked
 
 Create 'dummy' protocol somewhere in your project, like: `protocol AutoMockable { }`
 
@@ -112,7 +154,9 @@ Every protocol in source directories, having this annotation, will be added to `
 }
 ```
 
-### Stubbing return values for mock methods - **Given**
+<a name="given"></a>
+
+## 2. Stubbing return values for mock methods - **Given**
 
 All mocks has **given** method (accessible both as instance method or global function), with easy to use syntax, allowing to specify what should be return values for given methods (based on specified attributes).
 
@@ -145,7 +189,9 @@ print(mock.surname(for: "Johny"))   // and again Bravo
 
 For more details please see full [documentation][link-docs].
 
-### Check invocations of methods, subscripts and properties - **Verify**
+<a name="verify"></a>
+
+## 3. Check invocations of methods, subscripts and properties - **Verify**
 
 All mocks has **verify** method (accessible both as instance method or global function), with easy to use syntax, allowing to verify, whether a method was called on mock, and how many times. It also provides convenient way to specify, whether method attributes matters (and which ones).
 
@@ -190,19 +236,24 @@ Verify(mock, 1, .name(set: .value("Danny")))
 Verify(mock, .never, .name(set: .value("Bishop")))
 ```
 
-The old `VerifyProperty` is now deprecated. We also deprecated using setters for readonly properties, in favour of using `Given`.
+<a name="perform"></a>
 
-### All supported features
+### 4. Take action when a stubbed method is called - **Perform**
 
-For list all supported features, check documentation [here][link-docs-features] or [guides][link-guides-features]
+All mocks has **perform** method (accessible both as instance method or global function), with easy to use syntax, allowing to specify closure, that will be executed upon stubbed method being called.
 
-### Example of usage
+It uses same paramter wrapping features as given, so you can specify different **Perform** cases for different attributes set.
 
-For more examples, check out our example project, or examples section in [guides][link-guides-examples].
+It's very handy when working with completion block based approach.
 
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
+Example:
 
-To trigger mocks generation, run `rake mock` from root directory. For watcher mode, when mocks are generated every time you change your file projects, use `rake mock_watcher` instead.
+```swift
+// Perform allows to execute given closure, with all the method parameters, as soon as it is being called
+Perform(mock, .methodThatTakesCompletionBlock(completion: .any, perform: { completion in
+    completion(true,nil)
+}))
+```
 
 # Documentation
 
@@ -211,6 +262,26 @@ Full documentation is available [here][link-docs], as well as through *docs* dir
 Guides - [Table of contents][link-guides-contents]
 
 Changelog is available [here][link-changelog]
+
+<a name="features"></a>
+
+## All supported features
+
+For list all supported features, check documentation [here][link-docs-features] or [guides][link-guides-features]
+
+<a name="examples"></a>
+
+## Examples of usage
+
+For more examples, check out our example project, or examples section in [guides][link-guides-examples].
+
+To run the example project, clone the repo, and run `pod install` from the Example directory first.
+
+To trigger mocks generation, run `rake mock` from root directory. For watcher mode, when mocks are generated every time you change your file projects, use `rake mock_watcher` instead.
+
+<a name="guides"></a>
+
+<a name="roadmap"></a>
 
 ## Roadmap
 
@@ -228,14 +299,14 @@ Changelog is available [here][link-changelog]
 - [x] Stub return values as sequences
 - [x] Simple tool simplifying configuration process
 
-## Current version
-
-As we value stability, there should be no breaking changes in version 3.1.0. Nevertheless, we explicitly marked some parts as deprecated, as they will be removed in version 3.2.x. The main reason is because we want to simplify and unify mocking experience.
+<a name="authors"></a>
 
 ## Authors
 
 - Przemysław Wośko, wosko.przemyslaw@gmail.com
 - Andrzej Michnia, amichnia@gmail.com
+
+<a name="license"></a>
 
 ## License
 
@@ -252,10 +323,10 @@ SwiftyMocky is available under the MIT license. See the [LICENSE][link-license] 
 [link-guides-examples]: ./guides/Examples.md
 [link-changelog]: ./guides/CHANGELOG.md
 
-[link-guides-cli]: ./guides/CHANGELOG.md
-[link-guides-cli-migration]: ./guides/CHANGELOG.md
+[link-guides-cli]: ./guides/CommanLineInterface.md
+[link-guides-cli-migration]: ./guides/CommanLineInterface.md#migration
 [link-guides-cli-legacy]: ./guides/Legacy.md
-[link-guides-cli-generate]: ./guides/CHANGELOG.md
+[link-guides-cli-generate]: ./guides/CommanLineInterface.md#generate
 [link-guides-mockfile]: ./guides/Mockfile.md
 
 <!-- Links based on tag -->
