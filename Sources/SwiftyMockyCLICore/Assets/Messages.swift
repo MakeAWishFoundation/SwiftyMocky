@@ -27,4 +27,33 @@ public struct Messages {
     public struct Doctor {
         public static let description = "run to inspect status of SwiftyMocky setup"
     }
+    public struct Tools {
+        public static let assetizeDescription = "[internal] re-generates assets enum with templates."
+    }
+
+    public static func message(for error: MockyError) -> String {
+        switch error {  
+        case .targetNotFound: 
+            return Errors.targetNotFound
+        case .projectNotFound:
+            return Errors.projectNotFound
+        case .mockNotFound:
+            return Errors.mockNotFound
+        case .internalFailure:
+            return Errors.internalFailure
+        case .writingError:
+            return Errors.writingError
+        case .overrideWarning:
+            return Errors.overrideWarning
+        }
+    }
+
+    struct Errors {
+        static let targetNotFound = "Specified target was not found!"
+        static let projectNotFound = "Specified project was not found!"
+        static let mockNotFound = "Mock with this name does not exist!"
+        static let internalFailure = "SwiftyMocky: Internal error!"
+        static let writingError = "SwiftyMocky: Internal writing error!"
+        static let overrideWarning = "Already exists. Will not override."
+    }
 }

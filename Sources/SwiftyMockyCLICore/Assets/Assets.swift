@@ -15,6 +15,23 @@ public enum Assets {
         public static let allTypes: AssetFile = Files.allTypes
         public static let mock: AssetFile = Files.mock
     }
+
+    public static var mockfileTemplate: String { return """
+        # Mockfile is a SwiftyMocky YAML configuration file
+        sourceryCommand: null
+        unit.tests.mock:    # Name of your mock
+          sources:
+            include:        # All swift files here would be scanned for AutoMockable types
+                - ./MyApp
+            exclude: []     # You can exclude files as well
+          output:           # Generated mock file location and name
+            ./MyAppUnitTests/Mocks/Mock.generated.swift
+          targets:          # Specify XCodeproj targets for your mock. Used for linting
+            - MyAppUnitTests
+          testable: []      # Specify  list of imported/@testable modules referenced in mock
+          import: []        # You can use 'swiftymocky autoimport' to update it automatically
+        """
+    }
 }
 
 public protocol AssetFile {

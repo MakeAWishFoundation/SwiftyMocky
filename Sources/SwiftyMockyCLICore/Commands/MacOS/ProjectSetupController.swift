@@ -48,7 +48,7 @@ public class ProjectSetupController {
             let exists = $1.mockName != nil
             let prefix = "\(exists ? "❕":"☑️ ") \($0 + 1))"
             let infix = "\(crayon.bold.on($1.name))"
-            let suffix = "\(exists ? " - already defined in \'\($1.mockName!)\'" : "")"
+            let suffix = exists ? " - already defined in \'\($1.mockName!)\'" : ""
             Message.just("\(prefix) \(infix) \(suffix)")
         }
 

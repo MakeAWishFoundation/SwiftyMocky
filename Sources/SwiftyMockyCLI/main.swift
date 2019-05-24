@@ -17,7 +17,7 @@ Group() { main in
 
     // MARK: - Commands
 
-    main.command("init") {
+    main.command("init", description: Messages.Setup.initDescription) {
         application.initialize()
     }
 
@@ -78,7 +78,7 @@ Group() { main in
     #endif
 
     #if DEBUG
-    main.command("assetize") {
+    main.command("assetize", description: Messages.Tools.assetizeDescription) {
         let pwd = Path(ProcessInfo.processInfo.environment["PWD"] ?? "")
         application.assetizeTemplates(
             templates: pwd + "Sources/Templates", 

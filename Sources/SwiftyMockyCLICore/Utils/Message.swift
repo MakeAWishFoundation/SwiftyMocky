@@ -40,19 +40,23 @@ public enum Message {
     public static func header(_ message: String) {
         empty()
         count += 1
-        just("\(crayon.bold.on("\(count). \(message)"))")
+        let styled = crayon.bold.on("\(count). \(message)")
+        just("\(styled)")
     }
 
     public static func subheader(_ message: String) {
-        just("\(crayon.bold.on(message))")
+        let styled = crayon.bold.on(message)
+        just("\(styled)")
     }
 
     public static func actionHeader(_ message: String) {
-        just("\(crayon.bold.bg(.darkGreen).whiteBright.on(message))")
+        let styled = crayon.bold.bg(.darkGreen).whiteBright.on(message)
+        just("\(styled)")
     }
 
     public static func infoPoint(_ message: String) {
-        just("\(crayon.bold.on(" -> \(message)"))")
+        let styled = crayon.bold.on(" -> \(message)")
+        just("\(styled)")
     }
 
     public static func success(_ message: String) {
@@ -60,10 +64,13 @@ public enum Message {
     }
 
     public static func ok(_ message: String) {
-        just("\(crayon.greenBright.on(" +  \(message)"))")
+        let styled = crayon.greenBright.on(" +  \(message)")
+        just("\(styled)")
     }
+
     public static func nok(_ message: String) {
-        just("\(crayon.red.on(" -  \(message)"))")
+        let styled = crayon.red.on(" -  \(message)")
+        just("\(styled)")
     }
 
     public static func failure(_ message: String) {
@@ -81,7 +88,10 @@ public enum Message {
     public static func resolutions(array messages: [String], title: String = "Possible solutions:") {
         indent()
         just("\(crayon.underline.gray.on(title))")
-        messages.forEach { just("\(crayon.gray.on(" - \($0)"))") }
+        messages.forEach { 
+            let styled = crayon.gray.on(" - \($0)")
+            just("\(styled)")
+        }
         unindent()
     }
 

@@ -11,7 +11,7 @@ public class Application {
     public var handle: (Error) -> Void = { error in
         switch error {
         case let error as MockyError:
-            Message.failure("Error: \(error)")
+            Message.failure(Messages.message(for: error))
         default:
             Message.failure("Error: \(error)")
         }
@@ -53,7 +53,7 @@ public class Application {
         }
 
         do {
-            try mockfilePath.write(mockfileTemplate)
+            try mockfilePath.write(Assets.mockfileTemplate)
             Message.success("Successfully generated Mockfile")
             Message.hint("Use 'doctor' to validate it, or update manually. You can use 'autoimport' to resolve imports automatically")
         } catch {
@@ -199,25 +199,5 @@ public class Application {
     private func encoded(_ file: Path) -> String {
         let data: Data = try! file.read()
         return data.base64EncodedString()
-    }
-}
-
-extension Application {
-
-    var mockfileTemplate: String { return """
-        # Mockfile is a SwiftyMocky YAML configuration file
-        sourceryCommand: null
-        unit.tests.mock:    # Name of your mock
-          sources:
-            include:        # All swift files here would be scanned for AutoMockable types
-                - ./MyApp
-            exclude: []     # You can exclude files as well
-          output:           # Generated mock file location and name
-            ./MyAppUnitTests/Mocks/Mock.generated.swift
-          targets:          # Specify XCodeproj targets for your mock. Used for linting
-            - MyAppUnitTests
-          testable: []      # Specify  list of imported/@testable modules referenced in mock
-          import: []        # You can use 'swiftymocky autoimport' to update it automatically
-        """
     }
 }
