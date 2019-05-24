@@ -22,21 +22,30 @@ import Foundation
 ///       - .moreOrEqual(to: 3)
 ///       - .never
 public enum Count: ExpressibleByIntegerLiteral {
-
+    /// Count matching closure
     public typealias CustomMatchingClosure = ( _ value: Int ) -> Bool
-
     /// [Internal] Count is represented by integer literals, with type Int
     public typealias IntegerLiteralType = Int
 
+    /// Called at least once
     case atLeastOnce
+    /// Called exactly once
     case once
+    /// Custom count resolving closure
     case custom(CustomMatchingClosure)
+    /// Called exactly n times
     case exactly(Int)
+    /// Called in a...b range
     case from(Int, to: Int)
+    /// Called less than n times
     case less(than: Int)
+    /// Called less than ot equal to n times
     case lessOrEqual(to: Int)
+    /// Called more than n times
     case more(than: Int)
+    /// Called more than ot equal to n times
     case moreOrEqual(to: Int)
+    /// Never called
     case never
 
     /// Creates new count instance, matching specific count
@@ -49,7 +58,7 @@ public enum Count: ExpressibleByIntegerLiteral {
 
 // MARK: - CustomStringConvertible
 extension Count: CustomStringConvertible {
-
+    /// Human readable description
     public var description: String {
         switch self {
         case .atLeastOnce:

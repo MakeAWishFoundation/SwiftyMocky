@@ -145,9 +145,9 @@ git clone -b "sourcery/$SOURCERY_VERSION-swift$VERSION" --single-branch --depth 
 
 <!-- Assets -->
 
-[example-link]: ../guides/assets/link-binary-with-libraries.png "Example - link binary"
-[example-add]: ../guides/assets/add-new-copy-files-phase.png "Example - add copy files phase"
-[example-copy]: ../guides/assets/add-framework-tocopy-files-phase.png "Example - add SwiftyMocky to copy frameworks"
+[example-link]: https://raw.githubusercontent.com/MakeAWishFoundation/SwiftyMocky/3.2.0/guides/assets/link-binary-with-libraries.png "Example - link binary"
+[example-add]: https://raw.githubusercontent.com/MakeAWishFoundation/SwiftyMocky/3.2.0/guides/assets/add-new-copy-files-phase.png "Example - add copy files phase"
+[example-copy]: https://raw.githubusercontent.com/MakeAWishFoundation/SwiftyMocky/3.2.0/guides/assets/add-framework-tocopy-files-phase.png "Example - add SwiftyMocky to copy frameworks"
 
 
 [example-watcher]: https://raw.githubusercontent.com/MakeAWishFoundation/SwiftyMocky/1.0.0/guides/assets/example-watcher.gif "Example - generation"

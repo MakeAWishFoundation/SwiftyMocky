@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Countable Protocol Reference</title>
+    <title>OptionalType Protocol Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,8 +10,8 @@
     
   </head>
   <body>
-    <a name="//apple_ref/swift/Protocol/Countable" class="dashAnchor"></a>
-    <a title="Countable Protocol Reference"></a>
+    <a name="//apple_ref/swift/Protocol/OptionalType" class="dashAnchor"></a>
+    <a title="OptionalType Protocol Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html">SwiftyMocky Docs</a> (96% documented)</p>
@@ -22,7 +22,7 @@
       <p id="breadcrumbs">
         <a href="../index.html">SwiftyMocky Reference</a>
         <img id="carat" src="../img/carat.png" />
-        Countable Protocol Reference
+        OptionalType Protocol Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -245,14 +245,14 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>Countable</h1>
+            <h1>OptionalType</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Countable</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">OptionalType</span> <span class="p">:</span> <span class="kt">ExpressibleByNilLiteral</span></code></pre>
 
                 </div>
               </div>
-            <p>Allows matching count, verifying whether given count is right or not</p>
+            <p>Undocumented</p>
 
           </section>
           <section class="section task-group-section">
@@ -261,9 +261,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:11SwiftyMocky9CountableP7matchesySbSiF"></a>
-                    <a name="//apple_ref/swift/Method/matches(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:11SwiftyMocky9CountableP7matchesySbSiF">matches(_:)</a>
+                    <a name="/s:11SwiftyMocky12OptionalTypeP8isNotNilSbvp"></a>
+                    <a name="//apple_ref/swift/Property/isNotNil" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky12OptionalTypeP8isNotNilSbvp">isNotNil</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -271,39 +271,16 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Returns whether given count matches countable case.</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">matches</span><span class="p">(</span><span class="n">_</span> <span class="nv">count</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">isNotNil</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>count</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>Given count</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>true, if it is within boundaries, false otherwise</p>
                       </div>
                     </section>
                   </div>

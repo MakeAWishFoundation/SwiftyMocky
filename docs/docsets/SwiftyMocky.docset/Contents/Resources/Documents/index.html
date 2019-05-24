@@ -13,7 +13,7 @@
     <a title="SwiftyMocky  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">SwiftyMocky Docs</a> (89% documented)</p>
+        <p><a href="index.html">SwiftyMocky Docs</a> (96% documented)</p>
         <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -28,13 +28,10 @@
       <nav class="sidebar">
         <ul class="nav-groups">
           <li class="nav-group-name">
-            <a href="Guides.html">Guides</a>
+            <a href="Main Guides.html">Main Guides</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="overview.html">Overview</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="supported-features.html">Supported features</a>
               </li>
               <li class="nav-group-task">
                 <a href="installation.html">Installation</a>
@@ -42,6 +39,20 @@
               <li class="nav-group-task">
                 <a href="setup-in-project.html">Setup in project</a>
               </li>
+              <li class="nav-group-task">
+                <a href="mockfile.html">Mockfile</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="command-line-interface.html">Command Line Interface</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="supported-features.html">Supported features</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Additional Guides.html">Additional Guides</a>
+            <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="matcher-support-for-not-equatable.html">Matcher support for not Equatable</a>
               </li>
@@ -52,7 +63,7 @@
                 <a href="examples.html">Examples</a>
               </li>
               <li class="nav-group-task">
-                <a href="custom-subspec.html">Custom Subspec</a>
+                <a href="legacy.html">Legacy</a>
               </li>
               <li class="nav-group-task">
                 <a href="add-xcode-generate-action.html">Add XCode generate action</a>
@@ -146,6 +157,17 @@
             </ul>
           </li>
           <li class="nav-group-name">
+            <a href="Helpers.html">Helpers</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Helpers.html#/s:11SwiftyMocky20XCTAssertThrowsError_2of_4file4lineyxyKXK_q_mSSyXKs12StaticStringVSuts0E0R_r0_lF">XCTAssertThrowsError(_:of:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Helpers.html#/s:11SwiftyMocky20XCTAssertThrowsError_5error_4file4lineyxyKXK_q_SSyXKs12StaticStringVSutSQR_s0E0R_r0_lF">XCTAssertThrowsError(_:error:_:file:line:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
             <a href="Deprecated.html">Deprecated</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
@@ -163,69 +185,20 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="Other Guides.html">Other Guides</a>
+            <a href="Internal.html">Internal</a>
             <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="contents.html">Contents</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="Other Classes.html">Other Classes</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="Classes/StubbedMethod.html">StubbedMethod</a>
-              </li>
               <li class="nav-group-task">
                 <a href="Classes/SwiftyMockyTestObserver.html">SwiftyMockyTestObserver</a>
               </li>
               <li class="nav-group-task">
                 <a href="Classes/SwiftyMockyTestObserver.html">SwiftyMockyTestObserver</a>
               </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="Other Enums.html">Other Enumerations</a>
-            <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="Other Enums.html#/s:11SwiftyMocky9MockErrorO">MockError</a>
+                <a href="Structs/FatalErrorUtil.html">FatalErrorUtil</a>
               </li>
               <li class="nav-group-task">
-                <a href="Enums/StubProduct.html">StubProduct</a>
+                <a href="Protocols/OptionalType.html">OptionalType</a>
               </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="Other Extensions.html">Other Extensions</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="Extensions/Int.html">Int</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Extensions/Optional.html">Optional</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Extensions/UInt.html">UInt</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="Other Functions.html">Other Functions</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="Other Functions.html#/s:11SwiftyMocky7Failureys5NeverOSSF">Failure(_:)</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Other Functions.html#/s:11SwiftyMocky20XCTAssertThrowsError_5error_4file4lineyxyKXK_q_SSyXKs12StaticStringVSutSQR_s0E0R_r0_lF">XCTAssertThrowsError(_:error:_:file:line:)</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Other Functions.html#/s:11SwiftyMocky20XCTAssertThrowsError_2of_4file4lineyxyKXK_q_mSSyXKs12StaticStringVSuts0E0R_r0_lF">XCTAssertThrowsError(_:of:_:file:line:)</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="Other Protocols.html">Other Protocols</a>
-            <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Protocols/WithSequencingPolicy.html">WithSequencingPolicy</a>
               </li>
@@ -235,13 +208,34 @@
               <li class="nav-group-task">
                 <a href="Protocols/WithStubbingPolicy.html">WithStubbingPolicy</a>
               </li>
+              <li class="nav-group-task">
+                <a href="Extensions/Int.html">Int</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/Optional.html">Optional</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/UInt.html">UInt</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/MockError.html">MockError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/StubProduct.html">StubProduct</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/StubbedMethod.html">StubbedMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Internal.html#/s:11SwiftyMocky7Failureys5NeverOSSF">Failure(_:)</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="Other Structs.html">Other Structures</a>
+            <a href="Other Guides.html">Other Guides</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="Structs/FatalErrorUtil.html">FatalErrorUtil</a>
+                <a href="contents.html">Contents</a>
               </li>
             </ul>
           </li>
@@ -251,48 +245,166 @@
         <section>
           <section class="section">
             
-            <h1 id='swiftymocky' class='heading'>SwiftyMocky</h1>
+            <h1 id='swiftymocky-3-3-0' class='heading'>SwiftyMocky 3.3.0</h1>
+<h1 id='img-src-https-raw-githubusercontent-com-makeawishfoundation-swiftymocky-1-0-0-icon-png-alt-logo' class='heading'><img src="https://raw.githubusercontent.com/MakeAWishFoundation/SwiftyMocky/1.0.0/icon.png" alt="logo"></h1>
+
+<p>Join our community on Slack! -&gt; [invitation link here][link-slack]</p>
+
+<p>Check out <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.0/docs/contents.html">guides</a>, or full <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.0/docs/index.html">documentation</a></p>
+<h2 id='table-of-contents' class='heading'>Table of contents</h2>
+
+<ol>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#current-version">Current version</a></li>
+<li><a href="#getting-started">Getting started:</a>
+
+<ol>
+<li><a href="#installation">Installing SiwftyMocky CLI</a></li>
+<li><a href="#integration">Integrating SwiftyMocky runtime into test target</a></li>
+<li><a href="#generation">Generate mocks</a></li>
+</ol></li>
+<li><a href="#usage">Usage:</a>
+
+<ol>
+<li><a href="#mock-annotate">Marking protocols to be mocked</a></li>
+<li><a href="#given">Stubbing return values for mock methods - Given</a></li>
+<li><a href="#verify">Check invocations of methods, subscripts and properties - Verify</a></li>
+<li><a href="#perform">Take action when a stubbed method is called - Perform</a></li>
+</ol></li>
+<li><a href="#guides">Documentation</a>
+
+<ol>
+<li><a href="#features">All supported Features</a></li>
+<li><a href="#examples">Examples of usage</a></li>
+<li><a href="#roadmap">Roadmap</a></li>
+<li><a href="#authors">Authors</a></li>
+<li><a href="#license">License</a></li>
+</ol></li>
+</ol>
+
+<p><a name="overview"></a></p>
 <h2 id='overview' class='heading'>Overview</h2>
 
-<p><strong>SwiftyMocky</strong> is Lightweight, strongly typed framework for Mockito-like unit testing experience. As Swift doesn&rsquo;t support reflections well enough to allow building mocks in runtime, library depends on <a href="https://github.com/krzysztofzablocki/Sourcery">Sourcery</a>, that scans your source code and generates Swift code for you.</p>
+<p><strong>SwiftyMocky</strong> is Lightweight, strongly typed framework for Mockito-like unit testing experience. As Swift doesn&rsquo;t support reflections well enough to allow building mocks in runtime, library depends on <a href="https://github.com/krzysztofzablocki/Sourcery">Sourcery</a>, that scans your source code and <strong>generates Mocks Swift code for you!</strong></p>
 
-<p>The idea of <strong>SwiftyMokcy</strong> is to mock Swift protocols. The main features are:</p>
+<p>The idea of <strong>SwiftyMocky</strong> is to automatically mock Swift protocols. The main features are:</p>
 
 <ul>
-<li>easy syntax, utilizing full power of auto-complete, which makes writing test easier and faster</li>
+<li>easy syntax, utilising full power of auto-complete, which makes writing test easier and faster</li>
+<li><strong>we DO support generics</strong></li>
 <li>mock implementations generation</li>
 <li>a way to specify what mock will return (given)</li>
 <li>possibility to specify different return values for different attributes</li>
+<li>record stubbed return values sequence</li>
 <li>verify, whether a method was called on mock or not</li>
 <li>check method invocations with specified attributes</li>
+<li>it works with real device</li>
 </ul>
-<h3 id='strong-1-generating-mocks-implementations-strong' class='heading'><strong>1. Generating mocks implementations:</strong></h3>
 
-<p>One of the boilerplate part of testing and development is writing and updating <strong>mocks</strong> accordingly to newest changes. SwiftyMocky is capable of generating mock implementations (with configurable behavior), based on protocol definition.</p>
+<p><a name="current-version"></a></p>
+<h2 id='current-version' class='heading'>Current version</h2>
 
-<p>During development process it is possible to use SwiftyMocky in a <em>watcher</em> mode, which will observe changes in you project files, and regenerate files on the fly.</p>
+<p>We consider current version as stable. We are moving toward using the new <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.0/docs/mockfile.html">Mockfile</a> but the previous configuration format would be still supported, until SwiftyMocky 4.0. Library works with Swift <strong>4.1, 4.2, 5.0</strong>  and  Sourcery 0.16.0.</p>
 
-<p><img src="../guides/assets/example-watcher.gif" alt="Generating mock" title="Example - generation"></p>
+<p>While it is technically possible to integrate SwiftyMocky on Linux targets, there is no Mock generation feature there yet.</p>
 
-<p>By default, all protocols marked as AutoMockable (inheriting from dummy protocol <code>AutoMockable</code> or annotated with <code>//sourcery: AutoMockable</code>) are being subject of mock implementation generation. All mocks goes to <code>Mock.generated.swift</code>, which can be imported into test target.</p>
-<h3 id='strong-2-stubbing-return-values-for-mock-methods-given-strong' class='heading'><strong>2. Stubbing return values for mock methods - Given</strong></h3>
+<p><a name="getting-started"></a></p>
+<h2 id='getting-started' class='heading'>Getting started</h2>
+
+<p>To start working with <strong>SwiftyMocky</strong> you need to:</p>
+
+<ol>
+<li>Install <strong>CLI</strong></li>
+<li>Integrate <strong>SwiftyMocky</strong> runtime library</li>
+<li>Generate Mocks and add to your test target</li>
+</ol>
+
+<p><a name="installation"></a></p>
+<h3 id='1-installing-swiftymocky-cli' class='heading'>1. Installing SwiftyMocky CLI:</h3>
+
+<p><strong><a href="https://github.com/yonaskolb/Mint">Mint 🌱</a></strong>:</p>
+<pre class="highlight shell"><code><span class="o">&gt;</span> brew <span class="nb">install </span>mint
+<span class="o">&gt;</span> mint <span class="nb">install </span>MakeAWishFoundation/SwiftyMocky
+</code></pre>
+
+<p><a name="integration"></a></p>
+<h3 id='2-integrating-swiftymocky-runtime-into-test-target' class='heading'>2. Integrating SwiftyMocky runtime into test target:</h3>
+
+<p><strong><a href="http://cocoapods.org">CocoaPods</a></strong>: </p>
+
+<p>SwiftyMocky is available through <a href="http://cocoapods.org">CocoaPods</a>. To install it, simply add the following line to your Podfile:</p>
+<pre class="highlight ruby"><code><span class="n">pod</span> <span class="s2">"SwiftyMocky"</span>
+</code></pre>
+
+<p><strong><a href="https://github.com/Carthage/Carthage">Carthage</a></strong>: </p>
+
+<p>For <a href="https://github.com/Carthage/Carthage">Carthage</a> install instructions, see full <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.0/docs/installation.html">documentation</a>.</p>
+
+<p><a name="generation"></a></p>
+<h3 id='3-generate-mocks' class='heading'>3. Generate mocks</h3>
+
+<p><a href="#mock-annotate">Annotate your protocols</a> that are going to be mocked, making them adopt <code>AutoMockable</code> protocol, or adding annotation comment above their definition in the source code.</p>
+
+<p>Mocks are generated from your project root directory, based on configuration inside <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.0/docs/mockfile.html">Mockfile</a>. </p>
+<pre class="highlight shell"><code><span class="o">&gt;</span> swiftymocky setup     <span class="c"># if you don't have a Mockfile yet</span>
+<span class="o">&gt;</span> swiftymocky doctor    <span class="c"># validate your setup</span>
+<span class="o">&gt;</span> swiftymocky generate  <span class="c"># generate mocks</span>
+</code></pre>
+
+<p>More informations about <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.0/docs/command-line-interface.html">CLI</a> and <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.0/docs/command-line-interface.html#generate">mock generation</a></p>
+
+<p>If you don&rsquo;t want to migrate to our <strong>CLI</strong> and prefer to use <q>raw</q> Sourcery, please refer <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.0/docs/legacy.html">to this section in documentation</a>.</p>
+
+<p><a name="usage"></a></p>
+<h1 id='usage' class='heading'>Usage</h1>
+
+<p><a name="mock-annotate"></a></p>
+<h2 id='1-marking-protocols-to-be-mocked' class='heading'>1.Marking protocols to be mocked</h2>
+
+<p>Create &lsquo;dummy&rsquo; protocol somewhere in your project, like: <code>protocol AutoMockable { }</code></p>
+
+<p>Adopt it by every protocol you want to actually mock.</p>
+<pre class="highlight swift"><code><span class="kd">protocol</span> <span class="kt">ToBeMocked</span><span class="p">:</span> <span class="kt">AutoMockable</span> <span class="p">{</span>
+  <span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>Alternatively, mark protocols that are meant to be mocked with sourcery annotation as following:</p>
+<pre class="highlight swift"><code><span class="c1">//sourcery: AutoMockable</span>
+<span class="kd">protocol</span> <span class="kt">ToBeMocked</span> <span class="p">{</span>
+  <span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>Every protocol in source directories, having this annotation, will be added to <code>Mock.generated.swift</code></p>
+
+<p>@objc protocols are also supported, but needs to be explicitly marked with ObjcProtocol annotation:</p>
+<pre class="highlight swift"><code><span class="c1">//sourcery: AutoMockable</span>
+<span class="c1">//sourcery: ObjcProtocol</span>
+<span class="kd">@objc</span> <span class="kd">protocol</span> <span class="kt">NonSwiftProtocol</span> <span class="p">{</span>
+  <span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre>
+
+<p><a name="given"></a></p>
+<h2 id='2-stubbing-return-values-for-mock-methods-strong-given-strong' class='heading'>2. Stubbing return values for mock methods - <strong>Given</strong></h2>
 
 <p>All mocks has <strong>given</strong> method (accessible both as instance method or global function), with easy to use syntax, allowing to specify what should be return values for given methods (based on specified attributes).</p>
 
-<p><img src="../guides/assets/example-given.gif" alt="Generating mock" title="Example - given"></p>
+<p><img src="https://raw.githubusercontent.com/MakeAWishFoundation/SwiftyMocky/3.2.0/guides/assets/example-given.gif" alt="Generating mock" title="Example - given"></p>
 
-<p>All protocol methods are nicely put into <strong>MethodProxy</strong>, with matching signature. That allows to use auto-complete (just type <code>.</code>) to see all mocked protocol methods, and specify return value for them.</p>
+<p>All protocol methods are nicely put into <strong>Given</strong>, with matching signature. That allows to use auto-complete (just type <code>.</code>) to see all mocked protocol methods, and specify return value for them.</p>
 
-<p>All method attributes are wrapped as <strong>Parameter</strong> enum, allowing to choose between <code>any</code>, <code>value</code> and <code>matching</code>, giving great flexibility to mock behavior. Please consider following:</p>
+<p>All method attributes are wrapped as <strong>Parameter</strong> enum, allowing to choose between <code>any</code> and <code>value</code>, giving great flexibility to mock behaviour. Please consider following:</p>
 <pre class="highlight swift"><code><span class="kt">Given</span><span class="p">(</span><span class="n">mock</span><span class="p">,</span> <span class="o">.</span><span class="nf">surname</span><span class="p">(</span><span class="k">for</span> <span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="s">"Johnny"</span><span class="p">),</span> <span class="nv">willReturn</span><span class="p">:</span> <span class="s">"Bravo"</span><span class="p">))</span>
-<span class="kt">Given</span><span class="p">(</span><span class="n">mock</span><span class="p">,</span> <span class="o">.</span><span class="nf">surname</span><span class="p">(</span><span class="k">for</span> <span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="nf">any</span><span class="p">(</span><span class="kt">String</span><span class="o">.</span><span class="k">self</span><span class="p">),</span> <span class="nv">willReturn</span><span class="p">:</span> <span class="s">"Kowalsky"</span><span class="p">))</span>
+<span class="kt">Given</span><span class="p">(</span><span class="n">mock</span><span class="p">,</span> <span class="o">.</span><span class="nf">surname</span><span class="p">(</span><span class="k">for</span> <span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="n">any</span><span class="p">,</span> <span class="nv">willReturn</span><span class="p">:</span> <span class="s">"Kowalsky"</span><span class="p">))</span>
 
-<span class="nf">print</span><span class="p">(</span><span class="n">mock</span><span class="o">.</span><span class="nf">surname</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="s">"Johny"</span><span class="p">))</span> <span class="c1">// Bravo</span>
-<span class="nf">print</span><span class="p">(</span><span class="n">mock</span><span class="o">.</span><span class="nf">surname</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="s">"Mathew"</span><span class="p">))</span> <span class="c1">// Kowalsky</span>
-<span class="nf">print</span><span class="p">(</span><span class="n">mock</span><span class="o">.</span><span class="nf">surname</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="s">"Joanna"</span><span class="p">))</span> <span class="c1">// Kowalsky</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">mock</span><span class="o">.</span><span class="nf">surname</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="s">"Johny"</span><span class="p">))</span>   <span class="c1">// Bravo</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">mock</span><span class="o">.</span><span class="nf">surname</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="s">"Mathew"</span><span class="p">))</span>  <span class="c1">// Kowalsky</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">mock</span><span class="o">.</span><span class="nf">surname</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="s">"Joanna"</span><span class="p">))</span>  <span class="c1">// Kowalsky</span>
 </code></pre>
 
-<p>In verions 3.0 we introduced sequences and policies for better control of mock behaviour.</p>
+<p>In verions 3.0 we introduced sequences and policies for better control of mock behvaiour.</p>
 <pre class="highlight swift"><code><span class="kt">Given</span><span class="p">(</span><span class="n">mock</span><span class="p">,</span> <span class="o">.</span><span class="nf">surname</span><span class="p">(</span><span class="k">for</span> <span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="n">any</span><span class="p">,</span> <span class="nv">willReturn</span><span class="p">:</span> <span class="s">"Bravo"</span><span class="p">,</span> <span class="s">"Kowalsky"</span><span class="p">,</span> <span class="s">"Nguyen"</span><span class="p">))</span>
 
 <span class="nf">print</span><span class="p">(</span><span class="n">mock</span><span class="o">.</span><span class="nf">surname</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="s">"Johny"</span><span class="p">))</span>   <span class="c1">// Bravo</span>
@@ -301,13 +413,17 @@
 <span class="nf">print</span><span class="p">(</span><span class="n">mock</span><span class="o">.</span><span class="nf">surname</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="s">"Johny"</span><span class="p">))</span>   <span class="c1">// and again Bravo</span>
 <span class="c1">// ...</span>
 </code></pre>
-<h3 id='strong-3-check-invocations-of-methods-verify-strong' class='heading'><strong>3. Check invocations of methods - Verify</strong></h3>
+
+<p>For more details please see full <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.0/docs/index.html">documentation</a>.</p>
+
+<p><a name="verify"></a></p>
+<h2 id='3-check-invocations-of-methods-subscripts-and-properties-strong-verify-strong' class='heading'>3. Check invocations of methods, subscripts and properties - <strong>Verify</strong></h2>
 
 <p>All mocks has <strong>verify</strong> method (accessible both as instance method or global function), with easy to use syntax, allowing to verify, whether a method was called on mock, and how many times. It also provides convenient way to specify, whether method attributes matters (and which ones).</p>
 
-<p><img src="../guides/assets/example-verify.gif" alt="Generating mock" title="Example - verify"></p>
+<p><img src="https://raw.githubusercontent.com/MakeAWishFoundation/SwiftyMocky/3.2.0/guides/assets/example-verify.gif" alt="Generating mock" title="Example - verify"></p>
 
-<p>All protocol methods are nicely put into <strong>VerificationProxy</strong>, with matching signature. That allows to use auto-complete (just type <code>.</code>) to see all mocked protocol methods, and specify which one we want to verify.</p>
+<p>All protocol methods are nicely put into <strong>Verify</strong>, with matching signature. That allows to use auto-complete (just type <code>.</code>) to see all mocked protocol methods, and specify which one we want to verify.</p>
 
 <p>All method attributes are wrapped as <strong>Parameter</strong> enum, allowing to choose between <code>any</code>, <code>value</code> and <code>matching</code>, giving great flexibility to tests. Please consider following:</p>
 <pre class="highlight swift"><code><span class="c1">// inject mock to sut. Every time sut saves user data, it should trigger storage storeUser method</span>
@@ -326,16 +442,6 @@
 <span class="kt">Verify</span><span class="p">(</span><span class="n">mockStorage</span><span class="p">,</span> <span class="o">.</span><span class="nf">moreOrEqual</span><span class="p">(</span><span class="nv">to</span><span class="p">:</span> <span class="mi">2</span><span class="p">),</span> <span class="o">.</span><span class="nf">storeUser</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="nf">matching</span><span class="p">({</span> <span class="nv">$0</span><span class="o">.</span><span class="n">count</span> <span class="o">&gt;</span> <span class="mi">3</span> <span class="p">}}),</span> <span class="nv">surname</span><span class="p">:</span> <span class="o">.</span><span class="n">any</span><span class="p">))</span>
 </code></pre>
 
-<p>For <strong>Verify</strong>, you can use <strong>Count</strong> to specify how many times you expect something to be triggered. <strong>Count</strong> can be defined as explicit value:</p>
-<pre class="highlight swift"><code><span class="kt">Verify</span><span class="p">(</span><span class="n">mockStorage</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">.</span><span class="nf">storeUser</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="s">"Johny"</span><span class="p">),</span> <span class="nv">surname</span><span class="p">:</span> <span class="o">.</span><span class="n">any</span><span class="p">))</span>
-</code></pre>
-
-<p>But has many more predefined options, like:</p>
-<pre class="highlight swift"><code><span class="kt">Verify</span><span class="p">(</span><span class="n">mockStorage</span><span class="p">,</span> <span class="o">.</span><span class="n">atLeastOnce</span><span class="p">,</span> <span class="o">.</span><span class="nf">storeUser</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="s">"Johny"</span><span class="p">),</span> <span class="nv">surname</span><span class="p">:</span> <span class="o">.</span><span class="n">any</span><span class="p">))</span>
-<span class="kt">Verify</span><span class="p">(</span><span class="n">mockStorage</span><span class="p">,</span> <span class="o">.</span><span class="nf">in</span><span class="p">(</span><span class="nv">range</span><span class="p">:</span> <span class="mi">0</span><span class="o">...</span><span class="mi">3</span><span class="p">),</span> <span class="o">.</span><span class="nf">storeUser</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="s">"Johny"</span><span class="p">),</span> <span class="nv">surname</span><span class="p">:</span> <span class="o">.</span><span class="n">any</span><span class="p">))</span>
-<span class="kt">Verify</span><span class="p">(</span><span class="n">mockStorage</span><span class="p">,</span> <span class="o">.</span><span class="nf">less</span><span class="p">(</span><span class="nv">than</span><span class="p">:</span> <span class="mi">4</span><span class="p">),</span> <span class="o">.</span><span class="nf">storeUser</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="s">"Johny"</span><span class="p">),</span> <span class="nv">surname</span><span class="p">:</span> <span class="o">.</span><span class="n">any</span><span class="p">))</span>
-</code></pre>
-
 <p>For <strong>Verify</strong>, you can use <strong>Count</strong> to specify how many times you expect something to be triggered. <strong>Count</strong> can be defined as explicit value, like <code>1</code>,<code>2</code>,&hellip; or in more descriptive and flexible way, like <code>.never</code>, <code>more(than: 1)</code>, etc.</p>
 
 <p>From SwiftyMocky 3.0, it is possible to use <code>Given</code> and perform <code>Verify</code> on properties as well, with respect to whether it is get or set:</p>
@@ -352,8 +458,8 @@
 <span class="kt">Verify</span><span class="p">(</span><span class="n">mock</span><span class="p">,</span> <span class="o">.</span><span class="n">never</span><span class="p">,</span> <span class="o">.</span><span class="nf">name</span><span class="p">(</span><span class="nv">set</span><span class="p">:</span> <span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="s">"Bishop"</span><span class="p">)))</span>
 </code></pre>
 
-<p>The old <code>VerifyProperty</code> is now deprecated. We also deprecated using setters for readonly properties, in favour of using <code>Given</code>.</p>
-<h3 id='strong-4-do-something-when-stub-is-called-perform-strong' class='heading'><strong>4. Do something when stub is called - Perform</strong></h3>
+<p><a name="perform"></a></p>
+<h3 id='4-take-action-when-a-stubbed-method-is-called-strong-perform-strong' class='heading'>4. Take action when a stubbed method is called - <strong>Perform</strong></h3>
 
 <p>All mocks has <strong>perform</strong> method (accessible both as instance method or global function), with easy to use syntax, allowing to specify closure, that will be executed upon stubbed method being called.</p>
 
@@ -367,18 +473,65 @@
     <span class="nf">completion</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span><span class="kc">nil</span><span class="p">)</span>
 <span class="p">}))</span>
 </code></pre>
-<h2 id='current-version' class='heading'>Current version</h2>
+<h1 id='documentation' class='heading'>Documentation</h1>
 
-<p>Current versions is 2.0. It is stable, breaking changes should not happen until 3.0, and our goal is to make seamless updates. So in general, if you are using 1.2, moving to 2.0 should not require to change any code.</p>
+<p>Full documentation is available <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.0/docs/index.html">here</a>, as well as through <em>docs</em> directory.</p>
+
+<p>Guides - <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.0/docs/contents.html">Table of contents</a></p>
+
+<p>Changelog is available <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.0/docs/changelog.html">here</a></p>
+
+<p><a name="features"></a></p>
+<h2 id='all-supported-features' class='heading'>All supported features</h2>
+
+<p>For list all supported features, check documentation <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.0/docs/supported-features.html">here</a> or [guides][link-guides-features]</p>
+
+<p><a name="examples"></a></p>
+<h2 id='examples-of-usage' class='heading'>Examples of usage</h2>
+
+<p>For more examples, check out our example project, or examples section in <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.0/docs/examples.html">guides</a>.</p>
+
+<p>To run the example project, clone the repo, and run <code>pod install</code> from the Example directory first.</p>
+
+<p>To trigger mocks generation, run <code>rake mock</code> from root directory. For watcher mode, when mocks are generated every time you change your file projects, use <code>rake mock_watcher</code> instead.</p>
+
+<p><a name="guides"></a></p>
+
+<p><a name="roadmap"></a></p>
+<h2 id='roadmap' class='heading'>Roadmap</h2>
+
+<ul>
+<li>[x] stubbing protocols in elegant way</li>
+<li>[x] template for generating mocks</li>
+<li>[x] example project</li>
+<li>[x] stubbing protocols with variables</li>
+<li>[x] method signature generation without name conflicts</li>
+<li>[ ] cover 95% of framework codebase with unit tests</li>
+<li>[x] cover 95% of framework codebase with documentation</li>
+<li>[ ] add unit tests for template</li>
+<li>[x] support for tvOS, Linux and MacOS</li>
+<li>[x] Carthage support</li>
+<li>[x] Subscripts support</li>
+<li>[x] Stub return values as sequences</li>
+<li>[x] Simple tool simplifying configuration process</li>
+</ul>
+
+<p><a name="authors"></a></p>
 <h2 id='authors' class='heading'>Authors</h2>
 
 <ul>
 <li>Przemysław Wośko, <a href="mailto:wosko.przemyslaw@gmail.com">wosko.przemyslaw@gmail.com</a></li>
 <li>Andrzej Michnia, <a href="mailto:amichnia@gmail.com">amichnia@gmail.com</a></li>
 </ul>
+
+<p><a name="license"></a></p>
 <h2 id='license' class='heading'>License</h2>
 
-<p>SwiftyMocky is available under the MIT license. See the LICENSE file for more info.</p>
+<p>SwiftyMocky is available under the MIT license. </p>
+
+<!-- Links -->
+
+<!-- Links based on tag -->
 
 <!-- Assets -->
 

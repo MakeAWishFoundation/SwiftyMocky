@@ -1,22 +1,25 @@
 author: Przemysław Wośko, Andrzej Michnia
-author_url: http://girappe.com
+author_url: https://girappe.com
 module: SwiftyMocky
 sourcekitten_sourcefile: docs.json
-module_version: 0.0.9
+module_version: 3.3.0
 github_url: https://github.com/MakeAWishFoundation/SwiftyMocky
 copyright: 'Copyright © 2017 MakeAWishFoundation. All rights reserved.'
 readme: guides/Overview.md
 documentation: guides/*.md
 
 custom_categories:
-  - name: Guides
+  - name: Main Guides
     children:
       - Overview
-      - Supported features
       - Installation
       - Setup in project
       - Mockfile
       - Command Line Interface
+      - Supported features
+
+  - name: Additional Guides
+    children:
       - Matcher support for not Equatable
       - Handling Generics
       - Examples
@@ -53,7 +56,28 @@ custom_categories:
       - GenericAttribute
       - GenericAttributeType
 
+  - name: Helpers
+    children:
+      - XCTAssertThrowsError(_:of:_:file:line:)
+      - XCTAssertThrowsError(_:error:_:file:line:)
+
   - name: Deprecated
     children:
       - VerifyProperty(_:_:file:line:)
       - VerifyProperty(_:_:_:file:line:)
+
+  - name: Internal
+    children:
+      - SwiftyMockyTestObserver
+      - FatalErrorUtil
+      - OptionalType
+      - WithSequencingPolicy
+      - WithStaticSequencingPolicy
+      - WithStubbingPolicy
+      - Int
+      - Optional
+      - UInt
+      - MockError
+      - StubProduct
+      - StubbedMethod
+      - Failure(_:)

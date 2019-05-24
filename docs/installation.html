@@ -13,7 +13,7 @@
     <a title="Installation  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">SwiftyMocky Docs</a> (89% documented)</p>
+        <p><a href="index.html">SwiftyMocky Docs</a> (96% documented)</p>
         <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -28,13 +28,10 @@
       <nav class="sidebar">
         <ul class="nav-groups">
           <li class="nav-group-name">
-            <a href="Guides.html">Guides</a>
+            <a href="Main Guides.html">Main Guides</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="overview.html">Overview</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="supported-features.html">Supported features</a>
               </li>
               <li class="nav-group-task">
                 <a href="installation.html">Installation</a>
@@ -42,6 +39,20 @@
               <li class="nav-group-task">
                 <a href="setup-in-project.html">Setup in project</a>
               </li>
+              <li class="nav-group-task">
+                <a href="mockfile.html">Mockfile</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="command-line-interface.html">Command Line Interface</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="supported-features.html">Supported features</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Additional Guides.html">Additional Guides</a>
+            <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="matcher-support-for-not-equatable.html">Matcher support for not Equatable</a>
               </li>
@@ -52,7 +63,7 @@
                 <a href="examples.html">Examples</a>
               </li>
               <li class="nav-group-task">
-                <a href="custom-subspec.html">Custom Subspec</a>
+                <a href="legacy.html">Legacy</a>
               </li>
               <li class="nav-group-task">
                 <a href="add-xcode-generate-action.html">Add XCode generate action</a>
@@ -146,6 +157,17 @@
             </ul>
           </li>
           <li class="nav-group-name">
+            <a href="Helpers.html">Helpers</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Helpers.html#/s:11SwiftyMocky20XCTAssertThrowsError_2of_4file4lineyxyKXK_q_mSSyXKs12StaticStringVSuts0E0R_r0_lF">XCTAssertThrowsError(_:of:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Helpers.html#/s:11SwiftyMocky20XCTAssertThrowsError_5error_4file4lineyxyKXK_q_SSyXKs12StaticStringVSutSQR_s0E0R_r0_lF">XCTAssertThrowsError(_:error:_:file:line:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
             <a href="Deprecated.html">Deprecated</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
@@ -163,69 +185,20 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="Other Guides.html">Other Guides</a>
+            <a href="Internal.html">Internal</a>
             <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="contents.html">Contents</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="Other Classes.html">Other Classes</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="Classes/StubbedMethod.html">StubbedMethod</a>
-              </li>
               <li class="nav-group-task">
                 <a href="Classes/SwiftyMockyTestObserver.html">SwiftyMockyTestObserver</a>
               </li>
               <li class="nav-group-task">
                 <a href="Classes/SwiftyMockyTestObserver.html">SwiftyMockyTestObserver</a>
               </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="Other Enums.html">Other Enumerations</a>
-            <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="Other Enums.html#/s:11SwiftyMocky9MockErrorO">MockError</a>
+                <a href="Structs/FatalErrorUtil.html">FatalErrorUtil</a>
               </li>
               <li class="nav-group-task">
-                <a href="Enums/StubProduct.html">StubProduct</a>
+                <a href="Protocols/OptionalType.html">OptionalType</a>
               </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="Other Extensions.html">Other Extensions</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="Extensions/Int.html">Int</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Extensions/Optional.html">Optional</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Extensions/UInt.html">UInt</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="Other Functions.html">Other Functions</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="Other Functions.html#/s:11SwiftyMocky7Failureys5NeverOSSF">Failure(_:)</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Other Functions.html#/s:11SwiftyMocky20XCTAssertThrowsError_5error_4file4lineyxyKXK_q_SSyXKs12StaticStringVSutSQR_s0E0R_r0_lF">XCTAssertThrowsError(_:error:_:file:line:)</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Other Functions.html#/s:11SwiftyMocky20XCTAssertThrowsError_2of_4file4lineyxyKXK_q_mSSyXKs12StaticStringVSuts0E0R_r0_lF">XCTAssertThrowsError(_:of:_:file:line:)</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="Other Protocols.html">Other Protocols</a>
-            <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Protocols/WithSequencingPolicy.html">WithSequencingPolicy</a>
               </li>
@@ -235,13 +208,34 @@
               <li class="nav-group-task">
                 <a href="Protocols/WithStubbingPolicy.html">WithStubbingPolicy</a>
               </li>
+              <li class="nav-group-task">
+                <a href="Extensions/Int.html">Int</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/Optional.html">Optional</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/UInt.html">UInt</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/MockError.html">MockError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/StubProduct.html">StubProduct</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/StubbedMethod.html">StubbedMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Internal.html#/s:11SwiftyMocky7Failureys5NeverOSSF">Failure(_:)</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="Other Structs.html">Other Structures</a>
+            <a href="Other Guides.html">Other Guides</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="Structs/FatalErrorUtil.html">FatalErrorUtil</a>
+                <a href="contents.html">Contents</a>
               </li>
             </ul>
           </li>
@@ -251,9 +245,23 @@
         <section>
           <section class="section">
             
-            <h1 id='installation' class='heading'>Installation</h1>
+            <h1 id='swiftymocky-cli' class='heading'>SwiftyMocky CLI</h1>
 
-<p>SwiftyMocky is available through:</p>
+<p>CLI will help you with project setup and mocks generation. Also, it supports new <strong>Mockfile</strong> format.</p>
+
+<p>To install it:</p>
+
+<p><strong><a href="https://github.com/yonaskolb/Mint">Mint 🌱</a></strong>:</p>
+<pre class="highlight shell"><code><span class="o">&gt;</span> brew <span class="nb">install </span>mint
+<span class="o">&gt;</span> mint <span class="nb">install </span>MakeAWishFoundation/SwiftyMocky
+</code></pre>
+
+<blockquote>
+<p>More information about <strong>CLI</strong> you will fund in <q>Command Line Interface</q> section. </p>
+</blockquote>
+<h1 id='swiftymocky-runtime-installation' class='heading'>SwiftyMocky Runtime installation</h1>
+
+<p>SwiftyMocky Runtime is available through:</p>
 <h2 id='1-a-href-http-cocoapods-org-cocoapods-a' class='heading'>1. <a href="http://cocoapods.org">CocoaPods</a>.</h2>
 
 <p>To install it, simply add the following line to your Podfile:</p>
@@ -274,36 +282,18 @@
 <p>For Carthage, few additional steps are required:</p>
 
 <ol>
-<li>Obtain <a href="https://github.com/krzysztofzablocki/Sourcery">Sourcery</a> - used to generate mocks (specify valid path in generate mock) - you can use <strong>get_sourcery</strong> script below</li>
-<li>Change templates path to <code>Carthage/Build/iOS/SwiftyMocky.framework/</code></li>
-<li>In your test target <strong>add</strong> to:
-
-<ul>
-<li><strong>Other Swift Flags</strong>: <code>-DMocky</code></li>
-</ul></li>
 <li><p>In your test target, add SwiftyMocky to linked libraries:</p>
 
-<p><img src="../guides/assets/link-binary-with-libraries.png" alt="Link binary" title="Example - link binary"></p></li>
+<p><img src="https://raw.githubusercontent.com/MakeAWishFoundation/SwiftyMocky/3.2.0/guides/assets/link-binary-with-libraries.png" alt="Link binary" title="Example - link binary"></p></li>
 <li><p>In your test target, add new copy files phase:</p>
 
-<p><img src="../guides/assets/add-new-copy-files-phase.png" alt="Link binary" title="Example - add copy files phase"></p></li>
+<p><img src="https://raw.githubusercontent.com/MakeAWishFoundation/SwiftyMocky/3.2.0/guides/assets/add-new-copy-files-phase.png" alt="Link binary" title="Example - add copy files phase"></p></li>
 <li><p>Select destination to frameworks, and add SwiftyMocky:</p>
 
-<p><img src="../guides/assets/add-framework-tocopy-files-phase.png" alt="Link binary" title="Example - add SwiftyMocky to copy frameworks"></p></li>
+<p><img src="https://raw.githubusercontent.com/MakeAWishFoundation/SwiftyMocky/3.2.0/guides/assets/add-framework-tocopy-files-phase.png" alt="Link binary" title="Example - add SwiftyMocky to copy frameworks"></p></li>
 </ol>
 
 <p>The integration part is described in setup page.</p>
-<h2 id='3-manually' class='heading'>3. Manually.</h2>
-
-<p>Include Sources in your project, and setup <a href="https://github.com/krzysztofzablocki/Sourcery">Sourcery</a></p>
-
-<p>The integration part is described in setup page.</p>
-
-<blockquote>
-<p><strong>Important!!!</strong></p>
-
-<p>Main difference between how SwiftyMocky is installed, is location of sourcery binary and templates, used to generate Mocks. Whatever you choose, make sure that correct paths are setup for mocky.yml, and sourcery call.</p>
-</blockquote>
 <h2 id='support-for-other-swift-versions' class='heading'>Support for other swift versions</h2>
 
 <p>Download/build Sourcery binary manually, or use prebuilt sourcery versions from: <code>https://github.com/MakeAWishFoundation/SwiftyMocky.wiki.git</code></p>
@@ -314,34 +304,7 @@
 <li>5.0</li>
 <li>4.2</li>
 <li>4.1</li>
-<li>4.0.2</li>
-<li>4.0</li>
 </ul>
-
-<p><strong>Usage from root project dir:</strong></p>
-<pre class="highlight shell"><code>sh get_sourcery.sh <span class="c"># Will download 5.0 by default</span>
-sh get_sourcery.sh 5.0 <span class="c"># or 4.2, if you use Xcode 10.1</span>
-</code></pre>
-
-<p><strong>get_sourcery.sh</strong></p>
-<pre class="highlight shell"><code><span class="o">[[</span> <span class="nv">$# </span><span class="o">&gt;</span> 0 <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nv">VERSION</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> <span class="o">||</span> <span class="nv">VERSION</span><span class="o">=</span><span class="s2">"5.0"</span>
-<span class="o">[[</span> <span class="nv">$# </span><span class="o">&gt;</span> 1 <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nv">OUTPUT</span><span class="o">=</span><span class="s2">"</span><span class="nv">$2</span><span class="s2">"</span> <span class="o">||</span> <span class="nv">OUTPUT</span><span class="o">=</span><span class="s2">"./Pods/Sourcery/bin"</span>
-<span class="nv">SOURCERY_VERSION</span><span class="o">=</span><span class="s2">"0.16.0"</span> <span class="c"># The version of Sourcery that is associated with this SwiftyMocky version</span>
-
-<span class="nb">echo</span> <span class="s2">"CLONE SOURCERY </span><span class="nv">$SOURCERY_VERSION</span><span class="s2"> FOR Swift </span><span class="nv">$VERSION</span><span class="s2"> INTO </span><span class="nv">$OUTPUT</span><span class="s2">"</span>
-<span class="nb">rm</span> <span class="nt">-r</span> <span class="nt">-f</span> <span class="s2">"</span><span class="nv">$OUTPUT</span><span class="s2">"</span>
-git clone <span class="nt">-b</span> <span class="s2">"sourcery/</span><span class="nv">$SOURCERY_VERSION</span><span class="s2">-swift</span><span class="nv">$VERSION</span><span class="s2">"</span> <span class="nt">--single-branch</span> <span class="nt">--depth</span> 1 https://github.com/MakeAWishFoundation/SwiftyMocky.wiki.git <span class="s2">"</span><span class="nv">$OUTPUT</span><span class="s2">"</span>
-</code></pre>
-
-<blockquote>
-<p><strong>Note!</strong>
-This script is also shipped with SwiftyMocky when installing via cocoapods
-You can use it from project root like <code>sh ./Pods/SwiftyMocky/get_sourcery.sh 4.2</code>
-Version is optional, if you don&rsquo;t specify it, script will use latest supported (5.0 in that case)</p>
-
-<p><strong>Note 2!</strong>
-If you use Carthage, you should specify your custom output location for sourcery binary. Please have in mind, that script clears output dir, so don&rsquo;t point it to <code>~/</code> or something ;)</p>
-</blockquote>
 
 <!-- Assets -->
 

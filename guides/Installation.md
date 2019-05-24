@@ -64,15 +64,8 @@ Currentyly we support:
 - 4.2
 - 4.1
 
-**Usage from root project dir:**
-
-```shell
-sh get_sourcery.sh # Will download 5.0 by default
-sh get_sourcery.sh 5.0 # or 4.2, if you use Xcode 10.1
-```
-
 <!-- Assets -->
 
-[example-link]: ../guides/assets/link-binary-with-libraries.png "Example - link binary"
-[example-add]: ../guides/assets/add-new-copy-files-phase.png "Example - add copy files phase"
-[example-copy]: ../guides/assets/add-framework-tocopy-files-phase.png "Example - add SwiftyMocky to copy frameworks"
+[example-link]: https://raw.githubusercontent.com/MakeAWishFoundation/SwiftyMocky/3.2.0/guides/assets/link-binary-with-libraries.png "Example - link binary"
+[example-add]:  https://raw.githubusercontent.com/MakeAWishFoundation/SwiftyMocky/3.2.0/guides/assets/add-new-copy-files-phase.png "Example - add copy files phase"
+[example-copy]: https://raw.githubusercontent.com/MakeAWishFoundation/SwiftyMocky/3.2.0/guides/assets/add-framework-tocopy-files-phase.png "Example - add SwiftyMocky to copy frameworks"

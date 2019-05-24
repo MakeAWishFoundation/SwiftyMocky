@@ -1,87 +1,17 @@
 {
   "warnings": [
     {
-      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Count.swift",
-      "line": 26,
-      "symbol": "Count.CustomMatchingClosure",
-      "symbol_kind": "source.lang.swift.decl.typealias",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Count.swift",
-      "line": 31,
-      "symbol": "Count.atLeastOnce",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Count.swift",
-      "line": 32,
-      "symbol": "Count.once",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Count.swift",
-      "line": 33,
-      "symbol": "Count.custom(_:)",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Count.swift",
-      "line": 34,
-      "symbol": "Count.exactly(_:)",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Count.swift",
-      "line": 35,
-      "symbol": "Count.from(_:to:)",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Count.swift",
-      "line": 36,
-      "symbol": "Count.less(than:)",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Count.swift",
-      "line": 37,
-      "symbol": "Count.lessOrEqual(to:)",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Count.swift",
-      "line": 38,
-      "symbol": "Count.more(than:)",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Count.swift",
-      "line": 39,
-      "symbol": "Count.moreOrEqual(to:)",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Count.swift",
-      "line": 40,
-      "symbol": "Count.never",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
       "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Parameter.swift",
       "line": 49,
       "symbol": "OptionalType",
       "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Parameter.swift",
+      "line": 50,
+      "symbol": "OptionalType.isNotNil",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
@@ -96,41 +26,6 @@
       "line": 63,
       "symbol": "Parameter.notNil",
       "symbol_kind": "source.lang.swift.decl.var.static",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Policies.swift",
-      "line": 20,
-      "symbol": "StubbingPolicy.default",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Policies.swift",
-      "line": 21,
-      "symbol": "StubbingPolicy.wrap",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Policies.swift",
-      "line": 22,
-      "symbol": "StubbingPolicy.drop",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Policies.swift",
-      "line": 80,
-      "symbol": "SequencingPolicy.lastWrittenResolvedFirst",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Policies.swift",
-      "line": 81,
-      "symbol": "SequencingPolicy.inWritingOrder",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {

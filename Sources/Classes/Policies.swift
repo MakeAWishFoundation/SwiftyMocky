@@ -17,8 +17,11 @@ import Foundation
 /// - `wrap`: Default policy in general. When reaching end of sequence of events, index will rewind to beginning (looping)
 /// - `drop`: With this policy, every call drops event. When events count reaches zero, given is removed from mock.
 public enum StubbingPolicy {
-    case `default`  // use mock default policy for method type
-    case wrap       // default
+    /// Use current policy specified for Mock method type
+    case `default`
+    /// Default policy in general. When reaching end of sequence of events, index will rewind to beginning (looping)
+    case wrap
+    /// With this policy, every call drops event. When events count reaches zero, given is removed from mock.
     case drop
 
     /// [Internal] Resolves used policy. If self is default, will use inherited, otherwise self
@@ -77,7 +80,9 @@ public extension WithStubbingPolicy {
 /// - `lastWrittenResolvedFirst`: Default policy. Last given overrides previous, if they are both with same generocity level
 /// - `inWritingOrder`: Givens would be recalled in order of generocity, respecting writing order (first line resolved first)
 public enum SequencingPolicy {
+    /// Default policy. Last given overrides previous, if they are both with same generocity level
     case lastWrittenResolvedFirst
+    /// Givens would be recalled in order of generocity, respecting writing order (first line resolved first)
     case inWritingOrder
 
     /// [Internal] Sorts stub return values / errors throw with respect to ordering rule and policy

@@ -13,7 +13,7 @@
     <a title="Known issues  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">SwiftyMocky Docs</a> (89% documented)</p>
+        <p><a href="index.html">SwiftyMocky Docs</a> (96% documented)</p>
         <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -28,13 +28,10 @@
       <nav class="sidebar">
         <ul class="nav-groups">
           <li class="nav-group-name">
-            <a href="Guides.html">Guides</a>
+            <a href="Main Guides.html">Main Guides</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="overview.html">Overview</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="supported-features.html">Supported features</a>
               </li>
               <li class="nav-group-task">
                 <a href="installation.html">Installation</a>
@@ -42,6 +39,20 @@
               <li class="nav-group-task">
                 <a href="setup-in-project.html">Setup in project</a>
               </li>
+              <li class="nav-group-task">
+                <a href="mockfile.html">Mockfile</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="command-line-interface.html">Command Line Interface</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="supported-features.html">Supported features</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Additional Guides.html">Additional Guides</a>
+            <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="matcher-support-for-not-equatable.html">Matcher support for not Equatable</a>
               </li>
@@ -52,7 +63,7 @@
                 <a href="examples.html">Examples</a>
               </li>
               <li class="nav-group-task">
-                <a href="custom-subspec.html">Custom Subspec</a>
+                <a href="legacy.html">Legacy</a>
               </li>
               <li class="nav-group-task">
                 <a href="add-xcode-generate-action.html">Add XCode generate action</a>
@@ -146,6 +157,17 @@
             </ul>
           </li>
           <li class="nav-group-name">
+            <a href="Helpers.html">Helpers</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Helpers.html#/s:11SwiftyMocky20XCTAssertThrowsError_2of_4file4lineyxyKXK_q_mSSyXKs12StaticStringVSuts0E0R_r0_lF">XCTAssertThrowsError(_:of:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Helpers.html#/s:11SwiftyMocky20XCTAssertThrowsError_5error_4file4lineyxyKXK_q_SSyXKs12StaticStringVSutSQR_s0E0R_r0_lF">XCTAssertThrowsError(_:error:_:file:line:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
             <a href="Deprecated.html">Deprecated</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
@@ -163,69 +185,20 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="Other Guides.html">Other Guides</a>
+            <a href="Internal.html">Internal</a>
             <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="contents.html">Contents</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="Other Classes.html">Other Classes</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="Classes/StubbedMethod.html">StubbedMethod</a>
-              </li>
               <li class="nav-group-task">
                 <a href="Classes/SwiftyMockyTestObserver.html">SwiftyMockyTestObserver</a>
               </li>
               <li class="nav-group-task">
                 <a href="Classes/SwiftyMockyTestObserver.html">SwiftyMockyTestObserver</a>
               </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="Other Enums.html">Other Enumerations</a>
-            <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="Other Enums.html#/s:11SwiftyMocky9MockErrorO">MockError</a>
+                <a href="Structs/FatalErrorUtil.html">FatalErrorUtil</a>
               </li>
               <li class="nav-group-task">
-                <a href="Enums/StubProduct.html">StubProduct</a>
+                <a href="Protocols/OptionalType.html">OptionalType</a>
               </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="Other Extensions.html">Other Extensions</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="Extensions/Int.html">Int</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Extensions/Optional.html">Optional</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Extensions/UInt.html">UInt</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="Other Functions.html">Other Functions</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="Other Functions.html#/s:11SwiftyMocky7Failureys5NeverOSSF">Failure(_:)</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Other Functions.html#/s:11SwiftyMocky20XCTAssertThrowsError_5error_4file4lineyxyKXK_q_SSyXKs12StaticStringVSutSQR_s0E0R_r0_lF">XCTAssertThrowsError(_:error:_:file:line:)</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Other Functions.html#/s:11SwiftyMocky20XCTAssertThrowsError_2of_4file4lineyxyKXK_q_mSSyXKs12StaticStringVSuts0E0R_r0_lF">XCTAssertThrowsError(_:of:_:file:line:)</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="Other Protocols.html">Other Protocols</a>
-            <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Protocols/WithSequencingPolicy.html">WithSequencingPolicy</a>
               </li>
@@ -235,13 +208,34 @@
               <li class="nav-group-task">
                 <a href="Protocols/WithStubbingPolicy.html">WithStubbingPolicy</a>
               </li>
+              <li class="nav-group-task">
+                <a href="Extensions/Int.html">Int</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/Optional.html">Optional</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/UInt.html">UInt</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/MockError.html">MockError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/StubProduct.html">StubProduct</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/StubbedMethod.html">StubbedMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Internal.html#/s:11SwiftyMocky7Failureys5NeverOSSF">Failure(_:)</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="Other Structs.html">Other Structures</a>
+            <a href="Other Guides.html">Other Guides</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="Structs/FatalErrorUtil.html">FatalErrorUtil</a>
+                <a href="contents.html">Contents</a>
               </li>
             </ul>
           </li>
@@ -260,36 +254,7 @@
 
 <p>This seems to be a problem with Swift abi. Either download/build Sourcery binary manually, or use prebuilt sourcery versions from: <code>https://github.com/MakeAWishFoundation/SwiftyMocky.wiki.git</code></p>
 
-<p>Currentyly we support:</p>
-
-<ul>
-<li>5.0</li>
-<li>4.2</li>
-<li>4.1</li>
-<li>4.0.2</li>
-<li>4.0</li>
-</ul>
-
-<p><strong>Usage from root project dir:</strong></p>
-<pre class="highlight shell"><code>sh get_sourcery.sh <span class="c"># Will download 5.0 by default</span>
-sh get_sourcery.sh 5.0 <span class="c"># or 4.2, if you use Xcode 10.1</span>
-</code></pre>
-
-<blockquote>
-<p><strong>Note!</strong>
-This script is also shipped with SwiftyMocky when installing via cocoapods
-Swift version is optional, if you don&rsquo;t specify it, script will use latest supported (5.0 in that case)</p>
-</blockquote>
-
-<p><strong>get_sourcery.sh</strong></p>
-<pre class="highlight shell"><code><span class="o">[[</span> <span class="nv">$# </span><span class="o">&gt;</span> 0 <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nv">VERSION</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> <span class="o">||</span> <span class="nv">VERSION</span><span class="o">=</span><span class="s2">"5.0"</span>
-<span class="o">[[</span> <span class="nv">$# </span><span class="o">&gt;</span> 1 <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nv">OUTPUT</span><span class="o">=</span><span class="s2">"</span><span class="nv">$2</span><span class="s2">"</span> <span class="o">||</span> <span class="nv">OUTPUT</span><span class="o">=</span><span class="s2">"./Pods/Sourcery/bin"</span>
-<span class="nv">SOURCERY_VERSION</span><span class="o">=</span><span class="s2">"0.16.0"</span> <span class="c"># The version of Sourcery that is associated with this SwiftyMocky version</span>
-
-<span class="nb">echo</span> <span class="s2">"CLONE SOURCERY </span><span class="nv">$SOURCERY_VERSION</span><span class="s2"> FOR Swift </span><span class="nv">$VERSION</span><span class="s2"> INTO </span><span class="nv">$OUTPUT</span><span class="s2">"</span>
-<span class="nb">rm</span> <span class="nt">-r</span> <span class="nt">-f</span> <span class="s2">"</span><span class="nv">$OUTPUT</span><span class="s2">"</span>
-git clone <span class="nt">-b</span> <span class="s2">"sourcery/</span><span class="nv">$SOURCERY_VERSION</span><span class="s2">-swift</span><span class="nv">$VERSION</span><span class="s2">"</span> <span class="nt">--single-branch</span> <span class="nt">--depth</span> 1 https://github.com/MakeAWishFoundation/SwiftyMocky.wiki.git <span class="s2">"</span><span class="nv">$OUTPUT</span><span class="s2">"</span>
-</code></pre>
+<p>The best solution is to install <strong>SwiftyMocky CLI</strong> and <strong>mint</strong>, and generate with <code>swiftymocky generate</code></p>
 <h2 id='2-matcher-fatal-error-for-equatable-sequence-types' class='heading'>2. Matcher [FATAL] error for Equatable / Sequence types</h2>
 
 <p>This happens usually for generic mocks - seems that wrapping generic methods causes breaking default resolving of generic contraints, and you might end up seeing something like <code>[FATAL] No registered matcher comparator for &lt;ValueType&gt;</code> even when ValueType conforms to Equatable, or is a Collection of objects conforming to Equatable.</p>

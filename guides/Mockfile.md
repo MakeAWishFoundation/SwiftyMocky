@@ -33,7 +33,7 @@ mock2:                              # 2.
     4. `testable` list of testable modules imports. By default, if you generate mocks for `YourApp`, it should contain `YourApp`. Would be placed at the top of the generated file.
     5. `import` list of modules imports. Would be placed at the top of the generated file.
 
-> **Note 1:** Calling `swiftymocky setup` will launch an interactive tool helping you to create and prefill **Mockfile**. You can also use `swiftymocky init` if you want a placeholder you can fill manually.
+> **Note 1:** Calling `swiftymocky setup` will launch an interactive tool helping you to create and prefill the **Mockfile**. You can also use `swiftymocky init` if you want a placeholder you can fill manually.
 
 > **Note 2:** To evaluate your **Mockfile** setup, as well as other things, run `swiftmocky doctor`.
 

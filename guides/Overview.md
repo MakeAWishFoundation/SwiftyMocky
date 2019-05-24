@@ -1,4 +1,4 @@
-# SwiftyMocky
+# SwiftyMocky 3.3.0
 
 # ![logo][logo]
 
@@ -327,6 +327,6 @@ SwiftyMocky is available under the MIT license.
 <!-- Assets -->
 
 [logo]: https://raw.githubusercontent.com/MakeAWishFoundation/SwiftyMocky/1.0.0/icon.png
-[example-watcher]: ../guides/assets/example-watcher.gif "Example - generation"
-[example-given]: ../guides/assets/example-given.gif "Example - given"
-[example-verify]: ../guides/assets/example-verify.gif "Example - verify"
+[example-watcher]: https://raw.githubusercontent.com/MakeAWishFoundation/SwiftyMocky/3.2.0/guides/assets/example-watcher.gif "Example - generation"
+[example-given]: https://raw.githubusercontent.com/MakeAWishFoundation/SwiftyMocky/3.2.0/guides/assets/example-given.gif "Example - given"
+[example-verify]: https://raw.githubusercontent.com/MakeAWishFoundation/SwiftyMocky/3.2.0/guides/assets/example-verify.gif "Example - verify"

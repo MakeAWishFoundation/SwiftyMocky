@@ -74,7 +74,7 @@ end
 desc "Update docs"
 task :docs do
     print_info "Updating docs"
-    sh "sourcekitten doc -- -workspace Mocky.xcworkspace -scheme SwiftyMocky > docs.json && jazzy --clean --skip-undocumented && rm docs.json"
+    sh "sourcekitten doc -- -workspace SwiftyMocky.xcworkspace -scheme SwiftyMocky > docs.json && jazzy --clean && rm docs.json"
 end
 
 ## [ Helpers ] #################################################################

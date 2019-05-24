@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Types  Reference</title>
+    <title>Internal  Reference</title>
     <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,8 +10,8 @@
     
   </head>
   <body>
-    <a name="//apple_ref/swift/Section/Types" class="dashAnchor"></a>
-    <a title="Types  Reference"></a>
+    <a name="//apple_ref/swift/Section/Internal" class="dashAnchor"></a>
+    <a title="Internal  Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="index.html">SwiftyMocky Docs</a> (96% documented)</p>
@@ -22,7 +22,7 @@
       <p id="breadcrumbs">
         <a href="index.html">SwiftyMocky Reference</a>
         <img id="carat" src="img/carat.png" />
-        Types  Reference
+        Internal  Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -245,7 +245,7 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>Types</h1>
+            <h1>Internal</h1>
             
           </section>
           <section class="section task-group-section">
@@ -254,9 +254,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:11SwiftyMocky4MockP"></a>
-                    <a name="//apple_ref/swift/Protocol/Mock" class="dashAnchor"></a>
-                    <a class="token" href="#/s:11SwiftyMocky4MockP">Mock</a>
+                    <a name="/c:@M@SwiftyMocky@objc(cs)SwiftyMockyTestObserver"></a>
+                    <a name="//apple_ref/swift/Class/SwiftyMockyTestObserver" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@SwiftyMocky@objc(cs)SwiftyMockyTestObserver">SwiftyMockyTestObserver</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -264,16 +264,15 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Every generated mock implementation adopts <strong>Mock</strong> protocol.
-It defines base Mock structure and features.</p>
+                        <p>Used for observing tests and handling internal library errors.</p>
 
-                        <a href="Protocols/Mock.html" class="slightly-smaller">See more</a>
+                        <a href="Classes/SwiftyMockyTestObserver.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Mock</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">SwiftyMockyTestObserver</span> <span class="p">:</span> <span class="kt">NSObject</span><span class="p">,</span> <span class="kt">XCTestObservation</span></code></pre>
 
                         </div>
                       </div>
@@ -283,9 +282,9 @@ It defines base Mock structure and features.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:11SwiftyMocky10StaticMockP"></a>
-                    <a name="//apple_ref/swift/Protocol/StaticMock" class="dashAnchor"></a>
-                    <a class="token" href="#/s:11SwiftyMocky10StaticMockP">StaticMock</a>
+                    <a name="/"></a>
+                    <a name="//apple_ref/swift/Class/SwiftyMockyTestObserver" class="dashAnchor"></a>
+                    <a class="token" href="#/">SwiftyMockyTestObserver</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -293,16 +292,269 @@ It defines base Mock structure and features.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Every mock, that stubs static methods, should adopt <strong>StaticMock</strong> protocol.
-It defines base StaticMock structure and features.</p>
+                        <p>Used for observing tests and handling internal library errors.</p>
 
-                        <a href="Protocols/StaticMock.html" class="slightly-smaller">See more</a>
+                        <a href="Classes/SwiftyMockyTestObserver.html" class="slightly-smaller">See more</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Helpers"></a>
+                <a name="//apple_ref/swift/Section/Helpers" class="dashAnchor"></a>
+                <a href="#/Helpers">
+                  <h3 class="section-name">Helpers</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky14FatalErrorUtilV"></a>
+                    <a name="//apple_ref/swift/Struct/FatalErrorUtil" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky14FatalErrorUtilV">FatalErrorUtil</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[Internal] Used for handling fatal errors inside library.</p>
+
+                        <a href="Structs/FatalErrorUtil.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">StaticMock</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">FatalErrorUtil</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:Sq"></a>
+                    <a name="//apple_ref/swift/Extension/Optional" class="dashAnchor"></a>
+                    <a class="token" href="#/s:Sq">Optional</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                        <a href="Extensions/Optional.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@_frozen</span>
+<span class="kd">enum</span> <span class="kt">Optional</span><span class="o">&lt;</span><span class="kt">Wrapped</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">ExpressibleByNilLiteral</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky7Failureys5NeverOSSF"></a>
+                    <a name="//apple_ref/swift/Function/Failure(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky7Failureys5NeverOSSF">Failure(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[Internal] Fails flow with given message</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="kt">Failure</span><span class="p">(</span><span class="n">_</span> <span class="nv">message</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Never</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>message</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Failure message</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Never</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Optionality%20checks"></a>
+                <a name="//apple_ref/swift/Section/Optionality checks" class="dashAnchor"></a>
+                <a href="#/Optionality%20checks">
+                  <h3 class="section-name">Optionality checks</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky12OptionalTypeP"></a>
+                    <a name="//apple_ref/swift/Protocol/OptionalType" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky12OptionalTypeP">OptionalType</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Protocols/OptionalType.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">OptionalType</span> <span class="p">:</span> <span class="kt">ExpressibleByNilLiteral</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Sequencing%20policy"></a>
+                <a name="//apple_ref/swift/Section/Sequencing policy" class="dashAnchor"></a>
+                <a href="#/Sequencing%20policy">
+                  <h3 class="section-name">Sequencing policy</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky20WithSequencingPolicyP"></a>
+                    <a name="//apple_ref/swift/Protocol/WithSequencingPolicy" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky20WithSequencingPolicyP">WithSequencingPolicy</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Has sequencing policy for stubbing methods</p>
+
+                        <a href="Protocols/WithSequencingPolicy.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">WithSequencingPolicy</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky26WithStaticSequencingPolicyP"></a>
+                    <a name="//apple_ref/swift/Protocol/WithStaticSequencingPolicy" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky26WithStaticSequencingPolicyP">WithStaticSequencingPolicy</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Has sequencing policy for stubbing static methods</p>
+
+                        <a href="Protocols/WithStaticSequencingPolicy.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">WithStaticSequencingPolicy</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Stubbing%20Policy"></a>
+                <a name="//apple_ref/swift/Section/Stubbing Policy" class="dashAnchor"></a>
+                <a href="#/Stubbing%20Policy">
+                  <h3 class="section-name">Stubbing Policy</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky18WithStubbingPolicyP"></a>
+                    <a name="//apple_ref/swift/Protocol/WithStubbingPolicy" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky18WithStubbingPolicyP">WithStubbingPolicy</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[Internal] used for marking that stubs have configurable policy</p>
+
+                        <a href="Protocols/WithStubbingPolicy.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">WithStubbingPolicy</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
 
                         </div>
                       </div>
@@ -316,9 +568,9 @@ It defines base StaticMock structure and features.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:11SwiftyMocky9ParameterO"></a>
-                    <a name="//apple_ref/swift/Enum/Parameter" class="dashAnchor"></a>
-                    <a class="token" href="#/s:11SwiftyMocky9ParameterO">Parameter</a>
+                    <a name="/s:Si"></a>
+                    <a name="//apple_ref/swift/Extension/Int" class="dashAnchor"></a>
+                    <a class="token" href="#/s:Si">Int</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -326,182 +578,110 @@ It defines base StaticMock structure and features.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Parameter wraps method attribute, allowing to make a difference between explicit value,
-expressed by <code>.value</code> case and wildcard value, expressed by <code>.any</code> case.</p>
+                        
+                        <a href="Extensions/Int.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">Int</span> <span class="p">:</span> <span class="kt">FixedWidthInteger</span><span class="p">,</span> <span class="kt">SignedInteger</span></code></pre>
 
-<p>Whole idea is to be able to test and specify behaviours, in both generic and explicit way
-(and any mix of these two). Every test method matches mock methods in signature, but changes attributes types
-to Parameter.</p>
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:Su"></a>
+                    <a name="//apple_ref/swift/Extension/UInt" class="dashAnchor"></a>
+                    <a class="token" href="#/s:Su">UInt</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                        <a href="Extensions/UInt.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">UInt</span> <span class="p">:</span> <span class="kt">FixedWidthInteger</span><span class="p">,</span> <span class="kt">UnsignedInteger</span></code></pre>
 
-<p>That allows pattern like matching between two Parameter values:</p>
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky9MockErrorO"></a>
+                    <a name="//apple_ref/swift/Enum/MockError" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky9MockErrorO">MockError</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[Internal] Generic Mock library errors</p>
 
 <ul>
-<li><strong>.any</strong> is equal to every other parameter. (<strong>!!!</strong> actual case name is <code>._</code>, but it is advised to use <code>.any</code>)</li>
-<li><strong>.value(p1)</strong> is equal to <strong>.value(p2)</strong> only, when p1 == p2</li>
+<li>notStubed: Calling method on mock, for which return value was not yet stubbed. DO NOT USE it as stub throw value!</li>
 </ul>
 
-<p><strong>Important!</strong> Comparing parameters, where ValueType is not Equatable will result in fatalError,
-unless you register comparator for its <em>ValueType</em> in <strong>Matcher</strong> instance used (typically Matcher.default)</p>
+                        <a href="Enums/MockError.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">MockError</span> <span class="p">:</span> <span class="kt">Error</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky11StubProductO"></a>
+                    <a name="//apple_ref/swift/Enum/StubProduct" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky11StubProductO">StubProduct</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[Internal] Possible Given products. Method can either return or throw an error (in general)</p>
 
 <ul>
-<li>any: represents and matches any parameter value</li>
-<li>value: represents explicit parameter value</li>
+<li><code>return</code>: Return value</li>
+<li><code>throw</code>: Thrown error value</li>
 </ul>
 
-                        <a href="Enums/Parameter.html" class="slightly-smaller">See more</a>
+                        <a href="Enums/StubProduct.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt">ValueType</span><span class="o">&gt;</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:11SwiftyMocky7MatcherC"></a>
-                    <a name="//apple_ref/swift/Class/Matcher" class="dashAnchor"></a>
-                    <a class="token" href="#/s:11SwiftyMocky7MatcherC">Matcher</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Matcher is container class, responsible for storing and resolving comparators for given types.</p>
-
-                        <a href="Classes/Matcher.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">Matcher</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:11SwiftyMocky9CountableP"></a>
-                    <a name="//apple_ref/swift/Protocol/Countable" class="dashAnchor"></a>
-                    <a class="token" href="#/s:11SwiftyMocky9CountableP">Countable</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Allows matching count, verifying whether given count is right or not</p>
-
-                        <a href="Protocols/Countable.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Countable</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:11SwiftyMocky5CountO"></a>
-                    <a name="//apple_ref/swift/Enum/Count" class="dashAnchor"></a>
-                    <a class="token" href="#/s:11SwiftyMocky5CountO">Count</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Count enum. Use it for all Verify features, when checking how many times something happened.</p>
-
-<p>There are three ways of using it:</p>
-
-<ol>
-<li>Explicit literal - you can pass 0, 1, 2 &hellip; to verify exact number</li>
-<li>Using predefined .custom, to specify custom matching rule.</li>
-<li>Using one of predefined rules, for example:
-
-<ul>
-<li>.atLeastOnce</li>
-<li>.exactly(1)</li>
-<li>.from(2, to: 4)</li>
-<li>.less(than: 2)</li>
-<li>.lessOrEqual(to: 1)</li>
-<li>.more(than: 2)</li>
-<li>.moreOrEqual(to: 3)</li>
-<li>.never</li>
-</ul></li>
-</ol>
-
-                        <a href="Enums/Count.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">Count</span> <span class="p">:</span> <span class="kt">ExpressibleByIntegerLiteral</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:11SwiftyMocky7StubberV"></a>
-                    <a name="//apple_ref/swift/Struct/Stubber" class="dashAnchor"></a>
-                    <a class="token" href="#/s:11SwiftyMocky7StubberV">Stubber</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Used to populate stubbed method with sequence of events. Call it&rsquo;s methods, to record subsequent stub return values.</p>
-
-                        <a href="Structs/Stubber.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Stubber</span><span class="o">&lt;</span><span class="kt">ReturnedValue</span><span class="o">&gt;</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">StubProduct</span></code></pre>
 
                         </div>
                       </div>
@@ -511,9 +691,9 @@ unless you register comparator for its <em>ValueType</em> in <strong>Matcher</st
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:11SwiftyMocky13StubberThrowsV"></a>
-                    <a name="//apple_ref/swift/Struct/StubberThrows" class="dashAnchor"></a>
-                    <a class="token" href="#/s:11SwiftyMocky13StubberThrowsV">StubberThrows</a>
+                    <a name="/s:11SwiftyMocky13StubbedMethodC"></a>
+                    <a name="//apple_ref/swift/Class/StubbedMethod" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky13StubbedMethodC">StubbedMethod</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -521,15 +701,15 @@ unless you register comparator for its <em>ValueType</em> in <strong>Matcher</st
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Used to populate stubbed method with sequence of events. Call it&rsquo;s methods, to record subsequent stub return/throw values.</p>
+                        <p>[Internal] Allows to reduce Mock.generated.swif size, by moving part of implementation here.</p>
 
-                        <a href="Structs/StubberThrows.html" class="slightly-smaller">See more</a>
+                        <a href="Classes/StubbedMethod.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">StubberThrows</span><span class="o">&lt;</span><span class="kt">ReturnedValue</span><span class="o">&gt;</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">class</span> <span class="kt">StubbedMethod</span> <span class="p">:</span> <span class="kt"><a href="Protocols/WithStubbingPolicy.html">WithStubbingPolicy</a></span></code></pre>
 
                         </div>
                       </div>
