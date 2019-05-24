@@ -20,7 +20,6 @@ final class GenerationController: GenerationCommand {
     private let temp: WorkingDirectory
     private var mockfile: Mockfile
     private let mockfilePath: Path
-
     private let outputHandle = ProxyFileHandle()
 
     // MARK: - Lifecycle
@@ -105,12 +104,21 @@ final class GenerationController: GenerationCommand {
             arguments += ["--watch"]
         }
 
+        #if os(macOS)
         try shellOut(
             to: sourcery.string,
             arguments: arguments,
             at: root.string,
             outputHandle: outputHandle
         )
+        #else 
+        let resultString = try shellOut(
+            to: sourcery.string,
+            arguments: arguments,
+            at: root.string
+        )
+        print(resultString)
+        #endif
 
         Message.success("Generation done.")
     }
@@ -171,12 +179,22 @@ final class GenerationController: GenerationCommand {
 
         arguments += ["--config", temp.config.string]
 
+        #if os(macOS)
         try shellOut(
             to: sourcery.string,
             arguments: arguments,
             at: root.string,
             outputHandle: outputHandle
         )
+        #else 
+        let resultString = try shellOut(
+            to: sourcery.string,
+            arguments: arguments,
+            at: root.string
+        )
+        print(resultString)
+        #endif
+
 
         let resultsYaml: String = try typesFilePath.read().replacingOccurrences(of: "//", with: "#")
 
