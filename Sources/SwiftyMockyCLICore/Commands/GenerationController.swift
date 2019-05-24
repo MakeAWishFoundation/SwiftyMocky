@@ -120,7 +120,25 @@ final class GenerationController: GenerationCommand {
         print(resultString)
         #endif
 
-        Message.success("Generation done.")
+        if missingAutoMockable(for: mock) {
+            Message.warning("No mocks generated, haven't found any \'AutoMockable\' protocols.")
+            let resolutions = [
+                "(preferred) inherit from any protocol named \'AutoMockable\' (you need to define it first)",
+                "annotate protocol definition with \'//sourcery: AutoMockable\'"
+            ]
+            Message.resolutions(array: resolutions, title: "In order to generate mocks for your protocols:")
+        } else {
+            Message.success("Generation done.")
+        }
+    }
+
+    func missingAutoMockable(for mock: MockConfiguration) -> Bool {
+        let output = Path(mock.output)
+        do {
+            return try output.read().contains("// SwiftyMocky: no AutoMockable found.")
+        } catch {
+            return false
+        }
     }
 
     // MARK: - Auto Imports

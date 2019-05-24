@@ -1,12 +1,15 @@
 <%# ================================================== SETUP -%><%_ -%>
 <%_ var all = types.all
-    all += types.protocols.map { $0 } -%>
+    all += types.protocols.map { $0 } 
+    var mockedCount = 0
+-%>
 
 <%_ for type in all { -%><%_ -%>
 <%_ let autoMockable: Bool = type.inheritedTypes.contains("AutoMockable") || type.annotations["AutoMockable"] != nil
     let protocolToDecorate = types.protocols.first(where: { $0.name == (type.annotations["mock"] as? String) })
     let inlineMockable = protocolToDecorate != nil
     guard let aProtocol = autoMockable ? type : protocolToDecorate else { continue }
+    mockedCount += 1
     let associatedTypes: [String]? = Helpers.extractAssociatedTypes(from: aProtocol)
     let genericTypesModifier: String = Helpers.extractGenericTypesModifier(associatedTypes)
     let genericTypesConstraints: String = Helpers.extractGenericTypesConstraints(associatedTypes)
@@ -495,3 +498,7 @@
 // sourcery:end
 <%_ } -%>
 <% } -%>
+<%_ if mockedCount == 0 { -%>
+// SwiftyMocky: no AutoMockable found.
+// Please define and inherit from AutoMockable, or annotate protocols to be mocked
+<%_ } -%>
