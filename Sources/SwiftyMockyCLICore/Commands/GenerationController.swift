@@ -222,7 +222,10 @@ final class GenerationController: GenerationCommand {
 
         Message.indent()
 
-        let list: TypesList = try YAMLDecoder().decode(from: resultsYaml)
+        guard let list: TypesList = try? YAMLDecoder().decode(from: resultsYaml) else {
+            return Message.infoPoint("No AutoMockable types found!")
+        }
+        
         let types = list.types
 
         Message.infoPoint("Found \(types.count) types.")

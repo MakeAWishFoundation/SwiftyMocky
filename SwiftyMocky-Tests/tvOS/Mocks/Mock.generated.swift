@@ -6,7 +6,7 @@
 // Generated with SwiftyMocky 3.3.0
 
 import SwiftyMocky
-#if canImport(XCTest)
+#if !MockyCustom
 import XCTest
 #endif
 import Foundation

@@ -6,7 +6,7 @@
 //  Copyright © 2018 MakeAWishFoundation. All rights reserved.
 //
 
-#if canImport(XCTest)
+#if !MockyCustom
 import XCTest
 
 /// Allows to verify if error was thrown, and if it is of given type.

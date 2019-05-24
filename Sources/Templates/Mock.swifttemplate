@@ -39,7 +39,7 @@ _%>
 // Generated with SwiftyMocky 3.3.0
 
 import SwiftyMocky
-#if canImport(XCTest)
+#if !MockyCustom
 import XCTest
 #endif
 <%# ================================================== IMPORTS -%><%_ -%>
@@ -74,7 +74,8 @@ import XCTest
         assert(expression(), message(), file: file, line: line)
         #endif
     }
-#endif<%_
+#endif
+<%_
 class Current {
     static var selfType: String = "Self"
 }
