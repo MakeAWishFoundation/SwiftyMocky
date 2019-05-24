@@ -10,7 +10,7 @@ Create `mock.sh` file in project root directory, that will execute mock generati
 ```bash
 #!/bin/sh
 
-rake mock
+swiftymocky generate
 ```
 
 Make it executable, by executing in terminal:

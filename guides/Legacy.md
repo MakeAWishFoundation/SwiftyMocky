@@ -91,6 +91,63 @@ If you are already using [Sourcery](https://github.com/krzysztofzablocki/Sourcer
 > ```
 
 
+## Setup for Sourcery users (alternative to mocky.yml):
+
+We know that Sourcery is a powerful tool and you are likely to use it already. You can easily integrate SwiftyMocky with your project with keeping all already written templates working.
+
+All you have to do is add path (note that path can be different for Carthage/manual installation) to SwiftyMocky templates in your `sourcery.yml` file:
+
+```yaml
+sources:
+    - ./ExampleApp
+    - ./ExampleAppTests
+templates:
+    - <templates path> # Path to already written Sourcery templates
+    - ./Pods/SwiftyMocky/Sources/Templates # <- SwiftyMocky templates
+output:
+    ./ExampleApp
+args:
+  testable:
+    - ExampleApp
+  import:
+    - RxSwift
+    - RxBlocking
+  excludedSwiftLintRules:
+    - force_cast
+    - function_body_length
+    - line_length
+    - vertical_whitespace
+```
+
+You can use all arguments (like `testable`, `import`, etc.) in the same way as in `mocky.yaml`, under `args` key.
+
+## **get_sourcery.sh**
+
+This is a helper script allowing to obtain Sourcery binary compiled for usage with SwiftyMocky. It can be used with both: legacy configurations and new Mockfile (specify path to binary in Mockfile `sourceyCommand`)
+
+```shell
+[[ $# > 0 ]] && VERSION="$1" || VERSION="5.0"
+[[ $# > 1 ]] && OUTPUT="$2" || OUTPUT="./Pods/Sourcery/bin"
+SOURCERY_VERSION="0.16.0" # The version of Sourcery that is associated with this SwiftyMocky version
+
+echo "CLONE SOURCERY $SOURCERY_VERSION FOR Swift $VERSION INTO $OUTPUT"
+rm -r -f "$OUTPUT"
+git clone -b "sourcery/$SOURCERY_VERSION-swift$VERSION" --single-branch --depth 1 https://github.com/MakeAWishFoundation/SwiftyMocky.wiki.git "$OUTPUT"
+```
+
+> **Note!**
+> This script is also shipped with SwiftyMocky when installing via cocoapods
+> You can use it from project root like `sh ./Pods/SwiftyMocky/get_sourcery.sh 4.2`
+> Version is optional, if you don't specify it, script will use latest supported (5.0 in that case)
+
+> **Note 2!**
+> If you use Carthage, you should specify your custom output location for sourcery binary. Please have in mind, that script clears output dir, so don't point it to `~/` or something ;)
+
+<!-- Assets -->
+
+[example-link]: ../guides/assets/link-binary-with-libraries.png "Example - link binary"
+[example-add]: ../guides/assets/add-new-copy-files-phase.png "Example - add copy files phase"
+[example-copy]: ../guides/assets/add-framework-tocopy-files-phase.png "Example - add SwiftyMocky to copy frameworks"
 
 
 [example-watcher]: https://raw.githubusercontent.com/MakeAWishFoundation/SwiftyMocky/1.0.0/guides/assets/example-watcher.gif "Example - generation"

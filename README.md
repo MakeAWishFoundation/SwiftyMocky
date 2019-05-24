@@ -255,6 +255,8 @@ Perform(mock, .methodThatTakesCompletionBlock(completion: .any, perform: { compl
 }))
 ```
 
+<a name="guides"></a>
+
 # Documentation
 
 Full documentation is available [here][link-docs], as well as through *docs* directory.
@@ -277,9 +279,7 @@ For more examples, check out our example project, or examples section in [guides
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
-To trigger mocks generation, run `rake mock` from root directory. For watcher mode, when mocks are generated every time you change your file projects, use `rake mock_watcher` instead.
-
-<a name="guides"></a>
+To trigger mocks generation, run `rake mock` from root directory.
 
 <a name="roadmap"></a>
 

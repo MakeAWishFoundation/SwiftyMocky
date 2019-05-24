@@ -1,44 +1,9 @@
-<%# ================================================== SwiftLint -%><%_ -%>
-<%_ for rule in swiftLintRules(argument) { -%>
-    <%_ %><%= rule %>
-<%_ } -%>
-<%# ================================================== SwiftLint (aggregated argument) -%><%_ -%>
-<%_ if let swiftyMockyArgs = argument["swiftyMocky"] as? [String: Any], let rules = swiftyMockyArgs["excludedSwiftLintRules"] as? [String] { -%>
-    <%_ for rule in rules { -%>
-    <%_ %>//swiftlint:disable <%= rule %>
-    <%_ } -%>
-<%_ } -%>
+// Generated with SwiftyMocky 3.3.0
 
-#if MockyCustom
 import SwiftyMocky
-<%# ================================================== IMPORTS InAPP -%><%_ -%>
-    <%_ for projectImport in projectImports(argument) { -%>
-        <%_ %><%= projectImport %>
-    <%_ } -%>
-    <%# ============================ IMPORTS InAPP (aggregated argument) -%><%_ -%>
-    <%_ if let swiftyMockyArgs = argument["swiftyMocky"] as? [String: Any] { -%>
-        <%_ for projectImport in imports(swiftyMockyArgs) { -%>
-            <%_ %><%= projectImport %>
-        <%_ } -%>
-    <%_ } -%>
-
-    public final class MockyAssertion {
-        public static var handler: ((Bool, String, StaticString, UInt) -> Void)?
-    }
-
-    func MockyAssert(_ expression: @autoclosure () -> Bool, _ message: @autoclosure () -> String = "Verification failed", file: StaticString = #file, line: UInt = #line) {
-        guard let handler = MockyAssertion.handler else {
-            assert(expression, message, file: file, line: line)
-            return
-        }
-
-        handler(expression(), message(), file, line)
-    }
-#else
 #if canImport(XCTest)
 import XCTest
 #endif
-import SwiftyMocky
 <%# ================================================== IMPORTS -%><%_ -%>
     <%_ for projectImport in projectImports(argument) { -%>
         <%_ %><%= projectImport %>
@@ -49,12 +14,26 @@ import SwiftyMocky
             <%_ %><%= projectImport %>
         <%_ } -%>
     <%_ } -%>
+<%# ================================================== ASSERTION -%><%_ -%>
+#if MockyCustom
+    public final class MockyAssertion {
+        public static var handler: ((Bool, String, StaticString, UInt) -> Void)?
+    }
 
+    func MockyAssert(_ expression: @autoclosure () -> Bool, _ message: @autoclosure () -> String = "Verification failed", file: StaticString = #file, line: UInt = #line) {
+        guard let handler = MockyAssertion.handler else {
+            assert(expression(), message(), file: file, line: line)
+            return
+        }
+
+        handler(expression(), message(), file, line)
+    }
+#else
     func MockyAssert(_ expression: @autoclosure () -> Bool, _ message: @autoclosure () -> String = "Verification failed", file: StaticString = #file, line: UInt = #line) {
         #if canImport(XCTest)
         XCTAssert(expression(), message(), file: file, line: line)
         #else 
-        assert(expression(), "\(message()), file: \(file), line: \(line)")
+        assert(expression(), message(), file: file, line: line)
         #endif
     }
 #endif
