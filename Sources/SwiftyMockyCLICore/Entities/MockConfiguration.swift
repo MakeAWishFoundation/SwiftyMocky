@@ -36,6 +36,19 @@ extension MockConfiguration: Codable {
         `import` = (try? container.decode([String].self, forKey: .import)) ?? []
         prototype = (try? container.decode(Bool.self, forKey: .prototype)) ?? false
     }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        // Required
+        try container.encode(sources, forKey: .sources)
+        try container.encode(output, forKey: .output)
+        // Optional
+        targets.isEmpty ? () : try container.encode(targets, forKey: .targets)
+        testable.isEmpty ? () : try container.encode(testable, forKey: .testable)
+        `import`.isEmpty ? () : try container.encode(`import`, forKey: .import)
+        prototype ? try container.encode(true, forKey: .targets) : ()
+    }
 }
 
 // MARK: - MockConfiguration config and Sources

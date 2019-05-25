@@ -14,11 +14,11 @@ public struct Messages {
     }
     public struct Generate {
         public static let description = """
-            generate mocks. Usage 'swiftymocky <options> <optional mock name>'
-                                Allowed flags:
-                                    --disableCache      \(Messages.Generate.disableCache)
-                                    --verbose, -v       \(Messages.Generate.verbose)
-                                    --watch, -w         \(Messages.Generate.watcher)
+            generate mocks. Usage 'swiftymocky <flags> <optional mock name>'
+                             Allowed flags:
+                                --disableCache      \(Messages.Generate.disableCache)
+                                --verbose, -v       \(Messages.Generate.verbose)
+                                --watch, -w         \(Messages.Generate.watcher)
             """
         public static let verbose = "additional sourcery debug info"
         public static let disableCache = "disables using cahche"

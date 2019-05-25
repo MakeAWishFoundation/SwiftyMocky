@@ -10,7 +10,8 @@ public struct ProjectPathOption: RawRepresentable, SelectableOption {
     public var rawValue: String
     public var title: String {
         if rawValue == ProjectPathOption.projects.first?.string {
-            return "\(crayon.underline.on("\(Path(rawValue).lastComponentWithoutExtension)"))"
+            let formatted = crayon.underline.on("\(Path(rawValue).lastComponentWithoutExtension)")
+            return "\(formatted)"
         }
         return Path(rawValue).lastComponentWithoutExtension
     }
@@ -67,6 +68,7 @@ private extension Path {
     func xcproj(with root: Path) -> Path {
         return (root + self).dropSlash()
     }
+    
     func dropSlash() -> Path {
         return string.hasSuffix("/") ? Path(String(string.dropLast())) : self
     }
