@@ -101,10 +101,11 @@ public enum Message {
 
     // MARK: - Misc
 
-    public static func swiftyMockyLabel(_ ver: String) {
-        print(crayon.bold.on("╔═════════════════════════════╗"))
-        print(crayon.bold.on("║ SwiftyMocky CLI \(ver) BETA ║"))
-        print(crayon.bold.on("╚═════════════════════════════╝"))
+    public static func swiftyMockyLabel(_ message: String) {
+        let bar = String(repeating: "═", count: message.count + 2)
+        print(crayon.bold.on("╔\(bar)╗"))
+        print(crayon.bold.on("║ \(message) ║"))
+        print(crayon.bold.on("╚\(bar)╝"))
         print("")
     }
 }

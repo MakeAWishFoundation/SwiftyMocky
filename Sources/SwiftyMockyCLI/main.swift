@@ -5,7 +5,7 @@ import SwiftyMockyCLICore
 
 let application = Application()
 
-Message.swiftyMockyLabel("v\(application.version)")
+Message.swiftyMockyLabel("SwiftyMocky CLI v\(application.version)")
 
 Group() { main in
 
