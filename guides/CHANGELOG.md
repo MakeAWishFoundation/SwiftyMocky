@@ -11,9 +11,10 @@ All changes to SwiftyMocky project will be documented in this file.
 * Added support for Swift Package Manager (SPM)
 * New configuration file for working with multiple targets - `Mockfile`
 * Fixed redundant constraints for methods with stripped generics (@tarbayev)
+* Added Argument captor (@timedelta)
 #### Removed:
 * dropped Swift 4.0, SwiftyMocky now requires Swift 4.1+
-* deprecated MockyCustom subspec. We now check XCTest availability instead of using separate subspec for prototyping
+* dropped MockyCustom subspec, new subspec is Prototyping, for Carthage SwiftyPrototype
 
 -----
 
