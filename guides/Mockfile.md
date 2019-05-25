@@ -8,17 +8,20 @@ Every generated file have its own section, following pattern below:
 
 ```yaml
 sourceryCommand: null               # 1.
+
 mock1:                              # 2.
     sources:                        # 2.1.
         include:                    # 2.1.1
         - ./MyApp
-        exclude: []                 # 2.1.2 
+        exclude: []                 # 2.1.2 (optional)
     output:                         # 2.2
         ./MyAppUnitTests/Mocks/Mock.generated.swift
-    targets:                        # 2.3
+    targets:                        # 2.3 (optional)
         - MyAppUnitTests
-    testable: []                    # 2.4
-    import: []                      # 2.5
+    testable: []                    # 2.4 (optional)
+    import: []                      # 2.5 (optional)
+    prototype: false                # 2.6 (optional)
+
 mock2:                              # 2.
     ...
 ```
@@ -32,6 +35,7 @@ mock2:                              # 2.
     3. `targets` list of targets names. It should match the test targets that are using generated mocks file. Used to determine if your setup is correct.
     4. `testable` list of testable modules imports. By default, if you generate mocks for `YourApp`, it should contain `YourApp`. Would be placed at the top of the generated file.
     5. `import` list of modules imports. Would be placed at the top of the generated file.
+    5. `prototype` default is `false`. Set `true` if you are going to use Carthage `SwiftyPrototype` library
 
 > **Note 1:** Calling `swiftymocky setup` will launch an interactive tool helping you to create and prefill the **Mockfile**. You can also use `swiftymocky init` if you want a placeholder you can fill manually.
 
