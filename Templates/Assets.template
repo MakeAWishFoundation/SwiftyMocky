@@ -3,17 +3,10 @@ import PathKit
 
 public enum Assets {
 
-    public enum AllTypes {
-        public static let swifttemplate: AssetFile = Files.allTypes
-    }
-    
-    public enum MockConfiguration {
-        public static let swifttemplate: AssetFile = Files.mock
-    }
-
     public enum swifttemplate {
         public static let allTypes: AssetFile = Files.allTypes
         public static let mock: AssetFile = Files.mock
+        public static let prototype: AssetFile = Files.prototype
     }
 
     public static var mockfileTemplate: String { return """
@@ -61,5 +54,9 @@ private enum Files {
     static let mock = File(
         name: "Mock.swifttemplate",
         contents: "{{ Mock.swifttemplate }}"
+    )
+    static let prototype = File(
+        name: "Mock.swifttemplate",
+        contents: "{{ Prototype.swifttemplate }}"
     )
 }

@@ -1,4 +1,5 @@
 sourceryCommand: null
+
 mocky.iOS:
   sources:
     include:
@@ -16,6 +17,7 @@ mocky.iOS:
   - CoreGraphics
   - Foundation
   - UIKit
+
 mocky.macOS:
   sources:
     include:
@@ -31,6 +33,7 @@ mocky.macOS:
   - Mocky_Example_macOS
   import:
   - Foundation
+
 mocky.tvOS:
   sources:
     include:
@@ -46,6 +49,7 @@ mocky.tvOS:
   - Mocky_Example_tvOS
   import:
   - Foundation
+
 cli.core.tests:
   sources:
     include:

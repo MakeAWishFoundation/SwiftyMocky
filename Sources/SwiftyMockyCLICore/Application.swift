@@ -6,7 +6,7 @@ public class Application {
 
     // MARK: - Properties
 
-    public let version = "0.0.3"
+    public let version = "3.3.0"
     public var pwd = Path(ProcessInfo.processInfo.environment["PWD"] ?? "")
     public var handle: (Error) -> Void = { error in
         switch error {
@@ -187,17 +187,31 @@ public class Application {
         let mockTemplate = templates + mockName
         let mockContent = encoded(mockTemplate)
         Message.success("Encoded mock template")
+
+        let prototypeName = "Prototype.swifttemplate"
+        let prototypePlaceholder = "{{ \(prototypeName) }}"
+        let prototypeTemplate = templates + mockName
+        let prototypeContent = encoded(prototypeTemplate, replacing: "import SwiftyMocky", with: "import SwiftyPrototype")
+        Message.success("Encoded prototype template")
         
         Message.info("Writing assets to `\(output)` ...")
         var assetsContents: String = try! template.read()
         assetsContents = assetsContents.replacingOccurrences(of: allTypesPlaceholder, with: allTypesContent)
         assetsContents = assetsContents.replacingOccurrences(of: mockPlaceholder, with: mockContent)
+        assetsContents = assetsContents.replacingOccurrences(of: prototypePlaceholder, with: prototypeContent)
         try! output.write(assetsContents)
         Message.success("Done")
     }
 
     private func encoded(_ file: Path) -> String {
         let data: Data = try! file.read()
+        return data.base64EncodedString()
+    }
+
+    private func encoded(_ file: Path, replacing: String, with other: String) -> String {
+        let text: String = try! file.read()
+        let replaced = text.replacingOccurrences(of: replacing, with: other)
+        let data = replaced.data(using: .utf8) ?? Data()
         return data.base64EncodedString()
     }
 }
