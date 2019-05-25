@@ -11,7 +11,7 @@ $ .build/debug/swiftymocky <command>
 ## Commands:
 
 + `init` - Creates template of Mockfile to fill
-+ `generate` - generate mocks. Usage 'swiftymocky <options> <optional mock name>'. Allowed flags:
++ `generate` - generate mocks. Usage 'swiftymocky options optional-mock-name'. Allowed flags:
     + `--disableCache`: disables using cahche
     + `--verbose`, `-v`: additional sourcery debug info
     + `--watch`, `-w`: run in watcher mode, allowed only if mock name specified

@@ -325,10 +325,10 @@ SwiftyMocky is available under the MIT license. See the [LICENSE][link-license] 
 [link-guides-examples]: ./guides/Examples.md
 [link-changelog]: ./guides/CHANGELOG.md
 
-[link-guides-cli]: ./guides/CommanLineInterface.md
-[link-guides-cli-migration]: ./guides/CommanLineInterface.md#migration
+[link-guides-cli]: ./guides/Command%20Line%20Interface.md
+[link-guides-cli-migration]: ./guides/Command%20Line%20Interface.md#migration
 [link-guides-cli-legacy]: ./guides/Legacy.md
-[link-guides-cli-generate]: ./guides/CommanLineInterface.md#generate
+[link-guides-cli-generate]: ./guides/Command%20Line%20Interface.md#generate
 [link-guides-mockfile]: ./guides/Mockfile.md
 
 <!-- Links based on tag -->
