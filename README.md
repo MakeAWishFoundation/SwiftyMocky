@@ -56,9 +56,9 @@ The idea of **SwiftyMocky** is to automatically mock Swift protocols. The main f
 
 ## Current version
 
-We consider current version as stable. We are moving toward using the new [Mockfile][link-guides-mockfile] but the previous configuration format would be still supported, until SwiftyMocky 4.0. Library works with Swift **4.1, 4.2, 5.0**  and  Sourcery 0.16.0.
+We consider current version as stable. We are moving toward using the new [Mockfile][link-guides-mockfile] but the previous configuration format would be still supported, until SwiftyMocky 4.0. Library works with Swift **4.1, 4.2, 5.0**  and  Sourcery 0.16.1.
 
-While it is technically possible to integrate SwiftyMocky on Linux targets, there is no Mock generation feature there yet.
+While it is technically possible to integrate SwiftyMocky on Linux targets, there is no Mock generation feature there yet. You can use SwiftyMokcy runtime via SwiftPM though, as long as your are fine with generating mocks on mac machine.
 
 <a name="getting-started"></a>
 
@@ -96,6 +96,8 @@ pod "SwiftyMocky"
 **[Carthage](https://github.com/Carthage/Carthage)**: 
 
 For [Carthage](https://github.com/Carthage/Carthage) install instructions, see full [documentation][link-docs-installation].
+
+> **Note:** Examples of **SwiftyMocky** integration as a tool for Unit tests, as well as a Prototyping framework, are here: [https://github.com/MakeAWishFoundation/SM-Integration-Tests](https://github.com/MakeAWishFoundation/SM-Integration-Tests)
 
 <a name="generation"></a>
 

@@ -89,6 +89,8 @@ pod "SwiftyMocky"
 
 For [Carthage](https://github.com/Carthage/Carthage) install instructions, see full [documentation][link-docs-installation].
 
+> **Note:** Examples of **SwiftyMocky** integration as a tool for Unit tests, as well as a Prototyping framework, are here: [https://github.com/MakeAWishFoundation/SM-Integration-Tests](https://github.com/MakeAWishFoundation/SM-Integration-Tests)
+
 <a name="generation"></a>
 
 ### 3. Generate mocks
