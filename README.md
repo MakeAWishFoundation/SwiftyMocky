@@ -62,6 +62,16 @@ While it is technically possible to integrate SwiftyMocky on Linux targets, ther
 
 <a name="getting-started"></a>
 
+## Migration from 3.2.0 and below
+
+The migration is not required, you can keep using **SwiftyMocky** as you did before. The [Legacy setup](https://github.com/MakeAWishFoundation/SwiftyMocky/blob/master/guides/Legacy.md) is described in [guides section](https://github.com/MakeAWishFoundation/SwiftyMocky/blob/master/guides/Contents.md).
+
+Still, we would encourage to try new **CLI** and share a feedback. We believe it will make using and setting up **SwiftyMocky** way easier. If you have an existing setup, try:
+
+```bash
+> swiftymocky migrate
+```
+
 ## Getting started
 
 To start working with **SwiftyMocky** you need to:
