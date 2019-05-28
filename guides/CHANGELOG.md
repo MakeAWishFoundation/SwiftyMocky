@@ -4,6 +4,13 @@ All changes to SwiftyMocky project will be documented in this file.
 
 -----
 
+## __3.3.1__ / 2019
+
+#### Fixed:
+* Removed leftover swift version setting to 5.0 from SwiftyPrototype target, causing problems for Carthage setup
+
+-----
+
 ## __3.3.0__ / 2019
 
 #### Added:
@@ -15,8 +22,6 @@ All changes to SwiftyMocky project will be documented in this file.
 #### Removed:
 * dropped Swift 4.0, SwiftyMocky now requires Swift 4.1+
 * dropped MockyCustom subspec, new subspec is Prototyping, for Carthage SwiftyPrototype
-
------
 
 -----
 
