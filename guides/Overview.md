@@ -1,4 +1,4 @@
-# SwiftyMocky 3.3.0
+# SwiftyMocky 3.3.1
 
 # ![logo][logo]
 
@@ -308,23 +308,23 @@ SwiftyMocky is available under the MIT license.
 
 <!-- Links -->
 
-[link-guides-installation]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.0/docs/setup-in-project.html
-[link-guides-contents]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.0/docs/contents.html
-[link-guides-examples]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.0/docs/examples.html
-[link-changelog]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.0/docs/changelog.html
+[link-guides-installation]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.1/docs/setup-in-project.html
+[link-guides-contents]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.1/docs/contents.html
+[link-guides-examples]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.1/docs/examples.html
+[link-changelog]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.1/docs/changelog.html
 
-[link-guides-cli]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.0/docs/command-line-interface.html
-[link-guides-cli-migration]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.0/docs/command-line-interface.html#migration
-[link-guides-cli-legacy]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.0/docs/legacy.html
-[link-guides-cli-generate]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.0/docs/command-line-interface.html#generate
-[link-guides-mockfile]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.0/docs/mockfile.html
+[link-guides-cli]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.1/docs/command-line-interface.html
+[link-guides-cli-migration]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.1/docs/command-line-interface.html#migration
+[link-guides-cli-legacy]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.1/docs/legacy.html
+[link-guides-cli-generate]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.1/docs/command-line-interface.html#generate
+[link-guides-mockfile]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.1/docs/mockfile.html
 
 <!-- Links based on tag -->
 
-[link-docs]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.0/docs/index.html
-[link-docs-features]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.0/docs/supported-features.html
-[link-docs-installation]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.0/docs/installation.html
-[link-docs-setup]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.0/docs/setup-in-project.html
+[link-docs]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.1/docs/index.html
+[link-docs-features]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.1/docs/supported-features.html
+[link-docs-installation]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.1/docs/installation.html
+[link-docs-setup]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.1/docs/setup-in-project.html
 
 <!-- Assets -->
 

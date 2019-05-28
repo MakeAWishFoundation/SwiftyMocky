@@ -250,6 +250,14 @@
 <p>All changes to SwiftyMocky project will be documented in this file.</p>
 
 <hr>
+<h2 id='strong-3-3-1-strong-2019' class='heading'><strong>3.3.1</strong> / 2019</h2>
+<h4 id='fixed' class='heading'>Fixed:</h4>
+
+<ul>
+<li>Removed leftover swift version setting to 5.0 from SwiftyPrototype target, causing problems for Carthage setup</li>
+</ul>
+
+<hr>
 <h2 id='strong-3-3-0-strong-2019' class='heading'><strong>3.3.0</strong> / 2019</h2>
 <h4 id='added' class='heading'>Added:</h4>
 
@@ -257,13 +265,12 @@
 <li>Added SwiftyMocky CLI, simplifying setup and providing <code>doctor</code> feature</li>
 <li>Added support for Swift Package Manager (SPM)</li>
 <li>New configuration file for working with multiple targets - <code><a href="mockfile.html">Mockfile</a></code></li>
-<li>Fixed redundant constraints for methods with stripped generics (@tarbayev)
+<li>Fixed redundant constraints for methods with stripped generics (@tarbayev)</li>
+<li>Added Argument captor (@timedelta)
 #### Removed:</li>
 <li>dropped Swift 4.0, SwiftyMocky now requires Swift 4.1+</li>
-<li>deprecated MockyCustom subspec. We now check XCTest availability instead of using separate subspec for prototyping</li>
+<li>dropped MockyCustom subspec, new subspec is Prototyping, for Carthage SwiftyPrototype</li>
 </ul>
-
-<hr>
 
 <hr>
 <h2 id='strong-3-2-0-strong-2019' class='heading'><strong>3.2.0</strong> / 2019</h2>
