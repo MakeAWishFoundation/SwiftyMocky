@@ -91,6 +91,12 @@ To start working with **SwiftyMocky** you need to:
 > mint install MakeAWishFoundation/SwiftyMocky
 ```
 
+**[Marathon 🏃](https://github.com/JohnSundell/Marathon)**:
+
+```bash
+> marathon install MakeAWishFoundation/SwiftyMocky
+```
+
 <a name="integration"></a>
 
 ### 2. Integrating SwiftyMocky runtime into test target:
@@ -105,7 +111,31 @@ pod "SwiftyMocky"
 
 **[Carthage](https://github.com/Carthage/Carthage)**: 
 
-For [Carthage](https://github.com/Carthage/Carthage) install instructions, see full [documentation][link-docs-installation].
+To install, add following to you Cartfile:
+
+```ruby
+github "MakeAWishFoundation/SwiftyMocky"
+```
+
+Then execute `carthage update`
+
+For [Carthage](https://github.com/Carthage/Carthage), few additional steps are required ⚠️. For detailed install instructions, see full [documentation][link-docs-installation-carthage].
+
+**[Ice Package Manager ❄️](https://github.com/jakeheis/Ice)**:
+
+```bash
+> ice add MakeAWishFoundation/SwiftyMocky
+```
+
+**[Swift Package Manager](https://swift.org/package-manager/)**:
+
+Add **SwiftyMocky** to you **Package.swift** dependencies:
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/MakeAWishFoundation/SwiftyMocky", from: "3.3.1"),
+]
+```
 
 > **Note:** Examples of **SwiftyMocky** integration as a tool for Unit tests, as well as a Prototyping framework, are here: [https://github.com/MakeAWishFoundation/SM-Integration-Tests](https://github.com/MakeAWishFoundation/SM-Integration-Tests)
 
@@ -133,7 +163,7 @@ If you don't want to migrate to our **CLI** and prefer to use "raw" Sourcery, pl
 
 <a name="mock-annotate"></a>
 
-## 1.Marking protocols to be mocked
+## 1. Marking protocols to be mocked
 
 Create 'dummy' protocol somewhere in your project, like: `protocol AutoMockable { }`
 
@@ -346,6 +376,7 @@ SwiftyMocky is available under the MIT license. See the [LICENSE][link-license] 
 [link-docs]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.1/docs/index.html
 [link-docs-features]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.1/docs/supported-features.html
 [link-docs-installation]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.1/docs/installation.html
+[link-docs-installation-carthage]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.1/docs/installation.html#installation-carthage
 [link-docs-setup]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.3.1/docs/setup-in-project.html
 
 <!-- Assets -->

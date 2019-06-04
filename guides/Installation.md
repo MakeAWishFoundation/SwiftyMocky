@@ -11,6 +11,12 @@ To install it:
 > mint install MakeAWishFoundation/SwiftyMocky
 ```
 
+**[Marathon 🏃](https://github.com/JohnSundell/Marathon)**:
+
+```bash
+> marathon install MakeAWishFoundation/SwiftyMocky
+```
+
 > More information about **CLI** you will fund in "Command Line Interface" section. 
 
 # SwiftyMocky Runtime installation
@@ -28,6 +34,8 @@ pod "SwiftyMocky"
 Then execute `pod install`
 
 The integration part is described in setup page.
+
+<a name="installation-carthage"></a>
 
 ## 2. [Carthage](https://github.com/Carthage/Carthage).
 
@@ -54,6 +62,23 @@ For Carthage, few additional steps are required:
     ![Link binary][example-copy]
 
 The integration part is described in setup page.
+
+
+## 3. **[Ice Package Manager ❄️](https://github.com/jakeheis/Ice)**:
+
+```bash
+> ice add MakeAWishFoundation/SwiftyMocky
+```
+
+## 4. **[Swift Package Manager](https://swift.org/package-manager/)**:
+
+Add **SwiftyMocky** to you **Package.swift** dependencies:
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/MakeAWishFoundation/SwiftyMocky", from: "3.3.1"),
+]
+```
 
 ## Support for other swift versions
 
