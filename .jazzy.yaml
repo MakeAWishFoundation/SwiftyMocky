@@ -60,6 +60,7 @@ custom_categories:
     children:
       - XCTAssertThrowsError(_:of:_:file:line:)
       - XCTAssertThrowsError(_:error:_:file:line:)
+      - MockyAssertion
 
   - name: Deprecated
     children:
@@ -81,3 +82,4 @@ custom_categories:
       - StubProduct
       - StubbedMethod
       - Failure(_:)
+      - MockyAssert(_:_:file:line:)

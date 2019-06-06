@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>UInt Extension Reference</title>
+    <title>MockyAssertion Class Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,8 +10,8 @@
     
   </head>
   <body>
-    <a name="//apple_ref/swift/Extension/UInt" class="dashAnchor"></a>
-    <a title="UInt Extension Reference"></a>
+    <a name="//apple_ref/swift/Class/MockyAssertion" class="dashAnchor"></a>
+    <a title="MockyAssertion Class Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html">SwiftyMocky Docs</a> (96% documented)</p>
@@ -22,7 +22,7 @@
       <p id="breadcrumbs">
         <a href="../index.html">SwiftyMocky Reference</a>
         <img id="carat" src="../img/carat.png" />
-        UInt Extension Reference
+        MockyAssertion Class Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -254,14 +254,13 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>UInt</h1>
-              <div class="declaration">
-                <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">UInt</span> <span class="p">:</span> <span class="kt">FixedWidthInteger</span><span class="p">,</span> <span class="kt">UnsignedInteger</span></code></pre>
+            <h1>MockyAssertion</h1>
+            <p>[Prototyping] You can use this class if there is need to define custom
+assertion handler. You can use its static handler closure to alter default
+behaviour.</p>
 
-                </div>
-              </div>
-            
+<p>If it is <code>nil</code>, the default <code>assert</code> method would be used.</p>
+
           </section>
           <section class="section task-group-section">
             <div class="task-group">
@@ -269,9 +268,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:Su11SwiftyMockyE7matchesySbSiF"></a>
-                    <a name="//apple_ref/swift/Method/matches(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:Su11SwiftyMockyE7matchesySbSiF">matches(_:)</a>
+                    <a name="/"></a>
+                    <a name="//apple_ref/swift/Variable/handler" class="dashAnchor"></a>
+                    <a class="token" href="#/">handler</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -279,39 +278,9 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Returns whether given count matches countable case.</p>
+                        <p>[Prototyping] You can use it to define assertion behaviour.
+Leave blank to not assert at all.</p>
 
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">matches</span><span class="p">(</span><span class="n">_</span> <span class="nv">count</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>count</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>Given count</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>true, if it is within boundaries, false otherwise</p>
                       </div>
                     </section>
                   </div>
