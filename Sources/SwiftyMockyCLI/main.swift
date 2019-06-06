@@ -81,7 +81,8 @@ Group() { main in
     main.command("assetize", description: Messages.Tools.assetizeDescription) {
         let pwd = Path(ProcessInfo.processInfo.environment["PWD"] ?? "")
         application.assetizeTemplates(
-            templates: pwd + "Sources/Templates", 
+            mockTemplate: pwd + "Sources/Templates/Mock.swifttemplate", 
+            allTypesTemplate: pwd + "Templates/AllTypes.swifttemplate",
             template: pwd + "Templates/Assets.template", 
             output: pwd + "Sources/SwiftyMockyCLICore/Assets/Assets.swift"
         )

@@ -175,22 +175,25 @@ public class Application {
 
     // MARK: - Helpers and Debug
 
-    public func assetizeTemplates(templates: Path, template: Path, output: Path) {
+    public func assetizeTemplates(
+        mockTemplate: Path, 
+        allTypesTemplate: Path,
+        template: Path, 
+        output: Path
+    ) {
         let allTypesName = "AllTypes.swifttemplate"
         let allTypesPlaceholder = "{{ \(allTypesName) }}"
-        let allTypesTemplate = templates + allTypesName
         let allTypesContent = encoded(allTypesTemplate)
         Message.success("Encoded all types template")
 
         let mockName = "Mock.swifttemplate"
         let mockPlaceholder = "{{ \(mockName) }}"
-        let mockTemplate = templates + mockName
         let mockContent = encoded(mockTemplate)
         Message.success("Encoded mock template")
 
         let prototypeName = "Prototype.swifttemplate"
         let prototypePlaceholder = "{{ \(prototypeName) }}"
-        let prototypeTemplate = templates + mockName
+        let prototypeTemplate = mockTemplate
         let prototypeContent = encoded(prototypeTemplate, replacing: "import SwiftyMocky", with: "import SwiftyPrototype")
         Message.success("Encoded prototype template")
         
