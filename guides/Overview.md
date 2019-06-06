@@ -103,12 +103,6 @@ Then execute `carthage update`
 
 For [Carthage](https://github.com/Carthage/Carthage), few additional steps are required ⚠️. For detailed install instructions, see full [documentation][link-docs-installation-carthage].
 
-**[Ice Package Manager ❄️](https://github.com/jakeheis/Ice)**:
-
-```bash
-> ice add MakeAWishFoundation/SwiftyMocky
-```
-
 **[Swift Package Manager](https://swift.org/package-manager/)**:
 
 Add **SwiftyMocky** to you **Package.swift** dependencies:

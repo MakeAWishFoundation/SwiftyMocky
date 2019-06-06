@@ -70,6 +70,8 @@ The integration part is described in setup page.
 > ice add MakeAWishFoundation/SwiftyMocky
 ```
 
+> It will be supported when Ice reviews PR, fallback to SwiftPM if any issues.
+
 ## 4. **[Swift Package Manager](https://swift.org/package-manager/)**:
 
 Add **SwiftyMocky** to you **Package.swift** dependencies:
