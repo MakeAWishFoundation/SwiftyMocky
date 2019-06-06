@@ -3,7 +3,7 @@
 
 
 
-// Generated with SwiftyMocky 3.3.1
+// Generated with SwiftyMocky 3.3.2
 
 import SwiftyMocky
 #if !MockyCustom
@@ -11,28 +11,6 @@ import XCTest
 #endif
 import Foundation
 @testable import Mocky_Example_macOS
-#if MockyCustom
-    public final class MockyAssertion {
-        public static var handler: ((Bool, String, StaticString, UInt) -> Void)?
-    }
-
-    func MockyAssert(_ expression: @autoclosure () -> Bool, _ message: @autoclosure () -> String = "Verification failed", file: StaticString = #file, line: UInt = #line) {
-        guard let handler = MockyAssertion.handler else {
-            assert(expression(), message(), file: file, line: line)
-            return
-        }
-
-        handler(expression(), message(), file, line)
-    }
-#else
-    func MockyAssert(_ expression: @autoclosure () -> Bool, _ message: @autoclosure () -> String = "Verification failed", file: StaticString = #file, line: UInt = #line) {
-        #if canImport(XCTest)
-        XCTAssert(expression(), message(), file: file, line: line)
-        #else 
-        assert(expression(), message(), file: file, line: line)
-        #endif
-    }
-#endif
 
 // MARK: - AMassiveTestProtocol
 open class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
