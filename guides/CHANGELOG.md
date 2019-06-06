@@ -4,6 +4,13 @@ All changes to SwiftyMocky project will be documented in this file.
 
 -----
 
+## __3.3.2__ / 2019
+
+#### Fixed:
+* Fixed problems with multiple mocks being part of same target (@davidmtamas)
+
+-----
+
 ## __3.3.1__ / 2019
 
 #### Fixed:
