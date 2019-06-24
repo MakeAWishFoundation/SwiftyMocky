@@ -15,6 +15,9 @@
 		7C10E4406673B3B3B7474E2C /* Pods_Mocky_Tests_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94B5EFCCD4E35E7C80D1E560 /* Pods_Mocky_Tests_macOS.framework */; };
 		AD487E872180A3CA005B74ED /* Count.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD487E862180A3CA005B74ED /* Count.swift */; };
 		BB4F9E470E0BD27A959C97EB /* Pods_Mocky_Tests_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9592625386F952AE07781D57 /* Pods_Mocky_Tests_iOS.framework */; };
+		C81D094D22C0C59800A0427F /* CustomAssertionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81D094C22C0C59800A0427F /* CustomAssertionsTests.swift */; };
+		C81D094E22C0C59800A0427F /* CustomAssertionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81D094C22C0C59800A0427F /* CustomAssertionsTests.swift */; };
+		C81D094F22C0C59800A0427F /* CustomAssertionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81D094C22C0C59800A0427F /* CustomAssertionsTests.swift */; };
 		C8294EB2229934E80036BC94 /* Prototyping.h in Headers */ = {isa = PBXBuildFile; fileRef = C8294EAC2299345C0036BC94 /* Prototyping.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C8294EB32299350B0036BC94 /* Mock.swifttemplate in Resources */ = {isa = PBXBuildFile; fileRef = CCAFC9F81FAF24EA003F776A /* Mock.swifttemplate */; };
 		C8294EB42299357E0036BC94 /* SwiftyMockyTestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC5CAD22161180D00D29291 /* SwiftyMockyTestObserver.swift */; };
@@ -244,6 +247,7 @@
 		AAEE52510F67C7DF13FF8AF2 /* Pods-Mocky_Example_tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Example_tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Example_tvOS/Pods-Mocky_Example_tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		AD487E862180A3CA005B74ED /* Count.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Count.swift; sourceTree = "<group>"; };
 		BCB5C12EDA17046011396E79 /* Pods-Mocky_Tests_tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Tests_tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Tests_tvOS/Pods-Mocky_Tests_tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		C81D094C22C0C59800A0427F /* CustomAssertionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAssertionsTests.swift; sourceTree = "<group>"; };
 		C8294EAA2299345C0036BC94 /* SwiftyPrototype.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyPrototype.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8294EAC2299345C0036BC94 /* Prototyping.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Prototyping.h; sourceTree = "<group>"; };
 		C83B2421215BDA870032BCF3 /* ProtocolWithSubscripts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolWithSubscripts.swift; sourceTree = "<group>"; };
@@ -796,6 +800,7 @@
 				C870665A215E5ACB00EC852B /* SubscriptsTests.swift */,
 				CCC5CABC215F8A6F00D29291 /* EdgeCasesTests.swift */,
 				CC542E6322198EB900691F24 /* InoutParameterTests.swift */,
+				C81D094C22C0C59800A0427F /* CustomAssertionsTests.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -1443,6 +1448,7 @@
 				CC32521C2004C217009AD6C2 /* GenericProtocolsTests.swift in Sources */,
 				CCE3514D1FCC0B8200A76C4C /* ProtocolsWithCollectionsTests.swift in Sources */,
 				CC32522420061574009AD6C2 /* SelfConstrainedProtocolTests.swift in Sources */,
+				C81D094E22C0C59800A0427F /* CustomAssertionsTests.swift in Sources */,
 				C87B4F832153EF0700DD8AE3 /* ExpressibleByLiteralsTests.swift in Sources */,
 				CCE351671FCC0B9700A76C4C /* ItemsRepositoryMock.swift in Sources */,
 				CCA9F81C21566B1400F2880B /* SimpleSequencingTests.swift in Sources */,
@@ -1512,6 +1518,7 @@
 				CC32522320061574009AD6C2 /* SelfConstrainedProtocolTests.swift in Sources */,
 				C87B4F822153EF0700DD8AE3 /* ExpressibleByLiteralsTests.swift in Sources */,
 				CC32521B2004C217009AD6C2 /* GenericProtocolsTests.swift in Sources */,
+				C81D094D22C0C59800A0427F /* CustomAssertionsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1588,6 +1595,7 @@
 				CC32521D2004C217009AD6C2 /* GenericProtocolsTests.swift in Sources */,
 				CC5B61E41FCC18D0007FB209 /* ExampleTests.swift in Sources */,
 				CC32522520061574009AD6C2 /* SelfConstrainedProtocolTests.swift in Sources */,
+				C81D094F22C0C59800A0427F /* CustomAssertionsTests.swift in Sources */,
 				C87B4F842153EF0700DD8AE3 /* ExpressibleByLiteralsTests.swift in Sources */,
 				CC5B61DF1FCC18D0007FB209 /* ProtocolsWithCustomAttributesTests.swift in Sources */,
 				CCA9F81D21566B1500F2880B /* SimpleSequencingTests.swift in Sources */,
