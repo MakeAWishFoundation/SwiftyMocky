@@ -4,6 +4,13 @@ All changes to SwiftyMocky project will be documented in this file.
 
 -----
 
+## __3.3.3__ / 2019
+
+#### Fixed:
+* Swift 5.0 issue with custom assertions not compiling
+
+-----
+
 ## __3.3.2__ / 2019
 
 #### Fixed:
