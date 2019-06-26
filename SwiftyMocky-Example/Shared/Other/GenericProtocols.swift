@@ -53,3 +53,7 @@ protocol ProtocolWithWhereAfterDefinition {
 
     func methodWithType(t: T) -> Bool
 }
+
+protocol GenericProtocolReturningInt: AutoMockable {
+    func value<T>(for value: T) -> Int
+}

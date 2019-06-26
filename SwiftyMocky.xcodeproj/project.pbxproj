@@ -55,6 +55,9 @@
 		CC07B60820221B6700F51534 /* ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC07B60720221B6700F51534 /* ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift */; };
 		CC07B60920221B6700F51534 /* ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC07B60720221B6700F51534 /* ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift */; };
 		CC07B60A20221B6700F51534 /* ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC07B60720221B6700F51534 /* ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift */; };
+		CC07C93622C372D0007F4162 /* MatcherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC07C93522C372D0007F4162 /* MatcherTests.swift */; };
+		CC07C93722C372D0007F4162 /* MatcherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC07C93522C372D0007F4162 /* MatcherTests.swift */; };
+		CC07C93822C372D0007F4162 /* MatcherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC07C93522C372D0007F4162 /* MatcherTests.swift */; };
 		CC3252172003CC22009AD6C2 /* Excluded.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3252162003CC22009AD6C2 /* Excluded.generated.swift */; };
 		CC3252182003CC22009AD6C2 /* Excluded.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3252162003CC22009AD6C2 /* Excluded.generated.swift */; };
 		CC3252192003CC22009AD6C2 /* Excluded.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3252162003CC22009AD6C2 /* Excluded.generated.swift */; };
@@ -270,6 +273,7 @@
 		C8EF7B8521FB429700AFA545 /* Rakefile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Rakefile; sourceTree = "<group>"; };
 		CC07B601202215D500F51534 /* ProtocolMethodsThatDifferOnlyInReturnType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolMethodsThatDifferOnlyInReturnType.swift; sourceTree = "<group>"; };
 		CC07B60720221B6700F51534 /* ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift; sourceTree = "<group>"; };
+		CC07C93522C372D0007F4162 /* MatcherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatcherTests.swift; sourceTree = "<group>"; };
 		CC3252162003CC22009AD6C2 /* Excluded.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Excluded.generated.swift; sourceTree = "<group>"; };
 		CC32521A2004C217009AD6C2 /* GenericProtocolsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericProtocolsTests.swift; sourceTree = "<group>"; };
 		CC32521E20051AC9009AD6C2 /* SelfConstrainedProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfConstrainedProtocol.swift; sourceTree = "<group>"; };
@@ -801,6 +805,7 @@
 				CCC5CABC215F8A6F00D29291 /* EdgeCasesTests.swift */,
 				CC542E6322198EB900691F24 /* InoutParameterTests.swift */,
 				C81D094C22C0C59800A0427F /* CustomAssertionsTests.swift */,
+				CC07C93522C372D0007F4162 /* MatcherTests.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -1248,18 +1253,16 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Mocky_Tests_iOS/Pods-Mocky_Tests_iOS-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_iOS/Pods-Mocky_Tests_iOS-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/SwiftyMocky-iOS/SwiftyMocky.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyMocky.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Mocky_Tests_iOS/Pods-Mocky_Tests_iOS-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_iOS/Pods-Mocky_Tests_iOS-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		44142757B38ABCA8B35C72D0 /* [CP] Embed Pods Frameworks */ = {
@@ -1268,18 +1271,16 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Mocky_Tests_macOS/Pods-Mocky_Tests_macOS-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_macOS/Pods-Mocky_Tests_macOS-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/SwiftyMocky-macOS/SwiftyMocky.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyMocky.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Mocky_Tests_macOS/Pods-Mocky_Tests_macOS-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_macOS/Pods-Mocky_Tests_macOS-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		52CEFF50E2B6E659CB5C4FF2 /* [CP] Check Pods Manifest.lock */ = {
@@ -1342,18 +1343,16 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Mocky_Tests_tvOS/Pods-Mocky_Tests_tvOS-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_tvOS/Pods-Mocky_Tests_tvOS-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/SwiftyMocky-tvOS/SwiftyMocky.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyMocky.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Mocky_Tests_tvOS/Pods-Mocky_Tests_tvOS-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_tvOS/Pods-Mocky_Tests_tvOS-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		BD34BA0BED4C085F8CC18492 /* [CP] Check Pods Manifest.lock */ = {
@@ -1439,6 +1438,7 @@
 				CCE3514B1FCC0B8200A76C4C /* ProtocolWithInitializersTests.swift in Sources */,
 				CCE351551FCC0B8200A76C4C /* ProtocolWithThrowingMehtodsTests.swift in Sources */,
 				CCE351661FCC0B9700A76C4C /* Mock.generated.swift in Sources */,
+				CC07C93722C372D0007F4162 /* MatcherTests.swift in Sources */,
 				CCC5CABE215F8A6F00D29291 /* EdgeCasesTests.swift in Sources */,
 				CCE351511FCC0B8200A76C4C /* ProtocolWithStaticMembersTests.swift in Sources */,
 				CCE351451FCC0B8200A76C4C /* ComplicatedServiceTests.swift in Sources */,
@@ -1513,6 +1513,7 @@
 				CCE3514C1FCC0B8200A76C4C /* ProtocolsWithCollectionsTests.swift in Sources */,
 				CCE3515E1FCC0B8F00A76C4C /* ItemsRepositoryMock.swift in Sources */,
 				CCE351481FCC0B8200A76C4C /* ProtocolsWithGenericsTests.swift in Sources */,
+				CC07C93622C372D0007F4162 /* MatcherTests.swift in Sources */,
 				CCE351461FCC0B8200A76C4C /* ExampleTests.swift in Sources */,
 				CC542E6422198EB900691F24 /* InoutParameterTests.swift in Sources */,
 				CC32522320061574009AD6C2 /* SelfConstrainedProtocolTests.swift in Sources */,
@@ -1586,6 +1587,7 @@
 				CC5B61E01FCC18D0007FB209 /* ProtocolWithStaticMembersTests.swift in Sources */,
 				CC5B61C61FCC178F007FB209 /* Mocky_Example_macOSTests.swift in Sources */,
 				CC5B61E21FCC18D0007FB209 /* ProtocolWithInitializersTests.swift in Sources */,
+				CC07C93822C372D0007F4162 /* MatcherTests.swift in Sources */,
 				CCC5CABF215F8A6F00D29291 /* EdgeCasesTests.swift in Sources */,
 				CC5B61E51FCC18D0007FB209 /* SampleServiceTests.swift in Sources */,
 				CC5B61DE1FCC18D0007FB209 /* ProtocolWithThrowingMehtodsTests.swift in Sources */,
