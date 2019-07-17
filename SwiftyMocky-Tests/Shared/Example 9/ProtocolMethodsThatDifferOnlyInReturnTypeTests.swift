@@ -50,29 +50,24 @@ class ProtocolMethodsThatDifferOnlyInReturnTypeTests: XCTestCase {
         }
 
         Given(mock, .foo(bar: .any(A.self), willReturn: Float(0)))
-        Given(mock, .foo(bar: .any(B.self), willReturn: Float(1)))
-        Given(mock, .foo(bar: .value(B(2)), willReturn: Float(2)))
+        Given(mock, .foo(bar: .any(B.self), willReturn: Double(1)))
         Given(mock, .foo(bar: .any(Int.self), willReturn: 3))
         Given(mock, .foo(bar: .any(String.self), willReturn: [1, 2]))
         Given(mock, .foo(bar: .any(String.self), willReturn: [1, 2, 3] as Set))
 
         Verify(mock, .never, .foo(bar: .any(A.self), returning: Float.self))
-        Verify(mock, .never, .foo(bar: .any(B.self), returning: Float.self))
         Verify(mock, .never, .foo(bar: .any(Int.self), returning: Int.self))
         Verify(mock, .never, .foo(bar: .any(String.self), returning: [Int].self))
         Verify(mock, .never, .foo(bar: .any(String.self), returning: Set<Int>.self))
 
         let v1: Float = mock.foo(bar: A(0))
         XCTAssertEqual(v1, 0)
-        let v2: Float = mock.foo(bar: B(1))
+        let v2: Double = mock.foo(bar: B(1))
         XCTAssertEqual(v2, 1)
-        let v3: Float = mock.foo(bar: B(2))
-        XCTAssertEqual(v3, 2)
-        let v4: Set<Int> = mock.foo(bar: "0")
-        XCTAssertEqual(v4, [1, 2, 3])
+        let v3: Set<Int> = mock.foo(bar: "0")
+        XCTAssertEqual(v3, [1, 2, 3])
 
         Verify(mock, 1, .foo(bar: .any(A.self), returning: Float.self))
-        Verify(mock, 2, .foo(bar: .any(B.self), returning: Float.self))
         Verify(mock, .never, .foo(bar: .any(Int.self), returning: Int.self))
         Verify(mock, .never, .foo(bar: .any(String.self), returning: [Int].self))
         Verify(mock, 1, .foo(bar: .any(String.self), returning: Set<Int>.self))
