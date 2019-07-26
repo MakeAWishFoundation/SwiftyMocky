@@ -12,6 +12,12 @@
 		66087FEBDA538F4C138743F2 /* Pods_Mocky_Example_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A4B259245C7FB13CDFFCEC0 /* Pods_Mocky_Example_iOS.framework */; };
 		68242AA222A7EBD300E36BCD /* MockyAssert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68242AA122A7EBD300E36BCD /* MockyAssert.swift */; };
 		68242AA322A7EF5400E36BCD /* MockyAssert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68242AA122A7EBD300E36BCD /* MockyAssert.swift */; };
+		6C3186ED22DF613C00746DCC /* ProtocolWithGenericConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C3186EC22DF613C00746DCC /* ProtocolWithGenericConstraints.swift */; };
+		6C3186EE22DF613C00746DCC /* ProtocolWithGenericConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C3186EC22DF613C00746DCC /* ProtocolWithGenericConstraints.swift */; };
+		6C3186EF22DF613C00746DCC /* ProtocolWithGenericConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C3186EC22DF613C00746DCC /* ProtocolWithGenericConstraints.swift */; };
+		6C3186F222DF67D800746DCC /* ProtocolWithGenericConstraintsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C3186F122DF67D800746DCC /* ProtocolWithGenericConstraintsTests.swift */; };
+		6C3186F322DF67D800746DCC /* ProtocolWithGenericConstraintsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C3186F122DF67D800746DCC /* ProtocolWithGenericConstraintsTests.swift */; };
+		6C3186F422DF67D800746DCC /* ProtocolWithGenericConstraintsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C3186F122DF67D800746DCC /* ProtocolWithGenericConstraintsTests.swift */; };
 		7C10E4406673B3B3B7474E2C /* Pods_Mocky_Tests_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94B5EFCCD4E35E7C80D1E560 /* Pods_Mocky_Tests_macOS.framework */; };
 		AD487E872180A3CA005B74ED /* Count.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD487E862180A3CA005B74ED /* Count.swift */; };
 		BB4F9E470E0BD27A959C97EB /* Pods_Mocky_Tests_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9592625386F952AE07781D57 /* Pods_Mocky_Tests_iOS.framework */; };
@@ -241,6 +247,8 @@
 		607FACE51AFB9204008FA782 /* Mocky_Tests_iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Mocky_Tests_iOS.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		64EF60CBE53D81700C87FB82 /* Pods_Mocky_Tests_tvOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mocky_Tests_tvOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		68242AA122A7EBD300E36BCD /* MockyAssert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockyAssert.swift; sourceTree = "<group>"; };
+		6C3186EC22DF613C00746DCC /* ProtocolWithGenericConstraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolWithGenericConstraints.swift; sourceTree = "<group>"; };
+		6C3186F122DF67D800746DCC /* ProtocolWithGenericConstraintsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolWithGenericConstraintsTests.swift; sourceTree = "<group>"; };
 		7194340B3CD91B825FCB78FB /* Pods-Mocky_Example_iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Example_iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Example_iOS/Pods-Mocky_Example_iOS.release.xcconfig"; sourceTree = "<group>"; };
 		7A9B02B1C24E9AC79ABF999C /* Pods-Mocky_Example_iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Example_iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Example_iOS/Pods-Mocky_Example_iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		8DDEF4635180A969B16362F7 /* Pods-Mocky_Tests_iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Tests_iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Tests_iOS/Pods-Mocky_Tests_iOS.debug.xcconfig"; sourceTree = "<group>"; };
@@ -480,6 +488,22 @@
 			path = "SwiftyMocky-Tests";
 			sourceTree = "<group>";
 		};
+		6C3186EB22DF60EA00746DCC /* Example 10 */ = {
+			isa = PBXGroup;
+			children = (
+				6C3186EC22DF613C00746DCC /* ProtocolWithGenericConstraints.swift */,
+			);
+			path = "Example 10";
+			sourceTree = "<group>";
+		};
+		6C3186F022DF67B600746DCC /* Example 10 */ = {
+			isa = PBXGroup;
+			children = (
+				6C3186F122DF67D800746DCC /* ProtocolWithGenericConstraintsTests.swift */,
+			);
+			path = "Example 10";
+			sourceTree = "<group>";
+		};
 		7FCC8434BB6BB8DECC81772A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -658,6 +682,7 @@
 				CCE350D71FCC0A9400A76C4C /* Example 7 */,
 				CC491A1C1FDAB48F001CAB8A /* Example 8 */,
 				CC07B600202215C200F51534 /* Example 9 */,
+				6C3186EB22DF60EA00746DCC /* Example 10 */,
 				CCE350DE1FCC0A9400A76C4C /* Model */,
 				CCE350D11FCC0A9400A76C4C /* Other */,
 			);
@@ -785,6 +810,7 @@
 				CCE351331FCC0B8200A76C4C /* Example 7 */,
 				CC491A221FDAB56F001CAB8A /* Example 8 */,
 				CC07B60620221B4B00F51534 /* Example 9 */,
+				6C3186F022DF67B600746DCC /* Example 10 */,
 				CCE3512F1FCC0B8200A76C4C /* Other */,
 			);
 			path = Shared;
@@ -1408,6 +1434,7 @@
 				CCE350F81FCC0A9400A76C4C /* ProtocolsWithCollections.swift in Sources */,
 				C87B4F7F2153EE2700DD8AE3 /* AllLiteralsContainerProtocol.swift in Sources */,
 				CCE350FA1FCC0A9400A76C4C /* SimpleProtocols.swift in Sources */,
+				6C3186EE22DF613C00746DCC /* ProtocolWithGenericConstraints.swift in Sources */,
 				CCE350EC1FCC0A9400A76C4C /* ExampleProtocols.swift in Sources */,
 				CCE350F61FCC0A9400A76C4C /* ProtocolWithInitializers.swift in Sources */,
 				CCE350EA1FCC0A9400A76C4C /* NonSwiftProtocol.swift in Sources */,
@@ -1447,6 +1474,7 @@
 				C8B87414215A54B1002CF376 /* PropertiesHandlingTests.swift in Sources */,
 				CC32521C2004C217009AD6C2 /* GenericProtocolsTests.swift in Sources */,
 				CCE3514D1FCC0B8200A76C4C /* ProtocolsWithCollectionsTests.swift in Sources */,
+				6C3186F322DF67D800746DCC /* ProtocolWithGenericConstraintsTests.swift in Sources */,
 				CC32522420061574009AD6C2 /* SelfConstrainedProtocolTests.swift in Sources */,
 				C81D094E22C0C59800A0427F /* CustomAssertionsTests.swift in Sources */,
 				C87B4F832153EF0700DD8AE3 /* ExpressibleByLiteralsTests.swift in Sources */,
@@ -1473,6 +1501,7 @@
 				CCE350F71FCC0A9400A76C4C /* ProtocolsWithCollections.swift in Sources */,
 				C87B4F7E2153EE2300DD8AE3 /* AllLiteralsContainerProtocol.swift in Sources */,
 				CCE350F91FCC0A9400A76C4C /* SimpleProtocols.swift in Sources */,
+				6C3186ED22DF613C00746DCC /* ProtocolWithGenericConstraints.swift in Sources */,
 				CCE350EB1FCC0A9400A76C4C /* ExampleProtocols.swift in Sources */,
 				CCE350F51FCC0A9400A76C4C /* ProtocolWithInitializers.swift in Sources */,
 				CCE350E91FCC0A9400A76C4C /* NonSwiftProtocol.swift in Sources */,
@@ -1495,6 +1524,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C3186F222DF67D800746DCC /* ProtocolWithGenericConstraintsTests.swift in Sources */,
 				C870665B215E5ACB00EC852B /* SubscriptsTests.swift in Sources */,
 				CCE3514E1FCC0B8200A76C4C /* SimpleProtocolsTests.swift in Sources */,
 				CCE351421FCC0B8200A76C4C /* SampleServiceTests.swift in Sources */,
@@ -1557,6 +1587,7 @@
 				CC5B61D01FCC18C4007FB209 /* ProtocolsWithCustomAttributes.swift in Sources */,
 				C87B4F802153EE2800DD8AE3 /* AllLiteralsContainerProtocol.swift in Sources */,
 				CC5B61D61FCC18C4007FB209 /* Models.swift in Sources */,
+				6C3186EF22DF613C00746DCC /* ProtocolWithGenericConstraints.swift in Sources */,
 				CC5B61D41FCC18C4007FB209 /* ProtocolsWithGenerics.swift in Sources */,
 				CC5B61DB1FCC18C4007FB209 /* SampleService.swift in Sources */,
 				CC5B61D91FCC18C4007FB209 /* ItemsRepository.swift in Sources */,
@@ -1596,6 +1627,7 @@
 				C8B87415215A54B1002CF376 /* PropertiesHandlingTests.swift in Sources */,
 				CC32521D2004C217009AD6C2 /* GenericProtocolsTests.swift in Sources */,
 				CC5B61E41FCC18D0007FB209 /* ExampleTests.swift in Sources */,
+				6C3186F422DF67D800746DCC /* ProtocolWithGenericConstraintsTests.swift in Sources */,
 				CC32522520061574009AD6C2 /* SelfConstrainedProtocolTests.swift in Sources */,
 				C81D094F22C0C59800A0427F /* CustomAssertionsTests.swift in Sources */,
 				C87B4F842153EF0700DD8AE3 /* ExpressibleByLiteralsTests.swift in Sources */,

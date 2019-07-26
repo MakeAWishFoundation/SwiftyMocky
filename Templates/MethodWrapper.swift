@@ -362,22 +362,24 @@ class MethodWrapper {
     }
 
     func givenConstructorName(prefix: String = "", deprecated: Bool = false, annotated: Bool = true) -> String {
-        let annotation = annotated && deprecated ? deprecatedMessage(deprecatedParametersMessage()) : ""
         let returnTypeString = givenReturnTypeString()
+        let (annotation, _, _) = methodInfo(deprecated, annotated)
+        let clauseConstraints = whereClauseExpression()
 
         if method.parameters.isEmpty {
-            return "public static func \(method.shortName)(willReturn: \(returnTypeString)...) -> \(prefix)MethodStub"
+            return "public static func \(method.shortName)(willReturn: \(returnTypeString)...) -> \(prefix)MethodStub" + clauseConstraints
         } else {
-            return "\(annotation)public static func \(method.shortName)(\(parametersForProxySignature(deprecated: deprecated)), willReturn: \(returnTypeString)...) -> \(prefix)MethodStub"
+            return "\(annotation)public static func \(method.shortName)(\(parametersForProxySignature(deprecated: deprecated)), willReturn: \(returnTypeString)...) -> \(prefix)MethodStub" + clauseConstraints
         }
     }
 
     func givenConstructorNameThrows(prefix: String = "", deprecated: Bool = false, annotated: Bool = true) -> String {
-        let annotation = annotated && deprecated ? deprecatedMessage(deprecatedParametersMessage()) : ""
+        let (annotation, _, _) = methodInfo(deprecated, annotated)
+        let clauseConstraints = whereClauseExpression()
         if method.parameters.isEmpty {
-            return "public static func \(method.shortName)(willThrow: Error...) -> \(prefix)MethodStub"
+            return "public static func \(method.shortName)(willThrow: Error...) -> \(prefix)MethodStub" + clauseConstraints
         } else {
-            return "\(annotation)public static func \(method.shortName)(\(parametersForProxySignature(deprecated: deprecated)), willThrow: Error...) -> \(prefix)MethodStub"
+            return "\(annotation)public static func \(method.shortName)(\(parametersForProxySignature(deprecated: deprecated)), willThrow: Error...) -> \(prefix)MethodStub" + clauseConstraints
         }
     }
 
@@ -401,22 +403,24 @@ class MethodWrapper {
     func givenProduceConstructorName(prefix: String = "") -> String {
         let returnTypeString = givenReturnTypeString()
         let produceClosure = "(Stubber<\(returnTypeString)>) -> Void"
+        let clauseConstraints = whereClauseExpression()
 
         if method.parameters.isEmpty {
-            return "public static func \(method.shortName)(willProduce: \(produceClosure)) -> \(prefix)MethodStub"
+            return "public static func \(method.shortName)(willProduce: \(produceClosure)) -> \(prefix)MethodStub" + clauseConstraints
         } else {
-            return "public static func \(method.shortName)(\(parametersForProxySignature()), willProduce: \(produceClosure)) -> \(prefix)MethodStub"
+            return "public static func \(method.shortName)(\(parametersForProxySignature()), willProduce: \(produceClosure)) -> \(prefix)MethodStub" + clauseConstraints
         }
     }
 
     func givenProduceConstructorNameThrows(prefix: String = "") -> String {
         let returnTypeString = givenReturnTypeString()
         let produceClosure = "(StubberThrows<\(returnTypeString)>) -> Void"
+        let clauseConstraints = whereClauseExpression()
 
         if method.parameters.isEmpty {
-            return "public static func \(method.shortName)(willProduce: \(produceClosure)) -> \(prefix)MethodStub"
+            return "public static func \(method.shortName)(willProduce: \(produceClosure)) -> \(prefix)MethodStub" + clauseConstraints
         } else {
-            return "public static func \(method.shortName)(\(parametersForProxySignature()), willProduce: \(produceClosure)) -> \(prefix)MethodStub"
+            return "public static func \(method.shortName)(\(parametersForProxySignature()), willProduce: \(produceClosure)) -> \(prefix)MethodStub" + clauseConstraints
         }
     }
 
@@ -650,17 +654,40 @@ class MethodWrapper {
         return "(\(stripped)).Type"
     }
 
+    private func whereClauseConstraints() -> [String] {
+        let returnTypeRaw = method.returnTypeName.name
+        guard let range = returnTypeRaw.range(of: "where") else { return [] }
+        var whereClause = returnTypeRaw
+        whereClause.removeSubrange(...(range.upperBound))
+        return whereClause
+            .trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+            .components(separatedBy: ",")
+    }
+
+    private func whereClauseExpression() -> String {
+        let constraints = whereClauseConstraints()
+        if constraints.isEmpty {
+            return ""
+        }
+        return " where " + constraints.joined(separator: ", ")
+    }
+
     private func methodInfo(_ deprecated: Bool, _ annotated: Bool)
         -> (annotation: String, methodName: String, genericConstrains: String) {
             let generics = getGenericsAmongParameters()
             let annotation = annotated && deprecated ? deprecatedMessage(deprecatedParametersMessage()) : ""
             let methodName = returnTypeMatters() ? method.shortName : "\(method.callName)\(wrapGenerics(generics))"
-            let genericConstrains: String = {
-                let constraints = getGenericsConstraints(generics)
+            let constraints: String = {
+                let constraints: [String]
+                if returnTypeMatters() {
+                    constraints = whereClauseConstraints()
+                } else {
+                    constraints = getGenericsConstraints(generics)
+                }
                 guard !constraints.isEmpty else { return "" }
 
                 return " where \(constraints.joined(separator: ", "))"
             }()
-            return (annotation, methodName, genericConstrains)
+            return (annotation, methodName, constraints)
     }
 }

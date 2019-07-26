@@ -20,10 +20,7 @@ class MatcherTests: XCTestCase {
 
     func test_matching_dict_String_Any() {
         Matcher.default.register([String: Any].self) { (lhs, rhs) -> Bool in
-            // Do the custom matching here
-            let lhsKeys = lhs.keys.map { $0 }
-            let rhsKeys = rhs.keys.map { $0 }
-            return lhsKeys == rhsKeys
+            return NSDictionary(dictionary: lhs).isEqual(to: rhs)
         }
 
         let mock = GenericProtocolReturningIntMock()
@@ -35,6 +32,7 @@ class MatcherTests: XCTestCase {
 
         Given(mock, .value(for: .value(a), willReturn: 1))
         Given(mock, .value(for: .value(b), willReturn: 2))
+        Given(mock, .value(for: .value(bb), willReturn: 2))
         Given(mock, .value(for: .value(c), willReturn: 3))
 
         XCTAssert(mock.value(for: 1) == 1)
