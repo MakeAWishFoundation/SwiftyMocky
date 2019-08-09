@@ -25,7 +25,7 @@ Library that uses metaprogramming technique to generate mocks based on sources, 
   s.macos.deployment_target = '10.10'
   s.default_subspec  = "Core"
   s.preserve_paths = '*'
-  s.swift_version = '4.1'
+  s.swift_version = '4.2'
 
   s.subspec 'Core' do |core|
     core.source_files = 'Sources/Classes/**/*'
