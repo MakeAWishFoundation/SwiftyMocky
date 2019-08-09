@@ -8,6 +8,7 @@ All changes to SwiftyMocky project will be documented in this file.
 
 #### Fixed:
 * Fixed problem with not printable ASCI characters by @TimeDelta
+* Fixed problem with missing generic constraints by @demalex
 
 -----
 
