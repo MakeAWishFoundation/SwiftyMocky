@@ -1,6 +1,6 @@
 <%# ================================================== SETUP -%><%_ -%>
 <%_ var all = types.all
-    all += types.protocols.map { $0 } 
+    all += types.protocols.map { $0 }
     var mockedCount = 0
 -%>
 

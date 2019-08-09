@@ -44,8 +44,9 @@ class MethodWrapper {
     private func deprecatedMessage(_ preferred: String = "") -> String {
         return "@available(*, deprecated, message: \"This constructor is deprecated, and will be removed in v3.1\(preferred)\")\n\t\t"
     }
-    private var noStubDefinedMessage: String { return "Stub return value not specified for \(method.name). Use given" }
-
+    private var noStubDefinedMessage: String {
+        return "Stub return value not specified for \(method.name.replacingOccurrences(of: "\t", with: " ")). Use given"
+    }
     private static var registered: [String: Int] = [:]
     private static var suffixes: [String: Int] = [:]
     private static var suffixesWithoutReturnType: [String: Int] = [:]

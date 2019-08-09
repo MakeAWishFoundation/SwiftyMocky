@@ -484,7 +484,6 @@ class MethodWrapper {
     private var noStubDefinedMessage: String {
         return "Stub return value not specified for \(method.name.replacingOccurrences(of: "\t", with: " ")). Use given"
     }
-
     private static var registered: [String: Int] = [:]
     private static var suffixes: [String: Int] = [:]
     private static var suffixesWithoutReturnType: [String: Int] = [:]
