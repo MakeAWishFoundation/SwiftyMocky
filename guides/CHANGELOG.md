@@ -4,6 +4,13 @@ All changes to SwiftyMocky project will be documented in this file.
 
 -----
 
+## __3.3.4__ / 2019
+
+#### Fixed:
+* Fixed problem with not printable ASCI characters by @TimeDelta
+
+-----
+
 ## __3.3.3__ / 2019
 
 #### Fixed:

@@ -2,7 +2,7 @@ author: Przemysław Wośko, Andrzej Michnia
 author_url: https://girappe.com
 module: SwiftyMocky
 sourcekitten_sourcefile: docs.json
-module_version: 3.3.3
+module_version: 3.3.4
 github_url: https://github.com/MakeAWishFoundation/SwiftyMocky
 copyright: 'Copyright © 2017 MakeAWishFoundation. All rights reserved.'
 readme: guides/Overview.md
