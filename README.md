@@ -278,7 +278,7 @@ Verify(mock, .never, .name(set: .value("Bishop")))
 
 All mocks has **perform** method (accessible both as instance method or global function), with easy to use syntax, allowing to specify closure, that will be executed upon stubbed method being called.
 
-It uses same paramter wrapping features as given, so you can specify different **Perform** cases for different attributes set.
+It uses same parameter wrapping features as given, so you can specify different **Perform** cases for different attributes set.
 
 It's very handy when working with completion block based approach.
 
