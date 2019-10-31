@@ -19,7 +19,7 @@ Check out [guides][link-guides-contents], or full [documentation][link-docs]
 1. [Overview](#overview)
 1. [Current version](#current-version)
 1. [Getting started:](#getting-started)
-    1. [Installing SiwftyMocky CLI](#installation)
+    1. [Installing SwiftyMocky CLI](#installation)
     1. [Integrating SwiftyMocky runtime into test target](#integration)
     1. [Generate mocks](#generation)
 1. [Usage:](#usage)
