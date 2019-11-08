@@ -14,6 +14,7 @@ matrix:
         - cd Mint
         - git checkout tags/0.11.3
         - swift run mint install yonaskolb/mint@0.11.3
+        - cd ./..
       script:
         - swift --version
         - swift build -c release
