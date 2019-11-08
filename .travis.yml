@@ -31,6 +31,10 @@ matrix:
         - fastlane ios test
         - rake mock # legacy mock generation
         - fastlane tvos test
+      after_failure:
+        - for v in ~/shared/logs/*.log ; do
+          echo $v logtail ======================== ; tail -100 $v ;
+          done
 
     # For now, Sourcery does not work on linux, so commented it out
     - os: linux

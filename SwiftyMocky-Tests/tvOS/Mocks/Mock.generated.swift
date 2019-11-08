@@ -1,13 +1,15 @@
-// Generated using Sourcery 0.16.0 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 0.17.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
 
-// Generated with SwiftyMocky 3.3.3
+
+// Generated with SwiftyMocky 3.4.0
 
 import SwiftyMocky
 #if !MockyCustom
 import XCTest
 #endif
+import Foundation
 @testable import Mocky_Example_tvOS
 
 // MARK: - AMassiveTestProtocol
