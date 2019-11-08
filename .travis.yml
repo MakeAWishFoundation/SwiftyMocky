@@ -24,17 +24,15 @@ matrix:
         - brew install mint
       script:
         - swift --version
+        - instruments -s
         - swift build -c release
         - swift run -c release --skip-build --skip-update swiftymocky doctor
         - swift run -c release --skip-build --skip-update swiftymocky generate
         - swift test
         - fastlane ios test
         - rake mock # legacy mock generation
-        - fastlane tvos test
-      after_failure:
-        - for v in ~/shared/logs/*.log ; do
-          echo $v logtail ======================== ; tail -100 $v ;
-          done
+        # Temporary: turned off tvOS tests
+        # - fastlane tvos test
 
     # For now, Sourcery does not work on linux, so commented it out
     - os: linux
