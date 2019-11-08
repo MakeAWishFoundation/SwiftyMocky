@@ -8,6 +8,12 @@
 
 import Foundation
 
+public enum MockScope {
+    case invocation
+    case given
+    case perform
+}
+
 /// Every generated mock implementation adopts **Mock** protocol.
 /// It defines base Mock structure and features.
 public protocol Mock: class {
@@ -69,9 +75,6 @@ public protocol StaticMock: class {
     associatedtype StaticVerify
     /// Perform type
     associatedtype StaticPerform
-
-    /// As verifying static members relies on static count of invocations, clear allows to 'reset' static mock internals.
-    static func clear()
 
     /// Registers return value for stubbed method, for specified attributes set.
     ///

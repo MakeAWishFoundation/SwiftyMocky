@@ -43,6 +43,14 @@ open class GenerationCommandMock: GenerationCommand, Mock {
         self.line = line
     }
 
+    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func clear(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
 
 
 
@@ -298,6 +306,14 @@ open class InstanceFactoryMock: InstanceFactory, Mock {
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
         self.file = file
         self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func clear(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
 
