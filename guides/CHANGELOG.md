@@ -4,6 +4,12 @@ All changes to SwiftyMocky project will be documented in this file.
 
 -----
 
+## __3.4.0__ / 2019
+
+#### Fixed:
+* Fixed Xcode 11 support by @glyuck
+* Fixed typos in Readmy, by @iliaskarim and @mikeakers
+
 ## __3.3.4__ / 2019
 
 #### Fixed:
