@@ -13,7 +13,7 @@ matrix:
         - git clone https://github.com/yonaskolb/Mint.git
         - cd Mint
         - git checkout tags/0.11.3
-        - swift run mint install yonaskolb/mint
+        - swift run mint install yonaskolb/mint@0.11.3
       script:
         - swift --version
         - swift build -c release
