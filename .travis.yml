@@ -1,31 +1,5 @@
-env:
-  global:
-    - SWIFT_BRANCH=swift-5.0-release
-    - SWIFT_VERSION=swift-5.0-RELEASE
-
 matrix:
   include:
-    - os: osx
-      language: swift
-      osx_image: xcode10
-      install:
-        - rake pods
-        - git clone https://github.com/yonaskolb/Mint.git
-        - cd Mint
-        - git checkout tags/0.11.3
-        - swift run mint install yonaskolb/mint@0.11.3
-        - cd ./..
-      script:
-        - swift --version
-        - swift build -c release
-        - sleep 1
-        - ./.build/x86_64-apple-macosx10.10/release/swiftymocky doctor
-        - ./.build/x86_64-apple-macosx10.10/release/swiftymocky generate
-        - swift test
-        - fastlane ios test
-        - rake mock # legacy mock generation
-        - fastlane tvos test
-
     - os: osx
       language: swift
       osx_image: xcode10.2
@@ -63,6 +37,9 @@ matrix:
       dist: trusty
       sudo: required
       language: generic
+      env:
+        - SWIFT_BRANCH=swift-5.0-release
+        - SWIFT_VERSION=swift-5.0-RELEASE
       install:
         - sudo apt-get install clang libicu-dev
         - mkdir swift
