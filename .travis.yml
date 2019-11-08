@@ -11,8 +11,8 @@ matrix:
       install:
         - rake pods
         - git clone https://github.com/yonaskolb/Mint.git
-        - git checkout tags/0.11.3
         - cd Mint
+        - git checkout tags/0.11.3
         - swift run mint install yonaskolb/mint
       script:
         - swift --version
