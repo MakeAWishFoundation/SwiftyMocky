@@ -14,6 +14,11 @@ platform :tvos do
     lane :test do
         scan(scheme: "Mocky_Tests_tvOS")
     end
+    
+    desc "Runs all the tests on tvOS 13.x"
+    lane :test_13 do
+        scan(scheme: "Mocky_Tests_tvOS", devices: ["Apple TV (13.2)"])
+    end
 end
 
 platform :mac do

@@ -30,6 +30,11 @@ Runs all the tests
 fastlane tvos test
 ```
 Runs all the tests
+### tvos test_13
+```
+fastlane tvos test_13
+```
+Runs all the tests on tvOS 13.x
 
 ----
 

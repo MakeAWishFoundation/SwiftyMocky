@@ -31,8 +31,7 @@ matrix:
         - swift test
         - fastlane ios test
         - rake mock # legacy mock generation
-        # Temporary: turned off tvOS tests
-        # - fastlane tvos test
+        - fastlane tvos test_13
 
     # For now, Sourcery does not work on linux, so commented it out
     - os: linux
