@@ -1,7 +1,7 @@
 import Foundation
 
 #if os(macOS)
-import xcodeproj
+import XcodeProj
 
 extension PBXTarget: ProjectTarget { }
 #endif

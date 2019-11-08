@@ -1,7 +1,7 @@
 import Foundation
 import ShellOut
 import PathKit
-import xcodeproj
+import XcodeProj
 
 public class InspectionController {
 

@@ -2,7 +2,7 @@ import Foundation
 import Yams
 import PathKit
 import Commander
-import xcodeproj
+import XcodeProj
 import Crayon
 
 // MARK: - Migration

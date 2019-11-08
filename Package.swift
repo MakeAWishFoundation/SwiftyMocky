@@ -13,10 +13,10 @@ let package = Package(
    ],
    dependencies: [
        .package(url: "https://github.com/JohnSundell/ShellOut.git", from: "2.0.0"),
-       .package(url: "https://github.com/tuist/xcodeproj.git", from: "6.5.0"),
+       .package(url: "https://github.com/tuist/xcodeproj.git", from: "7.1.0"),
        .package(url: "https://github.com/jianstm/Crayon", from: "0.0.3"),
        .package(url: "https://github.com/kylef/Commander", from: "0.8.0"),
-       .package(url: "https://github.com/kylef/PathKit", from: "0.9.0"),
+       .package(url: "https://github.com/kylef/PathKit", from: "1.0.0"),
        .package(url: "https://github.com/jpsim/Yams.git", from: "2.0.0"),
    ],
    targets: [
@@ -35,7 +35,7 @@ let package = Package(
            dependencies: [
                "ShellOut",
                "Crayon",
-               "xcodeproj",
+               "XcodeProj",
                "PathKit",
                "Yams",
            ]),
