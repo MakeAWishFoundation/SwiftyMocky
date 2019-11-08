@@ -10,7 +10,10 @@ matrix:
       osx_image: xcode10
       install:
         - rake pods
-        - brew install mint@0.11.3
+        - git clone https://github.com/yonaskolb/Mint.git
+        - git checkout tags/0.11.3
+        - cd Mint
+        - swift run mint install yonaskolb/mint
       script:
         - swift --version
         - swift build -c release
