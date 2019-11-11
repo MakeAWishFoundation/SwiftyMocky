@@ -47,13 +47,37 @@ public enum Parameter<ValueType> {
     }
 }
 
-// MARK: - Same instance
+// MARK: - Parameter convenience initializers
 
 public extension Parameter where ValueType: AnyObject {
+
     /// Represents and matches values on an "same instance" basis.
+    ///
     /// - Parameter instance: Instance to match against
-    public static func sameInstance(as instance: ValueType) -> Parameter<ValueType> {
-        return Parameter.matching { $0 === instance }
+    public static func sameInstance<T: AnyObject>(as instance: T) -> Parameter<ValueType> {
+        return .matching { this in
+            guard let thisCasted = this as? T else { return false }
+            return thisCasted === instance
+        }
+    }
+
+    /// Represents and matches whether parameter is of specific type, using `is` operator.
+    ///
+    /// - Parameter type: Type to match against
+    public static func isInstance<T: AnyObject>(of type: T.Type) -> Parameter<ValueType> {
+        return .matching { $0 is T }
+    }
+}
+
+public extension Parameter {
+
+    /// Allows combining multiple Parameter constraints into one Parameter constraint.
+    ///
+    /// - Parameter matching: List of parameter constraints
+    static func all(_ matching: Parameter<ValueType>...) -> Parameter<ValueType> {
+        return .matching { value -> Bool in
+            return matching.contains { !Parameter<ValueType>.compare(lhs: $0, rhs: .value(value), with: .default) }
+        }
     }
 }
 
