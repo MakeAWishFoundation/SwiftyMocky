@@ -8,6 +8,8 @@
 
 import Foundation
 
+// MARK: - Parameter
+
 /// Parameter wraps method attribute, allowing to make a difference between explicit value,
 /// expressed by `.value` case and wildcard value, expressed by `.any` case.
 ///
@@ -45,7 +47,18 @@ public enum Parameter<ValueType> {
     }
 }
 
+// MARK: - Same instance
+
+public extension Parameter where ValueType: AnyObject {
+    /// Represents and matches values on an "same instance" basis.
+    /// - Parameter instance: Instance to match against
+    public static func sameInstance(as instance: ValueType) -> Parameter<ValueType> {
+        return Parameter.matching { $0 === instance }
+    }
+}
+
 // MARK: - Optionality checks
+
 public protocol OptionalType: ExpressibleByNilLiteral {
     var isNotNil: Bool { get }
 }
@@ -66,6 +79,7 @@ public extension Parameter where ValueType: OptionalType {
 }
 
 // MARK: - Order
+
 public extension Parameter where ValueType: GenericAttributeType {
     /// Used for invocations sorting purpose.
     var intValue: Int {

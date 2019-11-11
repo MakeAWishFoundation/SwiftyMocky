@@ -1,5 +1,5 @@
 //
-//  ProtocolAssociatedTypeWithConstraints.swift
+//  SuggestionRepository.swift
 //  SwiftyMocky
 //
 //  Created by Andrzej Michnia on 11/11/2019.
@@ -33,7 +33,7 @@ protocol Repository {
 
 protocol EntityType {}
 
-protocol SuggestionProtocol: EntityType { }
+protocol SuggestionProtocol: EntityType, AutoMockable { }
 
 class Suggestion: SuggestionProtocol {
     init() {}

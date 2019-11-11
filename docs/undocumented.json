@@ -2,28 +2,28 @@
   "warnings": [
     {
       "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Classes/Parameter.swift",
-      "line": 49,
+      "line": 62,
       "symbol": "OptionalType",
       "symbol_kind": "source.lang.swift.decl.protocol",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Classes/Parameter.swift",
-      "line": 50,
+      "line": 63,
       "symbol": "OptionalType.isNotNil",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Classes/Parameter.swift",
-      "line": 54,
+      "line": 67,
       "symbol": "Optional.isNotNil",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Classes/Parameter.swift",
-      "line": 63,
+      "line": 76,
       "symbol": "Parameter.notNil",
       "symbol_kind": "source.lang.swift.decl.var.static",
       "warning": "undocumented"
