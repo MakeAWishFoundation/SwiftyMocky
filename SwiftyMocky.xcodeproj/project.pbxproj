@@ -64,6 +64,9 @@
 		CC07C93622C372D0007F4162 /* MatcherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC07C93522C372D0007F4162 /* MatcherTests.swift */; };
 		CC07C93722C372D0007F4162 /* MatcherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC07C93522C372D0007F4162 /* MatcherTests.swift */; };
 		CC07C93822C372D0007F4162 /* MatcherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC07C93522C372D0007F4162 /* MatcherTests.swift */; };
+		CC0955612379902500891A47 /* ProtocolAssociatedTypeWithConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0955602379902500891A47 /* ProtocolAssociatedTypeWithConstraints.swift */; };
+		CC0955622379902500891A47 /* ProtocolAssociatedTypeWithConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0955602379902500891A47 /* ProtocolAssociatedTypeWithConstraints.swift */; };
+		CC0955632379902500891A47 /* ProtocolAssociatedTypeWithConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0955602379902500891A47 /* ProtocolAssociatedTypeWithConstraints.swift */; };
 		CC3252172003CC22009AD6C2 /* Excluded.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3252162003CC22009AD6C2 /* Excluded.generated.swift */; };
 		CC3252182003CC22009AD6C2 /* Excluded.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3252162003CC22009AD6C2 /* Excluded.generated.swift */; };
 		CC3252192003CC22009AD6C2 /* Excluded.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3252162003CC22009AD6C2 /* Excluded.generated.swift */; };
@@ -282,6 +285,7 @@
 		CC07B601202215D500F51534 /* ProtocolMethodsThatDifferOnlyInReturnType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolMethodsThatDifferOnlyInReturnType.swift; sourceTree = "<group>"; };
 		CC07B60720221B6700F51534 /* ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift; sourceTree = "<group>"; };
 		CC07C93522C372D0007F4162 /* MatcherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatcherTests.swift; sourceTree = "<group>"; };
+		CC0955602379902500891A47 /* ProtocolAssociatedTypeWithConstraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolAssociatedTypeWithConstraints.swift; sourceTree = "<group>"; };
 		CC3252162003CC22009AD6C2 /* Excluded.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Excluded.generated.swift; sourceTree = "<group>"; };
 		CC32521A2004C217009AD6C2 /* GenericProtocolsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericProtocolsTests.swift; sourceTree = "<group>"; };
 		CC32521E20051AC9009AD6C2 /* SelfConstrainedProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfConstrainedProtocol.swift; sourceTree = "<group>"; };
@@ -571,6 +575,14 @@
 			path = "Example 9";
 			sourceTree = "<group>";
 		};
+		CC09555F23798FEA00891A47 /* AssociatedTypes */ = {
+			isa = PBXGroup;
+			children = (
+				CC0955602379902500891A47 /* ProtocolAssociatedTypeWithConstraints.swift */,
+			);
+			path = AssociatedTypes;
+			sourceTree = "<group>";
+		};
 		CC491A1C1FDAB48F001CAB8A /* Example 8 */ = {
 			isa = PBXGroup;
 			children = (
@@ -684,6 +696,7 @@
 				CC07B600202215C200F51534 /* Example 9 */,
 				6C3186EB22DF60EA00746DCC /* Example 10 */,
 				CCE350DE1FCC0A9400A76C4C /* Model */,
+				CC09555F23798FEA00891A47 /* AssociatedTypes */,
 				CCE350D11FCC0A9400A76C4C /* Other */,
 			);
 			path = Shared;
@@ -1439,6 +1452,7 @@
 				CCE350F61FCC0A9400A76C4C /* ProtocolWithInitializers.swift in Sources */,
 				CCE350EA1FCC0A9400A76C4C /* NonSwiftProtocol.swift in Sources */,
 				CCC5CABA215EB24400D29291 /* EdgeCasesProtocols.swift in Sources */,
+				CC0955622379902500891A47 /* ProtocolAssociatedTypeWithConstraints.swift in Sources */,
 				CCE351061FCC0A9400A76C4C /* ProtocolsWithClosures.swift in Sources */,
 				CC07B604202215F600F51534 /* ProtocolMethodsThatDifferOnlyInReturnType.swift in Sources */,
 				CCE350F01FCC0A9400A76C4C /* GenericProtocols.swift in Sources */,
@@ -1506,6 +1520,7 @@
 				CCE350F51FCC0A9400A76C4C /* ProtocolWithInitializers.swift in Sources */,
 				CCE350E91FCC0A9400A76C4C /* NonSwiftProtocol.swift in Sources */,
 				CCC5CAB9215EB24400D29291 /* EdgeCasesProtocols.swift in Sources */,
+				CC0955612379902500891A47 /* ProtocolAssociatedTypeWithConstraints.swift in Sources */,
 				CCE351051FCC0A9400A76C4C /* ProtocolsWithClosures.swift in Sources */,
 				CC07B603202215F600F51534 /* ProtocolMethodsThatDifferOnlyInReturnType.swift in Sources */,
 				CCE350EF1FCC0A9400A76C4C /* GenericProtocols.swift in Sources */,
@@ -1592,6 +1607,7 @@
 				CC5B61DB1FCC18C4007FB209 /* SampleService.swift in Sources */,
 				CC5B61D91FCC18C4007FB209 /* ItemsRepository.swift in Sources */,
 				CCC5CABB215EB24400D29291 /* EdgeCasesProtocols.swift in Sources */,
+				CC0955632379902500891A47 /* ProtocolAssociatedTypeWithConstraints.swift in Sources */,
 				CC5B61D31FCC18C4007FB209 /* ProtocolWithInitializers.swift in Sources */,
 				CC07B605202215F700F51534 /* ProtocolMethodsThatDifferOnlyInReturnType.swift in Sources */,
 				CC5B61CF1FCC18C4007FB209 /* ProtocolWithThrowingMethods.swift in Sources */,
