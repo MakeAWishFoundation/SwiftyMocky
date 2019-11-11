@@ -64,6 +64,17 @@ public protocol Mock: class {
     ///   - file: for XCTest print purposes
     ///   - line: for XCTest print purposes
     func verify(_ method: Verify, count: Count, file: StaticString, line: UInt)
+
+    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs)
+    /// or leave it empty to clear all mock internals.
+    ///
+    /// Example:
+    /// ```swift
+    /// mock.clear(.invocation)         // clear invocations, Verify will have all the count on 0
+    /// mock.clear(.given, .perform)    // clear only mock setup, invocations stays
+    /// mock.clear()                    // clear all
+    /// ```
+    func clear(_ scopes: MockScope...)
 }
 
 /// Every mock, that stubs static methods, should adopt **StaticMock** protocol.
@@ -116,4 +127,15 @@ public protocol StaticMock: class {
     ///   - file: for XCTest print purposes
     ///   - line: for XCTest print purposes
     static func verify(_ method: StaticVerify, count: Count, file: StaticString, line: UInt)
+
+    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs)
+    /// or leave it empty to clear all mock internals.
+    ///
+    /// Example:
+    /// ```swift
+    /// mock.clear(.invocation)         // clear invocations, Verify will have all the count on 0
+    /// mock.clear(.given, .perform)    // clear only mock setup, invocations stays
+    /// mock.clear()                    // clear all
+    /// ```
+    static func clear(_ scopes: MockScope...)
 }
