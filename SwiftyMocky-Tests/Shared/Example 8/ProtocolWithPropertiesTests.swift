@@ -52,7 +52,7 @@ class ProtocolsWithPropertiesTests: XCTestCase {
 
     func test_static_properties_getters() {
         let mock = ProtocolWithPropoertiesMock.self
-        mock.clear()
+        mock.resetMock()
 
         Verify(mock, .never, .name)
         Verify(mock, .never, .name(set: .any))

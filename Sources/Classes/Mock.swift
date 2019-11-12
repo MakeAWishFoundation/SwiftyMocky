@@ -8,6 +8,12 @@
 
 import Foundation
 
+public enum MockScope {
+    case invocation
+    case given
+    case perform
+}
+
 /// Every generated mock implementation adopts **Mock** protocol.
 /// It defines base Mock structure and features.
 public protocol Mock: class {
@@ -58,6 +64,17 @@ public protocol Mock: class {
     ///   - file: for XCTest print purposes
     ///   - line: for XCTest print purposes
     func verify(_ method: Verify, count: Count, file: StaticString, line: UInt)
+
+    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs)
+    /// or leave it empty to clear all mock internals.
+    ///
+    /// Example:
+    /// ```swift
+    /// mock.resetMock(.invocation)         // clear invocations, Verify will have all the count on 0
+    /// mock.resetMock(.given, .perform)    // clear only mock setup, invocations stays
+    /// mock.resetMock()                    // clear all
+    /// ```
+    func resetMock(_ scopes: MockScope...)
 }
 
 /// Every mock, that stubs static methods, should adopt **StaticMock** protocol.
@@ -69,9 +86,6 @@ public protocol StaticMock: class {
     associatedtype StaticVerify
     /// Perform type
     associatedtype StaticPerform
-
-    /// As verifying static members relies on static count of invocations, clear allows to 'reset' static mock internals.
-    static func clear()
 
     /// Registers return value for stubbed method, for specified attributes set.
     ///
@@ -113,4 +127,24 @@ public protocol StaticMock: class {
     ///   - file: for XCTest print purposes
     ///   - line: for XCTest print purposes
     static func verify(_ method: StaticVerify, count: Count, file: StaticString, line: UInt)
+
+    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs)
+    /// or leave it empty to clear all mock internals.
+    ///
+    /// Example:
+    /// ```swift
+    /// mock.resetMock(.invocation)         // clear invocations, Verify will have all the count on 0
+    /// mock.resetMock(.given, .perform)    // clear only mock setup, invocations stays
+    /// mock.resetMock()                    // clear all
+    /// ```
+    static func resetMock(_ scopes: MockScope...)
+}
+
+public extension StaticMock {
+    
+    /// [deprecated] Method `clear` method was renamed to `resetMock`
+    @available(*, deprecated, message: "`clear` was renamed to `resetMock`")
+    static func clear() {
+        resetMock()
+    }
 }

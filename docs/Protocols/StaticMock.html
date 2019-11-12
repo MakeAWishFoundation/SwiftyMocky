@@ -14,7 +14,7 @@
     <a title="StaticMock Protocol Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">SwiftyMocky 3.4.0 Docs</a> (96% documented)</p>
+        <p><a href="../index.html">SwiftyMocky 3.4.0 Docs</a> (95% documented)</p>
         <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -249,6 +249,14 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Enums.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/MockScope.html">MockScope</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
@@ -343,33 +351,6 @@ It defines base StaticMock structure and features.</p>
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">StaticPerform</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:11SwiftyMocky10StaticMockP5clearyyFZ"></a>
-                    <a name="//apple_ref/swift/Method/clear()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:11SwiftyMocky10StaticMockP5clearyyFZ">clear()</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>As verifying static members relies on static count of invocations, clear allows to &lsquo;reset&rsquo; static mock internals.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">static</span> <span class="kd">func</span> <span class="nf">clear</span><span class="p">()</span></code></pre>
 
                         </div>
                       </div>
@@ -573,6 +554,75 @@ Method stub will return most recent one.</li>
                             </tr>
                           </tbody>
                         </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky10StaticMockP05resetD0yyAA0D5ScopeOd_tFZ"></a>
+                    <a name="//apple_ref/swift/Method/resetMock(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky10StaticMockP05resetD0yyAA0D5ScopeOd_tFZ">resetMock(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs)
+or leave it empty to clear all mock internals.</p>
+
+<p>Example:</p>
+<pre class="highlight swift"><code><span class="n">mock</span><span class="o">.</span><span class="nf">resetMock</span><span class="p">(</span><span class="o">.</span><span class="n">invocation</span><span class="p">)</span>         <span class="c1">// clear invocations, Verify will have all the count on 0</span>
+<span class="n">mock</span><span class="o">.</span><span class="nf">resetMock</span><span class="p">(</span><span class="o">.</span><span class="n">given</span><span class="p">,</span> <span class="o">.</span><span class="n">perform</span><span class="p">)</span>    <span class="c1">// clear only mock setup, invocations stays</span>
+<span class="n">mock</span><span class="o">.</span><span class="nf">resetMock</span><span class="p">()</span>                    <span class="c1">// clear all</span>
+</code></pre>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">static</span> <span class="kd">func</span> <span class="nf">resetMock</span><span class="p">(</span><span class="n">_</span> <span class="nv">scopes</span><span class="p">:</span> <span class="kt"><a href="../Enums/MockScope.html">MockScope</a></span><span class="o">...</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky10StaticMockPAAE5clearyyFZ"></a>
+                    <a name="//apple_ref/swift/Method/clear()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky10StaticMockPAAE5clearyyFZ">clear()</a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[deprecated] Method <code>clear</code> method was renamed to <code>resetMock</code></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@available(*, deprecated, message: "`clear` was renamed to `resetMock`")</span>
+<span class="kd">static</span> <span class="kd">func</span> <span class="nf">clear</span><span class="p">()</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>

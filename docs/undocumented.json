@@ -1,6 +1,34 @@
 {
   "warnings": [
     {
+      "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Classes/Mock.swift",
+      "line": 11,
+      "symbol": "MockScope",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Classes/Mock.swift",
+      "line": 12,
+      "symbol": "MockScope.invocation",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Classes/Mock.swift",
+      "line": 13,
+      "symbol": "MockScope.given",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Classes/Mock.swift",
+      "line": 14,
+      "symbol": "MockScope.perform",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
       "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Classes/Parameter.swift",
       "line": 86,
       "symbol": "OptionalType",
