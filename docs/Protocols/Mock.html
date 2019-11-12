@@ -14,7 +14,7 @@
     <a title="Mock Protocol Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">SwiftyMocky 3.4.0 Docs</a> (96% documented)</p>
+        <p><a href="../index.html">SwiftyMocky 3.4.0 Docs</a> (95% documented)</p>
         <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -246,6 +246,14 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../contents.html">Contents</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Enums.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/MockScope.html">MockScope</a>
               </li>
             </ul>
           </li>
@@ -546,6 +554,40 @@ Method stub will return most recent one.</li>
                             </tr>
                           </tbody>
                         </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky4MockP05resetC0yyAA0C5ScopeOd_tF"></a>
+                    <a name="//apple_ref/swift/Method/resetMock(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky4MockP05resetC0yyAA0C5ScopeOd_tF">resetMock(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs)
+or leave it empty to clear all mock internals.</p>
+
+<p>Example:</p>
+<pre class="highlight swift"><code><span class="n">mock</span><span class="o">.</span><span class="nf">resetMock</span><span class="p">(</span><span class="o">.</span><span class="n">invocation</span><span class="p">)</span>         <span class="c1">// clear invocations, Verify will have all the count on 0</span>
+<span class="n">mock</span><span class="o">.</span><span class="nf">resetMock</span><span class="p">(</span><span class="o">.</span><span class="n">given</span><span class="p">,</span> <span class="o">.</span><span class="n">perform</span><span class="p">)</span>    <span class="c1">// clear only mock setup, invocations stays</span>
+<span class="n">mock</span><span class="o">.</span><span class="nf">resetMock</span><span class="p">()</span>                    <span class="c1">// clear all</span>
+</code></pre>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">resetMock</span><span class="p">(</span><span class="n">_</span> <span class="nv">scopes</span><span class="p">:</span> <span class="kt"><a href="../Enums/MockScope.html">MockScope</a></span><span class="o">...</span><span class="p">)</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>

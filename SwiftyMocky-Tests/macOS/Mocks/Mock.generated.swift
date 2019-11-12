@@ -41,8 +41,8 @@ open class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -57,8 +57,8 @@ open class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
     public typealias StaticPropertyStub = StaticGiven
     public typealias StaticMethodStub = StaticGiven
     
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public static func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public static func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -555,8 +555,8 @@ open class AVeryAssociatedProtocolMock<T1,T2>: AVeryAssociatedProtocol, Mock whe
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -721,8 +721,8 @@ open class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -737,8 +737,8 @@ open class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
     public typealias StaticPropertyStub = StaticGiven
     public typealias StaticMethodStub = StaticGiven
     
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public static func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public static func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -1055,8 +1055,8 @@ open class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -1585,8 +1585,8 @@ open class AnotherProtocolMock: AnotherProtocol, Mock {
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -1767,8 +1767,8 @@ open class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -2174,8 +2174,8 @@ open class DateSortableMock: DateSortable, Mock {
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -2321,8 +2321,8 @@ open class EdgeCasesGenericsProtocolMock: EdgeCasesGenericsProtocol, Mock {
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -2503,8 +2503,8 @@ open class EmptyProtocolMock: EmptyProtocol, Mock {
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -2628,8 +2628,8 @@ open class FailsWithAutoClosureOnSwift5Mock: FailsWithAutoClosureOnSwift5, Mock 
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -2794,8 +2794,8 @@ open class FailsWithKeywordArgumentsMock: FailsWithKeywordArguments, Mock {
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -3055,8 +3055,8 @@ public final class FailsWithReturnedTypeBeingGenericOfSelfMock: FailsWithReturne
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -3360,8 +3360,8 @@ open class FailsWithUntaggedMock: FailsWithUntagged, Mock {
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -3510,8 +3510,8 @@ open class GenericProtocolReturningIntMock: GenericProtocolReturningInt, Mock {
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -3676,8 +3676,8 @@ open class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstra
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -3877,8 +3877,8 @@ open class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -4043,8 +4043,8 @@ open class InoutProtocolMock: InoutProtocol, Mock {
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -4225,8 +4225,8 @@ open class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -4387,8 +4387,8 @@ open class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethods
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -4780,8 +4780,8 @@ open class ProtocolMethodsThatDifferOnlyInReturnTypeMock: ProtocolMethodsThatDif
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -4980,8 +4980,8 @@ open class ProtocolWithAssociatedTypeMock<T>: ProtocolWithAssociatedType, Mock w
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -5161,8 +5161,8 @@ open class ProtocolWithAssociatedType2Mock<ValueType>: ProtocolWithAssociatedTyp
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -5308,8 +5308,8 @@ open class ProtocolWithClosuresMock: ProtocolWithClosures, Mock {
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -5487,8 +5487,8 @@ open class ProtocolWithConflictingMembersMock: ProtocolWithConflictingMembers, M
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -5720,8 +5720,8 @@ open class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock 
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -5919,8 +5919,8 @@ open class ProtocolWithDeprecatedMembersMock: ProtocolWithDeprecatedMembers, Moc
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -6085,8 +6085,8 @@ open class ProtocolWithGenericConstraintsMock<ContainedType>: ProtocolWithGeneri
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -6264,8 +6264,8 @@ open class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -6465,8 +6465,8 @@ open class ProtocolWithGenericMethodsNestedMock: ProtocolWithGenericMethodsNeste
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -6631,8 +6631,8 @@ open class ProtocolWithInitializersMock: ProtocolWithInitializers, Mock {
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -6797,8 +6797,8 @@ open class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMoc
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -6813,8 +6813,8 @@ open class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMoc
     public typealias StaticPropertyStub = StaticGiven
     public typealias StaticMethodStub = StaticGiven
     
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public static func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public static func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -7144,8 +7144,8 @@ open class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, Stati
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -7160,8 +7160,8 @@ open class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, Stati
     public typealias StaticPropertyStub = StaticGiven
     public typealias StaticMethodStub = StaticGiven
     
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public static func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public static func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -7420,8 +7420,8 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -7947,8 +7947,8 @@ open class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -8150,8 +8150,8 @@ open class ProtocolWithTuplesMock: ProtocolWithTuples, Mock {
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -8316,8 +8316,8 @@ open class ProtocolWithWhereAfterDefinitionMock<T>: ProtocolWithWhereAfterDefini
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -8497,8 +8497,8 @@ open class SampleServiceTypeMock: SampleServiceType, Mock {
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -8876,8 +8876,8 @@ open class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMoc
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -8892,8 +8892,8 @@ open class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMoc
     public typealias StaticPropertyStub = StaticGiven
     public typealias StaticMethodStub = StaticGiven
     
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public static func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public static func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -9291,8 +9291,8 @@ open class ShouldAllowNoStubDefinedMock: ShouldAllowNoStubDefined, Mock, StaticM
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -9307,8 +9307,8 @@ open class ShouldAllowNoStubDefinedMock: ShouldAllowNoStubDefined, Mock, StaticM
     public typealias StaticPropertyStub = StaticGiven
     public typealias StaticMethodStub = StaticGiven
     
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public static func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public static func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -9795,8 +9795,8 @@ open class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInher
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -10122,8 +10122,8 @@ open class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, M
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -10388,8 +10388,8 @@ open class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBot
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -10568,8 +10568,8 @@ open class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -10813,8 +10813,8 @@ open class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock 
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -11029,6 +11029,14 @@ open class SuggestionProtocolMock: SuggestionProtocol, Mock {
         self.line = line
     }
 
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
 
 
 
@@ -11145,6 +11153,14 @@ open class SuggestionRepositoryMock: SuggestionRepository, Mock {
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
         self.file = file
         self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
 
@@ -11472,6 +11488,14 @@ open class SuggestionRepositoryConstrainedToProtocolMock<Entity>: SuggestionRepo
         self.line = line
     }
 
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
 
 
 
@@ -11797,8 +11821,8 @@ open class UserNetworkTypeMock: UserNetworkType, Mock {
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }
@@ -11997,8 +12021,8 @@ open class UserStorageTypeMock: UserStorageType, Mock {
         self.line = line
     }
 
-    /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
-    public func clear(_ scopes: MockScope...) {
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
         if scopes.contains(.invocation) { invocations = [] }
         if scopes.contains(.given) { methodReturnValues = [] }

@@ -70,11 +70,11 @@ public protocol Mock: class {
     ///
     /// Example:
     /// ```swift
-    /// mock.clear(.invocation)         // clear invocations, Verify will have all the count on 0
-    /// mock.clear(.given, .perform)    // clear only mock setup, invocations stays
-    /// mock.clear()                    // clear all
+    /// mock.resetMock(.invocation)         // clear invocations, Verify will have all the count on 0
+    /// mock.resetMock(.given, .perform)    // clear only mock setup, invocations stays
+    /// mock.resetMock()                    // clear all
     /// ```
-    func clear(_ scopes: MockScope...)
+    func resetMock(_ scopes: MockScope...)
 }
 
 /// Every mock, that stubs static methods, should adopt **StaticMock** protocol.
@@ -133,9 +133,18 @@ public protocol StaticMock: class {
     ///
     /// Example:
     /// ```swift
-    /// mock.clear(.invocation)         // clear invocations, Verify will have all the count on 0
-    /// mock.clear(.given, .perform)    // clear only mock setup, invocations stays
-    /// mock.clear()                    // clear all
+    /// mock.resetMock(.invocation)         // clear invocations, Verify will have all the count on 0
+    /// mock.resetMock(.given, .perform)    // clear only mock setup, invocations stays
+    /// mock.resetMock()                    // clear all
     /// ```
-    static func clear(_ scopes: MockScope...)
+    static func resetMock(_ scopes: MockScope...)
+}
+
+public extension StaticMock {
+    
+    /// [deprecated] Method `clear` method was renamed to `resetMock`
+    @available(*, deprecated, message: "`clear` was renamed to `resetMock`")
+    static func clear() {
+        resetMock()
+    }
 }

@@ -37,7 +37,7 @@ class MockClearTests: XCTestCase {
         Verify(mock, 1, .surname(for: "Joanna"))
         XCTAssertEqual(performCount, 3)
 
-        mock.clear(.invocation)
+        mock.resetMock(.invocation)
 
         // Check invocations cleared
         Verify(mock, .never, .surname(for: .any))
@@ -73,7 +73,7 @@ class MockClearTests: XCTestCase {
         Verify(mock, 1, .surname(for: "Joanna"))
         XCTAssertEqual(performCount, 3)
 
-        mock.clear(.given)
+        mock.resetMock(.given)
 
         // Check invocations not cleared
         Verify(mock, 3, .surname(for: .any))
@@ -108,7 +108,7 @@ class MockClearTests: XCTestCase {
         Verify(mock, 1, .surname(for: "Joanna"))
         XCTAssertEqual(performCount, 3)
 
-        mock.clear(.perform)
+        mock.resetMock(.perform)
 
         // Check invocations not cleared
         Verify(mock, 3, .surname(for: .any))
@@ -144,7 +144,7 @@ class MockClearTests: XCTestCase {
         Verify(mock, 1, .surname(for: "Joanna"))
         XCTAssertEqual(performCount, 3)
 
-        mock.clear()
+        mock.resetMock()
 
         // Check invocations cleared
         Verify(mock, .never, .surname(for: .any))
