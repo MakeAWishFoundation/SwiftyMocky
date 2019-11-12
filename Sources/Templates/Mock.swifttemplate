@@ -220,10 +220,20 @@ class Helpers {
             return nil
         }
     }
+    /// Extract all typealiases from "annotations"
+    static func extractTypealiases(from annotated: SourceryRuntime.Annotated) -> [String] {
+        if let types = annotated.annotations["typealias"] as? [String] {
+            return types.reversed()
+        } else if let type = annotated.annotations["typealias"] as? String {
+            return [type]
+        } else {
+            return []
+        }
+    }
     static func extractGenericsList(_ associatedTypes: [String]?) -> [String] {
         return associatedTypes?.flatMap {
             split($0, byFirstOccurenceOf: " where ").0.replacingOccurrences(of: " ", with: "").characters.split(separator: ":").map(String.init).first
-            }.map { "\($0)" } ?? []
+        }.map { "\($0)" } ?? []
     }
     static func extractGenericTypesModifier(_ associatedTypes: [String]?) -> String {
         let all = extractGenericsList(associatedTypes)
@@ -1424,6 +1434,7 @@ _%>
     guard let aProtocol = autoMockable ? type : protocolToDecorate else { continue }
     mockedCount += 1
     let associatedTypes: [String]? = Helpers.extractAssociatedTypes(from: aProtocol)
+    let typeAliases: [String] = Helpers.extractTypealiases(from: aProtocol)
     let genericTypesModifier: String = Helpers.extractGenericTypesModifier(associatedTypes)
     let genericTypesConstraints: String = Helpers.extractGenericTypesConstraints(associatedTypes)
     let allSubscripts = aProtocol.allSubscripts
@@ -1469,6 +1480,9 @@ _%>
     public typealias PropertyStub = Given
     public typealias MethodStub = Given
     public typealias SubscriptStub = Given
+    <%_ for typeAlias in typeAliases { -%>
+    public typealias <%= typeAlias %>
+    <%_ } %> <%_ -%>
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {

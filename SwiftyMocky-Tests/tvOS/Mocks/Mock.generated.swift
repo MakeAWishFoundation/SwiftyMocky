@@ -10630,6 +10630,774 @@ open class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock 
     }
 }
 
+// MARK: - SuggestionProtocol
+open class SuggestionProtocolMock: SuggestionProtocol, Mock {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        SwiftyMockyTestObserver.setup()
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    public typealias PropertyStub = Given
+    public typealias MethodStub = Given
+    public typealias SubscriptStub = Given
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+
+
+
+
+
+
+    fileprivate struct MethodType {
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool { return true }
+        func intValue() -> Int { return 0 }
+    }
+
+    open class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [StubProduct]) {
+            self.method = method
+            super.init(products)
+        }
+
+
+    }
+
+    public struct Verify {
+        fileprivate var method: MethodType
+
+    }
+
+    public struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+    private func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        #endif
+    }
+}
+
+// MARK: - SuggestionRepository
+open class SuggestionRepositoryMock: SuggestionRepository, Mock {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        SwiftyMockyTestObserver.setup()
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    public typealias PropertyStub = Given
+    public typealias MethodStub = Given
+    public typealias SubscriptStub = Given
+    public typealias Entity = Suggestion
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+
+
+
+
+
+    open func save(entity: Entity) -> Bool {
+        addInvocation(.m_save__entity_entity(Parameter<Entity>.value(`entity`)))
+		let perform = methodPerformValue(.m_save__entity_entity(Parameter<Entity>.value(`entity`))) as? (Entity) -> Void
+		perform?(`entity`)
+		var __value: Bool
+		do {
+		    __value = try methodReturnValue(.m_save__entity_entity(Parameter<Entity>.value(`entity`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for save(entity: Entity). Use given")
+			Failure("Stub return value not specified for save(entity: Entity). Use given")
+		}
+		return __value
+    }
+
+    open func save(entities: [Entity]) -> Bool {
+        addInvocation(.m_save__entities_entities(Parameter<[Entity]>.value(`entities`)))
+		let perform = methodPerformValue(.m_save__entities_entities(Parameter<[Entity]>.value(`entities`))) as? ([Entity]) -> Void
+		perform?(`entities`)
+		var __value: Bool
+		do {
+		    __value = try methodReturnValue(.m_save__entities_entities(Parameter<[Entity]>.value(`entities`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for save(entities: [Entity]). Use given")
+			Failure("Stub return value not specified for save(entities: [Entity]). Use given")
+		}
+		return __value
+    }
+
+    open func find(    where predicate: NSPredicate,    sortedBy sortDescriptors: [NSSortDescriptor]) -> [Entity] {
+        addInvocation(.m_find__where_predicatesortedBy_sortDescriptors(Parameter<NSPredicate>.value(`predicate`), Parameter<[NSSortDescriptor]>.value(`sortDescriptors`)))
+		let perform = methodPerformValue(.m_find__where_predicatesortedBy_sortDescriptors(Parameter<NSPredicate>.value(`predicate`), Parameter<[NSSortDescriptor]>.value(`sortDescriptors`))) as? (NSPredicate, [NSSortDescriptor]) -> Void
+		perform?(`predicate`, `sortDescriptors`)
+		var __value: [Entity]
+		do {
+		    __value = try methodReturnValue(.m_find__where_predicatesortedBy_sortDescriptors(Parameter<NSPredicate>.value(`predicate`), Parameter<[NSSortDescriptor]>.value(`sortDescriptors`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for find(    where predicate: NSPredicate,    sortedBy sortDescriptors: [NSSortDescriptor]). Use given")
+			Failure("Stub return value not specified for find(    where predicate: NSPredicate,    sortedBy sortDescriptors: [NSSortDescriptor]). Use given")
+		}
+		return __value
+    }
+
+    open func findOne(where predicate: NSPredicate) -> Entity {
+        addInvocation(.m_findOne__where_predicate(Parameter<NSPredicate>.value(`predicate`)))
+		let perform = methodPerformValue(.m_findOne__where_predicate(Parameter<NSPredicate>.value(`predicate`))) as? (NSPredicate) -> Void
+		perform?(`predicate`)
+		var __value: Entity
+		do {
+		    __value = try methodReturnValue(.m_findOne__where_predicate(Parameter<NSPredicate>.value(`predicate`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for findOne(where predicate: NSPredicate). Use given")
+			Failure("Stub return value not specified for findOne(where predicate: NSPredicate). Use given")
+		}
+		return __value
+    }
+
+    open func delete(entity: Entity) -> Bool {
+        addInvocation(.m_delete__entity_entity(Parameter<Entity>.value(`entity`)))
+		let perform = methodPerformValue(.m_delete__entity_entity(Parameter<Entity>.value(`entity`))) as? (Entity) -> Void
+		perform?(`entity`)
+		var __value: Bool
+		do {
+		    __value = try methodReturnValue(.m_delete__entity_entity(Parameter<Entity>.value(`entity`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for delete(entity: Entity). Use given")
+			Failure("Stub return value not specified for delete(entity: Entity). Use given")
+		}
+		return __value
+    }
+
+    open func delete(entities: [Entity]) -> Bool {
+        addInvocation(.m_delete__entities_entities(Parameter<[Entity]>.value(`entities`)))
+		let perform = methodPerformValue(.m_delete__entities_entities(Parameter<[Entity]>.value(`entities`))) as? ([Entity]) -> Void
+		perform?(`entities`)
+		var __value: Bool
+		do {
+		    __value = try methodReturnValue(.m_delete__entities_entities(Parameter<[Entity]>.value(`entities`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for delete(entities: [Entity]). Use given")
+			Failure("Stub return value not specified for delete(entities: [Entity]). Use given")
+		}
+		return __value
+    }
+
+
+    fileprivate enum MethodType {
+        case m_save__entity_entity(Parameter<Entity>)
+        case m_save__entities_entities(Parameter<[Entity]>)
+        case m_find__where_predicatesortedBy_sortDescriptors(Parameter<NSPredicate>, Parameter<[NSSortDescriptor]>)
+        case m_findOne__where_predicate(Parameter<NSPredicate>)
+        case m_delete__entity_entity(Parameter<Entity>)
+        case m_delete__entities_entities(Parameter<[Entity]>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+            case (.m_save__entity_entity(let lhsEntity), .m_save__entity_entity(let rhsEntity)):
+                guard Parameter.compare(lhs: lhsEntity, rhs: rhsEntity, with: matcher) else { return false } 
+                return true 
+            case (.m_save__entities_entities(let lhsEntities), .m_save__entities_entities(let rhsEntities)):
+                guard Parameter.compare(lhs: lhsEntities, rhs: rhsEntities, with: matcher) else { return false } 
+                return true 
+            case (.m_find__where_predicatesortedBy_sortDescriptors(let lhsPredicate, let lhsSortdescriptors), .m_find__where_predicatesortedBy_sortDescriptors(let rhsPredicate, let rhsSortdescriptors)):
+                guard Parameter.compare(lhs: lhsPredicate, rhs: rhsPredicate, with: matcher) else { return false } 
+                guard Parameter.compare(lhs: lhsSortdescriptors, rhs: rhsSortdescriptors, with: matcher) else { return false } 
+                return true 
+            case (.m_findOne__where_predicate(let lhsPredicate), .m_findOne__where_predicate(let rhsPredicate)):
+                guard Parameter.compare(lhs: lhsPredicate, rhs: rhsPredicate, with: matcher) else { return false } 
+                return true 
+            case (.m_delete__entity_entity(let lhsEntity), .m_delete__entity_entity(let rhsEntity)):
+                guard Parameter.compare(lhs: lhsEntity, rhs: rhsEntity, with: matcher) else { return false } 
+                return true 
+            case (.m_delete__entities_entities(let lhsEntities), .m_delete__entities_entities(let rhsEntities)):
+                guard Parameter.compare(lhs: lhsEntities, rhs: rhsEntities, with: matcher) else { return false } 
+                return true 
+            default: return false
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+            case let .m_save__entity_entity(p0): return p0.intValue
+            case let .m_save__entities_entities(p0): return p0.intValue
+            case let .m_find__where_predicatesortedBy_sortDescriptors(p0, p1): return p0.intValue + p1.intValue
+            case let .m_findOne__where_predicate(p0): return p0.intValue
+            case let .m_delete__entity_entity(p0): return p0.intValue
+            case let .m_delete__entities_entities(p0): return p0.intValue
+            }
+        }
+    }
+
+    open class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [StubProduct]) {
+            self.method = method
+            super.init(products)
+        }
+
+
+        public static func save(entity: Parameter<Entity>, willReturn: Bool...) -> MethodStub {
+            return Given(method: .m_save__entity_entity(`entity`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func save(entities: Parameter<[Entity]>, willReturn: Bool...) -> MethodStub {
+            return Given(method: .m_save__entities_entities(`entities`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func find(where predicate: Parameter<NSPredicate>, sortedBy sortDescriptors: Parameter<[NSSortDescriptor]>, willReturn: [Entity]...) -> MethodStub {
+            return Given(method: .m_find__where_predicatesortedBy_sortDescriptors(`predicate`, `sortDescriptors`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func findOne(where predicate: Parameter<NSPredicate>, willReturn: Entity...) -> MethodStub {
+            return Given(method: .m_findOne__where_predicate(`predicate`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func delete(entity: Parameter<Entity>, willReturn: Bool...) -> MethodStub {
+            return Given(method: .m_delete__entity_entity(`entity`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func delete(entities: Parameter<[Entity]>, willReturn: Bool...) -> MethodStub {
+            return Given(method: .m_delete__entities_entities(`entities`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func save(entity: Parameter<Entity>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
+            let willReturn: [Bool] = []
+			let given: Given = { return Given(method: .m_save__entity_entity(`entity`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (Bool).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func save(entities: Parameter<[Entity]>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
+            let willReturn: [Bool] = []
+			let given: Given = { return Given(method: .m_save__entities_entities(`entities`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (Bool).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func find(where predicate: Parameter<NSPredicate>, sortedBy sortDescriptors: Parameter<[NSSortDescriptor]>, willProduce: (Stubber<[Entity]>) -> Void) -> MethodStub {
+            let willReturn: [[Entity]] = []
+			let given: Given = { return Given(method: .m_find__where_predicatesortedBy_sortDescriptors(`predicate`, `sortDescriptors`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: ([Entity]).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func findOne(where predicate: Parameter<NSPredicate>, willProduce: (Stubber<Entity>) -> Void) -> MethodStub {
+            let willReturn: [Entity] = []
+			let given: Given = { return Given(method: .m_findOne__where_predicate(`predicate`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (Entity).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func delete(entity: Parameter<Entity>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
+            let willReturn: [Bool] = []
+			let given: Given = { return Given(method: .m_delete__entity_entity(`entity`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (Bool).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func delete(entities: Parameter<[Entity]>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
+            let willReturn: [Bool] = []
+			let given: Given = { return Given(method: .m_delete__entities_entities(`entities`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (Bool).self)
+			willProduce(stubber)
+			return given
+        }
+    }
+
+    public struct Verify {
+        fileprivate var method: MethodType
+
+        public static func save(entity: Parameter<Entity>) -> Verify { return Verify(method: .m_save__entity_entity(`entity`))}
+        public static func save(entities: Parameter<[Entity]>) -> Verify { return Verify(method: .m_save__entities_entities(`entities`))}
+        public static func find(where predicate: Parameter<NSPredicate>, sortedBy sortDescriptors: Parameter<[NSSortDescriptor]>) -> Verify { return Verify(method: .m_find__where_predicatesortedBy_sortDescriptors(`predicate`, `sortDescriptors`))}
+        public static func findOne(where predicate: Parameter<NSPredicate>) -> Verify { return Verify(method: .m_findOne__where_predicate(`predicate`))}
+        public static func delete(entity: Parameter<Entity>) -> Verify { return Verify(method: .m_delete__entity_entity(`entity`))}
+        public static func delete(entities: Parameter<[Entity]>) -> Verify { return Verify(method: .m_delete__entities_entities(`entities`))}
+    }
+
+    public struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        public static func save(entity: Parameter<Entity>, perform: @escaping (Entity) -> Void) -> Perform {
+            return Perform(method: .m_save__entity_entity(`entity`), performs: perform)
+        }
+        public static func save(entities: Parameter<[Entity]>, perform: @escaping ([Entity]) -> Void) -> Perform {
+            return Perform(method: .m_save__entities_entities(`entities`), performs: perform)
+        }
+        public static func find(where predicate: Parameter<NSPredicate>, sortedBy sortDescriptors: Parameter<[NSSortDescriptor]>, perform: @escaping (NSPredicate, [NSSortDescriptor]) -> Void) -> Perform {
+            return Perform(method: .m_find__where_predicatesortedBy_sortDescriptors(`predicate`, `sortDescriptors`), performs: perform)
+        }
+        public static func findOne(where predicate: Parameter<NSPredicate>, perform: @escaping (NSPredicate) -> Void) -> Perform {
+            return Perform(method: .m_findOne__where_predicate(`predicate`), performs: perform)
+        }
+        public static func delete(entity: Parameter<Entity>, perform: @escaping (Entity) -> Void) -> Perform {
+            return Perform(method: .m_delete__entity_entity(`entity`), performs: perform)
+        }
+        public static func delete(entities: Parameter<[Entity]>, perform: @escaping ([Entity]) -> Void) -> Perform {
+            return Perform(method: .m_delete__entities_entities(`entities`), performs: perform)
+        }
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+    private func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        #endif
+    }
+}
+
+// MARK: - SuggestionRepositoryConstrainedToProtocol
+open class SuggestionRepositoryConstrainedToProtocolMock<Entity>: SuggestionRepositoryConstrainedToProtocol, Mock where Entity: SuggestionProtocol {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        SwiftyMockyTestObserver.setup()
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    public typealias PropertyStub = Given
+    public typealias MethodStub = Given
+    public typealias SubscriptStub = Given
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+
+
+
+
+
+    open func save(entity: Entity) -> Bool {
+        addInvocation(.m_save__entity_entity(Parameter<Entity>.value(`entity`)))
+		let perform = methodPerformValue(.m_save__entity_entity(Parameter<Entity>.value(`entity`))) as? (Entity) -> Void
+		perform?(`entity`)
+		var __value: Bool
+		do {
+		    __value = try methodReturnValue(.m_save__entity_entity(Parameter<Entity>.value(`entity`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for save(entity: Entity). Use given")
+			Failure("Stub return value not specified for save(entity: Entity). Use given")
+		}
+		return __value
+    }
+
+    open func save(entities: [Entity]) -> Bool {
+        addInvocation(.m_save__entities_entities(Parameter<[Entity]>.value(`entities`)))
+		let perform = methodPerformValue(.m_save__entities_entities(Parameter<[Entity]>.value(`entities`))) as? ([Entity]) -> Void
+		perform?(`entities`)
+		var __value: Bool
+		do {
+		    __value = try methodReturnValue(.m_save__entities_entities(Parameter<[Entity]>.value(`entities`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for save(entities: [Entity]). Use given")
+			Failure("Stub return value not specified for save(entities: [Entity]). Use given")
+		}
+		return __value
+    }
+
+    open func find(    where predicate: NSPredicate,    sortedBy sortDescriptors: [NSSortDescriptor]) -> [Entity] {
+        addInvocation(.m_find__where_predicatesortedBy_sortDescriptors(Parameter<NSPredicate>.value(`predicate`), Parameter<[NSSortDescriptor]>.value(`sortDescriptors`)))
+		let perform = methodPerformValue(.m_find__where_predicatesortedBy_sortDescriptors(Parameter<NSPredicate>.value(`predicate`), Parameter<[NSSortDescriptor]>.value(`sortDescriptors`))) as? (NSPredicate, [NSSortDescriptor]) -> Void
+		perform?(`predicate`, `sortDescriptors`)
+		var __value: [Entity]
+		do {
+		    __value = try methodReturnValue(.m_find__where_predicatesortedBy_sortDescriptors(Parameter<NSPredicate>.value(`predicate`), Parameter<[NSSortDescriptor]>.value(`sortDescriptors`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for find(    where predicate: NSPredicate,    sortedBy sortDescriptors: [NSSortDescriptor]). Use given")
+			Failure("Stub return value not specified for find(    where predicate: NSPredicate,    sortedBy sortDescriptors: [NSSortDescriptor]). Use given")
+		}
+		return __value
+    }
+
+    open func findOne(where predicate: NSPredicate) -> Entity {
+        addInvocation(.m_findOne__where_predicate(Parameter<NSPredicate>.value(`predicate`)))
+		let perform = methodPerformValue(.m_findOne__where_predicate(Parameter<NSPredicate>.value(`predicate`))) as? (NSPredicate) -> Void
+		perform?(`predicate`)
+		var __value: Entity
+		do {
+		    __value = try methodReturnValue(.m_findOne__where_predicate(Parameter<NSPredicate>.value(`predicate`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for findOne(where predicate: NSPredicate). Use given")
+			Failure("Stub return value not specified for findOne(where predicate: NSPredicate). Use given")
+		}
+		return __value
+    }
+
+    open func delete(entity: Entity) -> Bool {
+        addInvocation(.m_delete__entity_entity(Parameter<Entity>.value(`entity`)))
+		let perform = methodPerformValue(.m_delete__entity_entity(Parameter<Entity>.value(`entity`))) as? (Entity) -> Void
+		perform?(`entity`)
+		var __value: Bool
+		do {
+		    __value = try methodReturnValue(.m_delete__entity_entity(Parameter<Entity>.value(`entity`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for delete(entity: Entity). Use given")
+			Failure("Stub return value not specified for delete(entity: Entity). Use given")
+		}
+		return __value
+    }
+
+    open func delete(entities: [Entity]) -> Bool {
+        addInvocation(.m_delete__entities_entities(Parameter<[Entity]>.value(`entities`)))
+		let perform = methodPerformValue(.m_delete__entities_entities(Parameter<[Entity]>.value(`entities`))) as? ([Entity]) -> Void
+		perform?(`entities`)
+		var __value: Bool
+		do {
+		    __value = try methodReturnValue(.m_delete__entities_entities(Parameter<[Entity]>.value(`entities`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for delete(entities: [Entity]). Use given")
+			Failure("Stub return value not specified for delete(entities: [Entity]). Use given")
+		}
+		return __value
+    }
+
+
+    fileprivate enum MethodType {
+        case m_save__entity_entity(Parameter<Entity>)
+        case m_save__entities_entities(Parameter<[Entity]>)
+        case m_find__where_predicatesortedBy_sortDescriptors(Parameter<NSPredicate>, Parameter<[NSSortDescriptor]>)
+        case m_findOne__where_predicate(Parameter<NSPredicate>)
+        case m_delete__entity_entity(Parameter<Entity>)
+        case m_delete__entities_entities(Parameter<[Entity]>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+            case (.m_save__entity_entity(let lhsEntity), .m_save__entity_entity(let rhsEntity)):
+                guard Parameter.compare(lhs: lhsEntity, rhs: rhsEntity, with: matcher) else { return false } 
+                return true 
+            case (.m_save__entities_entities(let lhsEntities), .m_save__entities_entities(let rhsEntities)):
+                guard Parameter.compare(lhs: lhsEntities, rhs: rhsEntities, with: matcher) else { return false } 
+                return true 
+            case (.m_find__where_predicatesortedBy_sortDescriptors(let lhsPredicate, let lhsSortdescriptors), .m_find__where_predicatesortedBy_sortDescriptors(let rhsPredicate, let rhsSortdescriptors)):
+                guard Parameter.compare(lhs: lhsPredicate, rhs: rhsPredicate, with: matcher) else { return false } 
+                guard Parameter.compare(lhs: lhsSortdescriptors, rhs: rhsSortdescriptors, with: matcher) else { return false } 
+                return true 
+            case (.m_findOne__where_predicate(let lhsPredicate), .m_findOne__where_predicate(let rhsPredicate)):
+                guard Parameter.compare(lhs: lhsPredicate, rhs: rhsPredicate, with: matcher) else { return false } 
+                return true 
+            case (.m_delete__entity_entity(let lhsEntity), .m_delete__entity_entity(let rhsEntity)):
+                guard Parameter.compare(lhs: lhsEntity, rhs: rhsEntity, with: matcher) else { return false } 
+                return true 
+            case (.m_delete__entities_entities(let lhsEntities), .m_delete__entities_entities(let rhsEntities)):
+                guard Parameter.compare(lhs: lhsEntities, rhs: rhsEntities, with: matcher) else { return false } 
+                return true 
+            default: return false
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+            case let .m_save__entity_entity(p0): return p0.intValue
+            case let .m_save__entities_entities(p0): return p0.intValue
+            case let .m_find__where_predicatesortedBy_sortDescriptors(p0, p1): return p0.intValue + p1.intValue
+            case let .m_findOne__where_predicate(p0): return p0.intValue
+            case let .m_delete__entity_entity(p0): return p0.intValue
+            case let .m_delete__entities_entities(p0): return p0.intValue
+            }
+        }
+    }
+
+    open class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [StubProduct]) {
+            self.method = method
+            super.init(products)
+        }
+
+
+        public static func save(entity: Parameter<Entity>, willReturn: Bool...) -> MethodStub {
+            return Given(method: .m_save__entity_entity(`entity`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func save(entities: Parameter<[Entity]>, willReturn: Bool...) -> MethodStub {
+            return Given(method: .m_save__entities_entities(`entities`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func find(where predicate: Parameter<NSPredicate>, sortedBy sortDescriptors: Parameter<[NSSortDescriptor]>, willReturn: [Entity]...) -> MethodStub {
+            return Given(method: .m_find__where_predicatesortedBy_sortDescriptors(`predicate`, `sortDescriptors`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func findOne(where predicate: Parameter<NSPredicate>, willReturn: Entity...) -> MethodStub {
+            return Given(method: .m_findOne__where_predicate(`predicate`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func delete(entity: Parameter<Entity>, willReturn: Bool...) -> MethodStub {
+            return Given(method: .m_delete__entity_entity(`entity`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func delete(entities: Parameter<[Entity]>, willReturn: Bool...) -> MethodStub {
+            return Given(method: .m_delete__entities_entities(`entities`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func save(entity: Parameter<Entity>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
+            let willReturn: [Bool] = []
+			let given: Given = { return Given(method: .m_save__entity_entity(`entity`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (Bool).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func save(entities: Parameter<[Entity]>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
+            let willReturn: [Bool] = []
+			let given: Given = { return Given(method: .m_save__entities_entities(`entities`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (Bool).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func find(where predicate: Parameter<NSPredicate>, sortedBy sortDescriptors: Parameter<[NSSortDescriptor]>, willProduce: (Stubber<[Entity]>) -> Void) -> MethodStub {
+            let willReturn: [[Entity]] = []
+			let given: Given = { return Given(method: .m_find__where_predicatesortedBy_sortDescriptors(`predicate`, `sortDescriptors`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: ([Entity]).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func findOne(where predicate: Parameter<NSPredicate>, willProduce: (Stubber<Entity>) -> Void) -> MethodStub {
+            let willReturn: [Entity] = []
+			let given: Given = { return Given(method: .m_findOne__where_predicate(`predicate`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (Entity).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func delete(entity: Parameter<Entity>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
+            let willReturn: [Bool] = []
+			let given: Given = { return Given(method: .m_delete__entity_entity(`entity`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (Bool).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func delete(entities: Parameter<[Entity]>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
+            let willReturn: [Bool] = []
+			let given: Given = { return Given(method: .m_delete__entities_entities(`entities`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (Bool).self)
+			willProduce(stubber)
+			return given
+        }
+    }
+
+    public struct Verify {
+        fileprivate var method: MethodType
+
+        public static func save(entity: Parameter<Entity>) -> Verify { return Verify(method: .m_save__entity_entity(`entity`))}
+        public static func save(entities: Parameter<[Entity]>) -> Verify { return Verify(method: .m_save__entities_entities(`entities`))}
+        public static func find(where predicate: Parameter<NSPredicate>, sortedBy sortDescriptors: Parameter<[NSSortDescriptor]>) -> Verify { return Verify(method: .m_find__where_predicatesortedBy_sortDescriptors(`predicate`, `sortDescriptors`))}
+        public static func findOne(where predicate: Parameter<NSPredicate>) -> Verify { return Verify(method: .m_findOne__where_predicate(`predicate`))}
+        public static func delete(entity: Parameter<Entity>) -> Verify { return Verify(method: .m_delete__entity_entity(`entity`))}
+        public static func delete(entities: Parameter<[Entity]>) -> Verify { return Verify(method: .m_delete__entities_entities(`entities`))}
+    }
+
+    public struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        public static func save(entity: Parameter<Entity>, perform: @escaping (Entity) -> Void) -> Perform {
+            return Perform(method: .m_save__entity_entity(`entity`), performs: perform)
+        }
+        public static func save(entities: Parameter<[Entity]>, perform: @escaping ([Entity]) -> Void) -> Perform {
+            return Perform(method: .m_save__entities_entities(`entities`), performs: perform)
+        }
+        public static func find(where predicate: Parameter<NSPredicate>, sortedBy sortDescriptors: Parameter<[NSSortDescriptor]>, perform: @escaping (NSPredicate, [NSSortDescriptor]) -> Void) -> Perform {
+            return Perform(method: .m_find__where_predicatesortedBy_sortDescriptors(`predicate`, `sortDescriptors`), performs: perform)
+        }
+        public static func findOne(where predicate: Parameter<NSPredicate>, perform: @escaping (NSPredicate) -> Void) -> Perform {
+            return Perform(method: .m_findOne__where_predicate(`predicate`), performs: perform)
+        }
+        public static func delete(entity: Parameter<Entity>, perform: @escaping (Entity) -> Void) -> Perform {
+            return Perform(method: .m_delete__entity_entity(`entity`), performs: perform)
+        }
+        public static func delete(entities: Parameter<[Entity]>, perform: @escaping ([Entity]) -> Void) -> Perform {
+            return Perform(method: .m_delete__entities_entities(`entities`), performs: perform)
+        }
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+    private func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        #endif
+    }
+}
+
 // MARK: - UserNetworkType
 open class UserNetworkTypeMock: UserNetworkType, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
