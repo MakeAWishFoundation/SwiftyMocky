@@ -12,6 +12,7 @@ public struct MockConfiguration {
     public var testable: [String]
     public var `import`: [String]
     public var prototype: Bool
+    public var sourcery: [String]
 }
 
 // MARK: - Codable
@@ -24,6 +25,7 @@ extension MockConfiguration: Codable {
         case testable
         case `import` = "import"
         case prototype
+        case sourcery
     }
 
     public init(from decoder: Decoder) throws {
@@ -35,6 +37,7 @@ extension MockConfiguration: Codable {
         testable = (try? container.decode([String].self, forKey: .testable)) ?? []
         `import` = (try? container.decode([String].self, forKey: .import)) ?? []
         prototype = (try? container.decode(Bool.self, forKey: .prototype)) ?? false
+        sourcery = (try? container.decode([String].self, forKey: .sourcery)) ?? []
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -48,6 +51,7 @@ extension MockConfiguration: Codable {
         testable.isEmpty ? () : try container.encode(testable, forKey: .testable)
         `import`.isEmpty ? () : try container.encode(`import`, forKey: .import)
         prototype ? try container.encode(true, forKey: .targets) : ()
+        sourcery.isEmpty ? () : try container.encode(sourcery, forKey: .sourcery)
     }
 }
 
@@ -62,6 +66,7 @@ public extension MockConfiguration {
         self.import = (config.args?.import ?? config.args?.swiftyMocky?.import ?? []).sorted()
         self.targets = [] // TODO: Resolve targets
         self.prototype = false
+        self.sourcery = []
     }
 
     func configuration(template: Path) -> LegacyConfiguration {
