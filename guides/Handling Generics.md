@@ -64,3 +64,32 @@ class AVeryAssociatedProtocolMock<TypeT1,TypeT2>: AVeryAssociatedProtocol, Mock 
 
 // ...
 ```
+
+## Generic Protocols constrained to type
+
+In some scenarios, you might end up defining protocol "inheriting" from generic protocol and constraining it to some specific type. You can use **typealias** annotations to resolve this scenario. Consider following example:
+
+```swift
+protocol SomeObjectRepository: Repository where Entity == SomeObject { }
+
+protocol Repository {
+    associatedType Entity: EntityType
+
+    func store(_ entity: Entity)
+    func getEntity(id: String) -> Entity
+}
+
+protocol EntityType {
+    var id: String { get }
+}
+```
+
+In order to generate valid mock, you need to define what `Entity` is for `SomeObjectRepository`. You can do it by "annotating" typealias:
+
+```swift
+//sourcery: AutoMockable
+//sourcery: typealias = "Entity = SomeObject"
+protocol SomeObjectRepository: Repository where Entity == SomeObject { }
+```
+
+That would result in generating valid mock.

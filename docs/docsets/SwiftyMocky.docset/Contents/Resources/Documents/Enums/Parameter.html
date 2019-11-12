@@ -14,7 +14,7 @@
     <a title="Parameter Enumeration Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">SwiftyMocky 3.4.0 Docs</a> (94% documented)</p>
+        <p><a href="../index.html">SwiftyMocky 3.4.0 Docs</a> (96% documented)</p>
         <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -246,14 +246,6 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../contents.html">Contents</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="../Other%20Enums.html">Other Enumerations</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="../Enums/MockScope.html">MockScope</a>
               </li>
             </ul>
           </li>
@@ -995,6 +987,166 @@ wrapped <em>ValueType</em> type, to resolve ambiguity between methods with same 
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">dictionaryLiteral</span> <span class="nv">elements</span><span class="p">:</span> <span class="p">(</span><span class="kt"><a href="../Enums/Parameter.html#/s:s30ExpressibleByDictionaryLiteralP3KeyQa">Key</a></span><span class="p">,</span> <span class="kt"><a href="../Enums/Parameter.html#/s:s30ExpressibleByDictionaryLiteralP5ValueQa">Value</a></span><span class="p">)</span><span class="o">...</span><span class="p">)</span></code></pre>
 
                         </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Parameter%20convenience%20initializers"></a>
+                <a name="//apple_ref/swift/Section/Parameter convenience initializers" class="dashAnchor"></a>
+                <a href="#/Parameter%20convenience%20initializers">
+                  <h3 class="section-name">Parameter convenience initializers</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky9ParameterOAARlzClE12sameInstance2asACyxGqd___tRld__ClFZ"></a>
+                    <a name="//apple_ref/swift/Method/sameInstance(as:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky9ParameterOAARlzClE12sameInstance2asACyxGqd___tRld__ClFZ">sameInstance(as:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Represents and matches values on an <q>same instance</q> basis.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="n">sameInstance</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="k">as</span> <span class="nv">instance</span><span class="p">:</span> <span class="kt">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt">ValueType</span><span class="o">&gt;</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>instance</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Instance to match against</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky9ParameterOAARlzClE10isInstance2ofACyxGqd__m_tRld__ClFZ"></a>
+                    <a name="//apple_ref/swift/Method/isInstance(of:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky9ParameterOAARlzClE10isInstance2ofACyxGqd__m_tRld__ClFZ">isInstance(of:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Represents and matches whether parameter is of specific type, using <code>is</code> operator.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="n">isInstance</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">of</span> <span class="nv">type</span><span class="p">:</span> <span class="kt">T</span><span class="o">.</span><span class="k">Type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt">ValueType</span><span class="o">&gt;</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>type</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Type to match against</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Parameter%20convenience%20initializers2"></a>
+                <a name="//apple_ref/swift/Section/Parameter convenience initializers" class="dashAnchor"></a>
+                <a href="#/Parameter%20convenience%20initializers2">
+                  <h3 class="section-name">Parameter convenience initializers</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky9ParameterO3allyACyxGAEd_tFZ"></a>
+                    <a name="//apple_ref/swift/Method/all(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky9ParameterO3allyACyxGAEd_tFZ">all(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Allows combining multiple Parameter constraints into one Parameter constraint.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">static</span> <span class="kd">func</span> <span class="nf">all</span><span class="p">(</span><span class="n"><a href="../Enums/Parameter.html#/s:11SwiftyMocky9ParameterO1_yACyxGAEmlF">_</a></span> <span class="nv">matching</span><span class="p">:</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt">ValueType</span><span class="o">&gt;...</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt">ValueType</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>matching</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>List of parameter constraints</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>

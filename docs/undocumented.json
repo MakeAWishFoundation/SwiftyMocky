@@ -1,57 +1,29 @@
 {
   "warnings": [
     {
-      "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Classes/Mock.swift",
-      "line": 11,
-      "symbol": "MockScope",
-      "symbol_kind": "source.lang.swift.decl.enum",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Classes/Mock.swift",
-      "line": 12,
-      "symbol": "MockScope.invocation",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Classes/Mock.swift",
-      "line": 13,
-      "symbol": "MockScope.given",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Classes/Mock.swift",
-      "line": 14,
-      "symbol": "MockScope.perform",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
       "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Classes/Parameter.swift",
-      "line": 49,
+      "line": 86,
       "symbol": "OptionalType",
       "symbol_kind": "source.lang.swift.decl.protocol",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Classes/Parameter.swift",
-      "line": 50,
+      "line": 87,
       "symbol": "OptionalType.isNotNil",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Classes/Parameter.swift",
-      "line": 54,
+      "line": 91,
       "symbol": "Optional.isNotNil",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Classes/Parameter.swift",
-      "line": 63,
+      "line": 100,
       "symbol": "Parameter.notNil",
       "symbol_kind": "source.lang.swift.decl.var.static",
       "warning": "undocumented"

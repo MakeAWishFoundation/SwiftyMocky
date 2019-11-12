@@ -13,7 +13,7 @@
     <a title="Handling Generics  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">SwiftyMocky 3.4.0 Docs</a> (94% documented)</p>
+        <p><a href="index.html">SwiftyMocky 3.4.0 Docs</a> (96% documented)</p>
         <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -248,14 +248,6 @@
               </li>
             </ul>
           </li>
-          <li class="nav-group-name">
-            <a href="Other%20Enums.html">Other Enumerations</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="Enums/MockScope.html">MockScope</a>
-              </li>
-            </ul>
-          </li>
         </ul>
       </nav>
       <article class="main-content">
@@ -319,6 +311,30 @@
 
 <span class="c1">// ...</span>
 </code></pre>
+<h2 id='generic-protocols-constrained-to-type' class='heading'>Generic Protocols constrained to type</h2>
+
+<p>In some scenarios, you might end up defining protocol <q>inheriting</q> from generic protocol and constraining it to some specific type. You can use <strong>typealias</strong> annotations to resolve this scenario. Consider following example:</p>
+<pre class="highlight swift"><code><span class="kd">protocol</span> <span class="kt">SomeObjectRepository</span><span class="p">:</span> <span class="kt">Repository</span> <span class="k">where</span> <span class="kt">Entity</span> <span class="o">==</span> <span class="kt">SomeObject</span> <span class="p">{</span> <span class="p">}</span>
+
+<span class="kd">protocol</span> <span class="kt">Repository</span> <span class="p">{</span>
+    <span class="n">associatedType</span> <span class="kt">Entity</span><span class="p">:</span> <span class="kt">EntityType</span>
+
+    <span class="kd">func</span> <span class="nf">store</span><span class="p">(</span><span class="n">_</span> <span class="nv">entity</span><span class="p">:</span> <span class="kt">Entity</span><span class="p">)</span>
+    <span class="kd">func</span> <span class="nf">getEntity</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Entity</span>
+<span class="p">}</span>
+
+<span class="kd">protocol</span> <span class="kt">EntityType</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">id</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>In order to generate valid mock, you need to define what <code>Entity</code> is for <code>SomeObjectRepository</code>. You can do it by <q>annotating</q> typealias:</p>
+<pre class="highlight swift"><code><span class="c1">//sourcery: AutoMockable</span>
+<span class="c1">//sourcery: typealias = "Entity = SomeObject"</span>
+<span class="kd">protocol</span> <span class="kt">SomeObjectRepository</span><span class="p">:</span> <span class="kt">Repository</span> <span class="k">where</span> <span class="kt">Entity</span> <span class="o">==</span> <span class="kt">SomeObject</span> <span class="p">{</span> <span class="p">}</span>
+</code></pre>
+
+<p>That would result in generating valid mock.</p>
 
           </section>
         </section>

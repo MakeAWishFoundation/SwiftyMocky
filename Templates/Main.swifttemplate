@@ -11,6 +11,7 @@
     guard let aProtocol = autoMockable ? type : protocolToDecorate else { continue }
     mockedCount += 1
     let associatedTypes: [String]? = Helpers.extractAssociatedTypes(from: aProtocol)
+    let typeAliases: [String] = Helpers.extractTypealiases(from: aProtocol)
     let genericTypesModifier: String = Helpers.extractGenericTypesModifier(associatedTypes)
     let genericTypesConstraints: String = Helpers.extractGenericTypesConstraints(associatedTypes)
     let allSubscripts = aProtocol.allSubscripts
@@ -56,6 +57,9 @@
     public typealias PropertyStub = Given
     public typealias MethodStub = Given
     public typealias SubscriptStub = Given
+    <%_ for typeAlias in typeAliases { -%>
+    public typealias <%= typeAlias %>
+    <%_ } %> <%_ -%>
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
