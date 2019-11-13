@@ -1221,6 +1221,34 @@ open class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
 		return __value
     }
 
+    open func methodWithSetOfInt(p: Set<Int>) -> Int {
+        addInvocation(.m_methodWithSetOfInt__p_p(Parameter<Set<Int>>.value(`p`)))
+		let perform = methodPerformValue(.m_methodWithSetOfInt__p_p(Parameter<Set<Int>>.value(`p`))) as? (Set<Int>) -> Void
+		perform?(`p`)
+		var __value: Int
+		do {
+		    __value = try methodReturnValue(.m_methodWithSetOfInt__p_p(Parameter<Set<Int>>.value(`p`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for methodWithSetOfInt(p: Set<Int>). Use given")
+			Failure("Stub return value not specified for methodWithSetOfInt(p: Set<Int>). Use given")
+		}
+		return __value
+    }
+
+    open func methodWithOptionalSetOfInt(p: Set<Int>?) -> Int {
+        addInvocation(.m_methodWithOptionalSetOfInt__p_p(Parameter<Set<Int>?>.value(`p`)))
+		let perform = methodPerformValue(.m_methodWithOptionalSetOfInt__p_p(Parameter<Set<Int>?>.value(`p`))) as? (Set<Int>?) -> Void
+		perform?(`p`)
+		var __value: Int
+		do {
+		    __value = try methodReturnValue(.m_methodWithOptionalSetOfInt__p_p(Parameter<Set<Int>?>.value(`p`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for methodWithOptionalSetOfInt(p: Set<Int>?). Use given")
+			Failure("Stub return value not specified for methodWithOptionalSetOfInt(p: Set<Int>?). Use given")
+		}
+		return __value
+    }
+
     open func methodWithDict(p: [String: SomeClass]) -> Int {
         addInvocation(.m_methodWithDict__p_p(Parameter<[String: SomeClass]>.value(`p`)))
 		let perform = methodPerformValue(.m_methodWithDict__p_p(Parameter<[String: SomeClass]>.value(`p`))) as? ([String: SomeClass]) -> Void
@@ -1248,6 +1276,8 @@ open class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
         case m_methodWithDouble__p_p(Parameter<Double?>)
         case m_methodWithArrayOfInt__p_p(Parameter<[Int]>)
         case m_methodWithArrayOfOther__p_p(Parameter<[SomeClass]>)
+        case m_methodWithSetOfInt__p_p(Parameter<Set<Int>>)
+        case m_methodWithOptionalSetOfInt__p_p(Parameter<Set<Int>?>)
         case m_methodWithDict__p_p(Parameter<[String: SomeClass]>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
@@ -1285,6 +1315,12 @@ open class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
             case (.m_methodWithArrayOfOther__p_p(let lhsP), .m_methodWithArrayOfOther__p_p(let rhsP)):
                 guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
                 return true 
+            case (.m_methodWithSetOfInt__p_p(let lhsP), .m_methodWithSetOfInt__p_p(let rhsP)):
+                guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
+                return true 
+            case (.m_methodWithOptionalSetOfInt__p_p(let lhsP), .m_methodWithOptionalSetOfInt__p_p(let rhsP)):
+                guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
+                return true 
             case (.m_methodWithDict__p_p(let lhsP), .m_methodWithDict__p_p(let rhsP)):
                 guard Parameter.compare(lhs: lhsP, rhs: rhsP, with: matcher) else { return false } 
                 return true 
@@ -1305,6 +1341,8 @@ open class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
             case let .m_methodWithDouble__p_p(p0): return p0.intValue
             case let .m_methodWithArrayOfInt__p_p(p0): return p0.intValue
             case let .m_methodWithArrayOfOther__p_p(p0): return p0.intValue
+            case let .m_methodWithSetOfInt__p_p(p0): return p0.intValue
+            case let .m_methodWithOptionalSetOfInt__p_p(p0): return p0.intValue
             case let .m_methodWithDict__p_p(p0): return p0.intValue
             }
         }
@@ -1351,6 +1389,12 @@ open class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
         }
         public static func methodWithArrayOfOther(p: Parameter<[SomeClass]>, willReturn: Int...) -> MethodStub {
             return Given(method: .m_methodWithArrayOfOther__p_p(`p`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func methodWithSetOfInt(p: Parameter<Set<Int>>, willReturn: Int...) -> MethodStub {
+            return Given(method: .m_methodWithSetOfInt__p_p(`p`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func methodWithOptionalSetOfInt(p: Parameter<Set<Int>?>, willReturn: Int...) -> MethodStub {
+            return Given(method: .m_methodWithOptionalSetOfInt__p_p(`p`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func methodWithDict(p: Parameter<[String: SomeClass]>, willReturn: Int...) -> MethodStub {
             return Given(method: .m_methodWithDict__p_p(`p`), products: willReturn.map({ StubProduct.return($0 as Any) }))
@@ -1432,6 +1476,20 @@ open class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
 			willProduce(stubber)
 			return given
         }
+        public static func methodWithSetOfInt(p: Parameter<Set<Int>>, willProduce: (Stubber<Int>) -> Void) -> MethodStub {
+            let willReturn: [Int] = []
+			let given: Given = { return Given(method: .m_methodWithSetOfInt__p_p(`p`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (Int).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func methodWithOptionalSetOfInt(p: Parameter<Set<Int>?>, willProduce: (Stubber<Int>) -> Void) -> MethodStub {
+            let willReturn: [Int] = []
+			let given: Given = { return Given(method: .m_methodWithOptionalSetOfInt__p_p(`p`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (Int).self)
+			willProduce(stubber)
+			return given
+        }
         public static func methodWithDict(p: Parameter<[String: SomeClass]>, willProduce: (Stubber<Int>) -> Void) -> MethodStub {
             let willReturn: [Int] = []
 			let given: Given = { return Given(method: .m_methodWithDict__p_p(`p`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
@@ -1455,6 +1513,8 @@ open class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
         public static func methodWithDouble(p: Parameter<Double?>) -> Verify { return Verify(method: .m_methodWithDouble__p_p(`p`))}
         public static func methodWithArrayOfInt(p: Parameter<[Int]>) -> Verify { return Verify(method: .m_methodWithArrayOfInt__p_p(`p`))}
         public static func methodWithArrayOfOther(p: Parameter<[SomeClass]>) -> Verify { return Verify(method: .m_methodWithArrayOfOther__p_p(`p`))}
+        public static func methodWithSetOfInt(p: Parameter<Set<Int>>) -> Verify { return Verify(method: .m_methodWithSetOfInt__p_p(`p`))}
+        public static func methodWithOptionalSetOfInt(p: Parameter<Set<Int>?>) -> Verify { return Verify(method: .m_methodWithOptionalSetOfInt__p_p(`p`))}
         public static func methodWithDict(p: Parameter<[String: SomeClass]>) -> Verify { return Verify(method: .m_methodWithDict__p_p(`p`))}
     }
 
@@ -1494,6 +1554,12 @@ open class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
         }
         public static func methodWithArrayOfOther(p: Parameter<[SomeClass]>, perform: @escaping ([SomeClass]) -> Void) -> Perform {
             return Perform(method: .m_methodWithArrayOfOther__p_p(`p`), performs: perform)
+        }
+        public static func methodWithSetOfInt(p: Parameter<Set<Int>>, perform: @escaping (Set<Int>) -> Void) -> Perform {
+            return Perform(method: .m_methodWithSetOfInt__p_p(`p`), performs: perform)
+        }
+        public static func methodWithOptionalSetOfInt(p: Parameter<Set<Int>?>, perform: @escaping (Set<Int>?) -> Void) -> Perform {
+            return Perform(method: .m_methodWithOptionalSetOfInt__p_p(`p`), performs: perform)
         }
         public static func methodWithDict(p: Parameter<[String: SomeClass]>, perform: @escaping ([String: SomeClass]) -> Void) -> Perform {
             return Perform(method: .m_methodWithDict__p_p(`p`), performs: perform)

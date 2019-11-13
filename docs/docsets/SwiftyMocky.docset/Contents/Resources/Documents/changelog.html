@@ -268,18 +268,33 @@
 
 <hr>
 <h2 id='strong-3-4-0-strong-2019' class='heading'><strong>3.4.0</strong> / 2019</h2>
+<h4 id='added' class='heading'>Added:</h4>
+
+<ul>
+<li>New typealias <q>annotation</q>, allowing to fix common issues with generic protocols and ambigious class names</li>
+<li>A <q>sourcery</q> section to mockfile, to specify additional sourcery configurations to execute during generation</li>
+<li><code>resetMock(...)</code> methods to reset mock internals</li>
+<li>New tests suite for Xcode 11.2 (Swift 5.2)</li>
+</ul>
+<h4 id='deprecated' class='heading'>Deprecated:</h4>
+
+<ul>
+<li>deprecated <code>clear()</code> method on <code><a href="Protocols/StaticMock.html">StaticMock</a></code> in favour of <code>resetMock(...)</code></li>
+</ul>
 <h4 id='fixed' class='heading'>Fixed:</h4>
 
 <ul>
-<li>Fixed Xcode 11 support by @glyuck</li>
-<li>Fixed typos in Readmy, by @iliaskarim and @mikeakers</li>
+<li>Fixed Parameter ExpressibleByArrayLiteral init, by @chuckluck44 (Charley Luckhardt)</li>
+<li>Fixed Xcode 11 support by @glyuck (Vladimir Lyukov)</li>
+<li>Fixed typos in Readme, by @iliaskarim and @mikeakers (Mike Akers)</li>
+<li>Fixed tests for swift 5.0 and linux tests</li>
 </ul>
 <h2 id='strong-3-3-4-strong-2019' class='heading'><strong>3.3.4</strong> / 2019</h2>
 <h4 id='fixed' class='heading'>Fixed:</h4>
 
 <ul>
-<li>Fixed problem with not printable ASCI characters by @TimeDelta</li>
-<li>Fixed problem with missing generic constraints by @demalex</li>
+<li>Fixed problem with not printable ASCI characters by @timedelta (Bryan Nova)</li>
+<li>Fixed problem with missing generic constraints by @demalex (Alex Demishkevych)</li>
 </ul>
 
 <hr>
@@ -295,7 +310,7 @@
 <h4 id='fixed' class='heading'>Fixed:</h4>
 
 <ul>
-<li>Fixed problems with multiple mocks being part of same target (@davidmtamas)</li>
+<li>Fixed problems with multiple mocks being part of same target by @davidmtamas</li>
 </ul>
 
 <hr>
@@ -315,8 +330,11 @@
 <li>Added support for Swift Package Manager (SPM)</li>
 <li>New configuration file for working with multiple targets - <code><a href="mockfile.html">Mockfile</a></code></li>
 <li>Fixed redundant constraints for methods with stripped generics (@tarbayev)</li>
-<li>Added Argument captor (@timedelta)
-#### Removed:</li>
+<li>Added Argument captor by @timedelta (Bryan Nova)</li>
+</ul>
+<h4 id='removed' class='heading'>Removed:</h4>
+
+<ul>
 <li>dropped Swift 4.0, SwiftyMocky now requires Swift 4.1+</li>
 <li>dropped MockyCustom subspec, new subspec is Prototyping, for Carthage SwiftyPrototype</li>
 </ul>

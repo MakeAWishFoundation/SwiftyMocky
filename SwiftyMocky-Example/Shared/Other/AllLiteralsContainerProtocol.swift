@@ -71,6 +71,8 @@ protocol AllLiteralsContainer {
     // ExpressibleByArrayLiteral
     func methodWithArrayOfInt(p: [Int]) -> Int
     func methodWithArrayOfOther(p: [SomeClass]) -> Int
+    func methodWithSetOfInt(p: Set<Int>) -> Int
+    func methodWithOptionalSetOfInt(p: Set<Int>?) -> Int
 
     // ExpressibleByDictionaryLiteral
     func methodWithDict(p: [String: SomeClass]) -> Int

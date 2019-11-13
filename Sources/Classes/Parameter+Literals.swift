@@ -111,6 +111,13 @@ private extension ExpressibleByArrayLiteral {
     }
 }
 
+private extension ExpressibleByArrayLiteral where ArrayLiteralElement: Hashable {
+    init(_ elements: [ArrayLiteralElement]) {
+        let castedInit = unsafeBitCast(Self.init(arrayLiteral:), to: (([ArrayLiteralElement]) -> Self).self)
+        self = castedInit(elements)  // TODO: Update once splatting is supported. https://bugs.swift.org/browse/SR-128
+    }
+}
+
 extension Optional: ExpressibleByArrayLiteral where Wrapped: ExpressibleByArrayLiteral {
     public typealias ArrayLiteralElement = Wrapped.ArrayLiteralElement
 

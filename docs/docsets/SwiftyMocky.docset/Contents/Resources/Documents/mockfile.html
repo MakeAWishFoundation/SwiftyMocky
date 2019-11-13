@@ -283,6 +283,8 @@
     <span class="na">testable</span><span class="pi">:</span> <span class="pi">[]</span>                    <span class="c1"># 2.4 (optional)</span>
     <span class="na">import</span><span class="pi">:</span> <span class="pi">[]</span>                      <span class="c1"># 2.5 (optional)</span>
     <span class="na">prototype</span><span class="pi">:</span> <span class="s">false</span>                <span class="c1"># 2.6 (optional)</span>
+    <span class="na">sourcery</span><span class="pi">:</span>                       <span class="c1"># 2.7 (optional)</span>
+        <span class="pi">-</span> <span class="s">./path/to/custom/sourcery.yml</span> <span class="c1"># (optional)</span>
 
 <span class="na">mock2</span><span class="pi">:</span>                              <span class="c1"># 2.</span>
     <span class="s">...</span>
@@ -304,6 +306,7 @@
 <li><code>testable</code> list of testable modules imports. By default, if you generate mocks for <code>YourApp</code>, it should contain <code>YourApp</code>. Would be placed at the top of the generated file.</li>
 <li><code>import</code> list of modules imports. Would be placed at the top of the generated file.</li>
 <li><code>prototype</code> default is <code>false</code>. Set <code>true</code> if you are going to use Carthage <code>SwiftyPrototype</code> library</li>
+<li><code>sourcery</code> list of paths to additional Sourcery configurations, if you want to execute them alongside the mock generation.</li>
 </ol></li>
 </ol>
 
