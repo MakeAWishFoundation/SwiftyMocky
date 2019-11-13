@@ -106,7 +106,8 @@ extension Parameter: ExpressibleByFloatLiteral where ValueType: ExpressibleByFlo
 // MARK: - ExpressibleByArrayLiteral
 private extension ExpressibleByArrayLiteral {
     init(_ elements: [ArrayLiteralElement]) {
-        self = elements as! Self  // TODO: Check if can be fixed. For some reason could not use init(arayLiteral elements: ...)
+        let castedInit = unsafeBitCast(Self.init(arrayLiteral:), to: (([ArrayLiteralElement]) -> Self).self)
+        self = castedInit(elements)  // TODO: Update once splatting is supported. https://bugs.swift.org/browse/SR-128
     }
 }
 
