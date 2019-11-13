@@ -21,6 +21,8 @@ mock1:                              # 2.
     testable: []                    # 2.4 (optional)
     import: []                      # 2.5 (optional)
     prototype: false                # 2.6 (optional)
+    sourcery:                       # 2.7 (optional)
+        - ./path/to/custom/sourcery.yml # (optional)
 
 mock2:                              # 2.
     ...
@@ -35,7 +37,8 @@ mock2:                              # 2.
     3. `targets` list of targets names. It should match the test targets that are using generated mocks file. Used to determine if your setup is correct.
     4. `testable` list of testable modules imports. By default, if you generate mocks for `YourApp`, it should contain `YourApp`. Would be placed at the top of the generated file.
     5. `import` list of modules imports. Would be placed at the top of the generated file.
-    5. `prototype` default is `false`. Set `true` if you are going to use Carthage `SwiftyPrototype` library
+    6. `prototype` default is `false`. Set `true` if you are going to use Carthage `SwiftyPrototype` library
+    7. `sourcery` list of paths to additional Sourcery configurations, if you want to execute them alongside the mock generation.
 
 > **Note 1:** Calling `swiftymocky setup` will launch an interactive tool helping you to create and prefill the **Mockfile**. You can also use `swiftymocky init` if you want a placeholder you can fill manually.
 

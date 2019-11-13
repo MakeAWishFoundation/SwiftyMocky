@@ -132,6 +132,56 @@ final class GenerationController: GenerationCommand {
         } else {
             Message.success("Generation done.")
         }
+
+        try processCustomSourceryConfigurations(mock, disableCache, verbose, watch)
+    }
+
+    func processCustomSourceryConfigurations(
+        _ mock: MockConfiguration, 
+        _ disableCache: Bool, 
+        _ verbose: Bool, 
+        _ watch: Bool
+    ) throws {
+        guard !mock.sourcery.isEmpty else { return }
+
+        func launchSourcery(config path: String) throws {
+            var arguments: [String] = ["--config", path]
+            
+            if disableCache {
+                arguments += ["--disableCache"]
+            }
+            if verbose {
+                arguments += ["--verbose"]
+            }
+            if watch {
+                arguments += ["--watch"]
+            }
+
+            #if os(macOS)
+            try shellOut(
+                to: sourcery.string,
+                arguments: arguments,
+                at: root.string,
+                outputHandle: outputHandle
+            )
+            #else 
+            let resultString = try shellOut(
+                to: sourcery.string,
+                arguments: arguments,
+                at: root.string
+            )
+            print(resultString)
+            #endif
+        }
+
+        let total = mock.sourcery.count
+        
+        try mock.sourcery.enumerated().forEach { (offset, configPath) in
+            Message.info("\(offset + 1)/\(total) Processing custom Sourcery configuration at: \(configPath)")
+            try launchSourcery(config: configPath)
+        }
+
+        Message.success("Finished processing custom Sourcery configurations")
     }
 
     func missingAutoMockable(for mock: MockConfiguration) -> Bool {
