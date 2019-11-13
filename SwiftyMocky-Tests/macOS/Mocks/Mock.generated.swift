@@ -11858,6 +11858,173 @@ open class SuggestionRepositoryConstrainedToProtocolMock<Entity>: SuggestionRepo
     }
 }
 
+// MARK: - URLSessionDelegateExt
+open class URLSessionDelegateExtMock: NSObject, URLSessionDelegateExt, Mock {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        SwiftyMockyTestObserver.setup()
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    public typealias PropertyStub = Given
+    public typealias MethodStub = Given
+    public typealias SubscriptStub = Given
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
+
+
+
+
+    open func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
+        addInvocation(.m_urlSession__sessiondidBecomeInvalidWithError_error(Parameter<URLSession>.value(`session`), Parameter<Error?>.value(`error`)))
+		let perform = methodPerformValue(.m_urlSession__sessiondidBecomeInvalidWithError_error(Parameter<URLSession>.value(`session`), Parameter<Error?>.value(`error`))) as? (URLSession, Error?) -> Void
+		perform?(`session`, `error`)
+    }
+
+    open func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        addInvocation(.m_urlSession__sessiondidReceive_challengecompletionHandler_completionHandler(Parameter<URLSession>.value(`session`), Parameter<URLAuthenticationChallenge>.value(`challenge`), Parameter<(URLSession.AuthChallengeDisposition, URLCredential?) -> Void>.value(`completionHandler`)))
+		let perform = methodPerformValue(.m_urlSession__sessiondidReceive_challengecompletionHandler_completionHandler(Parameter<URLSession>.value(`session`), Parameter<URLAuthenticationChallenge>.value(`challenge`), Parameter<(URLSession.AuthChallengeDisposition, URLCredential?) -> Void>.value(`completionHandler`))) as? (URLSession, URLAuthenticationChallenge, @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) -> Void
+		perform?(`session`, `challenge`, `completionHandler`)
+    }
+
+
+    fileprivate enum MethodType {
+        case m_urlSession__sessiondidBecomeInvalidWithError_error(Parameter<URLSession>, Parameter<Error?>)
+        case m_urlSession__sessiondidReceive_challengecompletionHandler_completionHandler(Parameter<URLSession>, Parameter<URLAuthenticationChallenge>, Parameter<(URLSession.AuthChallengeDisposition, URLCredential?) -> Void>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+            case (.m_urlSession__sessiondidBecomeInvalidWithError_error(let lhsSession, let lhsError), .m_urlSession__sessiondidBecomeInvalidWithError_error(let rhsSession, let rhsError)):
+                guard Parameter.compare(lhs: lhsSession, rhs: rhsSession, with: matcher) else { return false } 
+                guard Parameter.compare(lhs: lhsError, rhs: rhsError, with: matcher) else { return false } 
+                return true 
+            case (.m_urlSession__sessiondidReceive_challengecompletionHandler_completionHandler(let lhsSession, let lhsChallenge, let lhsCompletionhandler), .m_urlSession__sessiondidReceive_challengecompletionHandler_completionHandler(let rhsSession, let rhsChallenge, let rhsCompletionhandler)):
+                guard Parameter.compare(lhs: lhsSession, rhs: rhsSession, with: matcher) else { return false } 
+                guard Parameter.compare(lhs: lhsChallenge, rhs: rhsChallenge, with: matcher) else { return false } 
+                guard Parameter.compare(lhs: lhsCompletionhandler, rhs: rhsCompletionhandler, with: matcher) else { return false } 
+                return true 
+            default: return false
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+            case let .m_urlSession__sessiondidBecomeInvalidWithError_error(p0, p1): return p0.intValue + p1.intValue
+            case let .m_urlSession__sessiondidReceive_challengecompletionHandler_completionHandler(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
+            }
+        }
+    }
+
+    open class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [StubProduct]) {
+            self.method = method
+            super.init(products)
+        }
+
+
+    }
+
+    public struct Verify {
+        fileprivate var method: MethodType
+
+        public static func urlSession(_ session: Parameter<URLSession>, didBecomeInvalidWithError error: Parameter<Error?>) -> Verify { return Verify(method: .m_urlSession__sessiondidBecomeInvalidWithError_error(`session`, `error`))}
+        public static func urlSession(_ session: Parameter<URLSession>, didReceive challenge: Parameter<URLAuthenticationChallenge>, completionHandler: Parameter<(URLSession.AuthChallengeDisposition, URLCredential?) -> Void>) -> Verify { return Verify(method: .m_urlSession__sessiondidReceive_challengecompletionHandler_completionHandler(`session`, `challenge`, `completionHandler`))}
+    }
+
+    public struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        public static func urlSession(_ session: Parameter<URLSession>, didBecomeInvalidWithError error: Parameter<Error?>, perform: @escaping (URLSession, Error?) -> Void) -> Perform {
+            return Perform(method: .m_urlSession__sessiondidBecomeInvalidWithError_error(`session`, `error`), performs: perform)
+        }
+        public static func urlSession(_ session: Parameter<URLSession>, didReceive challenge: Parameter<URLAuthenticationChallenge>, completionHandler: Parameter<(URLSession.AuthChallengeDisposition, URLCredential?) -> Void>, perform: @escaping (URLSession, URLAuthenticationChallenge, @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) -> Void) -> Perform {
+            return Perform(method: .m_urlSession__sessiondidReceive_challengecompletionHandler_completionHandler(`session`, `challenge`, `completionHandler`), performs: perform)
+        }
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+    private func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        #if Mocky
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        #endif
+    }
+}
+
 // MARK: - UserNetworkType
 open class UserNetworkTypeMock: UserNetworkType, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {

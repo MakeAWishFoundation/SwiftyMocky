@@ -8,6 +8,17 @@
 
 import Foundation
 
+//sourcery: AutoMockable
+//sourcery: ObjcProtocol
+@objc protocol URLSessionDelegateExt: URLSessionDelegate {
+
+    @objc @available(OSX 10.9, *)
+    optional func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?)
+
+    @objc @available(OSX 10.9, *)
+    optional func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void)
+}
+
 // MARK: - Issue 240 - generating mocks when attributes depends on generic constraints and other attributes associated types
 
 protocol StringConvertibleType { }

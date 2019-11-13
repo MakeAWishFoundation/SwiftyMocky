@@ -54,7 +54,7 @@ public extension Parameter where ValueType: AnyObject {
     /// Represents and matches values on an "same instance" basis.
     ///
     /// - Parameter instance: Instance to match against
-    public static func sameInstance<T: AnyObject>(as instance: T) -> Parameter<ValueType> {
+    static func sameInstance<T: AnyObject>(as instance: T) -> Parameter<ValueType> {
         return .matching { this in
             guard let thisCasted = this as? T else { return false }
             return thisCasted === instance
@@ -64,7 +64,7 @@ public extension Parameter where ValueType: AnyObject {
     /// Represents and matches whether parameter is of specific type, using `is` operator.
     ///
     /// - Parameter type: Type to match against
-    public static func isInstance<T: AnyObject>(of type: T.Type) -> Parameter<ValueType> {
+    static func isInstance<T: AnyObject>(of type: T.Type) -> Parameter<ValueType> {
         return .matching { $0 is T }
     }
 }
