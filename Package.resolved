@@ -47,21 +47,12 @@
         }
       },
       {
-        "package": "Shell",
-        "repositoryURL": "https://github.com/tuist/Shell",
-        "state": {
-          "branch": null,
-          "revision": "d38121f89401db902b0d0bfc30b987e2c84c254e",
-          "version": "2.0.3"
-        }
-      },
-      {
         "package": "ShellOut",
         "repositoryURL": "https://github.com/JohnSundell/ShellOut.git",
         "state": {
           "branch": null,
-          "revision": "d3d54ce662dfee7fef619330b71d251b8d4869f9",
-          "version": "2.2.0"
+          "revision": "4ebf25863deb9c3c02696704fc3d39736183f258",
+          "version": "2.2.1"
         }
       },
       {
@@ -78,8 +69,8 @@
         "repositoryURL": "https://github.com/tuist/xcodeproj.git",
         "state": {
           "branch": null,
-          "revision": "aefcbf59cea5b0831837ed2f385e6dfd80d82cc9",
-          "version": "7.1.0"
+          "revision": "23f7e12a7e0db29b4f16052692d99f9fbe41fa15",
+          "version": "7.5.0"
         }
       },
       {

@@ -46,6 +46,22 @@ task :xcode do
     sh "open Mocky.xcworkspace"
 end
 
+## [ Deploy ] ##################################################################
+
+desc "Deploys new version of a binary, by pushing passed tag"
+task :deploy do
+    ARGV.each { |a| task a.to_sym do ; end }
+    version = ARGV[1].to_s
+    if version
+        sh("sed 's|{{VERSION_NUMBER}}|#{version}|g' ./Podspec.template > ./SwiftyMocky.podspec")
+        sh("git add *")
+        sh("git commit -m \"Deploy #{version}\"")
+        sh("git push")
+        sh("git tag #{version} && git push --tags")
+        sh("pod trunk push")
+    end
+end
+
 ## [ Sourcery ] ################################################################
 
 desc "Download prebuilt sourcery app."

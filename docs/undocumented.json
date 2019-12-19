@@ -1,82 +1,82 @@
 {
   "warnings": [
     {
-      "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Classes/Mock.swift",
+      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Mock.swift",
       "line": 11,
       "symbol": "MockScope",
       "symbol_kind": "source.lang.swift.decl.enum",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Classes/Mock.swift",
+      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Mock.swift",
       "line": 12,
       "symbol": "MockScope.invocation",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Classes/Mock.swift",
+      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Mock.swift",
       "line": 13,
       "symbol": "MockScope.given",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Classes/Mock.swift",
+      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Mock.swift",
       "line": 14,
       "symbol": "MockScope.perform",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Classes/Parameter.swift",
+      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Parameter.swift",
       "line": 86,
       "symbol": "OptionalType",
       "symbol_kind": "source.lang.swift.decl.protocol",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Classes/Parameter.swift",
+      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Parameter.swift",
       "line": 87,
       "symbol": "OptionalType.isNotNil",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Classes/Parameter.swift",
+      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Parameter.swift",
       "line": 91,
       "symbol": "Optional.isNotNil",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Classes/Parameter.swift",
+      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Parameter.swift",
       "line": 100,
       "symbol": "Parameter.notNil",
       "symbol_kind": "source.lang.swift.decl.var.static",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Classes/Stubbing.swift",
+      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Stubbing.swift",
       "line": 15,
       "symbol": "MockError.notStubed",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Classes/Stubbing.swift",
+      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Stubbing.swift",
       "line": 23,
       "symbol": "StubProduct.return(_:)",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Classes/Stubbing.swift",
+      "file": "/Users/amichnia/Projects/SwiftyMocky/Sources/Classes/Stubbing.swift",
       "line": 24,
       "symbol": "StubProduct.throw(_:)",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     }
   ],
-  "source_directory": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky"
+  "source_directory": "/Users/amichnia/Projects/SwiftyMocky"
 }
