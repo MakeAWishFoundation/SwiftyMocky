@@ -55,10 +55,10 @@ task :deploy do
     if version
         sh("sed 's|{{VERSION_NUMBER}}|#{version}|g' ./Podspec.template > ./SwiftyMocky.podspec")
         sh("git add ./SwiftyMocky.podspec")
-        # sh("git commit -m \"Deploy #{version}\"")
-        # sh("git push")
-        # sh("git tag #{version} && git push --tags")
-        # sh("pod trunk push")
+        sh("git commit -m \"Deploy #{version}\"")
+        sh("git push")
+        sh("git tag #{version} && git push --tags")
+        sh("pod trunk push")
     end
 end
 

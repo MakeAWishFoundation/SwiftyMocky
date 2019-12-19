@@ -11,8 +11,8 @@ Library that uses metaprogramming technique to generate mocks based on sources, 
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Przemysław Wośko' => 'przemyslaw.wosko@intive.com', 'Andrzej Michnia' => 'amichnia@gmail.com' }
   s.source           = { :git => 'https://github.com/MakeAWishFoundation/SwiftyMocky.git', :tag => s.version.to_s }
+  
   s.swift_versions    = ['4.1', '4.2', '5.0', '5.1.2']
-
   s.ios.deployment_target = '8.0'
   s.tvos.deployment_target = '9.0'
   s.macos.deployment_target = '10.10'
