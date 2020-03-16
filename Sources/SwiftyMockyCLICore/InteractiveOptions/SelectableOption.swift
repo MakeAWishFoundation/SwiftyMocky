@@ -1,5 +1,4 @@
 import Foundation
-import Crayon
 
 public protocol SelectableOption: RawRepresentable {
     var title: String { get }

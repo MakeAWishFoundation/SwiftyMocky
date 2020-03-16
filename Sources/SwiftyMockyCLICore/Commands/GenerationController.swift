@@ -3,7 +3,6 @@ import ShellOut
 import PathKit
 import Commander
 import Yams
-import Crayon
 
 public protocol GenerationCommand: AutoMockable {
 

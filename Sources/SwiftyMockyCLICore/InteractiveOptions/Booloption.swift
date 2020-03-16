@@ -1,5 +1,5 @@
 import Foundation
-import Crayon
+import Chalk
 
 public enum BoolOption: RawRepresentable, SelectableOption {
     public typealias RawValue = String
@@ -14,7 +14,7 @@ public enum BoolOption: RawRepresentable, SelectableOption {
         }
     }
     public var title: String {
-        return crayon.underline.on("\(rawValue.first!)".uppercased()) + "\(rawValue.dropFirst())"
+        return ck.underline.on("\(rawValue.first!)".uppercased()) + "\(rawValue.dropFirst())"
     }
 
     public init?(rawValue: String) {
