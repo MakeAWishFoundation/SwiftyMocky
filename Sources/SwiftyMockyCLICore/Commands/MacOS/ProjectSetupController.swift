@@ -3,7 +3,7 @@ import Yams
 import PathKit
 import Commander
 import XcodeProj
-import Crayon
+import Chalk
 
 // MARK: - Project Setup
 
@@ -47,7 +47,7 @@ public class ProjectSetupController {
         .forEach {
             let exists = $1.mockName != nil
             let prefix = "\(exists ? "❕":"☑️ ") \($0 + 1))"
-            let infix = "\(crayon.bold.on($1.name))"
+            let infix = "\(ck.bold.on($1.name))"
             let suffix = exists ? " - already defined in \'\($1.mockName!)\'" : ""
             Message.just("\(prefix) \(infix) \(suffix)")
         }
@@ -119,19 +119,19 @@ public class ProjectSetupController {
             Message.actionHeader("\(target.name) - adding Mock configuration...")
         }
 
-        Message.infoPoint("Targets set to: \(crayon.bold.on(target.name))")
+        Message.infoPoint("Targets set to: \(ck.bold.on(target.name))")
 
         let output = "./" + defaultOutput(for: target).string
-        Message.infoPoint("Default output set to: \(crayon.bold.on(output))")
+        Message.infoPoint("Default output set to: \(ck.bold.on(output))")
 
         let sources = "./" + defaultSources(for: target).string
-        Message.infoPoint("Default sources directory: \(crayon.bold.on(sources))")
+        Message.infoPoint("Default sources directory: \(ck.bold.on(sources))")
 
         let testable = defaultTestable(for: target)
-        Message.infoPoint("Default testable module: \(crayon.bold.on(testable.joined(separator: ",")))")
+        Message.infoPoint("Default testable module: \(ck.bold.on(testable.joined(separator: ",")))")
 
         let imports = defaultImports(for: target)
-        Message.infoPoint("Default testable module: \(crayon.bold.on(imports.joined(separator: ",")))")
+        Message.infoPoint("Default testable module: \(ck.bold.on(imports.joined(separator: ",")))")
 
         guard force || !mockfile.isSetup(target: target) else {
             throw MockyError.overrideWarning

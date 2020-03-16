@@ -11,21 +11,21 @@
         }
       },
       {
+        "package": "Chalk",
+        "repositoryURL": "https://github.com/luoxiu/Chalk",
+        "state": {
+          "branch": null,
+          "revision": "a705a6ddbb338d8f350b3903c3eae7fd41140168",
+          "version": "0.0.4"
+        }
+      },
+      {
         "package": "Commander",
         "repositoryURL": "https://github.com/kylef/Commander",
         "state": {
           "branch": null,
           "revision": "4b6133c3071d521489a80c38fb92d7983f19d438",
           "version": "0.9.1"
-        }
-      },
-      {
-        "package": "Crayon",
-        "repositoryURL": "https://github.com/jianstm/Crayon",
-        "state": {
-          "branch": null,
-          "revision": "05930604feec1ac77b4633a17a722d428d5be2cc",
-          "version": "0.0.3"
         }
       },
       {
@@ -39,7 +39,7 @@
       },
       {
         "package": "Rainbow",
-        "repositoryURL": "https://github.com/jianstm/Rainbow",
+        "repositoryURL": "https://github.com/luoxiu/Rainbow",
         "state": {
           "branch": null,
           "revision": "177c6ebae4389c0363ea1bf62a7257151d53acbc",
