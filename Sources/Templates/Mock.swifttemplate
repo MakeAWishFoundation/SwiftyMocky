@@ -897,7 +897,6 @@ class MethodWrapper {
     // Verify
     func verificationProxyConstructorName(prefix: String = "", deprecated: Bool = false, annotated: Bool = true) -> String {
         let (annotation, methodName, genericConstrains) = methodInfo(deprecated, annotated)
-
         if method.parameters.isEmpty {
             return "public static func \(methodName)(\(returningParameter(false,true))) -> \(prefix)Verify\(genericConstrains)"
         } else {
@@ -1825,6 +1824,7 @@ _%>
 
   <%# ================================================== MOCK METHODS -%><%_ -%>
     public func given(_ method: Given) {
+        // todo: 
         methodReturnValues.append(method)
     }
 
@@ -1835,7 +1835,14 @@ _%>
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        // If no invocations found, chceck 
+        if count.matches(invocations.count) {
+
+        } else if (matchingCallsIgnoringParameters).count { 
+            MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)    
+        } else { 
+            MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        }
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -1850,6 +1857,9 @@ _%>
     private func methodPerformValue(_ method: MethodType) -> Any? {
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
         return matched?.performs
+    }
+    private func matchingCallsIgnoringParameters(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
     }
     private func matchingCalls(_ method: MethodType) -> [MethodType] {
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
