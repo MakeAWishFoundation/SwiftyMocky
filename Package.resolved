@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/luoxiu/Chalk",
         "state": {
           "branch": null,
-          "revision": "a705a6ddbb338d8f350b3903c3eae7fd41140168",
-          "version": "0.0.4"
+          "revision": "fbb0adbe8a54d8dbfcb4824ebc96bd3b401d0757",
+          "version": "0.0.7"
         }
       },
       {
@@ -42,8 +42,8 @@
         "repositoryURL": "https://github.com/luoxiu/Rainbow",
         "state": {
           "branch": null,
-          "revision": "177c6ebae4389c0363ea1bf62a7257151d53acbc",
-          "version": "0.0.4"
+          "revision": "438720f94da08582aff2abc4712de1c23f464d45",
+          "version": "0.0.5"
         }
       },
       {
@@ -51,8 +51,8 @@
         "repositoryURL": "https://github.com/JohnSundell/ShellOut.git",
         "state": {
           "branch": null,
-          "revision": "4ebf25863deb9c3c02696704fc3d39736183f258",
-          "version": "2.2.1"
+          "revision": "e1577acf2b6e90086d01a6d5e2b8efdaae033568",
+          "version": "2.3.0"
         }
       },
       {
@@ -69,8 +69,17 @@
         "repositoryURL": "https://github.com/tuist/xcodeproj.git",
         "state": {
           "branch": null,
-          "revision": "23f7e12a7e0db29b4f16052692d99f9fbe41fa15",
-          "version": "7.5.0"
+          "revision": "912d40cc2ea4a300eff6dd7c6a10b4f4dedbcbec",
+          "version": "7.10.0"
+        }
+      },
+      {
+        "package": "XcodeProjCExt",
+        "repositoryURL": "https://github.com/tuist/XcodeProjCExt",
+        "state": {
+          "branch": null,
+          "revision": "21a510c225ff2bc83d5920a21d902af4b1e7e218",
+          "version": "0.1.0"
         }
       },
       {

@@ -14,7 +14,7 @@ public enum BoolOption: RawRepresentable, SelectableOption {
         }
     }
     public var title: String {
-        return ck.underline.on("\(rawValue.first!)".uppercased()) + "\(rawValue.dropFirst())"
+        return ck.underline.on("\(rawValue.first!)".uppercased()).string + "\(rawValue.dropFirst())"
     }
 
     public init?(rawValue: String) {
