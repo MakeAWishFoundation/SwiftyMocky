@@ -15,7 +15,7 @@ let package = Package(
        .package(url: "https://github.com/JohnSundell/ShellOut.git", from: "2.0.0"),
        .package(url: "https://github.com/tuist/xcodeproj.git", from: "7.1.0"),
        .package(url: "https://github.com/luoxiu/Chalk", .exact("0.0.7")),
-       .package(url: "https://github.com/kylef/Commander", from: "0.8.0"),
+       .package(url: "https://github.com/kylef/Commander", .exact("0.9.1")),
        .package(url: "https://github.com/kylef/PathKit", from: "1.0.0"),
        .package(url: "https://github.com/jpsim/Yams.git", from: "2.0.0"),
    ],
@@ -58,7 +58,7 @@ let package = Package(
     dependencies: [
        .package(url: "https://github.com/JohnSundell/ShellOut.git", from: "2.0.0"),
        .package(url: "https://github.com/luoxiu/Chalk", .exact("0.0.7")),
-       .package(url: "https://github.com/kylef/Commander", from: "0.8.0"),
+       .package(url: "https://github.com/kylef/Commander", .exact("0.9.1")),
        .package(url: "https://github.com/kylef/PathKit", from: "1.0.0"),
        .package(url: "https://github.com/jpsim/Yams.git", from: "2.0.0"),
     ],
