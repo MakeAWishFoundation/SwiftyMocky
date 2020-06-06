@@ -1,5 +1,5 @@
 import Foundation
-import Crayon
+import Chalk
 
 // MARK: - Setup policy
 
@@ -32,9 +32,9 @@ enum AddingOption: RawRepresentable, SelectableOption {
     var title: String {
         switch self {
         case .only(let value):
-            return crayon.underline.on("\(value)") + ""
+            return ck.underline.on("\(value)").string
         default:
-            return crayon.underline.on("\(rawValue.first!)".uppercased()) + "\(rawValue.dropFirst())"
+            return ck.underline.on("\(rawValue.first!)".uppercased()).string + "\(rawValue.dropFirst())"
         }
     }
 

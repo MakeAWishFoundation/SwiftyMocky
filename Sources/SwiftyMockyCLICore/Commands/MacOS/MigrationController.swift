@@ -3,7 +3,6 @@ import Yams
 import PathKit
 import Commander
 import XcodeProj
-import Crayon
 
 // MARK: - Migration
 
