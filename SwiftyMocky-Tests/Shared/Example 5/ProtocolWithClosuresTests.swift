@@ -17,6 +17,7 @@ import SwiftyMocky
 #endif
 
 class ProtocolWithClosuresTests: XCTestCase {
+
     func test_closures_not_escaping() {
         let mock = ProtocolWithClosuresMock()
 

@@ -17,7 +17,7 @@ import SwiftyMocky
 #endif
 
 class ComplicatedServiceTests: XCTestCase {
-    //    var sut: // somthing depending on service - add later
+
     var service: ComplicatedServiceTypeMock!
 
     override func setUp() {

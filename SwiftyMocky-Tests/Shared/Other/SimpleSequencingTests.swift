@@ -17,6 +17,7 @@ import SwiftyMocky
 #endif
 
 class SimpleSequencingTests: XCTestCase {
+
     override func setUp() {
         super.setUp()
     }

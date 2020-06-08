@@ -9,7 +9,13 @@
 import Foundation
 
 // MARK: - ExpressibleByStringLiteral
-extension Optional: ExpressibleByStringLiteral, ExpressibleByExtendedGraphemeClusterLiteral, ExpressibleByUnicodeScalarLiteral where Wrapped: ExpressibleByStringLiteral {
+
+extension Optional:
+    ExpressibleByStringLiteral,
+    ExpressibleByExtendedGraphemeClusterLiteral,
+    ExpressibleByUnicodeScalarLiteral
+    where Wrapped: ExpressibleByStringLiteral
+{
     public typealias StringLiteralType = Wrapped.StringLiteralType
     public typealias ExtendedGraphemeClusterLiteralType = Wrapped.ExtendedGraphemeClusterLiteralType
     public typealias UnicodeScalarLiteralType = Wrapped.UnicodeScalarLiteralType
@@ -27,7 +33,12 @@ extension Optional: ExpressibleByStringLiteral, ExpressibleByExtendedGraphemeClu
     }
 }
 
-extension Parameter: ExpressibleByStringLiteral, ExpressibleByExtendedGraphemeClusterLiteral, ExpressibleByUnicodeScalarLiteral where ValueType: ExpressibleByStringLiteral {
+extension Parameter:
+    ExpressibleByStringLiteral,
+    ExpressibleByExtendedGraphemeClusterLiteral,
+    ExpressibleByUnicodeScalarLiteral
+    where ValueType: ExpressibleByStringLiteral
+{
     public typealias StringLiteralType = ValueType.StringLiteralType
     public typealias ExtendedGraphemeClusterLiteralType = ValueType.ExtendedGraphemeClusterLiteralType
     public typealias UnicodeScalarLiteralType = ValueType.UnicodeScalarLiteralType
@@ -46,6 +57,7 @@ extension Parameter: ExpressibleByStringLiteral, ExpressibleByExtendedGraphemeCl
 }
 
 // MARK: - ExpressibleByNilLiteral
+
 extension Parameter: ExpressibleByNilLiteral where ValueType: ExpressibleByNilLiteral {
     public init(nilLiteral: ()) {
         self = .value(nil)
@@ -53,6 +65,7 @@ extension Parameter: ExpressibleByNilLiteral where ValueType: ExpressibleByNilLi
 }
 
 // MARK: - ExpressibleByIntegerLiteral
+
 extension Optional: ExpressibleByIntegerLiteral where Wrapped: ExpressibleByIntegerLiteral {
     public typealias IntegerLiteralType = Wrapped.IntegerLiteralType
 
@@ -70,6 +83,7 @@ extension Parameter: ExpressibleByIntegerLiteral where ValueType: ExpressibleByI
 }
 
 // MARK: - ExpressibleByBooleanLiteral
+
 extension Optional: ExpressibleByBooleanLiteral where Wrapped: ExpressibleByBooleanLiteral {
     public typealias BooleanLiteralType = Wrapped.BooleanLiteralType
 
@@ -87,6 +101,7 @@ extension Parameter: ExpressibleByBooleanLiteral where ValueType: ExpressibleByB
 }
 
 // MARK: - ExpressibleByFloatLiteral
+
 extension Optional: ExpressibleByFloatLiteral where Wrapped: ExpressibleByFloatLiteral {
     public typealias FloatLiteralType = Wrapped.FloatLiteralType
 
@@ -104,6 +119,7 @@ extension Parameter: ExpressibleByFloatLiteral where ValueType: ExpressibleByFlo
 }
 
 // MARK: - ExpressibleByArrayLiteral
+
 private extension ExpressibleByArrayLiteral {
     init(_ elements: [ArrayLiteralElement]) {
         let castedInit = unsafeBitCast(Self.init(arrayLiteral:), to: (([ArrayLiteralElement]) -> Self).self)
@@ -135,6 +151,7 @@ extension Parameter: ExpressibleByArrayLiteral where ValueType: ExpressibleByArr
 }
 
 // MARK: - ExpressibleByDictionaryLiteral
+
 private extension ExpressibleByDictionaryLiteral where Key: Hashable {
     init(_ elements: [(Key, Value)]) {
         let value: [Key: Value] = Dictionary.init(uniqueKeysWithValues: elements)

@@ -5,6 +5,10 @@ class VariableWrapper {
     var privatePrototypeName: String { return "__p_\(variable.name)".replacingOccurrences(of: "`", with: "") }
     var casesCount: Int { return readonly ? 1 : 2 }
 
+    var accessModifier: String {
+        guard variable.type?.accessLevel != "internal" else { return "" }
+        return "public "
+    }
     let deprecatedMessage = "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value."
     var noStubDefinedMessage: String { return "\(scope) - stub value for \(variable.name) was not defined" }
 
@@ -25,7 +29,7 @@ class VariableWrapper {
     var prototype: String {
         let staticModifier = variable.isStatic ? "static " : ""
 
-        return "public \(staticModifier)var \(variable.name): \(variable.typeName.name) {" +
+        return "\(accessModifier)\(staticModifier)var \(variable.name): \(variable.typeName.name) {" +
             "\(getter)" +
             "\(setter)" +
         "\n\t}"
@@ -76,7 +80,7 @@ class VariableWrapper {
 
     // Given
     func givenConstructorName(prefix: String = "") -> String {
-        return "public static func \(variable.name)(getter defaultValue: \(TypeWrapper(variable.typeName).stripped)...) -> \(prefix)PropertyStub"
+        return "\(accessModifier)static func \(variable.name)(getter defaultValue: \(TypeWrapper(variable.typeName).stripped)...) -> \(prefix)PropertyStub"
     }
 
     func givenConstructor(prefix: String = "") -> String {

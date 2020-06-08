@@ -17,6 +17,7 @@ import SwiftyMocky
 #endif
 
 class SelfConstrainedProtocolTests: XCTestCase {
+
     override func setUp() {
         super.setUp()
     }

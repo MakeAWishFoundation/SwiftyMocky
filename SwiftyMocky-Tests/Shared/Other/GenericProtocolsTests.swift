@@ -17,6 +17,7 @@ import SwiftyMocky
 #endif
 
 class GenericProtocolsTests: XCTestCase {
+    
     override func setUp() {
         super.setUp()
     }

@@ -1341,6 +1341,7 @@ class VariableWrapper {
     var readonly: Bool { return variable.writeAccess.isEmpty }
     var privatePrototypeName: String { return "__p_\(variable.name)".replacingOccurrences(of: "`", with: "") }
     var casesCount: Int { return readonly ? 1 : 2 }
+
     var accessModifier: String {
         guard variable.type?.accessLevel != "internal" else { return "" }
         return "public "

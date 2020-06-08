@@ -22,6 +22,7 @@ enum SimpleTestError: Error {
 }
 
 class ProtocolWithThrowingMehtodsTests: XCTestCase {
+
     func test_will_throw() {
         let mock = ProtocolWithThrowingMethodsMock()
 

@@ -21,6 +21,7 @@ enum UserVerifyError: Error {
 }
 
 class ProtocolsWithCustomAttributesTests: XCTestCase {
+
     func test_protocol_using_tuples() {
         let mock = ProtocolWithTuplesMock()
 

@@ -23,6 +23,7 @@ enum TestError: Error {
 }
 
 class ExampleTests: XCTestCase {
+    
     func testGivenExample() {
         let mock = UserStorageTypeMock()
 

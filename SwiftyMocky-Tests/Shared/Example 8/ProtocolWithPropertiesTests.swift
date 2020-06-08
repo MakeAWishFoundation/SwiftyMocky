@@ -17,6 +17,7 @@ import SwiftyMocky
 #endif
 
 class ProtocolsWithPropertiesTests: XCTestCase {
+    
     func test_properties_getters() {
         let mock = ProtocolWithPropoertiesMock()
 

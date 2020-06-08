@@ -17,6 +17,7 @@ import SwiftyMocky
 #endif
 
 class ExpressibleByLiteralsTests: XCTestCase {
+    
     override func setUp() {
         super.setUp()
     }

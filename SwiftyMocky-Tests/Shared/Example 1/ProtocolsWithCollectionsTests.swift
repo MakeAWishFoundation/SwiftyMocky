@@ -17,6 +17,7 @@ import SwiftyMocky
 #endif
 
 class ProtocolsWithCollectionsTests: XCTestCase {
+    
     func test_protocol_with_array() {
         let mock = SimpleProtocolUsingCollectionsMock()
 

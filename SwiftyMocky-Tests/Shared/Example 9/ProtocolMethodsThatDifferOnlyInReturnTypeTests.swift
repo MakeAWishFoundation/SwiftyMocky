@@ -17,6 +17,7 @@ import SwiftyMocky
 #endif
 
 class ProtocolMethodsThatDifferOnlyInReturnTypeTests: XCTestCase {
+
     func test_simple_case() {
         let mock = ProtocolMethodsThatDifferOnlyInReturnTypeMock()
 

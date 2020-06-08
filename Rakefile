@@ -39,11 +39,10 @@ task :template do
     sh "cd ./Templates && cat VariableWrapper.swift >> #{destination}"
     sh "cd ./Templates && echo \"_%>\" >> #{destination}"
     sh "cd ./Templates && cat Main.swifttemplate >> #{destination}"
-    sh "swift run swiftymocky assetize"
 end
 
 task :xcode do
-    sh "open Mocky.xcworkspace"
+    sh "open SwiftyMocky.xcworkspace"
 end
 
 ## [ Deploy ] ##################################################################

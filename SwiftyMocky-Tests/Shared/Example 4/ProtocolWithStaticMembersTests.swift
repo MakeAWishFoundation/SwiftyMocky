@@ -17,6 +17,7 @@ import SwiftyMocky
 #endif
 
 class ProtocolWithStaticMembersTests: XCTestCase {
+    
     func test_protocol_with_static() {
         // Static members are handled similar way - but instead of instance
         // you pass its type to Verify and Given calls
