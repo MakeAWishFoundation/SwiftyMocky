@@ -22,9 +22,14 @@ end
 
 ## [ Tools ] ###################################################################
 
-task :template do
+task :update do
     print_info "Re-Generating main template from parts"
 
+    # Update source files
+    sh "cp -Rf ./Sources/Shared/ ./Sources/SwiftyMocky"
+    sh "cp -Rf ./Sources/Shared/ ./Sources/SwiftyPrototype"
+
+    # Prepare SwiftyMocky template
     destination = "../Sources/SwiftyMocky/Mock.swifttemplate"
     sh "rm -rf #{destination}"
     sh "cd ./Templates && echo \"<%_\" > #{destination}"
@@ -45,6 +50,7 @@ task :template do
     sh "cd ./Templates && echo \"_%>\" >> #{destination}"
     sh "cd ./Templates && cat Main.swifttemplate >> #{destination}"
 
+    # Prepare SwiftyPrototype template
     destination = "../Sources/SwiftyPrototype/Prototype.swifttemplate"
     sh "rm -rf #{destination}"
     sh "cd ./Templates && echo \"<%_\" > #{destination}"
