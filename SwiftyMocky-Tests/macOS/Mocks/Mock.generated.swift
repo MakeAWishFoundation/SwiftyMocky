@@ -2,10 +2,12 @@
 // DO NOT EDIT
 
 
+
 // Generated with SwiftyMocky 4.0.0
 
 import SwiftyMocky
 import XCTest
+import Foundation
 @testable import Mocky_Example_macOS
 
 // MARK: - AMassiveTestProtocol

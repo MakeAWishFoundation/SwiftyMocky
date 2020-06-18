@@ -19,7 +19,7 @@ protocol SimpleProtocolWithMethods {
 //sourcery: AutoMockable
 protocol SimpleProtocolWithProperties {
     var property: String { get set }
-    weak var weakProperty: AnyObject! { get set }
+    var weakProperty: AnyObject! { get set }
     var propertyGetOnly: String { get }
     var propertyOptional: Int? { get set }
     var propertyImplicit: Int! { get set }

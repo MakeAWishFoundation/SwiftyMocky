@@ -49,3 +49,17 @@ mocky.tvOS:
   - Mocky_Example_tvOS
   import:
   - Foundation
+
+mocky.spm:
+  sources:
+    include:
+    - "./SwiftyMocky-Example/Shared/Example\ 1"
+    exclude:
+    - ./SwiftyMocky-Example/Shared/Other/Excluded.generated.swift
+  output: ./Tests/SwiftyMockyTests/Mock.generated.swift
+  targets:
+  - SwiftyMockyTests
+  testable:
+  - Mocky_Example_SPM
+  import:
+  - Foundation
