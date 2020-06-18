@@ -6,7 +6,7 @@ sources:
   exclude:
     - ./SwiftyMocky-Example/Shared/Other/Excluded.generated.swift
 templates:
-  - ./Sources/Mock
+  - ./Sources/SwiftyMocky
 output:
   ./SwiftyMocky-Tests/tvOS/Mocks
 args:

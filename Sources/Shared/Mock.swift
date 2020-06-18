@@ -131,12 +131,3 @@ public protocol StaticMock: class {
     /// ```
     static func resetMock(_ scopes: MockScope...)
 }
-
-public extension StaticMock {
-
-    /// [deprecated] Method `clear` method was renamed to `resetMock`
-    @available(*, deprecated, message: "`clear` was renamed to `resetMock`")
-    static func clear() {
-        resetMock()
-    }
-}

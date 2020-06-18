@@ -17,7 +17,7 @@ import SwiftyMocky
 #endif
 
 class ProtocolsWithPropertiesTests: XCTestCase {
-    
+
     func test_properties_getters() {
         let mock = ProtocolWithPropoertiesMock()
 
@@ -71,7 +71,7 @@ class ProtocolsWithPropertiesTests: XCTestCase {
 
     func test_static_properties_setters() {
         let mock = ProtocolWithPropoertiesMock.self
-        mock.clear()
+        mock.resetMock()
 
         Verify(mock, .never, .name)
         Verify(mock, .never, .name(set: .any))

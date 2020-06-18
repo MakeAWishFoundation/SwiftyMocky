@@ -4,28 +4,28 @@
 import PackageDescription
 
 let package = Package(
-   name: "swiftymocky",
-   products: [
-       .library(name: "SwiftyMocky", targets: ["SwiftyMocky"]),
-       .library(name: "SwiftyPrototype", targets: ["SwiftyPrototype"]),
-   ],
-   dependencies: [],
-   targets: [
-       .target(
-           name: "SwiftyMocky",
-           dependencies: ["Core"],
-           path: "./Sources/Mock",
-           exclude: ["Mock.swifttemplate"]
+    name: "swiftymocky",
+    products: [
+        .library(name: "SwiftyMocky", targets: ["SwiftyMocky"]),
+        .library(name: "SwiftyPrototype", targets: ["SwiftyPrototype"]),
+    ],
+    dependencies: [],
+    targets: [
+        .target(
+            name: "SwiftyMocky",
+            exclude: ["Mock.swifttemplate",]
         ),
-       .target(
-           name: "SwiftyPrototype",
-           dependencies: ["Core"],
-           path: "./Sources/Prototype",
-           exclude: ["Prototype.swifttemplate"]
+        .target(
+            name: "SwiftyPrototype",
+            exclude: ["Prototype.swifttemplate",]
         ),
-       .target(
-           name: "Core",
-           path: "./Sources/Classes"
+        .target(
+            name: "Mocky_Example_macOS",
+            path: "./SwiftyMocky-Example/Shared"
         ),
-   ]
+        .testTarget(
+            name: "SwiftyMockyTests",
+            dependencies: ["Mocky_Example_macOS", "SwiftyMocky"]
+        ),
+    ]
 )
