@@ -1,11 +1,3 @@
-//
-//  Countable.swift
-//  SwiftyMocky
-//
-//  Created by Andrzej Michnia on 07.12.2017.
-//  Copyright © 2017 MakeAWishFoundation. All rights reserved.
-//
-
 import Foundation
 
 /// Allows matching count, verifying whether given count is right or not

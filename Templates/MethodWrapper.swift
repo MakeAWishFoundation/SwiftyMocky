@@ -55,6 +55,7 @@ class MethodWrapper {
     var accessModifier: String {
         guard !method.isStatic else { return "public static" }
         guard !returnsGenericConstrainedToSelf else { return "public" }
+        guard !parametersContainsSelf else { return "public" }
         return "open"
     }
 

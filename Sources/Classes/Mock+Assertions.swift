@@ -1,11 +1,3 @@
-//
-//  Mock+Assertions.swift
-//  Pods
-//
-//  Created by przemyslaw.wosko on 19/05/2017.
-//
-//
-
 import Foundation
 
 // MARK: - At least once instance member called

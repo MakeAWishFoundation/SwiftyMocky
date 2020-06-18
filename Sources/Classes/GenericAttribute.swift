@@ -1,11 +1,3 @@
-//
-//  GenericAttribute.swift
-//  SwiftyMocky
-//
-//  Created by Andrzej Michnia on 09.11.2017.
-//  Copyright © 2017 MakeAWishFoundation. All rights reserved.
-//
-
 import Foundation
 
 /// [Internal] Used as generic constraint for generic method stubs.

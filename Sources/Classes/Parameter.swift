@@ -1,11 +1,3 @@
-//
-//  Parameter.swift
-//  Pods
-//
-//  Created by przemyslaw.wosko on 19/05/2017.
-//
-//
-
 import Foundation
 
 // MARK: - Parameter

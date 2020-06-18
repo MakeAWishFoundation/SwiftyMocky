@@ -1,10 +1,3 @@
-//
-//  Matcher.swift
-//  Mocky
-//
-//  Created by Andrzej Michnia on 25.10.2017.
-//
-
 import Foundation
 
 /// Matcher is container class, responsible for storing and resolving comparators for given types.
@@ -239,7 +232,7 @@ public class Matcher {
         }
     }
 #endif
-    
+
     /// Register default comparatot for Equatable types. Required for generic mocks to work.
     ///
     /// - Parameter valueType: Equatable type

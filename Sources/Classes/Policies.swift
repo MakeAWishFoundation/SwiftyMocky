@@ -1,11 +1,3 @@
-//
-//  Policies.swift
-//  SwiftyMocky
-//
-//  Created by Andrzej Michnia on 22.09.2018.
-//  Copyright © 2018 MakeAWishFoundation. All rights reserved.
-//
-
 import Foundation
 
 // MARK: - Stubbing Policy

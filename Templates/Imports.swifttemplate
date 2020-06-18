@@ -1,9 +1,3 @@
-// Generated with SwiftyMocky 3.5.0
-
-import SwiftyMocky
-#if !MockyCustom
-import XCTest
-#endif
 <%# ================================================== IMPORTS -%><%_ -%>
     <%_ for projectImport in projectImports(argument) { -%>
         <%_ %><%= projectImport %>

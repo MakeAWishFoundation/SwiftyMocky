@@ -1,0 +1,1944 @@
+<%_
+let mockTypeName = "Mock"
+func swiftLintRules(_ arguments: [String: Any]) -> [String] {
+    return stringArray(fromArguments: arguments, forKey: "excludedSwiftLintRules").map { rule in
+        return "//swiftlint:disable \(rule)"
+    }
+}
+
+func projectImports(_ arguments: [String: Any]) -> [String] {
+    return imports(arguments) + testableImports(arguments)
+}
+
+func imports(_ arguments: [String: Any]) -> [String] {
+    return stringArray(fromArguments: arguments, forKey: "import")
+        .map { return "import \($0)" }
+}
+
+func testableImports(_ arguments: [String: Any]) -> [String] {
+    return stringArray(fromArguments: arguments, forKey: "testable")
+        .map { return "@testable import \($0)" }
+}
+
+/// [Internal] Get value from dictionary
+/// - Parameters:
+///   - fromArguments: dictionary
+///   - forKey: dictionary key
+/// - Returns: array of strings, if key not found, returns empty array.
+/// - Note: If sourcery arguments containts only one element, then single value is stored, otherwise array of elements. This method always gets array of elements.
+func stringArray(fromArguments arguments: [String: Any], forKey key: String) -> [String] {
+
+    if let argument = arguments[key] as? String {
+        return [argument]
+    } else if let manyArguments = arguments[key] as? [String] {
+        return manyArguments
+    } else {
+        return []
+    }
+}
+_%>
+// Generated with SwiftyMocky 4.0.0
+
+import SwiftyMocky
+import XCTest
+<%# ================================================== IMPORTS -%><%_ -%>
+    <%_ for projectImport in projectImports(argument) { -%>
+        <%_ %><%= projectImport %>
+    <%_ } -%>
+    <%# ============================ IMPORTS InAPP (aggregated argument) -%><%_ -%>
+    <%_ if let swiftyMockyArgs = argument["swiftyMocky"] as? [String: Any] { -%>
+        <%_ for projectImport in projectImports(swiftyMockyArgs) { -%>
+            <%_ %><%= projectImport %>
+        <%_ } -%>
+    <%_ } -%>
+<%_
+class Current {
+    static var selfType: String = "Self"
+}
+// Collision management
+func areThereCollisions(between methods: [MethodWrapper]) -> Bool {
+    let givenSet = Set<String>(methods.map({ $0.givenConstructorName(prefix: "", deprecated: true, annotated: false) }))
+    guard givenSet.count == methods.count else { return true } // there would be conflicts in Given
+    let verifySet = Set<String>(methods.map({ $0.verificationProxyConstructorName(prefix: "", deprecated: true, annotated: false) }))
+    guard verifySet.count == methods.count else { return true } // there would be conflicts in Verify
+    return false
+}
+
+// herlpers
+func uniques(methods: [SourceryRuntime.Method]) -> [SourceryRuntime.Method] {
+    func returnTypeStripped(_ method: SourceryRuntime.Method) -> String {
+        let returnTypeRaw = "\(method.returnTypeName)"
+        var stripped: String = {
+            guard let range = returnTypeRaw.range(of: "where") else { return returnTypeRaw }
+            var stripped = returnTypeRaw
+            stripped.removeSubrange((range.lowerBound)...)
+            return stripped
+        }()
+        stripped = stripped.trimmingCharacters(in: CharacterSet(charactersIn: " "))
+        return stripped
+    }
+
+    func areSameParams(_ p1: SourceryRuntime.MethodParameter, _ p2: SourceryRuntime.MethodParameter) -> Bool {
+        guard p1.argumentLabel == p2.argumentLabel else { return false }
+        guard p1.name == p2.name else { return false }
+        guard p1.argumentLabel == p2.argumentLabel else { return false }
+        guard p1.typeName.name == p2.typeName.name else { return false }
+        guard p1.actualTypeName?.name == p2.actualTypeName?.name else { return false }
+        return true
+    }
+
+    func areSameMethods(_ m1: SourceryRuntime.Method, _ m2: SourceryRuntime.Method) -> Bool {
+        guard m1.name != m2.name else { return m1.returnTypeName == m2.returnTypeName }
+        guard m1.selectorName == m2.selectorName else { return false }
+        guard m1.parameters.count == m2.parameters.count else { return false }
+
+        let p1 = m1.parameters
+        let p2 = m2.parameters
+
+        for i in 0..<p1.count {
+            if !areSameParams(p1[i],p2[i]) { return false }
+        }
+
+        return m1.returnTypeName == m2.returnTypeName
+    }
+
+    return methods.reduce([], { (result, element) -> [SourceryRuntime.Method] in
+        guard !result.contains(where: { areSameMethods($0,element) }) else { return result }
+        return result + [element]
+    })
+}
+
+func uniquesWithoutGenericConstraints(methods: [SourceryRuntime.Method]) -> [SourceryRuntime.Method] {
+    func returnTypeStripped(_ method: SourceryRuntime.Method) -> String {
+        let returnTypeRaw = "\(method.returnTypeName)"
+        var stripped: String = {
+            guard let range = returnTypeRaw.range(of: "where") else { return returnTypeRaw }
+            var stripped = returnTypeRaw
+            stripped.removeSubrange((range.lowerBound)...)
+            return stripped
+        }()
+        stripped = stripped.trimmingCharacters(in: CharacterSet(charactersIn: " "))
+        return stripped
+    }
+
+    func areSameParams(_ p1: SourceryRuntime.MethodParameter, _ p2: SourceryRuntime.MethodParameter) -> Bool {
+        guard p1.argumentLabel == p2.argumentLabel else { return false }
+        guard p1.name == p2.name else { return false }
+        guard p1.argumentLabel == p2.argumentLabel else { return false }
+        guard p1.typeName.name == p2.typeName.name else { return false }
+        guard p1.actualTypeName?.name == p2.actualTypeName?.name else { return false }
+        return true
+    }
+
+    func areSameMethods(_ m1: SourceryRuntime.Method, _ m2: SourceryRuntime.Method) -> Bool {
+        guard m1.name != m2.name else { return returnTypeStripped(m1) == returnTypeStripped(m2) }
+        guard m1.selectorName == m2.selectorName else { return false }
+        guard m1.parameters.count == m2.parameters.count else { return false }
+
+        let p1 = m1.parameters
+        let p2 = m2.parameters
+
+        for i in 0..<p1.count {
+            if !areSameParams(p1[i],p2[i]) { return false }
+        }
+
+        return returnTypeStripped(m1) == returnTypeStripped(m2)
+    }
+
+    return methods.reduce([], { (result, element) -> [SourceryRuntime.Method] in
+        guard !result.contains(where: { areSameMethods($0,element) }) else { return result }
+        return result + [element]
+    })
+}
+
+func uniques(variables: [SourceryRuntime.Variable]) -> [SourceryRuntime.Variable] {
+    return variables.reduce([], { (result, element) -> [SourceryRuntime.Variable] in
+        guard !result.contains(where: { $0.name == element.name }) else { return result }
+        return result + [element]
+    })
+}
+
+func wrapMethod(_ method: SourceryRuntime.Method) -> MethodWrapper {
+    return MethodWrapper(method)
+}
+
+func wrapSubscript(_ wrapped: SourceryRuntime.Subscript) -> SubscriptWrapper {
+    return SubscriptWrapper(wrapped)
+}
+
+func justWrap(_ variable: SourceryRuntime.Variable) -> VariableWrapper { return wrapProperty(variable) }
+func wrapProperty(_ variable: SourceryRuntime.Variable, _ scope: String = "") -> VariableWrapper {
+    return VariableWrapper(variable, scope: scope)
+}
+
+func stubProperty(_ variable: SourceryRuntime.Variable, _ scope: String) -> String {
+    let wrapper = VariableWrapper(variable, scope: scope)
+    return "\(wrapper.prototype)\n\t\(wrapper.privatePrototype)"
+}
+
+func propertyTypes(_ variable: SourceryRuntime.Variable) -> String {
+    let wrapper = VariableWrapper(variable, scope: "scope")
+    return "\(wrapper.propertyGet())" + (wrapper.readonly ? "" : "\n\t\t\(wrapper.propertySet())")
+}
+
+func propertyMethodTypes(_ variable: SourceryRuntime.Variable) -> String {
+    let wrapper = VariableWrapper(variable, scope: "")
+    return "\(wrapper.propertyCaseGet())" + (wrapper.readonly ? "" : "\n\t\t\(wrapper.propertyCaseSet())")
+}
+
+func propertyMethodTypesCompare(_ variable: SourceryRuntime.Variable) -> String {
+    let wrapper = VariableWrapper(variable, scope: "")
+    return "\(wrapper.propertyCaseGetCompare())" + (wrapper.readonly ? "" : "\n\t\t\t\(wrapper.propertyCaseSetCompare())")
+}
+
+func propertyMethodTypesIntValue(_ variable: SourceryRuntime.Variable) -> String {
+    let wrapper = VariableWrapper(variable, scope: "")
+    return "\(wrapper.propertyCaseGetIntValue())" + (wrapper.readonly ? "" : "\n\t\t\t\(wrapper.propertyCaseSetIntValue())")
+}
+
+func propertyRegister(_ variable: SourceryRuntime.Variable) {
+    let wrapper = VariableWrapper(variable, scope: "")
+    MethodWrapper.register(wrapper.propertyCaseGetName,wrapper.propertyCaseGetName,wrapper.propertyCaseGetName)
+    guard !wrapper.readonly else { return }
+    MethodWrapper.register(wrapper.propertyCaseSetName,wrapper.propertyCaseSetName,wrapper.propertyCaseGetName)
+}
+class Helpers {
+    static func split(_ string: String, byFirstOccurenceOf word: String) -> (String, String) {
+        guard let wordRange = string.range(of: word) else { return (string, "") }
+        let selfRange = string.range(of: string)!
+        let before = String(string[selfRange.lowerBound..<wordRange.lowerBound])
+        let after = String(string[wordRange.upperBound..<selfRange.upperBound])
+        return (before, after)
+    }
+    static func extractAssociatedTypes(from annotated: SourceryRuntime.Annotated) -> [String]? {
+        if let types = annotated.annotations["associatedtype"] as? [String] {
+            return types.reversed()
+        } else if let type = annotated.annotations["associatedtype"] as? String {
+            return [type]
+        } else {
+            return nil
+        }
+    }
+    /// Extract all typealiases from "annotations"
+    static func extractTypealiases(from annotated: SourceryRuntime.Annotated) -> [String] {
+        if let types = annotated.annotations["typealias"] as? [String] {
+            return types.reversed()
+        } else if let type = annotated.annotations["typealias"] as? String {
+            return [type]
+        } else {
+            return []
+        }
+    }
+    static func extractGenericsList(_ associatedTypes: [String]?) -> [String] {
+        return associatedTypes?.flatMap {
+            split($0, byFirstOccurenceOf: " where ").0.replacingOccurrences(of: " ", with: "").characters.split(separator: ":").map(String.init).first
+        }.map { "\($0)" } ?? []
+    }
+    static func extractGenericTypesModifier(_ associatedTypes: [String]?) -> String {
+        let all = extractGenericsList(associatedTypes)
+        guard !all.isEmpty else { return "" }
+        return "<\(all.joined(separator: ","))>"
+    }
+    static func extractGenericTypesConstraints(_ associatedTypes: [String]?) -> String {
+        guard let all = associatedTypes else { return "" }
+        let constraints = all.flatMap { t -> String? in
+            let splitted = split(t, byFirstOccurenceOf: " where ")
+            let constraint = splitted.0.replacingOccurrences(of: " ", with: "").characters.split(separator: ":").map(String.init)
+            guard constraint.count == 2 else { return nil }
+            let adopts = constraint[1].characters.split(separator: ",").map(String.init)
+            var mapped = adopts.map { "\(constraint[0]): \($0)" }
+            if !splitted.1.isEmpty {
+                mapped.append(splitted.1)
+            }
+            return mapped.joined(separator: ", ")
+            }
+            .joined(separator: ", ")
+        guard !constraints.isEmpty else { return "" }
+        return " where \(constraints)"
+    }
+}
+class ParameterWrapper {
+    let parameter: MethodParameter
+
+    var wrappedForCall: String {
+        let typeString = "\(type.actualTypeName ?? type)"
+        let isEscaping = typeString.contains("@escaping")
+        let isOptional = (type.actualTypeName ?? type).isOptional
+        if parameter.isClosure && !isEscaping && !isOptional {
+            return "\(nestedType).any"
+        } else {
+            return "\(nestedType).value(\(escapedName))"
+        }
+    }
+    var wrappedType: String {
+        return "Parameter<\(TypeWrapper(type).stripped)>"
+    }
+    var nestedType: String {
+        return "\(TypeWrapper(type).nestedParameter)"
+    }
+    var justType: String {
+        return "\(TypeWrapper(type).replacingSelf())"
+    }
+    var justPerformType: String {
+        return "\(TypeWrapper(type).replacingSelf())".replacingOccurrences(of: "!", with: "?")
+    }
+    var genericType: String {
+        return "Parameter<GenericAttribute>"
+    }
+    var type: SourceryRuntime.TypeName {
+        return parameter.typeName
+    }
+    var name: String {
+        return parameter.name
+    }
+    var escapedName: String {
+        return "`\(parameter.name)`"
+    }
+    var comparator: String {
+        return "guard Parameter.compare(lhs: lhs\(parameter.name.capitalized), rhs: rhs\(parameter.name.capitalized), with: matcher) else { return false }"
+    }
+
+    init(_ parameter: SourceryRuntime.MethodParameter) {
+        self.parameter = parameter
+    }
+
+    func isGeneric(_ types: [String]) -> Bool {
+        return TypeWrapper(type).isGeneric(types)
+    }
+
+    func wrappedForProxy(_ generics: [String]) -> String {
+        return isGeneric(generics) ? "\(escapedName).wrapAsGeneric()" : "\(escapedName)"
+    }
+    func wrappedForCalls(_ generics: [String]) -> String {
+        return isGeneric(generics) ? "\(wrappedForCall).wrapAsGeneric()" : "\(wrappedForCall)"
+    }
+
+    func asMethodArgument() -> String {
+        return "\(parameter.argumentLabel ?? "_") \(parameter.name): \(parameter.typeName)"
+    }
+    func labelAndName() -> String {
+        let label = parameter.argumentLabel ?? "_"
+        return label != "\(parameter.name)" ? "\(label) \(parameter.name)" : label
+    }
+    func sanitizedForEnumCaseName() -> String {
+        if let label = parameter.argumentLabel {
+            return "\(label)_\(parameter.name)".replacingOccurrences(of: "`", with: "")
+        } else {
+            return "\(parameter.name)".replacingOccurrences(of: "`", with: "")
+        }
+    }
+}
+class TypeWrapper {
+    let type: SourceryRuntime.TypeName
+
+    var unwrapped: String {
+        return type.unwrappedTypeName
+    }
+    var unwrappedReplacingSelf: String {
+        return replacingSelf(unwrap: true)
+    }
+    var stripped: String {
+        if type.isImplicitlyUnwrappedOptional {
+            return type.isClosure ? "(\(unwrappedReplacingSelf))?" : "\(unwrappedReplacingSelf)?"
+        } else if type.isOptional {
+            return type.isClosure ? "(\(unwrappedReplacingSelf))?" : "\(unwrappedReplacingSelf)?"
+        } else {
+            return unwrappedReplacingSelf
+        }
+    }
+    var nestedParameter: String {
+        if type.isImplicitlyUnwrappedOptional {
+            return "Parameter<" + (type.isClosure ? "(\(unwrappedReplacingSelf))?" : "\(unwrappedReplacingSelf)?") + ">"
+        } else if type.isOptional {
+            return "Parameter<" + (type.isClosure ? "(\(unwrappedReplacingSelf))?" : "\(unwrappedReplacingSelf)?") + ">"
+        } else {
+            return "Parameter<\(unwrappedReplacingSelf)>"
+        }
+    }
+    var isSelfType: Bool {
+        return unwrapped == "Self"
+    }
+    func isSelfTypeRecursive() -> Bool {
+        if let tuple = type.tuple {
+            for element in tuple.elements {
+                guard !TypeWrapper(element.typeName).isSelfTypeRecursive() else { return true }
+            }
+        } else if let array = type.array {
+            return TypeWrapper(array.elementTypeName).isSelfTypeRecursive()
+        } else if let dictionary = type.dictionary {
+            guard !TypeWrapper(dictionary.valueTypeName).isSelfTypeRecursive() else { return true }
+            guard !TypeWrapper(dictionary.keyTypeName).isSelfTypeRecursive() else { return true }
+        } else if let closure = type.closure {
+            guard !TypeWrapper(closure.actualReturnTypeName).isSelfTypeRecursive() else { return true }
+            for parameter in closure.parameters {
+                guard !TypeWrapper(parameter.typeName).isSelfTypeRecursive() else { return true }
+            }
+        }
+
+        return isSelfType
+    }
+
+    init(_ type: SourceryRuntime.TypeName) {
+        self.type = type
+    }
+
+    func isGeneric(_ types: [String]) -> Bool {
+        guard !type.isVoid else { return false }
+
+        return isGeneric(name: unwrapped, generics: types)
+    }
+
+    private func isGeneric(name: String, generics: [String]) -> Bool {
+        let name = "(\(name.replacingOccurrences(of: " ", with: "")))"
+        let modifiers = "[\\?\\!]*"
+        return generics.contains(where: { generic in
+            let wrapped = "([\\(]\(generic)\(modifiers)[\\)\\.])"
+            let constraint = "([<,]\(generic)\(modifiers)[>,\\.])"
+            let arrays = "([\\[:]\(generic)\(modifiers)[\\],\\.:])"
+            let tuples = "([\\(,]\(generic)\(modifiers)[,\\.\\)])"
+            let closures = "((\\-\\>)\(generic)\(modifiers)[,\\.\\)])"
+            let pattern = "\(wrapped)|\(constraint)|\(arrays)|\(tuples)|\(closures)"
+            guard let regex = try? NSRegularExpression(pattern: pattern) else { return false }
+            return regex.firstMatch(in: name, options: [], range: NSRange(location: 0, length: (name as NSString).length)) != nil
+        })
+    }
+
+    func replacingSelf(unwrap: Bool = false) -> String {
+        guard isSelfTypeRecursive() else {
+            return unwrap ? self.unwrapped : "\(type)"
+        }
+
+        if isSelfType {
+            let optionality: String = {
+                if type.isImplicitlyUnwrappedOptional {
+                    return "!"
+                } else if type.isOptional {
+                    return "?"
+                } else {
+                    return ""
+                }
+            }()
+            return unwrap ? Current.selfType : Current.selfType + optionality
+        } else if let tuple = type.tuple {
+            let inner = tuple.elements.map({ TypeWrapper($0.typeName).replacingSelf() }).joined(separator: ",")
+            let value = "(\(inner))"
+            return value
+        } else if let array = type.array {
+            let value = "[\(TypeWrapper(array.elementTypeName).replacingSelf())]"
+            return value
+        } else if let dictionary = type.dictionary {
+            let value = "[" +
+                "\(TypeWrapper(dictionary.valueTypeName).replacingSelf())"
+                + ":" +
+                "\(TypeWrapper(dictionary.keyTypeName).replacingSelf())"
+                + "]"
+            return value
+        } else if let closure = type.closure {
+            let returnType = TypeWrapper(closure.actualReturnTypeName).replacingSelf()
+            let inner = closure.parameters.map({ TypeWrapper($0.typeName).replacingSelf() }).joined(separator: ",")
+            let throwing = closure.throws ? "throws " : ""
+            let value = "(\(inner)) \(throwing)-> \(returnType)"
+            return value
+        } else {
+            return (unwrap ? self.unwrapped : "\(type)")
+        }
+    }
+}
+func replacingSelf(_ value: String) -> String {
+    return value
+        // TODO: proper regex here
+        // default < case >
+        .replacingOccurrences(of: "<Self>", with: "<\(Current.selfType)>")
+        .replacingOccurrences(of: "<Self ", with: "<\(Current.selfType) ")
+        .replacingOccurrences(of: "<Self.", with: "<\(Current.selfType).")
+        .replacingOccurrences(of: "<Self,", with: "<\(Current.selfType),")
+        .replacingOccurrences(of: "<Self?", with: "<\(Current.selfType)?")
+        .replacingOccurrences(of: " Self>", with: " \(Current.selfType)>")
+        .replacingOccurrences(of: ",Self>", with: ",\(Current.selfType)>")
+        // (Self) -> Case
+        .replacingOccurrences(of: "(Self)", with: "(\(Current.selfType))")
+        .replacingOccurrences(of: "(Self ", with: "(\(Current.selfType) ")
+        .replacingOccurrences(of: "(Self.", with: "(\(Current.selfType).")
+        .replacingOccurrences(of: "(Self,", with: "(\(Current.selfType),")
+        .replacingOccurrences(of: "(Self?", with: "(\(Current.selfType)?")
+        .replacingOccurrences(of: " Self)", with: " \(Current.selfType))")
+        .replacingOccurrences(of: ",Self)", with: ",\(Current.selfType))")
+        // literals
+        .replacingOccurrences(of: "[Self]", with: "[\(Current.selfType)]")
+        // right
+        .replacingOccurrences(of: "[Self ", with: "[\(Current.selfType) ")
+        .replacingOccurrences(of: "[Self.", with: "[\(Current.selfType).")
+        .replacingOccurrences(of: "[Self,", with: "[\(Current.selfType),")
+        .replacingOccurrences(of: "[Self:", with: "[\(Current.selfType):")
+        .replacingOccurrences(of: "[Self?", with: "[\(Current.selfType)?")
+        // left
+        .replacingOccurrences(of: " Self]", with: " \(Current.selfType)]")
+        .replacingOccurrences(of: ",Self]", with: ",\(Current.selfType)]")
+        .replacingOccurrences(of: ":Self]", with: ":\(Current.selfType)]")
+        // unknown
+        .replacingOccurrences(of: " Self ", with: " \(Current.selfType) ")
+        .replacingOccurrences(of: " Self.", with: " \(Current.selfType).")
+        .replacingOccurrences(of: " Self,", with: " \(Current.selfType),")
+        .replacingOccurrences(of: " Self:", with: " \(Current.selfType):")
+        .replacingOccurrences(of: " Self?", with: " \(Current.selfType)?")
+        .replacingOccurrences(of: ",Self ", with: ",\(Current.selfType) ")
+        .replacingOccurrences(of: ",Self,", with: ",\(Current.selfType),")
+        .replacingOccurrences(of: ",Self?", with: ",\(Current.selfType)?")
+}
+
+class MethodWrapper {
+    private func deprecatedMessage(_ preferred: String = "") -> String {
+        return "@available(*, deprecated, message: \"This constructor is deprecated, and will be removed in v3.1\(preferred)\")\n\t\t"
+    }
+    private var noStubDefinedMessage: String {
+        return "Stub return value not specified for \(method.name.replacingOccurrences(of: "\t", with: " ")). Use given"
+    }
+    private static var registered: [String: Int] = [:]
+    private static var suffixes: [String: Int] = [:]
+    private static var suffixesWithoutReturnType: [String: Int] = [:]
+
+    let method: SourceryRuntime.Method
+    var accessModifier: String {
+        guard !method.isStatic else { return "public static" }
+        guard !returnsGenericConstrainedToSelf else { return "public" }
+        guard !parametersContainsSelf else { return "public" }
+        return "open"
+    }
+
+    private var registrationName: String {
+        var rawName = (method.isStatic ? "sm*\(method.selectorName)" : "m*\(method.selectorName)")
+        .replacingOccurrences(of: "_", with: "")
+        .replacingOccurrences(of: "(", with: "__")
+        .replacingOccurrences(of: ")", with: "")
+
+        var parametersNames = method.parameters.map { "\($0.name)" }
+
+        while let range = rawName.range(of: ":"), let name = parametersNames.first {
+            parametersNames.removeFirst()
+            rawName.replaceSubrange(range, with: "_\(name)")
+        }
+
+        let trimSet = CharacterSet(charactersIn: "_")
+
+        return  rawName
+        .replacingOccurrences(of: ":", with: "")
+        .replacingOccurrences(of: "m*", with: "m_")
+        .replacingOccurrences(of: "___", with: "__").trimmingCharacters(in: trimSet)
+    }
+    private var uniqueName: String {
+        var rawName = (method.isStatic ? "sm_\(method.selectorName)" : "m_\(method.selectorName)")
+        var parametersNames = method.parameters.map { "\($0.name)_of_\($0.typeName.name)" }
+
+        while let range = rawName.range(of: ":"), let name = parametersNames.first {
+            parametersNames.removeFirst()
+            rawName.replaceSubrange(range, with: "_\(name)")
+        }
+
+        return rawName.trimmingCharacters(in: CharacterSet(charactersIn: "_"))
+    }
+    private var uniqueNameWithReturnType: String {
+        let returnTypeRaw = "\(method.returnTypeName)"
+        var returnTypeStripped: String = {
+            guard let range = returnTypeRaw.range(of: "where") else { return returnTypeRaw }
+            var stripped = returnTypeRaw
+            stripped.removeSubrange((range.lowerBound)...)
+            return stripped
+        }()
+        returnTypeStripped = returnTypeStripped.trimmingCharacters(in: CharacterSet(charactersIn: " "))
+        return "\(uniqueName)->\(returnTypeStripped)"
+    }
+    private var nameSuffix: String {
+        guard let count = MethodWrapper.registered[registrationName] else { return "" }
+        guard count > 1 else { return "" }
+        guard let index = MethodWrapper.suffixes[uniqueNameWithReturnType] else { return "" }
+        return "_\(index)"
+    }
+
+    var prototype: String {
+        return "\(registrationName)\(nameSuffix)".replacingOccurrences(of: "`", with: "")
+    }
+    var parameters: [ParameterWrapper] {
+        return method.parameters.map { ParameterWrapper($0) }
+    }
+    var functionPrototype: String {
+        let throwing: String = {
+            if method.throws {
+                return "throws "
+            } else if method.rethrows {
+                return "rethrows "
+            } else {
+                return ""
+            }
+        }()
+
+        let staticModifier: String = "\(accessModifier) "
+        let params = replacingSelf(parametersForStubSignature())
+
+        if method.isInitializer {
+            return "public required \(method.name) \(throwing)"
+        } else if method.returnTypeName.isVoid {
+            let wherePartIfNeeded: String = {
+                if method.returnTypeName.name.hasPrefix("Void") {
+                    let range = method.returnTypeName.name.range(of: "Void")!
+                    return "\(method.returnTypeName.name[range.upperBound...])"
+                } else {
+                    return !method.returnTypeName.name.isEmpty ? "\(method.returnTypeName.name) " : ""
+                }
+            }()
+            return "\(staticModifier)func \(method.shortName)\(params) \(throwing)\(wherePartIfNeeded)"
+        } else if returnsGenericConstrainedToSelf {
+            return "\(staticModifier)func \(method.shortName)\(params) \(throwing)-> \(returnTypeReplacingSelf) "
+        } else {
+            return "\(staticModifier)func \(method.shortName)\(params) \(throwing)-> \(method.returnTypeName.name) "
+        }
+    }
+    var invocation: String {
+        guard !method.isInitializer else { return "" }
+        if method.parameters.isEmpty {
+            return "addInvocation(.\(prototype))"
+        } else {
+            return "addInvocation(.\(prototype)(\(parametersForMethodCall())))"
+        }
+    }
+    var givenValue: String {
+        guard !method.isInitializer else { return "" }
+        guard method.throws || !method.returnTypeName.isVoid else { return "" }
+
+        let methodType = method.parameters.isEmpty ? ".\(prototype)" : ".\(prototype)(\(parametersForMethodCall()))"
+        let returnType: String = returnsSelf ? "__Self__" : "\(TypeWrapper(method.returnTypeName).stripped)"
+
+        if method.returnTypeName.isVoid {
+            return """
+            \n\t\tdo {
+            \t\t    _ = try methodReturnValue(\(methodType)).casted() as Void
+            \t\t}\(" ")
+            """
+        } else {
+            let defaultValue = method.returnTypeName.isOptional ? " = nil" : ""
+            return """
+            \n\t\tvar __value: \(returnType)\(defaultValue)
+            \t\tdo {
+            \t\t    __value = try methodReturnValue(\(methodType)).casted()
+            \t\t}\(" ")
+            """
+        }
+    }
+    var throwValue: String {
+        guard !method.isInitializer else { return "" }
+        guard method.throws || !method.returnTypeName.isVoid else { return "" }
+        let safeFailure = method.isStatic ? "" : "\t\t\tonFatalFailure(\"\(noStubDefinedMessage)\")\n"
+        // For Void and Returning optionals - we allow not stubbed case to happen, as we are still able to return
+        let noStubHandling = method.returnTypeName.isVoid || method.returnTypeName.isOptional ? "\t\t\t// do nothing" : "\(safeFailure)\t\t\tFailure(\"\(noStubDefinedMessage)\")"
+        guard method.throws else {
+            return """
+            catch {
+            \(noStubHandling)
+            \t\t}
+            """
+        }
+
+        return """
+        catch MockError.notStubed {
+        \(noStubHandling)
+        \t\t} catch {
+        \t\t    throw error
+        \t\t}
+        """
+    }
+    var returnValue: String {
+        guard !method.isInitializer else { return "" }
+        guard !method.returnTypeName.isVoid else { return "" }
+
+        return "\n\t\treturn __value"
+    }
+    var equalCase: String {
+        guard !method.isInitializer else { return "" }
+
+        if method.parameters.isEmpty {
+            return "case (.\(prototype), .\(prototype)):"
+        } else {
+            let lhsParams = method.parameters.map { "let lhs\($0.name.capitalized)" }.joined(separator: ", ")
+            let rhsParams = method.parameters.map { "let rhs\($0.name.capitalized)" }.joined(separator: ", ")
+            return "case (.\(prototype)(\(lhsParams)), .\(prototype)(\(rhsParams))):"
+        }
+    }
+    var intValueCase: String {
+        if method.parameters.isEmpty {
+            return "case .\(prototype): return 0"
+        } else {
+            let params = method.parameters.enumerated().map { offset, _ in
+                return "p\(offset)"
+            }
+            let definitions = params.joined(separator: ", ")
+            let paramsSum = params.map({ "\($0).intValue" }).joined(separator: " + ")
+            return "case let .\(prototype)(\(definitions)): return \(paramsSum)"
+        }
+    }
+
+    var returnsSelf: Bool {
+        guard !returnsGenericConstrainedToSelf else { return true }
+        return !method.returnTypeName.isVoid && TypeWrapper(method.returnTypeName).isSelfType
+    }
+    var returnsGenericConstrainedToSelf: Bool {
+        let defaultReturnType = "\(method.returnTypeName.name) "
+        return defaultReturnType != returnTypeReplacingSelf
+    }
+    var returnTypeReplacingSelf: String {
+        return replacingSelf("\(method.returnTypeName.name) ")
+    }
+    var parametersContainsSelf: Bool {
+        return replacingSelf(parametersForStubSignature()) != parametersForStubSignature()
+    }
+
+    var replaceSelf: String {
+        return Current.selfType
+    }
+
+    init(_ method: SourceryRuntime.Method) {
+        self.method = method
+    }
+
+    public static func clear() -> String {
+        MethodWrapper.registered = [:]
+        MethodWrapper.suffixes = [:]
+        MethodWrapper.suffixesWithoutReturnType = [:]
+        return ""
+    }
+
+    func register() {
+        MethodWrapper.register(registrationName,uniqueName,uniqueNameWithReturnType)
+    }
+
+    static func register(_ name: String, _ uniqueName: String, _ uniqueNameWithReturnType: String) {
+        if let count = MethodWrapper.registered[name] {
+            MethodWrapper.registered[name] = count + 1
+            MethodWrapper.suffixes[uniqueNameWithReturnType] = count + 1
+        } else {
+            MethodWrapper.registered[name] = 1
+            MethodWrapper.suffixes[uniqueNameWithReturnType] = 1
+        }
+
+        if let count = MethodWrapper.suffixesWithoutReturnType[uniqueName] {
+            MethodWrapper.suffixesWithoutReturnType[uniqueName] = count + 1
+        } else {
+            MethodWrapper.suffixesWithoutReturnType[uniqueName] = 1
+        }
+    }
+
+    func returnTypeMatters() -> Bool {
+        let count = MethodWrapper.suffixesWithoutReturnType[uniqueName] ?? 0
+        return count > 1
+    }
+
+    func wrappedInMethodType() -> Bool {
+        return !method.isInitializer
+    }
+
+    func returningParameter(_ multiple: Bool, _ front: Bool) -> String {
+        guard returnTypeMatters() else { return "" }
+        let returning: String = "returning: \(returnTypeStripped(method, type: true))"
+        guard multiple else { return returning }
+
+        return front ? ", \(returning)" : "\(returning), "
+    }
+
+    // Stub
+    func stubBody() -> String {
+        let body: String = {
+            if method.isInitializer || !returnsSelf {
+                return invocation + performCall() + givenValue + throwValue + returnValue
+            } else {
+                return wrappedStubPrefix()
+                    + "\t\t" + invocation
+                    + performCall()
+                    + givenValue
+                    + throwValue
+                    + returnValue
+                    + wrappedStubPostfix()
+            }
+        }()
+        return replacingSelf(body)
+    }
+
+    func wrappedStubPrefix() -> String {
+        guard !method.isInitializer, returnsSelf else {
+            return ""
+        }
+
+        let throwing: String = {
+            if method.throws {
+                return "throws "
+            } else if method.rethrows {
+                return "rethrows "
+            } else {
+                return ""
+            }
+        }()
+
+        return "func _wrapped<__Self__>() \(throwing)-> __Self__ {\n"
+    }
+
+    func wrappedStubPostfix() -> String {
+        guard !method.isInitializer, returnsSelf else {
+            return ""
+        }
+
+        let throwing: String = (method.throws || method.rethrows) ? "try ": ""
+
+        return "\n\t\t}"
+            + "\n\t\treturn \(throwing)_wrapped()"
+    }
+
+    // Method Type
+    func methodTypeDeclarationWithParameters() -> String {
+        guard !method.parameters.isEmpty else { return "\(prototype)" }
+        return "\(prototype)(\(parametersForMethodTypeDeclaration()))"
+    }
+
+    // Given
+    func containsEmptyArgumentLabels() -> Bool {
+        return parameters.contains(where: { $0.parameter.argumentLabel == nil })
+    }
+
+    func givenReturnTypeString() -> String {
+        let returnTypeString: String = {
+            guard !returnsGenericConstrainedToSelf else { return returnTypeReplacingSelf }
+            guard !returnsSelf else { return replaceSelf }
+            return TypeWrapper(method.returnTypeName).stripped
+        }()
+        return returnTypeString
+    }
+
+    func givenConstructorName(prefix: String = "", deprecated: Bool = false, annotated: Bool = true) -> String {
+        let returnTypeString = givenReturnTypeString()
+        let (annotation, _, _) = methodInfo(deprecated, annotated)
+        let clauseConstraints = whereClauseExpression()
+
+        if method.parameters.isEmpty {
+            return "public static func \(method.shortName)(willReturn: \(returnTypeString)...) -> \(prefix)MethodStub" + clauseConstraints
+        } else {
+            return "\(annotation)public static func \(method.shortName)(\(parametersForProxySignature(deprecated: deprecated)), willReturn: \(returnTypeString)...) -> \(prefix)MethodStub" + clauseConstraints
+        }
+    }
+
+    func givenConstructorNameThrows(prefix: String = "", deprecated: Bool = false, annotated: Bool = true) -> String {
+        let (annotation, _, _) = methodInfo(deprecated, annotated)
+        let clauseConstraints = whereClauseExpression()
+        if method.parameters.isEmpty {
+            return "public static func \(method.shortName)(willThrow: Error...) -> \(prefix)MethodStub" + clauseConstraints
+        } else {
+            return "\(annotation)public static func \(method.shortName)(\(parametersForProxySignature(deprecated: deprecated)), willThrow: Error...) -> \(prefix)MethodStub" + clauseConstraints
+        }
+    }
+
+    func givenConstructor(prefix: String = "") -> String {
+        if method.parameters.isEmpty {
+            return "return \(prefix)Given(method: .\(prototype), products: willReturn.map({ StubProduct.return($0 as Any) }))"
+        } else {
+            return "return \(prefix)Given(method: .\(prototype)(\(parametersForProxyInit())), products: willReturn.map({ StubProduct.return($0 as Any) }))"
+        }
+    }
+
+    func givenConstructorThrows(prefix: String = "") -> String {
+        if method.parameters.isEmpty {
+            return "return \(prefix)Given(method: .\(prototype), products: willThrow.map({ StubProduct.throw($0) }))"
+        } else {
+            return "return \(prefix)Given(method: .\(prototype)(\(parametersForProxyInit())), products: willThrow.map({ StubProduct.throw($0) }))"
+        }
+    }
+
+    // Given willProduce
+    func givenProduceConstructorName(prefix: String = "") -> String {
+        let returnTypeString = givenReturnTypeString()
+        let produceClosure = "(Stubber<\(returnTypeString)>) -> Void"
+        let clauseConstraints = whereClauseExpression()
+
+        if method.parameters.isEmpty {
+            return "public static func \(method.shortName)(willProduce: \(produceClosure)) -> \(prefix)MethodStub" + clauseConstraints
+        } else {
+            return "public static func \(method.shortName)(\(parametersForProxySignature()), willProduce: \(produceClosure)) -> \(prefix)MethodStub" + clauseConstraints
+        }
+    }
+
+    func givenProduceConstructorNameThrows(prefix: String = "") -> String {
+        let returnTypeString = givenReturnTypeString()
+        let produceClosure = "(StubberThrows<\(returnTypeString)>) -> Void"
+        let clauseConstraints = whereClauseExpression()
+
+        if method.parameters.isEmpty {
+            return "public static func \(method.shortName)(willProduce: \(produceClosure)) -> \(prefix)MethodStub" + clauseConstraints
+        } else {
+            return "public static func \(method.shortName)(\(parametersForProxySignature()), willProduce: \(produceClosure)) -> \(prefix)MethodStub" + clauseConstraints
+        }
+    }
+
+    func givenProduceConstructor(prefix: String = "") -> String {
+        let returnTypeString = givenReturnTypeString()
+        return """
+        let willReturn: [\(returnTypeString)] = []
+        \t\t\tlet given: \(prefix)Given = { \(givenConstructor(prefix: prefix)) }()
+        \t\t\tlet stubber = given.stub(for: (\(returnTypeString)).self)
+        \t\t\twillProduce(stubber)
+        \t\t\treturn given
+        """
+    }
+
+    func givenProduceConstructorThrows(prefix: String = "") -> String {
+        let returnTypeString = givenReturnTypeString()
+        return """
+        let willThrow: [Error] = []
+        \t\t\tlet given: \(prefix)Given = { \(givenConstructorThrows(prefix: prefix)) }()
+        \t\t\tlet stubber = given.stubThrows(for: (\(returnTypeString)).self)
+        \t\t\twillProduce(stubber)
+        \t\t\treturn given
+        """
+    }
+
+    // Verify
+    func verificationProxyConstructorName(prefix: String = "", deprecated: Bool = false, annotated: Bool = true) -> String {
+        let (annotation, methodName, genericConstrains) = methodInfo(deprecated, annotated)
+
+        if method.parameters.isEmpty {
+            return "public static func \(methodName)(\(returningParameter(false,true))) -> \(prefix)Verify\(genericConstrains)"
+        } else {
+            return "\(annotation)public static func \(methodName)(\(parametersForProxySignature(deprecated: deprecated))\(returningParameter(true,true))) -> \(prefix)Verify\(genericConstrains)"
+        }
+    }
+
+    func verificationProxyConstructor(prefix: String = "") -> String {
+        if method.parameters.isEmpty {
+            return "return \(prefix)Verify(method: .\(prototype))"
+        } else {
+            return "return \(prefix)Verify(method: .\(prototype)(\(parametersForProxyInit())))"
+        }
+    }
+
+    // Perform
+    func performProxyConstructorName(prefix: String = "", deprecated: Bool = false, annotated: Bool = true) -> String {
+        let body: String = {
+            let (annotation, methodName, genericConstrains) = methodInfo(deprecated, annotated)
+
+            if method.parameters.isEmpty {
+                return "public static func \(methodName)(\(returningParameter(true,false))perform: @escaping \(performProxyClosureType())) -> \(prefix)Perform\(genericConstrains)"
+            } else {
+                return "\(annotation)public static func \(methodName)(\(parametersForProxySignature(deprecated: deprecated)), \(returningParameter(true,false))perform: @escaping \(performProxyClosureType())) -> \(prefix)Perform\(genericConstrains)"
+            }
+        }()
+        return replacingSelf(body)
+    }
+
+    func performProxyConstructor(prefix: String = "") -> String {
+        if method.parameters.isEmpty {
+            return "return \(prefix)Perform(method: .\(prototype), performs: perform)"
+        } else {
+            return "return \(prefix)Perform(method: .\(prototype)(\(parametersForProxyInit())), performs: perform)"
+        }
+    }
+
+    func performProxyClosureType() -> String {
+        if method.parameters.isEmpty {
+            return "() -> Void"
+        } else {
+            let parameters = self.parameters
+                .map { "\($0.justPerformType)" }
+                .joined(separator: ", ")
+            return "(\(parameters)) -> Void"
+        }
+    }
+
+    func performProxyClosureCall() -> String {
+        if method.parameters.isEmpty {
+            return "perform?()"
+        } else {
+            let parameters = method.parameters
+                .map { p in
+                    let wrapped = ParameterWrapper(p)
+                    let isAutolosure = wrapped.justType.hasPrefix("@autoclosure")
+                    return "\(p.inout ? "&" : "")`\(p.name)`\(isAutolosure ? "()" : "")"
+                }
+                .joined(separator: ", ")
+            return "perform?(\(parameters))"
+        }
+    }
+
+    func performCall() -> String {
+        guard !method.isInitializer else { return "" }
+        let type = performProxyClosureType()
+        var proxy = method.parameters.isEmpty ? "\(prototype)" : "\(prototype)(\(parametersForMethodCall()))"
+
+        let cast = "let perform = methodPerformValue(.\(proxy)) as? \(type)"
+        let call = performProxyClosureCall()
+
+        return "\n\t\t\(cast)\n\t\t\(call)"
+    }
+
+    // Helpers
+    private func parametersForMethodCall() -> String {
+        let generics = getGenericsWithoutConstraints()
+        return parameters.map { $0.wrappedForCalls(generics) }.joined(separator: ", ")
+    }
+
+    private func parametersForMethodTypeDeclaration() -> String {
+        let generics = getGenericsWithoutConstraints()
+        return parameters.map { param in
+            return param.isGeneric(generics) ? param.genericType : replacingSelf(param.nestedType)
+        }.joined(separator: ", ")
+    }
+
+    private func parametersForProxySignature(deprecated: Bool = false) -> String {
+        return parameters.map { p in
+            guard deprecated else { return "\(p.labelAndName()): \(replacingSelf(p.nestedType))" }
+            guard let argumentLabel = p.parameter.argumentLabel else { return "\(p.parameter.name): \(replacingSelf(p.nestedType))" }
+            guard argumentLabel != p.name else { return "\(p.parameter.name): \(replacingSelf(p.nestedType))" }
+            return "\(argumentLabel) \(p.parameter.name): \(replacingSelf(p.nestedType))"
+        }.joined(separator: ", ")
+    }
+
+    private func deprecatedParametersMessage() -> String {
+        let newParams = parameters.map { p in return "\(p.parameter.argumentLabel ?? "_")" }
+        let oldParams = parameters.map { p -> String in
+            guard let argumentLabel = p.parameter.argumentLabel else { return "\(p.parameter.name)" }
+            guard argumentLabel != p.name else { return "\(p.parameter.name)" }
+            return "\(argumentLabel)"
+        }
+
+        var messages: [String] = []
+        for i in 0..<newParams.count {
+            if newParams[i] != oldParams[i] {
+                messages.append(" remove `\(oldParams[i])` label")
+            }
+        }
+
+        return " Possible fix: " + messages.joined(separator: ",")
+    }
+
+    private func parametersForStubSignature() -> String {
+        func replacing(first: String, in full: String, with other: String) -> String {
+            guard let range = full.range(of: first) else { return full }
+            return full.replacingCharacters(in: range, with: other)
+        }
+        let prefix = method.shortName
+        let full = method.name
+        let range = full.range(of: prefix)!
+        var unrefined = "\(full[range.upperBound...])"
+        parameters.map { p -> (String,String) in
+            return ("\(p.type)","\(p.justType)")
+        }.forEach {
+            unrefined = replacing(first: $0, in: unrefined, with: $1)
+        }
+        return unrefined
+    }
+
+    private func parametersForProxyInit() -> String {
+        let generics = getGenericsWithoutConstraints()
+        return parameters.map { "\($0.wrappedForProxy(generics))" }.joined(separator: ", ")
+    }
+
+    private func isGeneric() -> Bool {
+        return method.shortName.contains("<") && method.shortName.contains(">")
+    }
+
+    /// Returns list of generics used in method signature, without their constraints (like [T,U,V])
+    ///
+    /// - Returns: Array of strings, where each strings represent generic name
+    private func getGenericsWithoutConstraints() -> [String] {
+        let name = method.shortName
+        guard let start = name.index(of: "<"), let end = name.index(of: ">") else { return [] }
+
+        var genPart = name[start...end]
+        genPart.removeFirst()
+        genPart.removeLast()
+
+        let parts = genPart.replacingOccurrences(of: " ", with: "").characters.split(separator: ",").map(String.init)
+        return parts.map { stripGenPart(part: $0) }
+    }
+
+    /// Returns list of generic constraintes from method signature. Does only contain stuff between '<' and '>'
+    ///
+    /// - Returns: Array of strings, like ["T: Codable", "U: Whatever"]
+    private func getGenericsConstraints(_ generics: [String]) -> [String] {
+        let name = method.shortName
+        guard let start = name.index(of: "<"), let end = name.index(of: ">") else { return [] }
+
+        var genPart = name[start...end]
+        genPart.removeFirst()
+        genPart.removeLast()
+
+        let parts = genPart.replacingOccurrences(of: " ", with: "").characters.split(separator: ",").map(String.init)
+        return parts.filter {
+            let components = $0.components(separatedBy: ":")
+            return components.count == 2 && generics.contains(components[0])
+        }
+    }
+
+    private func getGenericsAmongParameters() -> [String] {
+        return getGenericsWithoutConstraints().filter {
+            for param in self.parameters {
+                if param.isGeneric([$0]) { return true }
+            }
+            return false
+        }
+    }
+
+    private func wrapGenerics(_ generics: [String]) -> String {
+        guard !generics.isEmpty else { return "" }
+        return "<\(generics.joined(separator:","))>"
+    }
+
+    private func stripGenPart(part: String) -> String {
+        return part.characters.split(separator: ":").map(String.init).first!
+    }
+
+    private func returnTypeStripped(_ method: SourceryRuntime.Method, type: Bool = false) -> String {
+        let returnTypeRaw = "\(method.returnTypeName)"
+        var stripped: String = {
+            guard let range = returnTypeRaw.range(of: "where") else { return returnTypeRaw }
+            var stripped = returnTypeRaw
+            stripped.removeSubrange((range.lowerBound)...)
+            return stripped
+        }()
+        stripped = stripped.trimmingCharacters(in: CharacterSet(charactersIn: " "))
+        guard type else { return stripped }
+        return "(\(stripped)).Type"
+    }
+
+    private func whereClauseConstraints() -> [String] {
+        let returnTypeRaw = method.returnTypeName.name
+        guard let range = returnTypeRaw.range(of: "where") else { return [] }
+        var whereClause = returnTypeRaw
+        whereClause.removeSubrange(...(range.upperBound))
+        return whereClause
+            .trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+            .components(separatedBy: ",")
+    }
+
+    private func whereClauseExpression() -> String {
+        let constraints = whereClauseConstraints()
+        if constraints.isEmpty {
+            return ""
+        }
+        return " where " + constraints.joined(separator: ", ")
+    }
+
+    private func methodInfo(_ deprecated: Bool, _ annotated: Bool)
+        -> (annotation: String, methodName: String, genericConstrains: String) {
+            let generics = getGenericsAmongParameters()
+            let annotation = annotated && deprecated ? deprecatedMessage(deprecatedParametersMessage()) : ""
+            let methodName = returnTypeMatters() ? method.shortName : "\(method.callName)\(wrapGenerics(generics))"
+            let constraints: String = {
+                let constraints: [String]
+                if returnTypeMatters() {
+                    constraints = whereClauseConstraints()
+                } else {
+                    constraints = getGenericsConstraints(generics)
+                }
+                guard !constraints.isEmpty else { return "" }
+
+                return " where \(constraints.joined(separator: ", "))"
+            }()
+            return (annotation, methodName, constraints)
+    }
+}
+class SubscriptWrapper {
+    let wrapped: SourceryRuntime.Subscript
+    var readonly: Bool { return !wrapped.isMutable }
+    var wrappedParameters: [ParameterWrapper] { return wrapped.parameters.map { ParameterWrapper($0) } }
+    var casesCount: Int { return readonly ? 1 : 2 }
+    var nestedType: String { return "\(TypeWrapper(wrapped.returnTypeName).nestedParameter)" }
+    let associatedTypes: [String]?
+    let genericTypesList: [String]
+    let genericTypesModifier: String?
+
+    private let noStubDefinedMessage = "Stub return value not specified for subscript. Use given first."
+
+    private static var registered: [String: Int] = [:]
+    private static var namesWithoutReturnType: [String: Int] = [:]
+    private static var suffixes: [String: Int] = [:]
+    public static func clear() -> String {
+        SubscriptWrapper.registered = [:]
+        SubscriptWrapper.suffixes = [:]
+        return ""
+    }
+    static func register(_ name: String, _ uniqueName: String) {
+        let count = SubscriptWrapper.registered[name] ?? 0
+        SubscriptWrapper.registered[name] = count + 1
+        SubscriptWrapper.suffixes[uniqueName] = count + 1
+    }
+    static func register(short name: String) {
+        let count = SubscriptWrapper.namesWithoutReturnType[name] ?? 0
+        SubscriptWrapper.namesWithoutReturnType[name] = count + 1
+    }
+
+    func register() {
+        SubscriptWrapper.register(registrationName("get"),uniqueName)
+        SubscriptWrapper.register(short: shortName)
+        guard !readonly else { return }
+        SubscriptWrapper.register(registrationName("set"),uniqueName)
+    }
+
+    init(_ wrapped: SourceryRuntime.Subscript) {
+        self.wrapped = wrapped
+        associatedTypes = Helpers.extractAssociatedTypes(from: wrapped)
+        genericTypesList = Helpers.extractGenericsList(associatedTypes)
+        if let types = associatedTypes {
+            genericTypesModifier = "<\(types.joined(separator: ","))>"
+        } else {
+            genericTypesModifier = nil
+        }
+    }
+
+    func registrationName(_ accessor: String) -> String {
+        return "subscript_\(accessor)_\(wrappedParameters.map({ $0.sanitizedForEnumCaseName() }).joined(separator: "_"))"
+    }
+    var shortName: String { return "public subscript\(genericTypesModifier ?? " ")(\(wrappedParameters.map({ $0.asMethodArgument() }).joined(separator: ", ")))" }
+    var uniqueName: String { return "\(shortName) -> \(wrapped.returnTypeName)" }
+
+    private func nameSuffix(_ accessor: String) -> String {
+        guard let count = SubscriptWrapper.registered[registrationName(accessor)] else { return "" }
+        guard count > 1 else { return "" }
+        guard let index = SubscriptWrapper.suffixes[uniqueName] else { return "" }
+        return "_\(index)"
+    }
+
+    // call
+    func subscriptCall() -> String {
+        let get = "\n\t\tget {\(getter())\n\t\t}"
+        let set = readonly ? "" : "\n\t\tset {\(setter())\n\t\t}"
+        return "\(uniqueName) {\(get)\(set)\n\t}"
+    }
+    private func getter() -> String {
+        let method = ".\(subscriptCasePrefix("get"))(\(parametersForMethodCall()))"
+        let noStubDefined = wrapped.returnTypeName.isOptional ? "return nil" : "onFatalFailure(\"\(noStubDefinedMessage)\"); Failure(\"noStubDefinedMessage\")"
+        return
+            "\n\t\t\taddInvocation(\(method))" +
+                "\n\t\t\tdo {" +
+                "\n\t\t\t\treturn try methodReturnValue(\(method)).casted()" +
+                "\n\t\t\t} catch {" +
+                "\n\t\t\t\t\(noStubDefined)" +
+        "\n\t\t\t}"
+    }
+    private func setter() -> String {
+        let method = ".\(subscriptCasePrefix("set"))(\(parametersForMethodCall(set: true)))"
+        return "\n\t\t\taddInvocation(\(method))"
+    }
+
+    // method type
+    func subscriptCasePrefix(_ accessor: String) -> String {
+        return "\(registrationName(accessor))\(nameSuffix(accessor))"
+    }
+    func subscriptCaseName(_ accessor: String) -> String {
+        return "\(subscriptCasePrefix(accessor))(\(parametersForMethodTypeDeclaration(set: accessor == "set")))"
+    }
+    func subscriptCases() -> String {
+        return readonly ? "case \(subscriptCaseName("get"))" : "case \(subscriptCaseName("get"))\n\t\tcase \(subscriptCaseName("set"))"
+    }
+    func equalCase(_ accessor: String) -> String {
+        var lhsParams = wrapped.parameters.map { "lhs\($0.name.capitalized)" }.joined(separator: ", ")
+        var rhsParams = wrapped.parameters.map { "rhs\($0.name.capitalized)" }.joined(separator: ", ")
+        var comparators = wrappedParameters.map { "\t\t\t\t\($0.comparator)" }.joined(separator: "\n")
+        if accessor == "set" {
+            lhsParams += ", lhsDidSet"
+            rhsParams += ", rhsDidSet"
+            comparators += "\n\t\t\t\treturn Parameter.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher)"
+        } else {
+            comparators += "\n\t\t\t\treturn true"
+        }
+        return "case (let .\(subscriptCasePrefix(accessor))(\(lhsParams)), let .\(subscriptCasePrefix(accessor))(\(rhsParams))):\n" + comparators
+    }
+    func equalCases() -> String {
+        return readonly ? equalCase("get") : "\(equalCase("get"))\n\t\t\t\(equalCase("set"))"
+    }
+    func intValueCase() -> String {
+        return readonly ? intValueCase("get") : "\(intValueCase("get"))\n\t\t\t\(intValueCase("set"))"
+    }
+    func intValueCase(_ accessor: String) -> String {
+        let params = wrappedParameters.enumerated().map { offset, _ in
+            return "p\(offset)"
+        }
+        let definitions = params.joined(separator: ", ") + (accessor == "set" ? ", _" : "")
+        let paramsSum = params.map({ "\($0).intValue" }).joined(separator: " + ")
+        return "case let .\(subscriptCasePrefix(accessor))(\(definitions)): return \(paramsSum)"
+    }
+
+    // Given
+    func givenConstructorName() -> String {
+        let returnTypeString = returnsSelf ? replaceSelf : TypeWrapper(wrapped.returnTypeName).stripped
+        return "public static func `subscript`\(genericTypesModifier ?? "")(\(parametersForProxySignature()), willReturn: \(returnTypeString)...) -> SubscriptStub"
+    }
+    func givenConstructor() -> String {
+        return "return Given(method: .\(subscriptCasePrefix("get"))(\(parametersForProxyInit())), products: willReturn.map({ StubProduct.return($0 as Any) }))"
+    }
+
+    // Verify
+    func verifyConstructorName(set: Bool = false) -> String {
+        let returnTypeString = returnsSelf ? replaceSelf : nestedType
+        let returning = set ? "" : returningParameter(true, true)
+        return "public static func `subscript`\(genericTypesModifier ?? "")(\(parametersForProxySignature())\(returning)\(set ? ", set newValue: \(returnTypeString)" : "")) -> Verify"
+    }
+    func verifyConstructor(set: Bool = false) -> String {
+        return "return Verify(method: .\(subscriptCasePrefix(set ? "set" : "get"))(\(parametersForProxyInit(set: set))))"
+    }
+
+    // Generics
+    private func getGenerics() -> [String] {
+        return genericTypesList
+    }
+
+    // Helpers
+    private var returnsSelf: Bool { return TypeWrapper(wrapped.returnTypeName).isSelfType }
+    private var replaceSelf: String { return Current.selfType }
+    private func returnTypeStripped(type: Bool = false) -> String {
+        let returnTypeRaw = "\(wrapped.returnTypeName)"
+        var stripped: String = {
+            guard let range = returnTypeRaw.range(of: "where") else { return returnTypeRaw }
+            var stripped = returnTypeRaw
+            stripped.removeSubrange((range.lowerBound)...)
+            return stripped
+        }()
+        stripped = stripped.trimmingCharacters(in: CharacterSet(charactersIn: " "))
+        guard type else { return stripped }
+        return "(\(stripped)).Type"
+    }
+    private func returnTypeMatters() -> Bool {
+        let count = SubscriptWrapper.namesWithoutReturnType[shortName] ?? 0
+        return count > 1
+    }
+
+    // params
+    private func returningParameter(_ multiple: Bool, _ front: Bool) -> String {
+        guard returnTypeMatters() else { return "" }
+        let returning: String = "returning: \(returnTypeStripped(type: true))"
+        guard multiple else { return returning }
+        return front ? ", \(returning)" : "\(returning), "
+    }
+    private func parametersForMethodTypeDeclaration(set: Bool = false) -> String {
+        let generics: [String] = getGenerics()
+        let params = wrappedParameters.map { param in
+            return param.isGeneric(generics) ? param.genericType : param.nestedType
+            }.joined(separator: ", ")
+        guard set else { return params }
+        let newValue = TypeWrapper(wrapped.returnTypeName).isGeneric(generics) ? "Parameter<GenericAttribute>" : nestedType
+        return "\(params), \(newValue)"
+    }
+    private func parametersForProxyInit(set: Bool = false) -> String {
+        let generics = getGenerics()
+        let newValue = TypeWrapper(wrapped.returnTypeName).isGeneric(generics) ? "newValue.wrapAsGeneric()" : "newValue"
+        return wrappedParameters.map { "\($0.wrappedForProxy(generics))" }.joined(separator: ", ") + (set ? ", \(newValue)" : "")
+    }
+    private func parametersForProxySignature(set: Bool = false) -> String {
+        return wrappedParameters.map { "\($0.labelAndName()): \($0.nestedType)" }.joined(separator: ", ") + (set ? ", set newValue: \(nestedType)" : "")
+    }
+    private func parametersForMethodCall(set: Bool = false) -> String {
+        let generics = getGenerics()
+        let params = wrappedParameters.map { $0.wrappedForCalls(generics) }.joined(separator: ", ")
+        let postfix = TypeWrapper(wrapped.returnTypeName).isGeneric(generics) ? ".wrapAsGeneric()" : ""
+        return !set ? params : "\(params), \(nestedType).value(newValue)\(postfix)"
+    }
+}
+class VariableWrapper {
+    let variable: SourceryRuntime.Variable
+    let scope: String
+    var readonly: Bool { return variable.writeAccess.isEmpty }
+    var privatePrototypeName: String { return "__p_\(variable.name)".replacingOccurrences(of: "`", with: "") }
+    var casesCount: Int { return readonly ? 1 : 2 }
+
+    var accessModifier: String {
+        guard variable.type?.accessLevel != "internal" else { return "" }
+        return "public "
+    }
+    let deprecatedMessage = "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value."
+    var noStubDefinedMessage: String { return "\(scope) - stub value for \(variable.name) was not defined" }
+
+    var getter: String {
+        let staticModifier = variable.isStatic ? "\(scope)." : ""
+        let returnValue = variable.isOptional ? "optionalGivenGetterValue(.\(propertyCaseGetName), \"\(noStubDefinedMessage)\")" : "givenGetterValue(.\(propertyCaseGetName), \"\(noStubDefinedMessage)\")"
+        return "\n\t\tget {\t\(staticModifier)invocations.append(.\(propertyCaseGetName)); return \(staticModifier)\(privatePrototypeName) ?? \(returnValue) }"
+    }
+    var setter: String {
+        let staticModifier = variable.isStatic ? "\(scope)." : ""
+        if readonly {
+            let annotation = readonly ? "\n\t\t@available(*, deprecated, message: \"\(deprecatedMessage)\")" : ""
+            return "\(annotation)\n\t\tset {\t\(variable.isStatic ? "\(scope)." : "")\(privatePrototypeName) = newValue }"
+        } else {
+            return "\n\t\tset {\t\(staticModifier)invocations.append(.\(propertyCaseSetName)(.value(newValue))); \(variable.isStatic ? "\(scope)." : "")\(privatePrototypeName) = newValue }"
+        }
+    }
+    var prototype: String {
+        let staticModifier = variable.isStatic ? "static " : ""
+
+        return "\(accessModifier)\(staticModifier)var \(variable.name): \(variable.typeName.name) {" +
+            "\(getter)" +
+            "\(setter)" +
+        "\n\t}"
+    }
+
+    var privatePrototype: String {
+        let staticModifier = variable.isStatic ? "static " : ""
+        return "private \(staticModifier)var \(privatePrototypeName): (\(variable.typeName.unwrappedTypeName))?"
+    }
+    var nestedType: String { return "\(TypeWrapper(variable.typeName).nestedParameter)" }
+
+    init(_ variable: SourceryRuntime.Variable, scope: String) {
+        self.variable = variable
+        self.scope = scope
+    }
+
+    func propertyGet() -> String {
+        let staticModifier = variable.isStatic ? "Static" : ""
+        return "public static var \(variable.name): \(staticModifier)Verify { return \(staticModifier)Verify(method: .\(propertyCaseGetName)) }"
+    }
+
+    func propertySet() -> String {
+        let staticModifier = variable.isStatic ? "Static" : ""
+        return "public static func \(variable.name)(set newValue: \(nestedType)) -> \(staticModifier)Verify { return \(staticModifier)Verify(method: .\(propertyCaseSetName)(newValue)) }"
+    }
+
+    var propertyCaseGetName: String { return "p_\(variable.name)_get".replacingOccurrences(of: "`", with: "") }
+    func propertyCaseGet() -> String {
+        return "case \(propertyCaseGetName)"
+    }
+    func propertyCaseGetCompare() -> String {
+        return "case (.\(propertyCaseGetName),.\(propertyCaseGetName)): return true"
+    }
+    func propertyCaseGetIntValue() -> String {
+        return "case .\(propertyCaseGetName): return 0"
+    }
+
+    var propertyCaseSetName: String { return "p_\(variable.name)_set".replacingOccurrences(of: "`", with: "") }
+    func propertyCaseSet() -> String {
+        return "case \(propertyCaseSetName)(\(nestedType))"
+    }
+    func propertyCaseSetCompare() -> String {
+        return "case (.\(propertyCaseSetName)(let left),.\(propertyCaseSetName)(let right)): return \(nestedType).compare(lhs: left, rhs: right, with: matcher)"
+    }
+    func propertyCaseSetIntValue() -> String {
+        return "case .\(propertyCaseSetName)(let newValue): return newValue.intValue"
+    }
+
+    // Given
+    func givenConstructorName(prefix: String = "") -> String {
+        return "\(accessModifier)static func \(variable.name)(getter defaultValue: \(TypeWrapper(variable.typeName).stripped)...) -> \(prefix)PropertyStub"
+    }
+
+    func givenConstructor(prefix: String = "") -> String {
+        return "return \(prefix)Given(method: .\(propertyCaseGetName), products: defaultValue.map({ StubProduct.return($0 as Any) }))"
+    }
+}
+_%>
+<%# ================================================== SETUP -%><%_ -%>
+<%_ var all = types.all
+    all += types.protocols.map { $0 }
+    var mockedCount = 0
+-%>
+
+<%_ for type in all { -%><%_ -%>
+<%_ let autoMockable: Bool = type.inheritedTypes.contains("AutoMockable") || type.annotations["AutoMockable"] != nil
+    let protocolToDecorate = types.protocols.first(where: { $0.name == (type.annotations["mock"] as? String) })
+    let inlineMockable = protocolToDecorate != nil
+    guard let aProtocol = autoMockable ? type : protocolToDecorate else { continue }
+    mockedCount += 1
+    let associatedTypes: [String]? = Helpers.extractAssociatedTypes(from: aProtocol)
+    let typeAliases: [String] = Helpers.extractTypealiases(from: aProtocol)
+    let genericTypesModifier: String = Helpers.extractGenericTypesModifier(associatedTypes)
+    let genericTypesConstraints: String = Helpers.extractGenericTypesConstraints(associatedTypes)
+    let allSubscripts = aProtocol.allSubscripts
+    let allVariables = uniques(variables: aProtocol.allVariables.filter({ !$0.isStatic }))
+    let containsVariables = !allVariables.isEmpty
+    let allStaticVariables = uniques(variables: aProtocol.allVariables.filter({ $0.isStatic }))
+    let containsStaticVariables = !allStaticVariables.isEmpty
+    let allMethods = uniques(methods: aProtocol.allMethods.filter({ !$0.isStatic }))
+    let accessModifier: String = {
+        let selfConstrained = allMethods.map(wrapMethod).contains(where: { $0.returnsGenericConstrainedToSelf || $0.parametersContainsSelf })
+        return selfConstrained ? "public final" : "open"
+    }()
+    let allMethodsForMethodType = uniquesWithoutGenericConstraints(methods: aProtocol.allMethods.filter({ !$0.isStatic }))
+    let allStaticMethods = uniques(methods: aProtocol.allMethods.filter({ $0.isStatic }))
+    let allStaticMethodsForMethodType = uniquesWithoutGenericConstraints(methods: aProtocol.allMethods.filter({ $0.isStatic }))
+    let conformsToStaticMock = !allStaticMethods.isEmpty || !allStaticVariables.isEmpty
+    let conformsToMock = !allMethods.isEmpty || !allVariables.isEmpty -%><%_ -%><%_ -%>
+<%_ if autoMockable { -%>
+// MARK: - <%= type.name %>
+<%= accessModifier %> class <%= type.name %><%= mockTypeName %><%= genericTypesModifier %>:<%= type.annotations["ObjcProtocol"] != nil ? " NSObject," : "" %> <%= type.name %>, Mock<%= conformsToStaticMock ? ", StaticMock" : "" %><%= genericTypesConstraints %> {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        SwiftyMockyTestObserver.setup()
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+<%_ } else { -%>
+// sourcery:inline:auto:<%= type.name %>.autoMocked
+<%_ } -%>
+<%# ================================================== MAIN CLASS -%><%_ -%>
+  <%# ================================================== MOCK INTERNALS -%><%_ -%>
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    public typealias PropertyStub = Given
+    public typealias MethodStub = Given
+    public typealias SubscriptStub = Given
+    <%_ for typeAlias in typeAliases { -%>
+    public typealias <%= typeAlias %>
+    <%_ } %> <%_ -%>
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+    <%_ -%>
+  <%# ================================================== STATIC MOCK INTERNALS -%><%_ -%>
+    <%_ if conformsToStaticMock { -%>
+    static var matcher: Matcher = Matcher.default
+    static var stubbingPolicy: StubbingPolicy = .wrap
+    static var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+    static private var invocations: [StaticMethodType] = []
+    static private var methodReturnValues: [StaticGiven] = []
+    static private var methodPerformValues: [StaticPerform] = []
+    public typealias StaticPropertyStub = StaticGiven
+    public typealias StaticMethodStub = StaticGiven
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public static func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+    <%_  } -%>
+
+  <%# ================================================== VARIABLES -%><%_ -%>
+    <%_ for variable in allVariables { -%>
+    <%_ if autoMockable { -%>
+    <%= stubProperty(variable,"\(type.name)\(mockTypeName)") %>
+    <%_ } else { %>
+    <%= stubProperty(variable,"\(type.name)") %>
+    <%_ } %>
+    <%_ } %> <%_ -%>
+
+  <%# ================================================== STATIC VARIABLES -%><%_ -%>
+    <%_ for variable in allStaticVariables { -%>
+    <%_ if autoMockable { -%>
+    <%= stubProperty(variable,"\(type.name)\(mockTypeName)") %>
+    <%_ } else { %>
+    <%= stubProperty(variable,"\(type.name)") %>
+    <%_ } %>
+    <%_ } %> <%_ -%>
+
+  <%# ================================================== METHOD REGISTRATIONS -%><%_ -%>
+    <%_ MethodWrapper.clear() -%>
+    <%_ SubscriptWrapper.clear() -%>
+    <%_ if autoMockable { -%>
+    <%_ Current.selfType = "\(type.name)\(mockTypeName)\(genericTypesModifier)" -%>
+    <%_ } else { %>
+    <%_ Current.selfType = "\(type.name)\(mockTypeName)\(genericTypesModifier)" -%>
+    <%_ } %>
+    <%_ let wrappedSubscripts = allSubscripts.map(wrapSubscript) -%>
+    <%_ let wrappedMethods = allMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) -%>
+    <%_ let wrappedVariables = allVariables.map(justWrap) -%>
+    <%_ let wrappedMethodsForMethodType = allMethodsForMethodType.map(wrapMethod).filter({ $0.wrappedInMethodType() }) -%>
+    <%_ let wrappedInitializers = allMethods.map(wrapMethod).filter({ $0.method.isInitializer }) -%>
+    <%_ let wrappedStaticMethods = allStaticMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) -%>
+    <%_ let wrappedStaticVariables = allStaticVariables.map(justWrap) -%>
+    <%_ let wrappedStaticMethodsForMethodType = allStaticMethodsForMethodType.map(wrapMethod).filter({ $0.wrappedInMethodType() }) -%>
+    <%_ for variable in allVariables { propertyRegister(variable) } -%>
+    <%_ for variable in allStaticVariables { propertyRegister(variable) } -%>
+    <%_ for method in wrappedMethods { method.register() } -%>
+    <%_ for wrapped in wrappedSubscripts { wrapped.register() } -%>
+    <%_ for method in wrappedStaticMethods { method.register() } -%><%_ -%>
+    <%_ let variableCasesCount: Int = wrappedVariables.reduce(0) { return $0 + $1.casesCount } -%><%_ -%>
+    <%_ let subscriptsCasesCount: Int = wrappedSubscripts.reduce(0) { return $0 + $1.casesCount } -%><%_ -%>
+    <%_ let staticVariableCasesCount: Int = wrappedStaticVariables.reduce(0) { return $0 + $1.casesCount } -%><%_ -%>
+    <%_ let generateOldAccessorsForMethods: Bool = false -%><%_ -%>
+    <%_ let generateOldAccessorsForStaticMethods: Bool = false -%><%_ -%>
+
+  <%# ================================================== STATIC STUBS -%><%_ -%>
+    <%_ for method in wrappedStaticMethods { -%>
+    <%= method.functionPrototype _%> {
+        <%= method.stubBody() _%>
+    }
+
+    <%_ } %><%_ -%>
+    <%_ -%>
+  <%# ================================================== INITIALIZERS -%><%_ -%>
+    <%_ for method in wrappedInitializers { -%>
+    <%= method.functionPrototype _%> { }
+
+    <%_ } -%><%_ -%>
+    <%_ -%><%_ -%>
+  <%# ================================================== STUBS -%><%_ -%>
+    <%_ for method in wrappedMethods { -%>
+    <%= method.functionPrototype _%> {
+        <%= method.stubBody() _%>
+    }
+
+    <%_ } -%>
+    <%_ for wrapped in wrappedSubscripts { -%>
+    <%= wrapped.subscriptCall() _%>
+
+    <%_ } -%>
+  <%# ================================================== STATIC METHOD TYPE -%><%_ -%>
+    <%_ if conformsToStaticMock { -%>
+    fileprivate enum StaticMethodType {
+    <%_ for method in wrappedStaticMethodsForMethodType { -%>
+        case <%= method.methodTypeDeclarationWithParameters() _%>
+    <%_  } %> <%_ for variable in allStaticVariables { -%>
+        <%= propertyMethodTypes(variable) %>
+    <%_ } %> <%_ %>
+    <%_ -%>
+        static func compareParameters(lhs: StaticMethodType, rhs: StaticMethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) { <%_ for method in wrappedStaticMethodsForMethodType { %>
+            <%= method.equalCase -%><% for parameter in method.parameters { %>
+                <%= parameter.comparator -%> <%  } %>
+                return true <% } %>
+            <%_ for variable in allStaticVariables { -%>
+            <%= propertyMethodTypesCompare(variable) %>
+        <%_ } %> <%_ -%> <%_ if wrappedStaticMethods.count + staticVariableCasesCount > 1 { -%>
+            default: return false
+            <%_ } -%>
+            }
+        }
+    <%_ %>
+        func intValue() -> Int {
+            switch self { <%_ for method in wrappedStaticMethodsForMethodType { %>
+                <%= method.intValueCase -%><% } %>
+                <%_ for variable in allStaticVariables { -%>
+                <%= propertyMethodTypesIntValue(variable) %>
+                <%_ } %> <%_ -%>
+            }
+        }
+    }
+
+    open class StaticGiven: StubbedMethod {
+        fileprivate var method: StaticMethodType
+
+        private init(method: StaticMethodType, products: [StubProduct]) {
+            self.method = method
+            super.init(products)
+        }
+
+        <%_ for variable in allStaticVariables { -%>
+        <%= wrapProperty(variable).givenConstructorName(prefix: "Static") -%> {
+            <%= wrapProperty(variable).givenConstructor(prefix: "Static") _%>
+        }
+        <%_ } %> <%_ %>
+        <%_ for method in wrappedStaticMethodsForMethodType.filter({ !$0.method.returnTypeName.isVoid && !$0.method.isInitializer }) { -%>
+        <%= method.givenConstructorName(prefix: "Static") -%> {
+            <%= method.givenConstructor(prefix: "Static") _%>
+        }
+        <%_ if generateOldAccessorsForStaticMethods, method.containsEmptyArgumentLabels() { -%>
+        <%= method.givenConstructorName(prefix: "Static", deprecated: true) %> {
+            <%= method.givenConstructor(prefix: "Static") _%>
+        }
+        <%_ } -%>
+        <%_ } -%>
+        <%_ for method in wrappedStaticMethodsForMethodType.filter({ !$0.method.throws && !$0.method.rethrows && !$0.method.returnTypeName.isVoid && !$0.method.isInitializer }) { -%>
+        <%= method.givenProduceConstructorName(prefix: "Static") -%> {
+            <%= method.givenProduceConstructor(prefix: "Static") _%>
+        }
+        <%_ } -%>
+        <%_ for method in wrappedStaticMethodsForMethodType.filter({ ($0.method.throws || $0.method.rethrows) && !$0.method.isInitializer }) { -%>
+        <%= method.givenConstructorNameThrows(prefix: "Static") -%> {
+            <%= method.givenConstructorThrows(prefix: "Static") _%>
+        }
+        <%_ if generateOldAccessorsForStaticMethods, method.containsEmptyArgumentLabels() { -%>
+        <%= method.givenConstructorNameThrows(prefix: "Static", deprecated: true) %> {
+            <%= method.givenConstructorThrows(prefix: "Static") _%>
+        }
+        <%_ } -%>
+        <%= method.givenProduceConstructorNameThrows(prefix: "Static") -%> {
+            <%= method.givenProduceConstructorThrows(prefix: "Static") _%>
+        }
+        <%_ } %> <%_ -%>
+    }
+
+    public struct StaticVerify {
+        fileprivate var method: StaticMethodType
+
+        <%_ for method in wrappedStaticMethodsForMethodType { -%>
+        <%= method.verificationProxyConstructorName(prefix: "Static") -%> { <%= method.verificationProxyConstructor(prefix: "Static") _%> }
+        <%_ if generateOldAccessorsForStaticMethods, method.containsEmptyArgumentLabels() { -%>
+        <%= method.verificationProxyConstructorName(prefix: "Static", deprecated: true) %> { <%= method.verificationProxyConstructor(prefix: "Static") _%> }
+        <%_ } -%>
+        <%_ } %> <%_ -%>
+        <%_ for variable in allStaticVariables { -%>
+        <%= propertyTypes(variable) %>
+        <%_ } %> <%_ -%>
+    }
+
+    public struct StaticPerform {
+        fileprivate var method: StaticMethodType
+        var performs: Any
+
+        <%_ for method in wrappedStaticMethodsForMethodType { -%>
+        <%= method.performProxyConstructorName(prefix: "Static") -%> {
+            <%= method.performProxyConstructor(prefix: "Static") _%>
+        }
+        <%_ if generateOldAccessorsForStaticMethods, method.containsEmptyArgumentLabels() { -%>
+        <%= method.performProxyConstructorName(prefix: "Static", deprecated: true) %> {
+            <%= method.performProxyConstructor(prefix: "Static") _%>
+        }
+        <%_ } -%>
+        <%_ } %> <%_ -%>
+    }
+
+    <% } -%>
+  <%# ================================================== METHOD TYPE -%><%_ -%>
+    <%_ if !wrappedMethods.isEmpty || !allVariables.isEmpty || !allSubscripts.isEmpty { -%>
+
+    fileprivate enum MethodType {
+    <%_ for method in wrappedMethodsForMethodType { -%>
+        case <%= method.methodTypeDeclarationWithParameters() _%>
+    <%_  } -%> <%_ for variable in allVariables { -%>
+        <%= propertyMethodTypes(variable) %>
+    <%_ } %> <%_ %> <%_ for wrapped in wrappedSubscripts { -%>
+        <%= wrapped.subscriptCases() _%>
+    <%_ } %> <%_ %>
+    <%_ -%>
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) { <%_ for method in wrappedMethodsForMethodType { %>
+            <%= method.equalCase -%><% for parameter in method.parameters { %>
+                <%= parameter.comparator -%> <%  } %>
+                return true <% } %>
+            <%_ for variable in allVariables { -%>
+            <%= propertyMethodTypesCompare(variable) %>
+            <%_ } %> <%_ -%> <%_ for wrapped in wrappedSubscripts { -%>
+            <%= wrapped.equalCases() %>
+        <%_ } %> <%_ if wrappedMethods.count + variableCasesCount + subscriptsCasesCount > 1 { -%>
+            default: return false
+            <%_ } -%>
+            }
+        }
+    <%_ %>
+        func intValue() -> Int {
+            switch self { <%_ for method in wrappedMethodsForMethodType { %>
+            <%= method.intValueCase -%><% } %>
+            <%_ for variable in allVariables { -%>
+            <%= propertyMethodTypesIntValue(variable) %>
+            <%_ } %> <%_ for wrapped in wrappedSubscripts { -%>
+            <%= wrapped.intValueCase() %>
+            <%_ } -%>
+            }
+        }
+    }
+    <%_ } else { %>
+    fileprivate struct MethodType {
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool { return true }
+        func intValue() -> Int { return 0 }
+    }
+    <%_ } -%><%_ -%>
+
+    open class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [StubProduct]) {
+            self.method = method
+            super.init(products)
+        }
+
+        <%_ for variable in allVariables { -%>
+        <%= wrapProperty(variable).givenConstructorName() -%> {
+            <%= wrapProperty(variable).givenConstructor() _%>
+        }
+        <%_ } %> <%_ %>
+        <%_ for method in wrappedMethodsForMethodType.filter({ !$0.method.returnTypeName.isVoid && !$0.method.isInitializer }) { -%>
+        <%= method.givenConstructorName() -%> {
+            <%= method.givenConstructor() _%>
+        }
+        <%_ if generateOldAccessorsForMethods, method.containsEmptyArgumentLabels() { -%>
+        <%= method.givenConstructorName(prefix: "", deprecated: true) %> {
+            <%= method.givenConstructor() _%>
+        }
+        <%_ } -%>
+        <%_ } -%>
+        <%_ for method in wrappedMethodsForMethodType.filter({ !$0.method.throws && !$0.method.rethrows && !$0.method.returnTypeName.isVoid && !$0.method.isInitializer }) { -%>
+        <%= method.givenProduceConstructorName() -%> {
+            <%= method.givenProduceConstructor() _%>
+        }
+        <%_ } -%>
+        <%_ for wrapped in wrappedSubscripts { -%>
+        <%= wrapped.givenConstructorName() -%> {
+            <%= wrapped.givenConstructor() _%>
+        }
+        <%_ } -%>
+        <%_ for method in wrappedMethodsForMethodType.filter({ ($0.method.throws || $0.method.rethrows) && !$0.method.isInitializer }) { -%>
+        <%= method.givenConstructorNameThrows() -%> {
+            <%= method.givenConstructorThrows() _%>
+        }
+        <%_ if generateOldAccessorsForMethods, method.containsEmptyArgumentLabels() { -%>
+        <%= method.givenConstructorNameThrows(prefix: "", deprecated: true) %> {
+            <%= method.givenConstructorThrows() _%>
+        }
+        <%_ } -%>
+        <%= method.givenProduceConstructorNameThrows() -%> {
+            <%= method.givenProduceConstructorThrows() _%>
+        }
+        <%_ } %> <%_ -%>
+    }
+
+    public struct Verify {
+        fileprivate var method: MethodType
+
+        <%_ for method in wrappedMethodsForMethodType { -%>
+        <%= method.verificationProxyConstructorName() -%> { <%= method.verificationProxyConstructor() _%> }
+        <%_ if generateOldAccessorsForMethods, method.containsEmptyArgumentLabels() { -%>
+        <%= method.verificationProxyConstructorName(prefix: "", deprecated: true) %> { <%= method.verificationProxyConstructor() _%> }
+        <%_ } -%>
+        <%_ } %> <%_ -%>
+        <%_ for variable in allVariables { -%>
+        <%= propertyTypes(variable) %>
+        <%_ } %> <%_ -%>
+        <%_ for wrapped in wrappedSubscripts { -%>
+        <%= wrapped.verifyConstructorName() -%> { <%= wrapped.verifyConstructor() _%> }
+        <%_ if !wrapped.readonly { -%>
+        <%= wrapped.verifyConstructorName(set: true) -%> { <%= wrapped.verifyConstructor(set: true) _%> }
+        <%_ } -%>
+        <%_ } %> <%_ -%>
+    }
+
+    public struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        <%_ for method in wrappedMethodsForMethodType { -%>
+        <%= method.performProxyConstructorName() -%> {
+            <%= method.performProxyConstructor() _%>
+        }
+        <%_ if generateOldAccessorsForMethods, method.containsEmptyArgumentLabels() { -%>
+        <%= method.performProxyConstructorName(prefix: "", deprecated: true) %> {
+            <%= method.performProxyConstructor() _%>
+        }
+        <%_ } -%>
+        <%_ } %> <%_ -%>
+    }
+
+  <%# ================================================== MOCK METHODS -%><%_ -%>
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+    private func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+    }
+  <%# ================================================== STATIC MOCK METHODS -%><%_ -%>
+    <%_ if conformsToStaticMock { -%>
+
+    static public func given(_ method: StaticGiven) {
+        methodReturnValues.append(method)
+    }
+
+    static public func perform(_ method: StaticPerform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    static public func verify(_ method: StaticVerify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    static private func addInvocation(_ call: StaticMethodType) {
+        invocations.append(call)
+    }
+    static private func methodReturnValue(_ method: StaticMethodType) throws -> StubProduct {
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    static private func methodPerformValue(_ method: StaticMethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+    static private func matchingCalls(_ method: StaticMethodType) -> [StaticMethodType] {
+        return invocations.filter { StaticMethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+    static private func matchingCalls(_ method: StaticVerify) -> Int {
+        return matchingCalls(method.method).count
+    }
+    static private func givenGetterValue<T>(_ method: StaticMethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            Failure(message)
+        }
+    }
+    static private func optionalGivenGetterValue<T>(_ method: StaticMethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
+    <%_ } -%>
+<%_ if autoMockable { -%>
+}
+
+<%_ } else { -%>
+// sourcery:end
+<%_ } -%>
+<% } -%>
+<%_ if mockedCount == 0 { -%>
+// SwiftyMocky: no AutoMockable found.
+// Please define and inherit from AutoMockable, or annotate protocols to be mocked
+<%_ } -%>

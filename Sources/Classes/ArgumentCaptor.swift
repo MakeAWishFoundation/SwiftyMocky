@@ -1,11 +1,3 @@
-//
-//  ArgumentCaptor.swift
-//  Pods
-//
-//  Created by TimeDelta on 15/04/2019.
-//
-//
-
 public class ArgumentCaptor<Type> {
 	/// Last captured value (if any)
 	public var value: Type? {

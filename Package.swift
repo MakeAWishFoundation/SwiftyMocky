@@ -3,16 +3,28 @@
 
 import PackageDescription
 
-/// MacOS swiftymocky mackage
 let package = Package(
    name: "swiftymocky",
    products: [
        .library(name: "SwiftyMocky", targets: ["SwiftyMocky"]),
+       .library(name: "SwiftyPrototype", targets: ["SwiftyPrototype"]),
    ],
    dependencies: [],
    targets: [
        .target(
            name: "SwiftyMocky",
+           dependencies: ["Core"],
+           path: "./Sources/Mock",
+           exclude: ["Mock.swifttemplate"]
+        ),
+       .target(
+           name: "SwiftyPrototype",
+           dependencies: ["Core"],
+           path: "./Sources/Prototype",
+           exclude: ["Prototype.swifttemplate"]
+        ),
+       .target(
+           name: "Core",
            path: "./Sources/Classes"
         ),
    ]

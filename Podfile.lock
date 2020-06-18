@@ -1,15 +1,15 @@
 PODS:
-  - Sourcery (0.17.0)
-  - SwiftyMocky (3.5.0):
-    - SwiftyMocky/Core (= 3.5.0)
-  - SwiftyMocky/Core (3.5.0):
-    - Sourcery (>= 0.17)
+  - Sourcery (0.18.0)
+  - SwiftyMocky (4.0.0):
+    - SwiftyMocky/Testing (= 4.0.0)
+  - SwiftyMocky/Testing (4.0.0):
+    - Sourcery (>= 0.18)
 
 DEPENDENCIES:
   - SwiftyMocky (from `./`)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  trunk:
     - Sourcery
 
 EXTERNAL SOURCES:
@@ -17,9 +17,9 @@ EXTERNAL SOURCES:
     :path: "./"
 
 SPEC CHECKSUMS:
-  Sourcery: 3ed61be7c8a1218fce349266139379dba477efe0
-  SwiftyMocky: f277174040db328a9da04ce8efa81b6d6d5b9d7d
+  Sourcery: e0e8658a1ce6d9f475156ad3ffce4c68f1261b3e
+  SwiftyMocky: 85f6e107fc7cc98ecf87d637a12e366a7d639860
 
-PODFILE CHECKSUM: 2c8b2a04598345eef7278f0b805b84438bb9f711
+PODFILE CHECKSUM: c5b363f6fe9e513e1d6cf9bbd52b93f5e914d9aa
 
 COCOAPODS: 1.8.4

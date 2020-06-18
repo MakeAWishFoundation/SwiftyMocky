@@ -31,7 +31,7 @@
     let conformsToMock = !allMethods.isEmpty || !allVariables.isEmpty -%><%_ -%><%_ -%>
 <%_ if autoMockable { -%>
 // MARK: - <%= type.name %>
-<%= accessModifier %> class <%= type.name %>Mock<%= genericTypesModifier %>:<%= type.annotations["ObjcProtocol"] != nil ? " NSObject," : "" %> <%= type.name %>, Mock<%= conformsToStaticMock ? ", StaticMock" : "" %><%= genericTypesConstraints %> {
+<%= accessModifier %> class <%= type.name %><%= mockTypeName %><%= genericTypesModifier %>:<%= type.annotations["ObjcProtocol"] != nil ? " NSObject," : "" %> <%= type.name %>, Mock<%= conformsToStaticMock ? ", StaticMock" : "" %><%= genericTypesConstraints %> {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
         self.sequencingPolicy = sequencingPolicy
@@ -85,7 +85,7 @@
     static private var methodPerformValues: [StaticPerform] = []
     public typealias StaticPropertyStub = StaticGiven
     public typealias StaticMethodStub = StaticGiven
-    
+
     /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
     public static func resetMock(_ scopes: MockScope...) {
         let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
@@ -98,7 +98,7 @@
   <%# ================================================== VARIABLES -%><%_ -%>
     <%_ for variable in allVariables { -%>
     <%_ if autoMockable { -%>
-    <%= stubProperty(variable,"\(type.name)Mock") %>
+    <%= stubProperty(variable,"\(type.name)\(mockTypeName)") %>
     <%_ } else { %>
     <%= stubProperty(variable,"\(type.name)") %>
     <%_ } %>
@@ -107,7 +107,7 @@
   <%# ================================================== STATIC VARIABLES -%><%_ -%>
     <%_ for variable in allStaticVariables { -%>
     <%_ if autoMockable { -%>
-    <%= stubProperty(variable,"\(type.name)Mock") %>
+    <%= stubProperty(variable,"\(type.name)\(mockTypeName)") %>
     <%_ } else { %>
     <%= stubProperty(variable,"\(type.name)") %>
     <%_ } %>
@@ -117,9 +117,9 @@
     <%_ MethodWrapper.clear() -%>
     <%_ SubscriptWrapper.clear() -%>
     <%_ if autoMockable { -%>
-    <%_ Current.selfType = "\(type.name)Mock\(genericTypesModifier)" -%>
+    <%_ Current.selfType = "\(type.name)\(mockTypeName)\(genericTypesModifier)" -%>
     <%_ } else { %>
-    <%_ Current.selfType = "\(type.name)Mock\(genericTypesModifier)" -%>
+    <%_ Current.selfType = "\(type.name)\(mockTypeName)\(genericTypesModifier)" -%>
     <%_ } %>
     <%_ let wrappedSubscripts = allSubscripts.map(wrapSubscript) -%>
     <%_ let wrappedMethods = allMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) -%>
@@ -450,10 +450,8 @@
         }
     }
     private func onFatalFailure(_ message: String) {
-        #if Mocky
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
-        #endif
     }
   <%# ================================================== STATIC MOCK METHODS -%><%_ -%>
     <%_ if conformsToStaticMock { -%>

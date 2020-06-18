@@ -5,52 +5,30 @@ matrix:
       osx_image: xcode10.2
       install:
         - rake pods
-        - brew install mint
       script:
-        - swift --version
-        - swift build -c release
-        - swift run -c release --skip-build --skip-update swiftymocky doctor
-        - swift run -c release --skip-build --skip-update swiftymocky generate
-        - swift test
-        - fastlane ios test
         - rake mock # legacy mock generation
+        - fastlane ios test
         - fastlane tvos test
-      
+
     - os: osx
       language: swift
       osx_image: xcode11.2
       install:
         - rake pods
-        - brew install mint
       script:
-        - swift --version
-        - instruments -s
-        - swift build -c release
-        - swift run -c release --skip-build --skip-update swiftymocky doctor
-        - swift run -c release --skip-build --skip-update swiftymocky generate
-        - swift test
-        - fastlane ios test
         - rake mock # legacy mock generation
+        - fastlane ios test
         - fastlane tvos test_13
 
-    # For now, Sourcery does not work on linux, so commented it out
-    - os: linux
-      dist: trusty
-      sudo: required
-      language: generic
-      env:
-        - SWIFT_BRANCH=swift-5.0-release
-        - SWIFT_VERSION=swift-5.0-RELEASE
+    - os: osx
+      language: swift
+      osx_image: xcode11.5
       install:
-        - sudo apt-get install clang libicu-dev
-        - mkdir swift
-        - curl https://swift.org/builds/$SWIFT_BRANCH/ubuntu1404/$SWIFT_VERSION/$SWIFT_VERSION-ubuntu14.04.tar.gz -s | tar xz -C swift &> /dev/null
-        - export PATH="$(pwd)/swift/$SWIFT_VERSION-ubuntu14.04/usr/bin:$PATH"
-        # - git clone https://github.com/yonaskolb/Mint.git
-        # - cd Mint && swift run mint install yonaskolb/mint
+        - rake pods
       script:
-        - swift --version
-        - swift test
+        - rake mock # legacy mock generation
+        - fastlane ios test
+        - fastlane tvos test_13
 
 notifications:
   email: false

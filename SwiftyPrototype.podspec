@@ -1,9 +1,9 @@
 Pod::Spec.new do |s|
-  s.name             = 'SwiftyMocky'
+  s.name             = 'SwiftyPrototype'
   s.version          = '4.0.0'
-  s.summary          = 'Unit testing library for Swift, with mock generation. Adds a set of handy methods, simplifying testing.'
+  s.summary          = 'Prototyping/Faking library for Swift, with code generation. Auto-generates fakes/prototypes based on protocol definitions.'
   s.description      = <<-DESC
-Library that uses metaprogramming technique to generate mocks based on sources, that makes testing for Swift Mockito-like.
+Library that uses metaprogramming technique to generate fakes/prototypes based on sources, makin it easier to prototype app.
                        DESC
 
   s.homepage         = 'https://github.com/MakeAWishFoundation/SwiftyMocky'
@@ -16,7 +16,7 @@ Library that uses metaprogramming technique to generate mocks based on sources, 
   s.ios.deployment_target = '8.0'
   s.tvos.deployment_target = '9.0'
   s.macos.deployment_target = '10.10'
-  s.default_subspec  = "Testing"
+  s.default_subspec  = "Prototyping"
   s.preserve_paths = '*'
 
   s.subspec 'Testing' do |spec|

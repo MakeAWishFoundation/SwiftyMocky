@@ -1,9 +1,9 @@
 Pod::Spec.new do |s|
-  s.name             = 'SwiftyMocky'
+  s.name             = '{{SPEC_NAME}}'
   s.version          = '{{VERSION_NUMBER}}'
-  s.summary          = 'Unit testing library for Swift, with mock generation. Adds a set of handy methods, simplifying testing.'
+  s.summary          = '{{SUMMARY}}'
   s.description      = <<-DESC
-Library that uses metaprogramming technique to generate mocks based on sources, that makes testing for Swift Mockito-like.
+{{DESCRIPTION}}
                        DESC
 
   s.homepage         = 'https://github.com/MakeAWishFoundation/SwiftyMocky'
@@ -11,22 +11,21 @@ Library that uses metaprogramming technique to generate mocks based on sources, 
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Przemysław Wośko' => 'przemyslaw.wosko@intive.com', 'Andrzej Michnia' => 'amichnia@gmail.com' }
   s.source           = { :git => 'https://github.com/MakeAWishFoundation/SwiftyMocky.git', :tag => s.version.to_s }
-  
+
   s.swift_versions    = ['4.1', '4.2', '5.0', '5.1.2']
   s.ios.deployment_target = '8.0'
   s.tvos.deployment_target = '9.0'
   s.macos.deployment_target = '10.10'
-  s.default_subspec  = "Core"
+  s.default_subspec  = "{{SPEC_TYPE}}"
   s.preserve_paths = '*'
 
-  s.subspec 'Core' do |core|
-    core.source_files = 'Sources/Classes/**/*'
-    core.resources = '{Sources/Templates/Mock.swifttemplate,get_sourcery.sh}'
-    core.xcconfig = { 'OTHER_SWIFT_FLAGS' => '-DMocky' }
-    core.frameworks = 'Foundation'
-    core.weak_framework = "XCTest"
-    core.dependency 'Sourcery', '>= 0.17'
-    core.pod_target_xcconfig = {
+  s.subspec 'Testing' do |spec|
+    spec.source_files = 'Sources/{Classes,Mock}/**/*'
+    spec.resources = '{Sources/Mock/Mock.swifttemplate,get_sourcery.sh}'
+    spec.frameworks = 'Foundation'
+    spec.weak_framework = "XCTest"
+    spec.dependency 'Sourcery', '>= 0.18'
+    spec.pod_target_xcconfig = {
         'APPLICATION_EXTENSION_API_ONLY' => 'YES',
         'ENABLE_BITCODE' => 'NO',
         'OTHER_LDFLAGS' => '$(inherited) -weak-lswiftXCTest -Xlinker -no_application_extension',
@@ -34,14 +33,13 @@ Library that uses metaprogramming technique to generate mocks based on sources, 
         'FRAMEWORK_SEARCH_PATHS' => '$(inherited) "$(PLATFORM_DIR)/Developer/Library/Frameworks"',
         'DEFINES_MODULE' => 'YES'
     }
-    core.user_target_xcconfig = { 'FRAMEWORK_SEARCH_PATHS' => '$(PLATFORM_DIR)/Developer/Library/Frameworks' }
+    spec.user_target_xcconfig = { 'FRAMEWORK_SEARCH_PATHS' => '$(PLATFORM_DIR)/Developer/Library/Frameworks' }
   end
 
   s.subspec 'Prototyping' do |spec|
-    spec.source_files = 'Sources/Classes/**/*'
-    spec.resources = '{Sources/Templates/Mock.swifttemplate,get_sourcery.sh}'
-    spec.xcconfig = { 'OTHER_SWIFT_FLAGS' => '-DMockyCustom' }
+    spec.source_files = 'Sources/{Classes,Prototype}/**/*'
+    spec.resources = '{Sources/Prototype/Prototype.swifttemplate,get_sourcery.sh}'
     spec.frameworks = 'Foundation'
-    spec.dependency 'Sourcery'
+    spec.dependency 'Sourcery', '>= 0.18'
   end
 end

@@ -1,11 +1,3 @@
-//
-//  Mock.swift
-//  Pods
-//
-//  Created by przemyslaw.wosko on 19/05/2017.
-//
-//
-
 import Foundation
 
 public enum MockScope {
@@ -141,7 +133,7 @@ public protocol StaticMock: class {
 }
 
 public extension StaticMock {
-    
+
     /// [deprecated] Method `clear` method was renamed to `resetMock`
     @available(*, deprecated, message: "`clear` was renamed to `resetMock`")
     static func clear() {

@@ -1,10 +1,3 @@
-//
-//  Count.swift
-//  SwiftyMocky
-//
-//  Created by Kamil Wyszomierski on 24/10/2018.
-//
-
 import Foundation
 
 /// Count enum. Use it for all Verify features, when checking how many times something happened.

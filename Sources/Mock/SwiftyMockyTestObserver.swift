@@ -1,12 +1,4 @@
-//
-//  TestObserver.swift
-//  Pods
-//
-//  Created by przemyslaw.wosko on 29/09/2018.
-//
-
 import Foundation
-#if !MockyCustom
 import XCTest
 
 /// Used for observing tests and handling internal library errors.
@@ -99,12 +91,3 @@ private class FilesExlorer {
         return String(data: fileData, encoding: .utf8) ?? String(data: fileData, encoding: .utf16)
     }
 }
-#else
-/// Used for observing tests and handling internal library errors.
-public class SwiftyMockyTestObserver: NSObject {
-    /// [Internal] No setup whatsoever
-    @objc public static func setup() {
-        // Empty on purpose
-    }
-}
-#endif

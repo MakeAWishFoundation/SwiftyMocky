@@ -27,7 +27,3 @@ target 'Mocky_Example_macOS' do
         tests
     end
 end
-
-post_install do |installer|
-  system("rake sourcery")
-end

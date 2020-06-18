@@ -6,11 +6,11 @@ sources:
   exclude:
     - ./SwiftyMocky-Example/Shared/Other/Excluded.generated.swift
 templates:
-  - ./Sources/Templates
+  - ./Sources/Mock
 output:
   ./SwiftyMocky-Tests/macOS/Mocks
 args:
-  swiftyMocky:   
+  swiftyMocky:
     testable:
       - Mocky_Example_macOS
     excludedSwiftLintRules:
