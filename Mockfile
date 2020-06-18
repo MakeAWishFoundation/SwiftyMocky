@@ -49,16 +49,3 @@ mocky.tvOS:
   - Mocky_Example_tvOS
   import:
   - Foundation
-
-cli.core.tests:
-  sources:
-    include:
-    - ./Sources/SwiftyMockyCLICore
-  output: ./Tests/SwiftyMockyCLICoreTests/Mock.generated.swift
-  targets:
-  - Package.swift/SwiftyMockyCLICore
-  testable:
-  - SwiftyMockyCLICore
-  import:
-  - Foundation
-  - PathKit
