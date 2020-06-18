@@ -368,6 +368,7 @@ class MethodWrapper {
         let (annotation, _, _) = methodInfo(deprecated, annotated)
         let clauseConstraints = whereClauseExpression()
 
+
         if method.parameters.isEmpty {
             return "public static func \(method.shortName)(willReturn: \(returnTypeString)...) -> \(prefix)MethodStub" + clauseConstraints
         } else {

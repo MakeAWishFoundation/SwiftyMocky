@@ -151,6 +151,12 @@
 		CCC5CABD215F8A6F00D29291 /* EdgeCasesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC5CABC215F8A6F00D29291 /* EdgeCasesTests.swift */; };
 		CCC5CABE215F8A6F00D29291 /* EdgeCasesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC5CABC215F8A6F00D29291 /* EdgeCasesTests.swift */; };
 		CCC5CABF215F8A6F00D29291 /* EdgeCasesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC5CABC215F8A6F00D29291 /* EdgeCasesTests.swift */; };
+		CCCB8A99249C02BE003CA85F /* UnnamedAttributesProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCB8A98249C02BE003CA85F /* UnnamedAttributesProtocol.swift */; };
+		CCCB8A9A249C02BE003CA85F /* UnnamedAttributesProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCB8A98249C02BE003CA85F /* UnnamedAttributesProtocol.swift */; };
+		CCCB8A9B249C02BE003CA85F /* UnnamedAttributesProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCB8A98249C02BE003CA85F /* UnnamedAttributesProtocol.swift */; };
+		CCCB8A9D249C0B47003CA85F /* UnnamedAttributesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCB8A9C249C0B46003CA85F /* UnnamedAttributesTests.swift */; };
+		CCCB8A9E249C0B47003CA85F /* UnnamedAttributesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCB8A9C249C0B46003CA85F /* UnnamedAttributesTests.swift */; };
+		CCCB8A9F249C0B47003CA85F /* UnnamedAttributesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCB8A9C249C0B46003CA85F /* UnnamedAttributesTests.swift */; };
 		CCE350E91FCC0A9400A76C4C /* NonSwiftProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE350D21FCC0A9400A76C4C /* NonSwiftProtocol.swift */; };
 		CCE350EA1FCC0A9400A76C4C /* NonSwiftProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE350D21FCC0A9400A76C4C /* NonSwiftProtocol.swift */; };
 		CCE350EB1FCC0A9400A76C4C /* ExampleProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE350D31FCC0A9400A76C4C /* ExampleProtocols.swift */; };
@@ -335,6 +341,8 @@
 		CCAFC9F21FAF244D003F776A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CCC5CAB8215EB24400D29291 /* EdgeCasesProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgeCasesProtocols.swift; sourceTree = "<group>"; };
 		CCC5CABC215F8A6F00D29291 /* EdgeCasesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgeCasesTests.swift; sourceTree = "<group>"; };
+		CCCB8A98249C02BE003CA85F /* UnnamedAttributesProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnnamedAttributesProtocol.swift; sourceTree = "<group>"; };
+		CCCB8A9C249C0B46003CA85F /* UnnamedAttributesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnnamedAttributesTests.swift; sourceTree = "<group>"; };
 		CCE350D21FCC0A9400A76C4C /* NonSwiftProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NonSwiftProtocol.swift; sourceTree = "<group>"; };
 		CCE350D31FCC0A9400A76C4C /* ExampleProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleProtocols.swift; sourceTree = "<group>"; };
 		CCE350D41FCC0A9400A76C4C /* ItemsRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemsRepository.swift; sourceTree = "<group>"; };
@@ -740,6 +748,7 @@
 				C83B2421215BDA870032BCF3 /* ProtocolWithSubscripts.swift */,
 				CCC5CAB8215EB24400D29291 /* EdgeCasesProtocols.swift */,
 				CC542E5E22198E7F00691F24 /* InoutParameterProtocols.swift */,
+				CCCB8A98249C02BE003CA85F /* UnnamedAttributesProtocol.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -857,6 +866,7 @@
 		CCE3512F1FCC0B8200A76C4C /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				CCCB8A9C249C0B46003CA85F /* UnnamedAttributesTests.swift */,
 				CCE351321FCC0B8200A76C4C /* ExampleTests.swift */,
 				CCE351301FCC0B8200A76C4C /* SampleServiceTests.swift */,
 				CCE351311FCC0B8200A76C4C /* ComplicatedServiceTests.swift */,
@@ -1478,6 +1488,7 @@
 				CCE350F61FCC0A9400A76C4C /* ProtocolWithInitializers.swift in Sources */,
 				CCE350EA1FCC0A9400A76C4C /* NonSwiftProtocol.swift in Sources */,
 				CCC5CABA215EB24400D29291 /* EdgeCasesProtocols.swift in Sources */,
+				CCCB8A9A249C02BE003CA85F /* UnnamedAttributesProtocol.swift in Sources */,
 				CC0955622379902500891A47 /* SuggestionRepository.swift in Sources */,
 				CCE351061FCC0A9400A76C4C /* ProtocolsWithClosures.swift in Sources */,
 				CC07B604202215F600F51534 /* ProtocolMethodsThatDifferOnlyInReturnType.swift in Sources */,
@@ -1510,6 +1521,7 @@
 				CCC5CABE215F8A6F00D29291 /* EdgeCasesTests.swift in Sources */,
 				CCE351511FCC0B8200A76C4C /* ProtocolWithStaticMembersTests.swift in Sources */,
 				CCE351451FCC0B8200A76C4C /* ComplicatedServiceTests.swift in Sources */,
+				CCCB8A9E249C0B47003CA85F /* UnnamedAttributesTests.swift in Sources */,
 				CC491A261FDAB587001CAB8A /* ProtocolWithPropertiesTests.swift in Sources */,
 				CCE351681FCC0B9700A76C4C /* Mocky_tvOS_Tests.swift in Sources */,
 				C8B87414215A54B1002CF376 /* PropertiesHandlingTests.swift in Sources */,
@@ -1548,6 +1560,7 @@
 				CCE350F51FCC0A9400A76C4C /* ProtocolWithInitializers.swift in Sources */,
 				CCE350E91FCC0A9400A76C4C /* NonSwiftProtocol.swift in Sources */,
 				CCC5CAB9215EB24400D29291 /* EdgeCasesProtocols.swift in Sources */,
+				CCCB8A99249C02BE003CA85F /* UnnamedAttributesProtocol.swift in Sources */,
 				CC0955612379902500891A47 /* SuggestionRepository.swift in Sources */,
 				CCE351051FCC0A9400A76C4C /* ProtocolsWithClosures.swift in Sources */,
 				CC07B603202215F600F51534 /* ProtocolMethodsThatDifferOnlyInReturnType.swift in Sources */,
@@ -1594,6 +1607,7 @@
 				CC32522320061574009AD6C2 /* SelfConstrainedProtocolTests.swift in Sources */,
 				C87B4F822153EF0700DD8AE3 /* ExpressibleByLiteralsTests.swift in Sources */,
 				CC32521B2004C217009AD6C2 /* GenericProtocolsTests.swift in Sources */,
+				CCCB8A9D249C0B47003CA85F /* UnnamedAttributesTests.swift in Sources */,
 				C81D094D22C0C59800A0427F /* CustomAssertionsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1636,6 +1650,7 @@
 				CC5B61DB1FCC18C4007FB209 /* SampleService.swift in Sources */,
 				CC5B61D91FCC18C4007FB209 /* ItemsRepository.swift in Sources */,
 				CCC5CABB215EB24400D29291 /* EdgeCasesProtocols.swift in Sources */,
+				CCCB8A9B249C02BE003CA85F /* UnnamedAttributesProtocol.swift in Sources */,
 				CC0955632379902500891A47 /* SuggestionRepository.swift in Sources */,
 				CC5B61D31FCC18C4007FB209 /* ProtocolWithInitializers.swift in Sources */,
 				CC07B605202215F700F51534 /* ProtocolMethodsThatDifferOnlyInReturnType.swift in Sources */,
@@ -1668,6 +1683,7 @@
 				CCC5CABF215F8A6F00D29291 /* EdgeCasesTests.swift in Sources */,
 				CC5B61E51FCC18D0007FB209 /* SampleServiceTests.swift in Sources */,
 				CC5B61DE1FCC18D0007FB209 /* ProtocolWithThrowingMehtodsTests.swift in Sources */,
+				CCCB8A9F249C0B47003CA85F /* UnnamedAttributesTests.swift in Sources */,
 				CC491A271FDAB588001CAB8A /* ProtocolWithPropertiesTests.swift in Sources */,
 				CC5B61E61FCC18D0007FB209 /* ComplicatedServiceTests.swift in Sources */,
 				C8B87415215A54B1002CF376 /* PropertiesHandlingTests.swift in Sources */,

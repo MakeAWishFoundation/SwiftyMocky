@@ -11760,6 +11760,203 @@ open class SuggestionRepositoryConstrainedToProtocolMock<Entity>: SuggestionRepo
     }
 }
 
+// MARK: - UnnamedAttributesProtocol
+open class UnnamedAttributesProtocolMock: UnnamedAttributesProtocol, Mock {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        SwiftyMockyTestObserver.setup()
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    public typealias PropertyStub = Given
+    public typealias MethodStub = Given
+    public typealias SubscriptStub = Given
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
+
+
+
+
+    open func methodWithUnnamedAttributes(_: Int) -> String {
+        addInvocation(.m_methodWithUnnamedAttributes)
+		let perform = methodPerformValue(.m_methodWithUnnamedAttributes) as? () -> Void
+		perform?()
+		var __value: String
+		do {
+		    __value = try methodReturnValue(.m_methodWithUnnamedAttributes).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for methodWithUnnamedAttributes(_: Int). Use given")
+			Failure("Stub return value not specified for methodWithUnnamedAttributes(_: Int). Use given")
+		}
+		return __value
+    }
+
+    open func methodWithUnnamedAndNamedAttributes(at int: Int, _: Int) -> String {
+        addInvocation(.m_methodWithUnnamedAndNamedAttributes__at_int(Parameter<Int>.value(`int`)))
+		let perform = methodPerformValue(.m_methodWithUnnamedAndNamedAttributes__at_int(Parameter<Int>.value(`int`))) as? (Int) -> Void
+		perform?(`int`)
+		var __value: String
+		do {
+		    __value = try methodReturnValue(.m_methodWithUnnamedAndNamedAttributes__at_int(Parameter<Int>.value(`int`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for methodWithUnnamedAndNamedAttributes(at int: Int, _: Int). Use given")
+			Failure("Stub return value not specified for methodWithUnnamedAndNamedAttributes(at int: Int, _: Int). Use given")
+		}
+		return __value
+    }
+
+
+    fileprivate enum MethodType {
+        case m_methodWithUnnamedAttributes
+        case m_methodWithUnnamedAndNamedAttributes__at_int(Parameter<Int>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+            case (.m_methodWithUnnamedAttributes, .m_methodWithUnnamedAttributes):
+                return true 
+            case (.m_methodWithUnnamedAndNamedAttributes__at_int(let lhsInt), .m_methodWithUnnamedAndNamedAttributes__at_int(let rhsInt)):
+                guard Parameter.compare(lhs: lhsInt, rhs: rhsInt, with: matcher) else { return false } 
+                return true 
+            default: return false
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+            case .m_methodWithUnnamedAttributes: return 0
+            case let .m_methodWithUnnamedAndNamedAttributes__at_int(p0): return p0.intValue
+            }
+        }
+    }
+
+    open class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [StubProduct]) {
+            self.method = method
+            super.init(products)
+        }
+
+
+        public static func methodWithUnnamedAttributes(willReturn: String...) -> MethodStub {
+            return Given(method: .m_methodWithUnnamedAttributes, products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func methodWithUnnamedAndNamedAttributes(at int: Parameter<Int>, willReturn: String...) -> MethodStub {
+            return Given(method: .m_methodWithUnnamedAndNamedAttributes__at_int(`int`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func methodWithUnnamedAttributes(willProduce: (Stubber<String>) -> Void) -> MethodStub {
+            let willReturn: [String] = []
+			let given: Given = { return Given(method: .m_methodWithUnnamedAttributes, products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (String).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func methodWithUnnamedAndNamedAttributes(at int: Parameter<Int>, willProduce: (Stubber<String>) -> Void) -> MethodStub {
+            let willReturn: [String] = []
+			let given: Given = { return Given(method: .m_methodWithUnnamedAndNamedAttributes__at_int(`int`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (String).self)
+			willProduce(stubber)
+			return given
+        }
+    }
+
+    public struct Verify {
+        fileprivate var method: MethodType
+
+        public static func methodWithUnnamedAttributes() -> Verify { return Verify(method: .m_methodWithUnnamedAttributes)}
+        public static func methodWithUnnamedAndNamedAttributes(at int: Parameter<Int>) -> Verify { return Verify(method: .m_methodWithUnnamedAndNamedAttributes__at_int(`int`))}
+    }
+
+    public struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        public static func methodWithUnnamedAttributes(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_methodWithUnnamedAttributes, performs: perform)
+        }
+        public static func methodWithUnnamedAndNamedAttributes(at int: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
+            return Perform(method: .m_methodWithUnnamedAndNamedAttributes__at_int(`int`), performs: perform)
+        }
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+    private func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+    }
+}
+
 // MARK: - UserNetworkType
 open class UserNetworkTypeMock: UserNetworkType, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
