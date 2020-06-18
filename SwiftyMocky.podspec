@@ -18,8 +18,8 @@ Library that uses metaprogramming technique to generate mocks based on sources, 
   s.macos.deployment_target = '10.10'
   s.preserve_paths = '*'
 
-  s.source_files = 'Sources/{Classes,Mock}/**/*'
-  s.resources = '{Sources/Mock/Mock.swifttemplate,get_sourcery.sh}'
+  s.source_files = 'Sources/SwiftyMocky/**/*'
+  s.resources = '{Sources/SwiftyMocky/Mock.swifttemplate,get_sourcery.sh}'
   s.frameworks = 'Foundation'
   s.weak_framework = "XCTest"
   s.dependency 'Sourcery', '>= 0.18'

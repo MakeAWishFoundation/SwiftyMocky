@@ -1017,7 +1017,7 @@
 				47EB3B1D1FC356B000905329 /* Sources */,
 				47EB3B1E1FC356B000905329 /* Frameworks */,
 				47EB3B1F1FC356B000905329 /* Resources */,
-				AD7A661328510B0F8FC3B8C0 /* [CP] Embed Pods Frameworks */,
+				AC084BAC57BCB9ADC03D8E2C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1055,7 +1055,7 @@
 				607FACE11AFB9204008FA782 /* Sources */,
 				607FACE21AFB9204008FA782 /* Frameworks */,
 				607FACE31AFB9204008FA782 /* Resources */,
-				3D56EA4D1952660D5E9DFB22 /* [CP] Embed Pods Frameworks */,
+				DF017F044B7A2A10E9E85577 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1111,7 +1111,7 @@
 				CC5B61A51FCC16F8007FB209 /* Sources */,
 				CC5B61A61FCC16F8007FB209 /* Frameworks */,
 				CC5B61A71FCC16F8007FB209 /* Resources */,
-				44142757B38ABCA8B35C72D0 /* [CP] Embed Pods Frameworks */,
+				1E18951788B95FF284B2C5B2 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1312,25 +1312,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		3D56EA4D1952660D5E9DFB22 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_iOS/Pods-Mocky_Tests_iOS-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/SwiftyMocky-iOS/SwiftyMocky.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyMocky.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_iOS/Pods-Mocky_Tests_iOS-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		44142757B38ABCA8B35C72D0 /* [CP] Embed Pods Frameworks */ = {
+		1E18951788B95FF284B2C5B2 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1402,7 +1384,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		AD7A661328510B0F8FC3B8C0 /* [CP] Embed Pods Frameworks */ = {
+		AC084BAC57BCB9ADC03D8E2C /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1454,6 +1436,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DF017F044B7A2A10E9E85577 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_iOS/Pods-Mocky_Tests_iOS-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/SwiftyMocky-iOS/SwiftyMocky.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyMocky.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_iOS/Pods-Mocky_Tests_iOS-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
