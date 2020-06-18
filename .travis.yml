@@ -7,6 +7,8 @@ matrix:
         - rake pods
       script:
         - rake mock # legacy mock generation
+        - swift build
+        - swift test
         - fastlane ios test
         - fastlane tvos test
 
@@ -17,6 +19,8 @@ matrix:
         - rake pods
       script:
         - rake mock # legacy mock generation
+        - swift build
+        - swift test
         - fastlane ios test
         - fastlane tvos test_13
 
@@ -27,6 +31,8 @@ matrix:
         - rake pods
       script:
         - rake mock # legacy mock generation
+        - swift build
+        - swift test
         - fastlane ios test
         - fastlane tvos test_13
 
