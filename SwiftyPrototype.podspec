@@ -18,7 +18,7 @@ Library that uses metaprogramming technique to generate fakes/prototypes based o
   s.macos.deployment_target = '10.10'
   s.preserve_paths = '*'
 
-  s.source_files = 'Sources/SwiftyPrototype/**/*'
+  s.source_files = 'Sources/SwiftyPrototype/**/*.swift'
   s.resources = '{Sources/SwiftyPrototype/Prototype.swifttemplate,get_sourcery.sh}'
   s.frameworks = 'Foundation'
   s.dependency 'Sourcery', '>= 0.18'

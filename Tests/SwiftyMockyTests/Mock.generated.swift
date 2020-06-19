@@ -5508,12 +5508,6 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
 		perform?(`dependency`)
     }
 
-    open func objcSupportingFunc() {
-        addInvocation(.m_objcSupportingFunc)
-		let perform = methodPerformValue(.m_objcSupportingFunc) as? () -> Void
-		perform?()
-    }
-
     @discardableResult
 	open func inlinableFunc(_ val: Int) -> Int {
         addInvocation(.m_inlinableFunc__val(Parameter<Int>.value(`val`)))
@@ -5533,15 +5527,12 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
     fileprivate enum MethodType {
         @available(iOS 14, *)
 		case m_funcB__dependency(Parameter<ProtocolWithAttributes>)
-        case m_objcSupportingFunc
         case m_inlinableFunc__val(Parameter<Int>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
             case (.m_funcB__dependency(let lhsDependency), .m_funcB__dependency(let rhsDependency)):
                 guard Parameter.compare(lhs: lhsDependency, rhs: rhsDependency, with: matcher) else { return false } 
-                return true 
-            case (.m_objcSupportingFunc, .m_objcSupportingFunc):
                 return true 
             case (.m_inlinableFunc__val(let lhsVal), .m_inlinableFunc__val(let rhsVal)):
                 guard Parameter.compare(lhs: lhsVal, rhs: rhsVal, with: matcher) else { return false } 
@@ -5553,7 +5544,6 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
         func intValue() -> Int {
             switch self {
             case let .m_funcB__dependency(p0): return p0.intValue
-            case .m_objcSupportingFunc: return 0
             case let .m_inlinableFunc__val(p0): return p0.intValue
             }
         }
@@ -5586,7 +5576,6 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
 
         @available(iOS 14, *)
 		public static func funcB(_ dependency: Parameter<ProtocolWithAttributes>) -> Verify { return Verify(method: .m_funcB__dependency(`dependency`))}
-        public static func objcSupportingFunc() -> Verify { return Verify(method: .m_objcSupportingFunc)}
         @discardableResult
 		public static func inlinableFunc(_ val: Parameter<Int>) -> Verify { return Verify(method: .m_inlinableFunc__val(`val`))}
     }
@@ -5598,9 +5587,6 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
         @available(iOS 14, *)
 		public static func funcB(_ dependency: Parameter<ProtocolWithAttributes>, perform: @escaping (ProtocolWithAttributes) -> Void) -> Perform {
             return Perform(method: .m_funcB__dependency(`dependency`), performs: perform)
-        }
-        public static func objcSupportingFunc(perform: @escaping () -> Void) -> Perform {
-            return Perform(method: .m_objcSupportingFunc, performs: perform)
         }
         @discardableResult
 		public static func inlinableFunc(_ val: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
