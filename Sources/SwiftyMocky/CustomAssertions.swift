@@ -1,4 +1,3 @@
-#if canImport(XCTest)
 import XCTest
 
 /// Allows to verify if error was thrown, and if it is of given type.
@@ -43,4 +42,3 @@ public func XCTAssertThrowsError<T, E>(
         XCTAssertTrue((errorThrown as? E) == error, typeMessage, file: file, line: line)
     }
 }
-#endif

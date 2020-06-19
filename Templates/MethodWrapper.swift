@@ -41,9 +41,6 @@ func replacingSelf(_ value: String) -> String {
 }
 
 class MethodWrapper {
-    private func deprecatedMessage(_ preferred: String = "") -> String {
-        return "@available(*, deprecated, message: \"This constructor is deprecated, and will be removed in v3.1\(preferred)\")\n\t\t"
-    }
     private var noStubDefinedMessage: String {
         return "Stub return value not specified for \(method.name.replacingOccurrences(of: "\t", with: " ")). Use given"
     }
@@ -107,6 +104,9 @@ class MethodWrapper {
         guard let index = MethodWrapper.suffixes[uniqueNameWithReturnType] else { return "" }
         return "_\(index)"
     }
+    private var methodAttributes: String {
+        return Helpers.extractAttributes(from: self.method.attributes)
+    }
 
     var prototype: String {
         return "\(registrationName)\(nameSuffix)".replacingOccurrences(of: "`", with: "")
@@ -127,9 +127,11 @@ class MethodWrapper {
 
         let staticModifier: String = "\(accessModifier) "
         let params = replacingSelf(parametersForStubSignature())
+        var attributes = self.methodAttributes
+        attributes = attributes.isEmpty ? "" : "\(attributes)\n\t"
 
         if method.isInitializer {
-            return "public required \(method.name) \(throwing)"
+            return "\(attributes)public required \(method.name) \(throwing)"
         } else if method.returnTypeName.isVoid {
             let wherePartIfNeeded: String = {
                 if method.returnTypeName.name.hasPrefix("Void") {
@@ -139,11 +141,11 @@ class MethodWrapper {
                     return !method.returnTypeName.name.isEmpty ? "\(method.returnTypeName.name) " : ""
                 }
             }()
-            return "\(staticModifier)func \(method.shortName)\(params) \(throwing)\(wherePartIfNeeded)"
+            return "\(attributes)\(staticModifier)func \(method.shortName)\(params) \(throwing)\(wherePartIfNeeded)"
         } else if returnsGenericConstrainedToSelf {
-            return "\(staticModifier)func \(method.shortName)\(params) \(throwing)-> \(returnTypeReplacingSelf) "
+            return "\(attributes)\(staticModifier)func \(method.shortName)\(params) \(throwing)-> \(returnTypeReplacingSelf) "
         } else {
-            return "\(staticModifier)func \(method.shortName)\(params) \(throwing)-> \(method.returnTypeName.name) "
+            return "\(attributes)\(staticModifier)func \(method.shortName)\(params) \(throwing)-> \(method.returnTypeName.name) "
         }
     }
     var invocation: String {
@@ -345,8 +347,10 @@ class MethodWrapper {
 
     // Method Type
     func methodTypeDeclarationWithParameters() -> String {
-        guard !method.parameters.isEmpty else { return "\(prototype)" }
-        return "\(prototype)(\(parametersForMethodTypeDeclaration()))"
+        let availability = method.attributes["available"]?.description
+        let attributes = availability != nil ? "\(availability!)\n\t\t" : ""
+        guard !method.parameters.isEmpty else { return "\(attributes)case \(prototype)" }
+        return "\(attributes)case \(prototype)(\(parametersForMethodTypeDeclaration()))"
     }
 
     // Given
@@ -363,26 +367,26 @@ class MethodWrapper {
         return returnTypeString
     }
 
-    func givenConstructorName(prefix: String = "", deprecated: Bool = false, annotated: Bool = true) -> String {
+    func givenConstructorName(prefix: String = "") -> String {
         let returnTypeString = givenReturnTypeString()
-        let (annotation, _, _) = methodInfo(deprecated, annotated)
+        let (annotation, _, _) = methodInfo()
         let clauseConstraints = whereClauseExpression()
 
 
         if method.parameters.isEmpty {
-            return "public static func \(method.shortName)(willReturn: \(returnTypeString)...) -> \(prefix)MethodStub" + clauseConstraints
+            return "\(annotation)public static func \(method.shortName)(willReturn: \(returnTypeString)...) -> \(prefix)MethodStub" + clauseConstraints
         } else {
-            return "\(annotation)public static func \(method.shortName)(\(parametersForProxySignature(deprecated: deprecated)), willReturn: \(returnTypeString)...) -> \(prefix)MethodStub" + clauseConstraints
+            return "\(annotation)public static func \(method.shortName)(\(parametersForProxySignature()), willReturn: \(returnTypeString)...) -> \(prefix)MethodStub" + clauseConstraints
         }
     }
 
-    func givenConstructorNameThrows(prefix: String = "", deprecated: Bool = false, annotated: Bool = true) -> String {
-        let (annotation, _, _) = methodInfo(deprecated, annotated)
+    func givenConstructorNameThrows(prefix: String = "") -> String {
+        let (annotation, _, _) = methodInfo()
         let clauseConstraints = whereClauseExpression()
         if method.parameters.isEmpty {
-            return "public static func \(method.shortName)(willThrow: Error...) -> \(prefix)MethodStub" + clauseConstraints
+            return "\(annotation)public static func \(method.shortName)(willThrow: Error...) -> \(prefix)MethodStub" + clauseConstraints
         } else {
-            return "\(annotation)public static func \(method.shortName)(\(parametersForProxySignature(deprecated: deprecated)), willThrow: Error...) -> \(prefix)MethodStub" + clauseConstraints
+            return "\(annotation)public static func \(method.shortName)(\(parametersForProxySignature()), willThrow: Error...) -> \(prefix)MethodStub" + clauseConstraints
         }
     }
 
@@ -450,13 +454,13 @@ class MethodWrapper {
     }
 
     // Verify
-    func verificationProxyConstructorName(prefix: String = "", deprecated: Bool = false, annotated: Bool = true) -> String {
-        let (annotation, methodName, genericConstrains) = methodInfo(deprecated, annotated)
+    func verificationProxyConstructorName(prefix: String = "") -> String {
+        let (annotation, methodName, genericConstrains) = methodInfo()
 
         if method.parameters.isEmpty {
-            return "public static func \(methodName)(\(returningParameter(false,true))) -> \(prefix)Verify\(genericConstrains)"
+            return "\(annotation)public static func \(methodName)(\(returningParameter(false,true))) -> \(prefix)Verify\(genericConstrains)"
         } else {
-            return "\(annotation)public static func \(methodName)(\(parametersForProxySignature(deprecated: deprecated))\(returningParameter(true,true))) -> \(prefix)Verify\(genericConstrains)"
+            return "\(annotation)public static func \(methodName)(\(parametersForProxySignature())\(returningParameter(true,true))) -> \(prefix)Verify\(genericConstrains)"
         }
     }
 
@@ -469,14 +473,14 @@ class MethodWrapper {
     }
 
     // Perform
-    func performProxyConstructorName(prefix: String = "", deprecated: Bool = false, annotated: Bool = true) -> String {
+    func performProxyConstructorName(prefix: String = "") -> String {
         let body: String = {
-            let (annotation, methodName, genericConstrains) = methodInfo(deprecated, annotated)
+            let (annotation, methodName, genericConstrains) = methodInfo()
 
             if method.parameters.isEmpty {
-                return "public static func \(methodName)(\(returningParameter(true,false))perform: @escaping \(performProxyClosureType())) -> \(prefix)Perform\(genericConstrains)"
+                return "\(annotation)public static func \(methodName)(\(returningParameter(true,false))perform: @escaping \(performProxyClosureType())) -> \(prefix)Perform\(genericConstrains)"
             } else {
-                return "\(annotation)public static func \(methodName)(\(parametersForProxySignature(deprecated: deprecated)), \(returningParameter(true,false))perform: @escaping \(performProxyClosureType())) -> \(prefix)Perform\(genericConstrains)"
+                return "\(annotation)public static func \(methodName)(\(parametersForProxySignature()), \(returningParameter(true,false))perform: @escaping \(performProxyClosureType())) -> \(prefix)Perform\(genericConstrains)"
             }
         }()
         return replacingSelf(body)
@@ -540,31 +544,10 @@ class MethodWrapper {
         }.joined(separator: ", ")
     }
 
-    private func parametersForProxySignature(deprecated: Bool = false) -> String {
+    private func parametersForProxySignature() -> String {
         return parameters.map { p in
-            guard deprecated else { return "\(p.labelAndName()): \(replacingSelf(p.nestedType))" }
-            guard let argumentLabel = p.parameter.argumentLabel else { return "\(p.parameter.name): \(replacingSelf(p.nestedType))" }
-            guard argumentLabel != p.name else { return "\(p.parameter.name): \(replacingSelf(p.nestedType))" }
-            return "\(argumentLabel) \(p.parameter.name): \(replacingSelf(p.nestedType))"
+            return "\(p.labelAndName()): \(replacingSelf(p.nestedType))"
         }.joined(separator: ", ")
-    }
-
-    private func deprecatedParametersMessage() -> String {
-        let newParams = parameters.map { p in return "\(p.parameter.argumentLabel ?? "_")" }
-        let oldParams = parameters.map { p -> String in
-            guard let argumentLabel = p.parameter.argumentLabel else { return "\(p.parameter.name)" }
-            guard argumentLabel != p.name else { return "\(p.parameter.name)" }
-            return "\(argumentLabel)"
-        }
-
-        var messages: [String] = []
-        for i in 0..<newParams.count {
-            if newParams[i] != oldParams[i] {
-                messages.append(" remove `\(oldParams[i])` label")
-            }
-        }
-
-        return " Possible fix: " + messages.joined(separator: ",")
     }
 
     private func parametersForStubSignature() -> String {
@@ -675,22 +658,22 @@ class MethodWrapper {
         return " where " + constraints.joined(separator: ", ")
     }
 
-    private func methodInfo(_ deprecated: Bool, _ annotated: Bool)
-        -> (annotation: String, methodName: String, genericConstrains: String) {
-            let generics = getGenericsAmongParameters()
-            let annotation = annotated && deprecated ? deprecatedMessage(deprecatedParametersMessage()) : ""
-            let methodName = returnTypeMatters() ? method.shortName : "\(method.callName)\(wrapGenerics(generics))"
-            let constraints: String = {
-                let constraints: [String]
-                if returnTypeMatters() {
-                    constraints = whereClauseConstraints()
-                } else {
-                    constraints = getGenericsConstraints(generics)
-                }
-                guard !constraints.isEmpty else { return "" }
+    private func methodInfo() -> (annotation: String, methodName: String, genericConstrains: String) {
+        let generics = getGenericsAmongParameters()
+        let methodName = returnTypeMatters() ? method.shortName : "\(method.callName)\(wrapGenerics(generics))"
+        let constraints: String = {
+            let constraints: [String]
+            if returnTypeMatters() {
+                constraints = whereClauseConstraints()
+            } else {
+                constraints = getGenericsConstraints(generics)
+            }
+            guard !constraints.isEmpty else { return "" }
 
-                return " where \(constraints.joined(separator: ", "))"
-            }()
-            return (annotation, methodName, constraints)
+            return " where \(constraints.joined(separator: ", "))"
+        }()
+        var attributes = self.methodAttributes.replacingOccurrences(of:"@objc", with: "")
+        attributes = attributes.isEmpty ? "" : "\(attributes)\n\t\t"
+        return (attributes, methodName, constraints)
     }
 }

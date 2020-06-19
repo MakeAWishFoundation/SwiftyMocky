@@ -11,6 +11,7 @@
     guard let aProtocol = autoMockable ? type : protocolToDecorate else { continue }
     mockedCount += 1
     let associatedTypes: [String]? = Helpers.extractAssociatedTypes(from: aProtocol)
+    let attributes: String = Helpers.extractAttributes(from: type.attributes)
     let typeAliases: [String] = Helpers.extractTypealiases(from: aProtocol)
     let genericTypesModifier: String = Helpers.extractGenericTypesModifier(associatedTypes)
     let genericTypesConstraints: String = Helpers.extractGenericTypesConstraints(associatedTypes)
@@ -24,6 +25,7 @@
         let selfConstrained = allMethods.map(wrapMethod).contains(where: { $0.returnsGenericConstrainedToSelf || $0.parametersContainsSelf })
         return selfConstrained ? "public final" : "open"
     }()
+    let inheritFromNSObject = type.annotations["ObjcProtocol"] != nil || attributes.contains("@objc")
     let allMethodsForMethodType = uniquesWithoutGenericConstraints(methods: aProtocol.allMethods.filter({ !$0.isStatic }))
     let allStaticMethods = uniques(methods: aProtocol.allMethods.filter({ $0.isStatic }))
     let allStaticMethodsForMethodType = uniquesWithoutGenericConstraints(methods: aProtocol.allMethods.filter({ $0.isStatic }))
@@ -31,7 +33,8 @@
     let conformsToMock = !allMethods.isEmpty || !allVariables.isEmpty -%><%_ -%><%_ -%>
 <%_ if autoMockable { -%>
 // MARK: - <%= type.name %>
-<%= accessModifier %> class <%= type.name %><%= mockTypeName %><%= genericTypesModifier %>:<%= type.annotations["ObjcProtocol"] != nil ? " NSObject," : "" %> <%= type.name %>, Mock<%= conformsToStaticMock ? ", StaticMock" : "" %><%= genericTypesConstraints %> {
+<%= attributes %>
+<%= accessModifier %> class <%= type.name %><%= mockTypeName %><%= genericTypesModifier %>:<%= inheritFromNSObject ? " NSObject," : "" %> <%= type.name %>, Mock<%= conformsToStaticMock ? ", StaticMock" : "" %><%= genericTypesConstraints %> {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
         self.sequencingPolicy = sequencingPolicy
@@ -137,8 +140,6 @@
     <%_ let variableCasesCount: Int = wrappedVariables.reduce(0) { return $0 + $1.casesCount } -%><%_ -%>
     <%_ let subscriptsCasesCount: Int = wrappedSubscripts.reduce(0) { return $0 + $1.casesCount } -%><%_ -%>
     <%_ let staticVariableCasesCount: Int = wrappedStaticVariables.reduce(0) { return $0 + $1.casesCount } -%><%_ -%>
-    <%_ let generateOldAccessorsForMethods: Bool = false -%><%_ -%>
-    <%_ let generateOldAccessorsForStaticMethods: Bool = false -%><%_ -%>
 
   <%# ================================================== STATIC STUBS -%><%_ -%>
     <%_ for method in wrappedStaticMethods { -%>
@@ -169,7 +170,7 @@
     <%_ if conformsToStaticMock { -%>
     fileprivate enum StaticMethodType {
     <%_ for method in wrappedStaticMethodsForMethodType { -%>
-        case <%= method.methodTypeDeclarationWithParameters() _%>
+        <%= method.methodTypeDeclarationWithParameters() _%>
     <%_  } %> <%_ for variable in allStaticVariables { -%>
         <%= propertyMethodTypes(variable) %>
     <%_ } %> <%_ %>
@@ -214,11 +215,6 @@
         <%= method.givenConstructorName(prefix: "Static") -%> {
             <%= method.givenConstructor(prefix: "Static") _%>
         }
-        <%_ if generateOldAccessorsForStaticMethods, method.containsEmptyArgumentLabels() { -%>
-        <%= method.givenConstructorName(prefix: "Static", deprecated: true) %> {
-            <%= method.givenConstructor(prefix: "Static") _%>
-        }
-        <%_ } -%>
         <%_ } -%>
         <%_ for method in wrappedStaticMethodsForMethodType.filter({ !$0.method.throws && !$0.method.rethrows && !$0.method.returnTypeName.isVoid && !$0.method.isInitializer }) { -%>
         <%= method.givenProduceConstructorName(prefix: "Static") -%> {
@@ -229,11 +225,6 @@
         <%= method.givenConstructorNameThrows(prefix: "Static") -%> {
             <%= method.givenConstructorThrows(prefix: "Static") _%>
         }
-        <%_ if generateOldAccessorsForStaticMethods, method.containsEmptyArgumentLabels() { -%>
-        <%= method.givenConstructorNameThrows(prefix: "Static", deprecated: true) %> {
-            <%= method.givenConstructorThrows(prefix: "Static") _%>
-        }
-        <%_ } -%>
         <%= method.givenProduceConstructorNameThrows(prefix: "Static") -%> {
             <%= method.givenProduceConstructorThrows(prefix: "Static") _%>
         }
@@ -245,9 +236,6 @@
 
         <%_ for method in wrappedStaticMethodsForMethodType { -%>
         <%= method.verificationProxyConstructorName(prefix: "Static") -%> { <%= method.verificationProxyConstructor(prefix: "Static") _%> }
-        <%_ if generateOldAccessorsForStaticMethods, method.containsEmptyArgumentLabels() { -%>
-        <%= method.verificationProxyConstructorName(prefix: "Static", deprecated: true) %> { <%= method.verificationProxyConstructor(prefix: "Static") _%> }
-        <%_ } -%>
         <%_ } %> <%_ -%>
         <%_ for variable in allStaticVariables { -%>
         <%= propertyTypes(variable) %>
@@ -262,11 +250,6 @@
         <%= method.performProxyConstructorName(prefix: "Static") -%> {
             <%= method.performProxyConstructor(prefix: "Static") _%>
         }
-        <%_ if generateOldAccessorsForStaticMethods, method.containsEmptyArgumentLabels() { -%>
-        <%= method.performProxyConstructorName(prefix: "Static", deprecated: true) %> {
-            <%= method.performProxyConstructor(prefix: "Static") _%>
-        }
-        <%_ } -%>
         <%_ } %> <%_ -%>
     }
 
@@ -276,7 +259,7 @@
 
     fileprivate enum MethodType {
     <%_ for method in wrappedMethodsForMethodType { -%>
-        case <%= method.methodTypeDeclarationWithParameters() _%>
+        <%= method.methodTypeDeclarationWithParameters() _%>
     <%_  } -%> <%_ for variable in allVariables { -%>
         <%= propertyMethodTypes(variable) %>
     <%_ } %> <%_ %> <%_ for wrapped in wrappedSubscripts { -%>
@@ -333,11 +316,6 @@
         <%= method.givenConstructorName() -%> {
             <%= method.givenConstructor() _%>
         }
-        <%_ if generateOldAccessorsForMethods, method.containsEmptyArgumentLabels() { -%>
-        <%= method.givenConstructorName(prefix: "", deprecated: true) %> {
-            <%= method.givenConstructor() _%>
-        }
-        <%_ } -%>
         <%_ } -%>
         <%_ for method in wrappedMethodsForMethodType.filter({ !$0.method.throws && !$0.method.rethrows && !$0.method.returnTypeName.isVoid && !$0.method.isInitializer }) { -%>
         <%= method.givenProduceConstructorName() -%> {
@@ -353,11 +331,6 @@
         <%= method.givenConstructorNameThrows() -%> {
             <%= method.givenConstructorThrows() _%>
         }
-        <%_ if generateOldAccessorsForMethods, method.containsEmptyArgumentLabels() { -%>
-        <%= method.givenConstructorNameThrows(prefix: "", deprecated: true) %> {
-            <%= method.givenConstructorThrows() _%>
-        }
-        <%_ } -%>
         <%= method.givenProduceConstructorNameThrows() -%> {
             <%= method.givenProduceConstructorThrows() _%>
         }
@@ -369,9 +342,6 @@
 
         <%_ for method in wrappedMethodsForMethodType { -%>
         <%= method.verificationProxyConstructorName() -%> { <%= method.verificationProxyConstructor() _%> }
-        <%_ if generateOldAccessorsForMethods, method.containsEmptyArgumentLabels() { -%>
-        <%= method.verificationProxyConstructorName(prefix: "", deprecated: true) %> { <%= method.verificationProxyConstructor() _%> }
-        <%_ } -%>
         <%_ } %> <%_ -%>
         <%_ for variable in allVariables { -%>
         <%= propertyTypes(variable) %>
@@ -392,11 +362,6 @@
         <%= method.performProxyConstructorName() -%> {
             <%= method.performProxyConstructor() _%>
         }
-        <%_ if generateOldAccessorsForMethods, method.containsEmptyArgumentLabels() { -%>
-        <%= method.performProxyConstructorName(prefix: "", deprecated: true) %> {
-            <%= method.performProxyConstructor() _%>
-        }
-        <%_ } -%>
         <%_ } %> <%_ -%>
     }
 

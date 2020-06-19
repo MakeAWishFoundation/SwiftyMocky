@@ -1,8 +1,8 @@
 // Collision management
 func areThereCollisions(between methods: [MethodWrapper]) -> Bool {
-    let givenSet = Set<String>(methods.map({ $0.givenConstructorName(prefix: "", deprecated: true, annotated: false) }))
+    let givenSet = Set<String>(methods.map({ $0.givenConstructorName(prefix: "") }))
     guard givenSet.count == methods.count else { return true } // there would be conflicts in Given
-    let verifySet = Set<String>(methods.map({ $0.verificationProxyConstructorName(prefix: "", deprecated: true, annotated: false) }))
+    let verifySet = Set<String>(methods.map({ $0.verificationProxyConstructorName(prefix: "") }))
     guard verifySet.count == methods.count else { return true } // there would be conflicts in Verify
     return false
 }

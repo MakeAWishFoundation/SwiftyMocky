@@ -7,6 +7,7 @@ protocol UnnamedAttributesProtocol {
 }
 
 class UnnamedAtributesProtocolImpl: UnnamedAttributesProtocol {
+
     func methodWithUnnamedAttributes(_ name: Int) -> String {
         return "\(name)"
     }

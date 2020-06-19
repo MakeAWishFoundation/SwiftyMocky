@@ -52,4 +52,9 @@ class Helpers {
         guard !constraints.isEmpty else { return "" }
         return " where \(constraints)"
     }
+    static func extractAttributes(from attributes: [String: SourceryRuntime.Attribute]) -> String {
+        return attributes.map { $0.1.description }
+        .filter { !["private", "internal", "public", "open", "optional"].contains($0) }
+        .joined(separator: " ")
+    }
 }

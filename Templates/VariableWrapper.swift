@@ -9,7 +9,10 @@ class VariableWrapper {
         guard variable.type?.accessLevel != "internal" else { return "" }
         return "public "
     }
-    let deprecatedMessage = "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value."
+    var attributes: String {
+        let value = Helpers.extractAttributes(from: self.variable.attributes)
+        return value.isEmpty ? "\(accessModifier)" : "\(value)\n\t\t\(accessModifier)"
+    }
     var noStubDefinedMessage: String { return "\(scope) - stub value for \(variable.name) was not defined" }
 
     var getter: String {
@@ -20,8 +23,7 @@ class VariableWrapper {
     var setter: String {
         let staticModifier = variable.isStatic ? "\(scope)." : ""
         if readonly {
-            let annotation = readonly ? "\n\t\t@available(*, deprecated, message: \"\(deprecatedMessage)\")" : ""
-            return "\(annotation)\n\t\tset {\t\(variable.isStatic ? "\(scope)." : "")\(privatePrototypeName) = newValue }"
+            return ""
         } else {
             return "\n\t\tset {\t\(staticModifier)invocations.append(.\(propertyCaseSetName)(.value(newValue))); \(variable.isStatic ? "\(scope)." : "")\(privatePrototypeName) = newValue }"
         }
@@ -29,7 +31,7 @@ class VariableWrapper {
     var prototype: String {
         let staticModifier = variable.isStatic ? "static " : ""
 
-        return "\(accessModifier)\(staticModifier)var \(variable.name): \(variable.typeName.name) {" +
+        return "\(attributes)\(staticModifier)var \(variable.name): \(variable.typeName.name) {" +
             "\(getter)" +
             "\(setter)" +
         "\n\t}"
@@ -80,7 +82,7 @@ class VariableWrapper {
 
     // Given
     func givenConstructorName(prefix: String = "") -> String {
-        return "\(accessModifier)static func \(variable.name)(getter defaultValue: \(TypeWrapper(variable.typeName).stripped)...) -> \(prefix)PropertyStub"
+        return "\(attributes)static func \(variable.name)(getter defaultValue: \(TypeWrapper(variable.typeName).stripped)...) -> \(prefix)PropertyStub"
     }
 
     func givenConstructor(prefix: String = "") -> String {

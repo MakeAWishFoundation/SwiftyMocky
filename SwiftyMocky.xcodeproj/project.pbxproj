@@ -157,6 +157,12 @@
 		CCCB8A9D249C0B47003CA85F /* UnnamedAttributesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCB8A9C249C0B46003CA85F /* UnnamedAttributesTests.swift */; };
 		CCCB8A9E249C0B47003CA85F /* UnnamedAttributesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCB8A9C249C0B46003CA85F /* UnnamedAttributesTests.swift */; };
 		CCCB8A9F249C0B47003CA85F /* UnnamedAttributesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCB8A9C249C0B46003CA85F /* UnnamedAttributesTests.swift */; };
+		CCCB8AA1249C1024003CA85F /* ProtocolWithAttributesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCB8AA0249C1024003CA85F /* ProtocolWithAttributesTests.swift */; };
+		CCCB8AA2249C1024003CA85F /* ProtocolWithAttributesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCB8AA0249C1024003CA85F /* ProtocolWithAttributesTests.swift */; };
+		CCCB8AA3249C1024003CA85F /* ProtocolWithAttributesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCB8AA0249C1024003CA85F /* ProtocolWithAttributesTests.swift */; };
+		CCCB8AA5249C1049003CA85F /* ProtocolWithAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCB8AA4249C1049003CA85F /* ProtocolWithAttributes.swift */; };
+		CCCB8AA6249C1049003CA85F /* ProtocolWithAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCB8AA4249C1049003CA85F /* ProtocolWithAttributes.swift */; };
+		CCCB8AA7249C1049003CA85F /* ProtocolWithAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCB8AA4249C1049003CA85F /* ProtocolWithAttributes.swift */; };
 		CCE350E91FCC0A9400A76C4C /* NonSwiftProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE350D21FCC0A9400A76C4C /* NonSwiftProtocol.swift */; };
 		CCE350EA1FCC0A9400A76C4C /* NonSwiftProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE350D21FCC0A9400A76C4C /* NonSwiftProtocol.swift */; };
 		CCE350EB1FCC0A9400A76C4C /* ExampleProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE350D31FCC0A9400A76C4C /* ExampleProtocols.swift */; };
@@ -343,6 +349,8 @@
 		CCC5CABC215F8A6F00D29291 /* EdgeCasesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgeCasesTests.swift; sourceTree = "<group>"; };
 		CCCB8A98249C02BE003CA85F /* UnnamedAttributesProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnnamedAttributesProtocol.swift; sourceTree = "<group>"; };
 		CCCB8A9C249C0B46003CA85F /* UnnamedAttributesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnnamedAttributesTests.swift; sourceTree = "<group>"; };
+		CCCB8AA0249C1024003CA85F /* ProtocolWithAttributesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolWithAttributesTests.swift; sourceTree = "<group>"; };
+		CCCB8AA4249C1049003CA85F /* ProtocolWithAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolWithAttributes.swift; sourceTree = "<group>"; };
 		CCE350D21FCC0A9400A76C4C /* NonSwiftProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NonSwiftProtocol.swift; sourceTree = "<group>"; };
 		CCE350D31FCC0A9400A76C4C /* ExampleProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleProtocols.swift; sourceTree = "<group>"; };
 		CCE350D41FCC0A9400A76C4C /* ItemsRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemsRepository.swift; sourceTree = "<group>"; };
@@ -749,6 +757,7 @@
 				CCC5CAB8215EB24400D29291 /* EdgeCasesProtocols.swift */,
 				CC542E5E22198E7F00691F24 /* InoutParameterProtocols.swift */,
 				CCCB8A98249C02BE003CA85F /* UnnamedAttributesProtocol.swift */,
+				CCCB8AA4249C1049003CA85F /* ProtocolWithAttributes.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -866,7 +875,6 @@
 		CCE3512F1FCC0B8200A76C4C /* Other */ = {
 			isa = PBXGroup;
 			children = (
-				CCCB8A9C249C0B46003CA85F /* UnnamedAttributesTests.swift */,
 				CCE351321FCC0B8200A76C4C /* ExampleTests.swift */,
 				CCE351301FCC0B8200A76C4C /* SampleServiceTests.swift */,
 				CCE351311FCC0B8200A76C4C /* ComplicatedServiceTests.swift */,
@@ -881,6 +889,8 @@
 				C81D094C22C0C59800A0427F /* CustomAssertionsTests.swift */,
 				CC07C93522C372D0007F4162 /* MatcherTests.swift */,
 				CC09555B2379771F00891A47 /* MockClearTests.swift */,
+				CCCB8A9C249C0B46003CA85F /* UnnamedAttributesTests.swift */,
+				CCCB8AA0249C1024003CA85F /* ProtocolWithAttributesTests.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -1497,6 +1507,7 @@
 				CCE350F21FCC0A9400A76C4C /* SampleService.swift in Sources */,
 				CCE350F41FCC0A9400A76C4C /* ProtocolsWithGenerics.swift in Sources */,
 				CC491A201FDAB4BB001CAB8A /* ProtocolWithProperties.swift in Sources */,
+				CCCB8AA6249C1049003CA85F /* ProtocolWithAttributes.swift in Sources */,
 				CCE351291FCC0AC300A76C4C /* ViewController.swift in Sources */,
 				CCE3512C1FCC0AC300A76C4C /* AppDelegate.swift in Sources */,
 				CC542E6122198E8600691F24 /* InoutParameterProtocols.swift in Sources */,
@@ -1534,6 +1545,7 @@
 				CCE351671FCC0B9700A76C4C /* ItemsRepositoryMock.swift in Sources */,
 				CCA9F81C21566B1400F2880B /* SimpleSequencingTests.swift in Sources */,
 				CC09555D2379771F00891A47 /* MockClearTests.swift in Sources */,
+				CCCB8AA2249C1024003CA85F /* ProtocolWithAttributesTests.swift in Sources */,
 				C870665C215E5ACB00EC852B /* SubscriptsTests.swift in Sources */,
 				CCE351491FCC0B8200A76C4C /* ProtocolsWithGenericsTests.swift in Sources */,
 				CCE351471FCC0B8200A76C4C /* ExampleTests.swift in Sources */,
@@ -1569,6 +1581,7 @@
 				CCE350F11FCC0A9400A76C4C /* SampleService.swift in Sources */,
 				CCE350F31FCC0A9400A76C4C /* ProtocolsWithGenerics.swift in Sources */,
 				CC491A1F1FDAB4BA001CAB8A /* ProtocolWithProperties.swift in Sources */,
+				CCCB8AA5249C1049003CA85F /* ProtocolWithAttributes.swift in Sources */,
 				CCE351101FCC0A9F00A76C4C /* ViewController.swift in Sources */,
 				CCE351141FCC0A9F00A76C4C /* AppDelegate.swift in Sources */,
 				CC542E6022198E8500691F24 /* InoutParameterProtocols.swift in Sources */,
@@ -1588,6 +1601,7 @@
 				CCE351561FCC0B8200A76C4C /* ProtocolWithClosuresTests.swift in Sources */,
 				CCA9F81B21566B1300F2880B /* SimpleSequencingTests.swift in Sources */,
 				CC07B60820221B6700F51534 /* ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift in Sources */,
+				CCCB8AA1249C1024003CA85F /* ProtocolWithAttributesTests.swift in Sources */,
 				CCE351521FCC0B8200A76C4C /* ProtocolsWithCustomAttributesTests.swift in Sources */,
 				CC491A251FDAB587001CAB8A /* ProtocolWithPropertiesTests.swift in Sources */,
 				CC09555C2379771F00891A47 /* MockClearTests.swift in Sources */,
@@ -1659,6 +1673,7 @@
 				CC5B61BE1FCC1764007FB209 /* ViewController.swift in Sources */,
 				CC5B61CD1FCC18BC007FB209 /* ProtocolsWithCollections.swift in Sources */,
 				CC491A211FDAB4BB001CAB8A /* ProtocolWithProperties.swift in Sources */,
+				CCCB8AA7249C1049003CA85F /* ProtocolWithAttributes.swift in Sources */,
 				CC5B61CE1FCC18BC007FB209 /* SimpleProtocols.swift in Sources */,
 				CC5B61D71FCC18C4007FB209 /* NonSwiftProtocol.swift in Sources */,
 				CC542E6222198E8600691F24 /* InoutParameterProtocols.swift in Sources */,
@@ -1696,6 +1711,7 @@
 				CC5B61DF1FCC18D0007FB209 /* ProtocolsWithCustomAttributesTests.swift in Sources */,
 				CCA9F81D21566B1500F2880B /* SimpleSequencingTests.swift in Sources */,
 				CC09555E2379771F00891A47 /* MockClearTests.swift in Sources */,
+				CCCB8AA3249C1024003CA85F /* ProtocolWithAttributesTests.swift in Sources */,
 				C870665D215E5ACB00EC852B /* SubscriptsTests.swift in Sources */,
 				CC5B61DC1FCC18D0007FB209 /* SimpleProtocolsTests.swift in Sources */,
 				CC5B61E31FCC18D0007FB209 /* ProtocolsWithGenericsTests.swift in Sources */,

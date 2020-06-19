@@ -9,6 +9,7 @@ import XCTest
 @testable import Mocky_Example_macOS
 
 // MARK: - AMassiveTestProtocol
+
 open class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -521,6 +522,7 @@ open class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
 }
 
 // MARK: - AVeryAssociatedProtocol
+
 open class AVeryAssociatedProtocolMock<T1,T2>: AVeryAssociatedProtocol, Mock where T1: Sequence, T2: Comparable, T2: EmptyProtocol {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -685,6 +687,7 @@ open class AVeryAssociatedProtocolMock<T1,T2>: AVeryAssociatedProtocol, Mock whe
 }
 
 // MARK: - AVeryGenericProtocol
+
 open class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -1017,6 +1020,7 @@ open class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
 }
 
 // MARK: - AllLiteralsContainer
+
 open class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -1611,6 +1615,7 @@ open class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
 }
 
 // MARK: - AnotherProtocol
+
 open class AnotherProtocolMock: AnotherProtocol, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -1791,6 +1796,7 @@ open class AnotherProtocolMock: AnotherProtocol, Mock {
 }
 
 // MARK: - ComplicatedServiceType
+
 open class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -1829,8 +1835,6 @@ open class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
 
     public var youCouldOnlyGetThis: String {
 		get {	invocations.append(.p_youCouldOnlyGetThis_get); return __p_youCouldOnlyGetThis ?? givenGetterValue(.p_youCouldOnlyGetThis_get, "ComplicatedServiceTypeMock - stub value for youCouldOnlyGetThis was not defined") }
-		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
-		set {	__p_youCouldOnlyGetThis = newValue }
 	}
 	private var __p_youCouldOnlyGetThis: (String)?
 
@@ -2196,6 +2200,7 @@ open class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
 }
 
 // MARK: - DateSortable
+
 open class DateSortableMock: DateSortable, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -2234,8 +2239,6 @@ open class DateSortableMock: DateSortable, Mock {
 
     public var date: Date {
 		get {	invocations.append(.p_date_get); return __p_date ?? givenGetterValue(.p_date_get, "DateSortableMock - stub value for date was not defined") }
-		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
-		set {	__p_date = newValue }
 	}
 	private var __p_date: (Date)?
 
@@ -2341,6 +2344,7 @@ open class DateSortableMock: DateSortable, Mock {
 }
 
 // MARK: - EdgeCasesGenericsProtocol
+
 open class EdgeCasesGenericsProtocolMock: EdgeCasesGenericsProtocol, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -2521,6 +2525,7 @@ open class EdgeCasesGenericsProtocolMock: EdgeCasesGenericsProtocol, Mock {
 }
 
 // MARK: - EmptyProtocol
+
 open class EmptyProtocolMock: EmptyProtocol, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -2644,6 +2649,7 @@ open class EmptyProtocolMock: EmptyProtocol, Mock {
 }
 
 // MARK: - FailsWithAutoClosureOnSwift5
+
 open class FailsWithAutoClosureOnSwift5Mock: FailsWithAutoClosureOnSwift5, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -2808,6 +2814,7 @@ open class FailsWithAutoClosureOnSwift5Mock: FailsWithAutoClosureOnSwift5, Mock 
 }
 
 // MARK: - FailsWithKeywordArguments
+
 open class FailsWithKeywordArgumentsMock: FailsWithKeywordArguments, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -3067,6 +3074,7 @@ open class FailsWithKeywordArgumentsMock: FailsWithKeywordArguments, Mock {
 }
 
 // MARK: - FailsWithReturnedTypeBeingGenericOfSelf
+
 public final class FailsWithReturnedTypeBeingGenericOfSelfMock: FailsWithReturnedTypeBeingGenericOfSelf, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -3370,6 +3378,7 @@ public final class FailsWithReturnedTypeBeingGenericOfSelfMock: FailsWithReturne
 }
 
 // MARK: - FailsWithUntagged
+
 open class FailsWithUntaggedMock: FailsWithUntagged, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -3518,6 +3527,7 @@ open class FailsWithUntaggedMock: FailsWithUntagged, Mock {
 }
 
 // MARK: - GenericProtocolReturningInt
+
 open class GenericProtocolReturningIntMock: GenericProtocolReturningInt, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -3682,6 +3692,7 @@ open class GenericProtocolReturningIntMock: GenericProtocolReturningInt, Mock {
 }
 
 // MARK: - GenericProtocolWithTypeConstraint
+
 open class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstraint, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -3881,6 +3892,7 @@ open class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstra
 }
 
 // MARK: - HistorySectionMapperType
+
 open class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -4045,6 +4057,7 @@ open class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
 }
 
 // MARK: - InoutProtocol
+
 open class InoutProtocolMock: InoutProtocol, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -4225,6 +4238,7 @@ open class InoutProtocolMock: InoutProtocol, Mock {
 }
 
 // MARK: - NonSwiftProtocol
+@objc
 open class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -4265,7 +4279,8 @@ open class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
 
 
 
-    open func returnNoting() {
+    @objc
+	open func returnNoting() {
         addInvocation(.m_returnNoting)
 		let perform = methodPerformValue(.m_returnNoting) as? () -> Void
 		perform?()
@@ -4385,6 +4400,7 @@ open class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
 }
 
 // MARK: - ProtocolMethodsGenericThatDifferOnlyInReturnType
+
 open class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethodsGenericThatDifferOnlyInReturnType, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -4776,6 +4792,7 @@ open class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethods
 }
 
 // MARK: - ProtocolMethodsThatDifferOnlyInReturnType
+
 open class ProtocolMethodsThatDifferOnlyInReturnTypeMock: ProtocolMethodsThatDifferOnlyInReturnType, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -4974,6 +4991,7 @@ open class ProtocolMethodsThatDifferOnlyInReturnTypeMock: ProtocolMethodsThatDif
 }
 
 // MARK: - ProtocolWithAssociatedType
+
 open class ProtocolWithAssociatedTypeMock<T>: ProtocolWithAssociatedType, Mock where T: Sequence {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -5012,8 +5030,6 @@ open class ProtocolWithAssociatedTypeMock<T>: ProtocolWithAssociatedType, Mock w
 
     public var sequence: T {
 		get {	invocations.append(.p_sequence_get); return __p_sequence ?? givenGetterValue(.p_sequence_get, "ProtocolWithAssociatedTypeMock - stub value for sequence was not defined") }
-		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
-		set {	__p_sequence = newValue }
 	}
 	private var __p_sequence: (T)?
 
@@ -5153,6 +5169,7 @@ open class ProtocolWithAssociatedTypeMock<T>: ProtocolWithAssociatedType, Mock w
 }
 
 // MARK: - ProtocolWithAssociatedType2
+
 open class ProtocolWithAssociatedType2Mock<ValueType>: ProtocolWithAssociatedType2, Mock where ValueType: StringConvertibleType {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -5191,8 +5208,6 @@ open class ProtocolWithAssociatedType2Mock<ValueType>: ProtocolWithAssociatedTyp
 
     public var property: String {
 		get {	invocations.append(.p_property_get); return __p_property ?? givenGetterValue(.p_property_get, "ProtocolWithAssociatedType2Mock - stub value for property was not defined") }
-		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
-		set {	__p_property = newValue }
 	}
 	private var __p_property: (String)?
 
@@ -5297,7 +5312,357 @@ open class ProtocolWithAssociatedType2Mock<ValueType>: ProtocolWithAssociatedTyp
     }
 }
 
+// MARK: - ProtocolWithAttributes
+@objc @available(iOS 14, *)
+open class ProtocolWithAttributesMock: NSObject, ProtocolWithAttributes, Mock {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        SwiftyMockyTestObserver.setup()
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    public typealias PropertyStub = Given
+    public typealias MethodStub = Given
+    public typealias SubscriptStub = Given
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
+
+
+
+
+    open func funcA() {
+        addInvocation(.m_funcA)
+		let perform = methodPerformValue(.m_funcA) as? () -> Void
+		perform?()
+    }
+
+
+    fileprivate enum MethodType {
+        case m_funcA
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+            case (.m_funcA, .m_funcA):
+                return true 
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+            case .m_funcA: return 0
+            }
+        }
+    }
+
+    open class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [StubProduct]) {
+            self.method = method
+            super.init(products)
+        }
+
+
+    }
+
+    public struct Verify {
+        fileprivate var method: MethodType
+
+        public static func funcA() -> Verify { return Verify(method: .m_funcA)}
+    }
+
+    public struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        public static func funcA(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_funcA, performs: perform)
+        }
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+    private func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+    }
+}
+
+// MARK: - ProtocolWithAttributesB
+
+open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        SwiftyMockyTestObserver.setup()
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    public typealias PropertyStub = Given
+    public typealias MethodStub = Given
+    public typealias SubscriptStub = Given
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
+
+
+
+
+    @available(iOS 14, *)
+	open func funcB(_ dependency: ProtocolWithAttributes) {
+        addInvocation(.m_funcB__dependency(Parameter<ProtocolWithAttributes>.value(`dependency`)))
+		let perform = methodPerformValue(.m_funcB__dependency(Parameter<ProtocolWithAttributes>.value(`dependency`))) as? (ProtocolWithAttributes) -> Void
+		perform?(`dependency`)
+    }
+
+    open func objcSupportingFunc() {
+        addInvocation(.m_objcSupportingFunc)
+		let perform = methodPerformValue(.m_objcSupportingFunc) as? () -> Void
+		perform?()
+    }
+
+    @discardableResult
+	open func inlinableFunc(_ val: Int) -> Int {
+        addInvocation(.m_inlinableFunc__val(Parameter<Int>.value(`val`)))
+		let perform = methodPerformValue(.m_inlinableFunc__val(Parameter<Int>.value(`val`))) as? (Int) -> Void
+		perform?(`val`)
+		var __value: Int
+		do {
+		    __value = try methodReturnValue(.m_inlinableFunc__val(Parameter<Int>.value(`val`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for inlinableFunc(_ val: Int). Use given")
+			Failure("Stub return value not specified for inlinableFunc(_ val: Int). Use given")
+		}
+		return __value
+    }
+
+
+    fileprivate enum MethodType {
+        @available(iOS 14, *)
+		case m_funcB__dependency(Parameter<ProtocolWithAttributes>)
+        case m_objcSupportingFunc
+        case m_inlinableFunc__val(Parameter<Int>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+            switch (lhs, rhs) {
+            case (.m_funcB__dependency(let lhsDependency), .m_funcB__dependency(let rhsDependency)):
+                guard Parameter.compare(lhs: lhsDependency, rhs: rhsDependency, with: matcher) else { return false } 
+                return true 
+            case (.m_objcSupportingFunc, .m_objcSupportingFunc):
+                return true 
+            case (.m_inlinableFunc__val(let lhsVal), .m_inlinableFunc__val(let rhsVal)):
+                guard Parameter.compare(lhs: lhsVal, rhs: rhsVal, with: matcher) else { return false } 
+                return true 
+            default: return false
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+            case let .m_funcB__dependency(p0): return p0.intValue
+            case .m_objcSupportingFunc: return 0
+            case let .m_inlinableFunc__val(p0): return p0.intValue
+            }
+        }
+    }
+
+    open class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [StubProduct]) {
+            self.method = method
+            super.init(products)
+        }
+
+
+        @discardableResult
+		public static func inlinableFunc(_ val: Parameter<Int>, willReturn: Int...) -> MethodStub {
+            return Given(method: .m_inlinableFunc__val(`val`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func inlinableFunc(_ val: Parameter<Int>, willProduce: (Stubber<Int>) -> Void) -> MethodStub {
+            let willReturn: [Int] = []
+			let given: Given = { return Given(method: .m_inlinableFunc__val(`val`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (Int).self)
+			willProduce(stubber)
+			return given
+        }
+    }
+
+    public struct Verify {
+        fileprivate var method: MethodType
+
+        @available(iOS 14, *)
+		public static func funcB(_ dependency: Parameter<ProtocolWithAttributes>) -> Verify { return Verify(method: .m_funcB__dependency(`dependency`))}
+        public static func objcSupportingFunc() -> Verify { return Verify(method: .m_objcSupportingFunc)}
+        @discardableResult
+		public static func inlinableFunc(_ val: Parameter<Int>) -> Verify { return Verify(method: .m_inlinableFunc__val(`val`))}
+    }
+
+    public struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        @available(iOS 14, *)
+		public static func funcB(_ dependency: Parameter<ProtocolWithAttributes>, perform: @escaping (ProtocolWithAttributes) -> Void) -> Perform {
+            return Perform(method: .m_funcB__dependency(`dependency`), performs: perform)
+        }
+        public static func objcSupportingFunc(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_objcSupportingFunc, performs: perform)
+        }
+        @discardableResult
+		public static func inlinableFunc(_ val: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
+            return Perform(method: .m_inlinableFunc__val(`val`), performs: perform)
+        }
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let invocations = matchingCalls(method.method)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+    }
+    private func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+    }
+}
+
 // MARK: - ProtocolWithClosures
+
 open class ProtocolWithClosuresMock: ProtocolWithClosures, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -5475,6 +5840,7 @@ open class ProtocolWithClosuresMock: ProtocolWithClosures, Mock {
 }
 
 // MARK: - ProtocolWithConflictingMembers
+
 open class ProtocolWithConflictingMembersMock: ProtocolWithConflictingMembers, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -5706,6 +6072,7 @@ open class ProtocolWithConflictingMembersMock: ProtocolWithConflictingMembers, M
 }
 
 // MARK: - ProtocolWithCustomAttributes
+
 open class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -5903,6 +6270,7 @@ open class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock 
 }
 
 // MARK: - ProtocolWithDeprecatedMembers
+
 open class ProtocolWithDeprecatedMembersMock: ProtocolWithDeprecatedMembers, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -6067,6 +6435,7 @@ open class ProtocolWithDeprecatedMembersMock: ProtocolWithDeprecatedMembers, Moc
 }
 
 // MARK: - ProtocolWithGenericConstraints
+
 open class ProtocolWithGenericConstraintsMock<ContainedType>: ProtocolWithGenericConstraints, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -6105,8 +6474,6 @@ open class ProtocolWithGenericConstraintsMock<ContainedType>: ProtocolWithGeneri
 
     public var value: ContainedType {
 		get {	invocations.append(.p_value_get); return __p_value ?? givenGetterValue(.p_value_get, "ProtocolWithGenericConstraintsMock - stub value for value was not defined") }
-		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
-		set {	__p_value = newValue }
 	}
 	private var __p_value: (ContainedType)?
 
@@ -6244,6 +6611,7 @@ open class ProtocolWithGenericConstraintsMock<ContainedType>: ProtocolWithGeneri
 }
 
 // MARK: - ProtocolWithGenericMethods
+
 open class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -6443,6 +6811,7 @@ open class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
 }
 
 // MARK: - ProtocolWithGenericMethodsNested
+
 open class ProtocolWithGenericMethodsNestedMock: ProtocolWithGenericMethodsNested, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -6607,6 +6976,7 @@ open class ProtocolWithGenericMethodsNestedMock: ProtocolWithGenericMethodsNeste
 }
 
 // MARK: - ProtocolWithInitializers
+
 open class ProtocolWithInitializersMock: ProtocolWithInitializers, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -6645,15 +7015,11 @@ open class ProtocolWithInitializersMock: ProtocolWithInitializers, Mock {
 
     public var param: Int {
 		get {	invocations.append(.p_param_get); return __p_param ?? givenGetterValue(.p_param_get, "ProtocolWithInitializersMock - stub value for param was not defined") }
-		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
-		set {	__p_param = newValue }
 	}
 	private var __p_param: (Int)?
 
     public var other: String {
 		get {	invocations.append(.p_other_get); return __p_other ?? givenGetterValue(.p_other_get, "ProtocolWithInitializersMock - stub value for other was not defined") }
-		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
-		set {	__p_other = newValue }
 	}
 	private var __p_other: (String)?
 
@@ -6771,6 +7137,7 @@ open class ProtocolWithInitializersMock: ProtocolWithInitializers, Mock {
 }
 
 // MARK: - ProtocolWithPropoerties
+
 open class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -7116,6 +7483,7 @@ open class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMoc
 }
 
 // MARK: - ProtocolWithStaticMembers
+
 open class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, StaticMock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -7171,8 +7539,6 @@ open class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, Stati
 
     public static var staticProperty: String {
 		get {	ProtocolWithStaticMembersMock.invocations.append(.p_staticProperty_get); return ProtocolWithStaticMembersMock.__p_staticProperty ?? givenGetterValue(.p_staticProperty_get, "ProtocolWithStaticMembersMock - stub value for staticProperty was not defined") }
-		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
-		set {	ProtocolWithStaticMembersMock.__p_staticProperty = newValue }
 	}
 	private static var __p_staticProperty: (String)?
 
@@ -7390,6 +7756,7 @@ open class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, Stati
 }
 
 // MARK: - ProtocolWithSubscripts
+
 open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -7915,6 +8282,7 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 }
 
 // MARK: - ProtocolWithThrowingMethods
+
 open class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -8116,6 +8484,7 @@ open class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
 }
 
 // MARK: - ProtocolWithTuples
+
 open class ProtocolWithTuplesMock: ProtocolWithTuples, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -8280,6 +8649,7 @@ open class ProtocolWithTuplesMock: ProtocolWithTuples, Mock {
 }
 
 // MARK: - ProtocolWithWhereAfterDefinition
+
 open class ProtocolWithWhereAfterDefinitionMock<T>: ProtocolWithWhereAfterDefinition, Mock where T: Sequence, T.Element: Equatable {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -8318,8 +8688,6 @@ open class ProtocolWithWhereAfterDefinitionMock<T>: ProtocolWithWhereAfterDefini
 
     public var sequence: T {
 		get {	invocations.append(.p_sequence_get); return __p_sequence ?? givenGetterValue(.p_sequence_get, "ProtocolWithWhereAfterDefinitionMock - stub value for sequence was not defined") }
-		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
-		set {	__p_sequence = newValue }
 	}
 	private var __p_sequence: (T)?
 
@@ -8459,6 +8827,7 @@ open class ProtocolWithWhereAfterDefinitionMock<T>: ProtocolWithWhereAfterDefini
 }
 
 // MARK: - SampleServiceType
+
 open class SampleServiceTypeMock: SampleServiceType, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -8836,6 +9205,7 @@ open class SampleServiceTypeMock: SampleServiceType, Mock {
 }
 
 // MARK: - SelfConstrainedProtocol
+
 open class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -9249,6 +9619,7 @@ open class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMoc
 }
 
 // MARK: - ShouldAllowNoStubDefined
+
 open class ShouldAllowNoStubDefinedMock: ShouldAllowNoStubDefined, Mock, StaticMock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -9303,16 +9674,12 @@ open class ShouldAllowNoStubDefinedMock: ShouldAllowNoStubDefined, Mock, StaticM
 
     public var property: Int? {
 		get {	invocations.append(.p_property_get); return __p_property ?? optionalGivenGetterValue(.p_property_get, "ShouldAllowNoStubDefinedMock - stub value for property was not defined") }
-		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
-		set {	__p_property = newValue }
 	}
 	private var __p_property: (Int)?
 
 
     public static var property: Int? {
 		get {	ShouldAllowNoStubDefinedMock.invocations.append(.p_property_get); return ShouldAllowNoStubDefinedMock.__p_property ?? optionalGivenGetterValue(.p_property_get, "ShouldAllowNoStubDefinedMock - stub value for property was not defined") }
-		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
-		set {	ShouldAllowNoStubDefinedMock.__p_property = newValue }
 	}
 	private static var __p_property: (Int)?
 
@@ -9751,6 +10118,7 @@ open class ShouldAllowNoStubDefinedMock: ShouldAllowNoStubDefined, Mock, StaticM
 }
 
 // MARK: - SimpleProtocolThatInheritsOtherProtocols
+
 open class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInheritsOtherProtocols, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -9801,8 +10169,6 @@ open class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInher
 
     public var propertyGetOnly: String {
 		get {	invocations.append(.p_propertyGetOnly_get); return __p_propertyGetOnly ?? givenGetterValue(.p_propertyGetOnly_get, "SimpleProtocolThatInheritsOtherProtocolsMock - stub value for propertyGetOnly was not defined") }
-		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
-		set {	__p_propertyGetOnly = newValue }
 	}
 	private var __p_propertyGetOnly: (String)?
 
@@ -10076,6 +10442,7 @@ open class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInher
 }
 
 // MARK: - SimpleProtocolUsingCollections
+
 open class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -10340,6 +10707,7 @@ open class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, M
 }
 
 // MARK: - SimpleProtocolWithBothMethodsAndProperties
+
 open class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBothMethodsAndProperties, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -10378,8 +10746,6 @@ open class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBot
 
     public var property: String {
 		get {	invocations.append(.p_property_get); return __p_property ?? givenGetterValue(.p_property_get, "SimpleProtocolWithBothMethodsAndPropertiesMock - stub value for property was not defined") }
-		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
-		set {	__p_property = newValue }
 	}
 	private var __p_property: (String)?
 
@@ -10518,6 +10884,7 @@ open class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBot
 }
 
 // MARK: - SimpleProtocolWithMethods
+
 open class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -10761,6 +11128,7 @@ open class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
 }
 
 // MARK: - SimpleProtocolWithProperties
+
 open class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -10811,8 +11179,6 @@ open class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock 
 
     public var propertyGetOnly: String {
 		get {	invocations.append(.p_propertyGetOnly_get); return __p_propertyGetOnly ?? givenGetterValue(.p_propertyGetOnly_get, "SimpleProtocolWithPropertiesMock - stub value for propertyGetOnly was not defined") }
-		@available(*, deprecated, message: "Using setters on readonly variables is deprecated, and will be removed in 3.1. Use Given to define stubbed property return value.")
-		set {	__p_propertyGetOnly = newValue }
 	}
 	private var __p_propertyGetOnly: (String)?
 
@@ -10975,6 +11341,7 @@ open class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock 
 }
 
 // MARK: - SuggestionProtocol
+
 open class SuggestionProtocolMock: SuggestionProtocol, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -11098,6 +11465,7 @@ open class SuggestionProtocolMock: SuggestionProtocol, Mock {
 }
 
 // MARK: - SuggestionRepository
+
 open class SuggestionRepositoryMock: SuggestionRepository, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -11430,6 +11798,7 @@ open class SuggestionRepositoryMock: SuggestionRepository, Mock {
 }
 
 // MARK: - SuggestionRepositoryConstrainedToProtocol
+
 open class SuggestionRepositoryConstrainedToProtocolMock<Entity>: SuggestionRepositoryConstrainedToProtocol, Mock where Entity: SuggestionProtocol {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -11761,6 +12130,7 @@ open class SuggestionRepositoryConstrainedToProtocolMock<Entity>: SuggestionRepo
 }
 
 // MARK: - UnnamedAttributesProtocol
+
 open class UnnamedAttributesProtocolMock: UnnamedAttributesProtocol, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -11958,6 +12328,7 @@ open class UnnamedAttributesProtocolMock: UnnamedAttributesProtocol, Mock {
 }
 
 // MARK: - UserNetworkType
+
 open class UserNetworkTypeMock: UserNetworkType, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -12156,6 +12527,7 @@ open class UserNetworkTypeMock: UserNetworkType, Mock {
 }
 
 // MARK: - UserStorageType
+
 open class UserStorageTypeMock: UserStorageType, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()

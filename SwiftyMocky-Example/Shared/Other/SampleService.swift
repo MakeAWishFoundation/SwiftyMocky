@@ -8,7 +8,7 @@
 
 import Foundation
 
-public protocol AutoMockable { }
+@objc public protocol AutoMockable { }
 
 struct Point {
     let x: Float
