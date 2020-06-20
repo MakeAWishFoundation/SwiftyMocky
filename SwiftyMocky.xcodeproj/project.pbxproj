@@ -70,8 +70,6 @@
 		CC16ADC7249BE9F7003FC808 /* Count.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC16ADB7249BE9F7003FC808 /* Count.swift */; };
 		CC16ADC8249BE9F7003FC808 /* Mock+Assertions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC16ADB8249BE9F7003FC808 /* Mock+Assertions.swift */; };
 		CC16ADC9249BE9F7003FC808 /* Mock+Assertions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC16ADB8249BE9F7003FC808 /* Mock+Assertions.swift */; };
-		CC16ADCA249BE9F7003FC808 /* Parameter+Literals.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC16ADB9249BE9F7003FC808 /* Parameter+Literals.swift */; };
-		CC16ADCB249BE9F7003FC808 /* Parameter+Literals.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC16ADB9249BE9F7003FC808 /* Parameter+Literals.swift */; };
 		CC16ADCC249BE9F7003FC808 /* Stubbing.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC16ADBA249BE9F7003FC808 /* Stubbing.swift */; };
 		CC16ADCD249BE9F7003FC808 /* Stubbing.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC16ADBA249BE9F7003FC808 /* Stubbing.swift */; };
 		CC16ADCE249BE9F7003FC808 /* GenericAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC16ADBB249BE9F7003FC808 /* GenericAttribute.swift */; };
@@ -163,6 +161,7 @@
 		CCCB8AA5249C1049003CA85F /* ProtocolWithAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCB8AA4249C1049003CA85F /* ProtocolWithAttributes.swift */; };
 		CCCB8AA6249C1049003CA85F /* ProtocolWithAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCB8AA4249C1049003CA85F /* ProtocolWithAttributes.swift */; };
 		CCCB8AA7249C1049003CA85F /* ProtocolWithAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCB8AA4249C1049003CA85F /* ProtocolWithAttributes.swift */; };
+		CCCB8AA9249E3066003CA85F /* Parameter+Literals.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCB8AA8249E3066003CA85F /* Parameter+Literals.swift */; };
 		CCE350E91FCC0A9400A76C4C /* NonSwiftProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE350D21FCC0A9400A76C4C /* NonSwiftProtocol.swift */; };
 		CCE350EA1FCC0A9400A76C4C /* NonSwiftProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE350D21FCC0A9400A76C4C /* NonSwiftProtocol.swift */; };
 		CCE350EB1FCC0A9400A76C4C /* ExampleProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE350D31FCC0A9400A76C4C /* ExampleProtocols.swift */; };
@@ -310,7 +309,6 @@
 		CC16ADB6249BE9F7003FC808 /* Policies.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Policies.swift; sourceTree = "<group>"; };
 		CC16ADB7249BE9F7003FC808 /* Count.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Count.swift; sourceTree = "<group>"; };
 		CC16ADB8249BE9F7003FC808 /* Mock+Assertions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Mock+Assertions.swift"; sourceTree = "<group>"; };
-		CC16ADB9249BE9F7003FC808 /* Parameter+Literals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Parameter+Literals.swift"; sourceTree = "<group>"; };
 		CC16ADBA249BE9F7003FC808 /* Stubbing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stubbing.swift; sourceTree = "<group>"; };
 		CC16ADBB249BE9F7003FC808 /* GenericAttribute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericAttribute.swift; sourceTree = "<group>"; };
 		CC16ADD1249BEA09003FC808 /* MockyAssert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockyAssert.swift; sourceTree = "<group>"; };
@@ -351,6 +349,7 @@
 		CCCB8A9C249C0B46003CA85F /* UnnamedAttributesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnnamedAttributesTests.swift; sourceTree = "<group>"; };
 		CCCB8AA0249C1024003CA85F /* ProtocolWithAttributesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolWithAttributesTests.swift; sourceTree = "<group>"; };
 		CCCB8AA4249C1049003CA85F /* ProtocolWithAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolWithAttributes.swift; sourceTree = "<group>"; };
+		CCCB8AA8249E3066003CA85F /* Parameter+Literals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Parameter+Literals.swift"; sourceTree = "<group>"; };
 		CCE350D21FCC0A9400A76C4C /* NonSwiftProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NonSwiftProtocol.swift; sourceTree = "<group>"; };
 		CCE350D31FCC0A9400A76C4C /* ExampleProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleProtocols.swift; sourceTree = "<group>"; };
 		CCE350D41FCC0A9400A76C4C /* ItemsRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemsRepository.swift; sourceTree = "<group>"; };
@@ -629,7 +628,6 @@
 				CC16ADB6249BE9F7003FC808 /* Policies.swift */,
 				CC16ADB7249BE9F7003FC808 /* Count.swift */,
 				CC16ADB8249BE9F7003FC808 /* Mock+Assertions.swift */,
-				CC16ADB9249BE9F7003FC808 /* Parameter+Literals.swift */,
 				CC16ADBA249BE9F7003FC808 /* Stubbing.swift */,
 				CC16ADBB249BE9F7003FC808 /* GenericAttribute.swift */,
 			);
@@ -641,6 +639,7 @@
 			isa = PBXGroup;
 			children = (
 				CC16ADD1249BEA09003FC808 /* MockyAssert.swift */,
+				CCCB8AA8249E3066003CA85F /* Parameter+Literals.swift */,
 				CC16ADDD249BEA09003FC808 /* Mock.swifttemplate */,
 				CC16ADDE249BEA09003FC808 /* ArgumentCaptor.swift */,
 				CC16ADDF249BEA09003FC808 /* SwiftyMockyTestObserver.swift */,
@@ -1641,7 +1640,6 @@
 				CC16ADFF249BEA23003FC808 /* MockyAssert.swift in Sources */,
 				CC16ADC9249BE9F7003FC808 /* Mock+Assertions.swift in Sources */,
 				CC16AE0A249BEA23003FC808 /* SwiftyMockyTestObserver.swift in Sources */,
-				CC16ADCB249BE9F7003FC808 /* Parameter+Literals.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1735,8 +1733,8 @@
 				CC16ADC6249BE9F7003FC808 /* Count.swift in Sources */,
 				CC16ADE1249BEA09003FC808 /* MockyAssert.swift in Sources */,
 				CC16ADC8249BE9F7003FC808 /* Mock+Assertions.swift in Sources */,
-				CC16ADCA249BE9F7003FC808 /* Parameter+Literals.swift in Sources */,
 				CC16ADEF249BEA09003FC808 /* CustomAssertions.swift in Sources */,
+				CCCB8AA9249E3066003CA85F /* Parameter+Literals.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

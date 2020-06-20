@@ -5313,7 +5313,7 @@ open class ProtocolWithAssociatedType2Mock<ValueType>: ProtocolWithAssociatedTyp
 }
 
 // MARK: - ProtocolWithAttributes
-@available(iOS 14, *) @objc
+@objc @available(iOS 14, *)
 open class ProtocolWithAttributesMock: NSObject, ProtocolWithAttributes, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
