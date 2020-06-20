@@ -5523,11 +5523,30 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
 		return __value
     }
 
+    @available(iOS 12, macOS 10.14, *)
+	public subscript (_ x: Int, _ y: Int) -> String {
+		get {
+			addInvocation(.subscript_get_x_y(Parameter<Int>.value(`x`), Parameter<Int>.value(`y`)))
+			do {
+				return try methodReturnValue(.subscript_get_x_y(Parameter<Int>.value(`x`), Parameter<Int>.value(`y`))).casted()
+			} catch {
+				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubDefinedMessage")
+			}
+		}
+		set {
+			addInvocation(.subscript_set_x_y(Parameter<Int>.value(`x`), Parameter<Int>.value(`y`), Parameter<String>.value(newValue)))
+		}
+	}
+
 
     fileprivate enum MethodType {
         @available(iOS 14, *)
 		case m_funcB__dependency(Parameter<ProtocolWithAttributes>)
         case m_inlinableFunc__val(Parameter<Int>)
+        @available(iOS 12, macOS 10.14, *)
+		case subscript_get_x_y(Parameter<Int>, Parameter<Int>)
+		@available(iOS 12, macOS 10.14, *)
+		case subscript_set_x_y(Parameter<Int>, Parameter<Int>, Parameter<String>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
             switch (lhs, rhs) {
@@ -5537,6 +5556,14 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
             case (.m_inlinableFunc__val(let lhsVal), .m_inlinableFunc__val(let rhsVal)):
                 guard Parameter.compare(lhs: lhsVal, rhs: rhsVal, with: matcher) else { return false } 
                 return true 
+            case (let .subscript_get_x_y(lhsX, lhsY), let .subscript_get_x_y(rhsX, rhsY)):
+				guard Parameter.compare(lhs: lhsX, rhs: rhsX, with: matcher) else { return false }
+				guard Parameter.compare(lhs: lhsY, rhs: rhsY, with: matcher) else { return false }
+				return true
+			case (let .subscript_set_x_y(lhsX, lhsY, lhsDidSet), let .subscript_set_x_y(rhsX, rhsY, rhsDidSet)):
+				guard Parameter.compare(lhs: lhsX, rhs: rhsX, with: matcher) else { return false }
+				guard Parameter.compare(lhs: lhsY, rhs: rhsY, with: matcher) else { return false }
+				return Parameter.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher)
             default: return false
             }
         }
@@ -5545,6 +5572,8 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
             switch self {
             case let .m_funcB__dependency(p0): return p0.intValue
             case let .m_inlinableFunc__val(p0): return p0.intValue
+            case let .subscript_get_x_y(p0, p1): return p0.intValue + p1.intValue
+			case let .subscript_set_x_y(p0, p1, _): return p0.intValue + p1.intValue
             }
         }
     }
@@ -5569,6 +5598,10 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
 			willProduce(stubber)
 			return given
         }
+        @available(iOS 12, macOS 10.14, *)
+		public static func `subscript`(_ x: Parameter<Int>, _ y: Parameter<Int>, willReturn: String...) -> SubscriptStub {
+            return Given(method: .subscript_get_x_y(`x`, `y`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
     }
 
     public struct Verify {
@@ -5578,6 +5611,10 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
 		public static func funcB(_ dependency: Parameter<ProtocolWithAttributes>) -> Verify { return Verify(method: .m_funcB__dependency(`dependency`))}
         @discardableResult
 		public static func inlinableFunc(_ val: Parameter<Int>) -> Verify { return Verify(method: .m_inlinableFunc__val(`val`))}
+        @available(iOS 12, macOS 10.14, *)
+		public static func `subscript`(_ x: Parameter<Int>, _ y: Parameter<Int>) -> Verify { return Verify(method: .subscript_get_x_y(`x`, `y`))}
+        @available(iOS 12, macOS 10.14, *)
+		public static func `subscript`(_ x: Parameter<Int>, _ y: Parameter<Int>, set newValue: Parameter<String>) -> Verify { return Verify(method: .subscript_set_x_y(`x`, `y`, newValue))}
     }
 
     public struct Perform {

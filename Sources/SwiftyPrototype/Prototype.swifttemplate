@@ -1138,6 +1138,10 @@ class SubscriptWrapper {
     let genericTypesList: [String]
     let genericTypesModifier: String?
 
+    private var methodAttributes: String {
+        return Helpers.extractAttributes(from: self.wrapped.attributes)
+    }
+
     private let noStubDefinedMessage = "Stub return value not specified for subscript. Use given first."
 
     private static var registered: [String: Int] = [:]
@@ -1146,6 +1150,7 @@ class SubscriptWrapper {
     public static func clear() -> String {
         SubscriptWrapper.registered = [:]
         SubscriptWrapper.suffixes = [:]
+        namesWithoutReturnType = [:]
         return ""
     }
     static func register(_ name: String, _ uniqueName: String) {
@@ -1193,7 +1198,9 @@ class SubscriptWrapper {
     func subscriptCall() -> String {
         let get = "\n\t\tget {\(getter())\n\t\t}"
         let set = readonly ? "" : "\n\t\tset {\(setter())\n\t\t}"
-        return "\(uniqueName) {\(get)\(set)\n\t}"
+        var attributes = self.methodAttributes.replacingOccurrences(of:"@objc", with: "")
+        attributes = attributes.isEmpty ? "" : "\(attributes)\n\t"
+        return "\(attributes)\(uniqueName) {\(get)\(set)\n\t}"
     }
     private func getter() -> String {
         let method = ".\(subscriptCasePrefix("get"))(\(parametersForMethodCall()))"
@@ -1219,7 +1226,9 @@ class SubscriptWrapper {
         return "\(subscriptCasePrefix(accessor))(\(parametersForMethodTypeDeclaration(set: accessor == "set")))"
     }
     func subscriptCases() -> String {
-        return readonly ? "case \(subscriptCaseName("get"))" : "case \(subscriptCaseName("get"))\n\t\tcase \(subscriptCaseName("set"))"
+        let availability = wrapped.attributes["available"]?.description
+        let attributes = availability != nil ? "\(availability!)\n\t\t" : ""
+        return readonly ? "\(attributes)case \(subscriptCaseName("get"))" : "\(attributes)case \(subscriptCaseName("get"))\n\t\t\(attributes)case \(subscriptCaseName("set"))"
     }
     func equalCase(_ accessor: String) -> String {
         var lhsParams = wrapped.parameters.map { "lhs\($0.name.capitalized)" }.joined(separator: ", ")
@@ -1252,7 +1261,9 @@ class SubscriptWrapper {
     // Given
     func givenConstructorName() -> String {
         let returnTypeString = returnsSelf ? replaceSelf : TypeWrapper(wrapped.returnTypeName).stripped
-        return "public static func `subscript`\(genericTypesModifier ?? "")(\(parametersForProxySignature()), willReturn: \(returnTypeString)...) -> SubscriptStub"
+        var attributes = self.methodAttributes.replacingOccurrences(of:"@objc", with: "")
+        attributes = attributes.isEmpty ? "" : "\(attributes)\n\t\t"
+        return "\(attributes)public static func `subscript`\(genericTypesModifier ?? "")(\(parametersForProxySignature()), willReturn: \(returnTypeString)...) -> SubscriptStub"
     }
     func givenConstructor() -> String {
         return "return Given(method: .\(subscriptCasePrefix("get"))(\(parametersForProxyInit())), products: willReturn.map({ StubProduct.return($0 as Any) }))"
@@ -1262,7 +1273,9 @@ class SubscriptWrapper {
     func verifyConstructorName(set: Bool = false) -> String {
         let returnTypeString = returnsSelf ? replaceSelf : nestedType
         let returning = set ? "" : returningParameter(true, true)
-        return "public static func `subscript`\(genericTypesModifier ?? "")(\(parametersForProxySignature())\(returning)\(set ? ", set newValue: \(returnTypeString)" : "")) -> Verify"
+        var attributes = self.methodAttributes.replacingOccurrences(of:"@objc", with: "")
+        attributes = attributes.isEmpty ? "" : "\(attributes)\n\t\t"
+        return "\(attributes)public static func `subscript`\(genericTypesModifier ?? "")(\(parametersForProxySignature())\(returning)\(set ? ", set newValue: \(returnTypeString)" : "")) -> Verify"
     }
     func verifyConstructor(set: Bool = false) -> String {
         return "return Verify(method: .\(subscriptCasePrefix(set ? "set" : "get"))(\(parametersForProxyInit(set: set))))"
