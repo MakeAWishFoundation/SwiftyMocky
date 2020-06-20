@@ -1,4 +1,4 @@
-// Generated using Sourcery 0.16.0 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 0.18.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
 
@@ -5313,7 +5313,7 @@ open class ProtocolWithAssociatedType2Mock<ValueType>: ProtocolWithAssociatedTyp
 }
 
 // MARK: - ProtocolWithAttributes
-@objc @available(iOS 14, *)
+@available(iOS 14, *) @objc
 open class ProtocolWithAttributesMock: NSObject, ProtocolWithAttributes, Mock {
     init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()

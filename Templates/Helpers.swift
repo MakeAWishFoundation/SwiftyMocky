@@ -55,6 +55,7 @@ class Helpers {
     static func extractAttributes(from attributes: [String: SourceryRuntime.Attribute]) -> String {
         return attributes.map { $0.1.description }
         .filter { !["private", "internal", "public", "open", "optional"].contains($0) }
+        .sorted()
         .joined(separator: " ")
     }
 }
