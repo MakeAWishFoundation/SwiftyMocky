@@ -1,4 +1,4 @@
-// Generated using Sourcery 0.18.0 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 0.16.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
 
@@ -7898,7 +7898,7 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 		}
 	}
 
-    public subscript<T: FloatingPoint>(with generic: T) -> Int where T: FloatingPoint {
+    public subscript<T>(with generic: T) -> Int where T: FloatingPoint {
 		get {
 			addInvocation(.subscript_get_with_generic_2(Parameter<T>.value(`generic`).wrapAsGeneric()))
 			do {
@@ -8156,7 +8156,7 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
         public static func `subscript`<T: Sequence>(with generic: Parameter<T>, willReturn: Bool...) -> SubscriptStub {
             return Given(method: .subscript_get_with_generic_1(`generic`.wrapAsGeneric()), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func `subscript`<T: FloatingPoint>(with generic: Parameter<T>, willReturn: Int...) -> SubscriptStub {
+        public static func `subscript`<T>(with generic: Parameter<T>, willReturn: Int...) -> SubscriptStub {
             return Given(method: .subscript_get_with_generic_2(`generic`.wrapAsGeneric()), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func `subscript`<T>(_ i: Parameter<Int>, _ type: Parameter<T.Type>, willReturn: T...) -> SubscriptStub {
@@ -8192,8 +8192,8 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
         public static func `subscript`(label name: Parameter<String>) -> Verify { return Verify(method: .subscript_get_label_name(`name`))}
         public static func `subscript`<T: Sequence>(with generic: Parameter<T>) -> Verify { return Verify(method: .subscript_get_with_generic_1(`generic`.wrapAsGeneric()))}
         public static func `subscript`<T: Sequence>(with generic: Parameter<T>, set newValue: Parameter<Bool>) -> Verify { return Verify(method: .subscript_set_with_generic_1(`generic`.wrapAsGeneric(), newValue))}
-        public static func `subscript`<T: FloatingPoint>(with generic: Parameter<T>) -> Verify { return Verify(method: .subscript_get_with_generic_2(`generic`.wrapAsGeneric()))}
-        public static func `subscript`<T: FloatingPoint>(with generic: Parameter<T>, set newValue: Parameter<Int>) -> Verify { return Verify(method: .subscript_set_with_generic_2(`generic`.wrapAsGeneric(), newValue))}
+        public static func `subscript`<T>(with generic: Parameter<T>) -> Verify { return Verify(method: .subscript_get_with_generic_2(`generic`.wrapAsGeneric()))}
+        public static func `subscript`<T>(with generic: Parameter<T>, set newValue: Parameter<Int>) -> Verify { return Verify(method: .subscript_set_with_generic_2(`generic`.wrapAsGeneric(), newValue))}
         public static func `subscript`<T>(_ i: Parameter<Int>, _ type: Parameter<T.Type>) -> Verify { return Verify(method: .subscript_get_i_type(`i`, `type`.wrapAsGeneric()))}
         public static func `subscript`<T>(_ i: Parameter<Int>, _ type: Parameter<T.Type>, set newValue: Parameter<T>) -> Verify { return Verify(method: .subscript_set_i_type(`i`, `type`.wrapAsGeneric(), newValue.wrapAsGeneric()))}
         public static func `subscript`(closure c: Parameter<(Int) -> Void>) -> Verify { return Verify(method: .subscript_get_closure_c(`c`))}

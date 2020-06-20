@@ -20,7 +20,7 @@ protocol ProtocolWithSubscripts {
     subscript (label name: String) -> Int { get }
     //sourcery: associatedtype = "T: Sequence"
     subscript<T: Sequence>(with generic: T) -> Bool where T.Element: Equatable { get set }
-    //sourcery: associatedtype = "T: FloatingPoint"
+    //sourcery: associatedtype = "T"
     subscript<T>(with generic: T) -> Int where T: FloatingPoint { get set }
     //sourcery: associatedtype = "T"
     subscript<T>(_ i: Int, type: T.Type) -> T { get set }
