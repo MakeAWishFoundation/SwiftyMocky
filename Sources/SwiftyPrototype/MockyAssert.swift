@@ -20,7 +20,7 @@ public final class MockyAssertion {
 ///   - line: Line (levae default)
 public func MockyAssert(
     _ expression: @autoclosure () -> Bool,
-    _ message: @autoclosure () -> String = "Verification failed",
+    _ message: @autoclosure () -> String = "Verify failed",
     file: StaticString = #file,
     line: UInt = #line
 ) {

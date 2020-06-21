@@ -88,6 +88,14 @@ class SubscriptWrapper {
         return "\n\t\t\taddInvocation(\(method))"
     }
 
+    var assertionName: String {
+        return readonly ? assertionName("get") : "\(assertionName("get"))\n\t\t\t\(assertionName("set"))"
+    }
+    private func assertionName(_ accessor: String) -> String {
+        return "case .\(subscriptCasePrefix(accessor)): return " +
+            "\"[\(accessor)] `subscript`\(genericTypesModifier ?? "")[\(parametersForAssertionName())]\""
+    }
+
     // method type
     func subscriptCasePrefix(_ accessor: String) -> String {
         return "\(registrationName(accessor))\(nameSuffix(accessor))"
@@ -199,6 +207,9 @@ class SubscriptWrapper {
     }
     private func parametersForProxySignature(set: Bool = false) -> String {
         return wrappedParameters.map { "\($0.labelAndName()): \($0.nestedType)" }.joined(separator: ", ") + (set ? ", set newValue: \(nestedType)" : "")
+    }
+    private func parametersForAssertionName() -> String {
+        return wrappedParameters.map { "\($0.labelAndName())" }.joined(separator: ", ")
     }
     private func parametersForMethodCall(set: Bool = false) -> String {
         let generics = getGenerics()

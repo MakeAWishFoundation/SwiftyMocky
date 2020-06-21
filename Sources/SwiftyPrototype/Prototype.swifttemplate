@@ -681,6 +681,9 @@ class MethodWrapper {
             return "case let .\(prototype)(\(definitions)): return \(paramsSum)"
         }
     }
+    var assertionName: String {
+        return "case .\(prototype): return \".\(method.selectorName)\(method.parameters.isEmpty ? "()" : "")\""
+    }
 
     var returnsSelf: Bool {
         guard !returnsGenericConstrainedToSelf else { return true }
@@ -1218,6 +1221,14 @@ class SubscriptWrapper {
         return "\n\t\t\taddInvocation(\(method))"
     }
 
+    var assertionName: String {
+        return readonly ? assertionName("get") : "\(assertionName("get"))\n\t\t\t\(assertionName("set"))"
+    }
+    private func assertionName(_ accessor: String) -> String {
+        return "case .\(subscriptCasePrefix(accessor)): return " +
+            "\"[\(accessor)] `subscript`\(genericTypesModifier ?? "")[\(parametersForAssertionName())]\""
+    }
+
     // method type
     func subscriptCasePrefix(_ accessor: String) -> String {
         return "\(registrationName(accessor))\(nameSuffix(accessor))"
@@ -1330,6 +1341,9 @@ class SubscriptWrapper {
     private func parametersForProxySignature(set: Bool = false) -> String {
         return wrappedParameters.map { "\($0.labelAndName()): \($0.nestedType)" }.joined(separator: ", ") + (set ? ", set newValue: \(nestedType)" : "")
     }
+    private func parametersForAssertionName() -> String {
+        return wrappedParameters.map { "\($0.labelAndName())" }.joined(separator: ", ")
+    }
     private func parametersForMethodCall(set: Bool = false) -> String {
         let generics = getGenerics()
         let params = wrappedParameters.map { $0.wrappedForCalls(generics) }.joined(separator: ", ")
@@ -1374,6 +1388,13 @@ class VariableWrapper {
             "\(getter)" +
             "\(setter)" +
         "\n\t}"
+    }
+    var assertionName: String {
+        var result = "case .\(propertyCaseGetName): return \"[get] .\(variable.name)\""
+        if !readonly {
+            result += "\n\t\t\tcase .\(propertyCaseSetName): return \"[set] .\(variable.name)\""
+        }
+        return result
     }
 
     var privatePrototype: String {
@@ -1627,6 +1648,14 @@ _%>
                 <%_ } %> <%_ -%>
             }
         }
+        func assertionName() -> String {
+            switch self { <%_ for method in wrappedStaticMethodsForMethodType { %>
+            <%= method.assertionName -%><% } %>
+            <%_ for variable in wrappedStaticVariables { -%>
+            <%= variable.assertionName %>
+            <%_ } %>
+            }
+        }
     }
 
     open class StaticGiven: StubbedMethod {
@@ -1722,11 +1751,22 @@ _%>
             <%_ } -%>
             }
         }
+        func assertionName() -> String {
+            switch self { <%_ for method in wrappedMethodsForMethodType { %>
+            <%= method.assertionName -%><% } %>
+            <%_ for variable in wrappedVariables { -%>
+            <%= variable.assertionName %>
+            <%_ } %> <%_ for wrapped in wrappedSubscripts { -%>
+            <%= wrapped.assertionName %>
+            <%_ } -%>
+            }
+        }
     }
     <%_ } else { %>
     fileprivate struct MethodType {
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool { return true }
         func intValue() -> Int { return 0 }
+        func assertionName() -> String { return "" }
     }
     <%_ } -%><%_ -%>
 
@@ -1808,7 +1848,7 @@ _%>
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {

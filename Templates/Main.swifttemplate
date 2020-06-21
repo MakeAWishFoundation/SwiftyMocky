@@ -196,6 +196,14 @@
                 <%_ } %> <%_ -%>
             }
         }
+        func assertionName() -> String {
+            switch self { <%_ for method in wrappedStaticMethodsForMethodType { %>
+            <%= method.assertionName -%><% } %>
+            <%_ for variable in wrappedStaticVariables { -%>
+            <%= variable.assertionName %>
+            <%_ } %>
+            }
+        }
     }
 
     open class StaticGiven: StubbedMethod {
@@ -291,11 +299,22 @@
             <%_ } -%>
             }
         }
+        func assertionName() -> String {
+            switch self { <%_ for method in wrappedMethodsForMethodType { %>
+            <%= method.assertionName -%><% } %>
+            <%_ for variable in wrappedVariables { -%>
+            <%= variable.assertionName %>
+            <%_ } %> <%_ for wrapped in wrappedSubscripts { -%>
+            <%= wrapped.assertionName %>
+            <%_ } -%>
+            }
+        }
     }
     <%_ } else { %>
     fileprivate struct MethodType {
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool { return true }
         func intValue() -> Int { return 0 }
+        func assertionName() -> String { return "" }
     }
     <%_ } -%><%_ -%>
 
@@ -377,7 +396,7 @@
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {

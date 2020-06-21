@@ -116,6 +116,14 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
             case let .m_storedDetails__item_item(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_storeItems__items_items: return ".storeItems(items:)"
+            case .m_storeDetails__details_details: return ".storeDetails(details:)"
+            case .m_storedItems: return ".storedItems()"
+            case .m_storedDetails__item_item: return ".storedDetails(item:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -187,7 +195,7 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {

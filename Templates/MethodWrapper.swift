@@ -230,6 +230,9 @@ class MethodWrapper {
             return "case let .\(prototype)(\(definitions)): return \(paramsSum)"
         }
     }
+    var assertionName: String {
+        return "case .\(prototype): return \".\(method.selectorName)\(method.parameters.isEmpty ? "()" : "")\""
+    }
 
     var returnsSelf: Bool {
         guard !returnsGenericConstrainedToSelf else { return true }

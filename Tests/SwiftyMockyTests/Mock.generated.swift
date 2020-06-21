@@ -211,6 +211,16 @@ open class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
 			case .p_optionalClosure_set(let newValue): return newValue.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .sm_methodThatThrows: return ".methodThatThrows()"
+            case .sm_methodThatReturnsAndThrows__param_param: return ".methodThatReturnsAndThrows(param:)"
+            case .sm_methodThatRethrows__param_param: return ".methodThatRethrows(param:)"
+            case .p_optionalClosure_get: return "[get] .optionalClosure"
+			case .p_optionalClosure_set: return "[set] .optionalClosure"
+
+            }
+        }
     }
 
     open class StaticGiven: StubbedMethod {
@@ -333,6 +343,19 @@ open class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
 			case .p_implicitelyUnwrappedClosure_set(let newValue): return newValue.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_methodThatThrows: return ".methodThatThrows()"
+            case .m_methodThatReturnsAndThrows__param_param: return ".methodThatReturnsAndThrows(param:)"
+            case .m_methodThatRethrows__param_param: return ".methodThatRethrows(param:)"
+            case .p_nonOptionalClosure_get: return "[get] .nonOptionalClosure"
+			case .p_nonOptionalClosure_set: return "[set] .nonOptionalClosure"
+            case .p_optionalClosure_get: return "[get] .optionalClosure"
+			case .p_optionalClosure_set: return "[set] .optionalClosure"
+            case .p_implicitelyUnwrappedClosure_get: return "[get] .implicitelyUnwrappedClosure"
+			case .p_implicitelyUnwrappedClosure_set: return "[set] .implicitelyUnwrappedClosure"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -431,7 +454,7 @@ open class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -595,6 +618,11 @@ open class AVeryAssociatedProtocolMock<T1,T2>: AVeryAssociatedProtocol, Mock whe
             case let .m_fetch__for_value(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_fetch__for_value: return ".fetch(for:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -644,7 +672,7 @@ open class AVeryAssociatedProtocolMock<T1,T2>: AVeryAssociatedProtocol, Mock whe
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -811,6 +839,13 @@ open class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
                 case let .sm_veryConstrained__lhs_lhsrhs_rhs(p0, p1): return p0.intValue + p1.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .sm_generic__lhs_lhsrhs_rhs: return ".generic(lhs:rhs:)"
+            case .sm_veryConstrained__lhs_lhsrhs_rhs: return ".veryConstrained(lhs:rhs:)"
+
+            }
+        }
     }
 
     open class StaticGiven: StubbedMethod {
@@ -880,6 +915,11 @@ open class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
             case let .m_methodConstrained__param_param(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_methodConstrained__param_param: return ".methodConstrained(param:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -929,7 +969,7 @@ open class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -1341,6 +1381,24 @@ open class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
             case let .m_methodWithDict__p_p(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_methodWithStringParameter__p_p: return ".methodWithStringParameter(p:)"
+            case .m_methodWithOtionalStringParameter__p_p: return ".methodWithOtionalStringParameter(p:)"
+            case .m_methodWithCustomStringParameter__p_p: return ".methodWithCustomStringParameter(p:)"
+            case .m_methodWithCustomOptionalStringParameter__p_p: return ".methodWithCustomOptionalStringParameter(p:)"
+            case .m_methodWithIntParameter__p_p: return ".methodWithIntParameter(p:)"
+            case .m_methodWithCustomOptionalIntParameter__p_p: return ".methodWithCustomOptionalIntParameter(p:)"
+            case .m_methodWithBool__p_p: return ".methodWithBool(p:)"
+            case .m_methodWithFloat__p_p: return ".methodWithFloat(p:)"
+            case .m_methodWithDouble__p_p: return ".methodWithDouble(p:)"
+            case .m_methodWithArrayOfInt__p_p: return ".methodWithArrayOfInt(p:)"
+            case .m_methodWithArrayOfOther__p_p: return ".methodWithArrayOfOther(p:)"
+            case .m_methodWithSetOfInt__p_p: return ".methodWithSetOfInt(p:)"
+            case .m_methodWithOptionalSetOfInt__p_p: return ".methodWithOptionalSetOfInt(p:)"
+            case .m_methodWithDict__p_p: return ".methodWithDict(p:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -1572,7 +1630,7 @@ open class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -1700,6 +1758,12 @@ open class AnotherProtocolMock: AnotherProtocol, Mock {
             case let .m_doSomething2__type_typewithValue_withValue(p0, p1): return p0.intValue + p1.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_doSomething__type_type: return ".doSomething(type:)"
+            case .m_doSomething2__type_typewithValue_withValue: return ".doSomething2(type:withValue:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -1753,7 +1817,7 @@ open class AnotherProtocolMock: AnotherProtocol, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -2012,6 +2076,20 @@ open class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
             case .p_youCouldOnlyGetThis_get: return 0
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_serviceName: return ".serviceName()"
+            case .m_aNewWayToSayHooray: return ".aNewWayToSayHooray()"
+            case .m_getPoint__from_point: return ".getPoint(from:)"
+            case .m_getPoint__from_tuple: return ".getPoint(from:)"
+            case .m_similarMethodThatDiffersOnType__value_1: return ".similarMethodThatDiffersOnType(_:)"
+            case .m_similarMethodThatDiffersOnType__value_2: return ".similarMethodThatDiffersOnType(_:)"
+            case .m_methodWithTypedef__scalar: return ".methodWithTypedef(_:)"
+            case .m_methodWithClosures__success_function_1: return ".methodWithClosures(success:)"
+            case .m_methodWithClosures__success_function_2: return ".methodWithClosures(success:)"
+            case .p_youCouldOnlyGetThis_get: return "[get] .youCouldOnlyGetThis"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -2157,7 +2235,7 @@ open class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -2262,6 +2340,11 @@ open class DateSortableMock: DateSortable, Mock {
             case .p_date_get: return 0
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .p_date_get: return "[get] .date"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -2301,7 +2384,7 @@ open class DateSortableMock: DateSortable, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -2429,6 +2512,12 @@ open class EdgeCasesGenericsProtocolMock: EdgeCasesGenericsProtocol, Mock {
             case let .m_getter__swapped_key(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_sorted__by_key: return ".sorted(by:)"
+            case .m_getter__swapped_key: return ".getter(swapped:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -2482,7 +2571,7 @@ open class EdgeCasesGenericsProtocolMock: EdgeCasesGenericsProtocol, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -2571,6 +2660,7 @@ open class EmptyProtocolMock: EmptyProtocol, Mock {
     fileprivate struct MethodType {
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool { return true }
         func intValue() -> Int { return 0 }
+        func assertionName() -> String { return "" }
     }
 
     open class Given: StubbedMethod {
@@ -2606,7 +2696,7 @@ open class EmptyProtocolMock: EmptyProtocol, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -2722,6 +2812,11 @@ open class FailsWithAutoClosureOnSwift5Mock: FailsWithAutoClosureOnSwift5, Mock 
             case let .m_connect__token(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_connect__token: return ".connect(_:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -2771,7 +2866,7 @@ open class FailsWithAutoClosureOnSwift5Mock: FailsWithAutoClosureOnSwift5, Mock 
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -2954,6 +3049,17 @@ open class FailsWithKeywordArgumentsMock: FailsWithKeywordArguments, Mock {
 			case let .subscript_set_return(p0, _): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_foo__for_for: return ".foo(for:)"
+            case .m_throw__while_while: return ".`throw(while:)`"
+            case .m_return__do_while: return ".`return(do:)`"
+            case .p_throw_get: return "[get] .`throw`"
+			case .p_throw_set: return "[set] .`throw`"
+            case .subscript_get_return: return "[get] `subscript`[_ return]"
+			case .subscript_set_return: return "[set] `subscript`[_ return]"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -3031,7 +3137,7 @@ open class FailsWithKeywordArgumentsMock: FailsWithKeywordArguments, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -3230,6 +3336,15 @@ public final class FailsWithReturnedTypeBeingGenericOfSelfMock: FailsWithReturne
             case let .m_insanetTest__value_value(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_methodWillReturnSelfTypedArray: return ".methodWillReturnSelfTypedArray()"
+            case .m_methodWillReturnSelfTypedArray2: return ".methodWillReturnSelfTypedArray2()"
+            case .m_methodWillReturnSelfTypedCustom: return ".methodWillReturnSelfTypedCustom()"
+            case .m_test__value_value: return ".test(value:)"
+            case .m_insanetTest__value_value: return ".insanetTest(value:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -3335,7 +3450,7 @@ public final class FailsWithReturnedTypeBeingGenericOfSelfMock: FailsWithReturne
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -3445,6 +3560,11 @@ open class FailsWithUntaggedMock: FailsWithUntagged, Mock {
             case let .m_foo__barbar(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_foo__barbar: return ".foo(_:bar:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -3484,7 +3604,7 @@ open class FailsWithUntaggedMock: FailsWithUntagged, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -3600,6 +3720,11 @@ open class GenericProtocolReturningIntMock: GenericProtocolReturningInt, Mock {
             case let .m_value__for_value(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_value__for_value: return ".value(for:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -3649,7 +3774,7 @@ open class GenericProtocolReturningIntMock: GenericProtocolReturningInt, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -3786,6 +3911,12 @@ open class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstra
             case let .m_test__type(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_decode__typefrom_data: return ".decode(_:from:)"
+            case .m_test__type: return ".test(_:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -3849,7 +3980,7 @@ open class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstra
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -3965,6 +4096,11 @@ open class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
             case let .m_map__items(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_map__items: return ".map(_:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -4014,7 +4150,7 @@ open class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -4142,6 +4278,12 @@ open class InoutProtocolMock: InoutProtocol, Mock {
             case let .m_returnAndInOut__value_value(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_passThisAsInOut__value_value: return ".passThisAsInOut(value:)"
+            case .m_returnAndInOut__value_value: return ".returnAndInOut(value:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -4195,7 +4337,7 @@ open class InoutProtocolMock: InoutProtocol, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -4314,6 +4456,12 @@ open class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
             case .m_someMethod: return 0
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_returnNoting: return ".returnNoting()"
+            case .m_someMethod: return ".someMethod()"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -4357,7 +4505,7 @@ open class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -4616,6 +4764,17 @@ open class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethods
             case let .m_foo__bar_bar_9(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_foo__bar_bar_1: return ".foo(bar:)"
+            case .m_foo__bar_bar_2: return ".foo(bar:)"
+            case .m_foo__bar_bar_4: return ".foo(bar:)"
+            case .m_foo__bar_bar_5: return ".foo(bar:)"
+            case .m_foo__bar_bar_6: return ".foo(bar:)"
+            case .m_foo__bar_bar_7: return ".foo(bar:)"
+            case .m_foo__bar_bar_9: return ".foo(bar:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -4749,7 +4908,7 @@ open class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethods
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -4885,6 +5044,12 @@ open class ProtocolMethodsThatDifferOnlyInReturnTypeMock: ProtocolMethodsThatDif
             case let .m_foo__bar_bar_2(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_foo__bar_bar_1: return ".foo(bar:)"
+            case .m_foo__bar_bar_2: return ".foo(bar:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -4948,7 +5113,7 @@ open class ProtocolMethodsThatDifferOnlyInReturnTypeMock: ProtocolMethodsThatDif
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -5073,6 +5238,12 @@ open class ProtocolWithAssociatedTypeMock<T>: ProtocolWithAssociatedType, Mock w
             case .p_sequence_get: return 0
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_methodWithType__t_t: return ".methodWithType(t:)"
+            case .p_sequence_get: return "[get] .sequence"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -5126,7 +5297,7 @@ open class ProtocolWithAssociatedTypeMock<T>: ProtocolWithAssociatedType, Mock w
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -5231,6 +5402,11 @@ open class ProtocolWithAssociatedType2Mock<ValueType>: ProtocolWithAssociatedTyp
             case .p_property_get: return 0
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .p_property_get: return "[get] .property"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -5270,7 +5446,7 @@ open class ProtocolWithAssociatedType2Mock<ValueType>: ProtocolWithAssociatedTyp
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -5377,6 +5553,11 @@ open class ProtocolWithAttributesMock: NSObject, ProtocolWithAttributes, Mock {
             case .m_funcA: return 0
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_funcA: return ".funcA()"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -5416,7 +5597,7 @@ open class ProtocolWithAttributesMock: NSObject, ProtocolWithAttributes, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -5576,6 +5757,14 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
 			case let .subscript_set_x_y(p0, p1, _): return p0.intValue + p1.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_funcB__dependency: return ".funcB(_:)"
+            case .m_inlinableFunc__val: return ".inlinableFunc(_:)"
+            case .subscript_get_x_y: return "[get] `subscript`[_ x, _ y]"
+			case .subscript_set_x_y: return "[set] `subscript`[_ x, _ y]"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -5642,7 +5831,7 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -5773,6 +5962,13 @@ open class ProtocolWithClosuresMock: ProtocolWithClosures, Mock {
             case let .m_methodThatTakesCompletionBlock__completion_completion(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_methodThatTakes__closure_closure: return ".methodThatTakes(closure:)"
+            case .m_methodThatTakesEscaping__closure_closure: return ".methodThatTakesEscaping(closure:)"
+            case .m_methodThatTakesCompletionBlock__completion_completion: return ".methodThatTakesCompletionBlock(completion:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -5820,7 +6016,7 @@ open class ProtocolWithClosuresMock: ProtocolWithClosures, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -5975,6 +6171,13 @@ open class ProtocolWithConflictingMembersMock: ProtocolWithConflictingMembers, M
             case let .m_method__value_value(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_method__withLabel_value: return ".method(withLabel:)"
+            case .m_method__value: return ".method(_:)"
+            case .m_method__value_value: return ".method(value:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -6052,7 +6255,7 @@ open class ProtocolWithConflictingMembersMock: ProtocolWithConflictingMembers, M
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -6187,6 +6390,12 @@ open class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock 
             case let .m_methodThatTakesArrayOfUsers__array_array(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_methodThatTakesUser__user_user: return ".methodThatTakesUser(user:)"
+            case .m_methodThatTakesArrayOfUsers__array_array: return ".methodThatTakesArrayOfUsers(array:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -6250,7 +6459,7 @@ open class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock 
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -6366,6 +6575,11 @@ open class ProtocolWithDeprecatedMembersMock: ProtocolWithDeprecatedMembers, Moc
             case let .m_method__value(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_method__value: return ".method(_:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -6415,7 +6629,7 @@ open class ProtocolWithDeprecatedMembersMock: ProtocolWithDeprecatedMembers, Moc
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -6538,6 +6752,12 @@ open class ProtocolWithGenericConstraintsMock<ContainedType>: ProtocolWithGeneri
             case .p_value_get: return 0
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_extractString: return ".extractString()"
+            case .p_value_get: return "[get] .value"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -6591,7 +6811,7 @@ open class ProtocolWithGenericConstraintsMock<ContainedType>: ProtocolWithGeneri
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -6728,6 +6948,12 @@ open class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
             case let .m_methodWithGenericConstraint__param_param(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_methodWithGeneric__lhs_lhsrhs_rhs: return ".methodWithGeneric(lhs:rhs:)"
+            case .m_methodWithGenericConstraint__param_param: return ".methodWithGenericConstraint(param:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -6791,7 +7017,7 @@ open class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -6907,6 +7133,11 @@ open class ProtocolWithGenericMethodsNestedMock: ProtocolWithGenericMethodsNeste
             case let .m_methodWithGeneric__resource_resource(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_methodWithGeneric__resource_resource: return ".methodWithGeneric(resource:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -6956,7 +7187,7 @@ open class ProtocolWithGenericMethodsNestedMock: ProtocolWithGenericMethodsNeste
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -7074,6 +7305,12 @@ open class ProtocolWithInitializersMock: ProtocolWithInitializers, Mock {
             case .p_other_get: return 0
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .p_param_get: return "[get] .param"
+            case .p_other_get: return "[get] .other"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -7117,7 +7354,7 @@ open class ProtocolWithInitializersMock: ProtocolWithInitializers, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -7289,6 +7526,16 @@ open class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMoc
 			case .p_defaultEmail_set(let newValue): return newValue.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .sm_defaultEmail__newValue: return ".defaultEmail(_:)"
+            case .p_name_get: return "[get] .name"
+			case .p_name_set: return "[set] .name"
+            case .p_defaultEmail_get: return "[get] .defaultEmail"
+			case .p_defaultEmail_set: return "[set] .defaultEmail"
+
+            }
+        }
     }
 
     open class StaticGiven: StubbedMethod {
@@ -7362,6 +7609,16 @@ open class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMoc
 			case .p_email_set(let newValue): return newValue.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_name__newValue: return ".name(_:)"
+            case .m_email__newValue: return ".email(_:)"
+            case .p_name_get: return "[get] .name"
+			case .p_name_set: return "[set] .name"
+            case .p_email_get: return "[get] .email"
+			case .p_email_set: return "[set] .email"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -7415,7 +7672,7 @@ open class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMoc
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -7604,6 +7861,13 @@ open class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, Stati
                 case .p_staticProperty_get: return 0
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .sm_staticMethod__param_param: return ".staticMethod(param:)"
+            case .p_staticProperty_get: return "[get] .staticProperty"
+
+            }
+        }
     }
 
     open class StaticGiven: StubbedMethod {
@@ -7653,6 +7917,7 @@ open class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, Stati
     fileprivate struct MethodType {
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool { return true }
         func intValue() -> Int { return 0 }
+        func assertionName() -> String { return "" }
     }
 
     open class Given: StubbedMethod {
@@ -7688,7 +7953,7 @@ open class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, Stati
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -8149,6 +8414,36 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 			case let .subscript_set_same_same_2(p0, _): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_aaa__value: return ".aaa(_:)"
+            case .p_something_get: return "[get] .something"
+			case .p_something_set: return "[set] .something"
+            case .subscript_get_index_1: return "[get] `subscript`[_ index]"
+			case .subscript_set_index_1: return "[set] `subscript`[_ index]"
+            case .subscript_get_labeled_index: return "[get] `subscript`[labeled index]"
+			case .subscript_set_labeled_index: return "[set] `subscript`[labeled index]"
+            case .subscript_get_x_y: return "[get] `subscript`[_ x, _ y]"
+			case .subscript_set_x_y: return "[set] `subscript`[_ x, _ y]"
+            case .subscript_get_index_2: return "[get] `subscript`[_ index]"
+			case .subscript_set_index_2: return "[set] `subscript`[_ index]"
+            case .subscript_get_index_index: return "[get] `subscript`[index]"
+			case .subscript_set_index_index: return "[set] `subscript`[index]"
+            case .subscript_get_label_name: return "[get] `subscript`[label name]"
+            case .subscript_get_with_generic_1: return "[get] `subscript`<T: Sequence>[with generic]"
+			case .subscript_set_with_generic_1: return "[set] `subscript`<T: Sequence>[with generic]"
+            case .subscript_get_with_generic_2: return "[get] `subscript`<T>[with generic]"
+			case .subscript_set_with_generic_2: return "[set] `subscript`<T>[with generic]"
+            case .subscript_get_i_type: return "[get] `subscript`<T>[_ i, _ type]"
+			case .subscript_set_i_type: return "[set] `subscript`<T>[_ i, _ type]"
+            case .subscript_get_closure_c: return "[get] `subscript`[closure c]"
+			case .subscript_set_closure_c: return "[set] `subscript`[closure c]"
+            case .subscript_get_same_same_1: return "[get] `subscript`[same]"
+			case .subscript_set_same_same_1: return "[set] `subscript`[same]"
+            case .subscript_get_same_same_2: return "[get] `subscript`[same]"
+			case .subscript_set_same_same_2: return "[set] `subscript`[same]"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -8262,7 +8557,7 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -8398,6 +8693,12 @@ open class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
             case let .m_methodThatReturnsAndThrows__param_param(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_methodThatThrows: return ".methodThatThrows()"
+            case .m_methodThatReturnsAndThrows__param_param: return ".methodThatReturnsAndThrows(param:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -8464,7 +8765,7 @@ open class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -8580,6 +8881,11 @@ open class ProtocolWithTuplesMock: ProtocolWithTuples, Mock {
             case let .m_methodThatTakesTuple__tuple_tuple(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_methodThatTakesTuple__tuple_tuple: return ".methodThatTakesTuple(tuple:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -8629,7 +8935,7 @@ open class ProtocolWithTuplesMock: ProtocolWithTuples, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -8754,6 +9060,12 @@ open class ProtocolWithWhereAfterDefinitionMock<T>: ProtocolWithWhereAfterDefini
             case .p_sequence_get: return 0
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_methodWithType__t_t: return ".methodWithType(t:)"
+            case .p_sequence_get: return "[get] .sequence"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -8807,7 +9119,7 @@ open class ProtocolWithWhereAfterDefinitionMock<T>: ProtocolWithWhereAfterDefini
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -9048,6 +9360,18 @@ open class SampleServiceTypeMock: SampleServiceType, Mock {
             case let .m_methodWithClosures__success_function_2(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_serviceName: return ".serviceName()"
+            case .m_getPoint__from_point: return ".getPoint(from:)"
+            case .m_getPoint__from_tuple: return ".getPoint(from:)"
+            case .m_similarMethodThatDiffersOnType__value_1: return ".similarMethodThatDiffersOnType(_:)"
+            case .m_similarMethodThatDiffersOnType__value_2: return ".similarMethodThatDiffersOnType(_:)"
+            case .m_methodWithTypedef__scalar: return ".methodWithTypedef(_:)"
+            case .m_methodWithClosures__success_function_1: return ".methodWithClosures(success:)"
+            case .m_methodWithClosures__success_function_2: return ".methodWithClosures(success:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -9185,7 +9509,7 @@ open class SampleServiceTypeMock: SampleServiceType, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -9385,6 +9709,12 @@ open class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMoc
                 case let .sm_construct__param_value(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .sm_construct__param_value: return ".construct(param:)"
+
+            }
+        }
     }
 
     open class StaticGiven: StubbedMethod {
@@ -9455,6 +9785,14 @@ open class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMoc
             case let .m_compare__with_other(p0): return p0.intValue
             case let .m_genericMethodWithNestedSelf__param_paramsecond_secondother_other(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
             case let .m_configure__with_secret(p0): return p0.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_methodReturningSelf: return ".methodReturningSelf()"
+            case .m_compare__with_other: return ".compare(with:)"
+            case .m_genericMethodWithNestedSelf__param_paramsecond_secondother_other: return ".genericMethodWithNestedSelf(param:second:other:)"
+            case .m_configure__with_secret: return ".configure(with:)"
             }
         }
     }
@@ -9551,7 +9889,7 @@ open class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMoc
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -9846,6 +10184,16 @@ open class ShouldAllowNoStubDefinedMock: ShouldAllowNoStubDefined, Mock, StaticM
                 case .p_property_get: return 0
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .sm_voidMethod__key: return ".voidMethod(_:)"
+            case .sm_throwingVoidMethod__key: return ".throwingVoidMethod(_:)"
+            case .sm_optionalMethod__key: return ".optionalMethod(_:)"
+            case .sm_optionalThrowingMethod__key: return ".optionalThrowingMethod(_:)"
+            case .p_property_get: return "[get] .property"
+
+            }
+        }
     }
 
     open class StaticGiven: StubbedMethod {
@@ -9961,6 +10309,16 @@ open class ShouldAllowNoStubDefinedMock: ShouldAllowNoStubDefined, Mock, StaticM
             case let .subscript_get_x(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_voidMethod__key: return ".voidMethod(_:)"
+            case .m_throwingVoidMethod__key: return ".throwingVoidMethod(_:)"
+            case .m_optionalMethod__key: return ".optionalMethod(_:)"
+            case .m_optionalThrowingMethod__key: return ".optionalThrowingMethod(_:)"
+            case .p_property_get: return "[get] .property"
+            case .subscript_get_x: return "[get] `subscript`[_ x]"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -10050,7 +10408,7 @@ open class ShouldAllowNoStubDefinedMock: ShouldAllowNoStubDefined, Mock, StaticM
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -10317,6 +10675,23 @@ open class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInher
 			case .p_propertyImplicit_set(let newValue): return newValue.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_simpleMethod: return ".simpleMethod()"
+            case .m_simpleMehtodThatReturns: return ".simpleMehtodThatReturns()"
+            case .m_simpleMehtodThatReturns__param_param: return ".simpleMehtodThatReturns(param:)"
+            case .m_simpleMehtodThatReturns__optionalParam_optionalParam: return ".simpleMehtodThatReturns(optionalParam:)"
+            case .p_property_get: return "[get] .property"
+			case .p_property_set: return "[set] .property"
+            case .p_weakProperty_get: return "[get] .weakProperty"
+			case .p_weakProperty_set: return "[set] .weakProperty"
+            case .p_propertyGetOnly_get: return "[get] .propertyGetOnly"
+            case .p_propertyOptional_get: return "[get] .propertyOptional"
+			case .p_propertyOptional_set: return "[set] .propertyOptional"
+            case .p_propertyImplicit_get: return "[get] .propertyImplicit"
+			case .p_propertyImplicit_set: return "[set] .propertyImplicit"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -10422,7 +10797,7 @@ open class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInher
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -10596,6 +10971,14 @@ open class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, M
             case let .m_verify__set_set(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_getArray: return ".getArray()"
+            case .m_map__array_arrayparam_param: return ".map(array:param:)"
+            case .m_use__dictionary_dictionary: return ".use(dictionary:)"
+            case .m_verify__set_set: return ".verify(set:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -10687,7 +11070,7 @@ open class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, M
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -10811,6 +11194,12 @@ open class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBot
             case .p_property_get: return 0
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_simpleMethod: return ".simpleMethod()"
+            case .p_property_get: return "[get] .property"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -10864,7 +11253,7 @@ open class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBot
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -11027,6 +11416,14 @@ open class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
             case let .m_simpleMehtodThatReturns__optionalParam_optionalParam(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_simpleMethod: return ".simpleMethod()"
+            case .m_simpleMehtodThatReturns: return ".simpleMehtodThatReturns()"
+            case .m_simpleMehtodThatReturns__param_param: return ".simpleMehtodThatReturns(param:)"
+            case .m_simpleMehtodThatReturns__optionalParam_optionalParam: return ".simpleMehtodThatReturns(optionalParam:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -11108,7 +11505,7 @@ open class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -11262,6 +11659,19 @@ open class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock 
 			case .p_propertyImplicit_set(let newValue): return newValue.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .p_property_get: return "[get] .property"
+			case .p_property_set: return "[set] .property"
+            case .p_weakProperty_get: return "[get] .weakProperty"
+			case .p_weakProperty_set: return "[set] .weakProperty"
+            case .p_propertyGetOnly_get: return "[get] .propertyGetOnly"
+            case .p_propertyOptional_get: return "[get] .propertyOptional"
+			case .p_propertyOptional_set: return "[set] .propertyOptional"
+            case .p_propertyImplicit_get: return "[get] .propertyImplicit"
+			case .p_propertyImplicit_set: return "[set] .propertyImplicit"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -11321,7 +11731,7 @@ open class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock 
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -11410,6 +11820,7 @@ open class SuggestionProtocolMock: SuggestionProtocol, Mock {
     fileprivate struct MethodType {
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool { return true }
         func intValue() -> Int { return 0 }
+        func assertionName() -> String { return "" }
     }
 
     open class Given: StubbedMethod {
@@ -11445,7 +11856,7 @@ open class SuggestionProtocolMock: SuggestionProtocol, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -11659,6 +12070,16 @@ open class SuggestionRepositoryMock: SuggestionRepository, Mock {
             case let .m_delete__entities_entities(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_save__entity_entity: return ".save(entity:)"
+            case .m_save__entities_entities: return ".save(entities:)"
+            case .m_find__where_predicatesortedBy_sortDescriptors: return ".find(where:sortedBy:)"
+            case .m_findOne__where_predicate: return ".findOne(where:)"
+            case .m_delete__entity_entity: return ".delete(entity:)"
+            case .m_delete__entities_entities: return ".delete(entities:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -11778,7 +12199,7 @@ open class SuggestionRepositoryMock: SuggestionRepository, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -11991,6 +12412,16 @@ open class SuggestionRepositoryConstrainedToProtocolMock<Entity>: SuggestionRepo
             case let .m_delete__entities_entities(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_save__entity_entity: return ".save(entity:)"
+            case .m_save__entities_entities: return ".save(entities:)"
+            case .m_find__where_predicatesortedBy_sortDescriptors: return ".find(where:sortedBy:)"
+            case .m_findOne__where_predicate: return ".findOne(where:)"
+            case .m_delete__entity_entity: return ".delete(entity:)"
+            case .m_delete__entities_entities: return ".delete(entities:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -12110,7 +12541,7 @@ open class SuggestionRepositoryConstrainedToProtocolMock<Entity>: SuggestionRepo
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -12245,6 +12676,12 @@ open class UnnamedAttributesProtocolMock: UnnamedAttributesProtocol, Mock {
             case let .m_methodWithUnnamedAndNamedAttributes__at_int(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_methodWithUnnamedAttributes: return ".methodWithUnnamedAttributes(_:)()"
+            case .m_methodWithUnnamedAndNamedAttributes__at_int: return ".methodWithUnnamedAndNamedAttributes(at:_:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -12308,7 +12745,7 @@ open class UnnamedAttributesProtocolMock: UnnamedAttributesProtocol, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -12456,6 +12893,14 @@ open class UserNetworkTypeMock: UserNetworkType, Mock {
             case let .m_testDefaultValues__value_value(p0): return p0.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_getUser__for_idcompletion_completion: return ".getUser(for:completion:)"
+            case .m_getUserEscaping__for_idcompletion_completion: return ".getUserEscaping(for:completion:)"
+            case .m_doSomething__prop_prop: return ".doSomething(prop:)"
+            case .m_testDefaultValues__value_value: return ".testDefaultValues(value:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -12507,7 +12952,7 @@ open class UserNetworkTypeMock: UserNetworkType, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -12636,6 +13081,12 @@ open class UserStorageTypeMock: UserStorageType, Mock {
             case let .m_storeUser__name_namesurname_surname(p0, p1): return p0.intValue + p1.intValue
             }
         }
+        func assertionName() -> String {
+            switch self {
+            case .m_surname__for_name: return ".surname(for:)"
+            case .m_storeUser__name_namesurname_surname: return ".storeUser(name:surname:)"
+            }
+        }
     }
 
     open class Given: StubbedMethod {
@@ -12689,7 +13140,7 @@ open class UserStorageTypeMock: UserStorageType, Mock {
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
         let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {

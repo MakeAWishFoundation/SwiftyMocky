@@ -36,6 +36,13 @@ class VariableWrapper {
             "\(setter)" +
         "\n\t}"
     }
+    var assertionName: String {
+        var result = "case .\(propertyCaseGetName): return \"[get] .\(variable.name)\""
+        if !readonly {
+            result += "\n\t\t\tcase .\(propertyCaseSetName): return \"[set] .\(variable.name)\""
+        }
+        return result
+    }
 
     var privatePrototype: String {
         let staticModifier = variable.isStatic ? "static " : ""
