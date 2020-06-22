@@ -37,6 +37,14 @@ public enum Parameter<ValueType> {
     public static func any<T>(_ type: T.Type) -> Parameter<T> {
         return Parameter<T>._
     }
+
+    public var shortDescription: String {
+        switch self {
+        case ._: return ".any"
+        case .value(let value): return String(describing: value)
+        case .matching(let closure): return String(describing: closure.self)
+        }
+    }
 }
 
 // MARK: - Parameter convenience initializers

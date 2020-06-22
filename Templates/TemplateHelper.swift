@@ -129,11 +129,6 @@ func propertyMethodTypes(_ variable: SourceryRuntime.Variable) -> String {
     return "\(wrapper.propertyCaseGet())" + (wrapper.readonly ? "" : "\n\t\t\(wrapper.propertyCaseSet())")
 }
 
-func propertyMethodTypesCompare(_ variable: SourceryRuntime.Variable) -> String {
-    let wrapper = VariableWrapper(variable, scope: "")
-    return "\(wrapper.propertyCaseGetCompare())" + (wrapper.readonly ? "" : "\n\t\t\t\(wrapper.propertyCaseSetCompare())")
-}
-
 func propertyMethodTypesIntValue(_ variable: SourceryRuntime.Variable) -> String {
     let wrapper = VariableWrapper(variable, scope: "")
     return "\(wrapper.propertyCaseGetIntValue())" + (wrapper.readonly ? "" : "\n\t\t\t\(wrapper.propertyCaseSetIntValue())")

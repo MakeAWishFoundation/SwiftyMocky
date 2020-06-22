@@ -20,6 +20,9 @@ let package = Package(
             exclude: ["Prototype.swifttemplate",]
         ),
         .target(
+            name: "Shared"
+        ),
+        .target(
             name: "Mocky_Example_macOS",
             path: "./SwiftyMocky-Example/Shared"
         ),

@@ -91,20 +91,25 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         case m_storedItems
         case m_storedDetails__item_item(Parameter<Item>)
 
-        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
             case (.m_storeItems__items_items(let lhsItems), .m_storeItems__items_items(let rhsItems)):
-                guard Parameter.compare(lhs: lhsItems, rhs: rhsItems, with: matcher) else { return false } 
-                return true 
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsItems, rhs: rhsItems, with: matcher), lhsItems, rhsItems, "items"))
+				return Matcher.ComparisonResult(results)
+
             case (.m_storeDetails__details_details(let lhsDetails), .m_storeDetails__details_details(let rhsDetails)):
-                guard Parameter.compare(lhs: lhsDetails, rhs: rhsDetails, with: matcher) else { return false } 
-                return true 
-            case (.m_storedItems, .m_storedItems):
-                return true 
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsDetails, rhs: rhsDetails, with: matcher), lhsDetails, rhsDetails, "details"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_storedItems, .m_storedItems): return .match
+
             case (.m_storedDetails__item_item(let lhsItem), .m_storedDetails__item_item(let rhsItem)):
-                guard Parameter.compare(lhs: lhsItem, rhs: rhsItem, with: matcher) else { return false } 
-                return true 
-            default: return false
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsItem, rhs: rhsItem, with: matcher), lhsItem, rhsItem, "item"))
+				return Matcher.ComparisonResult(results)
+            default: return .none
             }
         }
 
@@ -194,8 +199,17 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
+        let fullMatches = matchingCalls(method)
+        let success = count.matches(fullMatches)
+        let assertionName = method.method.assertionName()
+        let feedback: String = {
+            guard !success else { return "" }
+            return Utils.closestCallsMessage(
+                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                name: assertionName
+            )
+        }()
+        MockyAssert(success, "Expected: \(count) invocations of `\(assertionName)`, but was: \(fullMatches).\(feedback)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -203,16 +217,16 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
-        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
-        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
     private func matchingCalls(_ method: MethodType) -> [MethodType] {
-        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
     private func matchingCalls(_ method: Verify) -> Int {
         return matchingCalls(method.method).count

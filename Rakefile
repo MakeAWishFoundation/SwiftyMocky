@@ -72,6 +72,13 @@ task :update do
     sh "cd ./Templates && cat Main.swifttemplate >> #{destination}"
 end
 
+task :test do
+    # fast test for development
+    sh "rake update"
+    sh "rake mock"
+    sh "ice test"
+end
+
 task :xcode do
     sh "open SwiftyMocky.xcworkspace"
 end

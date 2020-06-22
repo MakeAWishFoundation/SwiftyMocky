@@ -101,7 +101,7 @@ To start working with **SwiftyMocky** you need to:
 
 ### 2. Integrating SwiftyMocky runtime into test target:
 
-**[CocoaPods](http://cocoapods.org)**: 
+**[CocoaPods](http://cocoapods.org)**:
 
 SwiftyMocky is available through [CocoaPods](http://cocoapods.org). To install it, simply add the following line to your Podfile:
 
@@ -109,7 +109,7 @@ SwiftyMocky is available through [CocoaPods](http://cocoapods.org). To install i
 pod "SwiftyMocky"
 ```
 
-**[Carthage](https://github.com/Carthage/Carthage)**: 
+**[Carthage](https://github.com/Carthage/Carthage)**:
 
 To install, add following to you Cartfile:
 
@@ -119,7 +119,7 @@ github "MakeAWishFoundation/SwiftyMocky"
 
 Then execute `carthage update`
 
-For [Carthage](https://github.com/Carthage/Carthage), few additional steps are required ⚠️. For detailed install instructions, see full [documentation][link-docs-installation-carthage].
+For [Carthage](https://github.com/Carthage/Carthage), few additional steps are required ⚠️. For detailed install instructions, see full [documentation][link-docs-installation-carthage] or consult [Carthage documentation][carthage-adding-framework].
 
 **[Swift Package Manager](https://swift.org/package-manager/)**:
 
@@ -139,7 +139,7 @@ dependencies: [
 
 [Annotate your protocols](#mock-annotate) that are going to be mocked, making them adopt `AutoMockable` protocol, or adding annotation comment above their definition in the source code.
 
-Mocks are generated from your project root directory, based on configuration inside [Mockfile][link-guides-mockfile]. 
+Mocks are generated from your project root directory, based on configuration inside [Mockfile][link-guides-mockfile].
 
 ```bash
 > swiftymocky setup     # if you don't have a Mockfile yet
@@ -364,6 +364,8 @@ SwiftyMocky is available under the MIT license. See the [LICENSE][link-license] 
 [link-guides-cli-legacy]: ./guides/Legacy.md
 [link-guides-cli-generate]: ./guides/Command%20Line%20Interface.md#generate
 [link-guides-mockfile]: ./guides/Mockfile.md
+
+[carthage-adding-framework]: https://github.com/Carthage/Carthage#adding-frameworks-to-unit-tests-or-a-framework
 
 <!-- Links based on tag -->
 

@@ -218,6 +218,19 @@ class MethodWrapper {
             return "case (.\(prototype)(\(lhsParams)), .\(prototype)(\(rhsParams))):"
         }
     }
+    func equalCases() -> String {
+        var results = self.equalCase
+
+        guard !parameters.isEmpty else {
+            results += " return .match"
+            return results
+        }
+
+        results += "\n\t\t\t\tvar results: [Matcher.ParameterComparisonResult] = []\n"
+        results += parameters.map { "\t\t\t\t\($0.comparatorResult())" }.joined(separator: "\n")
+        results += "\n\t\t\t\treturn Matcher.ComparisonResult(results)"
+        return results
+    }
     var intValueCase: String {
         if method.parameters.isEmpty {
             return "case .\(prototype): return 0"

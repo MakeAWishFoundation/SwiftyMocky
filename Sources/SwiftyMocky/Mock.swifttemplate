@@ -186,11 +186,6 @@ func propertyMethodTypes(_ variable: SourceryRuntime.Variable) -> String {
     return "\(wrapper.propertyCaseGet())" + (wrapper.readonly ? "" : "\n\t\t\(wrapper.propertyCaseSet())")
 }
 
-func propertyMethodTypesCompare(_ variable: SourceryRuntime.Variable) -> String {
-    let wrapper = VariableWrapper(variable, scope: "")
-    return "\(wrapper.propertyCaseGetCompare())" + (wrapper.readonly ? "" : "\n\t\t\t\(wrapper.propertyCaseSetCompare())")
-}
-
 func propertyMethodTypesIntValue(_ variable: SourceryRuntime.Variable) -> String {
     let wrapper = VariableWrapper(variable, scope: "")
     return "\(wrapper.propertyCaseGetIntValue())" + (wrapper.readonly ? "" : "\n\t\t\t\(wrapper.propertyCaseSetIntValue())")
@@ -302,6 +297,11 @@ class ParameterWrapper {
     }
     var comparator: String {
         return "guard Parameter.compare(lhs: lhs\(parameter.name.capitalized), rhs: rhs\(parameter.name.capitalized), with: matcher) else { return false }"
+    }
+    func comparatorResult() -> String {
+        let lhsName = "lhs\(parameter.name.capitalized)"
+        let rhsName = "rhs\(parameter.name.capitalized)"
+        return "results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: \(lhsName), rhs: \(rhsName), with: matcher), \(lhsName), \(rhsName), \"\(labelAndName())\"))"
     }
 
     init(_ parameter: SourceryRuntime.MethodParameter) {
@@ -669,6 +669,19 @@ class MethodWrapper {
             let rhsParams = method.parameters.map { "let rhs\($0.name.capitalized)" }.joined(separator: ", ")
             return "case (.\(prototype)(\(lhsParams)), .\(prototype)(\(rhsParams))):"
         }
+    }
+    func equalCases() -> String {
+        var results = self.equalCase
+
+        guard !parameters.isEmpty else {
+            results += " return .match"
+            return results
+        }
+
+        results += "\n\t\t\t\tvar results: [Matcher.ParameterComparisonResult] = []\n"
+        results += parameters.map { "\t\t\t\t\($0.comparatorResult())" }.joined(separator: "\n")
+        results += "\n\t\t\t\treturn Matcher.ComparisonResult(results)"
+        return results
     }
     var intValueCase: String {
         if method.parameters.isEmpty {
@@ -1245,14 +1258,18 @@ class SubscriptWrapper {
     func equalCase(_ accessor: String) -> String {
         var lhsParams = wrapped.parameters.map { "lhs\($0.name.capitalized)" }.joined(separator: ", ")
         var rhsParams = wrapped.parameters.map { "rhs\($0.name.capitalized)" }.joined(separator: ", ")
-        var comparators = wrappedParameters.map { "\t\t\t\t\($0.comparator)" }.joined(separator: "\n")
+        var comparators = "\t\t\t\tvar results: [Matcher.ParameterComparisonResult] = []\n"
+        comparators += wrappedParameters.map { "\t\t\t\t\($0.comparatorResult())" }.joined(separator: "\n")
+
         if accessor == "set" {
             lhsParams += ", lhsDidSet"
             rhsParams += ", rhsDidSet"
-            comparators += "\n\t\t\t\treturn Parameter.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher)"
-        } else {
-            comparators += "\n\t\t\t\treturn true"
+            comparators += "\n\t\t\t\tresults.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher), lhsDidSet, rhsDidSet, \"newValue\"))"
         }
+
+        comparators += "\n\t\t\t\treturn Matcher.ComparisonResult(results)"
+
+        // comparatorResult()
         return "case (let .\(subscriptCasePrefix(accessor))(\(lhsParams)), let .\(subscriptCasePrefix(accessor))(\(rhsParams))):\n" + comparators
     }
     func equalCases() -> String {
@@ -1409,6 +1426,14 @@ class VariableWrapper {
         self.scope = scope
     }
 
+    func compareCases() -> String {
+        var result =  propertyCaseGetCompare()
+        if !readonly {
+            result += "\n\t\t\t\(propertyCaseSetCompare())"
+        }
+        return result
+    }
+
     func propertyGet() -> String {
         let staticModifier = variable.isStatic ? "Static" : ""
         return "public static var \(variable.name): \(staticModifier)Verify { return \(staticModifier)Verify(method: .\(propertyCaseGetName)) }"
@@ -1424,7 +1449,7 @@ class VariableWrapper {
         return "case \(propertyCaseGetName)"
     }
     func propertyCaseGetCompare() -> String {
-        return "case (.\(propertyCaseGetName),.\(propertyCaseGetName)): return true"
+        return "case (.\(propertyCaseGetName),.\(propertyCaseGetName)): return Matcher.ComparisonResult.match"
     }
     func propertyCaseGetIntValue() -> String {
         return "case .\(propertyCaseGetName): return 0"
@@ -1435,7 +1460,11 @@ class VariableWrapper {
         return "case \(propertyCaseSetName)(\(nestedType))"
     }
     func propertyCaseSetCompare() -> String {
-        return "case (.\(propertyCaseSetName)(let left),.\(propertyCaseSetName)(let right)): return \(nestedType).compare(lhs: left, rhs: right, with: matcher)"
+        let lhsName = "left"
+        let rhsName = "right"
+        let comaprison = "Matcher.ParameterComparisonResult(\(nestedType).compare(lhs: \(lhsName), rhs: \(rhsName), with: matcher), \(lhsName), \(rhsName), \"newValue\")"
+        let result = "Matcher.ComparisonResult([\(comaprison)])"
+        return "case (.\(propertyCaseSetName)(let left),.\(propertyCaseSetName)(let right)): return \(result)"
     }
     func propertyCaseSetIntValue() -> String {
         return "case .\(propertyCaseSetName)(let newValue): return newValue.intValue"
@@ -1628,15 +1657,13 @@ _%>
         <%= propertyMethodTypes(variable) %>
     <%_ } %> <%_ %>
     <%_ -%>
-        static func compareParameters(lhs: StaticMethodType, rhs: StaticMethodType, matcher: Matcher) -> Bool {
+        static func compareParameters(lhs: StaticMethodType, rhs: StaticMethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) { <%_ for method in wrappedStaticMethodsForMethodType { %>
-            <%= method.equalCase -%><% for parameter in method.parameters { %>
-                <%= parameter.comparator -%> <%  } %>
-                return true <% } %>
-            <%_ for variable in allStaticVariables { -%>
-            <%= propertyMethodTypesCompare(variable) %>
-        <%_ } %> <%_ -%> <%_ if wrappedStaticMethods.count + staticVariableCasesCount > 1 { -%>
-            default: return false
+            <%= method.equalCases() %>
+            <%_ } %> <%_ for variable in wrappedStaticVariables { -%>
+            <%= variable.compareCases() %>
+            <%_ } %> <%_ -%> <%_ if wrappedStaticMethods.count + staticVariableCasesCount > 1 { -%>
+            default: return .none
             <%_ } -%>
             }
         }
@@ -1727,17 +1754,15 @@ _%>
         <%= wrapped.subscriptCases() _%>
     <%_ } %> <%_ %>
     <%_ -%>
-        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool {
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) { <%_ for method in wrappedMethodsForMethodType { %>
-            <%= method.equalCase -%><% for parameter in method.parameters { %>
-                <%= parameter.comparator -%> <%  } %>
-                return true <% } %>
-            <%_ for variable in allVariables { -%>
-            <%= propertyMethodTypesCompare(variable) %>
+            <%= method.equalCases() %>
+            <%_ } %> <%_ for variable in wrappedVariables { -%>
+            <%= variable.compareCases() %>
             <%_ } %> <%_ -%> <%_ for wrapped in wrappedSubscripts { -%>
             <%= wrapped.equalCases() %>
-        <%_ } %> <%_ if wrappedMethods.count + variableCasesCount + subscriptsCasesCount > 1 { -%>
-            default: return false
+            <%_ } %> <%_ if wrappedMethods.count + variableCasesCount + subscriptsCasesCount > 1 { -%>
+            default: return .none
             <%_ } -%>
             }
         }
@@ -1765,7 +1790,7 @@ _%>
     }
     <%_ } else { %>
     fileprivate struct MethodType {
-        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Bool { return true }
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult { return .match }
         func intValue() -> Int { return 0 }
         func assertionName() -> String { return "" }
     }
@@ -1848,8 +1873,17 @@ _%>
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method.assertionName())`, but was: \(invocations.count)", file: file, line: line)
+        let fullMatches = matchingCalls(method)
+        let success = count.matches(fullMatches)
+        let assertionName = method.method.assertionName()
+        let feedback: String = {
+            guard !success else { return "" }
+            return Utils.closestCallsMessage(
+                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                name: assertionName
+            )
+        }()
+        MockyAssert(success, "Expected: \(count) invocations of `\(assertionName)`, but was: \(fullMatches).\(feedback)", file: file, line: line)
     }
 
     private func addInvocation(_ call: MethodType) {
@@ -1857,16 +1891,16 @@ _%>
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
-        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
-        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
     private func matchingCalls(_ method: MethodType) -> [MethodType] {
-        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
     private func matchingCalls(_ method: Verify) -> Int {
         return matchingCalls(method.method).count
@@ -1903,8 +1937,17 @@ _%>
     }
 
     static public func verify(_ method: StaticVerify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let invocations = matchingCalls(method.method)
-        MockyAssert(count.matches(invocations.count), "Expected: \(count) invocations of `\(method.method)`, but was: \(invocations.count)", file: file, line: line)
+        let fullMatches = matchingCalls(method)
+        let success = count.matches(fullMatches)
+        let assertionName = method.method.assertionName()
+        let feedback: String = {
+            guard !success else { return "" }
+            return Utils.closestCallsMessage(
+                for: self.invocations.map { StaticMethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                name: assertionName
+            )
+        }()
+        MockyAssert(success, "Expected: \(count) invocations of `\(assertionName)`, but was: \(fullMatches).\(feedback)", file: file, line: line)
     }
 
     static private func addInvocation(_ call: StaticMethodType) {
@@ -1912,16 +1955,16 @@ _%>
     }
     static private func methodReturnValue(_ method: StaticMethodType) throws -> StubProduct {
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
-        let matched = candidates.first(where: { $0.isValid && StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) })
+        let matched = candidates.first(where: { $0.isValid && StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     static private func methodPerformValue(_ method: StaticMethodType) -> Any? {
-        let matched = methodPerformValues.reversed().first { StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher) }
+        let matched = methodPerformValues.reversed().first { StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
     static private func matchingCalls(_ method: StaticMethodType) -> [StaticMethodType] {
-        return invocations.filter { StaticMethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher) }
+        return invocations.filter { StaticMethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
     static private func matchingCalls(_ method: StaticVerify) -> Int {
         return matchingCalls(method.method).count

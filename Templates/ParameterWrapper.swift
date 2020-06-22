@@ -38,6 +38,11 @@ class ParameterWrapper {
     var comparator: String {
         return "guard Parameter.compare(lhs: lhs\(parameter.name.capitalized), rhs: rhs\(parameter.name.capitalized), with: matcher) else { return false }"
     }
+    func comparatorResult() -> String {
+        let lhsName = "lhs\(parameter.name.capitalized)"
+        let rhsName = "rhs\(parameter.name.capitalized)"
+        return "results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: \(lhsName), rhs: \(rhsName), with: matcher), \(lhsName), \(rhsName), \"\(labelAndName())\"))"
+    }
 
     init(_ parameter: SourceryRuntime.MethodParameter) {
         self.parameter = parameter

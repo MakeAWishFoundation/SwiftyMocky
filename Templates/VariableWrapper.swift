@@ -55,6 +55,14 @@ class VariableWrapper {
         self.scope = scope
     }
 
+    func compareCases() -> String {
+        var result =  propertyCaseGetCompare()
+        if !readonly {
+            result += "\n\t\t\t\(propertyCaseSetCompare())"
+        }
+        return result
+    }
+
     func propertyGet() -> String {
         let staticModifier = variable.isStatic ? "Static" : ""
         return "public static var \(variable.name): \(staticModifier)Verify { return \(staticModifier)Verify(method: .\(propertyCaseGetName)) }"
@@ -70,7 +78,7 @@ class VariableWrapper {
         return "case \(propertyCaseGetName)"
     }
     func propertyCaseGetCompare() -> String {
-        return "case (.\(propertyCaseGetName),.\(propertyCaseGetName)): return true"
+        return "case (.\(propertyCaseGetName),.\(propertyCaseGetName)): return Matcher.ComparisonResult.match"
     }
     func propertyCaseGetIntValue() -> String {
         return "case .\(propertyCaseGetName): return 0"
@@ -81,7 +89,11 @@ class VariableWrapper {
         return "case \(propertyCaseSetName)(\(nestedType))"
     }
     func propertyCaseSetCompare() -> String {
-        return "case (.\(propertyCaseSetName)(let left),.\(propertyCaseSetName)(let right)): return \(nestedType).compare(lhs: left, rhs: right, with: matcher)"
+        let lhsName = "left"
+        let rhsName = "right"
+        let comaprison = "Matcher.ParameterComparisonResult(\(nestedType).compare(lhs: \(lhsName), rhs: \(rhsName), with: matcher), \(lhsName), \(rhsName), \"newValue\")"
+        let result = "Matcher.ComparisonResult([\(comaprison)])"
+        return "case (.\(propertyCaseSetName)(let left),.\(propertyCaseSetName)(let right)): return \(result)"
     }
     func propertyCaseSetIntValue() -> String {
         return "case .\(propertyCaseSetName)(let newValue): return newValue.intValue"

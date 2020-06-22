@@ -111,14 +111,18 @@ class SubscriptWrapper {
     func equalCase(_ accessor: String) -> String {
         var lhsParams = wrapped.parameters.map { "lhs\($0.name.capitalized)" }.joined(separator: ", ")
         var rhsParams = wrapped.parameters.map { "rhs\($0.name.capitalized)" }.joined(separator: ", ")
-        var comparators = wrappedParameters.map { "\t\t\t\t\($0.comparator)" }.joined(separator: "\n")
+        var comparators = "\t\t\t\tvar results: [Matcher.ParameterComparisonResult] = []\n"
+        comparators += wrappedParameters.map { "\t\t\t\t\($0.comparatorResult())" }.joined(separator: "\n")
+
         if accessor == "set" {
             lhsParams += ", lhsDidSet"
             rhsParams += ", rhsDidSet"
-            comparators += "\n\t\t\t\treturn Parameter.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher)"
-        } else {
-            comparators += "\n\t\t\t\treturn true"
+            comparators += "\n\t\t\t\tresults.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher), lhsDidSet, rhsDidSet, \"newValue\"))"
         }
+
+        comparators += "\n\t\t\t\treturn Matcher.ComparisonResult(results)"
+
+        // comparatorResult()
         return "case (let .\(subscriptCasePrefix(accessor))(\(lhsParams)), let .\(subscriptCasePrefix(accessor))(\(rhsParams))):\n" + comparators
     }
     func equalCases() -> String {
