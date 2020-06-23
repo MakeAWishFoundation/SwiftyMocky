@@ -41,8 +41,9 @@ public enum Parameter<ValueType> {
     public var shortDescription: String {
         switch self {
         case ._: return ".any"
+        case .value(let value as GenericAttribute): return value.shortDescription
         case .value(let value): return String(describing: value)
-        case .matching(let closure): return String(describing: closure.self)
+        case .matching: return ".matching(\(String(describing: ValueType.self)) -> Bool)"
         }
     }
 }
@@ -161,46 +162,61 @@ public extension Parameter {
     func wrapAsGeneric() -> Parameter<GenericAttribute> {
         switch self {
         case ._:
-            let attribute = GenericAttribute(Mirror(reflecting: ValueType.self), intValue, { (l, r, m) -> Bool in
-                guard let lv = l as? Mirror else { return false }
-                if let rv = r as? Mirror {
-                    return lv.subjectType == rv.subjectType
-                } else if let _ = r as? ValueType {
-                    return true // .any comparing .value or .matching
-                } else {
-                    return false
+            let attribute = GenericAttribute(
+                value: Mirror(reflecting: ValueType.self),
+                intValue: intValue,
+                shortDescription: shortDescription,
+                compare: { (l, r, m) -> Bool in
+                    guard let lv = l as? Mirror else { return false }
+                    if let rv = r as? Mirror {
+                        return lv.subjectType == rv.subjectType
+                    } else if let _ = r as? ValueType {
+                        return true // .any comparing .value or .matching
+                    } else {
+                        return false
+                    }
                 }
-            })
+            )
             return Parameter<GenericAttribute>.value(attribute)
         case let .value(value):
-            let attribute = GenericAttribute(value, intValue, { (l, r, m) -> Bool in
-                guard let lv = l as? ValueType  else { return false }
-                if let rv = r as? ValueType {
-                    let lhs = Parameter<ValueType>.value(lv)
-                    let rhs = Parameter<ValueType>.value(rv)
-                    return Parameter<ValueType>.compare(lhs: lhs, rhs: rhs, with: m)
-                } else if let rv = r as? ((ValueType) -> Bool) {
-                    return rv(lv)
-                } else if let rv = r as? Mirror {
-                    return Mirror(reflecting: ValueType.self).subjectType == rv.subjectType
-                } else {
-                    return false
+            let attribute = GenericAttribute(
+                value: value,
+                intValue: intValue,
+                shortDescription: shortDescription,
+                compare: { (l, r, m) -> Bool in
+                    guard let lv = l as? ValueType  else { return false }
+                    if let rv = r as? ValueType {
+                        let lhs = Parameter<ValueType>.value(lv)
+                        let rhs = Parameter<ValueType>.value(rv)
+                        return Parameter<ValueType>.compare(lhs: lhs, rhs: rhs, with: m)
+                    } else if let rv = r as? ((ValueType) -> Bool) {
+                        return rv(lv)
+                    } else if let rv = r as? Mirror {
+                        return Mirror(reflecting: ValueType.self).subjectType == rv.subjectType
+                    } else {
+                        return false
+                    }
                 }
-            })
+            )
             return Parameter<GenericAttribute>.value(attribute)
         case let .matching(match):
-            let attribute = GenericAttribute(match, intValue, { (l, r, m) -> Bool in
-                guard let lv = l as? ((ValueType) -> Bool)  else { return false }
-                if let rv = r as? ValueType {
-                    let lhs = Parameter<ValueType>.matching(lv)
-                    let rhs = Parameter<ValueType>.value(rv)
-                    return Parameter<ValueType>.compare(lhs: lhs, rhs: rhs, with: m)
-                } else if let rv = r as? Mirror {
-                    return Mirror(reflecting: ValueType.self).subjectType == rv.subjectType
-                } else {
-                    return false
+            let attribute = GenericAttribute(
+                value: match,
+                intValue: intValue,
+                shortDescription: shortDescription,
+                compare: { (l, r, m) -> Bool in
+                    guard let lv = l as? ((ValueType) -> Bool)  else { return false }
+                    if let rv = r as? ValueType {
+                        let lhs = Parameter<ValueType>.matching(lv)
+                        let rhs = Parameter<ValueType>.value(rv)
+                        return Parameter<ValueType>.compare(lhs: lhs, rhs: rhs, with: m)
+                    } else if let rv = r as? Mirror {
+                        return Mirror(reflecting: ValueType.self).subjectType == rv.subjectType
+                    } else {
+                        return false
+                    }
                 }
-            })
+            )
             return Parameter<GenericAttribute>.value(attribute)
         }
     }
@@ -348,46 +364,61 @@ public extension Parameter where ValueType: Sequence {
     func wrapAsGeneric() -> Parameter<GenericAttribute> {
         switch self {
         case ._:
-            let attribute = GenericAttribute(Mirror(reflecting: ValueType.self), intValue, { (l, r, m) -> Bool in
-                guard let lv = l as? Mirror else { return false }
-                if let rv = r as? Mirror {
-                    return lv.subjectType == rv.subjectType
-                } else if let _ = r as? ValueType {
-                    return true // .any comparing .value
-                } else {
-                    return false
+            let attribute = GenericAttribute(
+                value: Mirror(reflecting: ValueType.self),
+                intValue: intValue,
+                shortDescription: shortDescription,
+                compare: { (l, r, m) -> Bool in
+                    guard let lv = l as? Mirror else { return false }
+                    if let rv = r as? Mirror {
+                        return lv.subjectType == rv.subjectType
+                    } else if let _ = r as? ValueType {
+                        return true // .any comparing .value
+                    } else {
+                        return false
+                    }
                 }
-            })
+            )
             return Parameter<GenericAttribute>.value(attribute)
         case let .value(value):
-            let attribute = GenericAttribute(value, intValue, { (l, r, m) -> Bool in
-                guard let lv = l as? ValueType  else { return false }
-                if let rv = r as? ValueType {
-                    let lhs = Parameter<ValueType>.value(lv)
-                    let rhs = Parameter<ValueType>.value(rv)
-                    return Parameter<ValueType>.compare(lhs: lhs, rhs: rhs, with: m)
-                } else if let rv = r as? ((ValueType) -> Bool) {
-                    return rv(lv)
-                } else if let rv = r as? Mirror {
-                    return Mirror(reflecting: ValueType.self).subjectType == rv.subjectType
-                } else {
-                    return false
+            let attribute = GenericAttribute(
+                value: value,
+                intValue: intValue,
+                shortDescription: shortDescription,
+                compare: { (l, r, m) -> Bool in
+                    guard let lv = l as? ValueType  else { return false }
+                    if let rv = r as? ValueType {
+                        let lhs = Parameter<ValueType>.value(lv)
+                        let rhs = Parameter<ValueType>.value(rv)
+                        return Parameter<ValueType>.compare(lhs: lhs, rhs: rhs, with: m)
+                    } else if let rv = r as? ((ValueType) -> Bool) {
+                        return rv(lv)
+                    } else if let rv = r as? Mirror {
+                        return Mirror(reflecting: ValueType.self).subjectType == rv.subjectType
+                    } else {
+                        return false
+                    }
                 }
-            })
+            )
             return Parameter<GenericAttribute>.value(attribute)
         case let .matching(match):
-            let attribute = GenericAttribute(match, intValue, { (l, r, m) -> Bool in
-                guard let lv = l as? ((ValueType) -> Bool)  else { return false }
-                if let rv = r as? ValueType {
-                    let lhs = Parameter<ValueType>.matching(lv)
-                    let rhs = Parameter<ValueType>.value(rv)
-                    return Parameter<ValueType>.compare(lhs: lhs, rhs: rhs, with: m)
-                } else if let rv = r as? Mirror {
-                    return Mirror(reflecting: ValueType.self).subjectType == rv.subjectType
-                } else {
-                    return false
+            let attribute = GenericAttribute(
+                value: match,
+                intValue: intValue,
+                shortDescription: shortDescription,
+                compare: { (l, r, m) -> Bool in
+                    guard let lv = l as? ((ValueType) -> Bool)  else { return false }
+                    if let rv = r as? ValueType {
+                        let lhs = Parameter<ValueType>.matching(lv)
+                        let rhs = Parameter<ValueType>.value(rv)
+                        return Parameter<ValueType>.compare(lhs: lhs, rhs: rhs, with: m)
+                    } else if let rv = r as? Mirror {
+                        return Mirror(reflecting: ValueType.self).subjectType == rv.subjectType
+                    } else {
+                        return false
+                    }
                 }
-            })
+            )
             return Parameter<GenericAttribute>.value(attribute)
         }
     }

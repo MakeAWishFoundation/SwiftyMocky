@@ -7815,6 +7815,172 @@ open class ProtocolWithInitializersMock: ProtocolWithInitializers, Mock {
     }
 }
 
+// MARK: - ProtocolWithMethodWithManyParameters
+
+open class ProtocolWithMethodWithManyParametersMock: ProtocolWithMethodWithManyParameters, Mock {
+    init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        SwiftyMockyTestObserver.setup()
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    public typealias PropertyStub = Given
+    public typealias MethodStub = Given
+    public typealias SubscriptStub = Given
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
+
+
+
+
+    open func method(param1: Int, value: String, flagA: Bool, flagB: Bool, closure: () -> Void) {
+        addInvocation(.m_method__param1_param1value_valueflagA_flagAflagB_flagBclosure_closure(Parameter<Int>.value(`param1`), Parameter<String>.value(`value`), Parameter<Bool>.value(`flagA`), Parameter<Bool>.value(`flagB`), Parameter<() -> Void>.any))
+		let perform = methodPerformValue(.m_method__param1_param1value_valueflagA_flagAflagB_flagBclosure_closure(Parameter<Int>.value(`param1`), Parameter<String>.value(`value`), Parameter<Bool>.value(`flagA`), Parameter<Bool>.value(`flagB`), Parameter<() -> Void>.any)) as? (Int, String, Bool, Bool, () -> Void) -> Void
+		perform?(`param1`, `value`, `flagA`, `flagB`, `closure`)
+    }
+
+
+    fileprivate enum MethodType {
+        case m_method__param1_param1value_valueflagA_flagAflagB_flagBclosure_closure(Parameter<Int>, Parameter<String>, Parameter<Bool>, Parameter<Bool>, Parameter<() -> Void>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
+            switch (lhs, rhs) {
+            case (.m_method__param1_param1value_valueflagA_flagAflagB_flagBclosure_closure(let lhsParam1, let lhsValue, let lhsFlaga, let lhsFlagb, let lhsClosure), .m_method__param1_param1value_valueflagA_flagAflagB_flagBclosure_closure(let rhsParam1, let rhsValue, let rhsFlaga, let rhsFlagb, let rhsClosure)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsParam1, rhs: rhsParam1, with: matcher), lhsParam1, rhsParam1, "param1"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsValue, rhs: rhsValue, with: matcher), lhsValue, rhsValue, "value"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsFlaga, rhs: rhsFlaga, with: matcher), lhsFlaga, rhsFlaga, "flagA"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsFlagb, rhs: rhsFlagb, with: matcher), lhsFlagb, rhsFlagb, "flagB"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsClosure, rhs: rhsClosure, with: matcher), lhsClosure, rhsClosure, "closure"))
+				return Matcher.ComparisonResult(results)
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+            case let .m_method__param1_param1value_valueflagA_flagAflagB_flagBclosure_closure(p0, p1, p2, p3, p4): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_method__param1_param1value_valueflagA_flagAflagB_flagBclosure_closure: return ".method(param1:value:flagA:flagB:closure:)"
+            }
+        }
+    }
+
+    open class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [StubProduct]) {
+            self.method = method
+            super.init(products)
+        }
+
+
+    }
+
+    public struct Verify {
+        fileprivate var method: MethodType
+
+        public static func method(param1: Parameter<Int>, value: Parameter<String>, flagA: Parameter<Bool>, flagB: Parameter<Bool>, closure: Parameter<() -> Void>) -> Verify { return Verify(method: .m_method__param1_param1value_valueflagA_flagAflagB_flagBclosure_closure(`param1`, `value`, `flagA`, `flagB`, `closure`))}
+    }
+
+    public struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        public static func method(param1: Parameter<Int>, value: Parameter<String>, flagA: Parameter<Bool>, flagB: Parameter<Bool>, closure: Parameter<() -> Void>, perform: @escaping (Int, String, Bool, Bool, () -> Void) -> Void) -> Perform {
+            return Perform(method: .m_method__param1_param1value_valueflagA_flagAflagB_flagBclosure_closure(`param1`, `value`, `flagA`, `flagB`, `closure`), performs: perform)
+        }
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let fullMatches = matchingCalls(method)
+        let success = count.matches(fullMatches)
+        let assertionName = method.method.assertionName()
+        let feedback: String = {
+            guard !success else { return "" }
+            return Utils.closestCallsMessage(
+                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                name: assertionName
+            )
+        }()
+        MockyAssert(success, "Expected: \(count) invocations of `\(assertionName)`, but was: \(fullMatches).\(feedback)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        invocations.append(call)
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
+    }
+    private func matchingCalls(_ method: Verify) -> Int {
+        return matchingCalls(method.method).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+    }
+}
+
 // MARK: - ProtocolWithPropoerties
 
 open class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {

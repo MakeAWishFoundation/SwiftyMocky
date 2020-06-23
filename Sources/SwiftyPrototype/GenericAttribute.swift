@@ -18,15 +18,23 @@ public struct GenericAttribute: GenericAttributeType {
     public var intValue: Int
     /// [internal] Used to compare with other generic attributes
     public let compare: (Any,Any,Matcher) -> Bool
+    /// [internal] Used for formatting messages.
+    public let shortDescription: String
 
     /// [internal] Creates new GenericAttribute instance, with specified return value and compare closure
     ///
     /// - Parameters:
     ///   - value: Returned value
     ///   - compare: Used to compare with other generic attributes values
-    public init(_ value: Any, _ intValue: Int, _ compare: @escaping (Any,Any,Matcher) -> Bool) {
+    public init(
+        value: Any,
+        intValue: Int,
+        shortDescription: String,
+        compare: @escaping (Any,Any,Matcher) -> Bool
+    ) {
         self.value = value
         self.intValue = intValue
+        self.shortDescription = shortDescription
         self.compare = compare
     }
 }

@@ -167,6 +167,9 @@
 		CCCB8AAD249F64EB003CA85F /* VerifyMessagesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCB8AAA249F64EB003CA85F /* VerifyMessagesTests.swift */; };
 		CCD6C0AF24A15F3C000B52A1 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD6C0AE24A15F3C000B52A1 /* Utils.swift */; };
 		CCD6C0B024A15F3C000B52A1 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD6C0AE24A15F3C000B52A1 /* Utils.swift */; };
+		CCD6C0B224A1D94C000B52A1 /* ProtocolWithMethodWithManyParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD6C0B124A1D94C000B52A1 /* ProtocolWithMethodWithManyParameters.swift */; };
+		CCD6C0B324A1D94C000B52A1 /* ProtocolWithMethodWithManyParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD6C0B124A1D94C000B52A1 /* ProtocolWithMethodWithManyParameters.swift */; };
+		CCD6C0B424A1D94C000B52A1 /* ProtocolWithMethodWithManyParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD6C0B124A1D94C000B52A1 /* ProtocolWithMethodWithManyParameters.swift */; };
 		CCE350E91FCC0A9400A76C4C /* NonSwiftProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE350D21FCC0A9400A76C4C /* NonSwiftProtocol.swift */; };
 		CCE350EA1FCC0A9400A76C4C /* NonSwiftProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE350D21FCC0A9400A76C4C /* NonSwiftProtocol.swift */; };
 		CCE350EB1FCC0A9400A76C4C /* ExampleProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE350D31FCC0A9400A76C4C /* ExampleProtocols.swift */; };
@@ -357,6 +360,7 @@
 		CCCB8AA8249E3066003CA85F /* Parameter+Literals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Parameter+Literals.swift"; sourceTree = "<group>"; };
 		CCCB8AAA249F64EB003CA85F /* VerifyMessagesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifyMessagesTests.swift; sourceTree = "<group>"; };
 		CCD6C0AE24A15F3C000B52A1 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		CCD6C0B124A1D94C000B52A1 /* ProtocolWithMethodWithManyParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolWithMethodWithManyParameters.swift; sourceTree = "<group>"; };
 		CCE350D21FCC0A9400A76C4C /* NonSwiftProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NonSwiftProtocol.swift; sourceTree = "<group>"; };
 		CCE350D31FCC0A9400A76C4C /* ExampleProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleProtocols.swift; sourceTree = "<group>"; };
 		CCE350D41FCC0A9400A76C4C /* ItemsRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemsRepository.swift; sourceTree = "<group>"; };
@@ -765,6 +769,7 @@
 				CC542E5E22198E7F00691F24 /* InoutParameterProtocols.swift */,
 				CCCB8A98249C02BE003CA85F /* UnnamedAttributesProtocol.swift */,
 				CCCB8AA4249C1049003CA85F /* ProtocolWithAttributes.swift */,
+				CCD6C0B124A1D94C000B52A1 /* ProtocolWithMethodWithManyParameters.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -1497,6 +1502,7 @@
 				CC3252182003CC22009AD6C2 /* Excluded.generated.swift in Sources */,
 				CCE350EE1FCC0A9400A76C4C /* ItemsRepository.swift in Sources */,
 				C83B2423215BDA870032BCF3 /* ProtocolWithSubscripts.swift in Sources */,
+				CCD6C0B324A1D94C000B52A1 /* ProtocolWithMethodWithManyParameters.swift in Sources */,
 				CCE351021FCC0A9400A76C4C /* ProtocolsWithCustomAttributes.swift in Sources */,
 				CCE350F81FCC0A9400A76C4C /* ProtocolsWithCollections.swift in Sources */,
 				C87B4F7F2153EE2700DD8AE3 /* AllLiteralsContainerProtocol.swift in Sources */,
@@ -1572,6 +1578,7 @@
 				CC3252172003CC22009AD6C2 /* Excluded.generated.swift in Sources */,
 				CCE350ED1FCC0A9400A76C4C /* ItemsRepository.swift in Sources */,
 				C83B2422215BDA870032BCF3 /* ProtocolWithSubscripts.swift in Sources */,
+				CCD6C0B224A1D94C000B52A1 /* ProtocolWithMethodWithManyParameters.swift in Sources */,
 				CCE351011FCC0A9400A76C4C /* ProtocolsWithCustomAttributes.swift in Sources */,
 				CCE350F71FCC0A9400A76C4C /* ProtocolsWithCollections.swift in Sources */,
 				C87B4F7E2153EE2300DD8AE3 /* AllLiteralsContainerProtocol.swift in Sources */,
@@ -1665,6 +1672,7 @@
 				CC3252192003CC22009AD6C2 /* Excluded.generated.swift in Sources */,
 				CC5B61C11FCC1764007FB209 /* AppDelegate.swift in Sources */,
 				C83B2424215BDA870032BCF3 /* ProtocolWithSubscripts.swift in Sources */,
+				CCD6C0B424A1D94C000B52A1 /* ProtocolWithMethodWithManyParameters.swift in Sources */,
 				CC5B61DA1FCC18C4007FB209 /* GenericProtocols.swift in Sources */,
 				CC5B61D01FCC18C4007FB209 /* ProtocolsWithCustomAttributes.swift in Sources */,
 				C87B4F802153EE2800DD8AE3 /* AllLiteralsContainerProtocol.swift in Sources */,
