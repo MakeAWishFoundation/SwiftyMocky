@@ -148,8 +148,10 @@ public extension Parameter {
         case (.value(let value), .matching(let match)): return match(value)
         case (.value(let lhsValue), .value(let rhsValue)):
             guard let compare = matcher.comparator(for: ValueType.self) else {
-                print("[FATAL] No registered matcher comparator for \(String(describing: ValueType.self))")
-                Failure("No registered comparators for \(String(describing: ValueType.self))")
+                let message = "No registered comparators for \(String(describing: ValueType.self))"
+                print("[FATAL] \(message)")
+                matcher.onFatalFailure(message)
+                Failure(message)
             }
             return compare(lhsValue,rhsValue)
         default: return false
@@ -343,8 +345,10 @@ public extension Parameter where ValueType: Sequence {
             }
 
             guard let comparator = matcher.comparator(for: Element.self) else {
-                print("[FATAL] No registered matcher comparator for \(Element.self)")
-                Failure("Not registered comparator for \(Element.self)")
+                let message = "No registered matcher comparator for \(Element.self)"
+                print("[FATAL] \(message)")
+                matcher.onFatalFailure(message)
+                Failure(message)
             }
 
             for (left,right) in values {

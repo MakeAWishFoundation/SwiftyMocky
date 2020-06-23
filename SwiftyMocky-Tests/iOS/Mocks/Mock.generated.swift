@@ -458,13 +458,17 @@ open class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -475,20 +479,26 @@ open class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -507,7 +517,7 @@ open class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 
     static public func given(_ method: StaticGiven) {
@@ -520,13 +530,17 @@ open class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
     }
 
     static public func verify(_ method: StaticVerify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { StaticMethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return StaticMethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -546,11 +560,13 @@ open class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
         let matched = methodPerformValues.reversed().first { StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    static private func matchingCalls(_ method: StaticMethodType) -> [StaticMethodType] {
+    static private func matchingCalls(_ method: StaticMethodType, file: StaticString?, line: UInt?) -> [StaticMethodType] {
+        matcher.set(file: file, line: line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { StaticMethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    static private func matchingCalls(_ method: StaticVerify) -> Int {
-        return matchingCalls(method.method).count
+    static private func matchingCalls(_ method: StaticVerify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     static private func givenGetterValue<T>(_ method: StaticMethodType, _ message: String) -> T {
         do {
@@ -695,13 +711,17 @@ open class AVeryAssociatedProtocolMock<T1,T2>: AVeryAssociatedProtocol, Mock whe
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -712,20 +732,26 @@ open class AVeryAssociatedProtocolMock<T1,T2>: AVeryAssociatedProtocol, Mock whe
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -744,7 +770,7 @@ open class AVeryAssociatedProtocolMock<T1,T2>: AVeryAssociatedProtocol, Mock whe
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -1005,13 +1031,17 @@ open class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -1022,20 +1052,26 @@ open class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -1054,7 +1090,7 @@ open class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 
     static public func given(_ method: StaticGiven) {
@@ -1067,13 +1103,17 @@ open class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
     }
 
     static public func verify(_ method: StaticVerify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { StaticMethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return StaticMethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -1093,11 +1133,13 @@ open class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
         let matched = methodPerformValues.reversed().first { StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    static private func matchingCalls(_ method: StaticMethodType) -> [StaticMethodType] {
+    static private func matchingCalls(_ method: StaticMethodType, file: StaticString?, line: UInt?) -> [StaticMethodType] {
+        matcher.set(file: file, line: line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { StaticMethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    static private func matchingCalls(_ method: StaticVerify) -> Int {
-        return matchingCalls(method.method).count
+    static private func matchingCalls(_ method: StaticVerify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     static private func givenGetterValue<T>(_ method: StaticMethodType, _ message: String) -> T {
         do {
@@ -1711,13 +1753,17 @@ open class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -1728,20 +1774,26 @@ open class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -1760,7 +1812,7 @@ open class AllLiteralsContainerMock: AllLiteralsContainer, Mock {
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -1910,13 +1962,17 @@ open class AnotherProtocolMock: AnotherProtocol, Mock {
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -1927,20 +1983,26 @@ open class AnotherProtocolMock: AnotherProtocol, Mock {
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -1959,7 +2021,7 @@ open class AnotherProtocolMock: AnotherProtocol, Mock {
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -2350,13 +2412,17 @@ open class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -2367,20 +2433,26 @@ open class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -2399,7 +2471,7 @@ open class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -2507,13 +2579,17 @@ open class DateSortableMock: DateSortable, Mock {
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -2524,20 +2600,26 @@ open class DateSortableMock: DateSortable, Mock {
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -2556,7 +2638,7 @@ open class DateSortableMock: DateSortable, Mock {
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -2706,13 +2788,17 @@ open class EdgeCasesGenericsProtocolMock: EdgeCasesGenericsProtocol, Mock {
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -2723,20 +2809,26 @@ open class EdgeCasesGenericsProtocolMock: EdgeCasesGenericsProtocol, Mock {
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -2755,7 +2847,7 @@ open class EdgeCasesGenericsProtocolMock: EdgeCasesGenericsProtocol, Mock {
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -2840,13 +2932,17 @@ open class EmptyProtocolMock: EmptyProtocol, Mock {
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -2857,20 +2953,26 @@ open class EmptyProtocolMock: EmptyProtocol, Mock {
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -2889,7 +2991,7 @@ open class EmptyProtocolMock: EmptyProtocol, Mock {
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -3020,13 +3122,17 @@ open class FailsWithAutoClosureOnSwift5Mock: FailsWithAutoClosureOnSwift5, Mock 
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -3037,20 +3143,26 @@ open class FailsWithAutoClosureOnSwift5Mock: FailsWithAutoClosureOnSwift5, Mock 
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -3069,7 +3181,7 @@ open class FailsWithAutoClosureOnSwift5Mock: FailsWithAutoClosureOnSwift5, Mock 
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -3308,13 +3420,17 @@ open class FailsWithKeywordArgumentsMock: FailsWithKeywordArguments, Mock {
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -3325,20 +3441,26 @@ open class FailsWithKeywordArgumentsMock: FailsWithKeywordArguments, Mock {
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -3357,7 +3479,7 @@ open class FailsWithKeywordArgumentsMock: FailsWithKeywordArguments, Mock {
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -3633,13 +3755,17 @@ public final class FailsWithReturnedTypeBeingGenericOfSelfMock: FailsWithReturne
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -3650,20 +3776,26 @@ public final class FailsWithReturnedTypeBeingGenericOfSelfMock: FailsWithReturne
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -3682,7 +3814,7 @@ public final class FailsWithReturnedTypeBeingGenericOfSelfMock: FailsWithReturne
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -3797,13 +3929,17 @@ open class FailsWithUntaggedMock: FailsWithUntagged, Mock {
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -3814,20 +3950,26 @@ open class FailsWithUntaggedMock: FailsWithUntagged, Mock {
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -3846,7 +3988,7 @@ open class FailsWithUntaggedMock: FailsWithUntagged, Mock {
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -3977,13 +4119,17 @@ open class GenericProtocolReturningIntMock: GenericProtocolReturningInt, Mock {
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -3994,20 +4140,26 @@ open class GenericProtocolReturningIntMock: GenericProtocolReturningInt, Mock {
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -4026,7 +4178,7 @@ open class GenericProtocolReturningIntMock: GenericProtocolReturningInt, Mock {
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -4195,13 +4347,17 @@ open class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstra
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -4212,20 +4368,26 @@ open class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstra
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -4244,7 +4406,7 @@ open class GenericProtocolWithTypeConstraintMock: GenericProtocolWithTypeConstra
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -4375,13 +4537,17 @@ open class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -4392,20 +4558,26 @@ open class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -4424,7 +4596,7 @@ open class HistorySectionMapperTypeMock: HistorySectionMapperType, Mock {
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -4574,13 +4746,17 @@ open class InoutProtocolMock: InoutProtocol, Mock {
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -4591,20 +4767,26 @@ open class InoutProtocolMock: InoutProtocol, Mock {
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -4623,7 +4805,7 @@ open class InoutProtocolMock: InoutProtocol, Mock {
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -4750,13 +4932,17 @@ open class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -4767,20 +4953,26 @@ open class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -4799,7 +4991,7 @@ open class NonSwiftProtocolMock: NSObject, NonSwiftProtocol, Mock {
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -5175,13 +5367,17 @@ open class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethods
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -5192,20 +5388,26 @@ open class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethods
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -5224,7 +5426,7 @@ open class ProtocolMethodsGenericThatDifferOnlyInReturnTypeMock: ProtocolMethods
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -5392,13 +5594,17 @@ open class ProtocolMethodsThatDifferOnlyInReturnTypeMock: ProtocolMethodsThatDif
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -5409,20 +5615,26 @@ open class ProtocolMethodsThatDifferOnlyInReturnTypeMock: ProtocolMethodsThatDif
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -5441,7 +5653,7 @@ open class ProtocolMethodsThatDifferOnlyInReturnTypeMock: ProtocolMethodsThatDif
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -5586,13 +5798,17 @@ open class ProtocolWithAssociatedTypeMock<T>: ProtocolWithAssociatedType, Mock w
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -5603,20 +5819,26 @@ open class ProtocolWithAssociatedTypeMock<T>: ProtocolWithAssociatedType, Mock w
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -5635,7 +5857,7 @@ open class ProtocolWithAssociatedTypeMock<T>: ProtocolWithAssociatedType, Mock w
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -5743,13 +5965,17 @@ open class ProtocolWithAssociatedType2Mock<ValueType>: ProtocolWithAssociatedTyp
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -5760,20 +5986,26 @@ open class ProtocolWithAssociatedType2Mock<ValueType>: ProtocolWithAssociatedTyp
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -5792,7 +6024,7 @@ open class ProtocolWithAssociatedType2Mock<ValueType>: ProtocolWithAssociatedTyp
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -5902,13 +6134,17 @@ open class ProtocolWithAttributesMock: NSObject, ProtocolWithAttributes, Mock {
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -5919,20 +6155,26 @@ open class ProtocolWithAttributesMock: NSObject, ProtocolWithAttributes, Mock {
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -5951,7 +6193,7 @@ open class ProtocolWithAttributesMock: NSObject, ProtocolWithAttributes, Mock {
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -6151,13 +6393,17 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -6168,20 +6414,26 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -6200,7 +6452,7 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -6350,13 +6602,17 @@ open class ProtocolWithClosuresMock: ProtocolWithClosures, Mock {
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -6367,20 +6623,26 @@ open class ProtocolWithClosuresMock: ProtocolWithClosures, Mock {
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -6399,7 +6661,7 @@ open class ProtocolWithClosuresMock: ProtocolWithClosures, Mock {
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -6603,13 +6865,17 @@ open class ProtocolWithConflictingMembersMock: ProtocolWithConflictingMembers, M
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -6620,20 +6886,26 @@ open class ProtocolWithConflictingMembersMock: ProtocolWithConflictingMembers, M
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -6652,7 +6924,7 @@ open class ProtocolWithConflictingMembersMock: ProtocolWithConflictingMembers, M
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -6819,13 +7091,17 @@ open class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock 
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -6836,20 +7112,26 @@ open class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock 
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -6868,7 +7150,7 @@ open class ProtocolWithCustomAttributesMock: ProtocolWithCustomAttributes, Mock 
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -6999,13 +7281,17 @@ open class ProtocolWithDeprecatedMembersMock: ProtocolWithDeprecatedMembers, Moc
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -7016,20 +7302,26 @@ open class ProtocolWithDeprecatedMembersMock: ProtocolWithDeprecatedMembers, Moc
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -7048,7 +7340,7 @@ open class ProtocolWithDeprecatedMembersMock: ProtocolWithDeprecatedMembers, Moc
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -7189,13 +7481,17 @@ open class ProtocolWithGenericConstraintsMock<ContainedType>: ProtocolWithGeneri
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -7206,20 +7502,26 @@ open class ProtocolWithGenericConstraintsMock<ContainedType>: ProtocolWithGeneri
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -7238,7 +7540,7 @@ open class ProtocolWithGenericConstraintsMock<ContainedType>: ProtocolWithGeneri
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -7407,13 +7709,17 @@ open class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -7424,20 +7730,26 @@ open class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -7456,7 +7768,7 @@ open class ProtocolWithGenericMethodsMock: ProtocolWithGenericMethods, Mock {
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -7587,13 +7899,17 @@ open class ProtocolWithGenericMethodsNestedMock: ProtocolWithGenericMethodsNeste
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -7604,20 +7920,26 @@ open class ProtocolWithGenericMethodsNestedMock: ProtocolWithGenericMethodsNeste
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -7636,7 +7958,7 @@ open class ProtocolWithGenericMethodsNestedMock: ProtocolWithGenericMethodsNeste
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -7762,13 +8084,17 @@ open class ProtocolWithInitializersMock: ProtocolWithInitializers, Mock {
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -7779,20 +8105,26 @@ open class ProtocolWithInitializersMock: ProtocolWithInitializers, Mock {
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -7811,7 +8143,7 @@ open class ProtocolWithInitializersMock: ProtocolWithInitializers, Mock {
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -7928,13 +8260,17 @@ open class ProtocolWithMethodWithManyParametersMock: ProtocolWithMethodWithManyP
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -7945,20 +8281,26 @@ open class ProtocolWithMethodWithManyParametersMock: ProtocolWithMethodWithManyP
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -7977,7 +8319,7 @@ open class ProtocolWithMethodWithManyParametersMock: ProtocolWithMethodWithManyP
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -8259,13 +8601,17 @@ open class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMoc
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -8276,20 +8622,26 @@ open class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMoc
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -8308,7 +8660,7 @@ open class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMoc
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 
     static public func given(_ method: StaticGiven) {
@@ -8321,13 +8673,17 @@ open class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMoc
     }
 
     static public func verify(_ method: StaticVerify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { StaticMethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return StaticMethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -8347,11 +8703,13 @@ open class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMoc
         let matched = methodPerformValues.reversed().first { StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    static private func matchingCalls(_ method: StaticMethodType) -> [StaticMethodType] {
+    static private func matchingCalls(_ method: StaticMethodType, file: StaticString?, line: UInt?) -> [StaticMethodType] {
+        matcher.set(file: file, line: line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { StaticMethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    static private func matchingCalls(_ method: StaticVerify) -> Int {
-        return matchingCalls(method.method).count
+    static private func matchingCalls(_ method: StaticVerify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     static private func givenGetterValue<T>(_ method: StaticMethodType, _ message: String) -> T {
         do {
@@ -8559,13 +8917,17 @@ open class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, Stati
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -8576,20 +8938,26 @@ open class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, Stati
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -8608,7 +8976,7 @@ open class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, Stati
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 
     static public func given(_ method: StaticGiven) {
@@ -8621,13 +8989,17 @@ open class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, Stati
     }
 
     static public func verify(_ method: StaticVerify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { StaticMethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return StaticMethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -8647,11 +9019,13 @@ open class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, Stati
         let matched = methodPerformValues.reversed().first { StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    static private func matchingCalls(_ method: StaticMethodType) -> [StaticMethodType] {
+    static private func matchingCalls(_ method: StaticMethodType, file: StaticString?, line: UInt?) -> [StaticMethodType] {
+        matcher.set(file: file, line: line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { StaticMethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    static private func matchingCalls(_ method: StaticVerify) -> Int {
-        return matchingCalls(method.method).count
+    static private func matchingCalls(_ method: StaticVerify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     static private func givenGetterValue<T>(_ method: StaticMethodType, _ message: String) -> T {
         do {
@@ -9216,13 +9590,17 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -9233,20 +9611,26 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -9265,7 +9649,7 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -9434,13 +9818,17 @@ open class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -9451,20 +9839,26 @@ open class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -9483,7 +9877,7 @@ open class ProtocolWithThrowingMethodsMock: ProtocolWithThrowingMethods, Mock {
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -9614,13 +10008,17 @@ open class ProtocolWithTuplesMock: ProtocolWithTuples, Mock {
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -9631,20 +10029,26 @@ open class ProtocolWithTuplesMock: ProtocolWithTuples, Mock {
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -9663,7 +10067,7 @@ open class ProtocolWithTuplesMock: ProtocolWithTuples, Mock {
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -9808,13 +10212,17 @@ open class ProtocolWithWhereAfterDefinitionMock<T>: ProtocolWithWhereAfterDefini
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -9825,20 +10233,26 @@ open class ProtocolWithWhereAfterDefinitionMock<T>: ProtocolWithWhereAfterDefini
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -9857,7 +10271,7 @@ open class ProtocolWithWhereAfterDefinitionMock<T>: ProtocolWithWhereAfterDefini
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -10220,13 +10634,17 @@ open class SampleServiceTypeMock: SampleServiceType, Mock {
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -10237,20 +10655,26 @@ open class SampleServiceTypeMock: SampleServiceType, Mock {
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -10269,7 +10693,7 @@ open class SampleServiceTypeMock: SampleServiceType, Mock {
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -10615,13 +11039,17 @@ open class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMoc
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -10632,20 +11060,26 @@ open class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMoc
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -10664,7 +11098,7 @@ open class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMoc
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 
     static public func given(_ method: StaticGiven) {
@@ -10677,13 +11111,17 @@ open class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMoc
     }
 
     static public func verify(_ method: StaticVerify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { StaticMethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return StaticMethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -10703,11 +11141,13 @@ open class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMoc
         let matched = methodPerformValues.reversed().first { StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    static private func matchingCalls(_ method: StaticMethodType) -> [StaticMethodType] {
+    static private func matchingCalls(_ method: StaticMethodType, file: StaticString?, line: UInt?) -> [StaticMethodType] {
+        matcher.set(file: file, line: line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { StaticMethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    static private func matchingCalls(_ method: StaticVerify) -> Int {
-        return matchingCalls(method.method).count
+    static private func matchingCalls(_ method: StaticVerify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     static private func givenGetterValue<T>(_ method: StaticMethodType, _ message: String) -> T {
         do {
@@ -11167,13 +11607,17 @@ open class ShouldAllowNoStubDefinedMock: ShouldAllowNoStubDefined, Mock, StaticM
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -11184,20 +11628,26 @@ open class ShouldAllowNoStubDefinedMock: ShouldAllowNoStubDefined, Mock, StaticM
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -11216,7 +11666,7 @@ open class ShouldAllowNoStubDefinedMock: ShouldAllowNoStubDefined, Mock, StaticM
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 
     static public func given(_ method: StaticGiven) {
@@ -11229,13 +11679,17 @@ open class ShouldAllowNoStubDefinedMock: ShouldAllowNoStubDefined, Mock, StaticM
     }
 
     static public func verify(_ method: StaticVerify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { StaticMethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return StaticMethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -11255,11 +11709,13 @@ open class ShouldAllowNoStubDefinedMock: ShouldAllowNoStubDefined, Mock, StaticM
         let matched = methodPerformValues.reversed().first { StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    static private func matchingCalls(_ method: StaticMethodType) -> [StaticMethodType] {
+    static private func matchingCalls(_ method: StaticMethodType, file: StaticString?, line: UInt?) -> [StaticMethodType] {
+        matcher.set(file: file, line: line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { StaticMethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    static private func matchingCalls(_ method: StaticVerify) -> Int {
-        return matchingCalls(method.method).count
+    static private func matchingCalls(_ method: StaticVerify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     static private func givenGetterValue<T>(_ method: StaticMethodType, _ message: String) -> T {
         do {
@@ -11577,13 +12033,17 @@ open class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInher
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -11594,20 +12054,26 @@ open class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInher
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -11626,7 +12092,7 @@ open class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInher
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -11864,13 +12330,17 @@ open class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, M
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -11881,20 +12351,26 @@ open class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, M
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -11913,7 +12389,7 @@ open class SimpleProtocolUsingCollectionsMock: SimpleProtocolUsingCollections, M
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -12055,13 +12531,17 @@ open class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBot
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -12072,20 +12552,26 @@ open class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBot
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -12104,7 +12590,7 @@ open class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBot
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -12319,13 +12805,17 @@ open class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -12336,20 +12826,26 @@ open class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -12368,7 +12864,7 @@ open class SimpleProtocolWithMethodsMock: SimpleProtocolWithMethods, Mock {
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -12553,13 +13049,17 @@ open class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock 
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -12570,20 +13070,26 @@ open class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock 
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -12602,7 +13108,7 @@ open class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock 
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -12687,13 +13193,17 @@ open class SuggestionProtocolMock: SuggestionProtocol, Mock {
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -12704,20 +13214,26 @@ open class SuggestionProtocolMock: SuggestionProtocol, Mock {
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -12736,7 +13252,7 @@ open class SuggestionProtocolMock: SuggestionProtocol, Mock {
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -13050,13 +13566,17 @@ open class SuggestionRepositoryMock: SuggestionRepository, Mock {
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -13067,20 +13587,26 @@ open class SuggestionRepositoryMock: SuggestionRepository, Mock {
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -13099,7 +13625,7 @@ open class SuggestionRepositoryMock: SuggestionRepository, Mock {
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -13412,13 +13938,17 @@ open class SuggestionRepositoryConstrainedToProtocolMock<Entity>: SuggestionRepo
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -13429,20 +13959,26 @@ open class SuggestionRepositoryConstrainedToProtocolMock<Entity>: SuggestionRepo
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -13461,7 +13997,7 @@ open class SuggestionRepositoryConstrainedToProtocolMock<Entity>: SuggestionRepo
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -13546,13 +14082,17 @@ open class TestAutoImportMock: TestAutoImport, Mock {
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -13563,20 +14103,26 @@ open class TestAutoImportMock: TestAutoImport, Mock {
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -13595,7 +14141,7 @@ open class TestAutoImportMock: TestAutoImport, Mock {
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -13760,13 +14306,17 @@ open class UnnamedAttributesProtocolMock: UnnamedAttributesProtocol, Mock {
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -13777,20 +14327,26 @@ open class UnnamedAttributesProtocolMock: UnnamedAttributesProtocol, Mock {
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -13809,7 +14365,7 @@ open class UnnamedAttributesProtocolMock: UnnamedAttributesProtocol, Mock {
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -13983,13 +14539,17 @@ open class UserNetworkTypeMock: UserNetworkType, Mock {
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -14000,20 +14560,26 @@ open class UserNetworkTypeMock: UserNetworkType, Mock {
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -14032,7 +14598,7 @@ open class UserNetworkTypeMock: UserNetworkType, Mock {
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 
@@ -14183,13 +14749,17 @@ open class UserStorageTypeMock: UserStorageType, Mock {
     }
 
     public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method)
+        let fullMatches = matchingCalls(method, file: file, line: line)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
-                for: self.invocations.map { MethodType.compareParameters(lhs: $0, rhs: method.method, matcher: matcher) },
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
                 name: assertionName
             )
         }()
@@ -14200,20 +14770,26 @@ open class UserStorageTypeMock: UserStorageType, Mock {
         invocations.append(call)
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType) -> [MethodType] {
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify) -> Int {
-        return matchingCalls(method.method).count
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -14232,7 +14808,7 @@ open class UserStorageTypeMock: UserStorageType, Mock {
     }
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleMissingStubError(message: message, file: file, line: line)
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
     }
 }
 

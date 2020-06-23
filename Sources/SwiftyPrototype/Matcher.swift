@@ -6,6 +6,12 @@ public class Matcher {
     public static var `default` = Matcher()
     /// [Internal] Matchers storage
     private var matchers: [(Mirror,Any)] = []
+    /// [Internal] file where comparison faiure should be recorded
+    private var file: StaticString?
+    /// [Internal] line where comparison faiure should be recorded
+    private var line: UInt?
+    /// [Internal] matcher fatal error handler
+    public static var fatalErrorHandler: (String, StaticString, UInt) -> Void = { _,_,_ in}
 
     /// Create new clean matcher instance.
     public init() {
@@ -184,6 +190,20 @@ public class Matcher {
         register(UInt32?.Type.self)
         register(UInt64?.Type.self)
         register(Data?.Type.self)
+    }
+
+    public func set(file: StaticString?, line: UInt?) {
+        self.file = file
+        self.line = line
+    }
+
+    public func clearFileAndLine() {
+        self.set(file: nil, line: nil)
+    }
+
+    public func onFatalFailure(_ message: String) {
+        guard let file = self.file, let line = self.line else { return }
+        Matcher.fatalErrorHandler(message, file, line)
     }
 
     /// Registers comparator for given type **T**.

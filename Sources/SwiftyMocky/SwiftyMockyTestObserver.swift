@@ -8,6 +8,7 @@ public class SwiftyMockyTestObserver: NSObject, XCTestObservation {
     /// [Internal] Setup observing once
     private static let setupBlock: (() -> Void) = {
         XCTestObservationCenter.shared.addTestObserver(SwiftyMockyTestObserver())
+        Matcher.fatalErrorHandler = SwiftyMockyTestObserver.handleFatalError
         return {}
     }()
 
@@ -31,13 +32,13 @@ public class SwiftyMockyTestObserver: NSObject, XCTestObservation {
         SwiftyMockyTestObserver.currentTestCase = nil
     }
 
-    /// [Internal] used to notify that stub return value was not found. Do not call it directly.
+    /// [Internal] used to notify about internal error. Do not call it directly.
     ///
     /// - Parameters:
     ///   - message: Message
     ///   - file: File
     ///   - line: Line
-    public static func handleMissingStubError(message: String, file: StaticString, line: UInt) {
+    public static func handleFatalError(message: String, file: StaticString, line: UInt) {
         guard let testCase = SwiftyMockyTestObserver.currentTestCase else {
             XCTFail(message, file: file, line: line)
             return

@@ -18,6 +18,11 @@ import SwiftyMocky
 
 class EdgeCasesTests: XCTestCase {
 
+    override class func setUp() {
+        super.setUp()
+        SwiftyMockyTestObserver.setup()
+    }
+
     func test_generics_with_custom_structs() {
         let mock = EdgeCasesGenericsProtocolMock()
         Matcher.default.register(Mytest<String, [Int]>.self) { lhs, rhs in
@@ -143,5 +148,25 @@ class EdgeCasesTests: XCTestCase {
         }))
         XCTAssert(mock.methodWillReturnSelfTypedCustom().t === mock)
         Verify(mock, .methodWillReturnSelfTypedCustom())
+    }
+
+    func test_that_matcher_can_fail_gracefully() {
+        // This test should be commented, as it works when it fails instead of fatal erroring
+//        let mock = ProtocolWithGenericMethodsMock()
+//        mock.matcher = Matcher() // Make sure there are no registrations from other tests
+//
+//        struct CustomObject { }
+//        struct OtherObject { }
+//
+//        mock.matcher.register(OtherObject.self) { (_, _) -> Bool in
+//            return true
+//        }
+//
+//        Given(mock, .methodWithGeneric(lhs: .value(CustomObject()), rhs: .value(CustomObject()), willReturn: false))
+//        Given(mock, .methodWithGeneric(lhs: .value(OtherObject()), rhs: .value(OtherObject()), willReturn: false))
+//
+//        // Should fail under mock definition
+//        _ = mock.methodWithGeneric(lhs: CustomObject(), rhs: CustomObject())
+//        _ = mock.methodWithGeneric(lhs: OtherObject(), rhs: OtherObject())
     }
 }

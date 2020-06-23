@@ -7,7 +7,7 @@ public class SwiftyMockyTestObserver: NSObject {
         // Empty on purpose
     }
 
-    public static func handleMissingStubError(message: String, file: StaticString, line: UInt) {
+    public static func handleFatalError(message: String, file: StaticString, line: UInt) {
         // Empty on purpose
     }
 }
