@@ -840,7 +840,6 @@ class MethodWrapper {
         let (annotation, _, _) = methodInfo()
         let clauseConstraints = whereClauseExpression()
 
-
         if method.parameters.isEmpty {
             return "\(annotation)public static func \(method.shortName)(willReturn: \(returnTypeString)...) -> \(prefix)MethodStub" + clauseConstraints
         } else {
@@ -851,10 +850,14 @@ class MethodWrapper {
     func givenConstructorNameThrows(prefix: String = "") -> String {
         let (annotation, _, _) = methodInfo()
         let clauseConstraints = whereClauseExpression()
+
+        let genericsArray = getGenericsConstraints(getGenericsAmongParameters(), filterSingle: false)
+        let generics = genericsArray.isEmpty ? "" : "<\(genericsArray.joined(separator: ", "))>"
+
         if method.parameters.isEmpty {
-            return "\(annotation)public static func \(method.shortName)(willThrow: Error...) -> \(prefix)MethodStub" + clauseConstraints
+            return "\(annotation)public static func \(method.callName)\(generics)(willThrow: Error...) -> \(prefix)MethodStub" + clauseConstraints
         } else {
-            return "\(annotation)public static func \(method.shortName)(\(parametersForProxySignature()), willThrow: Error...) -> \(prefix)MethodStub" + clauseConstraints
+            return "\(annotation)public static func \(method.callName)\(generics)(\(parametersForProxySignature()), willThrow: Error...) -> \(prefix)MethodStub" + clauseConstraints
         }
     }
 
@@ -1062,7 +1065,7 @@ class MethodWrapper {
     /// Returns list of generic constraintes from method signature. Does only contain stuff between '<' and '>'
     ///
     /// - Returns: Array of strings, like ["T: Codable", "U: Whatever"]
-    private func getGenericsConstraints(_ generics: [String]) -> [String] {
+    private func getGenericsConstraints(_ generics: [String], filterSingle: Bool = true) -> [String] {
         let name = method.shortName
         guard let start = name.index(of: "<"), let end = name.index(of: ">") else { return [] }
 
@@ -1073,7 +1076,7 @@ class MethodWrapper {
         let parts = genPart.replacingOccurrences(of: " ", with: "").characters.split(separator: ",").map(String.init)
         return parts.filter {
             let components = $0.components(separatedBy: ":")
-            return components.count == 2 && generics.contains(components[0])
+            return (components.count == 2 || !filterSingle) && generics.contains(components[0])
         }
     }
 

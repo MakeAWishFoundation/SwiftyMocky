@@ -57,3 +57,11 @@ protocol ProtocolWithWhereAfterDefinition {
 protocol GenericProtocolReturningInt: AutoMockable {
     func value<T>(for value: T) -> Int
 }
+
+protocol ProtocolWithMethodsWithGenericReturnTypeThatThrows: AutoMockable {
+    func max<Type: Comparable>(
+        for attribute: Int,
+        over samples: [Int],
+        per aggregationUnit: String?
+    ) throws -> [(date: String?, value: Type)]
+}
