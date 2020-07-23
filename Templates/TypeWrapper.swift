@@ -1,5 +1,9 @@
 class TypeWrapper {
     let type: SourceryRuntime.TypeName
+    let isVariadic: Bool
+
+    var vPref: String { return isVariadic ? "[" : "" }
+    var vSuff: String { return isVariadic ? "]" : "" }
 
     var unwrapped: String {
         return type.unwrappedTypeName
@@ -9,20 +13,20 @@ class TypeWrapper {
     }
     var stripped: String {
         if type.isImplicitlyUnwrappedOptional {
-            return type.isClosure ? "(\(unwrappedReplacingSelf))?" : "\(unwrappedReplacingSelf)?"
+            return type.isClosure ? "\(vPref)(\(unwrappedReplacingSelf))?\(vSuff)" : "\(vPref)\(unwrappedReplacingSelf)?\(vSuff)"
         } else if type.isOptional {
-            return type.isClosure ? "(\(unwrappedReplacingSelf))?" : "\(unwrappedReplacingSelf)?"
+            return type.isClosure ? "\(vPref)(\(unwrappedReplacingSelf))?\(vSuff)" : "\(vPref)\(unwrappedReplacingSelf)?\(vSuff)"
         } else {
-            return unwrappedReplacingSelf
+            return "\(vPref)\(unwrappedReplacingSelf)\(vSuff)"
         }
     }
     var nestedParameter: String {
         if type.isImplicitlyUnwrappedOptional {
-            return "Parameter<" + (type.isClosure ? "(\(unwrappedReplacingSelf))?" : "\(unwrappedReplacingSelf)?") + ">"
+            return "Parameter<" + (type.isClosure ? "\(vPref)(\(unwrappedReplacingSelf))?\(vSuff)" : "\(vPref)\(unwrappedReplacingSelf)?\(vSuff)") + ">"
         } else if type.isOptional {
-            return "Parameter<" + (type.isClosure ? "(\(unwrappedReplacingSelf))?" : "\(unwrappedReplacingSelf)?") + ">"
+            return "Parameter<" + (type.isClosure ? "\(vPref)(\(unwrappedReplacingSelf))?\(vSuff)" : "\(vPref)\(unwrappedReplacingSelf)?\(vSuff)") + ">"
         } else {
-            return "Parameter<\(unwrappedReplacingSelf)>"
+            return "Parameter<\(vPref)\(unwrappedReplacingSelf)\(vSuff)>"
         }
     }
     var isSelfType: Bool {
@@ -48,8 +52,9 @@ class TypeWrapper {
         return isSelfType
     }
 
-    init(_ type: SourceryRuntime.TypeName) {
+    init(_ type: SourceryRuntime.TypeName, _ isVariadic: Bool = false) {
         self.type = type
+        self.isVariadic = isVariadic
     }
 
     func isGeneric(_ types: [String]) -> Bool {
@@ -112,5 +117,9 @@ class TypeWrapper {
         } else {
             return (unwrap ? self.unwrapped : "\(type)")
         }
+    }
+
+    func replacingSelfRespectingVariadic() -> String {
+        return "\(vPref)\(replacingSelf())\(vSuff)"
     }
 }

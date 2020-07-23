@@ -1,4 +1,5 @@
 sourceryCommand: null
+sourceryTemplate: ./Sources/SwiftyMocky/Mock.swifttemplate
 
 mocky.iOS:
   sources:

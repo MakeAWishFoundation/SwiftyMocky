@@ -112,7 +112,7 @@ class MethodWrapper {
         return "\(registrationName)\(nameSuffix)".replacingOccurrences(of: "`", with: "")
     }
     var parameters: [ParameterWrapper] {
-        return method.parameters.map { ParameterWrapper($0) }
+        return method.parameters.map { ParameterWrapper($0, self.getVariadicParametersNames()) }
     }
     var functionPrototype: String {
         let throwing: String = {
@@ -530,7 +530,7 @@ class MethodWrapper {
         } else {
             let parameters = method.parameters
                 .map { p in
-                    let wrapped = ParameterWrapper(p)
+                    let wrapped = ParameterWrapper(p, self.getVariadicParametersNames())
                     let isAutolosure = wrapped.justType.hasPrefix("@autoclosure")
                     return "\(p.inout ? "&" : "")`\(p.name)`\(isAutolosure ? "()" : "")"
                 }
@@ -593,6 +593,22 @@ class MethodWrapper {
 
     private func isGeneric() -> Bool {
         return method.shortName.contains("<") && method.shortName.contains(">")
+    }
+
+    private func getVariadicParametersNames() -> [String] {
+        let pattern = "[\\(|,]( *[_|\\w]* )? *(\\w+) *\\: *(.+?\\.\\.\\.)"
+        let str = method.name
+        let range = NSRange(location: 0, length: (str as NSString).length)
+
+        guard let regex = try? NSRegularExpression(pattern: pattern) else { return [] }
+
+        var result: [String] = regex
+            .matches(in: str, options: [], range: range)
+            .compactMap { match -> String? in
+                guard let nameRange = Range(match.range(at: 2), in: str) else { return nil }
+                return String(str[nameRange])
+            }
+        return result
     }
 
     /// Returns list of generics used in method signature, without their constraints (like [T,U,V])
