@@ -96,3 +96,10 @@ protocol FailsWithReturnedTypeBeingGenericOfSelf: class {
 struct CustomGeneric<T> {
     let t: T
 }
+
+//sourcery: typealias = "A = WithConflictingNameMock.A"
+protocol WithConflictingName: AutoMockable {
+    typealias A = Int
+
+    func test(with attribute: A) -> Bool
+}

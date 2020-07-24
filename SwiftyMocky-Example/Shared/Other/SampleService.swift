@@ -41,4 +41,3 @@ protocol ComplicatedServiceType: SampleServiceType, SimpleServiceType {
     func serviceName() -> String
     func aNewWayToSayHooray() -> Void
 }
-
