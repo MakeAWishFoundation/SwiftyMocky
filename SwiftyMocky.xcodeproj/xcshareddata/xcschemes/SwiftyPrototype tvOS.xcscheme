@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CCAFC9EE1FAF244D003F776A"
-               BuildableName = "SwiftyMocky.framework"
-               BlueprintName = "SwiftyMocky"
+               BlueprintIdentifier = "CCAD79EC24D1782F00FBB680"
+               BuildableName = "SwiftyPrototype tvOS.framework"
+               BlueprintName = "SwiftyPrototype tvOS"
                ReferencedContainer = "container:SwiftyMocky.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -27,15 +27,6 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "CCAFC9EE1FAF244D003F776A"
-            BuildableName = "SwiftyMocky.framework"
-            BlueprintName = "SwiftyMocky"
-            ReferencedContainer = "container:SwiftyMocky.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <Testables>
       </Testables>
    </TestAction>
@@ -49,15 +40,6 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "CCAFC9EE1FAF244D003F776A"
-            BuildableName = "SwiftyMocky.framework"
-            BlueprintName = "SwiftyMocky"
-            ReferencedContainer = "container:SwiftyMocky.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -68,9 +50,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "CCAFC9EE1FAF244D003F776A"
-            BuildableName = "SwiftyMocky.framework"
-            BlueprintName = "SwiftyMocky"
+            BlueprintIdentifier = "CCAD79EC24D1782F00FBB680"
+            BuildableName = "SwiftyPrototype tvOS.framework"
+            BlueprintName = "SwiftyPrototype tvOS"
             ReferencedContainer = "container:SwiftyMocky.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
