@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CC7FF88324D16BCB00DD4B72"
-               BuildableName = "SwiftyMocky.framework"
-               BlueprintName = "SwiftyMocky macOS"
+               BlueprintIdentifier = "C8294EA92299345C0036BC94"
+               BuildableName = "SwiftyPrototype.framework"
+               BlueprintName = "SwiftyPrototype"
                ReferencedContainer = "container:SwiftyMocky.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -40,6 +40,15 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "C8294EA92299345C0036BC94"
+            BuildableName = "SwiftyPrototype.framework"
+            BlueprintName = "SwiftyPrototype"
+            ReferencedContainer = "container:SwiftyMocky.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -50,9 +59,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "CC7FF88324D16BCB00DD4B72"
-            BuildableName = "SwiftyMocky.framework"
-            BlueprintName = "SwiftyMocky macOS"
+            BlueprintIdentifier = "C8294EA92299345C0036BC94"
+            BuildableName = "SwiftyPrototype.framework"
+            BlueprintName = "SwiftyPrototype"
             ReferencedContainer = "container:SwiftyMocky.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
