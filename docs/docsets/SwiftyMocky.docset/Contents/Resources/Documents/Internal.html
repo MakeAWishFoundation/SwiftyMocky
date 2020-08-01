@@ -14,7 +14,7 @@
     <a title="Internal  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">SwiftyMocky 3.5.0 Docs</a> (95% documented)</p>
+        <p><a href="index.html">SwiftyMocky 4.0.0 Docs</a> (85% documented)</p>
         <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -48,6 +48,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="supported-features.html">Supported features</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="prototyping.html">Prototyping</a>
               </li>
             </ul>
           </li>
@@ -133,6 +136,12 @@
                 <a href="Classes/Matcher.html">Matcher</a>
               </li>
               <li class="nav-group-task">
+                <a href="Classes/Matcher/ComparisonResult.html">– ComparisonResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/Matcher/ParameterComparisonResult.html">– ParameterComparisonResult</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Protocols/Countable.html">Countable</a>
               </li>
               <li class="nav-group-task">
@@ -172,28 +181,8 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="Deprecated.html">Deprecated</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty__4file4lineyx_0C0Qzs12StaticStringVSutAA4MockRzlF">VerifyProperty(_:_:file:line:)</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty__4file4lineyxm_06StaticC0Qzs0G6StringVSutAA0G4MockRzlF">VerifyProperty(_:_:file:line:)</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty___4file4lineyx_AA5CountO0C0Qzs12StaticStringVSutAA4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty___4file4lineyxm_AA5CountO06StaticC0Qzs0H6StringVSutAA0H4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
             <a href="Internal.html">Internal</a>
             <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="Classes/SwiftyMockyTestObserver.html">SwiftyMockyTestObserver</a>
-              </li>
               <li class="nav-group-task">
                 <a href="Classes/SwiftyMockyTestObserver.html">SwiftyMockyTestObserver</a>
               </li>
@@ -236,9 +225,6 @@
               <li class="nav-group-task">
                 <a href="Internal.html#/s:11SwiftyMocky0B6Assert__4file4lineySbyXK_SSyXKs12StaticStringVSutF">MockyAssert(_:_:file:line:)</a>
               </li>
-              <li class="nav-group-task">
-                <a href="Internal.html#/MockyAssert(_:_:file:line:)">MockyAssert(_:_:file:line:)</a>
-              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -250,10 +236,21 @@
             </ul>
           </li>
           <li class="nav-group-name">
+            <a href="Other%20Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/ArgumentCaptor.html">ArgumentCaptor</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
             <a href="Other%20Enums.html">Other Enumerations</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Enums/MockScope.html">MockScope</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/Utils.html">Utils</a>
               </li>
             </ul>
           </li>
@@ -296,37 +293,15 @@
                     </section>
                   </div>
                 </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/"></a>
-                    <a name="//apple_ref/swift/Class/SwiftyMockyTestObserver" class="dashAnchor"></a>
-                    <a class="token" href="#/">SwiftyMockyTestObserver</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Used for observing tests and handling internal library errors.</p>
-
-                        <a href="Classes/SwiftyMockyTestObserver.html" class="slightly-smaller">See more</a>
-                      </div>
-                    </section>
-                  </div>
-                </li>
               </ul>
             </div>
             <div class="task-group">
               <div class="task-name-container">
                 <a name="/Helpers"></a>
                 <a name="//apple_ref/swift/Section/Helpers" class="dashAnchor"></a>
-                <div class="section-name-container">
-                  <a class="section-name-link" href="#/Helpers"></a>
-                  <h3 class="section-name"><p>Helpers</p>
-</h3>
-                </div>
+                <a href="#/Helpers">
+                  <h3 class="section-name">Helpers</h3>
+                </a>
               </div>
               <ul>
                 <li class="item">
@@ -377,7 +352,236 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          
+                          <pre class="highlight swift"><code><span class="kd">@frozen</span>
+<span class="kd">public</span> <span class="kd">extension</span> <span class="kt">Optional</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky7Failureys5NeverOSSF"></a>
+                    <a name="//apple_ref/swift/Function/Failure(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky7Failureys5NeverOSSF">Failure(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[Internal] Fails flow with given message</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="kt">Failure</span><span class="p">(</span><span class="n">_</span> <span class="nv">message</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Never</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>message</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Failure message</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Never</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Optionality%20checks"></a>
+                <a name="//apple_ref/swift/Section/Optionality checks" class="dashAnchor"></a>
+                <a href="#/Optionality%20checks">
+                  <h3 class="section-name">Optionality checks</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky12OptionalTypeP"></a>
+                    <a name="//apple_ref/swift/Protocol/OptionalType" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky12OptionalTypeP">OptionalType</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Protocols/OptionalType.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">OptionalType</span> <span class="p">:</span> <span class="kt">ExpressibleByNilLiteral</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Sequencing%20policy"></a>
+                <a name="//apple_ref/swift/Section/Sequencing policy" class="dashAnchor"></a>
+                <a href="#/Sequencing%20policy">
+                  <h3 class="section-name">Sequencing policy</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky20WithSequencingPolicyP"></a>
+                    <a name="//apple_ref/swift/Protocol/WithSequencingPolicy" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky20WithSequencingPolicyP">WithSequencingPolicy</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Has sequencing policy for stubbing methods</p>
+
+                        <a href="Protocols/WithSequencingPolicy.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">WithSequencingPolicy</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky26WithStaticSequencingPolicyP"></a>
+                    <a name="//apple_ref/swift/Protocol/WithStaticSequencingPolicy" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky26WithStaticSequencingPolicyP">WithStaticSequencingPolicy</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Has sequencing policy for stubbing static methods</p>
+
+                        <a href="Protocols/WithStaticSequencingPolicy.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">WithStaticSequencingPolicy</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Stubbing%20Policy"></a>
+                <a name="//apple_ref/swift/Section/Stubbing Policy" class="dashAnchor"></a>
+                <a href="#/Stubbing%20Policy">
+                  <h3 class="section-name">Stubbing Policy</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky18WithStubbingPolicyP"></a>
+                    <a name="//apple_ref/swift/Protocol/WithStubbingPolicy" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky18WithStubbingPolicyP">WithStubbingPolicy</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[Internal] used for marking that stubs have configurable policy</p>
+
+                        <a href="Protocols/WithStubbingPolicy.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">WithStubbingPolicy</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:Si"></a>
+                    <a name="//apple_ref/swift/Extension/Int" class="dashAnchor"></a>
+                    <a class="token" href="#/s:Si">Int</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                        <a href="Extensions/Int.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@frozen</span>
+<span class="kd">extension</span> <span class="kt">Int</span><span class="p">:</span> <span class="kt"><a href="Protocols/Countable.html">Countable</a></span></code></pre>
+
                         </div>
                       </div>
                     </section>
@@ -399,9 +603,22 @@
                         
                         <a href="Extensions/UInt.html" class="slightly-smaller">See more</a>
                       </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@frozen</span>
+<span class="kd">extension</span> <span class="kt">UInt</span><span class="p">:</span> <span class="kt"><a href="Protocols/Countable.html">Countable</a></span></code></pre>
+
+                        </div>
+                      </div>
                     </section>
                   </div>
                 </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
                 <li class="item">
                   <div>
                     <code>
@@ -495,56 +712,10 @@
                     </section>
                   </div>
                 </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:11SwiftyMocky7Failureys5NeverOSSF"></a>
-                    <a name="//apple_ref/swift/Function/Failure(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:11SwiftyMocky7Failureys5NeverOSSF">Failure(_:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>[Internal] Fails flow with given message</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="kt">Failure</span><span class="p">(</span><span class="n">_</span> <span class="nv">message</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Never</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>message</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>Failure message</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>Never</p>
-                      </div>
-                    </section>
-                  </div>
-                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
                 <li class="item">
                   <div>
                     <code>
@@ -565,7 +736,12 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="kt">MockyAssert</span><span class="p">(</span><span class="n">_</span> <span class="nv">expression</span><span class="p">:</span> <span class="kd">@autoclosure</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Bool</span><span class="p">,</span> <span class="n">_</span> <span class="nv">message</span><span class="p">:</span> <span class="kd">@autoclosure</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">"Verification failed"</span><span class="p">,</span> <span class="nv">file</span><span class="p">:</span> <span class="kt">StaticString</span> <span class="o">=</span> <span class="kd">#file</span><span class="p">,</span> <span class="nv">line</span><span class="p">:</span> <span class="kt">UInt</span> <span class="o">=</span> <span class="kd">#line</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="kt">MockyAssert</span><span class="p">(</span>
+    <span class="n">_</span> <span class="nv">expression</span><span class="p">:</span> <span class="kd">@autoclosure</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Bool</span><span class="p">,</span>
+    <span class="n">_</span> <span class="nv">message</span><span class="p">:</span> <span class="kd">@autoclosure</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">"Verify failed"</span><span class="p">,</span>
+    <span class="nv">file</span><span class="p">:</span> <span class="kt">StaticString</span> <span class="o">=</span> <span class="kd">#file</span><span class="p">,</span>
+    <span class="nv">line</span><span class="p">:</span> <span class="kt">UInt</span> <span class="o">=</span> <span class="kd">#line</span>
+<span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -627,202 +803,13 @@
                     </section>
                   </div>
                 </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/"></a>
-                    <a name="//apple_ref/swift/Function/MockyAssert(_:_:file:line:)" class="dashAnchor"></a>
-                    <a class="token" href="#/">MockyAssert(_:_:file:line:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>[internal] Assertion used by mocks and Verify methods</p>
-
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <div class="task-name-container">
-                <a name="/Optionality%20checks"></a>
-                <a name="//apple_ref/swift/Section/Optionality checks" class="dashAnchor"></a>
-                <div class="section-name-container">
-                  <a class="section-name-link" href="#/Optionality%20checks"></a>
-                  <h3 class="section-name"><p>Optionality checks</p>
-</h3>
-                </div>
-              </div>
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:11SwiftyMocky12OptionalTypeP"></a>
-                    <a name="//apple_ref/swift/Protocol/OptionalType" class="dashAnchor"></a>
-                    <a class="token" href="#/s:11SwiftyMocky12OptionalTypeP">OptionalType</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Undocumented</p>
-
-                        <a href="Protocols/OptionalType.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">OptionalType</span> <span class="p">:</span> <span class="kt">ExpressibleByNilLiteral</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <div class="task-name-container">
-                <a name="/Sequencing%20policy"></a>
-                <a name="//apple_ref/swift/Section/Sequencing policy" class="dashAnchor"></a>
-                <div class="section-name-container">
-                  <a class="section-name-link" href="#/Sequencing%20policy"></a>
-                  <h3 class="section-name"><p>Sequencing policy</p>
-</h3>
-                </div>
-              </div>
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:11SwiftyMocky20WithSequencingPolicyP"></a>
-                    <a name="//apple_ref/swift/Protocol/WithSequencingPolicy" class="dashAnchor"></a>
-                    <a class="token" href="#/s:11SwiftyMocky20WithSequencingPolicyP">WithSequencingPolicy</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Has sequencing policy for stubbing methods</p>
-
-                        <a href="Protocols/WithSequencingPolicy.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">WithSequencingPolicy</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:11SwiftyMocky26WithStaticSequencingPolicyP"></a>
-                    <a name="//apple_ref/swift/Protocol/WithStaticSequencingPolicy" class="dashAnchor"></a>
-                    <a class="token" href="#/s:11SwiftyMocky26WithStaticSequencingPolicyP">WithStaticSequencingPolicy</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Has sequencing policy for stubbing static methods</p>
-
-                        <a href="Protocols/WithStaticSequencingPolicy.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">WithStaticSequencingPolicy</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <div class="task-name-container">
-                <a name="/Stubbing%20Policy"></a>
-                <a name="//apple_ref/swift/Section/Stubbing Policy" class="dashAnchor"></a>
-                <div class="section-name-container">
-                  <a class="section-name-link" href="#/Stubbing%20Policy"></a>
-                  <h3 class="section-name"><p>Stubbing Policy</p>
-</h3>
-                </div>
-              </div>
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:11SwiftyMocky18WithStubbingPolicyP"></a>
-                    <a name="//apple_ref/swift/Protocol/WithStubbingPolicy" class="dashAnchor"></a>
-                    <a class="token" href="#/s:11SwiftyMocky18WithStubbingPolicyP">WithStubbingPolicy</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>[Internal] used for marking that stubs have configurable policy</p>
-
-                        <a href="Protocols/WithStubbingPolicy.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">WithStubbingPolicy</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:Si"></a>
-                    <a name="//apple_ref/swift/Extension/Int" class="dashAnchor"></a>
-                    <a class="token" href="#/s:Si">Int</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        
-                        <a href="Extensions/Int.html" class="slightly-smaller">See more</a>
-                      </div>
-                    </section>
-                  </div>
-                </li>
               </ul>
             </div>
           </section>
         </section>
         <section id="footer">
           <p>Copyright © 2017 MakeAWishFoundation. All rights reserved.</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.0</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.11.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>

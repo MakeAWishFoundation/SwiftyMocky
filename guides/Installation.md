@@ -1,3 +1,5 @@
+<a name="installation-cli"></a>
+
 # SwiftyMocky CLI
 
 CLI will help you with project setup and mocks generation. Also, it supports new **Mockfile** format.
@@ -8,16 +10,22 @@ To install it:
 
 ```bash
 > brew install mint
-> mint install MakeAWishFoundation/SwiftyMocky
+> mint install MakeAWishFoundation/SwiftyMocky-CLI
 ```
 
 **[Marathon 🏃](https://github.com/JohnSundell/Marathon)**:
 
 ```bash
-> marathon install MakeAWishFoundation/SwiftyMocky
+> marathon install MakeAWishFoundation/SwiftyMocky-CLI
 ```
 
-> More information about **CLI** you will fund in "Command Line Interface" section. 
+**Make**:
+
+Clone from https://github.com/MakeAWishFoundation/SwiftyMockyCLI and run `make` in the root directory.
+
+> More information about **CLI** you will fund in "Command Line Interface" section.
+
+<a name="installation-runtime"></a>
 
 # SwiftyMocky Runtime installation
 
@@ -81,6 +89,8 @@ dependencies: [
     .package(url: "https://github.com/MakeAWishFoundation/SwiftyMocky", from: "4.0.0"),
 ]
 ```
+
+And add `SwiftyMocky` to your test target dependencies.
 
 ## Support for other swift versions
 

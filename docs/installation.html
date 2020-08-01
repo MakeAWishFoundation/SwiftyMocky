@@ -13,7 +13,7 @@
     <a title="Installation  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">SwiftyMocky 3.5.0 Docs</a> (95% documented)</p>
+        <p><a href="index.html">SwiftyMocky 4.0.0 Docs</a> (85% documented)</p>
         <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -47,6 +47,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="supported-features.html">Supported features</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="prototyping.html">Prototyping</a>
               </li>
             </ul>
           </li>
@@ -132,6 +135,12 @@
                 <a href="Classes/Matcher.html">Matcher</a>
               </li>
               <li class="nav-group-task">
+                <a href="Classes/Matcher/ComparisonResult.html">– ComparisonResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/Matcher/ParameterComparisonResult.html">– ParameterComparisonResult</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Protocols/Countable.html">Countable</a>
               </li>
               <li class="nav-group-task">
@@ -171,28 +180,8 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="Deprecated.html">Deprecated</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty__4file4lineyx_0C0Qzs12StaticStringVSutAA4MockRzlF">VerifyProperty(_:_:file:line:)</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty__4file4lineyxm_06StaticC0Qzs0G6StringVSutAA0G4MockRzlF">VerifyProperty(_:_:file:line:)</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty___4file4lineyx_AA5CountO0C0Qzs12StaticStringVSutAA4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty___4file4lineyxm_AA5CountO06StaticC0Qzs0H6StringVSutAA0H4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
             <a href="Internal.html">Internal</a>
             <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="Classes/SwiftyMockyTestObserver.html">SwiftyMockyTestObserver</a>
-              </li>
               <li class="nav-group-task">
                 <a href="Classes/SwiftyMockyTestObserver.html">SwiftyMockyTestObserver</a>
               </li>
@@ -235,9 +224,6 @@
               <li class="nav-group-task">
                 <a href="Internal.html#/s:11SwiftyMocky0B6Assert__4file4lineySbyXK_SSyXKs12StaticStringVSutF">MockyAssert(_:_:file:line:)</a>
               </li>
-              <li class="nav-group-task">
-                <a href="Internal.html#/MockyAssert(_:_:file:line:)">MockyAssert(_:_:file:line:)</a>
-              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -249,10 +235,21 @@
             </ul>
           </li>
           <li class="nav-group-name">
+            <a href="Other%20Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/ArgumentCaptor.html">ArgumentCaptor</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
             <a href="Other%20Enums.html">Other Enumerations</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Enums/MockScope.html">MockScope</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/Utils.html">Utils</a>
               </li>
             </ul>
           </li>
@@ -262,24 +259,31 @@
         <section>
           <section class="section">
             
-            <h1 id='swiftymocky-cli' class='heading'>SwiftyMocky CLI</h1>
+            <p><a name="installation-cli"></a></p>
+<h1 id='swiftymocky-cli' class='heading'>SwiftyMocky CLI</h1>
 
 <p>CLI will help you with project setup and mocks generation. Also, it supports new <strong>Mockfile</strong> format.</p>
 
 <p>To install it:</p>
 
 <p><strong><a href="https://github.com/yonaskolb/Mint">Mint 🌱</a></strong>:</p>
-<pre class="highlight shell"><code><span class="o">&gt;</span> brew <span class="nb">install </span>mint
-<span class="o">&gt;</span> mint <span class="nb">install </span>MakeAWishFoundation/SwiftyMocky
+<pre class="highlight shell"><code><span class="gp">&gt; </span>brew install mint
+<span class="gp">&gt; </span>mint install MakeAWishFoundation/SwiftyMocky-CLI
 </code></pre>
 
 <p><strong><a href="https://github.com/JohnSundell/Marathon">Marathon 🏃</a></strong>:</p>
-<pre class="highlight shell"><code><span class="o">&gt;</span> marathon <span class="nb">install </span>MakeAWishFoundation/SwiftyMocky
+<pre class="highlight shell"><code><span class="gp">&gt; </span>marathon install MakeAWishFoundation/SwiftyMocky-CLI
 </code></pre>
 
+<p><strong>Make</strong>:</p>
+
+<p>Clone from <a href="https://github.com/MakeAWishFoundation/SwiftyMockyCLI">https://github.com/MakeAWishFoundation/SwiftyMockyCLI</a> and run <code>make</code> in the root directory.</p>
+
 <blockquote>
-<p>More information about <strong>CLI</strong> you will fund in &ldquo;Command Line Interface&rdquo; section. </p>
+<p>More information about <strong>CLI</strong> you will fund in <q>Command Line Interface</q> section.</p>
 </blockquote>
+
+<p><a name="installation-runtime"></a></p>
 <h1 id='swiftymocky-runtime-installation' class='heading'>SwiftyMocky Runtime installation</h1>
 
 <p>SwiftyMocky Runtime is available through:</p>
@@ -318,7 +322,7 @@
 
 <p>The integration part is described in setup page.</p>
 <h2 id='3-strong-a-href-https-github-com-jakeheis-ice-ice-package-manager-️-a-strong' class='heading'>3. <strong><a href="https://github.com/jakeheis/Ice">Ice Package Manager ❄️</a></strong>:</h2>
-<pre class="highlight shell"><code><span class="o">&gt;</span> ice add MakeAWishFoundation/SwiftyMocky
+<pre class="highlight shell"><code><span class="gp">&gt; </span>ice add MakeAWishFoundation/SwiftyMocky
 </code></pre>
 
 <blockquote>
@@ -328,9 +332,11 @@
 
 <p>Add <strong>SwiftyMocky</strong> to you <strong>Package.swift</strong> dependencies:</p>
 <pre class="highlight swift"><code><span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span>
-    <span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"https://github.com/MakeAWishFoundation/SwiftyMocky"</span><span class="p">,</span> <span class="nv">from</span><span class="p">:</span> <span class="s">"3.5.0"</span><span class="p">),</span>
+    <span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"https://github.com/MakeAWishFoundation/SwiftyMocky"</span><span class="p">,</span> <span class="nv">from</span><span class="p">:</span> <span class="s">"4.0.0"</span><span class="p">),</span>
 <span class="p">]</span>
 </code></pre>
+
+<p>And add <code>SwiftyMocky</code> to your test target dependencies.</p>
 <h2 id='support-for-other-swift-versions' class='heading'>Support for other swift versions</h2>
 
 <p>Download/build Sourcery binary manually, or use prebuilt sourcery versions from: <code>https://github.com/MakeAWishFoundation/SwiftyMocky.wiki.git</code></p>
@@ -349,7 +355,7 @@
         </section>
         <section id="footer">
           <p>Copyright © 2017 MakeAWishFoundation. All rights reserved.</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.0</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.11.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>

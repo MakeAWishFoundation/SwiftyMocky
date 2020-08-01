@@ -14,7 +14,7 @@
     <a title="Helpers  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">SwiftyMocky 3.5.0 Docs</a> (95% documented)</p>
+        <p><a href="index.html">SwiftyMocky 4.0.0 Docs</a> (85% documented)</p>
         <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -48,6 +48,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="supported-features.html">Supported features</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="prototyping.html">Prototyping</a>
               </li>
             </ul>
           </li>
@@ -133,6 +136,12 @@
                 <a href="Classes/Matcher.html">Matcher</a>
               </li>
               <li class="nav-group-task">
+                <a href="Classes/Matcher/ComparisonResult.html">– ComparisonResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/Matcher/ParameterComparisonResult.html">– ParameterComparisonResult</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Protocols/Countable.html">Countable</a>
               </li>
               <li class="nav-group-task">
@@ -172,28 +181,8 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="Deprecated.html">Deprecated</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty__4file4lineyx_0C0Qzs12StaticStringVSutAA4MockRzlF">VerifyProperty(_:_:file:line:)</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty__4file4lineyxm_06StaticC0Qzs0G6StringVSutAA0G4MockRzlF">VerifyProperty(_:_:file:line:)</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty___4file4lineyx_AA5CountO0C0Qzs12StaticStringVSutAA4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty___4file4lineyxm_AA5CountO06StaticC0Qzs0H6StringVSutAA0H4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
             <a href="Internal.html">Internal</a>
             <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="Classes/SwiftyMockyTestObserver.html">SwiftyMockyTestObserver</a>
-              </li>
               <li class="nav-group-task">
                 <a href="Classes/SwiftyMockyTestObserver.html">SwiftyMockyTestObserver</a>
               </li>
@@ -236,9 +225,6 @@
               <li class="nav-group-task">
                 <a href="Internal.html#/s:11SwiftyMocky0B6Assert__4file4lineySbyXK_SSyXKs12StaticStringVSutF">MockyAssert(_:_:file:line:)</a>
               </li>
-              <li class="nav-group-task">
-                <a href="Internal.html#/MockyAssert(_:_:file:line:)">MockyAssert(_:_:file:line:)</a>
-              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -250,10 +236,21 @@
             </ul>
           </li>
           <li class="nav-group-name">
+            <a href="Other%20Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/ArgumentCaptor.html">ArgumentCaptor</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
             <a href="Other%20Enums.html">Other Enumerations</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Enums/MockScope.html">MockScope</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/Utils.html">Utils</a>
               </li>
             </ul>
           </li>
@@ -288,7 +285,13 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="kt">XCTAssertThrowsError</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">,</span> <span class="kt">E</span><span class="p">:</span> <span class="kt">Error</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">expression</span><span class="p">:</span> <span class="kd">@autoclosure</span> <span class="p">()</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">T</span><span class="p">,</span> <span class="n">of</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">E</span><span class="o">.</span><span class="k">Type</span><span class="p">,</span> <span class="n">_</span> <span class="nv">message</span><span class="p">:</span> <span class="kd">@autoclosure</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">""</span><span class="p">,</span> <span class="nv">file</span><span class="p">:</span> <span class="kt">StaticString</span> <span class="o">=</span> <span class="kd">#file</span><span class="p">,</span> <span class="nv">line</span><span class="p">:</span> <span class="kt">UInt</span> <span class="o">=</span> <span class="kd">#line</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="kt">XCTAssertThrowsError</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">,</span> <span class="kt">E</span><span class="p">:</span> <span class="kt">Error</span><span class="o">&gt;</span><span class="p">(</span>
+    <span class="n">_</span> <span class="nv">expression</span><span class="p">:</span> <span class="kd">@autoclosure</span> <span class="p">()</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">T</span><span class="p">,</span>
+    <span class="n">of</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">E</span><span class="o">.</span><span class="k">Type</span><span class="p">,</span>
+    <span class="n">_</span> <span class="nv">message</span><span class="p">:</span> <span class="kd">@autoclosure</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">""</span><span class="p">,</span>
+    <span class="nv">file</span><span class="p">:</span> <span class="kt">StaticString</span> <span class="o">=</span> <span class="kd">#file</span><span class="p">,</span>
+    <span class="nv">line</span><span class="p">:</span> <span class="kt">UInt</span> <span class="o">=</span> <span class="kd">#line</span>
+<span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -382,7 +385,12 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="kt">XCTAssertThrowsError</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">,</span> <span class="kt">E</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">expression</span><span class="p">:</span> <span class="kd">@autoclosure</span> <span class="p">()</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">T</span><span class="p">,</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">E</span><span class="p">,</span> <span class="n">_</span> <span class="nv">message</span><span class="p">:</span> <span class="kd">@autoclosure</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">""</span><span class="p">,</span> <span class="nv">file</span><span class="p">:</span> <span class="kt">StaticString</span> <span class="o">=</span> <span class="kd">#file</span><span class="p">,</span> <span class="nv">line</span><span class="p">:</span> <span class="kt">UInt</span> <span class="o">=</span> <span class="kd">#line</span><span class="p">)</span> <span class="k">where</span> <span class="kt">E</span><span class="p">:</span> <span class="kt">Error</span><span class="p">,</span> <span class="kt">E</span><span class="p">:</span> <span class="kt">Equatable</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="kt">XCTAssertThrowsError</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">,</span> <span class="kt">E</span><span class="o">&gt;</span><span class="p">(</span>
+    <span class="n">_</span> <span class="nv">expression</span><span class="p">:</span> <span class="kd">@autoclosure</span> <span class="p">()</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">T</span><span class="p">,</span>
+    <span class="nv">error</span><span class="p">:</span> <span class="kt">E</span><span class="p">,</span> <span class="n">_</span> <span class="nv">message</span><span class="p">:</span> <span class="kd">@autoclosure</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">""</span><span class="p">,</span>
+    <span class="nv">file</span><span class="p">:</span> <span class="kt">StaticString</span> <span class="o">=</span> <span class="kd">#file</span><span class="p">,</span>
+    <span class="nv">line</span><span class="p">:</span> <span class="kt">UInt</span> <span class="o">=</span> <span class="kd">#line</span>
+<span class="p">)</span> <span class="k">where</span> <span class="kt">E</span><span class="p">:</span> <span class="kt">Error</span><span class="p">,</span> <span class="kt">E</span><span class="p">:</span> <span class="kt">Equatable</span></code></pre>
 
                         </div>
                       </div>
@@ -456,12 +464,16 @@
                     </section>
                   </div>
                 </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/"></a>
+                    <a name="/s:11SwiftyMocky0B9AssertionC"></a>
                     <a name="//apple_ref/swift/Class/MockyAssertion" class="dashAnchor"></a>
-                    <a class="token" href="#/">MockyAssertion</a>
+                    <a class="token" href="#/s:11SwiftyMocky0B9AssertionC">MockyAssertion</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -469,13 +481,21 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>[Prototyping] You can use this class if there is need to define custom
+                        <p>You can use this class if there is need to define custom
 assertion handler. You can use its static handler closure to alter default
 behaviour.</p>
 
 <p>If it is <code>nil</code>, the default <code>assert</code> method would be used.</p>
 
                         <a href="Classes/MockyAssertion.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">MockyAssertion</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -486,7 +506,7 @@ behaviour.</p>
         </section>
         <section id="footer">
           <p>Copyright © 2017 MakeAWishFoundation. All rights reserved.</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.0</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.11.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>

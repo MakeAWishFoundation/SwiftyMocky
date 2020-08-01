@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>ComparisonResult Structure Reference</title>
+    <link rel="stylesheet" type="text/css" href="../../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../../js/jquery.min.js" defer></script>
+    <script src="../../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Struct/ComparisonResult" class="dashAnchor"></a>
+    <a title="ComparisonResult Structure Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../../index.html">SwiftyMocky 4.0.0 Docs</a> (85% documented)</p>
+        <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="../../img/gh.png"/>View on GitHub</a></p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../../index.html">SwiftyMocky Reference</a>
+        <img id="carat" src="../../img/carat.png" />
+        ComparisonResult Structure Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../../Main%20Guides.html">Main Guides</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../overview.html">Overview</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../installation.html">Installation</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../setup-in-project.html">Setup in project</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../mockfile.html">Mockfile</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../command-line-interface.html">Command Line Interface</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../supported-features.html">Supported features</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../prototyping.html">Prototyping</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../../Additional%20Guides.html">Additional Guides</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../matcher-support-for-not-equatable.html">Matcher support for not Equatable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../handling-generics.html">Handling Generics</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../examples.html">Examples</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../legacy.html">Legacy</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../add-xcode-generate-action.html">Add XCode generate action</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../known-issues.html">Known issues</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../changelog.html">CHANGELOG</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../../Global%20methods.html">Global methods</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../Global%20methods.html#/s:11SwiftyMocky5Givenyyx_ABQzAA14StubbingPolicyOtAA4MockRzlF">Given(_:_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Global%20methods.html#/s:11SwiftyMocky5Givenyyxm_06StaticC0QzAA14StubbingPolicyOtAA0D4MockRzlF">Given(_:_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Global%20methods.html#/s:11SwiftyMocky7Performyyx_ABQztAA4MockRzlF">Perform(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Global%20methods.html#/s:11SwiftyMocky7Performyyxm_06StaticC0QztAA0D4MockRzlF">Perform(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Global%20methods.html#/s:11SwiftyMocky6Verify__4file4lineyx_ABQzs12StaticStringVSutAA4MockRzlF">Verify(_:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Global%20methods.html#/s:11SwiftyMocky6Verify__4file4lineyxm_06StaticC0Qzs0F6StringVSutAA0F4MockRzlF">Verify(_:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Global%20methods.html#/s:11SwiftyMocky6Verify___4file4lineyx_AA5CountOABQzs12StaticStringVSutAA4MockRzlF">Verify(_:_:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Global%20methods.html#/s:11SwiftyMocky6Verify___4file4lineyxm_AA5CountO06StaticC0Qzs0G6StringVSutAA0G4MockRzlF">Verify(_:_:_:file:line:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../../Configuration.html">Configuration</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../Enums/StubbingPolicy.html">StubbingPolicy</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Enums/SequencingPolicy.html">SequencingPolicy</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../../Types.html">Types</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../Protocols/Mock.html">Mock</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Protocols/StaticMock.html">StaticMock</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Enums/Parameter.html">Parameter</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Classes/Matcher.html">Matcher</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Classes/Matcher/ComparisonResult.html">– ComparisonResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Classes/Matcher/ParameterComparisonResult.html">– ParameterComparisonResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Protocols/Countable.html">Countable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Enums/Count.html">Count</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Structs/Stubber.html">Stubber</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Structs/StubberThrows.html">StubberThrows</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../../Generics.html">Generics</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../Structs/GenericAttribute.html">GenericAttribute</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Protocols/GenericAttributeType.html">GenericAttributeType</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../../Helpers.html">Helpers</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../Helpers.html#/s:11SwiftyMocky20XCTAssertThrowsError_2of_4file4lineyxyKXK_q_mSSyXKs12StaticStringVSuts0E0R_r0_lF">XCTAssertThrowsError(_:of:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Helpers.html#/s:11SwiftyMocky20XCTAssertThrowsError_5error_4file4lineyxyKXK_q_SSyXKs12StaticStringVSutSQR_s0E0R_r0_lF">XCTAssertThrowsError(_:error:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Classes/MockyAssertion.html">MockyAssertion</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../../Internal.html">Internal</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../Classes/SwiftyMockyTestObserver.html">SwiftyMockyTestObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Structs/FatalErrorUtil.html">FatalErrorUtil</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Protocols/OptionalType.html">OptionalType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Protocols/WithSequencingPolicy.html">WithSequencingPolicy</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Protocols/WithStaticSequencingPolicy.html">WithStaticSequencingPolicy</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Protocols/WithStubbingPolicy.html">WithStubbingPolicy</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Extensions/Int.html">Int</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Extensions/Optional.html">Optional</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Extensions/UInt.html">UInt</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Enums/MockError.html">MockError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Enums/StubProduct.html">StubProduct</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Classes/StubbedMethod.html">StubbedMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Internal.html#/s:11SwiftyMocky7Failureys5NeverOSSF">Failure(_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Internal.html#/s:11SwiftyMocky0B6Assert__4file4lineySbyXK_SSyXKs12StaticStringVSutF">MockyAssert(_:_:file:line:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../../Other%20Guides.html">Other Guides</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../contents.html">Contents</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../../Other%20Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../Classes/ArgumentCaptor.html">ArgumentCaptor</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../../Other%20Enums.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../Enums/MockScope.html">MockScope</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Enums/Utils.html">Utils</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>ComparisonResult</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">ComparisonResult</span></code></pre>
+
+                </div>
+              </div>
+            <p>Undocumented</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky7MatcherC16ComparisonResultV7matchedSivp"></a>
+                    <a name="//apple_ref/swift/Property/matched" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky7MatcherC16ComparisonResultV7matchedSivp">matched</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">matched</span><span class="p">:</span> <span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky7MatcherC16ComparisonResultV5totalSivp"></a>
+                    <a name="//apple_ref/swift/Property/total" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky7MatcherC16ComparisonResultV5totalSivp">total</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">total</span><span class="p">:</span> <span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky7MatcherC16ComparisonResultV7resultsSayAC09ParameterdE0VGvp"></a>
+                    <a name="//apple_ref/swift/Property/results" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky7MatcherC16ComparisonResultV7resultsSayAC09ParameterdE0VGvp">results</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">results</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../../Classes/Matcher/ParameterComparisonResult.html">ParameterComparisonResult</a></span><span class="p">]</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky7MatcherC16ComparisonResultV10percentageSfvp"></a>
+                    <a name="//apple_ref/swift/Property/percentage" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky7MatcherC16ComparisonResultV10percentageSfvp">percentage</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">percentage</span><span class="p">:</span> <span class="kt">Float</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky7MatcherC16ComparisonResultV16percentageStringSSvp"></a>
+                    <a name="//apple_ref/swift/Property/percentageString" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky7MatcherC16ComparisonResultV16percentageStringSSvp">percentageString</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">percentageString</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky7MatcherC16ComparisonResultV11isFullMatchSbvp"></a>
+                    <a name="//apple_ref/swift/Property/isFullMatch" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky7MatcherC16ComparisonResultV11isFullMatchSbvp">isFullMatch</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">isFullMatch</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky7MatcherC16ComparisonResultV7isMatchSbvp"></a>
+                    <a name="//apple_ref/swift/Property/isMatch" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky7MatcherC16ComparisonResultV7isMatchSbvp">isMatch</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">isMatch</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky7MatcherC16ComparisonResultVyAESayAC09ParameterdE0VGcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky7MatcherC16ComparisonResultVyAESayAC09ParameterdE0VGcfc">init(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">_</span> <span class="nv">results</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../../Classes/Matcher/ParameterComparisonResult.html">ParameterComparisonResult</a></span><span class="p">])</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky7MatcherC16ComparisonResultV7matched5totalAESi_Sitcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(matched:total:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky7MatcherC16ComparisonResultV7matched5totalAESi_Sitcfc">init(matched:total:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">matched</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">total</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky7MatcherC16ComparisonResultV5matchAEvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/match" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky7MatcherC16ComparisonResultV5matchAEvpZ">match</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">match</span><span class="p">:</span> <span class="kt">ComparisonResult</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky7MatcherC16ComparisonResultV4noneAEvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/none" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky7MatcherC16ComparisonResultV4noneAEvpZ">none</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">none</span><span class="p">:</span> <span class="kt">ComparisonResult</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky7MatcherC16ComparisonResultV12resultStringySSSi_SStF"></a>
+                    <a name="//apple_ref/swift/Method/resultString(_:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky7MatcherC16ComparisonResultV12resultStringySSSi_SStF">resultString(_:_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">resultString</span><span class="p">(</span><span class="n">_</span> <span class="nv">index</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="n">_</span> <span class="nv">selectorName</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>Copyright © 2017 MakeAWishFoundation. All rights reserved.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.11.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

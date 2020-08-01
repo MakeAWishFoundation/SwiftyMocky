@@ -13,7 +13,7 @@
     <a title="Legacy  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">SwiftyMocky 3.5.0 Docs</a> (95% documented)</p>
+        <p><a href="index.html">SwiftyMocky 4.0.0 Docs</a> (85% documented)</p>
         <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -47,6 +47,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="supported-features.html">Supported features</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="prototyping.html">Prototyping</a>
               </li>
             </ul>
           </li>
@@ -132,6 +135,12 @@
                 <a href="Classes/Matcher.html">Matcher</a>
               </li>
               <li class="nav-group-task">
+                <a href="Classes/Matcher/ComparisonResult.html">– ComparisonResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/Matcher/ParameterComparisonResult.html">– ParameterComparisonResult</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Protocols/Countable.html">Countable</a>
               </li>
               <li class="nav-group-task">
@@ -171,28 +180,8 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="Deprecated.html">Deprecated</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty__4file4lineyx_0C0Qzs12StaticStringVSutAA4MockRzlF">VerifyProperty(_:_:file:line:)</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty__4file4lineyxm_06StaticC0Qzs0G6StringVSutAA0G4MockRzlF">VerifyProperty(_:_:file:line:)</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty___4file4lineyx_AA5CountO0C0Qzs12StaticStringVSutAA4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty___4file4lineyxm_AA5CountO06StaticC0Qzs0H6StringVSutAA0H4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
             <a href="Internal.html">Internal</a>
             <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="Classes/SwiftyMockyTestObserver.html">SwiftyMockyTestObserver</a>
-              </li>
               <li class="nav-group-task">
                 <a href="Classes/SwiftyMockyTestObserver.html">SwiftyMockyTestObserver</a>
               </li>
@@ -235,9 +224,6 @@
               <li class="nav-group-task">
                 <a href="Internal.html#/s:11SwiftyMocky0B6Assert__4file4lineySbyXK_SSyXKs12StaticStringVSutF">MockyAssert(_:_:file:line:)</a>
               </li>
-              <li class="nav-group-task">
-                <a href="Internal.html#/MockyAssert(_:_:file:line:)">MockyAssert(_:_:file:line:)</a>
-              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -249,10 +235,21 @@
             </ul>
           </li>
           <li class="nav-group-name">
+            <a href="Other%20Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/ArgumentCaptor.html">ArgumentCaptor</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
             <a href="Other%20Enums.html">Other Enumerations</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Enums/MockScope.html">MockScope</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/Utils.html">Utils</a>
               </li>
             </ul>
           </li>
@@ -264,7 +261,7 @@
             
             <h1 id='legacy' class='heading'>Legacy</h1>
 
-<p>If really you don&rsquo;t want to use the <strong>CLI</strong> (😢) then you can still use SwiftyMocky with a Sourcery configuration, described below. This is the &ldquo;old&rdquo; way of integrating our library. </p>
+<p>If really you don&rsquo;t want to use the <strong>CLI</strong> (😢) then you can still use SwiftyMocky with a Sourcery configuration, described below. This is the <q>old</q> way of integrating our library. </p>
 
 <p>Summing up, you need <strong>SwiftyMocky</strong> framework in the runtime, and <strong>sourcery</strong> binary with a configuration pointing to our template for the mocks generation.</p>
 <h2 id='installation' class='heading'>Installation</h2>
@@ -385,13 +382,13 @@ Just create file named Rakefile - generation is triggered by <code>rake mock</co
 <h2 id='strong-get_sourcery-sh-strong' class='heading'><strong>get_sourcery.sh</strong></h2>
 
 <p>This is a helper script allowing to obtain Sourcery binary compiled for usage with SwiftyMocky. It can be used with both: legacy configurations and new Mockfile (specify path to binary in Mockfile <code>sourceyCommand</code>)</p>
-<pre class="highlight shell"><code><span class="o">[[</span> <span class="nv">$# </span><span class="o">&gt;</span> 0 <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nv">VERSION</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> <span class="o">||</span> <span class="nv">VERSION</span><span class="o">=</span><span class="s2">"5.0"</span>
-<span class="o">[[</span> <span class="nv">$# </span><span class="o">&gt;</span> 1 <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nv">OUTPUT</span><span class="o">=</span><span class="s2">"</span><span class="nv">$2</span><span class="s2">"</span> <span class="o">||</span> <span class="nv">OUTPUT</span><span class="o">=</span><span class="s2">"./Pods/Sourcery/bin"</span>
+<pre class="highlight shell"><code><span class="o">[[</span> <span class="nv">$# </span>&gt; 0 <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nv">VERSION</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> <span class="o">||</span> <span class="nv">VERSION</span><span class="o">=</span><span class="s2">"5.0"</span>
+<span class="o">[[</span> <span class="nv">$# </span>&gt; 1 <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nv">OUTPUT</span><span class="o">=</span><span class="s2">"</span><span class="nv">$2</span><span class="s2">"</span> <span class="o">||</span> <span class="nv">OUTPUT</span><span class="o">=</span><span class="s2">"./Pods/Sourcery/bin"</span>
 <span class="nv">SOURCERY_VERSION</span><span class="o">=</span><span class="s2">"0.16.0"</span> <span class="c"># The version of Sourcery that is associated with this SwiftyMocky version</span>
 
 <span class="nb">echo</span> <span class="s2">"CLONE SOURCERY </span><span class="nv">$SOURCERY_VERSION</span><span class="s2"> FOR Swift </span><span class="nv">$VERSION</span><span class="s2"> INTO </span><span class="nv">$OUTPUT</span><span class="s2">"</span>
-<span class="nb">rm</span> <span class="nt">-r</span> <span class="nt">-f</span> <span class="s2">"</span><span class="nv">$OUTPUT</span><span class="s2">"</span>
-git clone <span class="nt">-b</span> <span class="s2">"sourcery/</span><span class="nv">$SOURCERY_VERSION</span><span class="s2">-swift</span><span class="nv">$VERSION</span><span class="s2">"</span> <span class="nt">--single-branch</span> <span class="nt">--depth</span> 1 https://github.com/MakeAWishFoundation/SwiftyMocky.wiki.git <span class="s2">"</span><span class="nv">$OUTPUT</span><span class="s2">"</span>
+rm -r -f <span class="s2">"</span><span class="nv">$OUTPUT</span><span class="s2">"</span>
+git clone -b <span class="s2">"sourcery/</span><span class="nv">$SOURCERY_VERSION</span><span class="s2">-swift</span><span class="nv">$VERSION</span><span class="s2">"</span> --single-branch --depth 1 https://github.com/MakeAWishFoundation/SwiftyMocky.wiki.git <span class="s2">"</span><span class="nv">$OUTPUT</span><span class="s2">"</span>
 </code></pre>
 
 <blockquote>
@@ -410,7 +407,7 @@ If you use Carthage, you should specify your custom output location for sourcery
         </section>
         <section id="footer">
           <p>Copyright © 2017 MakeAWishFoundation. All rights reserved.</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.0</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.11.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>

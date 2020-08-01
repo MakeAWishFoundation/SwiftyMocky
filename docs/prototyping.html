@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Prototyping  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a title="Prototyping  Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="index.html">SwiftyMocky 4.0.0 Docs</a> (85% documented)</p>
+        <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="img/gh.png"/>View on GitHub</a></p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="index.html">SwiftyMocky Reference</a>
+        <img id="carat" src="img/carat.png" />
+        Prototyping  Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="Main%20Guides.html">Main Guides</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="overview.html">Overview</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="installation.html">Installation</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="setup-in-project.html">Setup in project</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="mockfile.html">Mockfile</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="command-line-interface.html">Command Line Interface</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="supported-features.html">Supported features</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="prototyping.html">Prototyping</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Additional%20Guides.html">Additional Guides</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="matcher-support-for-not-equatable.html">Matcher support for not Equatable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="handling-generics.html">Handling Generics</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="examples.html">Examples</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="legacy.html">Legacy</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="add-xcode-generate-action.html">Add XCode generate action</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="known-issues.html">Known issues</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="changelog.html">CHANGELOG</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Global%20methods.html">Global methods</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Global%20methods.html#/s:11SwiftyMocky5Givenyyx_ABQzAA14StubbingPolicyOtAA4MockRzlF">Given(_:_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global%20methods.html#/s:11SwiftyMocky5Givenyyxm_06StaticC0QzAA14StubbingPolicyOtAA0D4MockRzlF">Given(_:_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global%20methods.html#/s:11SwiftyMocky7Performyyx_ABQztAA4MockRzlF">Perform(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global%20methods.html#/s:11SwiftyMocky7Performyyxm_06StaticC0QztAA0D4MockRzlF">Perform(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global%20methods.html#/s:11SwiftyMocky6Verify__4file4lineyx_ABQzs12StaticStringVSutAA4MockRzlF">Verify(_:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global%20methods.html#/s:11SwiftyMocky6Verify__4file4lineyxm_06StaticC0Qzs0F6StringVSutAA0F4MockRzlF">Verify(_:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global%20methods.html#/s:11SwiftyMocky6Verify___4file4lineyx_AA5CountOABQzs12StaticStringVSutAA4MockRzlF">Verify(_:_:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Global%20methods.html#/s:11SwiftyMocky6Verify___4file4lineyxm_AA5CountO06StaticC0Qzs0G6StringVSutAA0G4MockRzlF">Verify(_:_:_:file:line:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Configuration.html">Configuration</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Enums/StubbingPolicy.html">StubbingPolicy</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/SequencingPolicy.html">SequencingPolicy</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Types.html">Types</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Protocols/Mock.html">Mock</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/StaticMock.html">StaticMock</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/Parameter.html">Parameter</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/Matcher.html">Matcher</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/Matcher/ComparisonResult.html">– ComparisonResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/Matcher/ParameterComparisonResult.html">– ParameterComparisonResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/Countable.html">Countable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/Count.html">Count</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Stubber.html">Stubber</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/StubberThrows.html">StubberThrows</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Generics.html">Generics</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Structs/GenericAttribute.html">GenericAttribute</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/GenericAttributeType.html">GenericAttributeType</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Helpers.html">Helpers</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Helpers.html#/s:11SwiftyMocky20XCTAssertThrowsError_2of_4file4lineyxyKXK_q_mSSyXKs12StaticStringVSuts0E0R_r0_lF">XCTAssertThrowsError(_:of:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Helpers.html#/s:11SwiftyMocky20XCTAssertThrowsError_5error_4file4lineyxyKXK_q_SSyXKs12StaticStringVSutSQR_s0E0R_r0_lF">XCTAssertThrowsError(_:error:_:file:line:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/MockyAssertion.html">MockyAssertion</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Internal.html">Internal</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/SwiftyMockyTestObserver.html">SwiftyMockyTestObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/FatalErrorUtil.html">FatalErrorUtil</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/OptionalType.html">OptionalType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/WithSequencingPolicy.html">WithSequencingPolicy</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/WithStaticSequencingPolicy.html">WithStaticSequencingPolicy</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/WithStubbingPolicy.html">WithStubbingPolicy</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/Int.html">Int</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/Optional.html">Optional</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/UInt.html">UInt</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/MockError.html">MockError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/StubProduct.html">StubProduct</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/StubbedMethod.html">StubbedMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Internal.html#/s:11SwiftyMocky7Failureys5NeverOSSF">Failure(_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Internal.html#/s:11SwiftyMocky0B6Assert__4file4lineySbyXK_SSyXKs12StaticStringVSutF">MockyAssert(_:_:file:line:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other%20Guides.html">Other Guides</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="contents.html">Contents</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other%20Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/ArgumentCaptor.html">ArgumentCaptor</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other%20Enums.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Enums/MockScope.html">MockScope</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/Utils.html">Utils</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            
+            <h1 id='strong-prototyping-strong' class='heading'><strong>Prototyping</strong></h1>
+
+<p>It is possible to use <strong>SwiftyMocky</strong> not in tests, but to fake/prototype inside application (works on device).</p>
+
+<p>For this reason, there is an additional library extracted from <strong>Swiftymocky</strong>, that does not rely on XCTest framework.</p>
+
+<p>Installation and generation is exactly same as with <strong>SwiftyMocky</strong>. Install CLI and inegrate runtime, via one of the options below, and mark target in <a href="./Mockfile.md">Mockfile</a> with <code>prototype: true</code></p>
+<h2 id='installation' class='heading'>Installation</h2>
+<h2 id='1-a-href-http-cocoapods-org-cocoapods-a' class='heading'>1. <a href="http://cocoapods.org">CocoaPods</a>.</h2>
+
+<p>To install it, simply add the following line to your Podfile:</p>
+<pre class="highlight ruby"><code><span class="n">pod</span> <span class="s2">"SwiftyPrototype"</span>
+</code></pre>
+
+<p>Then execute <code>pod install</code></p>
+<h2 id='2-a-href-https-github-com-carthage-carthage-carthage-a' class='heading'>2. <a href="https://github.com/Carthage/Carthage">Carthage</a>.</h2>
+
+<p>To install, add following to you Cartfile:</p>
+<pre class="highlight ruby"><code><span class="n">github</span> <span class="s2">"MakeAWishFoundation/SwiftyMocky"</span>
+</code></pre>
+
+<p>Then execute <code>carthage update</code> and add <code>SwiftyPrototype</code> to your target.</p>
+<h3 id='3-strong-a-href-https-swift-org-package-manager-swift-package-manager-a-strong' class='heading'>3. <strong><a href="https://swift.org/package-manager/">Swift Package Manager</a></strong>:</h3>
+
+<p>Add <strong>SwiftyPrototype</strong> to you <strong>Package.swift</strong> dependencies:</p>
+<pre class="highlight swift"><code><span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span>
+    <span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"https://github.com/MakeAWishFoundation/SwiftyMocky"</span><span class="p">,</span> <span class="nv">from</span><span class="p">:</span> <span class="s">"4.0.0"</span><span class="p">),</span>
+<span class="p">]</span>
+</code></pre>
+
+<p>And add <code>SwiftyPrototype</code> to your target dependencies.</p>
+
+          </section>
+        </section>
+        <section id="footer">
+          <p>Copyright © 2017 MakeAWishFoundation. All rights reserved.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.11.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

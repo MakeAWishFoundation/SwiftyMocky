@@ -17,6 +17,7 @@ custom_categories:
       - Mockfile
       - Command Line Interface
       - Supported features
+      - Prototyping
 
   - name: Additional Guides
     children:
@@ -61,11 +62,6 @@ custom_categories:
       - XCTAssertThrowsError(_:of:_:file:line:)
       - XCTAssertThrowsError(_:error:_:file:line:)
       - MockyAssertion
-
-  - name: Deprecated
-    children:
-      - VerifyProperty(_:_:file:line:)
-      - VerifyProperty(_:_:_:file:line:)
 
   - name: Internal
     children:

@@ -4,6 +4,45 @@
 
 -----
 
+## 1. Ambiguity caused by multiple modules
+
+Considering situation as following:
+
+
+```swift
+// Module A
+class Entity { /*..*/ }
+```
+
+```swift
+// Module B
+class Entity { /*..*/ }
+```
+
+```swift
+// App
+import A
+
+class Entity { /*..*/ } // Shadows entity
+
+protocol ToBeMocked {
+    func convert(_ entity: Entity) -> A.Entity // It is App.Entity -> A.Entity
+}
+```
+
+```swift
+import B
+
+protocol OtherProtocol {
+    func isValid(_ entity: Entity) -> Bool // It is B.Entity
+}
+```
+
+In the generated mock, `Entity` would be on "the same level" as `A.Entity` and `B.Entity`, so generated mocks would have ambigious types. Similar happend if two There are two ways to resolve that:
+
+1. Use full names if possible, so `B.Entity` instead of just `Entity`
+2. Use additional annotation above protocol or method, to tell SwiftyMocky to translate types: `//sourcery: typealias = "Entity = B.Entity"` for example.
+
 ## 1. When triggering generation - error about modules in different swift versions appears
 
 This seems to be a problem with Swift abi. Either download/build Sourcery binary manually, or use prebuilt sourcery versions from: `https://github.com/MakeAWishFoundation/SwiftyMocky.wiki.git`

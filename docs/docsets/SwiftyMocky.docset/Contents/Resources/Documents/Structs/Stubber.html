@@ -14,7 +14,7 @@
     <a title="Stubber Structure Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">SwiftyMocky 3.5.0 Docs</a> (95% documented)</p>
+        <p><a href="../index.html">SwiftyMocky 4.0.0 Docs</a> (85% documented)</p>
         <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -48,6 +48,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="../supported-features.html">Supported features</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../prototyping.html">Prototyping</a>
               </li>
             </ul>
           </li>
@@ -133,6 +136,12 @@
                 <a href="../Classes/Matcher.html">Matcher</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Classes/Matcher/ComparisonResult.html">– ComparisonResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Matcher/ParameterComparisonResult.html">– ParameterComparisonResult</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Protocols/Countable.html">Countable</a>
               </li>
               <li class="nav-group-task">
@@ -172,28 +181,8 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Deprecated.html">Deprecated</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="../Deprecated.html#/s:11SwiftyMocky14VerifyProperty__4file4lineyx_0C0Qzs12StaticStringVSutAA4MockRzlF">VerifyProperty(_:_:file:line:)</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Deprecated.html#/s:11SwiftyMocky14VerifyProperty__4file4lineyxm_06StaticC0Qzs0G6StringVSutAA0G4MockRzlF">VerifyProperty(_:_:file:line:)</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Deprecated.html#/s:11SwiftyMocky14VerifyProperty___4file4lineyx_AA5CountO0C0Qzs12StaticStringVSutAA4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Deprecated.html#/s:11SwiftyMocky14VerifyProperty___4file4lineyxm_AA5CountO06StaticC0Qzs0H6StringVSutAA0H4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
             <a href="../Internal.html">Internal</a>
             <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="../Classes/SwiftyMockyTestObserver.html">SwiftyMockyTestObserver</a>
-              </li>
               <li class="nav-group-task">
                 <a href="../Classes/SwiftyMockyTestObserver.html">SwiftyMockyTestObserver</a>
               </li>
@@ -236,9 +225,6 @@
               <li class="nav-group-task">
                 <a href="../Internal.html#/s:11SwiftyMocky0B6Assert__4file4lineySbyXK_SSyXKs12StaticStringVSutF">MockyAssert(_:_:file:line:)</a>
               </li>
-              <li class="nav-group-task">
-                <a href="../Internal.html#/MockyAssert(_:_:file:line:)">MockyAssert(_:_:file:line:)</a>
-              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -250,10 +236,21 @@
             </ul>
           </li>
           <li class="nav-group-name">
+            <a href="../Other%20Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/ArgumentCaptor.html">ArgumentCaptor</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
             <a href="../Other%20Enums.html">Other Enumerations</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Enums/MockScope.html">MockScope</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/Utils.html">Utils</a>
               </li>
             </ul>
           </li>
@@ -380,7 +377,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="p">`</span><span class="nv">return</span><span class="p">`(</span><span class="n">_</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">ReturnedValue</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="err">`</span><span class="k">return</span><span class="err">`</span><span class="p">(</span><span class="n">_</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">ReturnedValue</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -426,7 +423,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="p">`</span><span class="nv">return</span><span class="p">`(</span><span class="n">_</span> <span class="nv">values</span><span class="p">:</span> <span class="kt">ReturnedValue</span><span class="o">...</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="err">`</span><span class="k">return</span><span class="err">`</span><span class="p">(</span><span class="n">_</span> <span class="nv">values</span><span class="p">:</span> <span class="kt">ReturnedValue</span><span class="o">...</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -458,7 +455,7 @@
         </section>
         <section id="footer">
           <p>Copyright © 2017 MakeAWishFoundation. All rights reserved.</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.0</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.11.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>

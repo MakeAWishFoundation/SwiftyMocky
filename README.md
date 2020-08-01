@@ -17,7 +17,7 @@ Check out [guides][link-guides-contents], or full [documentation][link-docs]
 ## Table of contents
 
 1. [Overview](#overview)
-1. [Current version](#current-version)
+1. [Current Version](#current-version)
 1. [Getting started:](#getting-started)
     1. [Installing SwiftyMocky CLI](#installation)
     1. [Integrating SwiftyMocky runtime into test target](#integration)
@@ -54,23 +54,27 @@ The idea of **SwiftyMocky** is to automatically mock Swift protocols. The main f
 
 <a name="current-version"></a>
 
-## Current version
+## **Important!!!** Version 4.x.x
 
-We consider current version as stable. We are moving toward using the new [Mockfile][link-guides-mockfile] but the previous configuration format would be still supported, until SwiftyMocky 4.0. Library works with Swift **4.1, 4.2, 5.0, 5.1.2**  and  Sourcery 0.17.0.
+Current version has several significant changes. It removes deprecated methods (which might be breaking) and moves CLI to the new [repository](https://github.com/MakeAWishFoundation/SwiftyMockyCLI).
+
+**SwiftyPrototype** was also extracted to separate library. There are no more compilation flags, so if you were relying on **SwiftyMocky** with `-DMockyCustom`, you will have to switch to `SwiftyPrototype`.
+
+We consider current version as stable. We are moving toward using the new [Mockfile][link-guides-mockfile] but the previous configuration format would be still supported. Library works with Swift **4.1, 4.2, 5.0, 5.1.2**  and  Sourcery 0.17-0.18.
 
 While it is technically possible to integrate SwiftyMocky on Linux targets, there is no Mock generation feature there yet. You can use SwiftyMokcy runtime via SwiftPM though, as long as your are fine with generating mocks on mac machine.
-
-<a name="getting-started"></a>
 
 ## Migration from 3.2.0 and below
 
 The migration is not required, you can keep using **SwiftyMocky** as you did before. The [Legacy setup](https://github.com/MakeAWishFoundation/SwiftyMocky/blob/master/guides/Legacy.md) is described in [guides section](https://github.com/MakeAWishFoundation/SwiftyMocky/blob/master/guides/Contents.md).
 
-Still, we would encourage to try new **CLI** and share a feedback. We believe it will make using and setting up **SwiftyMocky** way easier. If you have an existing setup, try:
+Still, we would encourage to try new **CLI** and share a feedback. We believe it will make using and setting up **SwiftyMocky** way easier. If you have an existing setup, install CLI as per this [guide](https://github.com/MakeAWishFoundation/SwiftyMocky/blob/master/guides/Installation.md) and try:
 
 ```bash
 > swiftymocky migrate
 ```
+
+<a name="getting-started"></a>
 
 ## Getting started
 
@@ -88,14 +92,18 @@ To start working with **SwiftyMocky** you need to:
 
 ```bash
 > brew install mint
-> mint install MakeAWishFoundation/SwiftyMocky
+> mint install MakeAWishFoundation/SwiftyMocky-CLI
 ```
 
 **[Marathon 🏃](https://github.com/JohnSundell/Marathon)**:
 
 ```bash
-> marathon install MakeAWishFoundation/SwiftyMocky
+> marathon install MakeAWishFoundation/SwiftyMocky-CLI
 ```
+
+**Make**:
+
+Clone from https://github.com/MakeAWishFoundation/SwiftyMockyCLI and run `make` in the root directory.
 
 <a name="integration"></a>
 
@@ -179,16 +187,6 @@ protocol ToBeMocked {
 ```
 
 Every protocol in source directories, having this annotation, will be added to `Mock.generated.swift`
-
-@objc protocols are also supported, but needs to be explicitly marked with ObjcProtocol annotation:
-
-```swift
-//sourcery: AutoMockable
-//sourcery: ObjcProtocol
-@objc protocol NonSwiftProtocol {
-  // ...
-}
-```
 
 <a name="given"></a>
 
@@ -315,7 +313,7 @@ For more examples, check out our example project, or examples section in [guides
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
-To trigger mocks generation, run `rake mock` from root directory.
+To trigger mocks generation, run `rake mock` or `swiftymocky generate` from root directory (if you installed CLI).
 
 <a name="roadmap"></a>
 

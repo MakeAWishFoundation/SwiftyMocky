@@ -4,6 +4,31 @@ All changes to SwiftyMocky project will be documented in this file.
 
 -----
 
+## __4.0.0__ / 2020
+
+### Important:
+* **CLI** is extracted to separate repo
+
+#### Added:
+* SwiftyPrototype is now separat library, so it is now possible to use SwiftyMocky to both test & prototype (fake) app.
+* Support for methods with variadic parameters
+* Support for `@available` and `@objc` annotations
+* Refined assertion messages
+* Made it easier to ship generated mocks with project, allowing to use them by 3rd party
+* Resolved problem with ambiguity for generic methods that throws
+* Matcher issues should be more prominent and easier trackable
+* Matcher should fail test instead of crashing whenever possible
+* Verify now have better failure messages, including best matching invocations
+* `typealias` annotation to workaround problems with multiple types from different modules sharing same name.
+
+#### Deprecated:
+* all methods and properties marked previously as deprecated are now removed.
+
+#### Fixed:
+* Mock generation for protocols with internal types (@truebucha)
+* Pinned CLI dependencies (@ohitsdaniel)
+* Added missing tvOS and macOS support for carthage
+
 ## __3.4.0__ / 2019
 
 #### Added:

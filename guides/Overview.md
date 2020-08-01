@@ -9,9 +9,9 @@ Check out [guides][link-guides-contents], or full [documentation][link-docs]
 ## Table of contents
 
 1. [Overview](#overview)
-1. [Current version](#current-version)
+1. [Current Version](#current-version)
 1. [Getting started:](#getting-started)
-    1. [Installing SiwftyMocky CLI](#installation)
+    1. [Installing SwiftyMocky CLI](#installation)
     1. [Integrating SwiftyMocky runtime into test target](#integration)
     1. [Generate mocks](#generation)
 1. [Usage:](#usage)
@@ -46,11 +46,13 @@ The idea of **SwiftyMocky** is to automatically mock Swift protocols. The main f
 
 <a name="current-version"></a>
 
-## Current version
+## **Important!!!** Version 4.x.x
 
-We consider current version as stable. We are moving toward using the new [Mockfile][link-guides-mockfile] but the previous configuration format would be still supported, until SwiftyMocky 4.0. Library works with Swift **4.1, 4.2, 5.0**  and  Sourcery 0.16.0.
+Current version has several significant changes. It removes deprecated methods (which might be breaking) and moves CLI to the new [repository](https://github.com/MakeAWishFoundation/SwiftyMockyCLI).
 
-While it is technically possible to integrate SwiftyMocky on Linux targets, there is no Mock generation feature there yet.
+We consider current version as stable. We are moving toward using the new [Mockfile][link-guides-mockfile] but the previous configuration format would be still supported. Library works with Swift **4.1, 4.2, 5.0, 5.1.2**  and  Sourcery 0.17-0.18.
+
+While it is technically possible to integrate SwiftyMocky on Linux targets, there is no Mock generation feature there yet. You can use SwiftyMokcy runtime via SwiftPM though, as long as your are fine with generating mocks on mac machine.
 
 <a name="getting-started"></a>
 
@@ -70,20 +72,24 @@ To start working with **SwiftyMocky** you need to:
 
 ```bash
 > brew install mint
-> mint install MakeAWishFoundation/SwiftyMocky
+> mint install MakeAWishFoundation/SwiftyMocky-CLI
 ```
 
 **[Marathon 🏃](https://github.com/JohnSundell/Marathon)**:
 
 ```bash
-> marathon install MakeAWishFoundation/SwiftyMocky
+> marathon install MakeAWishFoundation/SwiftyMocky-CLI
 ```
+
+**Make**:
+
+Clone from https://github.com/MakeAWishFoundation/SwiftyMockyCLI and run `make` in the root directory.
 
 <a name="integration"></a>
 
 ### 2. Integrating SwiftyMocky runtime into test target:
 
-**[CocoaPods](http://cocoapods.org)**: 
+**[CocoaPods](http://cocoapods.org)**:
 
 SwiftyMocky is available through [CocoaPods](http://cocoapods.org). To install it, simply add the following line to your Podfile:
 
@@ -91,7 +97,7 @@ SwiftyMocky is available through [CocoaPods](http://cocoapods.org). To install i
 pod "SwiftyMocky"
 ```
 
-**[Carthage](https://github.com/Carthage/Carthage)**: 
+**[Carthage](https://github.com/Carthage/Carthage)**:
 
 To install, add following to you Cartfile:
 
@@ -101,7 +107,7 @@ github "MakeAWishFoundation/SwiftyMocky"
 
 Then execute `carthage update`
 
-For [Carthage](https://github.com/Carthage/Carthage), few additional steps are required ⚠️. For detailed install instructions, see full [documentation][link-docs-installation-carthage].
+For [Carthage](https://github.com/Carthage/Carthage), few additional steps are required ⚠️. For detailed install instructions, see full [documentation][link-docs-installation-carthage] or consult [Carthage documentation][carthage-adding-framework].
 
 **[Swift Package Manager](https://swift.org/package-manager/)**:
 
@@ -121,7 +127,7 @@ dependencies: [
 
 [Annotate your protocols](#mock-annotate) that are going to be mocked, making them adopt `AutoMockable` protocol, or adding annotation comment above their definition in the source code.
 
-Mocks are generated from your project root directory, based on configuration inside [Mockfile][link-guides-mockfile]. 
+Mocks are generated from your project root directory, based on configuration inside [Mockfile][link-guides-mockfile].
 
 ```bash
 > swiftymocky setup     # if you don't have a Mockfile yet
@@ -139,7 +145,7 @@ If you don't want to migrate to our **CLI** and prefer to use "raw" Sourcery, pl
 
 <a name="mock-annotate"></a>
 
-## 1.Marking protocols to be mocked
+## 1. Marking protocols to be mocked
 
 Create 'dummy' protocol somewhere in your project, like: `protocol AutoMockable { }`
 
@@ -161,16 +167,6 @@ protocol ToBeMocked {
 ```
 
 Every protocol in source directories, having this annotation, will be added to `Mock.generated.swift`
-
-@objc protocols are also supported, but needs to be explicitly marked with ObjcProtocol annotation:
-
-```swift
-//sourcery: AutoMockable
-//sourcery: ObjcProtocol
-@objc protocol NonSwiftProtocol {
-  // ...
-}
-```
 
 <a name="given"></a>
 
@@ -260,7 +256,7 @@ Verify(mock, .never, .name(set: .value("Bishop")))
 
 All mocks has **perform** method (accessible both as instance method or global function), with easy to use syntax, allowing to specify closure, that will be executed upon stubbed method being called.
 
-It uses same paramter wrapping features as given, so you can specify different **Perform** cases for different attributes set.
+It uses same parameter wrapping features as given, so you can specify different **Perform** cases for different attributes set.
 
 It's very handy when working with completion block based approach.
 
@@ -272,6 +268,8 @@ Perform(mock, .methodThatTakesCompletionBlock(completion: .any, perform: { compl
     completion(true,nil)
 }))
 ```
+
+<a name="guides"></a>
 
 # Documentation
 
@@ -295,9 +293,7 @@ For more examples, check out our example project, or examples section in [guides
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
-To trigger mocks generation, run `rake mock` from root directory. For watcher mode, when mocks are generated every time you change your file projects, use `rake mock_watcher` instead.
-
-<a name="guides"></a>
+To trigger mocks generation, run `rake mock` or `swiftymocky generate` from root directory (if you installed CLI).
 
 <a name="roadmap"></a>
 
@@ -328,7 +324,7 @@ To trigger mocks generation, run `rake mock` from root directory. For watcher mo
 
 ## License
 
-SwiftyMocky is available under the MIT license. 
+SwiftyMocky is available under the MIT license. See the [LICENSE][link-license] file for more info.
 
 <!-- Links -->
 

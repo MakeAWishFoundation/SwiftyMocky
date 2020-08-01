@@ -20,7 +20,7 @@ Please have in mind, that generic methods are problematic in a lot of cases, so 
 1. AutoComplete issues for given, perform and verify: - use full `<MockName>.Given.` for getting autocomplete.
 1. Use full `.any(Value.Type)` instead of `.any`, to avoid ambiguity.
 1. Matching issues - if you are using generic parameters as `.value`, you might need to add additional comparators to `Matcher` instance. However, it should be handled for most of basic types.
-1. When working with methods like `func decode<T>(_ type: T.Type, data: Data) -> T`, it will require to register comparator for every custom `T.Type` used, like `Matcher.default.register(CustomType.Type.self)` - or just use .any(Custom.self)
+1. When working with methods like `func decode<T>(_ type: T.Type, data: Data) -> T`, it will require to register comparator for every custom `T.Type` used, like `Matcher.default.register(CustomType.Type.self)` - or just use `.any(Custom.self)`
 
 ## Protocols with generic subscripts
 

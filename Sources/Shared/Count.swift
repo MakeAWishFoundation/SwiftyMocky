@@ -50,6 +50,7 @@ public enum Count: ExpressibleByIntegerLiteral {
 }
 
 // MARK: - CustomStringConvertible
+
 extension Count: CustomStringConvertible {
     /// Human readable description
     public var description: String {
@@ -79,6 +80,7 @@ extension Count: CustomStringConvertible {
 }
 
 // MARK: - Countable
+
 extension Count: Countable {
 
     /// Returns whether given count matches countable case.

@@ -13,7 +13,7 @@
     <a title="CHANGELOG  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">SwiftyMocky 3.5.0 Docs</a> (95% documented)</p>
+        <p><a href="index.html">SwiftyMocky 4.0.0 Docs</a> (85% documented)</p>
         <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -47,6 +47,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="supported-features.html">Supported features</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="prototyping.html">Prototyping</a>
               </li>
             </ul>
           </li>
@@ -132,6 +135,12 @@
                 <a href="Classes/Matcher.html">Matcher</a>
               </li>
               <li class="nav-group-task">
+                <a href="Classes/Matcher/ComparisonResult.html">– ComparisonResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/Matcher/ParameterComparisonResult.html">– ParameterComparisonResult</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Protocols/Countable.html">Countable</a>
               </li>
               <li class="nav-group-task">
@@ -171,28 +180,8 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="Deprecated.html">Deprecated</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty__4file4lineyx_0C0Qzs12StaticStringVSutAA4MockRzlF">VerifyProperty(_:_:file:line:)</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty__4file4lineyxm_06StaticC0Qzs0G6StringVSutAA0G4MockRzlF">VerifyProperty(_:_:file:line:)</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty___4file4lineyx_AA5CountO0C0Qzs12StaticStringVSutAA4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty___4file4lineyxm_AA5CountO06StaticC0Qzs0H6StringVSutAA0H4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
             <a href="Internal.html">Internal</a>
             <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="Classes/SwiftyMockyTestObserver.html">SwiftyMockyTestObserver</a>
-              </li>
               <li class="nav-group-task">
                 <a href="Classes/SwiftyMockyTestObserver.html">SwiftyMockyTestObserver</a>
               </li>
@@ -235,9 +224,6 @@
               <li class="nav-group-task">
                 <a href="Internal.html#/s:11SwiftyMocky0B6Assert__4file4lineySbyXK_SSyXKs12StaticStringVSutF">MockyAssert(_:_:file:line:)</a>
               </li>
-              <li class="nav-group-task">
-                <a href="Internal.html#/MockyAssert(_:_:file:line:)">MockyAssert(_:_:file:line:)</a>
-              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -249,10 +235,21 @@
             </ul>
           </li>
           <li class="nav-group-name">
+            <a href="Other%20Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/ArgumentCaptor.html">ArgumentCaptor</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
             <a href="Other%20Enums.html">Other Enumerations</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Enums/MockScope.html">MockScope</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/Utils.html">Utils</a>
               </li>
             </ul>
           </li>
@@ -267,12 +264,44 @@
 <p>All changes to SwiftyMocky project will be documented in this file.</p>
 
 <hr>
+<h2 id='strong-4-0-0-strong-2020' class='heading'><strong>4.0.0</strong> / 2020</h2>
+<h3 id='important' class='heading'>Important:</h3>
+
+<ul>
+<li><strong>CLI</strong> is extracted to separate repo</li>
+</ul>
+<h4 id='added' class='heading'>Added:</h4>
+
+<ul>
+<li>SwiftyPrototype is now separat library, so it is now possible to use SwiftyMocky to both test &amp; prototype (fake) app.</li>
+<li>Support for methods with variadic parameters</li>
+<li>Support for <code>@available</code> and <code>@objc</code> annotations</li>
+<li>Refined assertion messages</li>
+<li>Made it easier to ship generated mocks with project, allowing to use them by 3rd party</li>
+<li>Resolved problem with ambiguity for generic methods that throws</li>
+<li>Matcher issues should be more prominent and easier trackable</li>
+<li>Matcher should fail test instead of crashing whenever possible</li>
+<li>Verify now have better failure messages, including best matching invocations</li>
+<li><code>typealias</code> annotation to workaround problems with multiple types from different modules sharing same name.</li>
+</ul>
+<h4 id='deprecated' class='heading'>Deprecated:</h4>
+
+<ul>
+<li>all methods and properties marked previously as deprecated are now removed.</li>
+</ul>
+<h4 id='fixed' class='heading'>Fixed:</h4>
+
+<ul>
+<li>Mock generation for protocols with internal types (@truebucha)</li>
+<li>Pinned CLI dependencies (@ohitsdaniel)</li>
+<li>Added missing tvOS and macOS support for carthage</li>
+</ul>
 <h2 id='strong-3-4-0-strong-2019' class='heading'><strong>3.4.0</strong> / 2019</h2>
 <h4 id='added' class='heading'>Added:</h4>
 
 <ul>
-<li>New typealias &ldquo;annotation&rdquo;, allowing to fix common issues with generic protocols and ambigious class names</li>
-<li>A &ldquo;sourcery&rdquo; section to mockfile, to specify additional sourcery configurations to execute during generation</li>
+<li>New typealias <q>annotation</q>, allowing to fix common issues with generic protocols and ambigious class names</li>
+<li>A <q>sourcery</q> section to mockfile, to specify additional sourcery configurations to execute during generation</li>
 <li><code>resetMock(...)</code> methods to reset mock internals</li>
 <li>New tests suite for Xcode 11.2 (Swift 5.2)</li>
 </ul>
@@ -525,7 +554,7 @@
         </section>
         <section id="footer">
           <p>Copyright © 2017 MakeAWishFoundation. All rights reserved.</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.0</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.11.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>

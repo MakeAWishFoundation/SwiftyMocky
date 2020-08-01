@@ -8,6 +8,7 @@
 1. [Command Line Interface](./Command%20Line%20Interface.md)
 1. [Mockfile](./Mockfile.md)
 1. [Supported Features](./Supported%20features.md)
+1. [Prototyping](./Prototyping.md)
 
 ## Other:
 

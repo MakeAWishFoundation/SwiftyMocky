@@ -13,18 +13,6 @@ public func Verify<T: Mock>(_ object: T, _ method: T.Verify, file: StaticString 
     object.verify(method, count: .moreOrEqual(to: 1), file: file, line: line)
 }
 
-/// Verify that given property getter or setter was called on mock object **at least once**.
-///
-/// - Parameters:
-///   - object: Mock instance
-///   - property: Property name, get or set with wrapped newValue (`Parameter`)
-///   - file: for XCTest print purposes
-///   - line: for XCTest print purposes
-@available(*, deprecated, message: "Use Verify instead!")
-public func VerifyProperty<T: Mock>(_ object: T, _ property: T.Verify, file: StaticString = #file, line: UInt = #line) {
-    object.verify(property, count: .moreOrEqual(to: 1), file: file, line: line)
-}
-
 // MARK: - At least once static member called
 
 /// Verify that given static method was called on mock type **at least once**.
@@ -36,18 +24,6 @@ public func VerifyProperty<T: Mock>(_ object: T, _ property: T.Verify, file: Sta
 ///   - line: for XCTest print purposes
 public func Verify<T: StaticMock>(_ type: T.Type, _ method: T.StaticVerify, file: StaticString = #file, line: UInt = #line) {
     T.verify(method, count: .moreOrEqual(to: 1), file: file, line: line)
-}
-
-/// Verify that given static property getter or setter was called on mock object **at least once**.
-///
-/// - Parameters:
-///   - object: Mock type
-///   - property: Property name, get or set with wrapped newValue (`Parameter`)
-///   - file: for XCTest print purposes
-///   - line: for XCTest print purposes
-@available(*, deprecated, message: "Use Verify instead!")
-public func VerifyProperty<T: StaticMock>(_ object: T.Type, _ property: T.StaticVerify, file: StaticString = #file, line: UInt = #line) {
-    T.verify(property, count: .moreOrEqual(to: 1), file: file, line: line)
 }
 
 // MARK: - Instance member called with explicit count
@@ -64,19 +40,6 @@ public func Verify<T: Mock>(_ object: T, _ count: Count, _ method: T.Verify, fil
     object.verify(method, count: count, file: file, line: line)
 }
 
-/// Verify that given property get / set was called on mock object **exact number of times**.
-///
-/// - Parameters:
-///   - object: Mock instance
-///   - count: Number of invocations
-///   - method: Property name, get or set with wrapped newValue (`Parameter`)
-///   - file: for XCTest print purposes
-///   - line: for XCTest print purposes
-@available(*, deprecated, message: "Use Verify instead!")
-public func VerifyProperty<T: Mock>(_ object: T, _ count: Count, _ property: T.Verify, file: StaticString = #file, line: UInt = #line) {
-    object.verify(property, count: count, file: file, line: line)
-}
-
 // MARK: - Static member called with explicit count
 
 /// Verify that given static method was called on mock type **exact number of times**.
@@ -89,19 +52,6 @@ public func VerifyProperty<T: Mock>(_ object: T, _ count: Count, _ property: T.V
 ///   - line: for XCTest print purposes
 public func Verify<T: StaticMock>(_ type: T.Type, _ count: Count, _ method: T.StaticVerify, file: StaticString = #file, line: UInt = #line) {
     T.verify(method, count: count, file: file, line: line)
-}
-
-/// Verify that given static property get / set was called on mock type **exact number of times**.
-///
-/// - Parameters:
-///   - object: Mock type
-///   - count: Number of invocations
-///   - method: Static property name, get or set with wrapped newValue (`Parameter`)
-///   - file: for XCTest print purposes
-///   - line: for XCTest print purposes
-@available(*, deprecated, message: "Use Verify instead!")
-public func VerifyProperty<T: StaticMock>(_ type: T.Type, _ count: Count, _ property: T.StaticVerify, file: StaticString = #file, line: UInt = #line) {
-    T.verify(property, count: count, file: file, line: line)
 }
 
 // MARK: - Given

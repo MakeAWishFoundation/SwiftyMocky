@@ -7,7 +7,8 @@ It  also ties generated **Mock** configuration with a specific target, allowing 
 Every generated file have its own section, following pattern below:
 
 ```yaml
-sourceryCommand: null               # 1.
+sourceryCommand: null               # 1. (optional)
+sourceryTemplate: null              # 1. (optional)
 
 mock1:                              # 2.
     sources:                        # 2.1.
@@ -28,7 +29,7 @@ mock2:                              # 2.
     ...
 ```
 
-1. `sourceryCommand` is by default `nil`. You can use it to select custom Sourcery version/command/binary, instead of using default one bundled with SwiftyMocky CLI via `mint`.
+1. `sourceryCommand` is by default `nil`. You can use it to select custom Sourcery version/command/binary, instead of using default one bundled with SwiftyMocky CLI via `mint`. `sourceryTemplate` is custpom template location to use instead of default one. Default template would be derived from Pods,Carthage,SPM directory. If not found, CLI would use bundled template.
 2. **Distinctive name** of your mock configuration. You can define as much **configurations** as you want. Each of them represents one generated file. That allows to have a separate mocks for a separate targets (you usually need that if you have more than one test target)
     1. `sources` defines what files/directories would be scanned for `AutoMockable` types.
         1. `include` list of included files/directories relative to project root

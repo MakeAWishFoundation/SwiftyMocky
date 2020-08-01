@@ -13,7 +13,7 @@
     <a title="SwiftyMocky  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">SwiftyMocky 3.5.0 Docs</a> (95% documented)</p>
+        <p><a href="index.html">SwiftyMocky 4.0.0 Docs</a> (85% documented)</p>
         <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -47,6 +47,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="supported-features.html">Supported features</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="prototyping.html">Prototyping</a>
               </li>
             </ul>
           </li>
@@ -132,6 +135,12 @@
                 <a href="Classes/Matcher.html">Matcher</a>
               </li>
               <li class="nav-group-task">
+                <a href="Classes/Matcher/ComparisonResult.html">– ComparisonResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/Matcher/ParameterComparisonResult.html">– ParameterComparisonResult</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Protocols/Countable.html">Countable</a>
               </li>
               <li class="nav-group-task">
@@ -171,28 +180,8 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="Deprecated.html">Deprecated</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty__4file4lineyx_0C0Qzs12StaticStringVSutAA4MockRzlF">VerifyProperty(_:_:file:line:)</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty__4file4lineyxm_06StaticC0Qzs0G6StringVSutAA0G4MockRzlF">VerifyProperty(_:_:file:line:)</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty___4file4lineyx_AA5CountO0C0Qzs12StaticStringVSutAA4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Deprecated.html#/s:11SwiftyMocky14VerifyProperty___4file4lineyxm_AA5CountO06StaticC0Qzs0H6StringVSutAA0H4MockRzlF">VerifyProperty(_:_:_:file:line:)</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
             <a href="Internal.html">Internal</a>
             <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="Classes/SwiftyMockyTestObserver.html">SwiftyMockyTestObserver</a>
-              </li>
               <li class="nav-group-task">
                 <a href="Classes/SwiftyMockyTestObserver.html">SwiftyMockyTestObserver</a>
               </li>
@@ -235,9 +224,6 @@
               <li class="nav-group-task">
                 <a href="Internal.html#/s:11SwiftyMocky0B6Assert__4file4lineySbyXK_SSyXKs12StaticStringVSutF">MockyAssert(_:_:file:line:)</a>
               </li>
-              <li class="nav-group-task">
-                <a href="Internal.html#/MockyAssert(_:_:file:line:)">MockyAssert(_:_:file:line:)</a>
-              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -249,10 +235,21 @@
             </ul>
           </li>
           <li class="nav-group-name">
+            <a href="Other%20Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/ArgumentCaptor.html">ArgumentCaptor</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
             <a href="Other%20Enums.html">Other Enumerations</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Enums/MockScope.html">MockScope</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/Utils.html">Utils</a>
               </li>
             </ul>
           </li>
@@ -262,21 +259,21 @@
         <section>
           <section class="section">
             
-            <h1 id='swiftymocky-3-5-0' class='heading'>SwiftyMocky 3.5.0</h1>
+            <h1 id='swiftymocky-4-0-0' class='heading'>SwiftyMocky 4.0.0</h1>
 <h1 id='img-src-https-raw-githubusercontent-com-makeawishfoundation-swiftymocky-1-0-0-icon-png-alt-logo' class='heading'><img src="https://raw.githubusercontent.com/MakeAWishFoundation/SwiftyMocky/1.0.0/icon.png" alt="logo"></h1>
 
 <p>Join our community on Slack! -&gt; [invitation link here][link-slack]</p>
 
-<p>Check out <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.5.0/docs/contents.html">guides</a>, or full <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.5.0/docs/index.html">documentation</a></p>
+<p>Check out <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.0.0/docs/contents.html">guides</a>, or full <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.0.0/docs/index.html">documentation</a></p>
 <h2 id='table-of-contents' class='heading'>Table of contents</h2>
 
 <ol>
 <li><a href="#overview">Overview</a></li>
-<li><a href="#current-version">Current version</a></li>
+<li><a href="#current-version">Current Version</a></li>
 <li><a href="#getting-started">Getting started:</a>
 
 <ol>
-<li><a href="#installation">Installing SiwftyMocky CLI</a></li>
+<li><a href="#installation">Installing SwiftyMocky CLI</a></li>
 <li><a href="#integration">Integrating SwiftyMocky runtime into test target</a></li>
 <li><a href="#generation">Generate mocks</a></li>
 </ol></li>
@@ -319,11 +316,13 @@
 </ul>
 
 <p><a name="current-version"></a></p>
-<h2 id='current-version' class='heading'>Current version</h2>
+<h2 id='strong-important-strong-version-4-x-x' class='heading'><strong>Important!!!</strong> Version 4.x.x</h2>
 
-<p>We consider current version as stable. We are moving toward using the new <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.5.0/docs/mockfile.html">Mockfile</a> but the previous configuration format would be still supported, until SwiftyMocky 4.0. Library works with Swift <strong>4.1, 4.2, 5.0</strong>  and  Sourcery 0.16.0.</p>
+<p>Current version has several significant changes. It removes deprecated methods (which might be breaking) and moves CLI to the new <a href="https://github.com/MakeAWishFoundation/SwiftyMockyCLI">repository</a>.</p>
 
-<p>While it is technically possible to integrate SwiftyMocky on Linux targets, there is no Mock generation feature there yet.</p>
+<p>We consider current version as stable. We are moving toward using the new <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.0.0/docs/mockfile.html">Mockfile</a> but the previous configuration format would be still supported. Library works with Swift <strong>4.1, 4.2, 5.0, 5.1.2</strong>  and  Sourcery 0.17-0.18.</p>
+
+<p>While it is technically possible to integrate SwiftyMocky on Linux targets, there is no Mock generation feature there yet. You can use SwiftyMokcy runtime via SwiftPM though, as long as your are fine with generating mocks on mac machine.</p>
 
 <p><a name="getting-started"></a></p>
 <h2 id='getting-started' class='heading'>Getting started</h2>
@@ -340,24 +339,28 @@
 <h3 id='1-installing-swiftymocky-cli' class='heading'>1. Installing SwiftyMocky CLI:</h3>
 
 <p><strong><a href="https://github.com/yonaskolb/Mint">Mint 🌱</a></strong>:</p>
-<pre class="highlight shell"><code><span class="o">&gt;</span> brew <span class="nb">install </span>mint
-<span class="o">&gt;</span> mint <span class="nb">install </span>MakeAWishFoundation/SwiftyMocky
+<pre class="highlight shell"><code><span class="gp">&gt; </span>brew install mint
+<span class="gp">&gt; </span>mint install MakeAWishFoundation/SwiftyMocky-CLI
 </code></pre>
 
 <p><strong><a href="https://github.com/JohnSundell/Marathon">Marathon 🏃</a></strong>:</p>
-<pre class="highlight shell"><code><span class="o">&gt;</span> marathon <span class="nb">install </span>MakeAWishFoundation/SwiftyMocky
+<pre class="highlight shell"><code><span class="gp">&gt; </span>marathon install MakeAWishFoundation/SwiftyMocky-CLI
 </code></pre>
+
+<p><strong>Make</strong>:</p>
+
+<p>Clone from <a href="https://github.com/MakeAWishFoundation/SwiftyMockyCLI">https://github.com/MakeAWishFoundation/SwiftyMockyCLI</a> and run <code>make</code> in the root directory.</p>
 
 <p><a name="integration"></a></p>
 <h3 id='2-integrating-swiftymocky-runtime-into-test-target' class='heading'>2. Integrating SwiftyMocky runtime into test target:</h3>
 
-<p><strong><a href="http://cocoapods.org">CocoaPods</a></strong>: </p>
+<p><strong><a href="http://cocoapods.org">CocoaPods</a></strong>:</p>
 
 <p>SwiftyMocky is available through <a href="http://cocoapods.org">CocoaPods</a>. To install it, simply add the following line to your Podfile:</p>
 <pre class="highlight ruby"><code><span class="n">pod</span> <span class="s2">"SwiftyMocky"</span>
 </code></pre>
 
-<p><strong><a href="https://github.com/Carthage/Carthage">Carthage</a></strong>: </p>
+<p><strong><a href="https://github.com/Carthage/Carthage">Carthage</a></strong>:</p>
 
 <p>To install, add following to you Cartfile:</p>
 <pre class="highlight ruby"><code><span class="n">github</span> <span class="s2">"MakeAWishFoundation/SwiftyMocky"</span>
@@ -365,13 +368,13 @@
 
 <p>Then execute <code>carthage update</code></p>
 
-<p>For <a href="https://github.com/Carthage/Carthage">Carthage</a>, few additional steps are required ⚠️. For detailed install instructions, see full <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.5.0/docs/installation.html#installation-carthage">documentation</a>.</p>
+<p>For <a href="https://github.com/Carthage/Carthage">Carthage</a>, few additional steps are required ⚠️. For detailed install instructions, see full <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.0.0/docs/installation.html#installation-carthage">documentation</a> or consult [Carthage documentation][carthage-adding-framework].</p>
 
 <p><strong><a href="https://swift.org/package-manager/">Swift Package Manager</a></strong>:</p>
 
 <p>Add <strong>SwiftyMocky</strong> to you <strong>Package.swift</strong> dependencies:</p>
 <pre class="highlight swift"><code><span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span>
-    <span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"https://github.com/MakeAWishFoundation/SwiftyMocky"</span><span class="p">,</span> <span class="nv">from</span><span class="p">:</span> <span class="s">"3.5.0"</span><span class="p">),</span>
+    <span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"https://github.com/MakeAWishFoundation/SwiftyMocky"</span><span class="p">,</span> <span class="nv">from</span><span class="p">:</span> <span class="s">"4.0.0"</span><span class="p">),</span>
 <span class="p">]</span>
 </code></pre>
 
@@ -384,21 +387,21 @@
 
 <p><a href="#mock-annotate">Annotate your protocols</a> that are going to be mocked, making them adopt <code>AutoMockable</code> protocol, or adding annotation comment above their definition in the source code.</p>
 
-<p>Mocks are generated from your project root directory, based on configuration inside <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.5.0/docs/mockfile.html">Mockfile</a>. </p>
-<pre class="highlight shell"><code><span class="o">&gt;</span> swiftymocky setup     <span class="c"># if you don't have a Mockfile yet</span>
-<span class="o">&gt;</span> swiftymocky doctor    <span class="c"># validate your setup</span>
-<span class="o">&gt;</span> swiftymocky generate  <span class="c"># generate mocks</span>
+<p>Mocks are generated from your project root directory, based on configuration inside <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.0.0/docs/mockfile.html">Mockfile</a>.</p>
+<pre class="highlight shell"><code><span class="gp">&gt; </span>swiftymocky setup     <span class="c"># if you don't have a Mockfile yet</span>
+<span class="gp">&gt; </span>swiftymocky doctor    <span class="c"># validate your setup</span>
+<span class="gp">&gt; </span>swiftymocky generate  <span class="c"># generate mocks</span>
 </code></pre>
 
-<p>More informations about <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.5.0/docs/command-line-interface.html">CLI</a> and <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.5.0/docs/command-line-interface.html#generate">mock generation</a></p>
+<p>More informations about <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.0.0/docs/command-line-interface.html">CLI</a> and <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.0.0/docs/command-line-interface.html#generate">mock generation</a></p>
 
-<p>If you don&rsquo;t want to migrate to our <strong>CLI</strong> and prefer to use &ldquo;raw&rdquo; Sourcery, please refer <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.5.0/docs/legacy.html">to this section in documentation</a>.</p>
+<p>If you don&rsquo;t want to migrate to our <strong>CLI</strong> and prefer to use <q>raw</q> Sourcery, please refer <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.0.0/docs/legacy.html">to this section in documentation</a>.</p>
 
 <p><a name="usage"></a></p>
 <h1 id='usage' class='heading'>Usage</h1>
 
 <p><a name="mock-annotate"></a></p>
-<h2 id='1-marking-protocols-to-be-mocked' class='heading'>1.Marking protocols to be mocked</h2>
+<h2 id='1-marking-protocols-to-be-mocked' class='heading'>1. Marking protocols to be mocked</h2>
 
 <p>Create &lsquo;dummy&rsquo; protocol somewhere in your project, like: <code>protocol AutoMockable { }</code></p>
 
@@ -416,14 +419,6 @@
 </code></pre>
 
 <p>Every protocol in source directories, having this annotation, will be added to <code>Mock.generated.swift</code></p>
-
-<p>@objc protocols are also supported, but needs to be explicitly marked with ObjcProtocol annotation:</p>
-<pre class="highlight swift"><code><span class="c1">//sourcery: AutoMockable</span>
-<span class="c1">//sourcery: ObjcProtocol</span>
-<span class="kd">@objc</span> <span class="kd">protocol</span> <span class="kt">NonSwiftProtocol</span> <span class="p">{</span>
-  <span class="c1">// ...</span>
-<span class="p">}</span>
-</code></pre>
 
 <p><a name="given"></a></p>
 <h2 id='2-stubbing-return-values-for-mock-methods-strong-given-strong' class='heading'>2. Stubbing return values for mock methods - <strong>Given</strong></h2>
@@ -453,7 +448,7 @@
 <span class="c1">// ...</span>
 </code></pre>
 
-<p>For more details please see full <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.5.0/docs/index.html">documentation</a>.</p>
+<p>For more details please see full <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.0.0/docs/index.html">documentation</a>.</p>
 
 <p><a name="verify"></a></p>
 <h2 id='3-check-invocations-of-methods-subscripts-and-properties-strong-verify-strong' class='heading'>3. Check invocations of methods, subscripts and properties - <strong>Verify</strong></h2>
@@ -502,7 +497,7 @@
 
 <p>All mocks has <strong>perform</strong> method (accessible both as instance method or global function), with easy to use syntax, allowing to specify closure, that will be executed upon stubbed method being called.</p>
 
-<p>It uses same paramter wrapping features as given, so you can specify different <strong>Perform</strong> cases for different attributes set.</p>
+<p>It uses same parameter wrapping features as given, so you can specify different <strong>Perform</strong> cases for different attributes set.</p>
 
 <p>It&rsquo;s very handy when working with completion block based approach.</p>
 
@@ -512,29 +507,29 @@
     <span class="nf">completion</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span><span class="kc">nil</span><span class="p">)</span>
 <span class="p">}))</span>
 </code></pre>
+
+<p><a name="guides"></a></p>
 <h1 id='documentation' class='heading'>Documentation</h1>
 
-<p>Full documentation is available <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.5.0/docs/index.html">here</a>, as well as through <em>docs</em> directory.</p>
+<p>Full documentation is available <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.0.0/docs/index.html">here</a>, as well as through <em>docs</em> directory.</p>
 
-<p>Guides - <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.5.0/docs/contents.html">Table of contents</a></p>
+<p>Guides - <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.0.0/docs/contents.html">Table of contents</a></p>
 
-<p>Changelog is available <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.5.0/docs/changelog.html">here</a></p>
+<p>Changelog is available <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.0.0/docs/changelog.html">here</a></p>
 
 <p><a name="features"></a></p>
 <h2 id='all-supported-features' class='heading'>All supported features</h2>
 
-<p>For list all supported features, check documentation <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.5.0/docs/supported-features.html">here</a> or [guides][link-guides-features]</p>
+<p>For list all supported features, check documentation <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.0.0/docs/supported-features.html">here</a> or [guides][link-guides-features]</p>
 
 <p><a name="examples"></a></p>
 <h2 id='examples-of-usage' class='heading'>Examples of usage</h2>
 
-<p>For more examples, check out our example project, or examples section in <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/3.5.0/docs/examples.html">guides</a>.</p>
+<p>For more examples, check out our example project, or examples section in <a href="https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.0.0/docs/examples.html">guides</a>.</p>
 
 <p>To run the example project, clone the repo, and run <code>pod install</code> from the Example directory first.</p>
 
-<p>To trigger mocks generation, run <code>rake mock</code> from root directory. For watcher mode, when mocks are generated every time you change your file projects, use <code>rake mock_watcher</code> instead.</p>
-
-<p><a name="guides"></a></p>
+<p>To trigger mocks generation, run <code>rake mock</code> or <code>swiftymocky generate</code> from root directory (if you installed CLI).</p>
 
 <p><a name="roadmap"></a></p>
 <h2 id='roadmap' class='heading'>Roadmap</h2>
@@ -566,7 +561,7 @@
 <p><a name="license"></a></p>
 <h2 id='license' class='heading'>License</h2>
 
-<p>SwiftyMocky is available under the MIT license. </p>
+<p>SwiftyMocky is available under the MIT license. See the [LICENSE][link-license] file for more info.</p>
 
 <!-- Links -->
 
@@ -578,7 +573,7 @@
         </section>
         <section id="footer">
           <p>Copyright © 2017 MakeAWishFoundation. All rights reserved.</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.0</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.11.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>
