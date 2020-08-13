@@ -250,7 +250,7 @@ Verify(mockStorage, 3, .storeUser(name: .any, surname: .any))
 // storeUser method should be triggered 2 times with name Johny
 Verify(mockStorage, 2, .storeUser(name: .value("Johny"), surname: .any))
 // storeUser method should be triggered at least 2 times with name longer than 3
-Verify(mockStorage, .moreOrEqual(to: 2), .storeUser(name: .matching({ $0.count > 3 }}), surname: .any))
+Verify(mockStorage, .moreOrEqual(to: 2), .storeUser(name: .matching({ $0.count > 3 }), surname: .any))
 ```
 
 For **Verify**, you can use **Count** to specify how many times you expect something to be triggered. **Count** can be defined as explicit value, like `1`,`2`,... or in more descriptive and flexible way, like `.never`, `more(than: 1)`, etc.
