@@ -57,7 +57,7 @@ class VerifyMessagesTests: XCTestCase {
     }
 
     func testMessagesForProperties() {
-        let mock = ProtocolWithPropoertiesMock()
+        let mock = ProtocolWithPropertiesMock()
 
         Given(mock, .email(getter: "john@mail.com"))
         Given(mock, .name(getter: "john"))

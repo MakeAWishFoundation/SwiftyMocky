@@ -10,6 +10,7 @@
     let inlineMockable = protocolToDecorate != nil
     guard let aProtocol = autoMockable ? type : protocolToDecorate else { continue }
     mockedCount += 1
+
     let associatedTypes: [String]? = Helpers.extractAssociatedTypes(from: aProtocol)
     let attributes: String = Helpers.extractAttributes(from: type.attributes)
     let typeAliases: [String] = Helpers.extractTypealiases(from: aProtocol)
@@ -23,6 +24,7 @@
     let allMethods = uniques(methods: aProtocol.allMethods.filter({ !$0.isStatic }))
     let selfConstrained = allMethods.map(wrapMethod).contains(where: { $0.returnsGenericConstrainedToSelf || $0.parametersContainsSelf })
     let accessModifier: String = selfConstrained ? "public final" : "open"
+    Current.accessModifier = accessModifier // TODO: Temporary workaround for access modifiers
     let inheritFromNSObject = type.annotations["ObjcProtocol"] != nil || attributes.contains("@objc")
     let allMethodsForMethodType = uniquesWithoutGenericConstraints(methods: aProtocol.allMethods.filter({ !$0.isStatic }))
     let allStaticMethods = uniques(methods: aProtocol.allMethods.filter({ $0.isStatic }))

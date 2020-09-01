@@ -3579,7 +3579,7 @@ public final class FailsWithReturnedTypeBeingGenericOfSelfMock: FailsWithReturne
 		return _wrapped()
     }
 
-    open func test(value: FailsWithReturnedTypeBeingGenericOfSelfMock) -> Bool {
+    public final func test(value: FailsWithReturnedTypeBeingGenericOfSelfMock) -> Bool {
         addInvocation(.m_test__value_value(Parameter<FailsWithReturnedTypeBeingGenericOfSelfMock>.value(`value`)))
 		let perform = methodPerformValue(.m_test__value_value(Parameter<FailsWithReturnedTypeBeingGenericOfSelfMock>.value(`value`))) as? (FailsWithReturnedTypeBeingGenericOfSelfMock) -> Void
 		perform?(`value`)
@@ -8523,9 +8523,9 @@ open class ProtocolWithMethodsWithGenericReturnTypeThatThrowsMock: ProtocolWithM
     }
 }
 
-// MARK: - ProtocolWithPropoerties
+// MARK: - ProtocolWithProperties
 
-open class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMock {
+open class ProtocolWithPropertiesMock: ProtocolWithProperties, Mock, StaticMock {
     public init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
         self.sequencingPolicy = sequencingPolicy
@@ -8578,27 +8578,33 @@ open class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMoc
     }
 
     public var name: String {
-		get {	invocations.append(.p_name_get); return __p_name ?? givenGetterValue(.p_name_get, "ProtocolWithPropoertiesMock - stub value for name was not defined") }
+		get {	invocations.append(.p_name_get); return __p_name ?? givenGetterValue(.p_name_get, "ProtocolWithPropertiesMock - stub value for name was not defined") }
 		set {	invocations.append(.p_name_set(.value(newValue))); __p_name = newValue }
 	}
 	private var __p_name: (String)?
 
     public var email: String? {
-		get {	invocations.append(.p_email_get); return __p_email ?? optionalGivenGetterValue(.p_email_get, "ProtocolWithPropoertiesMock - stub value for email was not defined") }
+		get {	invocations.append(.p_email_get); return __p_email ?? optionalGivenGetterValue(.p_email_get, "ProtocolWithPropertiesMock - stub value for email was not defined") }
 		set {	invocations.append(.p_email_set(.value(newValue))); __p_email = newValue }
 	}
 	private var __p_email: (String)?
 
+    public var internalProperty: InternalType {
+		get {	invocations.append(.p_internalProperty_get); return __p_internalProperty ?? givenGetterValue(.p_internalProperty_get, "ProtocolWithPropertiesMock - stub value for internalProperty was not defined") }
+		set {	invocations.append(.p_internalProperty_set(.value(newValue))); __p_internalProperty = newValue }
+	}
+	private var __p_internalProperty: (InternalType)?
+
 
     public static var name: String {
-		get {	ProtocolWithPropoertiesMock.invocations.append(.p_name_get); return ProtocolWithPropoertiesMock.__p_name ?? givenGetterValue(.p_name_get, "ProtocolWithPropoertiesMock - stub value for name was not defined") }
-		set {	ProtocolWithPropoertiesMock.invocations.append(.p_name_set(.value(newValue))); ProtocolWithPropoertiesMock.__p_name = newValue }
+		get {	ProtocolWithPropertiesMock.invocations.append(.p_name_get); return ProtocolWithPropertiesMock.__p_name ?? givenGetterValue(.p_name_get, "ProtocolWithPropertiesMock - stub value for name was not defined") }
+		set {	ProtocolWithPropertiesMock.invocations.append(.p_name_set(.value(newValue))); ProtocolWithPropertiesMock.__p_name = newValue }
 	}
 	private static var __p_name: (String)?
 
     public static var defaultEmail: String? {
-		get {	ProtocolWithPropoertiesMock.invocations.append(.p_defaultEmail_get); return ProtocolWithPropoertiesMock.__p_defaultEmail ?? optionalGivenGetterValue(.p_defaultEmail_get, "ProtocolWithPropoertiesMock - stub value for defaultEmail was not defined") }
-		set {	ProtocolWithPropoertiesMock.invocations.append(.p_defaultEmail_set(.value(newValue))); ProtocolWithPropoertiesMock.__p_defaultEmail = newValue }
+		get {	ProtocolWithPropertiesMock.invocations.append(.p_defaultEmail_get); return ProtocolWithPropertiesMock.__p_defaultEmail ?? optionalGivenGetterValue(.p_defaultEmail_get, "ProtocolWithPropertiesMock - stub value for defaultEmail was not defined") }
+		set {	ProtocolWithPropertiesMock.invocations.append(.p_defaultEmail_set(.value(newValue))); ProtocolWithPropertiesMock.__p_defaultEmail = newValue }
 	}
 	private static var __p_defaultEmail: (String)?
 
@@ -8709,6 +8715,8 @@ open class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMoc
 		case p_name_set(Parameter<String>)
         case p_email_get
 		case p_email_set(Parameter<String?>)
+        case p_internalProperty_get
+		case p_internalProperty_set(Parameter<InternalType>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
@@ -8725,6 +8733,8 @@ open class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMoc
 			case (.p_name_set(let left),.p_name_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<String>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
             case (.p_email_get,.p_email_get): return Matcher.ComparisonResult.match
 			case (.p_email_set(let left),.p_email_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<String?>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
+            case (.p_internalProperty_get,.p_internalProperty_get): return Matcher.ComparisonResult.match
+			case (.p_internalProperty_set(let left),.p_internalProperty_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<InternalType>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
             default: return .none
             }
         }
@@ -8737,6 +8747,8 @@ open class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMoc
 			case .p_name_set(let newValue): return newValue.intValue
             case .p_email_get: return 0
 			case .p_email_set(let newValue): return newValue.intValue
+            case .p_internalProperty_get: return 0
+			case .p_internalProperty_set(let newValue): return newValue.intValue
             }
         }
         func assertionName() -> String {
@@ -8747,6 +8759,8 @@ open class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMoc
 			case .p_name_set: return "[set] .name"
             case .p_email_get: return "[get] .email"
 			case .p_email_set: return "[set] .email"
+            case .p_internalProperty_get: return "[get] .internalProperty"
+			case .p_internalProperty_set: return "[set] .internalProperty"
             }
         }
     }
@@ -8765,6 +8779,9 @@ open class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMoc
         public static func email(getter defaultValue: String?...) -> PropertyStub {
             return Given(method: .p_email_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
         }
+        public static func internalProperty(getter defaultValue: InternalType...) -> PropertyStub {
+            return Given(method: .p_internalProperty_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
 
     }
 
@@ -8777,6 +8794,8 @@ open class ProtocolWithPropoertiesMock: ProtocolWithPropoerties, Mock, StaticMoc
 		public static func name(set newValue: Parameter<String>) -> Verify { return Verify(method: .p_name_set(newValue)) }
         public static var email: Verify { return Verify(method: .p_email_get) }
 		public static func email(set newValue: Parameter<String?>) -> Verify { return Verify(method: .p_email_set(newValue)) }
+        public static var internalProperty: Verify { return Verify(method: .p_internalProperty_get) }
+		public static func internalProperty(set newValue: Parameter<InternalType>) -> Verify { return Verify(method: .p_internalProperty_set(newValue)) }
     }
 
     public struct Perform {

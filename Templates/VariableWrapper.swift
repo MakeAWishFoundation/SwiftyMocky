@@ -6,7 +6,8 @@ class VariableWrapper {
     var casesCount: Int { return readonly ? 1 : 2 }
 
     var accessModifier: String {
-        guard variable.type?.accessLevel != "internal" else { return "" }
+        // TODO: Fix access levels for SwiftyPrototype
+        // guard variable.type?.accessLevel != "internal" else { return "" }
         return "public "
     }
     var attributes: String {

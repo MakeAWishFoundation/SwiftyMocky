@@ -19,7 +19,7 @@ import SwiftyMocky
 class ProtocolsWithPropertiesTests: XCTestCase {
 
     func test_properties_getters() {
-        let mock = ProtocolWithPropoertiesMock()
+        let mock = ProtocolWithPropertiesMock()
 
         Verify(mock, .never, .name)
         Verify(mock, .never, .name(set: .any))
@@ -36,7 +36,7 @@ class ProtocolsWithPropertiesTests: XCTestCase {
     }
 
     func test_properties_setters() {
-        let mock = ProtocolWithPropoertiesMock()
+        let mock = ProtocolWithPropertiesMock()
 
         Verify(mock, .never, .name)
         Verify(mock, .never, .name(set: .any))
@@ -52,7 +52,7 @@ class ProtocolsWithPropertiesTests: XCTestCase {
     }
 
     func test_static_properties_getters() {
-        let mock = ProtocolWithPropoertiesMock.self
+        let mock = ProtocolWithPropertiesMock.self
         mock.resetMock()
 
         Verify(mock, .never, .name)
@@ -70,7 +70,7 @@ class ProtocolsWithPropertiesTests: XCTestCase {
     }
 
     func test_static_properties_setters() {
-        let mock = ProtocolWithPropoertiesMock.self
+        let mock = ProtocolWithPropertiesMock.self
         mock.resetMock()
 
         Verify(mock, .never, .name)

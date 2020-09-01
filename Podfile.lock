@@ -1,5 +1,5 @@
 PODS:
-  - Sourcery (0.18.0)
+  - Sourcery (1.0.0)
   - SwiftyMocky (4.0.0):
     - Sourcery (>= 0.18)
 

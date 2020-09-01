@@ -53,6 +53,7 @@ import SwiftyPrototype
 <%_
 class Current {
     static var selfType: String = "Self"
+    static var accessModifier: String = "open"
 }
 // Collision management
 func areThereCollisions(between methods: [MethodWrapper]) -> Bool {
@@ -513,7 +514,7 @@ class MethodWrapper {
         guard !method.isStatic else { return "public static" }
         guard !returnsGenericConstrainedToSelf else { return "public" }
         guard !parametersContainsSelf else { return "public" }
-        return "open"
+        return Current.accessModifier
     }
 
     private var registrationName: String {
@@ -1404,7 +1405,8 @@ class VariableWrapper {
     var casesCount: Int { return readonly ? 1 : 2 }
 
     var accessModifier: String {
-        guard variable.type?.accessLevel != "internal" else { return "" }
+        // TODO: Fix access levels for SwiftyPrototype
+        // guard variable.type?.accessLevel != "internal" else { return "" }
         return "public "
     }
     var attributes: String {
@@ -1519,6 +1521,7 @@ _%>
     let inlineMockable = protocolToDecorate != nil
     guard let aProtocol = autoMockable ? type : protocolToDecorate else { continue }
     mockedCount += 1
+
     let associatedTypes: [String]? = Helpers.extractAssociatedTypes(from: aProtocol)
     let attributes: String = Helpers.extractAttributes(from: type.attributes)
     let typeAliases: [String] = Helpers.extractTypealiases(from: aProtocol)
@@ -1532,6 +1535,7 @@ _%>
     let allMethods = uniques(methods: aProtocol.allMethods.filter({ !$0.isStatic }))
     let selfConstrained = allMethods.map(wrapMethod).contains(where: { $0.returnsGenericConstrainedToSelf || $0.parametersContainsSelf })
     let accessModifier: String = selfConstrained ? "public final" : "open"
+    Current.accessModifier = accessModifier // TODO: Temporary workaround for access modifiers
     let inheritFromNSObject = type.annotations["ObjcProtocol"] != nil || attributes.contains("@objc")
     let allMethodsForMethodType = uniquesWithoutGenericConstraints(methods: aProtocol.allMethods.filter({ !$0.isStatic }))
     let allStaticMethods = uniques(methods: aProtocol.allMethods.filter({ $0.isStatic }))

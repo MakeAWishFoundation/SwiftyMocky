@@ -53,7 +53,7 @@ class MethodWrapper {
         guard !method.isStatic else { return "public static" }
         guard !returnsGenericConstrainedToSelf else { return "public" }
         guard !parametersContainsSelf else { return "public" }
-        return "open"
+        return Current.accessModifier
     }
 
     private var registrationName: String {
