@@ -4,6 +4,13 @@ All changes to SwiftyMocky project will be documented in this file.
 
 -----
 
+## __4.0.1__ / 2020
+
+#### Fixed:
+* Fixed issues with access modifiers for properties
+
+-----
+
 ## __4.0.0__ / 2020
 
 ### Important:

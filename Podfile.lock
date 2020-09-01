@@ -1,6 +1,6 @@
 PODS:
   - Sourcery (1.0.0)
-  - SwiftyMocky (4.0.0):
+  - SwiftyMocky (4.0.1):
     - Sourcery (>= 0.18)
 
 DEPENDENCIES:
