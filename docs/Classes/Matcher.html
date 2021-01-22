@@ -14,7 +14,7 @@
     <a title="Matcher Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">SwiftyMocky 4.0.1 Docs</a> (85% documented)</p>
+        <p><a href="../index.html">SwiftyMocky 4.0.3 Docs</a> (85% documented)</p>
         <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -722,7 +722,12 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Default Sequence comparator, compares count, and then element by element.</p>
+                        <p>Default Sequence comparator, compares count, and then depending on sequence type:</p>
+
+<ul>
+<li>for Arrays, elements will be compared element by element (verifying order as well)</li>
+<li><p>other Sequences would be treated as unordered, so every element has to have matching element</p></li>
+</ul>
 
                       </div>
                       <div class="declaration">
