@@ -40,4 +40,118 @@ class MatcherTests: XCTestCase {
         XCTAssert(mock.value(for: bb) == 2)
         XCTAssert(mock.value(for: c) == 3)
     }
+
+    func test_default_matcher_for_array() {
+        Matcher.default.register(TInt.self) { (lhs, rhs) -> Bool in
+            return lhs.value == rhs.value
+        }
+        guard let comparator = Matcher.default.comparator(for: [TInt].self) else {
+            XCTFail("Could not generate default matcher comparator")
+            return
+        }
+
+        XCTAssertTrue(
+            comparator(
+                [TInt(0), TInt(20), TInt(7), TInt(13)],
+                [TInt(0), TInt(20), TInt(7), TInt(13)]
+            )
+        )
+        XCTAssertFalse(
+            comparator(
+                [TInt(0), TInt(20), TInt(7), TInt(13)],
+                [TInt(0), TInt(20), TInt(7)]
+            )
+        )
+        XCTAssertFalse(
+            comparator(
+                [TInt(0), TInt(20), TInt(7), TInt(13)],
+                [TInt(0), TInt(-3), TInt(7), TInt(13)]
+            )
+        )
+        XCTAssertFalse(
+            comparator(
+                [TInt(0), TInt(20), TInt(7), TInt(13)],
+                [TInt(0), TInt(7), TInt(20), TInt(13)]
+            )
+        )
+    }
+
+    func test_default_matcher_for_set() {
+        guard let comparator = Matcher.default.comparator(for: Set<Int>.self) else {
+            XCTFail("Could not generate default matcher comparator")
+            return
+        }
+
+        XCTAssertTrue(
+            comparator(
+                Set(arrayLiteral: 0,20,7,13),
+                Set(arrayLiteral: 0,20,7,13)
+            )
+        )
+        XCTAssertFalse(
+            comparator(
+                Set(arrayLiteral: 0,20,7,13),
+                Set(arrayLiteral: 0,-3,7,13)
+            )
+        )
+        XCTAssertFalse(
+            comparator(
+                Set(arrayLiteral: 0,20,7,13),
+                Set(arrayLiteral: 0,20,7)
+            )
+        )
+        XCTAssertTrue(
+            comparator(
+                Set(arrayLiteral: 0,20,7,13),
+                Set(arrayLiteral: 0,7,20,13)
+            )
+        )
+    }
+
+    func test_default_matcher_for_dictionary() {
+        Matcher.default.register(TInt.self) { (lhs, rhs) -> Bool in
+            return lhs.value == rhs.value
+        }
+        Matcher.default.register([Int: TInt].Element.self) { (lhs, rhs) -> Bool in
+            return lhs.1.value == rhs.1.value
+        }
+
+        guard let comparator = Matcher.default.comparator(for: [Int: TInt].self) else {
+            XCTFail("Could not generate default matcher comparator")
+            return
+        }
+
+        XCTAssertTrue(
+            comparator(
+                Dictionary(dictionaryLiteral: (0, TInt(0)), (1, TInt(20)), (2, TInt(7)), (3, TInt(13))),
+                Dictionary(dictionaryLiteral: (0, TInt(0)), (1, TInt(20)), (2, TInt(7)), (3, TInt(13)))
+            )
+        )
+        XCTAssertFalse(
+            comparator(
+                Dictionary(dictionaryLiteral: (0, TInt(0)), (1, TInt(20)), (2, TInt(7)), (3, TInt(13))),
+                Dictionary(dictionaryLiteral: (0, TInt(0)), (1, TInt(-3)), (2, TInt(7)), (3, TInt(13)))
+            )
+        )
+        XCTAssertFalse(
+            comparator(
+                Dictionary(dictionaryLiteral: (0, TInt(0)), (1, TInt(20)), (2, TInt(7)), (3, TInt(13))),
+                Dictionary(dictionaryLiteral: (0, TInt(0)), (1, TInt(20)), (2, TInt(7)))
+            )
+        )
+        XCTAssertTrue(
+            comparator(
+                Dictionary(dictionaryLiteral: (0, TInt(0)), (1, TInt(20)), (2, TInt(7)), (3, TInt(13))),
+                Dictionary(dictionaryLiteral: (0, TInt(0)), (2, TInt(7)), (1, TInt(20)), (3, TInt(13)))
+            )
+        )
+    }
+}
+
+struct TInt {
+    let value: Int
+
+    init(_ value: Int) {
+        self.value = value
+    }
 }
