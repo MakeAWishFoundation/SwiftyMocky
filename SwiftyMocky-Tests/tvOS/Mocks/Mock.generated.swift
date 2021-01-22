@@ -6248,6 +6248,21 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
 		perform?(`dependency`)
     }
 
+    @available(iOS 14, *)
+	open func funcC(_ dependency: ProtocolWithAttributes) -> Bool {
+        addInvocation(.m_funcC__dependency(Parameter<ProtocolWithAttributes>.value(`dependency`)))
+		let perform = methodPerformValue(.m_funcC__dependency(Parameter<ProtocolWithAttributes>.value(`dependency`))) as? (ProtocolWithAttributes) -> Void
+		perform?(`dependency`)
+		var __value: Bool
+		do {
+		    __value = try methodReturnValue(.m_funcC__dependency(Parameter<ProtocolWithAttributes>.value(`dependency`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for funcC(_ dependency: ProtocolWithAttributes). Use given")
+			Failure("Stub return value not specified for funcC(_ dependency: ProtocolWithAttributes). Use given")
+		}
+		return __value
+    }
+
     @discardableResult
 	open func inlinableFunc(_ val: Int) -> Int {
         addInvocation(.m_inlinableFunc__val(Parameter<Int>.value(`val`)))
@@ -6282,6 +6297,8 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
     fileprivate enum MethodType {
         @available(iOS 14, *)
 		case m_funcB__dependency(Parameter<ProtocolWithAttributes>)
+        @available(iOS 14, *)
+		case m_funcC__dependency(Parameter<ProtocolWithAttributes>)
         case m_inlinableFunc__val(Parameter<Int>)
         @available(iOS 12, macOS 10.14, *)
 		case subscript_get_x_y(Parameter<Int>, Parameter<Int>)
@@ -6291,6 +6308,11 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
             case (.m_funcB__dependency(let lhsDependency), .m_funcB__dependency(let rhsDependency)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsDependency, rhs: rhsDependency, with: matcher), lhsDependency, rhsDependency, "_ dependency"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_funcC__dependency(let lhsDependency), .m_funcC__dependency(let rhsDependency)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsDependency, rhs: rhsDependency, with: matcher), lhsDependency, rhsDependency, "_ dependency"))
 				return Matcher.ComparisonResult(results)
@@ -6317,6 +6339,7 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
         func intValue() -> Int {
             switch self {
             case let .m_funcB__dependency(p0): return p0.intValue
+            case let .m_funcC__dependency(p0): return p0.intValue
             case let .m_inlinableFunc__val(p0): return p0.intValue
             case let .subscript_get_x_y(p0, p1): return p0.intValue + p1.intValue
 			case let .subscript_set_x_y(p0, p1, _): return p0.intValue + p1.intValue
@@ -6325,6 +6348,7 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
         func assertionName() -> String {
             switch self {
             case .m_funcB__dependency: return ".funcB(_:)"
+            case .m_funcC__dependency: return ".funcC(_:)"
             case .m_inlinableFunc__val: return ".inlinableFunc(_:)"
             case .subscript_get_x_y: return "[get] `subscript`[_ x, _ y]"
 			case .subscript_set_x_y: return "[set] `subscript`[_ x, _ y]"
@@ -6341,11 +6365,24 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
         }
 
 
+        @available(iOS 14, *)
+		public static func funcC(_ dependency: Parameter<ProtocolWithAttributes>, willReturn: Bool...) -> MethodStub {
+            return Given(method: .m_funcC__dependency(`dependency`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
         @discardableResult
 		public static func inlinableFunc(_ val: Parameter<Int>, willReturn: Int...) -> MethodStub {
             return Given(method: .m_inlinableFunc__val(`val`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func inlinableFunc(_ val: Parameter<Int>, willProduce: (Stubber<Int>) -> Void) -> MethodStub {
+        @available(iOS 14, *)
+		public static func funcC(_ dependency: Parameter<ProtocolWithAttributes>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
+            let willReturn: [Bool] = []
+			let given: Given = { return Given(method: .m_funcC__dependency(`dependency`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (Bool).self)
+			willProduce(stubber)
+			return given
+        }
+        @discardableResult
+		public static func inlinableFunc(_ val: Parameter<Int>, willProduce: (Stubber<Int>) -> Void) -> MethodStub {
             let willReturn: [Int] = []
 			let given: Given = { return Given(method: .m_inlinableFunc__val(`val`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
 			let stubber = given.stub(for: (Int).self)
@@ -6363,6 +6400,8 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
 
         @available(iOS 14, *)
 		public static func funcB(_ dependency: Parameter<ProtocolWithAttributes>) -> Verify { return Verify(method: .m_funcB__dependency(`dependency`))}
+        @available(iOS 14, *)
+		public static func funcC(_ dependency: Parameter<ProtocolWithAttributes>) -> Verify { return Verify(method: .m_funcC__dependency(`dependency`))}
         @discardableResult
 		public static func inlinableFunc(_ val: Parameter<Int>) -> Verify { return Verify(method: .m_inlinableFunc__val(`val`))}
         @available(iOS 12, macOS 10.14, *)
@@ -6378,6 +6417,10 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
         @available(iOS 14, *)
 		public static func funcB(_ dependency: Parameter<ProtocolWithAttributes>, perform: @escaping (ProtocolWithAttributes) -> Void) -> Perform {
             return Perform(method: .m_funcB__dependency(`dependency`), performs: perform)
+        }
+        @available(iOS 14, *)
+		public static func funcC(_ dependency: Parameter<ProtocolWithAttributes>, perform: @escaping (ProtocolWithAttributes) -> Void) -> Perform {
+            return Perform(method: .m_funcC__dependency(`dependency`), performs: perform)
         }
         @discardableResult
 		public static func inlinableFunc(_ val: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {

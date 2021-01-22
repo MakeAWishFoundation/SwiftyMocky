@@ -898,13 +898,14 @@ class MethodWrapper {
     // Given willProduce
     func givenProduceConstructorName(prefix: String = "") -> String {
         let returnTypeString = givenReturnTypeString()
+        let (annotation, _, _) = methodInfo()
         let produceClosure = "(Stubber<\(returnTypeString)>) -> Void"
         let clauseConstraints = whereClauseExpression()
 
         if filteredParameters.isEmpty {
-            return "public static func \(method.shortName)(willProduce: \(produceClosure)) -> \(prefix)MethodStub" + clauseConstraints
+            return "\(annotation)public static func \(method.shortName)(willProduce: \(produceClosure)) -> \(prefix)MethodStub" + clauseConstraints
         } else {
-            return "public static func \(method.shortName)(\(parametersForProxySignature()), willProduce: \(produceClosure)) -> \(prefix)MethodStub" + clauseConstraints
+            return "\(annotation)public static func \(method.shortName)(\(parametersForProxySignature()), willProduce: \(produceClosure)) -> \(prefix)MethodStub" + clauseConstraints
         }
     }
 
