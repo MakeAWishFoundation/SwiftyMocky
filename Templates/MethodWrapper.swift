@@ -108,7 +108,7 @@ class MethodWrapper {
         return "_\(index)"
     }
     private var methodAttributes: String {
-        return Helpers.extractAttributes(from: self.method.attributes)
+        return Helpers.extractAttributes(from: self.method.attributes).replacingOccurrences(of: "mutating", with: "")
     }
 
     var prototype: String {
@@ -718,6 +718,7 @@ class MethodWrapper {
             return " where \(constraints.joined(separator: ", "))"
         }()
         var attributes = self.methodAttributes.replacingOccurrences(of:"@objc", with: "")
+        attributes = attributes.condenseWhitespace()
         attributes = attributes.isEmpty ? "" : "\(attributes)\n\t\t"
         return (attributes, methodName, constraints)
     }
