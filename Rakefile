@@ -115,7 +115,8 @@ task :deploy do
         sh("git commit -m \"Deploy #{version}\"")
         sh("git push")
         sh("git tag #{version} && git push --tags")
-        sh("pod trunk push")
+        sh("pod trunk push ./SwiftyMocky.podspec")
+        sh("pod trunk push ./SwiftyPrototype.podspec")
     else
         print("Missing version!\n")
         exit(1)
