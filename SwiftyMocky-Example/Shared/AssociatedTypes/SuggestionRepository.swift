@@ -17,18 +17,19 @@ protocol SuggestionRepository: Repository where Entity == Suggestion {}
 protocol SuggestionRepositoryConstrainedToProtocol: Repository where Entity: SuggestionProtocol {}
 
 protocol Repository {
-  associatedtype Entity: EntityType
+    associatedtype Entity: EntityType
 
-  func save(entity: Entity) -> Bool
-  func save(entities: [Entity]) -> Bool
+    func save(entity: Entity) -> Bool
+    func save(entities: [Entity]) -> Bool
 
-  func find(
-    where predicate: NSPredicate,
-    sortedBy sortDescriptors: [NSSortDescriptor]) -> [Entity]
+    func find(
+        where predicate: NSPredicate,
+        sortedBy sortDescriptors: [NSSortDescriptor]
+    ) -> [Entity]
 
-  func findOne(where predicate: NSPredicate) -> Entity
-  func delete(entity: Entity) -> Bool
-  func delete(entities: [Entity]) -> Bool
+    func findOne(where predicate: NSPredicate) -> Entity
+    func delete(entity: Entity) -> Bool
+    func delete(entities: [Entity]) -> Bool
 }
 
 protocol EntityType {}

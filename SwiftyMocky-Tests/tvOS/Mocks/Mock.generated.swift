@@ -1,4 +1,4 @@
-// Generated using Sourcery 0.18.0 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 1.0.2 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
 
@@ -2171,12 +2171,12 @@ open class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
     }
 
     open func methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?) -> ((Int) -> Void) {
-        addInvocation(.m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.value(`function`)))
-		let perform = methodPerformValue(.m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.value(`function`))) as? (((Scalar,Scalar) -> Scalar)?) -> Void
+        addInvocation(.m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.any))
+		let perform = methodPerformValue(.m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.any)) as? (((Scalar,Scalar) -> Scalar)?) -> Void
 		perform?(`function`)
 		var __value: (Int) -> Void
 		do {
-		    __value = try methodReturnValue(.m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.value(`function`))).casted()
+		    __value = try methodReturnValue(.m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.any)).casted()
 		} catch {
 			onFatalFailure("Stub return value not specified for methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?). Use given")
 			Failure("Stub return value not specified for methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?). Use given")
@@ -3865,18 +3865,18 @@ open class FailsWithUntaggedMock: FailsWithUntagged, Mock {
     public required init<T>(with t: T) { }
 
     open func foo<T>(_: T, bar : String) where T: Sequence {
-        addInvocation(.m_foo__barbar(Parameter<String>.value(`bar`)))
-		let perform = methodPerformValue(.m_foo__barbar(Parameter<String>.value(`bar`))) as? (String) -> Void
+        addInvocation(.m_foo__bar_bar(Parameter<String>.value(`bar`)))
+		let perform = methodPerformValue(.m_foo__bar_bar(Parameter<String>.value(`bar`))) as? (String) -> Void
 		perform?(`bar`)
     }
 
 
     fileprivate enum MethodType {
-        case m_foo__barbar(Parameter<String>)
+        case m_foo__bar_bar(Parameter<String>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
-            case (.m_foo__barbar(let lhsBar), .m_foo__barbar(let rhsBar)):
+            case (.m_foo__bar_bar(let lhsBar), .m_foo__bar_bar(let rhsBar)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBar, rhs: rhsBar, with: matcher), lhsBar, rhsBar, "bar"))
 				return Matcher.ComparisonResult(results)
@@ -3885,12 +3885,12 @@ open class FailsWithUntaggedMock: FailsWithUntagged, Mock {
 
         func intValue() -> Int {
             switch self {
-            case let .m_foo__barbar(p0): return p0.intValue
+            case let .m_foo__bar_bar(p0): return p0.intValue
             }
         }
         func assertionName() -> String {
             switch self {
-            case .m_foo__barbar: return ".foo(_:bar:)"
+            case .m_foo__bar_bar: return ".foo(_:bar:)"
             }
         }
     }
@@ -3909,7 +3909,7 @@ open class FailsWithUntaggedMock: FailsWithUntagged, Mock {
     public struct Verify {
         fileprivate var method: MethodType
 
-        public static func foo(bar: Parameter<String>) -> Verify { return Verify(method: .m_foo__barbar(`bar`))}
+        public static func foo(bar: Parameter<String>) -> Verify { return Verify(method: .m_foo__bar_bar(`bar`))}
     }
 
     public struct Perform {
@@ -3917,7 +3917,7 @@ open class FailsWithUntaggedMock: FailsWithUntagged, Mock {
         var performs: Any
 
         public static func foo(bar: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
-            return Perform(method: .m_foo__barbar(`bar`), performs: perform)
+            return Perform(method: .m_foo__bar_bar(`bar`), performs: perform)
         }
     }
 
@@ -8367,7 +8367,11 @@ open class ProtocolWithMethodsWithGenericReturnTypeThatThrowsMock: ProtocolWithM
 
 
 
-    open func max<Type: Comparable>(        for attribute: Int,        over samples: [Int],        per aggregationUnit: String?    ) throws -> [(date: String?, value: Type)] {
+    open func max<Type: Comparable>(
+        for attribute: Int,
+        over samples: [Int],
+        per aggregationUnit: String?
+    ) throws -> [(date: String?, value: Type)] {
         addInvocation(.m_max__for_attributeover_samplesper_aggregationUnit(Parameter<Int>.value(`attribute`), Parameter<[Int]>.value(`samples`), Parameter<String?>.value(`aggregationUnit`)))
 		let perform = methodPerformValue(.m_max__for_attributeover_samplesper_aggregationUnit(Parameter<Int>.value(`attribute`), Parameter<[Int]>.value(`samples`), Parameter<String?>.value(`aggregationUnit`))) as? (Int, [Int], String?) -> Void
 		perform?(`attribute`, `samples`, `aggregationUnit`)
@@ -8375,8 +8379,8 @@ open class ProtocolWithMethodsWithGenericReturnTypeThatThrowsMock: ProtocolWithM
 		do {
 		    __value = try methodReturnValue(.m_max__for_attributeover_samplesper_aggregationUnit(Parameter<Int>.value(`attribute`), Parameter<[Int]>.value(`samples`), Parameter<String?>.value(`aggregationUnit`))).casted()
 		} catch MockError.notStubed {
-			onFatalFailure("Stub return value not specified for max<Type: Comparable>(        for attribute: Int,        over samples: [Int],        per aggregationUnit: String?    ). Use given")
-			Failure("Stub return value not specified for max<Type: Comparable>(        for attribute: Int,        over samples: [Int],        per aggregationUnit: String?    ). Use given")
+			onFatalFailure("Stub return value not specified for max<Type: Comparable>(for attribute: Int, over samples: [Int], per aggregationUnit: String?). Use given")
+			Failure("Stub return value not specified for max<Type: Comparable>(for attribute: Int, over samples: [Int], per aggregationUnit: String?). Use given")
 		} catch {
 		    throw error
 		}
@@ -10626,12 +10630,12 @@ open class SampleServiceTypeMock: SampleServiceType, Mock {
     }
 
     open func methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?) -> ((Int) -> Void) {
-        addInvocation(.m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.value(`function`)))
-		let perform = methodPerformValue(.m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.value(`function`))) as? (((Scalar,Scalar) -> Scalar)?) -> Void
+        addInvocation(.m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.any))
+		let perform = methodPerformValue(.m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.any)) as? (((Scalar,Scalar) -> Scalar)?) -> Void
 		perform?(`function`)
 		var __value: (Int) -> Void
 		do {
-		    __value = try methodReturnValue(.m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.value(`function`))).casted()
+		    __value = try methodReturnValue(.m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.any)).casted()
 		} catch {
 			onFatalFailure("Stub return value not specified for methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?). Use given")
 			Failure("Stub return value not specified for methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?). Use given")
@@ -13545,7 +13549,10 @@ open class SuggestionRepositoryMock: SuggestionRepository, Mock {
 		return __value
     }
 
-    open func find(    where predicate: NSPredicate,    sortedBy sortDescriptors: [NSSortDescriptor]) -> [Entity] {
+    open func find(
+        where predicate: NSPredicate,
+        sortedBy sortDescriptors: [NSSortDescriptor]
+    ) -> [Entity] {
         addInvocation(.m_find__where_predicatesortedBy_sortDescriptors(Parameter<NSPredicate>.value(`predicate`), Parameter<[NSSortDescriptor]>.value(`sortDescriptors`)))
 		let perform = methodPerformValue(.m_find__where_predicatesortedBy_sortDescriptors(Parameter<NSPredicate>.value(`predicate`), Parameter<[NSSortDescriptor]>.value(`sortDescriptors`))) as? (NSPredicate, [NSSortDescriptor]) -> Void
 		perform?(`predicate`, `sortDescriptors`)
@@ -13553,8 +13560,8 @@ open class SuggestionRepositoryMock: SuggestionRepository, Mock {
 		do {
 		    __value = try methodReturnValue(.m_find__where_predicatesortedBy_sortDescriptors(Parameter<NSPredicate>.value(`predicate`), Parameter<[NSSortDescriptor]>.value(`sortDescriptors`))).casted()
 		} catch {
-			onFatalFailure("Stub return value not specified for find(    where predicate: NSPredicate,    sortedBy sortDescriptors: [NSSortDescriptor]). Use given")
-			Failure("Stub return value not specified for find(    where predicate: NSPredicate,    sortedBy sortDescriptors: [NSSortDescriptor]). Use given")
+			onFatalFailure("Stub return value not specified for find(where predicate: NSPredicate, sortedBy sortDescriptors: [NSSortDescriptor]). Use given")
+			Failure("Stub return value not specified for find(where predicate: NSPredicate, sortedBy sortDescriptors: [NSSortDescriptor]). Use given")
 		}
 		return __value
     }
@@ -13917,7 +13924,10 @@ open class SuggestionRepositoryConstrainedToProtocolMock<Entity>: SuggestionRepo
 		return __value
     }
 
-    open func find(    where predicate: NSPredicate,    sortedBy sortDescriptors: [NSSortDescriptor]) -> [Entity] {
+    open func find(
+        where predicate: NSPredicate,
+        sortedBy sortDescriptors: [NSSortDescriptor]
+    ) -> [Entity] {
         addInvocation(.m_find__where_predicatesortedBy_sortDescriptors(Parameter<NSPredicate>.value(`predicate`), Parameter<[NSSortDescriptor]>.value(`sortDescriptors`)))
 		let perform = methodPerformValue(.m_find__where_predicatesortedBy_sortDescriptors(Parameter<NSPredicate>.value(`predicate`), Parameter<[NSSortDescriptor]>.value(`sortDescriptors`))) as? (NSPredicate, [NSSortDescriptor]) -> Void
 		perform?(`predicate`, `sortDescriptors`)
@@ -13925,8 +13935,8 @@ open class SuggestionRepositoryConstrainedToProtocolMock<Entity>: SuggestionRepo
 		do {
 		    __value = try methodReturnValue(.m_find__where_predicatesortedBy_sortDescriptors(Parameter<NSPredicate>.value(`predicate`), Parameter<[NSSortDescriptor]>.value(`sortDescriptors`))).casted()
 		} catch {
-			onFatalFailure("Stub return value not specified for find(    where predicate: NSPredicate,    sortedBy sortDescriptors: [NSSortDescriptor]). Use given")
-			Failure("Stub return value not specified for find(    where predicate: NSPredicate,    sortedBy sortDescriptors: [NSSortDescriptor]). Use given")
+			onFatalFailure("Stub return value not specified for find(where predicate: NSPredicate, sortedBy sortDescriptors: [NSSortDescriptor]). Use given")
+			Failure("Stub return value not specified for find(where predicate: NSPredicate, sortedBy sortDescriptors: [NSSortDescriptor]). Use given")
 		}
 		return __value
     }
@@ -14314,7 +14324,7 @@ open class UnnamedAttributesProtocolMock: UnnamedAttributesProtocol, Mock {
         }
         func assertionName() -> String {
             switch self {
-            case .m_methodWithUnnamedAttributes: return ".methodWithUnnamedAttributes(_:)()"
+            case .m_methodWithUnnamedAttributes: return ".methodWithUnnamedAttributes(_:)"
             case .m_methodWithUnnamedAndNamedAttributes__at_int: return ".methodWithUnnamedAndNamedAttributes(at:_:)"
             }
         }
