@@ -1,4 +1,5 @@
 import Foundation
+#if canImport(XCTest)
 import XCTest
 
 /// Used for observing tests and handling internal library errors.
@@ -65,6 +66,7 @@ public class SwiftyMockyTestObserver: NSObject, XCTestObservation {
         return testCase.name.components(separatedBy: " ")[1].components(separatedBy: "]").first
     }
 }
+#endif
 
 /// [Internal] Internal dependency that looks for line of test case, that caused test failure.
 private class FilesExlorer {
