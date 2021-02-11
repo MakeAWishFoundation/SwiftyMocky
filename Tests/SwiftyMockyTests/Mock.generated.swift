@@ -1,4 +1,4 @@
-// Generated using Sourcery 0.18.0 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 1.0.2 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
 
@@ -2172,12 +2172,12 @@ open class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
     }
 
     open func methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?) -> ((Int) -> Void) {
-        addInvocation(.m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.value(`function`)))
-		let perform = methodPerformValue(.m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.value(`function`))) as? (((Scalar,Scalar) -> Scalar)?) -> Void
+        addInvocation(.m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.any))
+		let perform = methodPerformValue(.m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.any)) as? (((Scalar,Scalar) -> Scalar)?) -> Void
 		perform?(`function`)
 		var __value: (Int) -> Void
 		do {
-		    __value = try methodReturnValue(.m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.value(`function`))).casted()
+		    __value = try methodReturnValue(.m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.any)).casted()
 		} catch {
 			onFatalFailure("Stub return value not specified for methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?). Use given")
 			Failure("Stub return value not specified for methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?). Use given")
@@ -3866,18 +3866,18 @@ open class FailsWithUntaggedMock: FailsWithUntagged, Mock {
     public required init<T>(with t: T) { }
 
     open func foo<T>(_: T, bar : String) where T: Sequence {
-        addInvocation(.m_foo__barbar(Parameter<String>.value(`bar`)))
-		let perform = methodPerformValue(.m_foo__barbar(Parameter<String>.value(`bar`))) as? (String) -> Void
+        addInvocation(.m_foo__bar_bar(Parameter<String>.value(`bar`)))
+		let perform = methodPerformValue(.m_foo__bar_bar(Parameter<String>.value(`bar`))) as? (String) -> Void
 		perform?(`bar`)
     }
 
 
     fileprivate enum MethodType {
-        case m_foo__barbar(Parameter<String>)
+        case m_foo__bar_bar(Parameter<String>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
-            case (.m_foo__barbar(let lhsBar), .m_foo__barbar(let rhsBar)):
+            case (.m_foo__bar_bar(let lhsBar), .m_foo__bar_bar(let rhsBar)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBar, rhs: rhsBar, with: matcher), lhsBar, rhsBar, "bar"))
 				return Matcher.ComparisonResult(results)
@@ -3886,12 +3886,12 @@ open class FailsWithUntaggedMock: FailsWithUntagged, Mock {
 
         func intValue() -> Int {
             switch self {
-            case let .m_foo__barbar(p0): return p0.intValue
+            case let .m_foo__bar_bar(p0): return p0.intValue
             }
         }
         func assertionName() -> String {
             switch self {
-            case .m_foo__barbar: return ".foo(_:bar:)"
+            case .m_foo__bar_bar: return ".foo(_:bar:)"
             }
         }
     }
@@ -3910,7 +3910,7 @@ open class FailsWithUntaggedMock: FailsWithUntagged, Mock {
     public struct Verify {
         fileprivate var method: MethodType
 
-        public static func foo(bar: Parameter<String>) -> Verify { return Verify(method: .m_foo__barbar(`bar`))}
+        public static func foo(bar: Parameter<String>) -> Verify { return Verify(method: .m_foo__bar_bar(`bar`))}
     }
 
     public struct Perform {
@@ -3918,7 +3918,7 @@ open class FailsWithUntaggedMock: FailsWithUntagged, Mock {
         var performs: Any
 
         public static func foo(bar: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
-            return Perform(method: .m_foo__barbar(`bar`), performs: perform)
+            return Perform(method: .m_foo__bar_bar(`bar`), performs: perform)
         }
     }
 
@@ -6249,6 +6249,35 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
 		perform?(`dependency`)
     }
 
+    @available(iOS 14, *)
+	open func funcC(_ dependency: ProtocolWithAttributes) -> Bool {
+        addInvocation(.m_funcC__dependency(Parameter<ProtocolWithAttributes>.value(`dependency`)))
+		let perform = methodPerformValue(.m_funcC__dependency(Parameter<ProtocolWithAttributes>.value(`dependency`))) as? (ProtocolWithAttributes) -> Void
+		perform?(`dependency`)
+		var __value: Bool
+		do {
+		    __value = try methodReturnValue(.m_funcC__dependency(Parameter<ProtocolWithAttributes>.value(`dependency`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for funcC(_ dependency: ProtocolWithAttributes). Use given")
+			Failure("Stub return value not specified for funcC(_ dependency: ProtocolWithAttributes). Use given")
+		}
+		return __value
+    }
+
+    open func mutatingFunc(param: Int) -> String {
+        addInvocation(.m_mutatingFunc__param_param(Parameter<Int>.value(`param`)))
+		let perform = methodPerformValue(.m_mutatingFunc__param_param(Parameter<Int>.value(`param`))) as? (Int) -> Void
+		perform?(`param`)
+		var __value: String
+		do {
+		    __value = try methodReturnValue(.m_mutatingFunc__param_param(Parameter<Int>.value(`param`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for mutatingFunc(param: Int). Use given")
+			Failure("Stub return value not specified for mutatingFunc(param: Int). Use given")
+		}
+		return __value
+    }
+
     @discardableResult
 	open func inlinableFunc(_ val: Int) -> Int {
         addInvocation(.m_inlinableFunc__val(Parameter<Int>.value(`val`)))
@@ -6283,6 +6312,9 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
     fileprivate enum MethodType {
         @available(iOS 14, *)
 		case m_funcB__dependency(Parameter<ProtocolWithAttributes>)
+        @available(iOS 14, *)
+		case m_funcC__dependency(Parameter<ProtocolWithAttributes>)
+        case m_mutatingFunc__param_param(Parameter<Int>)
         case m_inlinableFunc__val(Parameter<Int>)
         @available(iOS 12, macOS 10.14, *)
 		case subscript_get_x_y(Parameter<Int>, Parameter<Int>)
@@ -6294,6 +6326,16 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
             case (.m_funcB__dependency(let lhsDependency), .m_funcB__dependency(let rhsDependency)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsDependency, rhs: rhsDependency, with: matcher), lhsDependency, rhsDependency, "_ dependency"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_funcC__dependency(let lhsDependency), .m_funcC__dependency(let rhsDependency)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsDependency, rhs: rhsDependency, with: matcher), lhsDependency, rhsDependency, "_ dependency"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_mutatingFunc__param_param(let lhsParam), .m_mutatingFunc__param_param(let rhsParam)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsParam, rhs: rhsParam, with: matcher), lhsParam, rhsParam, "param"))
 				return Matcher.ComparisonResult(results)
 
             case (.m_inlinableFunc__val(let lhsVal), .m_inlinableFunc__val(let rhsVal)):
@@ -6318,6 +6360,8 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
         func intValue() -> Int {
             switch self {
             case let .m_funcB__dependency(p0): return p0.intValue
+            case let .m_funcC__dependency(p0): return p0.intValue
+            case let .m_mutatingFunc__param_param(p0): return p0.intValue
             case let .m_inlinableFunc__val(p0): return p0.intValue
             case let .subscript_get_x_y(p0, p1): return p0.intValue + p1.intValue
 			case let .subscript_set_x_y(p0, p1, _): return p0.intValue + p1.intValue
@@ -6326,6 +6370,8 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
         func assertionName() -> String {
             switch self {
             case .m_funcB__dependency: return ".funcB(_:)"
+            case .m_funcC__dependency: return ".funcC(_:)"
+            case .m_mutatingFunc__param_param: return ".mutatingFunc(param:)"
             case .m_inlinableFunc__val: return ".inlinableFunc(_:)"
             case .subscript_get_x_y: return "[get] `subscript`[_ x, _ y]"
 			case .subscript_set_x_y: return "[set] `subscript`[_ x, _ y]"
@@ -6342,11 +6388,34 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
         }
 
 
+        @available(iOS 14, *)
+		public static func funcC(_ dependency: Parameter<ProtocolWithAttributes>, willReturn: Bool...) -> MethodStub {
+            return Given(method: .m_funcC__dependency(`dependency`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func mutatingFunc(param: Parameter<Int>, willReturn: String...) -> MethodStub {
+            return Given(method: .m_mutatingFunc__param_param(`param`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
         @discardableResult
 		public static func inlinableFunc(_ val: Parameter<Int>, willReturn: Int...) -> MethodStub {
             return Given(method: .m_inlinableFunc__val(`val`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func inlinableFunc(_ val: Parameter<Int>, willProduce: (Stubber<Int>) -> Void) -> MethodStub {
+        @available(iOS 14, *)
+		public static func funcC(_ dependency: Parameter<ProtocolWithAttributes>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
+            let willReturn: [Bool] = []
+			let given: Given = { return Given(method: .m_funcC__dependency(`dependency`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (Bool).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func mutatingFunc(param: Parameter<Int>, willProduce: (Stubber<String>) -> Void) -> MethodStub {
+            let willReturn: [String] = []
+			let given: Given = { return Given(method: .m_mutatingFunc__param_param(`param`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (String).self)
+			willProduce(stubber)
+			return given
+        }
+        @discardableResult
+		public static func inlinableFunc(_ val: Parameter<Int>, willProduce: (Stubber<Int>) -> Void) -> MethodStub {
             let willReturn: [Int] = []
 			let given: Given = { return Given(method: .m_inlinableFunc__val(`val`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
 			let stubber = given.stub(for: (Int).self)
@@ -6364,6 +6433,9 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
 
         @available(iOS 14, *)
 		public static func funcB(_ dependency: Parameter<ProtocolWithAttributes>) -> Verify { return Verify(method: .m_funcB__dependency(`dependency`))}
+        @available(iOS 14, *)
+		public static func funcC(_ dependency: Parameter<ProtocolWithAttributes>) -> Verify { return Verify(method: .m_funcC__dependency(`dependency`))}
+        public static func mutatingFunc(param: Parameter<Int>) -> Verify { return Verify(method: .m_mutatingFunc__param_param(`param`))}
         @discardableResult
 		public static func inlinableFunc(_ val: Parameter<Int>) -> Verify { return Verify(method: .m_inlinableFunc__val(`val`))}
         @available(iOS 12, macOS 10.14, *)
@@ -6379,6 +6451,13 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
         @available(iOS 14, *)
 		public static func funcB(_ dependency: Parameter<ProtocolWithAttributes>, perform: @escaping (ProtocolWithAttributes) -> Void) -> Perform {
             return Perform(method: .m_funcB__dependency(`dependency`), performs: perform)
+        }
+        @available(iOS 14, *)
+		public static func funcC(_ dependency: Parameter<ProtocolWithAttributes>, perform: @escaping (ProtocolWithAttributes) -> Void) -> Perform {
+            return Perform(method: .m_funcC__dependency(`dependency`), performs: perform)
+        }
+        public static func mutatingFunc(param: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
+            return Perform(method: .m_mutatingFunc__param_param(`param`), performs: perform)
         }
         @discardableResult
 		public static func inlinableFunc(_ val: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
@@ -8368,7 +8447,11 @@ open class ProtocolWithMethodsWithGenericReturnTypeThatThrowsMock: ProtocolWithM
 
 
 
-    open func max<Type: Comparable>(        for attribute: Int,        over samples: [Int],        per aggregationUnit: String?    ) throws -> [(date: String?, value: Type)] {
+    open func max<Type: Comparable>(
+        for attribute: Int,
+        over samples: [Int],
+        per aggregationUnit: String?
+    ) throws -> [(date: String?, value: Type)] {
         addInvocation(.m_max__for_attributeover_samplesper_aggregationUnit(Parameter<Int>.value(`attribute`), Parameter<[Int]>.value(`samples`), Parameter<String?>.value(`aggregationUnit`)))
 		let perform = methodPerformValue(.m_max__for_attributeover_samplesper_aggregationUnit(Parameter<Int>.value(`attribute`), Parameter<[Int]>.value(`samples`), Parameter<String?>.value(`aggregationUnit`))) as? (Int, [Int], String?) -> Void
 		perform?(`attribute`, `samples`, `aggregationUnit`)
@@ -8376,8 +8459,8 @@ open class ProtocolWithMethodsWithGenericReturnTypeThatThrowsMock: ProtocolWithM
 		do {
 		    __value = try methodReturnValue(.m_max__for_attributeover_samplesper_aggregationUnit(Parameter<Int>.value(`attribute`), Parameter<[Int]>.value(`samples`), Parameter<String?>.value(`aggregationUnit`))).casted()
 		} catch MockError.notStubed {
-			onFatalFailure("Stub return value not specified for max<Type: Comparable>(        for attribute: Int,        over samples: [Int],        per aggregationUnit: String?    ). Use given")
-			Failure("Stub return value not specified for max<Type: Comparable>(        for attribute: Int,        over samples: [Int],        per aggregationUnit: String?    ). Use given")
+			onFatalFailure("Stub return value not specified for max<Type: Comparable>(for attribute: Int, over samples: [Int], per aggregationUnit: String?). Use given")
+			Failure("Stub return value not specified for max<Type: Comparable>(for attribute: Int, over samples: [Int], per aggregationUnit: String?). Use given")
 		} catch {
 		    throw error
 		}
@@ -10627,12 +10710,12 @@ open class SampleServiceTypeMock: SampleServiceType, Mock {
     }
 
     open func methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?) -> ((Int) -> Void) {
-        addInvocation(.m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.value(`function`)))
-		let perform = methodPerformValue(.m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.value(`function`))) as? (((Scalar,Scalar) -> Scalar)?) -> Void
+        addInvocation(.m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.any))
+		let perform = methodPerformValue(.m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.any)) as? (((Scalar,Scalar) -> Scalar)?) -> Void
 		perform?(`function`)
 		var __value: (Int) -> Void
 		do {
-		    __value = try methodReturnValue(.m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.value(`function`))).casted()
+		    __value = try methodReturnValue(.m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.any)).casted()
 		} catch {
 			onFatalFailure("Stub return value not specified for methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?). Use given")
 			Failure("Stub return value not specified for methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?). Use given")
@@ -13546,7 +13629,10 @@ open class SuggestionRepositoryMock: SuggestionRepository, Mock {
 		return __value
     }
 
-    open func find(    where predicate: NSPredicate,    sortedBy sortDescriptors: [NSSortDescriptor]) -> [Entity] {
+    open func find(
+        where predicate: NSPredicate,
+        sortedBy sortDescriptors: [NSSortDescriptor]
+    ) -> [Entity] {
         addInvocation(.m_find__where_predicatesortedBy_sortDescriptors(Parameter<NSPredicate>.value(`predicate`), Parameter<[NSSortDescriptor]>.value(`sortDescriptors`)))
 		let perform = methodPerformValue(.m_find__where_predicatesortedBy_sortDescriptors(Parameter<NSPredicate>.value(`predicate`), Parameter<[NSSortDescriptor]>.value(`sortDescriptors`))) as? (NSPredicate, [NSSortDescriptor]) -> Void
 		perform?(`predicate`, `sortDescriptors`)
@@ -13554,8 +13640,8 @@ open class SuggestionRepositoryMock: SuggestionRepository, Mock {
 		do {
 		    __value = try methodReturnValue(.m_find__where_predicatesortedBy_sortDescriptors(Parameter<NSPredicate>.value(`predicate`), Parameter<[NSSortDescriptor]>.value(`sortDescriptors`))).casted()
 		} catch {
-			onFatalFailure("Stub return value not specified for find(    where predicate: NSPredicate,    sortedBy sortDescriptors: [NSSortDescriptor]). Use given")
-			Failure("Stub return value not specified for find(    where predicate: NSPredicate,    sortedBy sortDescriptors: [NSSortDescriptor]). Use given")
+			onFatalFailure("Stub return value not specified for find(where predicate: NSPredicate, sortedBy sortDescriptors: [NSSortDescriptor]). Use given")
+			Failure("Stub return value not specified for find(where predicate: NSPredicate, sortedBy sortDescriptors: [NSSortDescriptor]). Use given")
 		}
 		return __value
     }
@@ -13918,7 +14004,10 @@ open class SuggestionRepositoryConstrainedToProtocolMock<Entity>: SuggestionRepo
 		return __value
     }
 
-    open func find(    where predicate: NSPredicate,    sortedBy sortDescriptors: [NSSortDescriptor]) -> [Entity] {
+    open func find(
+        where predicate: NSPredicate,
+        sortedBy sortDescriptors: [NSSortDescriptor]
+    ) -> [Entity] {
         addInvocation(.m_find__where_predicatesortedBy_sortDescriptors(Parameter<NSPredicate>.value(`predicate`), Parameter<[NSSortDescriptor]>.value(`sortDescriptors`)))
 		let perform = methodPerformValue(.m_find__where_predicatesortedBy_sortDescriptors(Parameter<NSPredicate>.value(`predicate`), Parameter<[NSSortDescriptor]>.value(`sortDescriptors`))) as? (NSPredicate, [NSSortDescriptor]) -> Void
 		perform?(`predicate`, `sortDescriptors`)
@@ -13926,8 +14015,8 @@ open class SuggestionRepositoryConstrainedToProtocolMock<Entity>: SuggestionRepo
 		do {
 		    __value = try methodReturnValue(.m_find__where_predicatesortedBy_sortDescriptors(Parameter<NSPredicate>.value(`predicate`), Parameter<[NSSortDescriptor]>.value(`sortDescriptors`))).casted()
 		} catch {
-			onFatalFailure("Stub return value not specified for find(    where predicate: NSPredicate,    sortedBy sortDescriptors: [NSSortDescriptor]). Use given")
-			Failure("Stub return value not specified for find(    where predicate: NSPredicate,    sortedBy sortDescriptors: [NSSortDescriptor]). Use given")
+			onFatalFailure("Stub return value not specified for find(where predicate: NSPredicate, sortedBy sortDescriptors: [NSSortDescriptor]). Use given")
+			Failure("Stub return value not specified for find(where predicate: NSPredicate, sortedBy sortDescriptors: [NSSortDescriptor]). Use given")
 		}
 		return __value
     }
@@ -14315,7 +14404,7 @@ open class UnnamedAttributesProtocolMock: UnnamedAttributesProtocol, Mock {
         }
         func assertionName() -> String {
             switch self {
-            case .m_methodWithUnnamedAttributes: return ".methodWithUnnamedAttributes(_:)()"
+            case .m_methodWithUnnamedAttributes: return ".methodWithUnnamedAttributes(_:)"
             case .m_methodWithUnnamedAndNamedAttributes__at_int: return ".methodWithUnnamedAndNamedAttributes(at:_:)"
             }
         }

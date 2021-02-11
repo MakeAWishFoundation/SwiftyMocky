@@ -279,7 +279,9 @@ public class Matcher {
         return comparator as? (T,T) -> Bool
     }
 
-    /// Default Sequence comparator, compares count, and then element by element.
+    /// Default Sequence comparator, compares count, and then depending on sequence type:
+    /// - for Arrays, elements will be compared element by element (verifying order as well)
+    /// - other Sequences would be treated as unordered, so every element has to have matching element
     ///
     /// - Parameter valueType: Sequence type
     /// - Returns: comparator closure
@@ -297,8 +299,29 @@ public class Matcher {
                 let rhs = r.map { $0 }
                 guard lhs.count == rhs.count else { return false }
 
-                for i in 0..<lhs.count {
-                    guard compare(lhs[i],rhs[i]) else { return false }
+                if valueType is [T.Element].Type {
+                    // Compare as ordered sequence:
+                    for i in 0..<lhs.count {
+                        guard compare(lhs[i],rhs[i]) else { return false }
+                    }
+                } else {
+                    // Compare as unordered sequence:
+                    var lbuff = lhs
+                    var rbuff = rhs
+
+                    while !lbuff.isEmpty {
+                        let rIndex = rbuff.firstIndex { compare(lbuff[0],$0) }
+                        if let rIndex = rIndex {
+                            // There is a match, remove both matching elements.
+                            rbuff.remove(at: rIndex)
+                            lbuff.remove(at: 0)
+                        } else {
+                            // There is no matching element - stop execution.
+                            return false
+                        }
+                    }
+
+                    return lbuff.isEmpty && rbuff.isEmpty
                 }
 
                 return true

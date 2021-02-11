@@ -4,6 +4,23 @@ All changes to SwiftyMocky project will be documented in this file.
 
 -----
 
+## __4.0.3__ / 2020
+
+#### Fixed:
+* Fixed issues for Sourcery 1.0.2+, resulting in broken mocks
+* Fixed issues with @available for methods returning values
+* Fixed issues with unnamed parameters handling
+* Updated matcher for sequences,
+* Fixed issue with mutating annotation breaking generated mock
+
+-----
+
+## __4.0.2__ / 2020
+
+skipped
+
+-----
+
 ## __4.0.1__ / 2020
 
 #### Fixed:

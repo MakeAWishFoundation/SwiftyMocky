@@ -86,7 +86,7 @@ Add **SwiftyMocky** to you **Package.swift** dependencies:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/MakeAWishFoundation/SwiftyMocky", from: "4.0.1"),
+    .package(url: "https://github.com/MakeAWishFoundation/SwiftyMocky", from: "4.0.3"),
 ]
 ```
 

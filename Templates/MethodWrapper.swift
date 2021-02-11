@@ -42,7 +42,10 @@ func replacingSelf(_ value: String) -> String {
 
 class MethodWrapper {
     private var noStubDefinedMessage: String {
-        return "Stub return value not specified for \(method.name.replacingOccurrences(of: "\t", with: " ")). Use given"
+        let methodName = method.name.condenseWhitespace()
+            .replacingOccurrences(of: "( ", with: "(")
+            .replacingOccurrences(of: " )", with: ")")
+        return "Stub return value not specified for \(methodName). Use given"
     }
     private static var registered: [String: Int] = [:]
     private static var suffixes: [String: Int] = [:]
@@ -105,14 +108,17 @@ class MethodWrapper {
         return "_\(index)"
     }
     private var methodAttributes: String {
-        return Helpers.extractAttributes(from: self.method.attributes)
+        return Helpers.extractAttributes(from: self.method.attributes).replacingOccurrences(of: "mutating", with: "")
     }
 
     var prototype: String {
         return "\(registrationName)\(nameSuffix)".replacingOccurrences(of: "`", with: "")
     }
     var parameters: [ParameterWrapper] {
-        return method.parameters.map { ParameterWrapper($0, self.getVariadicParametersNames()) }
+        return filteredParameters.map { ParameterWrapper($0, self.getVariadicParametersNames()) }
+    }
+    var filteredParameters: [MethodParameter] {
+        return method.parameters.filter { $0.name != "" }
     }
     var functionPrototype: String {
         let throwing: String = {
@@ -150,7 +156,7 @@ class MethodWrapper {
     }
     var invocation: String {
         guard !method.isInitializer else { return "" }
-        if method.parameters.isEmpty {
+        if filteredParameters.isEmpty {
             return "addInvocation(.\(prototype))"
         } else {
             return "addInvocation(.\(prototype)(\(parametersForMethodCall())))"
@@ -160,7 +166,7 @@ class MethodWrapper {
         guard !method.isInitializer else { return "" }
         guard method.throws || !method.returnTypeName.isVoid else { return "" }
 
-        let methodType = method.parameters.isEmpty ? ".\(prototype)" : ".\(prototype)(\(parametersForMethodCall()))"
+        let methodType = filteredParameters.isEmpty ? ".\(prototype)" : ".\(prototype)(\(parametersForMethodCall()))"
         let returnType: String = returnsSelf ? "__Self__" : "\(TypeWrapper(method.returnTypeName).stripped)"
 
         if method.returnTypeName.isVoid {
@@ -210,11 +216,11 @@ class MethodWrapper {
     var equalCase: String {
         guard !method.isInitializer else { return "" }
 
-        if method.parameters.isEmpty {
+        if filteredParameters.isEmpty {
             return "case (.\(prototype), .\(prototype)):"
         } else {
-            let lhsParams = method.parameters.map { "let lhs\($0.name.capitalized)" }.joined(separator: ", ")
-            let rhsParams = method.parameters.map { "let rhs\($0.name.capitalized)" }.joined(separator: ", ")
+            let lhsParams = filteredParameters.map { "let lhs\($0.name.capitalized)" }.joined(separator: ", ")
+            let rhsParams = filteredParameters.map { "let rhs\($0.name.capitalized)" }.joined(separator: ", ")
             return "case (.\(prototype)(\(lhsParams)), .\(prototype)(\(rhsParams))):"
         }
     }
@@ -232,10 +238,10 @@ class MethodWrapper {
         return results
     }
     var intValueCase: String {
-        if method.parameters.isEmpty {
+        if filteredParameters.isEmpty {
             return "case .\(prototype): return 0"
         } else {
-            let params = method.parameters.enumerated().map { offset, _ in
+            let params = filteredParameters.enumerated().map { offset, _ in
                 return "p\(offset)"
             }
             let definitions = params.joined(separator: ", ")
@@ -365,8 +371,11 @@ class MethodWrapper {
     func methodTypeDeclarationWithParameters() -> String {
         let availability = method.attributes["available"]?.description
         let attributes = availability != nil ? "\(availability!)\n\t\t" : ""
-        guard !method.parameters.isEmpty else { return "\(attributes)case \(prototype)" }
-        return "\(attributes)case \(prototype)(\(parametersForMethodTypeDeclaration()))"
+        if filteredParameters.isEmpty {
+            return "\(attributes)case \(prototype)"
+        } else {
+            return "\(attributes)case \(prototype)(\(parametersForMethodTypeDeclaration()))"
+        }
     }
 
     // Given
@@ -388,7 +397,7 @@ class MethodWrapper {
         let (annotation, _, _) = methodInfo()
         let clauseConstraints = whereClauseExpression()
 
-        if method.parameters.isEmpty {
+        if filteredParameters.isEmpty {
             return "\(annotation)public static func \(method.shortName)(willReturn: \(returnTypeString)...) -> \(prefix)MethodStub" + clauseConstraints
         } else {
             return "\(annotation)public static func \(method.shortName)(\(parametersForProxySignature()), willReturn: \(returnTypeString)...) -> \(prefix)MethodStub" + clauseConstraints
@@ -402,7 +411,7 @@ class MethodWrapper {
         let genericsArray = getGenericsConstraints(getGenericsAmongParameters(), filterSingle: false)
         let generics = genericsArray.isEmpty ? "" : "<\(genericsArray.joined(separator: ", "))>"
 
-        if method.parameters.isEmpty {
+        if filteredParameters.isEmpty {
             return "\(annotation)public static func \(method.callName)\(generics)(willThrow: Error...) -> \(prefix)MethodStub" + clauseConstraints
         } else {
             return "\(annotation)public static func \(method.callName)\(generics)(\(parametersForProxySignature()), willThrow: Error...) -> \(prefix)MethodStub" + clauseConstraints
@@ -410,7 +419,7 @@ class MethodWrapper {
     }
 
     func givenConstructor(prefix: String = "") -> String {
-        if method.parameters.isEmpty {
+        if filteredParameters.isEmpty {
             return "return \(prefix)Given(method: .\(prototype), products: willReturn.map({ StubProduct.return($0 as Any) }))"
         } else {
             return "return \(prefix)Given(method: .\(prototype)(\(parametersForProxyInit())), products: willReturn.map({ StubProduct.return($0 as Any) }))"
@@ -418,7 +427,7 @@ class MethodWrapper {
     }
 
     func givenConstructorThrows(prefix: String = "") -> String {
-        if method.parameters.isEmpty {
+        if filteredParameters.isEmpty {
             return "return \(prefix)Given(method: .\(prototype), products: willThrow.map({ StubProduct.throw($0) }))"
         } else {
             return "return \(prefix)Given(method: .\(prototype)(\(parametersForProxyInit())), products: willThrow.map({ StubProduct.throw($0) }))"
@@ -428,13 +437,14 @@ class MethodWrapper {
     // Given willProduce
     func givenProduceConstructorName(prefix: String = "") -> String {
         let returnTypeString = givenReturnTypeString()
+        let (annotation, _, _) = methodInfo()
         let produceClosure = "(Stubber<\(returnTypeString)>) -> Void"
         let clauseConstraints = whereClauseExpression()
 
-        if method.parameters.isEmpty {
-            return "public static func \(method.shortName)(willProduce: \(produceClosure)) -> \(prefix)MethodStub" + clauseConstraints
+        if filteredParameters.isEmpty {
+            return "\(annotation)public static func \(method.shortName)(willProduce: \(produceClosure)) -> \(prefix)MethodStub" + clauseConstraints
         } else {
-            return "public static func \(method.shortName)(\(parametersForProxySignature()), willProduce: \(produceClosure)) -> \(prefix)MethodStub" + clauseConstraints
+            return "\(annotation)public static func \(method.shortName)(\(parametersForProxySignature()), willProduce: \(produceClosure)) -> \(prefix)MethodStub" + clauseConstraints
         }
     }
 
@@ -443,7 +453,7 @@ class MethodWrapper {
         let produceClosure = "(StubberThrows<\(returnTypeString)>) -> Void"
         let clauseConstraints = whereClauseExpression()
 
-        if method.parameters.isEmpty {
+        if filteredParameters.isEmpty {
             return "public static func \(method.shortName)(willProduce: \(produceClosure)) -> \(prefix)MethodStub" + clauseConstraints
         } else {
             return "public static func \(method.shortName)(\(parametersForProxySignature()), willProduce: \(produceClosure)) -> \(prefix)MethodStub" + clauseConstraints
@@ -476,7 +486,7 @@ class MethodWrapper {
     func verificationProxyConstructorName(prefix: String = "") -> String {
         let (annotation, methodName, genericConstrains) = methodInfo()
 
-        if method.parameters.isEmpty {
+        if filteredParameters.isEmpty {
             return "\(annotation)public static func \(methodName)(\(returningParameter(false,true))) -> \(prefix)Verify\(genericConstrains)"
         } else {
             return "\(annotation)public static func \(methodName)(\(parametersForProxySignature())\(returningParameter(true,true))) -> \(prefix)Verify\(genericConstrains)"
@@ -484,7 +494,7 @@ class MethodWrapper {
     }
 
     func verificationProxyConstructor(prefix: String = "") -> String {
-        if method.parameters.isEmpty {
+        if filteredParameters.isEmpty {
             return "return \(prefix)Verify(method: .\(prototype))"
         } else {
             return "return \(prefix)Verify(method: .\(prototype)(\(parametersForProxyInit())))"
@@ -496,7 +506,7 @@ class MethodWrapper {
         let body: String = {
             let (annotation, methodName, genericConstrains) = methodInfo()
 
-            if method.parameters.isEmpty {
+            if filteredParameters.isEmpty {
                 return "\(annotation)public static func \(methodName)(\(returningParameter(true,false))perform: @escaping \(performProxyClosureType())) -> \(prefix)Perform\(genericConstrains)"
             } else {
                 return "\(annotation)public static func \(methodName)(\(parametersForProxySignature()), \(returningParameter(true,false))perform: @escaping \(performProxyClosureType())) -> \(prefix)Perform\(genericConstrains)"
@@ -506,7 +516,7 @@ class MethodWrapper {
     }
 
     func performProxyConstructor(prefix: String = "") -> String {
-        if method.parameters.isEmpty {
+        if filteredParameters.isEmpty {
             return "return \(prefix)Perform(method: .\(prototype), performs: perform)"
         } else {
             return "return \(prefix)Perform(method: .\(prototype)(\(parametersForProxyInit())), performs: perform)"
@@ -514,7 +524,7 @@ class MethodWrapper {
     }
 
     func performProxyClosureType() -> String {
-        if method.parameters.isEmpty {
+        if filteredParameters.isEmpty {
             return "() -> Void"
         } else {
             let parameters = self.parameters
@@ -525,10 +535,10 @@ class MethodWrapper {
     }
 
     func performProxyClosureCall() -> String {
-        if method.parameters.isEmpty {
+        if filteredParameters.isEmpty {
             return "perform?()"
         } else {
-            let parameters = method.parameters
+            let parameters = filteredParameters
                 .map { p in
                     let wrapped = ParameterWrapper(p, self.getVariadicParametersNames())
                     let isAutolosure = wrapped.justType.hasPrefix("@autoclosure")
@@ -542,7 +552,7 @@ class MethodWrapper {
     func performCall() -> String {
         guard !method.isInitializer else { return "" }
         let type = performProxyClosureType()
-        var proxy = method.parameters.isEmpty ? "\(prototype)" : "\(prototype)(\(parametersForMethodCall()))"
+        var proxy = filteredParameters.isEmpty ? "\(prototype)" : "\(prototype)(\(parametersForMethodCall()))"
 
         let cast = "let perform = methodPerformValue(.\(proxy)) as? \(type)"
         let call = performProxyClosureCall()
@@ -708,7 +718,15 @@ class MethodWrapper {
             return " where \(constraints.joined(separator: ", "))"
         }()
         var attributes = self.methodAttributes.replacingOccurrences(of:"@objc", with: "")
+        attributes = attributes.condenseWhitespace()
         attributes = attributes.isEmpty ? "" : "\(attributes)\n\t\t"
         return (attributes, methodName, constraints)
+    }
+}
+
+extension String {
+    func condenseWhitespace() -> String {
+        let components = self.components(separatedBy: .whitespacesAndNewlines)
+        return components.filter { !$0.isEmpty }.joined(separator: " ")
     }
 }
