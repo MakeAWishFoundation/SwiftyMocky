@@ -26,7 +26,7 @@ Library that uses metaprogramming technique to generate mocks based on sources, 
   s.pod_target_xcconfig = {
       'APPLICATION_EXTENSION_API_ONLY' => 'YES',
       'ENABLE_BITCODE' => 'NO',
-      'OTHER_LDFLAGS' => '-weak-lXCTestSwiftSupport -Xlinker -no_application_extension',
+      'OTHER_LDFLAGS' => '$(inherited) -weak-lXCTestSwiftSupport -Xlinker -no_application_extension',
       'OTHER_SWIFT_FLAGS' => '$(inherited) -suppress-warnings',
       'FRAMEWORK_SEARCH_PATHS' => '$(inherited) "$(PLATFORM_DIR)/Developer/Library/Frameworks"',
       'DEFINES_MODULE' => 'YES'
