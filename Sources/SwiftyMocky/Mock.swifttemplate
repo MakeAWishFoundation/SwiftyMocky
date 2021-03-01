@@ -37,7 +37,7 @@ func stringArray(fromArguments arguments: [String: Any], forKey key: String) -> 
     }
 }
 _%>
-// Generated with SwiftyMocky 4.0.1
+// Generated with SwiftyMocky 4.0.3
 
 import SwiftyMocky
 import XCTest
@@ -1531,6 +1531,7 @@ _%>
 <%# ================================================== SETUP -%><%_ -%>
 <%_ var all = types.all
     all += types.protocols.map { $0 }
+    all += types.protocolCompositions.map { $0 }
     var mockedCount = 0
 -%>
 
