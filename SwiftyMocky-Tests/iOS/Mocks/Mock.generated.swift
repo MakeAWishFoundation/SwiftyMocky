@@ -1,9 +1,8 @@
-// Generated using Sourcery 1.0.2 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 1.0.3 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
 
-
-// Generated with SwiftyMocky 4.0.3
+// Generated with SwiftyMocky 4.0.4
 
 import SwiftyMocky
 import XCTest

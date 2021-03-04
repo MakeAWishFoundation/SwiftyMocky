@@ -37,7 +37,7 @@ func stringArray(fromArguments arguments: [String: Any], forKey key: String) -> 
     }
 }
 _%>
-// Generated with SwiftyMocky 4.0.3
+// Generated with SwiftyMocky 4.0.4
 
 import SwiftyMocky
 import XCTest

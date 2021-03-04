@@ -1,4 +1,4 @@
-sourceryCommand: null
+sourceryCommand: ./Pods/Sourcery/bin/sourcery
 sourceryTemplate: ./Sources/SwiftyMocky/Mock.swifttemplate
 
 mocky.iOS:
