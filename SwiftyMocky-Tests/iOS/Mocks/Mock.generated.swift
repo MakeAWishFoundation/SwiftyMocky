@@ -3,7 +3,7 @@
 
 
 
-// Generated with SwiftyMocky 4.0.1
+// Generated with SwiftyMocky 4.0.3
 
 import SwiftyMocky
 import XCTest

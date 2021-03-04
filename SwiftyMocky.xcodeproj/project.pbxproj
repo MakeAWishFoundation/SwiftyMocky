@@ -356,10 +356,6 @@
 		CC5B61C91FCC188D007FB209 /* Mock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mock.generated.swift; sourceTree = "<group>"; };
 		CC5B61CA1FCC188D007FB209 /* ItemsRepositoryMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemsRepositoryMock.swift; sourceTree = "<group>"; };
 		CCA9F81921566AC500F2880B /* SimpleSequencingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleSequencingTests.swift; sourceTree = "<group>"; };
-		CCAD79BB24D1767400FBB680 /* SwiftyMocky iOS copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "SwiftyMocky iOS copy-Info.plist"; path = "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/SwiftyMocky iOS copy-Info.plist"; sourceTree = "<absolute>"; };
-		CCAD79D324D1775200FBB680 /* SwiftyPrototype iOS copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "SwiftyPrototype iOS copy-Info.plist"; path = "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/SwiftyPrototype iOS copy-Info.plist"; sourceTree = "<absolute>"; };
-		CCAD79EB24D1777300FBB680 /* SwiftyPrototype iOS copy2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "SwiftyPrototype iOS copy2-Info.plist"; path = "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/SwiftyPrototype iOS copy2-Info.plist"; sourceTree = "<absolute>"; };
-		CCAD7A0324D1782F00FBB680 /* SwiftyPrototype iOS copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "SwiftyPrototype iOS copy-Info.plist"; path = "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/SwiftyPrototype iOS copy-Info.plist"; sourceTree = "<absolute>"; };
 		CCAFC9EF1FAF244D003F776A /* SwiftyMocky.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyMocky.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCAFC9F11FAF244D003F776A /* SwiftyMocky.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftyMocky.h; sourceTree = "<group>"; };
 		CCAFC9F21FAF244D003F776A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -500,10 +496,6 @@
 				607FACD11AFB9204008FA782 /* Products */,
 				7FCC8434BB6BB8DECC81772A /* Frameworks */,
 				C28303449AB54C13301D7738 /* Pods */,
-				CCAD79BB24D1767400FBB680 /* SwiftyMocky iOS copy-Info.plist */,
-				CCAD79D324D1775200FBB680 /* SwiftyPrototype iOS copy-Info.plist */,
-				CCAD79EB24D1777300FBB680 /* SwiftyPrototype iOS copy2-Info.plist */,
-				CCAD7A0324D1782F00FBB680 /* SwiftyPrototype iOS copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};

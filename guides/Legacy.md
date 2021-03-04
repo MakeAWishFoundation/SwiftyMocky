@@ -1,6 +1,6 @@
 # Legacy
 
-If really you don't want to use the **CLI** (😢) then you can still use SwiftyMocky with a Sourcery configuration, described below. This is the "old" way of integrating our library. 
+If really you don't want to use the **CLI** (😢) then you can still use SwiftyMocky with a Sourcery configuration, described below. This is the "old" way of integrating our library.
 
 Summing up, you need **SwiftyMocky** framework in the runtime, and **sourcery** binary with a configuration pointing to our template for the mocks generation.
 
@@ -38,7 +38,7 @@ sources:
     - ./ExampleApp
     - ./ExampleAppTests
 templates:
-  - ./Pods/SwiftyMocky/Sources/Templates
+  - ./Pods/SwiftyMocky/Sources/SwiftyMocky
 output:
   ./ExampleApp
 args:
@@ -103,7 +103,7 @@ sources:
     - ./ExampleAppTests
 templates:
     - <templates path> # Path to already written Sourcery templates
-    - ./Pods/SwiftyMocky/Sources/Templates # <- SwiftyMocky templates
+    - ./Pods/SwiftyMocky/Sources/SwiftyMocky # <- SwiftyMocky templates
 output:
     ./ExampleApp
 args:

@@ -2,22 +2,22 @@
 
 task :mock do
     print_info "Generating mocks - iOS"
-    sh "Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config .mocky.iOS.yml"
+    sh "Pods/Sourcery/bin/sourcery --config .mocky.iOS.yml"
     print_info "Generating mocks - tvOS"
-    sh "Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config .mocky.tvOS.yml"
+    sh "Pods/Sourcery/bin/sourcery --config .mocky.tvOS.yml"
     print_info "Generating mocks - macOS"
-    sh "Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config .mocky.macOS.yml"
+    sh "Pods/Sourcery/bin/sourcery --config .mocky.macOS.yml"
     print_info "Generating mocks - SPM"
-    sh "Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config .mocky.spm.yml"
+    sh "Pods/Sourcery/bin/sourcery --config .mocky.spm.yml"
 end
 
 task :debug do
     print_info "Generating mocks - iOS - debug"
-    sh "Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config .mocky.iOS.yml --disableCache --verbose"
+    sh "Pods/Sourcery/bin/sourcery --config .mocky.iOS.yml --disableCache --verbose"
     print_info "Generating mocks - tvOS - debug"
-    sh "Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config .mocky.tvOS.yml --disableCache --verbose"
+    sh "Pods/Sourcery/bin/sourcery --config .mocky.tvOS.yml --disableCache --verbose"
     print_info "Generating mocks - macOS - debug"
-    sh "Pods/Sourcery/bin/Sourcery.app/Contents/MacOS/Sourcery --config .mocky.macOS.yml --disableCache --verbose"
+    sh "Pods/Sourcery/bin/sourcery --config .mocky.macOS.yml --disableCache --verbose"
 end
 
 ## [ Tools ] ###################################################################
