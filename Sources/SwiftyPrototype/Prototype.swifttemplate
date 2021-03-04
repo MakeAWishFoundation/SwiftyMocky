@@ -37,7 +37,7 @@ func stringArray(fromArguments arguments: [String: Any], forKey key: String) -> 
     }
 }
 _%>
-// Generated with SwiftyPrototype 4.0.1
+// Generated with SwiftyPrototype 4.0.3
 
 import SwiftyPrototype
 <%# ================================================== IMPORTS -%><%_ -%>
@@ -911,13 +911,14 @@ class MethodWrapper {
 
     func givenProduceConstructorNameThrows(prefix: String = "") -> String {
         let returnTypeString = givenReturnTypeString()
+        let (annotation, _, _) = methodInfo()
         let produceClosure = "(StubberThrows<\(returnTypeString)>) -> Void"
         let clauseConstraints = whereClauseExpression()
 
         if filteredParameters.isEmpty {
-            return "public static func \(method.shortName)(willProduce: \(produceClosure)) -> \(prefix)MethodStub" + clauseConstraints
+            return "\(annotation)public static func \(method.shortName)(willProduce: \(produceClosure)) -> \(prefix)MethodStub" + clauseConstraints
         } else {
-            return "public static func \(method.shortName)(\(parametersForProxySignature()), willProduce: \(produceClosure)) -> \(prefix)MethodStub" + clauseConstraints
+            return "\(annotation)public static func \(method.shortName)(\(parametersForProxySignature()), willProduce: \(produceClosure)) -> \(prefix)MethodStub" + clauseConstraints
         }
     }
 
