@@ -108,6 +108,24 @@ func uniques(methods: [SourceryRuntime.Method]) -> [SourceryRuntime.Method] {
     })
 }
 
+func getAllProtocolMethods(_ aProtocol: SourceryProtocol) -> [SourceryRuntime.Method] {
+    let inheritedProtocols = aProtocol.parentTypes.filter{ $0.kind == "protocol" }
+    var allMethods = aProtocol.allMethods
+    for p in inheritedProtocols {
+        allMethods.append(contentsOf: getAllProtocolMethods(p as! SourceryProtocol))
+    }
+    return allMethods
+}
+
+func getAllProtocolVariables(_ aProtocol: SourceryProtocol) -> [SourceryRuntime.Variable] {
+    let inheritedProtocols = aProtocol.parentTypes.filter{ $0.kind == "protocol" }
+    var allVariables = aProtocol.allVariables
+    for p in inheritedProtocols {
+        allVariables.append(contentsOf: getAllProtocolVariables(p as! SourceryProtocol))
+    }
+    return allVariables
+}
+
 func uniquesWithoutGenericConstraints(methods: [SourceryRuntime.Method]) -> [SourceryRuntime.Method] {
     func returnTypeStripped(_ method: SourceryRuntime.Method) -> String {
         let returnTypeRaw = "\(method.returnTypeName)"
@@ -1580,7 +1598,7 @@ _%>
 <%_ let autoMockable: Bool = type.inheritedTypes.contains("AutoMockable") || type.annotations["AutoMockable"] != nil
     let protocolToDecorate = types.protocols.first(where: { $0.name == (type.annotations["mock"] as? String) })
     let inlineMockable = protocolToDecorate != nil
-    guard let aProtocol = autoMockable ? type : protocolToDecorate else { continue }
+    guard let aProtocol: SourceryProtocol = autoMockable ? (type as! SourceryProtocol) : protocolToDecorate else { continue }
     mockedCount += 1
     let associatedTypes: [String]? = Helpers.extractAssociatedTypes(from: aProtocol)
     let attributes: String = Helpers.extractAttributes(from: type.attributes)
@@ -1588,17 +1606,17 @@ _%>
     let genericTypesModifier: String = Helpers.extractGenericTypesModifier(associatedTypes)
     let genericTypesConstraints: String = Helpers.extractGenericTypesConstraints(associatedTypes)
     let allSubscripts = aProtocol.allSubscripts
-    let allVariables = uniques(variables: aProtocol.allVariables.filter({ !$0.isStatic }))
+    let allVariables = uniques(variables: getAllProtocolVariables(aProtocol).filter({ !$0.isStatic }))
     let containsVariables = !allVariables.isEmpty
-    let allStaticVariables = uniques(variables: aProtocol.allVariables.filter({ $0.isStatic }))
+    let allStaticVariables = uniques(variables: getAllProtocolVariables(aProtocol).filter({ $0.isStatic }))
     let containsStaticVariables = !allStaticVariables.isEmpty
-    let allMethods = uniques(methods: aProtocol.allMethods.filter({ !$0.isStatic }))
+    let allMethods = uniques(methods: getAllProtocolMethods(aProtocol).filter({ !$0.isStatic }))
     let selfConstrained = allMethods.map(wrapMethod).contains(where: { $0.returnsGenericConstrainedToSelf || $0.parametersContainsSelf })
     let accessModifier: String = selfConstrained ? "public final" : "open"
     let inheritFromNSObject = type.annotations["ObjcProtocol"] != nil || attributes.contains("@objc")
-    let allMethodsForMethodType = uniquesWithoutGenericConstraints(methods: aProtocol.allMethods.filter({ !$0.isStatic }))
-    let allStaticMethods = uniques(methods: aProtocol.allMethods.filter({ $0.isStatic }))
-    let allStaticMethodsForMethodType = uniquesWithoutGenericConstraints(methods: aProtocol.allMethods.filter({ $0.isStatic }))
+    let allMethodsForMethodType = uniquesWithoutGenericConstraints(methods: getAllProtocolMethods(aProtocol).filter({ !$0.isStatic }))
+    let allStaticMethods = uniques(methods: getAllProtocolMethods(aProtocol).filter({ $0.isStatic }))
+    let allStaticMethodsForMethodType = uniquesWithoutGenericConstraints(methods: getAllProtocolMethods(aProtocol).filter({ $0.isStatic }))
     let conformsToStaticMock = !allStaticMethods.isEmpty || !allStaticVariables.isEmpty
     let conformsToMock = !allMethods.isEmpty || !allVariables.isEmpty -%><%_ -%><%_ -%>
 <%_ if autoMockable { -%>
