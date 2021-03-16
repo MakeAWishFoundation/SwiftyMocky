@@ -13,7 +13,7 @@
     <a title="CHANGELOG  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">SwiftyMocky 4.0.3 Docs</a> (85% documented)</p>
+        <p><a href="index.html">SwiftyMocky 4.0.4 Docs</a> (85% documented)</p>
         <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -186,6 +186,9 @@
                 <a href="Classes/SwiftyMockyTestObserver.html">SwiftyMockyTestObserver</a>
               </li>
               <li class="nav-group-task">
+                <a href="Classes/SwiftyMockyTestObserver.html">SwiftyMockyTestObserver</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Structs/FatalErrorUtil.html">FatalErrorUtil</a>
               </li>
               <li class="nav-group-task">
@@ -262,6 +265,34 @@
             <h1 id='changelog' class='heading'>Changelog</h1>
 
 <p>All changes to SwiftyMocky project will be documented in this file.</p>
+
+<hr>
+<h2 id='strong-4-0-4-strong-2020' class='heading'><strong>4.0.4</strong> / 2020</h2>
+<h4 id='fixed' class='heading'>Fixed:</h4>
+
+<ul>
+<li>Fixed concurrency issue, synchronized mock invocations in/out via private queue.</li>
+<li>Fixed missing annotations for stubbing with producer (Jean-Charles Dessaint)</li>
+<li>Fixed compilation of pod library for Xcode 12.5 (beta) (Emanuel Munteanu)</li>
+<li>Conditionally import XCTest related stuff in SwiftTestObserver (Mark DiFranco)</li>
+</ul>
+
+<hr>
+<h2 id='strong-4-0-3-strong-2020' class='heading'><strong>4.0.3</strong> / 2020</h2>
+<h4 id='fixed' class='heading'>Fixed:</h4>
+
+<ul>
+<li>Fixed issues for Sourcery 1.0.2+, resulting in broken mocks</li>
+<li>Fixed issues with @available for methods returning values</li>
+<li>Fixed issues with unnamed parameters handling</li>
+<li>Updated matcher for sequences,</li>
+<li>Fixed issue with mutating annotation breaking generated mock</li>
+</ul>
+
+<hr>
+<h2 id='strong-4-0-2-strong-2020' class='heading'><strong>4.0.2</strong> / 2020</h2>
+
+<p>skipped</p>
 
 <hr>
 <h2 id='strong-4-0-1-strong-2020' class='heading'><strong>4.0.1</strong> / 2020</h2>

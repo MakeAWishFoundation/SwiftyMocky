@@ -4,6 +4,16 @@ All changes to SwiftyMocky project will be documented in this file.
 
 -----
 
+## __4.0.4__ / 2020
+
+#### Fixed:
+* Fixed concurrency issue, synchronized mock invocations in/out via private queue.
+* Fixed missing annotations for stubbing with producer (Jean-Charles Dessaint)
+* Fixed compilation of pod library for Xcode 12.5 (beta) (Emanuel Munteanu)
+* Conditionally import XCTest related stuff in SwiftTestObserver (Mark DiFranco)
+
+-----
+
 ## __4.0.3__ / 2020
 
 #### Fixed:
