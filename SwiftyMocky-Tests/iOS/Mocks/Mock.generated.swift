@@ -4,8 +4,12 @@
 
 // Generated with SwiftyMocky 4.0.4
 
+
 import SwiftyMocky
 import XCTest
+import CoreGraphics
+import Foundation
+import UIKit
 @testable import Mocky_Example_iOS
 
 // MARK: - AMassiveTestProtocol
@@ -15861,6 +15865,8 @@ open class ComposedServiceMock: ComposedService, Mock {
     var matcher: Matcher = Matcher.default
     var stubbingPolicy: StubbingPolicy = .wrap
     var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+
+    private var queue = DispatchQueue(label: "com.swiftymocky.invocations", qos: .userInteractive)
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
@@ -16237,7 +16243,7 @@ open class ComposedServiceMock: ComposedService, Mock {
     }
 
     private func addInvocation(_ call: MethodType) {
-        invocations.append(call)
+        self.queue.sync { invocations.append(call) }
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
         matcher.set(file: self.file, line: self.line)

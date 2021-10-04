@@ -24,11 +24,11 @@ let package = Package(
         // XCTest Runtime libraries
         .target(
             name: "SwiftyMocky",
-            exclude: ["Mock.swifttemplate",]
+            exclude: ["Mock.swifttemplate"]
         ),
         .target(
             name: "SwiftyPrototype",
-            exclude: ["Prototype.swifttemplate",]
+            exclude: ["Prototype.swifttemplate"]
         ),
         .target(
             name: "Shared"

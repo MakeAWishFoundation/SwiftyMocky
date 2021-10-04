@@ -50,7 +50,14 @@ public class SwiftyMockyTestObserver: NSObject, XCTestObservation {
         testCase.continueAfterFailure = false
         let methodName = getNameOfExtecutedTestCase(testCase)
         if let name = methodName, let failingLine = FilesExlorer().findTestCaseLine(for: name, file: file) {
-            testCase.recordFailure(withDescription: message, inFile: file.description, atLine: Int(failingLine), expected: false)
+            testCase.record(XCTIssue(
+                type: .system,
+                compactDescription: message,
+                detailedDescription: nil,
+                sourceCodeContext: .init(location: .init(filePath: file.description, lineNumber: Int(failingLine))),
+                associatedError: nil,
+                attachments: []
+            ))
         } else if let name = methodName {
             XCTFail("\(name) - \(message)", file: file, line: line)
         } else {
@@ -66,18 +73,6 @@ public class SwiftyMockyTestObserver: NSObject, XCTestObservation {
         return testCase.name.components(separatedBy: " ")[1].components(separatedBy: "]").first
     }
 }
-#else
-public class SwiftyMockyTestObserver: NSObject {
-    /// [Internal] No setup whatsoever
-    @objc public static func setup() {
-        // Empty on purpose
-    }
-
-    public static func handleFatalError(message: String, file: StaticString, line: UInt) {
-        // Empty on purpose
-    }
-}
-#endif
 
 /// [Internal] Internal dependency that looks for line of test case, that caused test failure.
 private class FilesExlorer {
@@ -105,3 +100,17 @@ private class FilesExlorer {
         return String(data: fileData, encoding: .utf8) ?? String(data: fileData, encoding: .utf16)
     }
 }
+
+#else
+
+public class SwiftyMockyTestObserver: NSObject {
+    /// [Internal] No setup whatsoever
+    @objc public static func setup() {
+        // Empty on purpose
+    }
+
+    public static func handleFatalError(message: String, file: StaticString, line: UInt) {
+        // Empty on purpose
+    }
+}
+#endif
