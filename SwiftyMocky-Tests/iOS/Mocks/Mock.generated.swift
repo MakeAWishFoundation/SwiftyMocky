@@ -2,7 +2,7 @@
 // DO NOT EDIT
 
 
-// Generated with SwiftyMocky 4.0.4
+// Generated with SwiftyMocky 4.1.0
 
 
 import SwiftyMocky
@@ -15683,7 +15683,7 @@ open class WithConflictingNameMock: WithConflictingName, Mock {
     public typealias PropertyStub = Given
     public typealias MethodStub = Given
     public typealias SubscriptStub = Given
-    public typealias A = WithConflictingNameMock.A
+    public typealias A = WithConflictingName.A
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {

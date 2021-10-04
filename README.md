@@ -136,7 +136,7 @@ Add **SwiftyMocky** to you **Package.swift** dependencies:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/MakeAWishFoundation/SwiftyMocky", from: "4.0.4"),
+    .package(url: "https://github.com/MakeAWishFoundation/SwiftyMocky", from: "4.1.0"),
 ]
 ```
 
@@ -374,11 +374,11 @@ SwiftyMocky is available under the MIT license. See the [LICENSE][link-license] 
 
 <!-- Links based on tag -->
 
-[link-docs]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.0.4/docs/index.html
-[link-docs-features]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.0.4/docs/supported-features.html
-[link-docs-installation]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.0.4/docs/installation.html
-[link-docs-installation-carthage]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.0.4/docs/installation.html#installation-carthage
-[link-docs-setup]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.0.4/docs/setup-in-project.html
+[link-docs]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0/docs/index.html
+[link-docs-features]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0/docs/supported-features.html
+[link-docs-installation]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0/docs/installation.html
+[link-docs-installation-carthage]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0/docs/installation.html#installation-carthage
+[link-docs-setup]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0/docs/setup-in-project.html
 
 <!-- Assets -->
 

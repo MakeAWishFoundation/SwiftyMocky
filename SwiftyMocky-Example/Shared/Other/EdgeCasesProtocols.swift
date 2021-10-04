@@ -97,7 +97,7 @@ struct CustomGeneric<T> {
     let t: T
 }
 
-//sourcery: typealias = "A = WithConflictingNameMock.A"
+//sourcery: typealias = "A = WithConflictingName.A"
 protocol WithConflictingName: AutoMockable {
     typealias A = Int
 
