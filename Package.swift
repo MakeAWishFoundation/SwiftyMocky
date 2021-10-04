@@ -6,11 +6,22 @@ import PackageDescription
 let package = Package(
     name: "swiftymocky",
     products: [
+        // XCTest Runtime libraries
         .library(name: "SwiftyMocky", targets: ["SwiftyMocky"]),
         .library(name: "SwiftyPrototype", targets: ["SwiftyPrototype"]),
+        // CLI Executable
+        .executable(name: "swiftymocky", targets: ["SwiftyMockyCLI"]),
     ],
-    dependencies: [],
+    dependencies: [
+        .package(url: "https://github.com/JohnSundell/ShellOut.git", from: "2.3.0"),
+        .package(url: "https://github.com/tuist/xcodeproj.git", from: "8.3.1"),
+        .package(url: "https://github.com/luoxiu/Chalk", .exact("0.0.7")),
+        .package(url: "https://github.com/kylef/Commander", .exact("0.9.1")),
+        .package(url: "https://github.com/kylef/PathKit", from: "1.0.0"),
+        .package(url: "https://github.com/jpsim/Yams.git", from: "3.0.1"),
+    ],
     targets: [
+        // XCTest Runtime libraries
         .target(
             name: "SwiftyMocky",
             exclude: ["Mock.swifttemplate",]
@@ -29,6 +40,24 @@ let package = Package(
         .testTarget(
             name: "SwiftyMockyTests",
             dependencies: ["Mocky_Example_macOS", "SwiftyMocky"]
+        ),
+        // CLI Executable
+        .target(
+           name: "SwiftyMockyCLI",
+           dependencies: [
+               "Commander",
+               "SwiftyMockyCLICore",
+           ]
+        ),
+        .target(
+           name: "SwiftyMockyCLICore",
+           dependencies: [
+               "ShellOut",
+               "Chalk",
+               "XcodeProj",
+               "PathKit",
+               "Yams",
+           ]
         ),
     ]
 )
