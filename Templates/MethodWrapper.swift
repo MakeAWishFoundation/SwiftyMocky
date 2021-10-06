@@ -59,6 +59,9 @@ class MethodWrapper {
         return Current.accessModifier
     }
     var hasAvailability: Bool { method.attributes["available"]?.isEmpty == false }
+    var isAsync: Bool {
+        self.method.annotations["async"] != nil
+    }
 
     private var registrationName: String {
         var rawName = (method.isStatic ? "sm*\(method.selectorName)" : "m*\(method.selectorName)")
@@ -136,11 +139,12 @@ class MethodWrapper {
 
         let staticModifier: String = "\(accessModifier) "
         let params = replacingSelf(parametersForStubSignature())
-        var attributes = self.methodAttributes
+        var attributes = self.methodAttributes.replacingOccurrences(of: "@inlinable", with: "")
         attributes = attributes.isEmpty ? "" : "\(attributes)\n\t"
+        var asyncModifier = self.isAsync ? "async " : ""
 
         if method.isInitializer {
-            return "\(attributes)public required \(method.name) \(throwing)"
+            return "\(attributes)public required \(method.name) \(asyncModifier)\(throwing)"
         } else if method.returnTypeName.isVoid {
             let wherePartIfNeeded: String = {
                 if method.returnTypeName.name.hasPrefix("Void") {
@@ -150,11 +154,11 @@ class MethodWrapper {
                     return !method.returnTypeName.name.isEmpty ? "\(method.returnTypeName.name) " : ""
                 }
             }()
-            return "\(attributes)\(staticModifier)func \(method.shortName)\(params) \(throwing)\(wherePartIfNeeded)"
+            return "\(attributes)\(staticModifier)func \(method.shortName)\(params) \(asyncModifier)\(throwing)\(wherePartIfNeeded)"
         } else if returnsGenericConstrainedToSelf {
-            return "\(attributes)\(staticModifier)func \(method.shortName)\(params) \(throwing)-> \(returnTypeReplacingSelf) "
+            return "\(attributes)\(staticModifier)func \(method.shortName)\(params) \(asyncModifier)\(throwing)-> \(returnTypeReplacingSelf) "
         } else {
-            return "\(attributes)\(staticModifier)func \(method.shortName)\(params) \(throwing)-> \(method.returnTypeName.name) "
+            return "\(attributes)\(staticModifier)func \(method.shortName)\(params) \(asyncModifier)\(throwing)-> \(method.returnTypeName.name) "
         }
     }
     var invocation: String {

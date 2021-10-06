@@ -33,13 +33,15 @@ let package = Package(
         .target(
             name: "Shared"
         ),
+        // Example and tests
         .target(
             name: "Mocky_Example_macOS",
             path: "./SwiftyMocky-Example/Shared"
         ),
         .testTarget(
             name: "SwiftyMockyTests",
-            dependencies: ["Mocky_Example_macOS", "SwiftyMocky"]
+            dependencies: ["Mocky_Example_macOS", "SwiftyMocky"],
+            exclude: ["Shared/Swift5.5"]
         ),
         // CLI Executable
         .target(

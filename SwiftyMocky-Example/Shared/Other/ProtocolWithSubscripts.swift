@@ -16,7 +16,6 @@ protocol ProtocolWithSubscripts {
     subscript (labeled index: Int) -> String { get set }
     subscript (x: Int, y: Int) -> String { get set }
     subscript (_ index: String) -> String { get set }
-//    subscript (index index: String) -> String { get set }
     subscript (label name: String) -> Int { get }
     //sourcery: associatedtype = "T: Sequence"
     //sourcery: where = "T.Element: Equatable"
