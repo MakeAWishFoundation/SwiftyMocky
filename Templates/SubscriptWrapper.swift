@@ -7,9 +7,13 @@ class SubscriptWrapper {
     let associatedTypes: [String]?
     let genericTypesList: [String]
     let genericTypesModifier: String?
+    let whereClause: String
+    var hasAvailability: Bool { wrapped.attributes["available"]?.isEmpty == false }
 
     private var methodAttributes: String {
         return Helpers.extractAttributes(from: self.wrapped.attributes)
+            .replacingOccurrences(of: "mutating", with: "")
+            .replacingOccurrences(of: "@inlinable", with: "")
     }
 
     private let noStubDefinedMessage = "Stub return value not specified for subscript. Use given first."
@@ -44,6 +48,7 @@ class SubscriptWrapper {
         self.wrapped = wrapped
         associatedTypes = Helpers.extractAssociatedTypes(from: wrapped)
         genericTypesList = Helpers.extractGenericsList(associatedTypes)
+        whereClause = Helpers.extractWhereClause(from: wrapped) ?? ""
         if let types = associatedTypes {
             genericTypesModifier = "<\(types.joined(separator: ","))>"
         } else {
@@ -55,7 +60,7 @@ class SubscriptWrapper {
         return "subscript_\(accessor)_\(wrappedParameters.map({ $0.sanitizedForEnumCaseName() }).joined(separator: "_"))"
     }
     var shortName: String { return "public subscript\(genericTypesModifier ?? " ")(\(wrappedParameters.map({ $0.asMethodArgument() }).joined(separator: ", ")))" }
-    var uniqueName: String { return "\(shortName) -> \(wrapped.returnTypeName)" }
+    var uniqueName: String { return "\(shortName) -> \(wrapped.returnTypeName)\(self.whereClause)" }
 
     private func nameSuffix(_ accessor: String) -> String {
         guard let count = SubscriptWrapper.registered[registrationName(accessor)] else { return "" }
@@ -74,7 +79,8 @@ class SubscriptWrapper {
     }
     private func getter() -> String {
         let method = ".\(subscriptCasePrefix("get"))(\(parametersForMethodCall()))"
-        let noStubDefined = wrapped.returnTypeName.isOptional ? "return nil" : "onFatalFailure(\"\(noStubDefinedMessage)\"); Failure(\"noStubDefinedMessage\")"
+        let optionalReturnWorkaround = "\(wrapped.returnTypeName)".hasSuffix("?")
+        let noStubDefined = (optionalReturnWorkaround || wrapped.returnTypeName.isOptional) ? "return nil" : "onFatalFailure(\"\(noStubDefinedMessage)\"); Failure(\"noStubDefinedMessage\")"
         return
             "\n\t\t\taddInvocation(\(method))" +
                 "\n\t\t\tdo {" +
@@ -100,13 +106,15 @@ class SubscriptWrapper {
     func subscriptCasePrefix(_ accessor: String) -> String {
         return "\(registrationName(accessor))\(nameSuffix(accessor))"
     }
-    func subscriptCaseName(_ accessor: String) -> String {
-        return "\(subscriptCasePrefix(accessor))(\(parametersForMethodTypeDeclaration(set: accessor == "set")))"
+    func subscriptCaseName(_ accessor: String, availability: Bool = false) -> String {
+        return "\(subscriptCasePrefix(accessor))(\(parametersForMethodTypeDeclaration(availability: availability, set: accessor == "set")))"
     }
     func subscriptCases() -> String {
-        let availability = wrapped.attributes["available"]?.description
-        let attributes = availability != nil ? "\(availability!)\n\t\t" : ""
-        return readonly ? "\(attributes)case \(subscriptCaseName("get"))" : "\(attributes)case \(subscriptCaseName("get"))\n\t\t\(attributes)case \(subscriptCaseName("set"))"
+        if readonly {
+            return "case \(subscriptCaseName("get", availability: hasAvailability))"
+        } else {
+            return "case \(subscriptCaseName("get", availability: hasAvailability))\n\t\tcase \(subscriptCaseName("set", availability: hasAvailability))"
+        }
     }
     func equalCase(_ accessor: String) -> String {
         var lhsParams = wrapped.parameters.map { "lhs\($0.name.capitalized)" }.joined(separator: ", ")
@@ -195,11 +203,13 @@ class SubscriptWrapper {
         guard multiple else { return returning }
         return front ? ", \(returning)" : "\(returning), "
     }
-    private func parametersForMethodTypeDeclaration(set: Bool = false) -> String {
+    private func parametersForMethodTypeDeclaration(availability: Bool = false, set: Bool = false) -> String {
         let generics: [String] = getGenerics()
         let params = wrappedParameters.map { param in
-            return param.isGeneric(generics) ? param.genericType : param.nestedType
-            }.joined(separator: ", ")
+            if param.isGeneric(generics) { return param.genericType }
+            if availability { return param.typeErasedType }
+            return param.nestedType
+        }.joined(separator: ", ")
         guard set else { return params }
         let newValue = TypeWrapper(wrapped.returnTypeName).isGeneric(generics) ? "Parameter<GenericAttribute>" : nestedType
         return "\(params), \(newValue)"
@@ -207,7 +217,7 @@ class SubscriptWrapper {
     private func parametersForProxyInit(set: Bool = false) -> String {
         let generics = getGenerics()
         let newValue = TypeWrapper(wrapped.returnTypeName).isGeneric(generics) ? "newValue.wrapAsGeneric()" : "newValue"
-        return wrappedParameters.map { "\($0.wrappedForProxy(generics))" }.joined(separator: ", ") + (set ? ", \(newValue)" : "")
+        return wrappedParameters.map { "\($0.wrappedForProxy(generics, hasAvailability))" }.joined(separator: ", ") + (set ? ", \(newValue)" : "")
     }
     private func parametersForProxySignature(set: Bool = false) -> String {
         return wrappedParameters.map { "\($0.labelAndName()): \($0.nestedType)" }.joined(separator: ", ") + (set ? ", set newValue: \(nestedType)" : "")
@@ -217,7 +227,7 @@ class SubscriptWrapper {
     }
     private func parametersForMethodCall(set: Bool = false) -> String {
         let generics = getGenerics()
-        let params = wrappedParameters.map { $0.wrappedForCalls(generics) }.joined(separator: ", ")
+        let params = wrappedParameters.map { $0.wrappedForCalls(generics, hasAvailability) }.joined(separator: ", ")
         let postfix = TypeWrapper(wrapped.returnTypeName).isGeneric(generics) ? ".wrapAsGeneric()" : ""
         return !set ? params : "\(params), \(nestedType).value(newValue)\(postfix)"
     }

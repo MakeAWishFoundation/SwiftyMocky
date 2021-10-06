@@ -41,7 +41,7 @@ public enum Parameter<ValueType> {
     public var shortDescription: String {
         switch self {
         case ._: return ".any"
-        case .value(let value as GenericAttribute): return value.shortDescription
+        case .value(let value as TypeErasedValue): return value.shortDescription
         case .value(let value): return String(describing: value)
         case .matching: return ".matching(\(String(describing: ValueType.self)) -> Bool)"
         }
@@ -105,7 +105,7 @@ public extension Parameter where ValueType: OptionalType {
 
 // MARK: - Order
 
-public extension Parameter where ValueType: GenericAttributeType {
+public extension Parameter where ValueType: TypeErasedValue {
     /// Used for invocations sorting purpose.
     var intValue: Int {
         switch self {
@@ -162,6 +162,7 @@ public extension Parameter {
     ///
     /// - Returns: Wrapped parameter
     func wrapAsGeneric() -> Parameter<GenericAttribute> {
+        // TODO: - Simplify in same way as type erased attribute.
         switch self {
         case ._:
             let attribute = GenericAttribute(
@@ -222,9 +223,37 @@ public extension Parameter {
             return Parameter<GenericAttribute>.value(attribute)
         }
     }
+
+    /// [Internal] Wraps as generic Parameter instance. Should not be ever called directly.
+    ///
+    /// - Returns: Wrapped parameter
+    func typeErasedAttribute() -> Parameter<TypeErasedAttribute> {
+        // A side note - compare is different to `wrapAsGeneric`, as the actual type will always match. There will be no
+        // unrelated types.
+        switch self {
+        case ._:
+            return .any
+        case let .value(value):
+            return .value(TypeErasedAttribute(
+                value: value,
+                intValue: intValue,
+                shortDescription: shortDescription,
+                compare: { (lattr, rattr, m) -> Bool in
+                    guard let lvalue = lattr as? ValueType else { return false }
+                    guard let rvalue = rattr as? ValueType else { return false }
+                    return Parameter<ValueType>.compare(lhs: .value(lvalue), rhs: .value(rvalue), with: m)
+                }
+            ))
+        case let .matching(match):
+            return .matching { rattr -> Bool in
+                guard let rvalue = rattr as? ValueType else { return false }
+                return match(rvalue)
+            }
+        }
+    }
 }
 
-public extension Parameter where ValueType: GenericAttributeType {
+public extension Parameter where ValueType: TypeErasedValue {
     /// [Internal] Compare two parameters
     ///
     /// - Parameters:
@@ -236,6 +265,8 @@ public extension Parameter where ValueType: GenericAttributeType {
         switch (lhs, rhs) {
         case (._, _): return true
         case (_, ._): return true
+        case (.matching(let match), .value(let value)): return match(value)
+        case (.value(let value), .matching(let match)): return match(value)
         case (.value(let lhsGeneric), .value(let rhsGeneric)): return lhsGeneric.compare(lhsGeneric.value,rhsGeneric.value,matcher)
         default: return false
         }

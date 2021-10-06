@@ -13,18 +13,18 @@ class TypeWrapper {
     }
     var stripped: String {
         if type.isImplicitlyUnwrappedOptional {
-            return type.isClosure ? "\(vPref)(\(unwrappedReplacingSelf))?\(vSuff)" : "\(vPref)\(unwrappedReplacingSelf)?\(vSuff)"
+            return "\(vPref)\(unwrappedReplacingSelf)?\(vSuff)"
         } else if type.isOptional {
-            return type.isClosure ? "\(vPref)(\(unwrappedReplacingSelf))?\(vSuff)" : "\(vPref)\(unwrappedReplacingSelf)?\(vSuff)"
+            return "\(vPref)\(unwrappedReplacingSelf)?\(vSuff)"
         } else {
             return "\(vPref)\(unwrappedReplacingSelf)\(vSuff)"
         }
     }
     var nestedParameter: String {
         if type.isImplicitlyUnwrappedOptional {
-            return "Parameter<" + (type.isClosure ? "\(vPref)(\(unwrappedReplacingSelf))?\(vSuff)" : "\(vPref)\(unwrappedReplacingSelf)?\(vSuff)") + ">"
+            return "Parameter<\(vPref)\(unwrappedReplacingSelf)?\(vSuff)>"
         } else if type.isOptional {
-            return "Parameter<" + (type.isClosure ? "\(vPref)(\(unwrappedReplacingSelf))?\(vSuff)" : "\(vPref)\(unwrappedReplacingSelf)?\(vSuff)") + ">"
+            return "Parameter<\(vPref)\(unwrappedReplacingSelf)?\(vSuff)>"
         } else {
             return "Parameter<\(vPref)\(unwrappedReplacingSelf)\(vSuff)>"
         }
@@ -110,7 +110,9 @@ class TypeWrapper {
             return value
         } else if let closure = type.closure {
             let returnType = TypeWrapper(closure.actualReturnTypeName).replacingSelf()
-            let inner = closure.parameters.map({ TypeWrapper($0.typeName).replacingSelf() }).joined(separator: ",")
+            let inner = closure.parameters
+                .map { TypeWrapper($0.typeName).replacingSelf() }
+                .joined(separator: ",")
             let throwing = closure.throws ? "throws " : ""
             let value = "(\(inner)) \(throwing)-> \(returnType)"
             return value

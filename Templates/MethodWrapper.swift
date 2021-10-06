@@ -58,6 +58,7 @@ class MethodWrapper {
         guard !parametersContainsSelf else { return "public" }
         return Current.accessModifier
     }
+    var hasAvailability: Bool { method.attributes["available"]?.isEmpty == false }
 
     private var registrationName: String {
         var rawName = (method.isStatic ? "sm*\(method.selectorName)" : "m*\(method.selectorName)")
@@ -108,7 +109,9 @@ class MethodWrapper {
         return "_\(index)"
     }
     private var methodAttributes: String {
-        return Helpers.extractAttributes(from: self.method.attributes).replacingOccurrences(of: "mutating", with: "")
+        return Helpers.extractAttributes(from: self.method.attributes)
+            .replacingOccurrences(of: "mutating", with: "")
+            .replacingOccurrences(of: "@inlinable", with: "")
     }
 
     var prototype: String {
@@ -369,12 +372,10 @@ class MethodWrapper {
 
     // Method Type
     func methodTypeDeclarationWithParameters() -> String {
-        let availability = method.attributes["available"]?.description
-        let attributes = availability != nil ? "\(availability!)\n\t\t" : ""
         if filteredParameters.isEmpty {
-            return "\(attributes)case \(prototype)"
+            return "case \(prototype)"
         } else {
-            return "\(attributes)case \(prototype)(\(parametersForMethodTypeDeclaration()))"
+            return "case \(prototype)(\(parametersForMethodTypeDeclaration(availability: hasAvailability)))"
         }
     }
 
@@ -564,13 +565,15 @@ class MethodWrapper {
     // Helpers
     private func parametersForMethodCall() -> String {
         let generics = getGenericsWithoutConstraints()
-        return parameters.map { $0.wrappedForCalls(generics) }.joined(separator: ", ")
+        return parameters.map { $0.wrappedForCalls(generics, hasAvailability) }.joined(separator: ", ")
     }
 
-    private func parametersForMethodTypeDeclaration() -> String {
+    private func parametersForMethodTypeDeclaration(availability: Bool) -> String {
         let generics = getGenericsWithoutConstraints()
         return parameters.map { param in
-            return param.isGeneric(generics) ? param.genericType : replacingSelf(param.nestedType)
+            if param.isGeneric(generics) { return param.genericType }
+            if availability { return param.typeErasedType }
+            return replacingSelf(param.nestedType)
         }.joined(separator: ", ")
     }
 
@@ -599,7 +602,7 @@ class MethodWrapper {
 
     private func parametersForProxyInit() -> String {
         let generics = getGenericsWithoutConstraints()
-        return parameters.map { "\($0.wrappedForProxy(generics))" }.joined(separator: ", ")
+        return parameters.map { "\($0.wrappedForProxy(generics, hasAvailability))" }.joined(separator: ", ")
     }
 
     private func isGeneric() -> Bool {

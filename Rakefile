@@ -75,6 +75,12 @@ task :test do
     sh "ice test"
 end
 
+task :update_mock do
+    # fast test for development
+    sh "rake update"
+    sh "./.build/debug/swiftymocky generate"
+end
+
 task :xcode do
     sh "open SwiftyMocky.xcworkspace"
 end

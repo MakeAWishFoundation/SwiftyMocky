@@ -47,7 +47,12 @@ class VariableWrapper {
 
     var privatePrototype: String {
         let staticModifier = variable.isStatic ? "static " : ""
-        return "private \(staticModifier)var \(privatePrototypeName): (\(variable.typeName.unwrappedTypeName))?"
+        var typeName = "\(variable.typeName.unwrappedTypeName)"
+        let isWrappedInBrackets = typeName.hasPrefix("(") && typeName.hasSuffix(")")
+        if !isWrappedInBrackets {
+            typeName = "(\(typeName))"
+        }
+        return "private \(staticModifier)var \(privatePrototypeName): \(typeName)?"
     }
     var nestedType: String { return "\(TypeWrapper(variable.typeName).nestedParameter)" }
 

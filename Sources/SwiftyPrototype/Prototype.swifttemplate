@@ -218,6 +218,15 @@ class Helpers {
             return nil
         }
     }
+    static func extractWhereClause(from annotated: SourceryRuntime.Annotated) -> String? {
+        if let constraints = annotated.annotations["where"] as? [String] {
+            return " where \(constraints.reversed().joined(separator: ", "))"
+        } else if let constraint = annotated.annotations["where"] as? String {
+            return " where \(constraint)"
+        } else {
+            return nil
+        }
+    }
     /// Extract all typealiases from "annotations"
     static func extractTypealiases(from annotated: SourceryRuntime.Annotated) -> [String] {
         if let types = annotated.annotations["typealias"] as? [String] {
@@ -255,8 +264,10 @@ class Helpers {
         guard !constraints.isEmpty else { return "" }
         return " where \(constraints)"
     }
-    static func extractAttributes(from attributes: [String: SourceryRuntime.Attribute]) -> String {
-        return attributes.map { $0.1.description }
+    static func extractAttributes(from attributes: [String: [SourceryRuntime.Attribute]]) -> String {
+        return attributes
+        .reduce([SourceryRuntime.Attribute]()) { $0 + $1.1 }
+        .map { $0.description }
         .filter { !["private", "internal", "public", "open", "optional"].contains($0) }
         .sorted()
         .joined(separator: " ")
@@ -289,6 +300,9 @@ class ParameterWrapper {
     var genericType: String {
         return isVariadic ? "Parameter<[GenericAttribute]>" : "Parameter<GenericAttribute>"
     }
+    var typeErasedType: String {
+        return isVariadic ? "Parameter<[TypeErasedAttribute]>" : "Parameter<TypeErasedAttribute>"
+    }
     var type: SourceryRuntime.TypeName {
         return parameter.typeName
     }
@@ -316,22 +330,38 @@ class ParameterWrapper {
         return TypeWrapper(type).isGeneric(types)
     }
 
-    func wrappedForProxy(_ generics: [String]) -> String {
-        return isGeneric(generics) ? "\(escapedName).wrapAsGeneric()" : "\(escapedName)"
+    func wrappedForProxy(_ generics: [String], _ availability: Bool = false) -> String {
+        if isGeneric(generics) {
+            return "\(escapedName).wrapAsGeneric()"
+        }
+        if (availability) {
+            return "\(escapedName).typeErasedAttribute()"
+        }
+        return "\(escapedName)"
     }
-    func wrappedForCalls(_ generics: [String]) -> String {
-        return isGeneric(generics) ? "\(wrappedForCall).wrapAsGeneric()" : "\(wrappedForCall)"
+    func wrappedForCalls(_ generics: [String], _ availability: Bool = false) -> String {
+        if isGeneric(generics) {
+            return "\(wrappedForCall).wrapAsGeneric()"
+        }
+        if (availability) {
+            return "\(wrappedForCall).typeErasedAttribute()"
+        }
+        return "\(wrappedForCall)"
     }
 
     func asMethodArgument() -> String {
-        return "\(parameter.argumentLabel ?? "_") \(parameter.name): \(parameter.typeName)"
+        if parameter.argumentLabel != parameter.name {
+            return "\(parameter.argumentLabel ?? "_") \(parameter.name): \(parameter.typeName)"
+        } else {
+            return "\(parameter.name): \(parameter.typeName)"
+        }
     }
     func labelAndName() -> String {
         let label = parameter.argumentLabel ?? "_"
-        return label != "\(parameter.name)" ? "\(label) \(parameter.name)" : label
+        return label != parameter.name ? "\(label) \(parameter.name)" : label
     }
     func sanitizedForEnumCaseName() -> String {
-        if let label = parameter.argumentLabel {
+        if let label = parameter.argumentLabel, label != parameter.name {
             return "\(label)_\(parameter.name)".replacingOccurrences(of: "`", with: "")
         } else {
             return "\(parameter.name)".replacingOccurrences(of: "`", with: "")
@@ -353,18 +383,18 @@ class TypeWrapper {
     }
     var stripped: String {
         if type.isImplicitlyUnwrappedOptional {
-            return type.isClosure ? "\(vPref)(\(unwrappedReplacingSelf))?\(vSuff)" : "\(vPref)\(unwrappedReplacingSelf)?\(vSuff)"
+            return "\(vPref)\(unwrappedReplacingSelf)?\(vSuff)"
         } else if type.isOptional {
-            return type.isClosure ? "\(vPref)(\(unwrappedReplacingSelf))?\(vSuff)" : "\(vPref)\(unwrappedReplacingSelf)?\(vSuff)"
+            return "\(vPref)\(unwrappedReplacingSelf)?\(vSuff)"
         } else {
             return "\(vPref)\(unwrappedReplacingSelf)\(vSuff)"
         }
     }
     var nestedParameter: String {
         if type.isImplicitlyUnwrappedOptional {
-            return "Parameter<" + (type.isClosure ? "\(vPref)(\(unwrappedReplacingSelf))?\(vSuff)" : "\(vPref)\(unwrappedReplacingSelf)?\(vSuff)") + ">"
+            return "Parameter<\(vPref)\(unwrappedReplacingSelf)?\(vSuff)>"
         } else if type.isOptional {
-            return "Parameter<" + (type.isClosure ? "\(vPref)(\(unwrappedReplacingSelf))?\(vSuff)" : "\(vPref)\(unwrappedReplacingSelf)?\(vSuff)") + ">"
+            return "Parameter<\(vPref)\(unwrappedReplacingSelf)?\(vSuff)>"
         } else {
             return "Parameter<\(vPref)\(unwrappedReplacingSelf)\(vSuff)>"
         }
@@ -450,7 +480,9 @@ class TypeWrapper {
             return value
         } else if let closure = type.closure {
             let returnType = TypeWrapper(closure.actualReturnTypeName).replacingSelf()
-            let inner = closure.parameters.map({ TypeWrapper($0.typeName).replacingSelf() }).joined(separator: ",")
+            let inner = closure.parameters
+                .map { TypeWrapper($0.typeName).replacingSelf() }
+                .joined(separator: ",")
             let throwing = closure.throws ? "throws " : ""
             let value = "(\(inner)) \(throwing)-> \(returnType)"
             return value
@@ -523,6 +555,7 @@ class MethodWrapper {
         guard !parametersContainsSelf else { return "public" }
         return Current.accessModifier
     }
+    var hasAvailability: Bool { method.attributes["available"]?.isEmpty == false }
 
     private var registrationName: String {
         var rawName = (method.isStatic ? "sm*\(method.selectorName)" : "m*\(method.selectorName)")
@@ -573,7 +606,9 @@ class MethodWrapper {
         return "_\(index)"
     }
     private var methodAttributes: String {
-        return Helpers.extractAttributes(from: self.method.attributes).replacingOccurrences(of: "mutating", with: "")
+        return Helpers.extractAttributes(from: self.method.attributes)
+            .replacingOccurrences(of: "mutating", with: "")
+            .replacingOccurrences(of: "@inlinable", with: "")
     }
 
     var prototype: String {
@@ -834,12 +869,10 @@ class MethodWrapper {
 
     // Method Type
     func methodTypeDeclarationWithParameters() -> String {
-        let availability = method.attributes["available"]?.description
-        let attributes = availability != nil ? "\(availability!)\n\t\t" : ""
         if filteredParameters.isEmpty {
-            return "\(attributes)case \(prototype)"
+            return "case \(prototype)"
         } else {
-            return "\(attributes)case \(prototype)(\(parametersForMethodTypeDeclaration()))"
+            return "case \(prototype)(\(parametersForMethodTypeDeclaration(availability: hasAvailability)))"
         }
     }
 
@@ -1029,13 +1062,15 @@ class MethodWrapper {
     // Helpers
     private func parametersForMethodCall() -> String {
         let generics = getGenericsWithoutConstraints()
-        return parameters.map { $0.wrappedForCalls(generics) }.joined(separator: ", ")
+        return parameters.map { $0.wrappedForCalls(generics, hasAvailability) }.joined(separator: ", ")
     }
 
-    private func parametersForMethodTypeDeclaration() -> String {
+    private func parametersForMethodTypeDeclaration(availability: Bool) -> String {
         let generics = getGenericsWithoutConstraints()
         return parameters.map { param in
-            return param.isGeneric(generics) ? param.genericType : replacingSelf(param.nestedType)
+            if param.isGeneric(generics) { return param.genericType }
+            if availability { return param.typeErasedType }
+            return replacingSelf(param.nestedType)
         }.joined(separator: ", ")
     }
 
@@ -1064,7 +1099,7 @@ class MethodWrapper {
 
     private func parametersForProxyInit() -> String {
         let generics = getGenericsWithoutConstraints()
-        return parameters.map { "\($0.wrappedForProxy(generics))" }.joined(separator: ", ")
+        return parameters.map { "\($0.wrappedForProxy(generics, hasAvailability))" }.joined(separator: ", ")
     }
 
     private func isGeneric() -> Bool {
@@ -1205,9 +1240,13 @@ class SubscriptWrapper {
     let associatedTypes: [String]?
     let genericTypesList: [String]
     let genericTypesModifier: String?
+    let whereClause: String
+    var hasAvailability: Bool { wrapped.attributes["available"]?.isEmpty == false }
 
     private var methodAttributes: String {
         return Helpers.extractAttributes(from: self.wrapped.attributes)
+            .replacingOccurrences(of: "mutating", with: "")
+            .replacingOccurrences(of: "@inlinable", with: "")
     }
 
     private let noStubDefinedMessage = "Stub return value not specified for subscript. Use given first."
@@ -1242,6 +1281,7 @@ class SubscriptWrapper {
         self.wrapped = wrapped
         associatedTypes = Helpers.extractAssociatedTypes(from: wrapped)
         genericTypesList = Helpers.extractGenericsList(associatedTypes)
+        whereClause = Helpers.extractWhereClause(from: wrapped) ?? ""
         if let types = associatedTypes {
             genericTypesModifier = "<\(types.joined(separator: ","))>"
         } else {
@@ -1253,7 +1293,7 @@ class SubscriptWrapper {
         return "subscript_\(accessor)_\(wrappedParameters.map({ $0.sanitizedForEnumCaseName() }).joined(separator: "_"))"
     }
     var shortName: String { return "public subscript\(genericTypesModifier ?? " ")(\(wrappedParameters.map({ $0.asMethodArgument() }).joined(separator: ", ")))" }
-    var uniqueName: String { return "\(shortName) -> \(wrapped.returnTypeName)" }
+    var uniqueName: String { return "\(shortName) -> \(wrapped.returnTypeName)\(self.whereClause)" }
 
     private func nameSuffix(_ accessor: String) -> String {
         guard let count = SubscriptWrapper.registered[registrationName(accessor)] else { return "" }
@@ -1272,7 +1312,8 @@ class SubscriptWrapper {
     }
     private func getter() -> String {
         let method = ".\(subscriptCasePrefix("get"))(\(parametersForMethodCall()))"
-        let noStubDefined = wrapped.returnTypeName.isOptional ? "return nil" : "onFatalFailure(\"\(noStubDefinedMessage)\"); Failure(\"noStubDefinedMessage\")"
+        let optionalReturnWorkaround = "\(wrapped.returnTypeName)".hasSuffix("?")
+        let noStubDefined = (optionalReturnWorkaround || wrapped.returnTypeName.isOptional) ? "return nil" : "onFatalFailure(\"\(noStubDefinedMessage)\"); Failure(\"noStubDefinedMessage\")"
         return
             "\n\t\t\taddInvocation(\(method))" +
                 "\n\t\t\tdo {" +
@@ -1298,13 +1339,15 @@ class SubscriptWrapper {
     func subscriptCasePrefix(_ accessor: String) -> String {
         return "\(registrationName(accessor))\(nameSuffix(accessor))"
     }
-    func subscriptCaseName(_ accessor: String) -> String {
-        return "\(subscriptCasePrefix(accessor))(\(parametersForMethodTypeDeclaration(set: accessor == "set")))"
+    func subscriptCaseName(_ accessor: String, availability: Bool = false) -> String {
+        return "\(subscriptCasePrefix(accessor))(\(parametersForMethodTypeDeclaration(availability: availability, set: accessor == "set")))"
     }
     func subscriptCases() -> String {
-        let availability = wrapped.attributes["available"]?.description
-        let attributes = availability != nil ? "\(availability!)\n\t\t" : ""
-        return readonly ? "\(attributes)case \(subscriptCaseName("get"))" : "\(attributes)case \(subscriptCaseName("get"))\n\t\t\(attributes)case \(subscriptCaseName("set"))"
+        if readonly {
+            return "case \(subscriptCaseName("get", availability: hasAvailability))"
+        } else {
+            return "case \(subscriptCaseName("get", availability: hasAvailability))\n\t\tcase \(subscriptCaseName("set", availability: hasAvailability))"
+        }
     }
     func equalCase(_ accessor: String) -> String {
         var lhsParams = wrapped.parameters.map { "lhs\($0.name.capitalized)" }.joined(separator: ", ")
@@ -1393,11 +1436,13 @@ class SubscriptWrapper {
         guard multiple else { return returning }
         return front ? ", \(returning)" : "\(returning), "
     }
-    private func parametersForMethodTypeDeclaration(set: Bool = false) -> String {
+    private func parametersForMethodTypeDeclaration(availability: Bool = false, set: Bool = false) -> String {
         let generics: [String] = getGenerics()
         let params = wrappedParameters.map { param in
-            return param.isGeneric(generics) ? param.genericType : param.nestedType
-            }.joined(separator: ", ")
+            if param.isGeneric(generics) { return param.genericType }
+            if availability { return param.typeErasedType }
+            return param.nestedType
+        }.joined(separator: ", ")
         guard set else { return params }
         let newValue = TypeWrapper(wrapped.returnTypeName).isGeneric(generics) ? "Parameter<GenericAttribute>" : nestedType
         return "\(params), \(newValue)"
@@ -1405,7 +1450,7 @@ class SubscriptWrapper {
     private func parametersForProxyInit(set: Bool = false) -> String {
         let generics = getGenerics()
         let newValue = TypeWrapper(wrapped.returnTypeName).isGeneric(generics) ? "newValue.wrapAsGeneric()" : "newValue"
-        return wrappedParameters.map { "\($0.wrappedForProxy(generics))" }.joined(separator: ", ") + (set ? ", \(newValue)" : "")
+        return wrappedParameters.map { "\($0.wrappedForProxy(generics, hasAvailability))" }.joined(separator: ", ") + (set ? ", \(newValue)" : "")
     }
     private func parametersForProxySignature(set: Bool = false) -> String {
         return wrappedParameters.map { "\($0.labelAndName()): \($0.nestedType)" }.joined(separator: ", ") + (set ? ", set newValue: \(nestedType)" : "")
@@ -1415,7 +1460,7 @@ class SubscriptWrapper {
     }
     private func parametersForMethodCall(set: Bool = false) -> String {
         let generics = getGenerics()
-        let params = wrappedParameters.map { $0.wrappedForCalls(generics) }.joined(separator: ", ")
+        let params = wrappedParameters.map { $0.wrappedForCalls(generics, hasAvailability) }.joined(separator: ", ")
         let postfix = TypeWrapper(wrapped.returnTypeName).isGeneric(generics) ? ".wrapAsGeneric()" : ""
         return !set ? params : "\(params), \(nestedType).value(newValue)\(postfix)"
     }
@@ -1469,7 +1514,12 @@ class VariableWrapper {
 
     var privatePrototype: String {
         let staticModifier = variable.isStatic ? "static " : ""
-        return "private \(staticModifier)var \(privatePrototypeName): (\(variable.typeName.unwrappedTypeName))?"
+        var typeName = "\(variable.typeName.unwrappedTypeName)"
+        let isWrappedInBrackets = typeName.hasPrefix("(") && typeName.hasSuffix(")")
+        if !isWrappedInBrackets {
+            typeName = "(\(typeName))"
+        }
+        return "private \(staticModifier)var \(privatePrototypeName): \(typeName)?"
     }
     var nestedType: String { return "\(TypeWrapper(variable.typeName).nestedParameter)" }
 
@@ -1556,13 +1606,13 @@ _%>
     let containsVariables = !allVariables.isEmpty
     let allStaticVariables = uniques(variables: aProtocol.allVariables.filter({ $0.isStatic }))
     let containsStaticVariables = !allStaticVariables.isEmpty
-    let allMethods = uniques(methods: aProtocol.allMethods.filter({ !$0.isStatic }))
+    let allMethods = uniques(methods: aProtocol.allMethods.filter({ !$0.isStatic || $0.isInitializer }))
     let selfConstrained = allMethods.map(wrapMethod).contains(where: { $0.returnsGenericConstrainedToSelf || $0.parametersContainsSelf })
     let accessModifier: String = selfConstrained ? "public final" : "open"
     Current.accessModifier = accessModifier // TODO: Temporary workaround for access modifiers
     let inheritFromNSObject = type.annotations["ObjcProtocol"] != nil || attributes.contains("@objc")
     let allMethodsForMethodType = uniquesWithoutGenericConstraints(methods: aProtocol.allMethods.filter({ !$0.isStatic }))
-    let allStaticMethods = uniques(methods: aProtocol.allMethods.filter({ $0.isStatic }))
+    let allStaticMethods = uniques(methods: aProtocol.allMethods.filter({ $0.isStatic && !$0.isInitializer }))
     let allStaticMethodsForMethodType = uniquesWithoutGenericConstraints(methods: aProtocol.allMethods.filter({ $0.isStatic }))
     let conformsToStaticMock = !allStaticMethods.isEmpty || !allStaticVariables.isEmpty
     let conformsToMock = !allMethods.isEmpty || !allVariables.isEmpty -%><%_ -%><%_ -%>
