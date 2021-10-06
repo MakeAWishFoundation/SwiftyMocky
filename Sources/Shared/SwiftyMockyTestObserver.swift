@@ -8,8 +8,15 @@ public class SwiftyMockyTestObserver: NSObject, XCTestObservation {
     private static var currentTestCase: XCTestCase?
     /// [Internal] Setup observing once
     private static let setupBlock: (() -> Void) = {
-        XCTestObservationCenter.shared.addTestObserver(SwiftyMockyTestObserver())
         Matcher.fatalErrorHandler = SwiftyMockyTestObserver.handleFatalError
+        let addObserver = { XCTestObservationCenter.shared.addTestObserver(SwiftyMockyTestObserver()) }
+        if Thread.isMainThread {
+            addObserver()
+        } else {
+            DispatchQueue.main.async {
+                addObserver()
+            }
+        }
         return {}
     }()
 
