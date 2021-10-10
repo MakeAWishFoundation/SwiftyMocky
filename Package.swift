@@ -24,14 +24,17 @@ let package = Package(
         // XCTest Runtime libraries
         .target(
             name: "SwiftyMocky",
+            path: "./Sources/SwiftyMocky",
             exclude: ["Mock.swifttemplate"]
         ),
         .target(
             name: "SwiftyPrototype",
+            path: "./Sources/SwiftyPrototype",
             exclude: ["Prototype.swifttemplate"]
         ),
         .target(
-            name: "Shared"
+            name: "Shared",
+            path: "./Sources/Shared"
         ),
         // Example and tests
         .target(
@@ -41,24 +44,37 @@ let package = Package(
         .testTarget(
             name: "SwiftyMockyTests",
             dependencies: ["Mocky_Example_macOS", "SwiftyMocky"],
-            exclude: ["Shared/Swift5.5"]
+            exclude: ["Shared/Swift5.5"] // TODO: remove when macOS 12 released
+        ),
+        .testTarget(
+            name: "RuntimeLibaryTests",
+            dependencies: ["SwiftyMocky"]
         ),
         // CLI Executable
         .target(
-           name: "SwiftyMockyCLI",
-           dependencies: [
-               "Commander",
-               "SwiftyMockyCLICore",
-           ]
+            name: "SwiftyMockyCLI",
+            dependencies: [
+                "Commander",
+                "SwiftyMockyCLICore",
+            ],
+            path: "./Sources/CLI/App"
         ),
         .target(
-           name: "SwiftyMockyCLICore",
+            name: "SwiftyMockyCLICore",
+            dependencies: [
+                "ShellOut",
+                "Chalk",
+                "XcodeProj",
+                "PathKit",
+                "Yams",
+            ],
+            path: "./Sources/CLI/Core"
+        ),
+        .testTarget(
+           name: "SwiftyMockyCLICoreTests",
            dependencies: [
-               "ShellOut",
-               "Chalk",
-               "XcodeProj",
-               "PathKit",
-               "Yams",
+               "SwiftyMockyCLICore",
+               "SwiftyMocky",
            ]
         ),
     ]

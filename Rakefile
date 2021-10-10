@@ -125,15 +125,6 @@ task :deploy do
     end
 end
 
-## [ Sourcery ] ################################################################
-
-desc "Download prebuilt sourcery app."
-desc "Can specify version as argument (default is 4.2)"
-task :sourcery do
-    ARGV.each { |a| task a.to_sym do ; end }
-    sh "sh get_sourcery.sh " + ARGV[1].to_s + " " + ARGV[2].to_s
-end
-
 ## [ CocoaPods ] ###############################################################
 
 desc "Install project dependencies"

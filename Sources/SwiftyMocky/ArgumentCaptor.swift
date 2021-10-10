@@ -1,3 +1,5 @@
+import Foundation
+
 public class ArgumentCaptor<ValueType> {
 	/// Last captured value (if any)
 	public var value: ValueType? {

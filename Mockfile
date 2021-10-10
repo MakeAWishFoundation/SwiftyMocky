@@ -64,3 +64,18 @@ mocky.spm:
   - Mocky_Example_macOS
   import:
   - Foundation
+
+cli.core.tests:
+  sources:
+    include:
+    - ./Sources/CLI/Core
+    exclude:
+    - ./Sources/CLI/Core/Assets
+  output: ./Tests/SwiftyMockyCLICoreTests/Mock.generated.swift
+  targets:
+  - Package.swift/SwiftyMockyCLICore
+  testable:
+  - SwiftyMockyCLICore
+  import:
+  - Foundation
+  - PathKit
