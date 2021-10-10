@@ -197,6 +197,10 @@ public class Matcher {
         self.line = line
     }
 
+    public func setupCorrentFileAndLine(file: StaticString = #file, line: UInt = #line) {
+        self.set(file: file, line: line)
+    }
+
     public func clearFileAndLine() {
         self.set(file: nil, line: nil)
     }
@@ -227,31 +231,6 @@ public class Matcher {
     public func register<T>(_ valueType: T.Type.Type) {
         self.register(valueType, match: { _, _ in return true })
     }
-
-#if swift(>=4.1)
-    // Use equatable
-#else
-    /// Register sequence comparator, based on elements comparing.
-    ///
-    /// - Parameters:
-    ///   - valueType: Sequence type
-    ///   - match: Element comparator closure
-    public func register<T,E>(_ valueType: T.Type, match: @escaping (E,E) -> Bool) where T: Sequence, E == T.Element {
-        let mirror = Mirror(reflecting: E.self)
-        matchers.append((mirror, match as Any))
-        register(T.self) { (l: T, r: T) -> Bool in
-            let lhs = l.map { $0 }
-            let rhs = r.map { $0 }
-            guard lhs.count == rhs.count else { return false }
-
-            for i in 0..<lhs.count {
-                guard match(lhs[i],rhs[i]) else { return false }
-            }
-
-            return true
-        }
-    }
-#endif
 
     /// Register default comparatot for Equatable types. Required for generic mocks to work.
     ///
@@ -304,6 +283,8 @@ public class Matcher {
                     for i in 0..<lhs.count {
                         guard compare(lhs[i],rhs[i]) else { return false }
                     }
+
+                    return true
                 } else {
                     // Compare as unordered sequence:
                     var lbuff = lhs
@@ -323,8 +304,6 @@ public class Matcher {
 
                     return lbuff.isEmpty && rbuff.isEmpty
                 }
-
-                return true
             }
         } else {
             return nil

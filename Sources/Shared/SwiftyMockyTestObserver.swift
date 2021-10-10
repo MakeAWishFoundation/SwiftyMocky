@@ -48,8 +48,7 @@ public class SwiftyMockyTestObserver: NSObject, XCTestObservation {
     ///   - line: Line
     public static func handleFatalError(message: String, file: StaticString, line: UInt) {
         guard let testCase = SwiftyMockyTestObserver.currentTestCase else {
-            XCTFail(message, file: file, line: line)
-            return
+            return XCTFail(message, file: file, line: line)
         }
 
         let continueAfterFailure = testCase.continueAfterFailure
