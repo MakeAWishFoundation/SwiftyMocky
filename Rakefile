@@ -1,6 +1,11 @@
 ## [ Mocks Generation ] ########################################################
 
 task :mock do
+    print_info "Generating mocks using local CLI version"
+    sh "swift run swiftymocky generate"
+end
+
+task :mock_legacy do
     print_info "Generating mocks - iOS"
     sh "Pods/Sourcery/bin/sourcery --config .mocky.iOS.yml"
     print_info "Generating mocks - tvOS"
@@ -75,14 +80,13 @@ task :test do
     sh "ice test"
 end
 
-task :update_mock do
-    # fast test for development
-    sh "rake update"
-    sh "./.build/debug/swiftymocky generate"
-end
-
 task :xcode do
     sh "open SwiftyMocky.xcworkspace"
+end
+
+desc "Assetizes templates for specified version of a SwiftyMocky into CLI"
+task :assetize do
+    sh "swift run swiftymocky assetize"
 end
 
 ## [ Deploy ] ##################################################################
@@ -103,6 +107,8 @@ task :version do
         sh("sed -i '' 's|#{version_from}|#{version_to}|g' ./Templates/Header-Prototype.swifttemplate")
         sh("sed -i '' 's|#{version_from}|#{version_to}|g' ./SwiftyMocky.podspec")
         sh("sed -i '' 's|#{version_from}|#{version_to}|g' ./SwiftyPrototype.podspec")
+        sh("sed -i '' 's|#{version_from}|#{version_to}|g' ./Makefile")
+        sh("sed -i '' 's|#{version_from}|#{version_to}|g' ./Sources/CLI/Core/Application.swift")
     else
         print("Missing versions!\n")
         exit(1)

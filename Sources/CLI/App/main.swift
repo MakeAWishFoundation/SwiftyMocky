@@ -83,7 +83,7 @@ Group() { main in
 
         // Assetize from current template, but check version first. CLI version should match SM version
         let cliVersion = application.version
-        let templateFile = pwd + "Sources/Templates/Mock.swifttemplate"
+        let templateFile = pwd + "Sources/SwiftyMocky/Mock.swifttemplate"
         let templateContent: String = try! templateFile.read()
         let matchesVersion = templateContent.contains("// Generated with SwiftyMocky \(cliVersion)")
 
@@ -92,11 +92,11 @@ Group() { main in
         }
 
         application.assetizeTemplates(
-            mockTemplate: pwd + "Sources/Templates/Mock.swifttemplate",
-            prototypeTemplate: pwd + "Sources/Templates/Prototype.swifttemplate",
-            allTypesTemplate: pwd + "Sources/Templates/AllTypes.swifttemplate",
-            template: pwd + "Sources/Templates/Assets.template",
-            output: pwd + "Sources/SwiftyMockyCLICore/Assets/Assets.swift"
+            mockTemplate: pwd + "Sources/SwiftyMocky/Mock.swifttemplate",
+            prototypeTemplate: pwd + "Sources/SwiftyPrototype/Prototype.swifttemplate",
+            allTypesTemplate: pwd + "Templates/AllTypes.swifttemplate",
+            template: pwd + "Templates/Assets.template",
+            output: pwd + "Sources/CLI/Core/Assets/Assets.swift"
         )
     }
     #endif
