@@ -112,9 +112,10 @@ class MethodWrapper {
         return "_\(index)"
     }
     private var methodAttributes: String {
-        return Helpers.extractAttributes(from: self.method.attributes)
-            .replacingOccurrences(of: "mutating", with: "")
-            .replacingOccurrences(of: "@inlinable", with: "")
+        return Helpers.extractAttributes(from: self.method.attributes, filterOutStartingWith: ["mutating", "@inlinable"])
+    }
+    private var methodAttributesNonObjc: String {
+        return Helpers.extractAttributes(from: self.method.attributes, filterOutStartingWith: ["mutating", "@inlinable", "@objc"])
     }
 
     var prototype: String {
@@ -139,7 +140,7 @@ class MethodWrapper {
 
         let staticModifier: String = "\(accessModifier) "
         let params = replacingSelf(parametersForStubSignature())
-        var attributes = self.methodAttributes.replacingOccurrences(of: "@inlinable", with: "")
+        var attributes = self.methodAttributes
         attributes = attributes.isEmpty ? "" : "\(attributes)\n\t"
         var asyncModifier = self.isAsync ? "async " : ""
 
@@ -725,7 +726,7 @@ class MethodWrapper {
 
             return " where \(constraints.joined(separator: ", "))"
         }()
-        var attributes = self.methodAttributes.replacingOccurrences(of:"@objc", with: "")
+        var attributes = self.methodAttributesNonObjc
         attributes = attributes.condenseWhitespace()
         attributes = attributes.isEmpty ? "" : "\(attributes)\n\t\t"
         return (attributes, methodName, constraints)

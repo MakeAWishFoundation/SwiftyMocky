@@ -11,9 +11,10 @@ class SubscriptWrapper {
     var hasAvailability: Bool { wrapped.attributes["available"]?.isEmpty == false }
 
     private var methodAttributes: String {
-        return Helpers.extractAttributes(from: self.wrapped.attributes)
-            .replacingOccurrences(of: "mutating", with: "")
-            .replacingOccurrences(of: "@inlinable", with: "")
+        return Helpers.extractAttributes(from: self.wrapped.attributes, filterOutStartingWith: ["mutating", "@inlinable"])
+    }
+    private var methodAttributesNonObjc: String {
+        return Helpers.extractAttributes(from: self.wrapped.attributes, filterOutStartingWith: ["mutating", "@inlinable", "@objc"])
     }
 
     private let noStubDefinedMessage = "Stub return value not specified for subscript. Use given first."
@@ -73,7 +74,7 @@ class SubscriptWrapper {
     func subscriptCall() -> String {
         let get = "\n\t\tget {\(getter())\n\t\t}"
         let set = readonly ? "" : "\n\t\tset {\(setter())\n\t\t}"
-        var attributes = self.methodAttributes.replacingOccurrences(of:"@objc", with: "")
+        var attributes = self.methodAttributesNonObjc
         attributes = attributes.isEmpty ? "" : "\(attributes)\n\t"
         return "\(attributes)\(uniqueName) {\(get)\(set)\n\t}"
     }
@@ -151,7 +152,7 @@ class SubscriptWrapper {
     // Given
     func givenConstructorName() -> String {
         let returnTypeString = returnsSelf ? replaceSelf : TypeWrapper(wrapped.returnTypeName).stripped
-        var attributes = self.methodAttributes.replacingOccurrences(of:"@objc", with: "")
+        var attributes = self.methodAttributesNonObjc
         attributes = attributes.isEmpty ? "" : "\(attributes)\n\t\t"
         return "\(attributes)public static func `subscript`\(genericTypesModifier ?? "")(\(parametersForProxySignature()), willReturn: \(returnTypeString)...) -> SubscriptStub"
     }
@@ -163,7 +164,7 @@ class SubscriptWrapper {
     func verifyConstructorName(set: Bool = false) -> String {
         let returnTypeString = returnsSelf ? replaceSelf : nestedType
         let returning = set ? "" : returningParameter(true, true)
-        var attributes = self.methodAttributes.replacingOccurrences(of:"@objc", with: "")
+        var attributes = self.methodAttributesNonObjc
         attributes = attributes.isEmpty ? "" : "\(attributes)\n\t\t"
         return "\(attributes)public static func `subscript`\(genericTypesModifier ?? "")(\(parametersForProxySignature())\(returning)\(set ? ", set newValue: \(returnTypeString)" : "")) -> Verify"
     }

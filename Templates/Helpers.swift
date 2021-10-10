@@ -61,11 +61,17 @@ class Helpers {
         guard !constraints.isEmpty else { return "" }
         return " where \(constraints)"
     }
-    static func extractAttributes(from attributes: [String: [SourceryRuntime.Attribute]]) -> String {
+    static func extractAttributes(
+        from attributes: [String: [SourceryRuntime.Attribute]],
+        filterOutStartingWith disallowedPrefixes: [String] = []
+    ) -> String {
         return attributes
         .reduce([SourceryRuntime.Attribute]()) { $0 + $1.1 }
         .map { $0.description }
         .filter { !["private", "internal", "public", "open", "optional"].contains($0) }
+        .filter { element in
+            !disallowedPrefixes.contains(where: element.hasPrefix)
+        }
         .sorted()
         .joined(separator: " ")
     }
