@@ -140,13 +140,13 @@ You need to install CLI to generate mocks - see [installation][#installation]
 
 ```bash
 > brew install mint
-> mint install MakeAWishFoundation/SwiftyMocky-CLI
+> mint install MakeAWishFoundation/SwiftyMocky
 ```
 
 **[Marathon 🏃](https://github.com/JohnSundell/Marathon)**:
 
 ```bash
-> marathon install MakeAWishFoundation/SwiftyMocky-CLI
+> marathon install MakeAWishFoundation/SwiftyMocky
 ```
 
 **Make**:
