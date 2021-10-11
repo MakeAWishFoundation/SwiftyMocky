@@ -99,7 +99,7 @@ Use CLI tool from your project directory:
 
 ```zsh
 # To setup initial Mockfile
-% ./Pods/SwiftyMocky/bin/swiftymocky init
+% ./Pods/SwiftyMocky/bin/swiftymocky setup
 # To generate mocks
 % ./Pods/SwiftyMocky/bin/swiftymocky generate
 ```
