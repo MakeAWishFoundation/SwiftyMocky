@@ -50,13 +50,26 @@ The idea of **SwiftyMocky** is to automatically mock Swift protocols and protoco
 
 CLI was moved bask to the main (this) repo. CLI in this [repository](https://github.com/MakeAWishFoundation/SwiftyMockyCLI) will be supported at least until version 5.0.0.
 
-## **Important!!!** Version 4.x.x
+## Version 4.0.x
 
-Current version has several significant changes. It removes deprecated methods (which might be breaking) and moves CLI to the new [repository](https://github.com/MakeAWishFoundation/SwiftyMockyCLI).
+Current version has several significant changes. It removes deprecated methods (which might be breaking) and deprecates having CLI in the new [repository](https://github.com/MakeAWishFoundation/SwiftyMockyCLI).
 
-We consider current version as stable. We are moving toward using the new [Mockfile][link-guides-mockfile] but the previous configuration format would be still supported. Library works with Swift **4.1, 4.2, 5.0, 5.1.2**  and  Sourcery 0.17-0.18.
+**SwiftyPrototype** was also extracted to separate library. There are no more compilation flags, so if you were relying on **SwiftyMocky** with `-DMockyCustom`, you will have to switch to `SwiftyPrototype`.
+
+We consider current version as stable. We are moving toward using the new [Mockfile][link-guides-mockfile] but the previous configuration format would be still supported. Library works with Swift **4.1, 4.2, 5.0, 5.1.2**  and  Sourcery 1.0.x.
 
 While it is technically possible to integrate SwiftyMocky on Linux targets, there is no Mock generation feature there yet. You can use SwiftyMokcy runtime via SwiftPM though, as long as your are fine with generating mocks on mac machine.
+
+## Migration from 3.2.0 and below
+
+The migration is not required, you can keep using **SwiftyMocky** as you did before. The [Legacy setup](https://github.com/MakeAWishFoundation/SwiftyMocky/blob/master/guides/Legacy.md) is described in [guides section](https://github.com/MakeAWishFoundation/SwiftyMocky/blob/master/guides/Contents.md).
+
+Still, we would encourage to try new **CLI** and share a feedback. We believe it will make using and setting up **SwiftyMocky** way easier. If you have an existing setup, install CLI as per this [guide](https://github.com/MakeAWishFoundation/SwiftyMocky/blob/master/guides/Installation.md) and try:
+
+```bash
+> swiftymocky migrate
+```
+
 <a name="getting-started"></a>
 
 ## Getting started
@@ -94,7 +107,7 @@ Then execute `carthage update`
 
 For [Carthage](https://github.com/Carthage/Carthage), few additional steps are required ⚠️. For detailed install instructions, see full [documentation][link-docs-installation-carthage] or consult [Carthage documentation][carthage-adding-framework].
 
-You need to install CLI to generate mocks - see [installation][#installation]
+You need to install CLI to generate mocks - see [installation](#installation)
 
 **[Swift Package Manager](https://swift.org/package-manager/)**:
 
@@ -106,7 +119,7 @@ dependencies: [
 ]
 ```
 
-You need to install CLI to generate mocks - see [installation][#installation]
+You need to install CLI to generate mocks - see [installation](#installation)
 
 > **Note:** Examples of **SwiftyMocky** integration as a tool for Unit tests, as well as a Prototyping framework, are here: [https://github.com/MakeAWishFoundation/SM-Integration-Tests](https://github.com/MakeAWishFoundation/SM-Integration-Tests)
 
@@ -130,6 +143,8 @@ You need to install CLI to generate mocks - see [installation][#installation]
 **Make**:
 
 Clone from https://github.com/MakeAWishFoundation/SwiftyMockyCLI and run `make` in the root directory.
+
+-----
 
 <a name="generation"></a>
 

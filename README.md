@@ -116,7 +116,7 @@ Then execute `carthage update`
 
 For [Carthage](https://github.com/Carthage/Carthage), few additional steps are required ⚠️. For detailed install instructions, see full [documentation][link-docs-installation-carthage] or consult [Carthage documentation][carthage-adding-framework].
 
-You need to install CLI to generate mocks - see [installation][#installation]
+You need to install CLI to generate mocks - see [installation](#installation)
 
 **[Swift Package Manager](https://swift.org/package-manager/)**:
 
@@ -128,7 +128,7 @@ dependencies: [
 ]
 ```
 
-You need to install CLI to generate mocks - see [installation][#installation]
+You need to install CLI to generate mocks - see [installation](#installation)
 
 > **Note:** Examples of **SwiftyMocky** integration as a tool for Unit tests, as well as a Prototyping framework, are here: [https://github.com/MakeAWishFoundation/SM-Integration-Tests](https://github.com/MakeAWishFoundation/SM-Integration-Tests)
 
@@ -152,6 +152,8 @@ You need to install CLI to generate mocks - see [installation][#installation]
 **Make**:
 
 Clone from https://github.com/MakeAWishFoundation/SwiftyMockyCLI and run `make` in the root directory.
+
+-----
 
 <a name="generation"></a>
 

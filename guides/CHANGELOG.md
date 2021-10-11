@@ -19,6 +19,7 @@ All changes to SwiftyMocky project will be documented in this file.
 * Fixed @availability for Swift 5.5
 * Fixed other basic issues and changes for Sourcery 1.6.0
 * Fixed observer setup when test is marked as async
+* Fixed CLI dependencies (Sergey Kovalenko)
 
 -----
 
