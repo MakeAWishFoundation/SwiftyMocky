@@ -14,7 +14,7 @@ public protocol DateSortable {
 }
 
 //sourcery: AutoMockable
-public protocol HistorySectionMapperType: class {
+public protocol HistorySectionMapperType: AnyObject {
     func map<T: DateSortable>(_ items: [T]) ->  [(key: String, items: [T])]
 }
 

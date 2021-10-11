@@ -45,21 +45,21 @@ class SubscriptsTests: XCTestCase {
     func test_multi_argument_subscript_usage() {
         let mock = ProtocolWithSubscriptsMock()
 
-        Given(mock, .subscript(.any, .any, willReturn: ""))
-        Given(mock, .subscript(.matching({ $0 < 0 }), .any, willReturn: "left half"))
-        Given(mock, .subscript(.matching({ $0 > 0 }), .any, willReturn: "right half"))
-        Given(mock, .subscript(0, .any, willReturn: "on y axis"))
-        Given(mock, .subscript(0, 0, willReturn: "point zero"))
+        Given(mock, .subscript(x: .any, y: .any, willReturn: ""))
+        Given(mock, .subscript(x: .matching({ $0 < 0 }), y: .any, willReturn: "left half"))
+        Given(mock, .subscript(x: .matching({ $0 > 0 }), y: .any, willReturn: "right half"))
+        Given(mock, .subscript(x: 0, y: .any, willReturn: "on y axis"))
+        Given(mock, .subscript(x: 0, y: 0, willReturn: "point zero"))
 
-        Verify(mock, .never, .subscript(.any, .any))
+        Verify(mock, .never, .subscript(x: .any, y: .any))
 
         XCTAssertEqual(mock[0,0], "point zero")
         XCTAssertEqual(mock[-1,1], "left half")
         XCTAssertEqual(mock[0,3], "on y axis")
         XCTAssertEqual(mock[3,2], "right half")
 
-        Verify(mock, 4, .subscript(.any, .any))
-        Verify(mock, 2, .subscript(0, .any))
+        Verify(mock, 4, .subscript(x: .any, y: .any))
+        Verify(mock, 2, .subscript(x: 0, y: .any))
     }
 
     func test_generic_subscripts() {
@@ -85,11 +85,11 @@ class SubscriptsTests: XCTestCase {
         mock[0,CustomStruct.self] = CustomStruct(value: 0)
         mock[1,CustomStruct.self] = CustomStruct(value: 1)
         mock[2,CustomStruct.self] = CustomStruct(value: 2)
-        Verify(mock, 3, .subscript(.any, .any, set: .any(CustomStruct.self)))
-        Verify(mock, 1, .subscript(0, .value(CustomStruct.self), set: .any))
-        Verify(mock, 1, .subscript(.any, .value(CustomStruct.self), set: .value(CustomStruct(value: 0))))
-        Verify(mock, 1, .subscript(.any, .value(CustomStruct.self), set: .value(CustomStruct(value: 1))))
-        Verify(mock, 1, .subscript(.any, .value(CustomStruct.self), set: .value(CustomStruct(value: 2))))
+        Verify(mock, 3, .subscript(.any, type: .any, set: .any(CustomStruct.self)))
+        Verify(mock, 1, .subscript(0, type: .value(CustomStruct.self), set: .any))
+        Verify(mock, 1, .subscript(.any, type: .value(CustomStruct.self), set: .value(CustomStruct(value: 0))))
+        Verify(mock, 1, .subscript(.any, type: .value(CustomStruct.self), set: .value(CustomStruct(value: 1))))
+        Verify(mock, 1, .subscript(.any, type: .value(CustomStruct.self), set: .value(CustomStruct(value: 2))))
     }
 
     func test_subscripts_verify_when_differ_only_in_return_type() {
@@ -98,23 +98,23 @@ class SubscriptsTests: XCTestCase {
         Given(mock, .subscript(same: 0, willReturn: true, false, true), .drop)
         Given(mock, .subscript(same: .any, willReturn: false))
 
-        XCTAssertFalse(mock[same: 1])
-        XCTAssertTrue(mock[same: 0])
-        XCTAssertFalse(mock[same: 0])
-        XCTAssertTrue(mock[same: 0])
-        XCTAssertFalse(mock[same: 2])
-        XCTAssertFalse(mock[same: 0])
-        XCTAssertFalse(mock[same: 0])
+        XCTAssertFalse(mock[1])
+        XCTAssertTrue(mock[0])
+        XCTAssertFalse(mock[0])
+        XCTAssertTrue(mock[0])
+        XCTAssertFalse(mock[2])
+        XCTAssertFalse(mock[0])
+        XCTAssertFalse(mock[0])
 
         Given(mock, .subscript(same: 1, willReturn: 1,2,3))
         Given(mock, .subscript(same: .any, willReturn: 0))
 
-        XCTAssertEqual(mock[same: 0], 0)
-        XCTAssertEqual(mock[same: 1], 1)
-        XCTAssertEqual(mock[same: 1], 2)
-        XCTAssertEqual(mock[same: 1], 3)
-        XCTAssertEqual(mock[same: 3], 0)
-        XCTAssertEqual(mock[same: 1], 1)
+        XCTAssertEqual(mock[0], 0)
+        XCTAssertEqual(mock[1], 1)
+        XCTAssertEqual(mock[1], 2)
+        XCTAssertEqual(mock[1], 3)
+        XCTAssertEqual(mock[3], 0)
+        XCTAssertEqual(mock[1], 1)
 
         // See if we can tell them apart
         Verify(mock, 7, .subscript(same: .any, returning: Bool.self))

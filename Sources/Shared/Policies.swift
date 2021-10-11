@@ -44,7 +44,7 @@ public enum StubbingPolicy {
 }
 
 /// [Internal] used for marking that stubs have configurable policy
-public protocol WithStubbingPolicy: class {
+public protocol WithStubbingPolicy: AnyObject {
     /// Stubbing policy
     var policy: StubbingPolicy { get set }
     /// [Internal] with new policy

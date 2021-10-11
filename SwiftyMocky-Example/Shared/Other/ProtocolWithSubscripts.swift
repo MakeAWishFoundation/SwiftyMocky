@@ -16,18 +16,19 @@ protocol ProtocolWithSubscripts {
     subscript (labeled index: Int) -> String { get set }
     subscript (x: Int, y: Int) -> String { get set }
     subscript (_ index: String) -> String { get set }
-    subscript (index index: String) -> String { get set }
     subscript (label name: String) -> Int { get }
     //sourcery: associatedtype = "T: Sequence"
+    //sourcery: where = "T.Element: Equatable"
     subscript<T: Sequence>(with generic: T) -> Bool where T.Element: Equatable { get set }
     //sourcery: associatedtype = "T"
+    //sourcery: where = "T: FloatingPoint"
     subscript<T>(with generic: T) -> Int where T: FloatingPoint { get set }
     //sourcery: associatedtype = "T"
     subscript<T>(_ i: Int, type: T.Type) -> T { get set }
     subscript (closure c: @escaping (Int) -> Void) -> Bool { get set }
 
-    subscript (same same: Int) -> Bool { get set }
-    subscript (same same: Int) -> Int { get set }
+    subscript (same: Int) -> Bool { get set }
+    subscript (same: Int) -> Int { get set }
 }
 
 //sourcery: AutoMockable

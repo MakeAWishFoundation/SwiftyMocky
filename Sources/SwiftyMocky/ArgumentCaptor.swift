@@ -1,16 +1,18 @@
-public class ArgumentCaptor<Type> {
+import Foundation
+
+public class ArgumentCaptor<ValueType> {
 	/// Last captured value (if any)
-	public var value: Type? {
+	public var value: ValueType? {
 		return allValues.last
 	}
 	/// All captured values
-	public private(set) var allValues = [Type]()
+	public private(set) var allValues = [ValueType]()
 
 	public init() {}
 
 	/// Return parameter matcher which captures the argument.
-	public func capture(where matches: ((Type) -> Bool)? = nil) -> Parameter<Type> {
-		return .matching({ (value: Type) -> Bool in
+	public func capture(where matches: ((ValueType) -> Bool)? = nil) -> Parameter<ValueType> {
+		return .matching { (value: ValueType) -> Bool in
 			if let matchFunction = matches {
 				let match = matchFunction(value)
 				if match {
@@ -20,6 +22,6 @@ public class ArgumentCaptor<Type> {
 			}
 			self.allValues.append(value)
 			return true
-		})
+		}
 	}
 }

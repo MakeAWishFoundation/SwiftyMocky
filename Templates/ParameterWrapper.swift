@@ -25,6 +25,9 @@ class ParameterWrapper {
     var genericType: String {
         return isVariadic ? "Parameter<[GenericAttribute]>" : "Parameter<GenericAttribute>"
     }
+    var typeErasedType: String {
+        return isVariadic ? "Parameter<[TypeErasedAttribute]>" : "Parameter<TypeErasedAttribute>"
+    }
     var type: SourceryRuntime.TypeName {
         return parameter.typeName
     }
@@ -52,22 +55,38 @@ class ParameterWrapper {
         return TypeWrapper(type).isGeneric(types)
     }
 
-    func wrappedForProxy(_ generics: [String]) -> String {
-        return isGeneric(generics) ? "\(escapedName).wrapAsGeneric()" : "\(escapedName)"
+    func wrappedForProxy(_ generics: [String], _ availability: Bool = false) -> String {
+        if isGeneric(generics) {
+            return "\(escapedName).wrapAsGeneric()"
+        }
+        if (availability) {
+            return "\(escapedName).typeErasedAttribute()"
+        }
+        return "\(escapedName)"
     }
-    func wrappedForCalls(_ generics: [String]) -> String {
-        return isGeneric(generics) ? "\(wrappedForCall).wrapAsGeneric()" : "\(wrappedForCall)"
+    func wrappedForCalls(_ generics: [String], _ availability: Bool = false) -> String {
+        if isGeneric(generics) {
+            return "\(wrappedForCall).wrapAsGeneric()"
+        }
+        if (availability) {
+            return "\(wrappedForCall).typeErasedAttribute()"
+        }
+        return "\(wrappedForCall)"
     }
 
     func asMethodArgument() -> String {
-        return "\(parameter.argumentLabel ?? "_") \(parameter.name): \(parameter.typeName)"
+        if parameter.argumentLabel != parameter.name {
+            return "\(parameter.argumentLabel ?? "_") \(parameter.name): \(parameter.typeName)"
+        } else {
+            return "\(parameter.name): \(parameter.typeName)"
+        }
     }
     func labelAndName() -> String {
         let label = parameter.argumentLabel ?? "_"
-        return label != "\(parameter.name)" ? "\(label) \(parameter.name)" : label
+        return label != parameter.name ? "\(label) \(parameter.name)" : label
     }
     func sanitizedForEnumCaseName() -> String {
-        if let label = parameter.argumentLabel {
+        if let label = parameter.argumentLabel, label != parameter.name {
             return "\(label)_\(parameter.name)".replacingOccurrences(of: "`", with: "")
         } else {
             return "\(parameter.name)".replacingOccurrences(of: "`", with: "")

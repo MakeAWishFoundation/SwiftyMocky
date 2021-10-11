@@ -9,7 +9,7 @@
 import Foundation
 
 //sourcery: AutoMockable
-protocol InoutProtocol: class {
+protocol InoutProtocol: AnyObject {
     func passThisAsInOut(value: inout URLRequest)
     func returnAndInOut(value: inout Int) -> String
 }

@@ -58,6 +58,10 @@ class MethodWrapper {
         guard !parametersContainsSelf else { return "public" }
         return Current.accessModifier
     }
+    var hasAvailability: Bool { method.attributes["available"]?.isEmpty == false }
+    var isAsync: Bool {
+        self.method.annotations["async"] != nil
+    }
 
     private var registrationName: String {
         var rawName = (method.isStatic ? "sm*\(method.selectorName)" : "m*\(method.selectorName)")
@@ -108,7 +112,10 @@ class MethodWrapper {
         return "_\(index)"
     }
     private var methodAttributes: String {
-        return Helpers.extractAttributes(from: self.method.attributes).replacingOccurrences(of: "mutating", with: "")
+        return Helpers.extractAttributes(from: self.method.attributes, filterOutStartingWith: ["mutating", "@inlinable"])
+    }
+    private var methodAttributesNonObjc: String {
+        return Helpers.extractAttributes(from: self.method.attributes, filterOutStartingWith: ["mutating", "@inlinable", "@objc"])
     }
 
     var prototype: String {
@@ -135,9 +142,10 @@ class MethodWrapper {
         let params = replacingSelf(parametersForStubSignature())
         var attributes = self.methodAttributes
         attributes = attributes.isEmpty ? "" : "\(attributes)\n\t"
+        var asyncModifier = self.isAsync ? "async " : ""
 
         if method.isInitializer {
-            return "\(attributes)public required \(method.name) \(throwing)"
+            return "\(attributes)public required \(method.name) \(asyncModifier)\(throwing)"
         } else if method.returnTypeName.isVoid {
             let wherePartIfNeeded: String = {
                 if method.returnTypeName.name.hasPrefix("Void") {
@@ -147,11 +155,11 @@ class MethodWrapper {
                     return !method.returnTypeName.name.isEmpty ? "\(method.returnTypeName.name) " : ""
                 }
             }()
-            return "\(attributes)\(staticModifier)func \(method.shortName)\(params) \(throwing)\(wherePartIfNeeded)"
+            return "\(attributes)\(staticModifier)func \(method.shortName)\(params) \(asyncModifier)\(throwing)\(wherePartIfNeeded)"
         } else if returnsGenericConstrainedToSelf {
-            return "\(attributes)\(staticModifier)func \(method.shortName)\(params) \(throwing)-> \(returnTypeReplacingSelf) "
+            return "\(attributes)\(staticModifier)func \(method.shortName)\(params) \(asyncModifier)\(throwing)-> \(returnTypeReplacingSelf) "
         } else {
-            return "\(attributes)\(staticModifier)func \(method.shortName)\(params) \(throwing)-> \(method.returnTypeName.name) "
+            return "\(attributes)\(staticModifier)func \(method.shortName)\(params) \(asyncModifier)\(throwing)-> \(method.returnTypeName.name) "
         }
     }
     var invocation: String {
@@ -369,12 +377,10 @@ class MethodWrapper {
 
     // Method Type
     func methodTypeDeclarationWithParameters() -> String {
-        let availability = method.attributes["available"]?.description
-        let attributes = availability != nil ? "\(availability!)\n\t\t" : ""
         if filteredParameters.isEmpty {
-            return "\(attributes)case \(prototype)"
+            return "case \(prototype)"
         } else {
-            return "\(attributes)case \(prototype)(\(parametersForMethodTypeDeclaration()))"
+            return "case \(prototype)(\(parametersForMethodTypeDeclaration(availability: hasAvailability)))"
         }
     }
 
@@ -564,13 +570,15 @@ class MethodWrapper {
     // Helpers
     private func parametersForMethodCall() -> String {
         let generics = getGenericsWithoutConstraints()
-        return parameters.map { $0.wrappedForCalls(generics) }.joined(separator: ", ")
+        return parameters.map { $0.wrappedForCalls(generics, hasAvailability) }.joined(separator: ", ")
     }
 
-    private func parametersForMethodTypeDeclaration() -> String {
+    private func parametersForMethodTypeDeclaration(availability: Bool) -> String {
         let generics = getGenericsWithoutConstraints()
         return parameters.map { param in
-            return param.isGeneric(generics) ? param.genericType : replacingSelf(param.nestedType)
+            if param.isGeneric(generics) { return param.genericType }
+            if availability { return param.typeErasedType }
+            return replacingSelf(param.nestedType)
         }.joined(separator: ", ")
     }
 
@@ -599,7 +607,7 @@ class MethodWrapper {
 
     private func parametersForProxyInit() -> String {
         let generics = getGenericsWithoutConstraints()
-        return parameters.map { "\($0.wrappedForProxy(generics))" }.joined(separator: ", ")
+        return parameters.map { "\($0.wrappedForProxy(generics, hasAvailability))" }.joined(separator: ", ")
     }
 
     private func isGeneric() -> Bool {
@@ -718,7 +726,7 @@ class MethodWrapper {
 
             return " where \(constraints.joined(separator: ", "))"
         }()
-        var attributes = self.methodAttributes.replacingOccurrences(of:"@objc", with: "")
+        var attributes = self.methodAttributesNonObjc
         attributes = attributes.condenseWhitespace()
         attributes = attributes.isEmpty ? "" : "\(attributes)\n\t\t"
         return (attributes, methodName, constraints)

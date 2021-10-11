@@ -1,6 +1,11 @@
 ## [ Mocks Generation ] ########################################################
 
 task :mock do
+    print_info "Generating mocks using local CLI version"
+    sh "swift run swiftymocky generate"
+end
+
+task :mock_legacy do
     print_info "Generating mocks - iOS"
     sh "Pods/Sourcery/bin/sourcery --config .mocky.iOS.yml"
     print_info "Generating mocks - tvOS"
@@ -18,16 +23,14 @@ task :debug do
     sh "Pods/Sourcery/bin/sourcery --config .mocky.tvOS.yml --disableCache --verbose"
     print_info "Generating mocks - macOS - debug"
     sh "Pods/Sourcery/bin/sourcery --config .mocky.macOS.yml --disableCache --verbose"
+    print_info "Generating mocks - SPM - debug"
+    sh "Pods/Sourcery/bin/sourcery --config .mocky.spm.yml --disableCache --verbose"
 end
 
 ## [ Tools ] ###################################################################
 
 task :update do
     print_info "Re-Generating main template from parts"
-
-    # Update source files
-    sh "cp -Rf ./Sources/Shared/ ./Sources/SwiftyMocky"
-    sh "cp -Rf ./Sources/Shared/ ./Sources/SwiftyPrototype"
 
     # Prepare SwiftyMocky template
     destination = "../Sources/SwiftyMocky/Mock.swifttemplate"
@@ -91,7 +94,7 @@ task :version do
     version_from = ARGV[1].to_s.strip
     version_to = ARGV[2].to_s.strip
     if version_from && !version_from.empty? && version_to && !version_to.empty?
-        print("Changing version from #{version_from} -> #{version_to} !\n")
+        print_info "Changing version from #{version_from} -> #{version_to} !\n"
         sh("sed -i '' 's|#{version_from}|#{version_to}|g' ./.jazzy.yaml")
         sh("sed -i '' 's|#{version_from}|#{version_to}|g' ./README.md")
         sh("sed -i '' 's|#{version_from}|#{version_to}|g' ./guides/Installation.md")
@@ -101,9 +104,25 @@ task :version do
         sh("sed -i '' 's|#{version_from}|#{version_to}|g' ./Templates/Header-Prototype.swifttemplate")
         sh("sed -i '' 's|#{version_from}|#{version_to}|g' ./SwiftyMocky.podspec")
         sh("sed -i '' 's|#{version_from}|#{version_to}|g' ./SwiftyPrototype.podspec")
+        sh("sed -i '' 's|#{version_from}|#{version_to}|g' ./Makefile")
+        sh("sed -i '' 's|#{version_from}|#{version_to}|g' ./Sources/CLI/Core/Application.swift")
     else
         print("Missing versions!\n")
         exit(1)
+    end
+end
+
+namespace :cli do
+    desc "Assetizes templates for specified version of a SwiftyMocky into CLI"
+    task :assetize do
+        sh "swift run swiftymocky assetize"
+    end
+
+    task :build do
+        print_info "Building CLI release version binary"
+        # sh "swift build -c release --disable-sandbox"
+        sh "swift build -c release"
+        sh "cp ./.build/release/swiftymocky ./bin/swiftymocky"
     end
 end
 
@@ -121,15 +140,6 @@ task :deploy do
         print("Missing version!\n")
         exit(1)
     end
-end
-
-## [ Sourcery ] ################################################################
-
-desc "Download prebuilt sourcery app."
-desc "Can specify version as argument (default is 4.2)"
-task :sourcery do
-    ARGV.each { |a| task a.to_sym do ; end }
-    sh "sh get_sourcery.sh " + ARGV[1].to_s + " " + ARGV[2].to_s
 end
 
 ## [ CocoaPods ] ###############################################################

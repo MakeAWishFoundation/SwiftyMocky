@@ -139,7 +139,7 @@ public func Perform<T: StaticMock>(_ object: T.Type, _ method: T.StaticPerform) 
 /// - Parameter message: Failure message
 /// - Returns: Never
 public func Failure(_ message: String) -> Swift.Never {
-    let errorMessage = "[FATAL] \(message)!"
+    let errorMessage = "[FATAL] \(message)"
     FatalErrorUtil.fatalError(errorMessage)
 }
 

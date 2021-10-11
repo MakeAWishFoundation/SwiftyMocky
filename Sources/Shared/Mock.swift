@@ -8,7 +8,7 @@ public enum MockScope {
 
 /// Every generated mock implementation adopts **Mock** protocol.
 /// It defines base Mock structure and features.
-public protocol Mock: class {
+public protocol Mock: AnyObject {
     /// Stubbed method and property type
     associatedtype Given
     /// Verification type
@@ -71,7 +71,7 @@ public protocol Mock: class {
 
 /// Every mock, that stubs static methods, should adopt **StaticMock** protocol.
 /// It defines base StaticMock structure and features.
-public protocol StaticMock: class {
+public protocol StaticMock: AnyObject {
     /// Stubbed method and property type
     associatedtype StaticGiven
     /// Verification type

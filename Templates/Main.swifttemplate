@@ -22,13 +22,13 @@
     let containsVariables = !allVariables.isEmpty
     let allStaticVariables = uniques(variables: aProtocol.allVariables.filter({ $0.isStatic }))
     let containsStaticVariables = !allStaticVariables.isEmpty
-    let allMethods = uniques(methods: aProtocol.allMethods.filter({ !$0.isStatic }))
+    let allMethods = uniques(methods: aProtocol.allMethods.filter({ !$0.isStatic || $0.isInitializer }))
     let selfConstrained = allMethods.map(wrapMethod).contains(where: { $0.returnsGenericConstrainedToSelf || $0.parametersContainsSelf })
     let accessModifier: String = selfConstrained ? "public final" : "open"
     Current.accessModifier = accessModifier // TODO: Temporary workaround for access modifiers
     let inheritFromNSObject = type.annotations["ObjcProtocol"] != nil || attributes.contains("@objc")
     let allMethodsForMethodType = uniquesWithoutGenericConstraints(methods: aProtocol.allMethods.filter({ !$0.isStatic }))
-    let allStaticMethods = uniques(methods: aProtocol.allMethods.filter({ $0.isStatic }))
+    let allStaticMethods = uniques(methods: aProtocol.allMethods.filter({ $0.isStatic && !$0.isInitializer }))
     let allStaticMethodsForMethodType = uniquesWithoutGenericConstraints(methods: aProtocol.allMethods.filter({ $0.isStatic }))
     let conformsToStaticMock = !allStaticMethods.isEmpty || !allStaticVariables.isEmpty
     let conformsToMock = !allMethods.isEmpty || !allVariables.isEmpty -%><%_ -%><%_ -%>

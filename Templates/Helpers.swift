@@ -15,6 +15,15 @@ class Helpers {
             return nil
         }
     }
+    static func extractWhereClause(from annotated: SourceryRuntime.Annotated) -> String? {
+        if let constraints = annotated.annotations["where"] as? [String] {
+            return " where \(constraints.reversed().joined(separator: ", "))"
+        } else if let constraint = annotated.annotations["where"] as? String {
+            return " where \(constraint)"
+        } else {
+            return nil
+        }
+    }
     /// Extract all typealiases from "annotations"
     static func extractTypealiases(from annotated: SourceryRuntime.Annotated) -> [String] {
         if let types = annotated.annotations["typealias"] as? [String] {
@@ -52,9 +61,17 @@ class Helpers {
         guard !constraints.isEmpty else { return "" }
         return " where \(constraints)"
     }
-    static func extractAttributes(from attributes: [String: SourceryRuntime.Attribute]) -> String {
-        return attributes.map { $0.1.description }
+    static func extractAttributes(
+        from attributes: [String: [SourceryRuntime.Attribute]],
+        filterOutStartingWith disallowedPrefixes: [String] = []
+    ) -> String {
+        return attributes
+        .reduce([SourceryRuntime.Attribute]()) { $0 + $1.1 }
+        .map { $0.description }
         .filter { !["private", "internal", "public", "open", "optional"].contains($0) }
+        .filter { element in
+            !disallowedPrefixes.contains(where: element.hasPrefix)
+        }
         .sorted()
         .joined(separator: " ")
     }

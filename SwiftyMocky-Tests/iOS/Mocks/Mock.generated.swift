@@ -1,11 +1,16 @@
-// Generated using Sourcery 1.0.3 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 1.6.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
 
-// Generated with SwiftyMocky 4.0.4
+// Generated with SwiftyMocky 4.1.0
+// Required Sourcery: 1.6.0
+
 
 import SwiftyMocky
 import XCTest
+import CoreGraphics
+import Foundation
+import UIKit
 @testable import Mocky_Example_iOS
 
 // MARK: - AMassiveTestProtocol
@@ -2037,6 +2042,200 @@ open class AnotherProtocolMock: AnotherProtocol, Mock {
     }
 }
 
+// MARK: - AsyncMethodsProtocol
+
+open class AsyncMethodsProtocolMock: AsyncMethodsProtocol, Mock {
+    public init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        SwiftyMockyTestObserver.setup()
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+
+    private var queue = DispatchQueue(label: "com.swiftymocky.invocations", qos: .userInteractive)
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    public typealias PropertyStub = Given
+    public typealias MethodStub = Given
+    public typealias SubscriptStub = Given
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
+
+
+
+
+    @available(iOS 15.0.0, macOS 12.0.0, tvOS 15.0.0, *)
+	open func loadListOfItems() -> [String] {
+        addInvocation(.m_loadListOfItems)
+		let perform = methodPerformValue(.m_loadListOfItems) as? () -> Void
+		perform?()
+		var __value: [String]
+		do {
+		    __value = try methodReturnValue(.m_loadListOfItems).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for loadListOfItems(). Use given")
+			Failure("Stub return value not specified for loadListOfItems(). Use given")
+		}
+		return __value
+    }
+
+
+    fileprivate enum MethodType {
+        case m_loadListOfItems
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
+            switch (lhs, rhs) {
+            case (.m_loadListOfItems, .m_loadListOfItems): return .match
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+            case .m_loadListOfItems: return 0
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_loadListOfItems: return ".loadListOfItems()"
+            }
+        }
+    }
+
+    open class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [StubProduct]) {
+            self.method = method
+            super.init(products)
+        }
+
+
+        @available(iOS 15.0.0, macOS 12.0.0, tvOS 15.0.0, *)
+		public static func loadListOfItems(willReturn: [String]...) -> MethodStub {
+            return Given(method: .m_loadListOfItems, products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        @available(iOS 15.0.0, macOS 12.0.0, tvOS 15.0.0, *)
+		public static func loadListOfItems(willProduce: (Stubber<[String]>) -> Void) -> MethodStub {
+            let willReturn: [[String]] = []
+			let given: Given = { return Given(method: .m_loadListOfItems, products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: ([String]).self)
+			willProduce(stubber)
+			return given
+        }
+    }
+
+    public struct Verify {
+        fileprivate var method: MethodType
+
+        @available(iOS 15.0.0, macOS 12.0.0, tvOS 15.0.0, *)
+		public static func loadListOfItems() -> Verify { return Verify(method: .m_loadListOfItems)}
+    }
+
+    public struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        @available(iOS 15.0.0, macOS 12.0.0, tvOS 15.0.0, *)
+		public static func loadListOfItems(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_loadListOfItems, performs: perform)
+        }
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let fullMatches = matchingCalls(method, file: file, line: line)
+        let success = count.matches(fullMatches)
+        let assertionName = method.method.assertionName()
+        let feedback: String = {
+            guard !success else { return "" }
+            return Utils.closestCallsMessage(
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
+                name: assertionName
+            )
+        }()
+        MockyAssert(success, "Expected: \(count) invocations of `\(assertionName)`, but was: \(fullMatches).\(feedback)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        self.queue.sync { invocations.append(call) }
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
+    }
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
+    }
+}
+
 // MARK: - ComplicatedServiceType
 
 open class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
@@ -2169,12 +2368,12 @@ open class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
     }
 
     open func methodWithClosures(success function: LinearFunction) -> ClosureFabric {
-        addInvocation(.m_methodWithClosures__success_function_1(Parameter<LinearFunction>.value(`function`)))
-		let perform = methodPerformValue(.m_methodWithClosures__success_function_1(Parameter<LinearFunction>.value(`function`))) as? (LinearFunction) -> Void
+        addInvocation(.m_methodWithClosures__success_function_1(Parameter<LinearFunction>.any))
+		let perform = methodPerformValue(.m_methodWithClosures__success_function_1(Parameter<LinearFunction>.any)) as? (LinearFunction) -> Void
 		perform?(`function`)
 		var __value: ClosureFabric
 		do {
-		    __value = try methodReturnValue(.m_methodWithClosures__success_function_1(Parameter<LinearFunction>.value(`function`))).casted()
+		    __value = try methodReturnValue(.m_methodWithClosures__success_function_1(Parameter<LinearFunction>.any)).casted()
 		} catch {
 			onFatalFailure("Stub return value not specified for methodWithClosures(success function: LinearFunction). Use given")
 			Failure("Stub return value not specified for methodWithClosures(success function: LinearFunction). Use given")
@@ -2182,16 +2381,16 @@ open class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
 		return __value
     }
 
-    open func methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?) -> ((Int) -> Void) {
-        addInvocation(.m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.any))
-		let perform = methodPerformValue(.m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.any)) as? (((Scalar,Scalar) -> Scalar)?) -> Void
+    open func methodWithClosures(success function: ((Scalar, Scalar) -> Scalar)?) -> (Int) -> Void {
+        addInvocation(.m_methodWithClosures__success_function_2(Parameter<((Scalar, Scalar) -> Scalar)?>.value(`function`)))
+		let perform = methodPerformValue(.m_methodWithClosures__success_function_2(Parameter<((Scalar, Scalar) -> Scalar)?>.value(`function`))) as? (((Scalar, Scalar) -> Scalar)?) -> Void
 		perform?(`function`)
 		var __value: (Int) -> Void
 		do {
-		    __value = try methodReturnValue(.m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.any)).casted()
+		    __value = try methodReturnValue(.m_methodWithClosures__success_function_2(Parameter<((Scalar, Scalar) -> Scalar)?>.value(`function`))).casted()
 		} catch {
-			onFatalFailure("Stub return value not specified for methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?). Use given")
-			Failure("Stub return value not specified for methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?). Use given")
+			onFatalFailure("Stub return value not specified for methodWithClosures(success function: ((Scalar, Scalar) -> Scalar)?). Use given")
+			Failure("Stub return value not specified for methodWithClosures(success function: ((Scalar, Scalar) -> Scalar)?). Use given")
 		}
 		return __value
     }
@@ -2206,7 +2405,7 @@ open class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
         case m_similarMethodThatDiffersOnType__value_2(Parameter<Point>)
         case m_methodWithTypedef__scalar(Parameter<Scalar>)
         case m_methodWithClosures__success_function_1(Parameter<LinearFunction>)
-        case m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>)
+        case m_methodWithClosures__success_function_2(Parameter<((Scalar, Scalar) -> Scalar)?>)
         case p_youCouldOnlyGetThis_get
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
@@ -2314,7 +2513,7 @@ open class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
         public static func methodWithClosures(success function: Parameter<LinearFunction>, willReturn: ClosureFabric...) -> MethodStub {
             return Given(method: .m_methodWithClosures__success_function_1(`function`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>, willReturn: (Int) -> Void...) -> MethodStub {
+        public static func methodWithClosures(success function: Parameter<((Scalar, Scalar) -> Scalar)?>, willReturn: (Int) -> Void...) -> MethodStub {
             return Given(method: .m_methodWithClosures__success_function_2(`function`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func serviceName(willProduce: (Stubber<String>) -> Void) -> MethodStub {
@@ -2359,7 +2558,7 @@ open class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
 			willProduce(stubber)
 			return given
         }
-        public static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>, willProduce: (Stubber<(Int) -> Void>) -> Void) -> MethodStub {
+        public static func methodWithClosures(success function: Parameter<((Scalar, Scalar) -> Scalar)?>, willProduce: (Stubber<(Int) -> Void>) -> Void) -> MethodStub {
             let willReturn: [(Int) -> Void] = []
 			let given: Given = { return Given(method: .m_methodWithClosures__success_function_2(`function`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
 			let stubber = given.stub(for: ((Int) -> Void).self)
@@ -2379,7 +2578,7 @@ open class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
         public static func similarMethodThatDiffersOnType(_ value: Parameter<Point>) -> Verify { return Verify(method: .m_similarMethodThatDiffersOnType__value_2(`value`))}
         public static func methodWithTypedef(_ scalar: Parameter<Scalar>) -> Verify { return Verify(method: .m_methodWithTypedef__scalar(`scalar`))}
         public static func methodWithClosures(success function: Parameter<LinearFunction>) -> Verify { return Verify(method: .m_methodWithClosures__success_function_1(`function`))}
-        public static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>) -> Verify { return Verify(method: .m_methodWithClosures__success_function_2(`function`))}
+        public static func methodWithClosures(success function: Parameter<((Scalar, Scalar) -> Scalar)?>) -> Verify { return Verify(method: .m_methodWithClosures__success_function_2(`function`))}
         public static var youCouldOnlyGetThis: Verify { return Verify(method: .p_youCouldOnlyGetThis_get) }
     }
 
@@ -2411,7 +2610,7 @@ open class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
         public static func methodWithClosures(success function: Parameter<LinearFunction>, perform: @escaping (LinearFunction) -> Void) -> Perform {
             return Perform(method: .m_methodWithClosures__success_function_1(`function`), performs: perform)
         }
-        public static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>, perform: @escaping (((Scalar,Scalar) -> Scalar)?) -> Void) -> Perform {
+        public static func methodWithClosures(success function: Parameter<((Scalar, Scalar) -> Scalar)?>, perform: @escaping (((Scalar, Scalar) -> Scalar)?) -> Void) -> Perform {
             return Perform(method: .m_methodWithClosures__success_function_2(`function`), performs: perform)
         }
     }
@@ -3360,8 +3559,8 @@ open class FailsWithKeywordArgumentsMock: FailsWithKeywordArguments, Mock {
         func assertionName() -> String {
             switch self {
             case .m_foo__for_for: return ".foo(for:)"
-            case .m_throw__while_while: return ".`throw(while:)`"
-            case .m_return__do_while: return ".`return(do:)`"
+            case .m_throw__while_while: return ".`throw`(while:)"
+            case .m_return__do_while: return ".`return`(do:)"
             case .p_throw_get: return "[get] .`throw`"
 			case .p_throw_set: return "[set] .`throw`"
             case .subscript_get_return: return "[get] `subscript`[_ return]"
@@ -3890,7 +4089,7 @@ open class FailsWithUntaggedMock: FailsWithUntagged, Mock {
 
     public required init<T>(with t: T) { }
 
-    open func foo<T>(_: T, bar : String) where T: Sequence {
+    open func foo<T>(_: T, bar: String)  where T: Sequence{
         addInvocation(.m_foo__bar_bar(Parameter<String>.value(`bar`)))
 		let perform = methodPerformValue(.m_foo__bar_bar(Parameter<String>.value(`bar`))) as? (String) -> Void
 		perform?(`bar`)
@@ -6483,19 +6682,19 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
 
     @available(iOS 14, *)
 	open func funcB(_ dependency: ProtocolWithAttributes) {
-        addInvocation(.m_funcB__dependency(Parameter<ProtocolWithAttributes>.value(`dependency`)))
-		let perform = methodPerformValue(.m_funcB__dependency(Parameter<ProtocolWithAttributes>.value(`dependency`))) as? (ProtocolWithAttributes) -> Void
+        addInvocation(.m_funcB__dependency(Parameter<ProtocolWithAttributes>.value(`dependency`).typeErasedAttribute()))
+		let perform = methodPerformValue(.m_funcB__dependency(Parameter<ProtocolWithAttributes>.value(`dependency`).typeErasedAttribute())) as? (ProtocolWithAttributes) -> Void
 		perform?(`dependency`)
     }
 
     @available(iOS 14, *)
 	open func funcC(_ dependency: ProtocolWithAttributes) -> Bool {
-        addInvocation(.m_funcC__dependency(Parameter<ProtocolWithAttributes>.value(`dependency`)))
-		let perform = methodPerformValue(.m_funcC__dependency(Parameter<ProtocolWithAttributes>.value(`dependency`))) as? (ProtocolWithAttributes) -> Void
+        addInvocation(.m_funcC__dependency(Parameter<ProtocolWithAttributes>.value(`dependency`).typeErasedAttribute()))
+		let perform = methodPerformValue(.m_funcC__dependency(Parameter<ProtocolWithAttributes>.value(`dependency`).typeErasedAttribute())) as? (ProtocolWithAttributes) -> Void
 		perform?(`dependency`)
 		var __value: Bool
 		do {
-		    __value = try methodReturnValue(.m_funcC__dependency(Parameter<ProtocolWithAttributes>.value(`dependency`))).casted()
+		    __value = try methodReturnValue(.m_funcC__dependency(Parameter<ProtocolWithAttributes>.value(`dependency`).typeErasedAttribute())).casted()
 		} catch {
 			onFatalFailure("Stub return value not specified for funcC(_ dependency: ProtocolWithAttributes). Use given")
 			Failure("Stub return value not specified for funcC(_ dependency: ProtocolWithAttributes). Use given")
@@ -6533,32 +6732,28 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
     }
 
     @available(iOS 12, macOS 10.14, *)
-	public subscript (_ x: Int, _ y: Int) -> String {
+	public subscript (x: Int, y: Int) -> String {
 		get {
-			addInvocation(.subscript_get_x_y(Parameter<Int>.value(`x`), Parameter<Int>.value(`y`)))
+			addInvocation(.subscript_get_x_y(Parameter<Int>.value(`x`).typeErasedAttribute(), Parameter<Int>.value(`y`).typeErasedAttribute()))
 			do {
-				return try methodReturnValue(.subscript_get_x_y(Parameter<Int>.value(`x`), Parameter<Int>.value(`y`))).casted()
+				return try methodReturnValue(.subscript_get_x_y(Parameter<Int>.value(`x`).typeErasedAttribute(), Parameter<Int>.value(`y`).typeErasedAttribute())).casted()
 			} catch {
 				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubDefinedMessage")
 			}
 		}
 		set {
-			addInvocation(.subscript_set_x_y(Parameter<Int>.value(`x`), Parameter<Int>.value(`y`), Parameter<String>.value(newValue)))
+			addInvocation(.subscript_set_x_y(Parameter<Int>.value(`x`).typeErasedAttribute(), Parameter<Int>.value(`y`).typeErasedAttribute(), Parameter<String>.value(newValue)))
 		}
 	}
 
 
     fileprivate enum MethodType {
-        @available(iOS 14, *)
-		case m_funcB__dependency(Parameter<ProtocolWithAttributes>)
-        @available(iOS 14, *)
-		case m_funcC__dependency(Parameter<ProtocolWithAttributes>)
+        case m_funcB__dependency(Parameter<TypeErasedAttribute>)
+        case m_funcC__dependency(Parameter<TypeErasedAttribute>)
         case m_mutatingFunc__param_param(Parameter<Int>)
         case m_inlinableFunc__val(Parameter<Int>)
-        @available(iOS 12, macOS 10.14, *)
-		case subscript_get_x_y(Parameter<Int>, Parameter<Int>)
-		@available(iOS 12, macOS 10.14, *)
-		case subscript_set_x_y(Parameter<Int>, Parameter<Int>, Parameter<String>)
+        case subscript_get_x_y(Parameter<TypeErasedAttribute>, Parameter<TypeErasedAttribute>)
+		case subscript_set_x_y(Parameter<TypeErasedAttribute>, Parameter<TypeErasedAttribute>, Parameter<String>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
@@ -6583,13 +6778,13 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
 				return Matcher.ComparisonResult(results)
             case (let .subscript_get_x_y(lhsX, lhsY), let .subscript_get_x_y(rhsX, rhsY)):
 				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsX, rhs: rhsX, with: matcher), lhsX, rhsX, "_ x"))
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsY, rhs: rhsY, with: matcher), lhsY, rhsY, "_ y"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsX, rhs: rhsX, with: matcher), lhsX, rhsX, "x"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsY, rhs: rhsY, with: matcher), lhsY, rhsY, "y"))
 				return Matcher.ComparisonResult(results)
 			case (let .subscript_set_x_y(lhsX, lhsY, lhsDidSet), let .subscript_set_x_y(rhsX, rhsY, rhsDidSet)):
 				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsX, rhs: rhsX, with: matcher), lhsX, rhsX, "_ x"))
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsY, rhs: rhsY, with: matcher), lhsY, rhsY, "_ y"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsX, rhs: rhsX, with: matcher), lhsX, rhsX, "x"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsY, rhs: rhsY, with: matcher), lhsY, rhsY, "y"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher), lhsDidSet, rhsDidSet, "newValue"))
 				return Matcher.ComparisonResult(results)
             default: return .none
@@ -6612,8 +6807,8 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
             case .m_funcC__dependency: return ".funcC(_:)"
             case .m_mutatingFunc__param_param: return ".mutatingFunc(param:)"
             case .m_inlinableFunc__val: return ".inlinableFunc(_:)"
-            case .subscript_get_x_y: return "[get] `subscript`[_ x, _ y]"
-			case .subscript_set_x_y: return "[set] `subscript`[_ x, _ y]"
+            case .subscript_get_x_y: return "[get] `subscript`[x, y]"
+			case .subscript_set_x_y: return "[set] `subscript`[x, y]"
             }
         }
     }
@@ -6629,7 +6824,7 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
 
         @available(iOS 14, *)
 		public static func funcC(_ dependency: Parameter<ProtocolWithAttributes>, willReturn: Bool...) -> MethodStub {
-            return Given(method: .m_funcC__dependency(`dependency`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+            return Given(method: .m_funcC__dependency(`dependency`.typeErasedAttribute()), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func mutatingFunc(param: Parameter<Int>, willReturn: String...) -> MethodStub {
             return Given(method: .m_mutatingFunc__param_param(`param`), products: willReturn.map({ StubProduct.return($0 as Any) }))
@@ -6641,7 +6836,7 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
         @available(iOS 14, *)
 		public static func funcC(_ dependency: Parameter<ProtocolWithAttributes>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
             let willReturn: [Bool] = []
-			let given: Given = { return Given(method: .m_funcC__dependency(`dependency`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let given: Given = { return Given(method: .m_funcC__dependency(`dependency`.typeErasedAttribute()), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
 			let stubber = given.stub(for: (Bool).self)
 			willProduce(stubber)
 			return given
@@ -6662,8 +6857,8 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
 			return given
         }
         @available(iOS 12, macOS 10.14, *)
-		public static func `subscript`(_ x: Parameter<Int>, _ y: Parameter<Int>, willReturn: String...) -> SubscriptStub {
-            return Given(method: .subscript_get_x_y(`x`, `y`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+		public static func `subscript`(x: Parameter<Int>, y: Parameter<Int>, willReturn: String...) -> SubscriptStub {
+            return Given(method: .subscript_get_x_y(`x`.typeErasedAttribute(), `y`.typeErasedAttribute()), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
     }
 
@@ -6671,16 +6866,16 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
         fileprivate var method: MethodType
 
         @available(iOS 14, *)
-		public static func funcB(_ dependency: Parameter<ProtocolWithAttributes>) -> Verify { return Verify(method: .m_funcB__dependency(`dependency`))}
+		public static func funcB(_ dependency: Parameter<ProtocolWithAttributes>) -> Verify { return Verify(method: .m_funcB__dependency(`dependency`.typeErasedAttribute()))}
         @available(iOS 14, *)
-		public static func funcC(_ dependency: Parameter<ProtocolWithAttributes>) -> Verify { return Verify(method: .m_funcC__dependency(`dependency`))}
+		public static func funcC(_ dependency: Parameter<ProtocolWithAttributes>) -> Verify { return Verify(method: .m_funcC__dependency(`dependency`.typeErasedAttribute()))}
         public static func mutatingFunc(param: Parameter<Int>) -> Verify { return Verify(method: .m_mutatingFunc__param_param(`param`))}
         @discardableResult
 		public static func inlinableFunc(_ val: Parameter<Int>) -> Verify { return Verify(method: .m_inlinableFunc__val(`val`))}
         @available(iOS 12, macOS 10.14, *)
-		public static func `subscript`(_ x: Parameter<Int>, _ y: Parameter<Int>) -> Verify { return Verify(method: .subscript_get_x_y(`x`, `y`))}
+		public static func `subscript`(x: Parameter<Int>, y: Parameter<Int>) -> Verify { return Verify(method: .subscript_get_x_y(`x`.typeErasedAttribute(), `y`.typeErasedAttribute()))}
         @available(iOS 12, macOS 10.14, *)
-		public static func `subscript`(_ x: Parameter<Int>, _ y: Parameter<Int>, set newValue: Parameter<String>) -> Verify { return Verify(method: .subscript_set_x_y(`x`, `y`, newValue))}
+		public static func `subscript`(x: Parameter<Int>, y: Parameter<Int>, set newValue: Parameter<String>) -> Verify { return Verify(method: .subscript_set_x_y(`x`.typeErasedAttribute(), `y`.typeErasedAttribute(), newValue))}
     }
 
     public struct Perform {
@@ -6689,11 +6884,11 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
 
         @available(iOS 14, *)
 		public static func funcB(_ dependency: Parameter<ProtocolWithAttributes>, perform: @escaping (ProtocolWithAttributes) -> Void) -> Perform {
-            return Perform(method: .m_funcB__dependency(`dependency`), performs: perform)
+            return Perform(method: .m_funcB__dependency(`dependency`.typeErasedAttribute()), performs: perform)
         }
         @available(iOS 14, *)
 		public static func funcC(_ dependency: Parameter<ProtocolWithAttributes>, perform: @escaping (ProtocolWithAttributes) -> Void) -> Perform {
-            return Perform(method: .m_funcC__dependency(`dependency`), performs: perform)
+            return Perform(method: .m_funcC__dependency(`dependency`.typeErasedAttribute()), performs: perform)
         }
         public static func mutatingFunc(param: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
             return Perform(method: .m_mutatingFunc__param_param(`param`), performs: perform)
@@ -6833,9 +7028,9 @@ open class ProtocolWithClosuresMock: ProtocolWithClosures, Mock {
 		perform?(`closure`)
     }
 
-    open func methodThatTakesCompletionBlock(completion: (Bool,Error?) -> Void) {
-        addInvocation(.m_methodThatTakesCompletionBlock__completion_completion(Parameter<(Bool,Error?) -> Void>.any))
-		let perform = methodPerformValue(.m_methodThatTakesCompletionBlock__completion_completion(Parameter<(Bool,Error?) -> Void>.any)) as? ((Bool,Error?) -> Void) -> Void
+    open func methodThatTakesCompletionBlock(completion: (Bool, Error?) -> Void) {
+        addInvocation(.m_methodThatTakesCompletionBlock__completion_completion(Parameter<(Bool, Error?) -> Void>.any))
+		let perform = methodPerformValue(.m_methodThatTakesCompletionBlock__completion_completion(Parameter<(Bool, Error?) -> Void>.any)) as? ((Bool, Error?) -> Void) -> Void
 		perform?(`completion`)
     }
 
@@ -6843,7 +7038,7 @@ open class ProtocolWithClosuresMock: ProtocolWithClosures, Mock {
     fileprivate enum MethodType {
         case m_methodThatTakes__closure_closure(Parameter<(Int) -> Int>)
         case m_methodThatTakesEscaping__closure_closure(Parameter<(Int) -> Int>)
-        case m_methodThatTakesCompletionBlock__completion_completion(Parameter<(Bool,Error?) -> Void>)
+        case m_methodThatTakesCompletionBlock__completion_completion(Parameter<(Bool, Error?) -> Void>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
@@ -6897,7 +7092,7 @@ open class ProtocolWithClosuresMock: ProtocolWithClosures, Mock {
 
         public static func methodThatTakes(closure: Parameter<(Int) -> Int>) -> Verify { return Verify(method: .m_methodThatTakes__closure_closure(`closure`))}
         public static func methodThatTakesEscaping(closure: Parameter<(Int) -> Int>) -> Verify { return Verify(method: .m_methodThatTakesEscaping__closure_closure(`closure`))}
-        public static func methodThatTakesCompletionBlock(completion: Parameter<(Bool,Error?) -> Void>) -> Verify { return Verify(method: .m_methodThatTakesCompletionBlock__completion_completion(`completion`))}
+        public static func methodThatTakesCompletionBlock(completion: Parameter<(Bool, Error?) -> Void>) -> Verify { return Verify(method: .m_methodThatTakesCompletionBlock__completion_completion(`completion`))}
     }
 
     public struct Perform {
@@ -6910,7 +7105,7 @@ open class ProtocolWithClosuresMock: ProtocolWithClosures, Mock {
         public static func methodThatTakesEscaping(closure: Parameter<(Int) -> Int>, perform: @escaping (@escaping (Int) -> Int) -> Void) -> Perform {
             return Perform(method: .m_methodThatTakesEscaping__closure_closure(`closure`), performs: perform)
         }
-        public static func methodThatTakesCompletionBlock(completion: Parameter<(Bool,Error?) -> Void>, perform: @escaping ((Bool,Error?) -> Void) -> Void) -> Perform {
+        public static func methodThatTakesCompletionBlock(completion: Parameter<(Bool, Error?) -> Void>, perform: @escaping ((Bool, Error?) -> Void) -> Void) -> Perform {
             return Perform(method: .m_methodThatTakesCompletionBlock__completion_completion(`completion`), performs: perform)
         }
     }
@@ -8706,11 +8901,7 @@ open class ProtocolWithMethodsWithGenericReturnTypeThatThrowsMock: ProtocolWithM
 
 
 
-    open func max<Type: Comparable>(
-        for attribute: Int,
-        over samples: [Int],
-        per aggregationUnit: String?
-    ) throws -> [(date: String?, value: Type)] {
+    open func max<Type: Comparable>(for attribute: Int, over samples: [Int], per aggregationUnit: String?) throws -> [(date: String?, value: Type)] {
         addInvocation(.m_max__for_attributeover_samplesper_aggregationUnit(Parameter<Int>.value(`attribute`), Parameter<[Int]>.value(`samples`), Parameter<String?>.value(`aggregationUnit`)))
 		let perform = methodPerformValue(.m_max__for_attributeover_samplesper_aggregationUnit(Parameter<Int>.value(`attribute`), Parameter<[Int]>.value(`samples`), Parameter<String?>.value(`aggregationUnit`))) as? (Int, [Int], String?) -> Void
 		perform?(`attribute`, `samples`, `aggregationUnit`)
@@ -8862,6 +9053,321 @@ open class ProtocolWithMethodsWithGenericReturnTypeThatThrowsMock: ProtocolWithM
     private func onFatalFailure(_ message: String) {
         guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
         SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
+    }
+}
+
+// MARK: - ProtocolWithObjc
+@objc(PRProtocolWithObjc)
+open class ProtocolWithObjcMock: NSObject, ProtocolWithObjc, Mock, StaticMock {
+    public init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        SwiftyMockyTestObserver.setup()
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+
+    private var queue = DispatchQueue(label: "com.swiftymocky.invocations", qos: .userInteractive)
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    public typealias PropertyStub = Given
+    public typealias MethodStub = Given
+    public typealias SubscriptStub = Given
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+    static var matcher: Matcher = Matcher.default
+    static var stubbingPolicy: StubbingPolicy = .wrap
+    static var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+    static private var queue = DispatchQueue(label: "com.swiftymocky.invocations.static", qos: .userInteractive)
+    static private var invocations: [StaticMethodType] = []
+    static private var methodReturnValues: [StaticGiven] = []
+    static private var methodPerformValues: [StaticPerform] = []
+    public typealias StaticPropertyStub = StaticGiven
+    public typealias StaticMethodStub = StaticGiven
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public static func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
+
+
+
+
+    @objc(doStaticStuffWithParameter1: andParameter2:)
+	public static func doStaticStuff(parameter1: String, parameter2: String) {
+        addInvocation(.sm_doStaticStuff__parameter1_parameter1parameter2_parameter2(Parameter<String>.value(`parameter1`), Parameter<String>.value(`parameter2`)))
+		let perform = methodPerformValue(.sm_doStaticStuff__parameter1_parameter1parameter2_parameter2(Parameter<String>.value(`parameter1`), Parameter<String>.value(`parameter2`))) as? (String, String) -> Void
+		perform?(`parameter1`, `parameter2`)
+    }
+
+    @objc(doStuffWithParameter1: andParameter2:)
+	open func doStuff(parameter1: String, parameter2: String) {
+        addInvocation(.m_doStuff__parameter1_parameter1parameter2_parameter2(Parameter<String>.value(`parameter1`), Parameter<String>.value(`parameter2`)))
+		let perform = methodPerformValue(.m_doStuff__parameter1_parameter1parameter2_parameter2(Parameter<String>.value(`parameter1`), Parameter<String>.value(`parameter2`))) as? (String, String) -> Void
+		perform?(`parameter1`, `parameter2`)
+    }
+
+    fileprivate enum StaticMethodType {
+        case sm_doStaticStuff__parameter1_parameter1parameter2_parameter2(Parameter<String>, Parameter<String>)
+
+        static func compareParameters(lhs: StaticMethodType, rhs: StaticMethodType, matcher: Matcher) -> Matcher.ComparisonResult {
+            switch (lhs, rhs) {
+            case (.sm_doStaticStuff__parameter1_parameter1parameter2_parameter2(let lhsParameter1, let lhsParameter2), .sm_doStaticStuff__parameter1_parameter1parameter2_parameter2(let rhsParameter1, let rhsParameter2)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsParameter1, rhs: rhsParameter1, with: matcher), lhsParameter1, rhsParameter1, "parameter1"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsParameter2, rhs: rhsParameter2, with: matcher), lhsParameter2, rhsParameter2, "parameter2"))
+				return Matcher.ComparisonResult(results)
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+                case let .sm_doStaticStuff__parameter1_parameter1parameter2_parameter2(p0, p1): return p0.intValue + p1.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .sm_doStaticStuff__parameter1_parameter1parameter2_parameter2: return ".doStaticStuff(parameter1:parameter2:)"
+
+            }
+        }
+    }
+
+    open class StaticGiven: StubbedMethod {
+        fileprivate var method: StaticMethodType
+
+        private init(method: StaticMethodType, products: [StubProduct]) {
+            self.method = method
+            super.init(products)
+        }
+
+
+    }
+
+    public struct StaticVerify {
+        fileprivate var method: StaticMethodType
+
+        public static func doStaticStuff(parameter1: Parameter<String>, parameter2: Parameter<String>) -> StaticVerify { return StaticVerify(method: .sm_doStaticStuff__parameter1_parameter1parameter2_parameter2(`parameter1`, `parameter2`))}
+    }
+
+    public struct StaticPerform {
+        fileprivate var method: StaticMethodType
+        var performs: Any
+
+        public static func doStaticStuff(parameter1: Parameter<String>, parameter2: Parameter<String>, perform: @escaping (String, String) -> Void) -> StaticPerform {
+            return StaticPerform(method: .sm_doStaticStuff__parameter1_parameter1parameter2_parameter2(`parameter1`, `parameter2`), performs: perform)
+        }
+    }
+
+    
+    fileprivate enum MethodType {
+        case m_doStuff__parameter1_parameter1parameter2_parameter2(Parameter<String>, Parameter<String>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
+            switch (lhs, rhs) {
+            case (.m_doStuff__parameter1_parameter1parameter2_parameter2(let lhsParameter1, let lhsParameter2), .m_doStuff__parameter1_parameter1parameter2_parameter2(let rhsParameter1, let rhsParameter2)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsParameter1, rhs: rhsParameter1, with: matcher), lhsParameter1, rhsParameter1, "parameter1"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsParameter2, rhs: rhsParameter2, with: matcher), lhsParameter2, rhsParameter2, "parameter2"))
+				return Matcher.ComparisonResult(results)
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+            case let .m_doStuff__parameter1_parameter1parameter2_parameter2(p0, p1): return p0.intValue + p1.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_doStuff__parameter1_parameter1parameter2_parameter2: return ".doStuff(parameter1:parameter2:)"
+            }
+        }
+    }
+
+    open class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [StubProduct]) {
+            self.method = method
+            super.init(products)
+        }
+
+
+    }
+
+    public struct Verify {
+        fileprivate var method: MethodType
+
+        public static func doStuff(parameter1: Parameter<String>, parameter2: Parameter<String>) -> Verify { return Verify(method: .m_doStuff__parameter1_parameter1parameter2_parameter2(`parameter1`, `parameter2`))}
+    }
+
+    public struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        public static func doStuff(parameter1: Parameter<String>, parameter2: Parameter<String>, perform: @escaping (String, String) -> Void) -> Perform {
+            return Perform(method: .m_doStuff__parameter1_parameter1parameter2_parameter2(`parameter1`, `parameter2`), performs: perform)
+        }
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let fullMatches = matchingCalls(method, file: file, line: line)
+        let success = count.matches(fullMatches)
+        let assertionName = method.method.assertionName()
+        let feedback: String = {
+            guard !success else { return "" }
+            return Utils.closestCallsMessage(
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
+                name: assertionName
+            )
+        }()
+        MockyAssert(success, "Expected: \(count) invocations of `\(assertionName)`, but was: \(fullMatches).\(feedback)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        self.queue.sync { invocations.append(call) }
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
+    }
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
+    }
+
+    static public func given(_ method: StaticGiven) {
+        methodReturnValues.append(method)
+    }
+
+    static public func perform(_ method: StaticPerform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    static public func verify(_ method: StaticVerify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let fullMatches = matchingCalls(method, file: file, line: line)
+        let success = count.matches(fullMatches)
+        let assertionName = method.method.assertionName()
+        let feedback: String = {
+            guard !success else { return "" }
+            return Utils.closestCallsMessage(
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return StaticMethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
+                name: assertionName
+            )
+        }()
+        MockyAssert(success, "Expected: \(count) invocations of `\(assertionName)`, but was: \(fullMatches).\(feedback)", file: file, line: line)
+    }
+
+    static private func addInvocation(_ call: StaticMethodType) {
+        self.queue.sync { invocations.append(call) }
+    }
+    static private func methodReturnValue(_ method: StaticMethodType) throws -> StubProduct {
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    static private func methodPerformValue(_ method: StaticMethodType) -> Any? {
+        let matched = methodPerformValues.reversed().first { StaticMethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
+        return matched?.performs
+    }
+    static private func matchingCalls(_ method: StaticMethodType, file: StaticString?, line: UInt?) -> [StaticMethodType] {
+        matcher.set(file: file, line: line)
+        defer { matcher.clearFileAndLine() }
+        return invocations.filter { StaticMethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
+    }
+    static private func matchingCalls(_ method: StaticVerify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
+    }
+    static private func givenGetterValue<T>(_ method: StaticMethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            Failure(message)
+        }
+    }
+    static private func optionalGivenGetterValue<T>(_ method: StaticMethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
     }
 }
 
@@ -9702,7 +10208,7 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 		}
 	}
 
-    public subscript (_ x: Int, _ y: Int) -> String {
+    public subscript (x: Int, y: Int) -> String {
 		get {
 			addInvocation(.subscript_get_x_y(Parameter<Int>.value(`x`), Parameter<Int>.value(`y`)))
 			do {
@@ -9727,20 +10233,6 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 		}
 		set {
 			addInvocation(.subscript_set_index_2(Parameter<String>.value(`index`), Parameter<String>.value(newValue)))
-		}
-	}
-
-    public subscript (index index: String) -> String {
-		get {
-			addInvocation(.subscript_get_index_index(Parameter<String>.value(`index`)))
-			do {
-				return try methodReturnValue(.subscript_get_index_index(Parameter<String>.value(`index`))).casted()
-			} catch {
-				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubDefinedMessage")
-			}
-		}
-		set {
-			addInvocation(.subscript_set_index_index(Parameter<String>.value(`index`), Parameter<String>.value(newValue)))
 		}
 	}
 
@@ -9783,7 +10275,7 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 		}
 	}
 
-    public subscript<T>(_ i: Int, _ type: T.Type) -> T {
+    public subscript<T>(_ i: Int, type: T.Type) -> T {
 		get {
 			addInvocation(.subscript_get_i_type(Parameter<Int>.value(`i`), Parameter<T.Type>.value(`type`).wrapAsGeneric()))
 			do {
@@ -9811,31 +10303,31 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 		}
 	}
 
-    public subscript (same same: Int) -> Bool {
+    public subscript (same: Int) -> Bool {
 		get {
-			addInvocation(.subscript_get_same_same_1(Parameter<Int>.value(`same`)))
+			addInvocation(.subscript_get_same_1(Parameter<Int>.value(`same`)))
 			do {
-				return try methodReturnValue(.subscript_get_same_same_1(Parameter<Int>.value(`same`))).casted()
+				return try methodReturnValue(.subscript_get_same_1(Parameter<Int>.value(`same`))).casted()
 			} catch {
 				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubDefinedMessage")
 			}
 		}
 		set {
-			addInvocation(.subscript_set_same_same_1(Parameter<Int>.value(`same`), Parameter<Bool>.value(newValue)))
+			addInvocation(.subscript_set_same_1(Parameter<Int>.value(`same`), Parameter<Bool>.value(newValue)))
 		}
 	}
 
-    public subscript (same same: Int) -> Int {
+    public subscript (same: Int) -> Int {
 		get {
-			addInvocation(.subscript_get_same_same_2(Parameter<Int>.value(`same`)))
+			addInvocation(.subscript_get_same_2(Parameter<Int>.value(`same`)))
 			do {
-				return try methodReturnValue(.subscript_get_same_same_2(Parameter<Int>.value(`same`))).casted()
+				return try methodReturnValue(.subscript_get_same_2(Parameter<Int>.value(`same`))).casted()
 			} catch {
 				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubDefinedMessage")
 			}
 		}
 		set {
-			addInvocation(.subscript_set_same_same_2(Parameter<Int>.value(`same`), Parameter<Int>.value(newValue)))
+			addInvocation(.subscript_set_same_2(Parameter<Int>.value(`same`), Parameter<Int>.value(newValue)))
 		}
 	}
 
@@ -9852,8 +10344,6 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 		case subscript_set_x_y(Parameter<Int>, Parameter<Int>, Parameter<String>)
         case subscript_get_index_2(Parameter<String>)
 		case subscript_set_index_2(Parameter<String>, Parameter<String>)
-        case subscript_get_index_index(Parameter<String>)
-		case subscript_set_index_index(Parameter<String>, Parameter<String>)
         case subscript_get_label_name(Parameter<String>)
         case subscript_get_with_generic_1(Parameter<GenericAttribute>)
 		case subscript_set_with_generic_1(Parameter<GenericAttribute>, Parameter<Bool>)
@@ -9863,10 +10353,10 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 		case subscript_set_i_type(Parameter<Int>, Parameter<GenericAttribute>, Parameter<GenericAttribute>)
         case subscript_get_closure_c(Parameter<(Int) -> Void>)
 		case subscript_set_closure_c(Parameter<(Int) -> Void>, Parameter<Bool>)
-        case subscript_get_same_same_1(Parameter<Int>)
-		case subscript_set_same_same_1(Parameter<Int>, Parameter<Bool>)
-        case subscript_get_same_same_2(Parameter<Int>)
-		case subscript_set_same_same_2(Parameter<Int>, Parameter<Int>)
+        case subscript_get_same_1(Parameter<Int>)
+		case subscript_set_same_1(Parameter<Int>, Parameter<Bool>)
+        case subscript_get_same_2(Parameter<Int>)
+		case subscript_set_same_2(Parameter<Int>, Parameter<Int>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
@@ -9896,13 +10386,13 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 				return Matcher.ComparisonResult(results)
             case (let .subscript_get_x_y(lhsX, lhsY), let .subscript_get_x_y(rhsX, rhsY)):
 				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsX, rhs: rhsX, with: matcher), lhsX, rhsX, "_ x"))
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsY, rhs: rhsY, with: matcher), lhsY, rhsY, "_ y"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsX, rhs: rhsX, with: matcher), lhsX, rhsX, "x"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsY, rhs: rhsY, with: matcher), lhsY, rhsY, "y"))
 				return Matcher.ComparisonResult(results)
 			case (let .subscript_set_x_y(lhsX, lhsY, lhsDidSet), let .subscript_set_x_y(rhsX, rhsY, rhsDidSet)):
 				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsX, rhs: rhsX, with: matcher), lhsX, rhsX, "_ x"))
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsY, rhs: rhsY, with: matcher), lhsY, rhsY, "_ y"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsX, rhs: rhsX, with: matcher), lhsX, rhsX, "x"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsY, rhs: rhsY, with: matcher), lhsY, rhsY, "y"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher), lhsDidSet, rhsDidSet, "newValue"))
 				return Matcher.ComparisonResult(results)
             case (let .subscript_get_index_2(lhsIndex), let .subscript_get_index_2(rhsIndex)):
@@ -9912,15 +10402,6 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 			case (let .subscript_set_index_2(lhsIndex, lhsDidSet), let .subscript_set_index_2(rhsIndex, rhsDidSet)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsIndex, rhs: rhsIndex, with: matcher), lhsIndex, rhsIndex, "_ index"))
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher), lhsDidSet, rhsDidSet, "newValue"))
-				return Matcher.ComparisonResult(results)
-            case (let .subscript_get_index_index(lhsIndex), let .subscript_get_index_index(rhsIndex)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsIndex, rhs: rhsIndex, with: matcher), lhsIndex, rhsIndex, "index"))
-				return Matcher.ComparisonResult(results)
-			case (let .subscript_set_index_index(lhsIndex, lhsDidSet), let .subscript_set_index_index(rhsIndex, rhsDidSet)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsIndex, rhs: rhsIndex, with: matcher), lhsIndex, rhsIndex, "index"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher), lhsDidSet, rhsDidSet, "newValue"))
 				return Matcher.ComparisonResult(results)
             case (let .subscript_get_label_name(lhsName), let .subscript_get_label_name(rhsName)):
@@ -9948,12 +10429,12 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
             case (let .subscript_get_i_type(lhsI, lhsType), let .subscript_get_i_type(rhsI, rhsType)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsI, rhs: rhsI, with: matcher), lhsI, rhsI, "_ i"))
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsType, rhs: rhsType, with: matcher), lhsType, rhsType, "_ type"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsType, rhs: rhsType, with: matcher), lhsType, rhsType, "type"))
 				return Matcher.ComparisonResult(results)
 			case (let .subscript_set_i_type(lhsI, lhsType, lhsDidSet), let .subscript_set_i_type(rhsI, rhsType, rhsDidSet)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsI, rhs: rhsI, with: matcher), lhsI, rhsI, "_ i"))
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsType, rhs: rhsType, with: matcher), lhsType, rhsType, "_ type"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsType, rhs: rhsType, with: matcher), lhsType, rhsType, "type"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher), lhsDidSet, rhsDidSet, "newValue"))
 				return Matcher.ComparisonResult(results)
             case (let .subscript_get_closure_c(lhsC), let .subscript_get_closure_c(rhsC)):
@@ -9965,20 +10446,20 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsC, rhs: rhsC, with: matcher), lhsC, rhsC, "closure c"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher), lhsDidSet, rhsDidSet, "newValue"))
 				return Matcher.ComparisonResult(results)
-            case (let .subscript_get_same_same_1(lhsSame), let .subscript_get_same_same_1(rhsSame)):
+            case (let .subscript_get_same_1(lhsSame), let .subscript_get_same_1(rhsSame)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSame, rhs: rhsSame, with: matcher), lhsSame, rhsSame, "same"))
 				return Matcher.ComparisonResult(results)
-			case (let .subscript_set_same_same_1(lhsSame, lhsDidSet), let .subscript_set_same_same_1(rhsSame, rhsDidSet)):
+			case (let .subscript_set_same_1(lhsSame, lhsDidSet), let .subscript_set_same_1(rhsSame, rhsDidSet)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSame, rhs: rhsSame, with: matcher), lhsSame, rhsSame, "same"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher), lhsDidSet, rhsDidSet, "newValue"))
 				return Matcher.ComparisonResult(results)
-            case (let .subscript_get_same_same_2(lhsSame), let .subscript_get_same_same_2(rhsSame)):
+            case (let .subscript_get_same_2(lhsSame), let .subscript_get_same_2(rhsSame)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSame, rhs: rhsSame, with: matcher), lhsSame, rhsSame, "same"))
 				return Matcher.ComparisonResult(results)
-			case (let .subscript_set_same_same_2(lhsSame, lhsDidSet), let .subscript_set_same_same_2(rhsSame, rhsDidSet)):
+			case (let .subscript_set_same_2(lhsSame, lhsDidSet), let .subscript_set_same_2(rhsSame, rhsDidSet)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSame, rhs: rhsSame, with: matcher), lhsSame, rhsSame, "same"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsDidSet, rhs: rhsDidSet, with: matcher), lhsDidSet, rhsDidSet, "newValue"))
@@ -10000,8 +10481,6 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 			case let .subscript_set_x_y(p0, p1, _): return p0.intValue + p1.intValue
             case let .subscript_get_index_2(p0): return p0.intValue
 			case let .subscript_set_index_2(p0, _): return p0.intValue
-            case let .subscript_get_index_index(p0): return p0.intValue
-			case let .subscript_set_index_index(p0, _): return p0.intValue
             case let .subscript_get_label_name(p0): return p0.intValue
             case let .subscript_get_with_generic_1(p0): return p0.intValue
 			case let .subscript_set_with_generic_1(p0, _): return p0.intValue
@@ -10011,10 +10490,10 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 			case let .subscript_set_i_type(p0, p1, _): return p0.intValue + p1.intValue
             case let .subscript_get_closure_c(p0): return p0.intValue
 			case let .subscript_set_closure_c(p0, _): return p0.intValue
-            case let .subscript_get_same_same_1(p0): return p0.intValue
-			case let .subscript_set_same_same_1(p0, _): return p0.intValue
-            case let .subscript_get_same_same_2(p0): return p0.intValue
-			case let .subscript_set_same_same_2(p0, _): return p0.intValue
+            case let .subscript_get_same_1(p0): return p0.intValue
+			case let .subscript_set_same_1(p0, _): return p0.intValue
+            case let .subscript_get_same_2(p0): return p0.intValue
+			case let .subscript_set_same_2(p0, _): return p0.intValue
             }
         }
         func assertionName() -> String {
@@ -10026,25 +10505,23 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 			case .subscript_set_index_1: return "[set] `subscript`[_ index]"
             case .subscript_get_labeled_index: return "[get] `subscript`[labeled index]"
 			case .subscript_set_labeled_index: return "[set] `subscript`[labeled index]"
-            case .subscript_get_x_y: return "[get] `subscript`[_ x, _ y]"
-			case .subscript_set_x_y: return "[set] `subscript`[_ x, _ y]"
+            case .subscript_get_x_y: return "[get] `subscript`[x, y]"
+			case .subscript_set_x_y: return "[set] `subscript`[x, y]"
             case .subscript_get_index_2: return "[get] `subscript`[_ index]"
 			case .subscript_set_index_2: return "[set] `subscript`[_ index]"
-            case .subscript_get_index_index: return "[get] `subscript`[index]"
-			case .subscript_set_index_index: return "[set] `subscript`[index]"
             case .subscript_get_label_name: return "[get] `subscript`[label name]"
             case .subscript_get_with_generic_1: return "[get] `subscript`<T: Sequence>[with generic]"
 			case .subscript_set_with_generic_1: return "[set] `subscript`<T: Sequence>[with generic]"
             case .subscript_get_with_generic_2: return "[get] `subscript`<T>[with generic]"
 			case .subscript_set_with_generic_2: return "[set] `subscript`<T>[with generic]"
-            case .subscript_get_i_type: return "[get] `subscript`<T>[_ i, _ type]"
-			case .subscript_set_i_type: return "[set] `subscript`<T>[_ i, _ type]"
+            case .subscript_get_i_type: return "[get] `subscript`<T>[_ i, type]"
+			case .subscript_set_i_type: return "[set] `subscript`<T>[_ i, type]"
             case .subscript_get_closure_c: return "[get] `subscript`[closure c]"
 			case .subscript_set_closure_c: return "[set] `subscript`[closure c]"
-            case .subscript_get_same_same_1: return "[get] `subscript`[same]"
-			case .subscript_set_same_same_1: return "[set] `subscript`[same]"
-            case .subscript_get_same_same_2: return "[get] `subscript`[same]"
-			case .subscript_set_same_same_2: return "[set] `subscript`[same]"
+            case .subscript_get_same_1: return "[get] `subscript`[same]"
+			case .subscript_set_same_1: return "[set] `subscript`[same]"
+            case .subscript_get_same_2: return "[get] `subscript`[same]"
+			case .subscript_set_same_2: return "[set] `subscript`[same]"
             }
         }
     }
@@ -10077,14 +10554,11 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
         public static func `subscript`(labeled index: Parameter<Int>, willReturn: String...) -> SubscriptStub {
             return Given(method: .subscript_get_labeled_index(`index`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func `subscript`(_ x: Parameter<Int>, _ y: Parameter<Int>, willReturn: String...) -> SubscriptStub {
+        public static func `subscript`(x: Parameter<Int>, y: Parameter<Int>, willReturn: String...) -> SubscriptStub {
             return Given(method: .subscript_get_x_y(`x`, `y`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func `subscript`(_ index: Parameter<String>, willReturn: String...) -> SubscriptStub {
             return Given(method: .subscript_get_index_2(`index`), products: willReturn.map({ StubProduct.return($0 as Any) }))
-        }
-        public static func `subscript`(index: Parameter<String>, willReturn: String...) -> SubscriptStub {
-            return Given(method: .subscript_get_index_index(`index`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func `subscript`(label name: Parameter<String>, willReturn: Int...) -> SubscriptStub {
             return Given(method: .subscript_get_label_name(`name`), products: willReturn.map({ StubProduct.return($0 as Any) }))
@@ -10095,17 +10569,17 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
         public static func `subscript`<T>(with generic: Parameter<T>, willReturn: Int...) -> SubscriptStub {
             return Given(method: .subscript_get_with_generic_2(`generic`.wrapAsGeneric()), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func `subscript`<T>(_ i: Parameter<Int>, _ type: Parameter<T.Type>, willReturn: T...) -> SubscriptStub {
+        public static func `subscript`<T>(_ i: Parameter<Int>, type: Parameter<T.Type>, willReturn: T...) -> SubscriptStub {
             return Given(method: .subscript_get_i_type(`i`, `type`.wrapAsGeneric()), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func `subscript`(closure c: Parameter<(Int) -> Void>, willReturn: Bool...) -> SubscriptStub {
             return Given(method: .subscript_get_closure_c(`c`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func `subscript`(same: Parameter<Int>, willReturn: Bool...) -> SubscriptStub {
-            return Given(method: .subscript_get_same_same_1(`same`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+            return Given(method: .subscript_get_same_1(`same`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func `subscript`(same: Parameter<Int>, willReturn: Int...) -> SubscriptStub {
-            return Given(method: .subscript_get_same_same_2(`same`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+            return Given(method: .subscript_get_same_2(`same`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
     }
 
@@ -10119,25 +10593,23 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
         public static func `subscript`(_ index: Parameter<Int>, set newValue: Parameter<String>) -> Verify { return Verify(method: .subscript_set_index_1(`index`, newValue))}
         public static func `subscript`(labeled index: Parameter<Int>) -> Verify { return Verify(method: .subscript_get_labeled_index(`index`))}
         public static func `subscript`(labeled index: Parameter<Int>, set newValue: Parameter<String>) -> Verify { return Verify(method: .subscript_set_labeled_index(`index`, newValue))}
-        public static func `subscript`(_ x: Parameter<Int>, _ y: Parameter<Int>) -> Verify { return Verify(method: .subscript_get_x_y(`x`, `y`))}
-        public static func `subscript`(_ x: Parameter<Int>, _ y: Parameter<Int>, set newValue: Parameter<String>) -> Verify { return Verify(method: .subscript_set_x_y(`x`, `y`, newValue))}
+        public static func `subscript`(x: Parameter<Int>, y: Parameter<Int>) -> Verify { return Verify(method: .subscript_get_x_y(`x`, `y`))}
+        public static func `subscript`(x: Parameter<Int>, y: Parameter<Int>, set newValue: Parameter<String>) -> Verify { return Verify(method: .subscript_set_x_y(`x`, `y`, newValue))}
         public static func `subscript`(_ index: Parameter<String>) -> Verify { return Verify(method: .subscript_get_index_2(`index`))}
         public static func `subscript`(_ index: Parameter<String>, set newValue: Parameter<String>) -> Verify { return Verify(method: .subscript_set_index_2(`index`, newValue))}
-        public static func `subscript`(index: Parameter<String>) -> Verify { return Verify(method: .subscript_get_index_index(`index`))}
-        public static func `subscript`(index: Parameter<String>, set newValue: Parameter<String>) -> Verify { return Verify(method: .subscript_set_index_index(`index`, newValue))}
         public static func `subscript`(label name: Parameter<String>) -> Verify { return Verify(method: .subscript_get_label_name(`name`))}
         public static func `subscript`<T: Sequence>(with generic: Parameter<T>) -> Verify { return Verify(method: .subscript_get_with_generic_1(`generic`.wrapAsGeneric()))}
         public static func `subscript`<T: Sequence>(with generic: Parameter<T>, set newValue: Parameter<Bool>) -> Verify { return Verify(method: .subscript_set_with_generic_1(`generic`.wrapAsGeneric(), newValue))}
         public static func `subscript`<T>(with generic: Parameter<T>) -> Verify { return Verify(method: .subscript_get_with_generic_2(`generic`.wrapAsGeneric()))}
         public static func `subscript`<T>(with generic: Parameter<T>, set newValue: Parameter<Int>) -> Verify { return Verify(method: .subscript_set_with_generic_2(`generic`.wrapAsGeneric(), newValue))}
-        public static func `subscript`<T>(_ i: Parameter<Int>, _ type: Parameter<T.Type>) -> Verify { return Verify(method: .subscript_get_i_type(`i`, `type`.wrapAsGeneric()))}
-        public static func `subscript`<T>(_ i: Parameter<Int>, _ type: Parameter<T.Type>, set newValue: Parameter<T>) -> Verify { return Verify(method: .subscript_set_i_type(`i`, `type`.wrapAsGeneric(), newValue.wrapAsGeneric()))}
+        public static func `subscript`<T>(_ i: Parameter<Int>, type: Parameter<T.Type>) -> Verify { return Verify(method: .subscript_get_i_type(`i`, `type`.wrapAsGeneric()))}
+        public static func `subscript`<T>(_ i: Parameter<Int>, type: Parameter<T.Type>, set newValue: Parameter<T>) -> Verify { return Verify(method: .subscript_set_i_type(`i`, `type`.wrapAsGeneric(), newValue.wrapAsGeneric()))}
         public static func `subscript`(closure c: Parameter<(Int) -> Void>) -> Verify { return Verify(method: .subscript_get_closure_c(`c`))}
         public static func `subscript`(closure c: Parameter<(Int) -> Void>, set newValue: Parameter<Bool>) -> Verify { return Verify(method: .subscript_set_closure_c(`c`, newValue))}
-        public static func `subscript`(same: Parameter<Int>, returning: (Bool).Type) -> Verify { return Verify(method: .subscript_get_same_same_1(`same`))}
-        public static func `subscript`(same: Parameter<Int>, set newValue: Parameter<Bool>) -> Verify { return Verify(method: .subscript_set_same_same_1(`same`, newValue))}
-        public static func `subscript`(same: Parameter<Int>, returning: (Int).Type) -> Verify { return Verify(method: .subscript_get_same_same_2(`same`))}
-        public static func `subscript`(same: Parameter<Int>, set newValue: Parameter<Int>) -> Verify { return Verify(method: .subscript_set_same_same_2(`same`, newValue))}
+        public static func `subscript`(same: Parameter<Int>, returning: (Bool).Type) -> Verify { return Verify(method: .subscript_get_same_1(`same`))}
+        public static func `subscript`(same: Parameter<Int>, set newValue: Parameter<Bool>) -> Verify { return Verify(method: .subscript_set_same_1(`same`, newValue))}
+        public static func `subscript`(same: Parameter<Int>, returning: (Int).Type) -> Verify { return Verify(method: .subscript_get_same_2(`same`))}
+        public static func `subscript`(same: Parameter<Int>, set newValue: Parameter<Int>) -> Verify { return Verify(method: .subscript_set_same_2(`same`, newValue))}
     }
 
     public struct Perform {
@@ -10971,12 +11443,12 @@ open class SampleServiceTypeMock: SampleServiceType, Mock {
     }
 
     open func methodWithClosures(success function: LinearFunction) -> ClosureFabric {
-        addInvocation(.m_methodWithClosures__success_function_1(Parameter<LinearFunction>.value(`function`)))
-		let perform = methodPerformValue(.m_methodWithClosures__success_function_1(Parameter<LinearFunction>.value(`function`))) as? (LinearFunction) -> Void
+        addInvocation(.m_methodWithClosures__success_function_1(Parameter<LinearFunction>.any))
+		let perform = methodPerformValue(.m_methodWithClosures__success_function_1(Parameter<LinearFunction>.any)) as? (LinearFunction) -> Void
 		perform?(`function`)
 		var __value: ClosureFabric
 		do {
-		    __value = try methodReturnValue(.m_methodWithClosures__success_function_1(Parameter<LinearFunction>.value(`function`))).casted()
+		    __value = try methodReturnValue(.m_methodWithClosures__success_function_1(Parameter<LinearFunction>.any)).casted()
 		} catch {
 			onFatalFailure("Stub return value not specified for methodWithClosures(success function: LinearFunction). Use given")
 			Failure("Stub return value not specified for methodWithClosures(success function: LinearFunction). Use given")
@@ -10984,16 +11456,16 @@ open class SampleServiceTypeMock: SampleServiceType, Mock {
 		return __value
     }
 
-    open func methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?) -> ((Int) -> Void) {
-        addInvocation(.m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.any))
-		let perform = methodPerformValue(.m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.any)) as? (((Scalar,Scalar) -> Scalar)?) -> Void
+    open func methodWithClosures(success function: ((Scalar, Scalar) -> Scalar)?) -> (Int) -> Void {
+        addInvocation(.m_methodWithClosures__success_function_2(Parameter<((Scalar, Scalar) -> Scalar)?>.value(`function`)))
+		let perform = methodPerformValue(.m_methodWithClosures__success_function_2(Parameter<((Scalar, Scalar) -> Scalar)?>.value(`function`))) as? (((Scalar, Scalar) -> Scalar)?) -> Void
 		perform?(`function`)
 		var __value: (Int) -> Void
 		do {
-		    __value = try methodReturnValue(.m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.any)).casted()
+		    __value = try methodReturnValue(.m_methodWithClosures__success_function_2(Parameter<((Scalar, Scalar) -> Scalar)?>.value(`function`))).casted()
 		} catch {
-			onFatalFailure("Stub return value not specified for methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?). Use given")
-			Failure("Stub return value not specified for methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?). Use given")
+			onFatalFailure("Stub return value not specified for methodWithClosures(success function: ((Scalar, Scalar) -> Scalar)?). Use given")
+			Failure("Stub return value not specified for methodWithClosures(success function: ((Scalar, Scalar) -> Scalar)?). Use given")
 		}
 		return __value
     }
@@ -11007,7 +11479,7 @@ open class SampleServiceTypeMock: SampleServiceType, Mock {
         case m_similarMethodThatDiffersOnType__value_2(Parameter<Point>)
         case m_methodWithTypedef__scalar(Parameter<Scalar>)
         case m_methodWithClosures__success_function_1(Parameter<LinearFunction>)
-        case m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>)
+        case m_methodWithClosures__success_function_2(Parameter<((Scalar, Scalar) -> Scalar)?>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
@@ -11104,7 +11576,7 @@ open class SampleServiceTypeMock: SampleServiceType, Mock {
         public static func methodWithClosures(success function: Parameter<LinearFunction>, willReturn: ClosureFabric...) -> MethodStub {
             return Given(method: .m_methodWithClosures__success_function_1(`function`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>, willReturn: (Int) -> Void...) -> MethodStub {
+        public static func methodWithClosures(success function: Parameter<((Scalar, Scalar) -> Scalar)?>, willReturn: (Int) -> Void...) -> MethodStub {
             return Given(method: .m_methodWithClosures__success_function_2(`function`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func serviceName(willProduce: (Stubber<String>) -> Void) -> MethodStub {
@@ -11149,7 +11621,7 @@ open class SampleServiceTypeMock: SampleServiceType, Mock {
 			willProduce(stubber)
 			return given
         }
-        public static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>, willProduce: (Stubber<(Int) -> Void>) -> Void) -> MethodStub {
+        public static func methodWithClosures(success function: Parameter<((Scalar, Scalar) -> Scalar)?>, willProduce: (Stubber<(Int) -> Void>) -> Void) -> MethodStub {
             let willReturn: [(Int) -> Void] = []
 			let given: Given = { return Given(method: .m_methodWithClosures__success_function_2(`function`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
 			let stubber = given.stub(for: ((Int) -> Void).self)
@@ -11168,7 +11640,7 @@ open class SampleServiceTypeMock: SampleServiceType, Mock {
         public static func similarMethodThatDiffersOnType(_ value: Parameter<Point>) -> Verify { return Verify(method: .m_similarMethodThatDiffersOnType__value_2(`value`))}
         public static func methodWithTypedef(_ scalar: Parameter<Scalar>) -> Verify { return Verify(method: .m_methodWithTypedef__scalar(`scalar`))}
         public static func methodWithClosures(success function: Parameter<LinearFunction>) -> Verify { return Verify(method: .m_methodWithClosures__success_function_1(`function`))}
-        public static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>) -> Verify { return Verify(method: .m_methodWithClosures__success_function_2(`function`))}
+        public static func methodWithClosures(success function: Parameter<((Scalar, Scalar) -> Scalar)?>) -> Verify { return Verify(method: .m_methodWithClosures__success_function_2(`function`))}
     }
 
     public struct Perform {
@@ -11196,7 +11668,7 @@ open class SampleServiceTypeMock: SampleServiceType, Mock {
         public static func methodWithClosures(success function: Parameter<LinearFunction>, perform: @escaping (LinearFunction) -> Void) -> Perform {
             return Perform(method: .m_methodWithClosures__success_function_1(`function`), performs: perform)
         }
-        public static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>, perform: @escaping (((Scalar,Scalar) -> Scalar)?) -> Void) -> Perform {
+        public static func methodWithClosures(success function: Parameter<((Scalar, Scalar) -> Scalar)?>, perform: @escaping (((Scalar, Scalar) -> Scalar)?) -> Void) -> Perform {
             return Perform(method: .m_methodWithClosures__success_function_2(`function`), performs: perform)
         }
     }
@@ -11276,7 +11748,7 @@ open class SampleServiceTypeMock: SampleServiceType, Mock {
 
 // MARK: - SelfConstrainedProtocol
 
-open class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
+public final class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMock {
     public init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
         self.sequencingPolicy = sequencingPolicy
@@ -11351,7 +11823,7 @@ open class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMoc
 		return _wrapped()
     }
 
-    open func methodReturningSelf() -> Self {
+    public final func methodReturningSelf() -> Self {
         func _wrapped<__Self__>() -> __Self__ {
 		addInvocation(.m_methodReturningSelf)
 		let perform = methodPerformValue(.m_methodReturningSelf) as? () -> Void
@@ -11368,7 +11840,7 @@ open class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMoc
 		return _wrapped()
     }
 
-    open func compare(with other: SelfConstrainedProtocolMock) -> Bool {
+    public final func compare(with other: SelfConstrainedProtocolMock) -> Bool {
         addInvocation(.m_compare__with_other(Parameter<SelfConstrainedProtocolMock>.value(`other`)))
 		let perform = methodPerformValue(.m_compare__with_other(Parameter<SelfConstrainedProtocolMock>.value(`other`))) as? (SelfConstrainedProtocolMock) -> Void
 		perform?(`other`)
@@ -11382,7 +11854,7 @@ open class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMoc
 		return __value
     }
 
-    open func genericMethodWithNestedSelf<T>(param: Int, second: T, other: (SelfConstrainedProtocolMock,SelfConstrainedProtocolMock)) -> Self {
+    public func genericMethodWithNestedSelf<T>(param: Int, second: T, other: (SelfConstrainedProtocolMock,SelfConstrainedProtocolMock)) -> Self {
         func _wrapped<__Self__>() -> __Self__ {
 		addInvocation(.m_genericMethodWithNestedSelf__param_paramsecond_secondother_other(Parameter<Int>.value(`param`), Parameter<T>.value(`second`).wrapAsGeneric(), Parameter<(SelfConstrainedProtocolMock,SelfConstrainedProtocolMock)>.value(`other`)))
 		let perform = methodPerformValue(.m_genericMethodWithNestedSelf__param_paramsecond_secondother_other(Parameter<Int>.value(`param`), Parameter<T>.value(`second`).wrapAsGeneric(), Parameter<(SelfConstrainedProtocolMock,SelfConstrainedProtocolMock)>.value(`other`))) as? (Int, T, (SelfConstrainedProtocolMock,SelfConstrainedProtocolMock)) -> Void
@@ -11399,7 +11871,7 @@ open class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, StaticMoc
 		return _wrapped()
     }
 
-    open func configure(with secret: String) throws -> Self {
+    public final func configure(with secret: String) throws -> Self {
         func _wrapped<__Self__>() throws -> __Self__ {
 		addInvocation(.m_configure__with_secret(Parameter<String>.value(`secret`)))
 		let perform = methodPerformValue(.m_configure__with_secret(Parameter<String>.value(`secret`))) as? (String) -> Void
@@ -13924,10 +14396,7 @@ open class SuggestionRepositoryMock: SuggestionRepository, Mock {
 		return __value
     }
 
-    open func find(
-        where predicate: NSPredicate,
-        sortedBy sortDescriptors: [NSSortDescriptor]
-    ) -> [Entity] {
+    open func find(where predicate: NSPredicate, sortedBy sortDescriptors: [NSSortDescriptor]) -> [Entity] {
         addInvocation(.m_find__where_predicatesortedBy_sortDescriptors(Parameter<NSPredicate>.value(`predicate`), Parameter<[NSSortDescriptor]>.value(`sortDescriptors`)))
 		let perform = methodPerformValue(.m_find__where_predicatesortedBy_sortDescriptors(Parameter<NSPredicate>.value(`predicate`), Parameter<[NSSortDescriptor]>.value(`sortDescriptors`))) as? (NSPredicate, [NSSortDescriptor]) -> Void
 		perform?(`predicate`, `sortDescriptors`)
@@ -14301,10 +14770,7 @@ open class SuggestionRepositoryConstrainedToProtocolMock<Entity>: SuggestionRepo
 		return __value
     }
 
-    open func find(
-        where predicate: NSPredicate,
-        sortedBy sortDescriptors: [NSSortDescriptor]
-    ) -> [Entity] {
+    open func find(where predicate: NSPredicate, sortedBy sortDescriptors: [NSSortDescriptor]) -> [Entity] {
         addInvocation(.m_find__where_predicatesortedBy_sortDescriptors(Parameter<NSPredicate>.value(`predicate`), Parameter<[NSSortDescriptor]>.value(`sortDescriptors`)))
 		let perform = methodPerformValue(.m_find__where_predicatesortedBy_sortDescriptors(Parameter<NSPredicate>.value(`predicate`), Parameter<[NSSortDescriptor]>.value(`sortDescriptors`))) as? (NSPredicate, [NSSortDescriptor]) -> Void
 		perform?(`predicate`, `sortDescriptors`)
@@ -14752,6 +15218,177 @@ open class TestAutoImportMock: TestAutoImport, Mock {
     }
 }
 
+// MARK: - ThrowingVarProtocol
+
+open class ThrowingVarProtocolMock: ThrowingVarProtocol, Mock {
+    public init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        SwiftyMockyTestObserver.setup()
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+
+    private var queue = DispatchQueue(label: "com.swiftymocky.invocations", qos: .userInteractive)
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    public typealias PropertyStub = Given
+    public typealias MethodStub = Given
+    public typealias SubscriptStub = Given
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
+    @available(iOS 15.0.0, macOS 12.0.0, tvOS 15.0.0, *)
+		public var testVariableThatThrow: Bool {
+		get {	invocations.append(.p_testVariableThatThrow_get); return __p_testVariableThatThrow ?? givenGetterValue(.p_testVariableThatThrow_get, "ThrowingVarProtocolMock - stub value for testVariableThatThrow was not defined") }
+	}
+	private var __p_testVariableThatThrow: (Bool)?
+
+
+
+
+
+
+    fileprivate enum MethodType {
+        case p_testVariableThatThrow_get
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
+            switch (lhs, rhs) {            case (.p_testVariableThatThrow_get,.p_testVariableThatThrow_get): return Matcher.ComparisonResult.match
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+            case .p_testVariableThatThrow_get: return 0
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .p_testVariableThatThrow_get: return "[get] .testVariableThatThrow"
+            }
+        }
+    }
+
+    open class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [StubProduct]) {
+            self.method = method
+            super.init(products)
+        }
+
+        @available(iOS 15.0.0, macOS 12.0.0, tvOS 15.0.0, *)
+		public static func testVariableThatThrow(getter defaultValue: Bool...) -> PropertyStub {
+            return Given(method: .p_testVariableThatThrow_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+
+    }
+
+    public struct Verify {
+        fileprivate var method: MethodType
+
+        public static var testVariableThatThrow: Verify { return Verify(method: .p_testVariableThatThrow_get) }
+    }
+
+    public struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let fullMatches = matchingCalls(method, file: file, line: line)
+        let success = count.matches(fullMatches)
+        let assertionName = method.method.assertionName()
+        let feedback: String = {
+            guard !success else { return "" }
+            return Utils.closestCallsMessage(
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
+                name: assertionName
+            )
+        }()
+        MockyAssert(success, "Expected: \(count) invocations of `\(assertionName)`, but was: \(fullMatches).\(feedback)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        self.queue.sync { invocations.append(call) }
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
+    }
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
+    }
+}
+
 // MARK: - UnnamedAttributesProtocol
 
 open class UnnamedAttributesProtocolMock: UnnamedAttributesProtocol, Mock {
@@ -15032,9 +15669,9 @@ open class UserNetworkTypeMock: UserNetworkType, Mock {
 		perform?(`id`, `completion`)
     }
 
-    open func getUserEscaping(for id: String, completion: @escaping (User?,Error?) -> Void) {
-        addInvocation(.m_getUserEscaping__for_idcompletion_completion(Parameter<String>.value(`id`), Parameter<(User?,Error?) -> Void>.value(`completion`)))
-		let perform = methodPerformValue(.m_getUserEscaping__for_idcompletion_completion(Parameter<String>.value(`id`), Parameter<(User?,Error?) -> Void>.value(`completion`))) as? (String, @escaping (User?,Error?) -> Void) -> Void
+    open func getUserEscaping(for id: String, completion: @escaping (User?, Error?) -> Void) {
+        addInvocation(.m_getUserEscaping__for_idcompletion_completion(Parameter<String>.value(`id`), Parameter<(User?, Error?) -> Void>.value(`completion`)))
+		let perform = methodPerformValue(.m_getUserEscaping__for_idcompletion_completion(Parameter<String>.value(`id`), Parameter<(User?, Error?) -> Void>.value(`completion`))) as? (String, @escaping (User?, Error?) -> Void) -> Void
 		perform?(`id`, `completion`)
     }
 
@@ -15053,7 +15690,7 @@ open class UserNetworkTypeMock: UserNetworkType, Mock {
 
     fileprivate enum MethodType {
         case m_getUser__for_idcompletion_completion(Parameter<String>, Parameter<(User?) -> Void>)
-        case m_getUserEscaping__for_idcompletion_completion(Parameter<String>, Parameter<(User?,Error?) -> Void>)
+        case m_getUserEscaping__for_idcompletion_completion(Parameter<String>, Parameter<(User?, Error?) -> Void>)
         case m_doSomething__prop_prop(Parameter<() -> String>)
         case m_testDefaultValues__value_value(Parameter<String>)
 
@@ -15117,7 +15754,7 @@ open class UserNetworkTypeMock: UserNetworkType, Mock {
         fileprivate var method: MethodType
 
         public static func getUser(for id: Parameter<String>, completion: Parameter<(User?) -> Void>) -> Verify { return Verify(method: .m_getUser__for_idcompletion_completion(`id`, `completion`))}
-        public static func getUserEscaping(for id: Parameter<String>, completion: Parameter<(User?,Error?) -> Void>) -> Verify { return Verify(method: .m_getUserEscaping__for_idcompletion_completion(`id`, `completion`))}
+        public static func getUserEscaping(for id: Parameter<String>, completion: Parameter<(User?, Error?) -> Void>) -> Verify { return Verify(method: .m_getUserEscaping__for_idcompletion_completion(`id`, `completion`))}
         public static func doSomething(prop: Parameter<() -> String>) -> Verify { return Verify(method: .m_doSomething__prop_prop(`prop`))}
         public static func testDefaultValues(value: Parameter<String>) -> Verify { return Verify(method: .m_testDefaultValues__value_value(`value`))}
     }
@@ -15129,7 +15766,7 @@ open class UserNetworkTypeMock: UserNetworkType, Mock {
         public static func getUser(for id: Parameter<String>, completion: Parameter<(User?) -> Void>, perform: @escaping (String, (User?) -> Void) -> Void) -> Perform {
             return Perform(method: .m_getUser__for_idcompletion_completion(`id`, `completion`), performs: perform)
         }
-        public static func getUserEscaping(for id: Parameter<String>, completion: Parameter<(User?,Error?) -> Void>, perform: @escaping (String, @escaping (User?,Error?) -> Void) -> Void) -> Perform {
+        public static func getUserEscaping(for id: Parameter<String>, completion: Parameter<(User?, Error?) -> Void>, perform: @escaping (String, @escaping (User?, Error?) -> Void) -> Void) -> Perform {
             return Perform(method: .m_getUserEscaping__for_idcompletion_completion(`id`, `completion`), performs: perform)
         }
         public static func doSomething(prop: Parameter<() -> String>, perform: @escaping (@autoclosure () -> String) -> Void) -> Perform {
@@ -15679,7 +16316,7 @@ open class WithConflictingNameMock: WithConflictingName, Mock {
     public typealias PropertyStub = Given
     public typealias MethodStub = Given
     public typealias SubscriptStub = Given
-    public typealias A = WithConflictingNameMock.A
+    public typealias A = WithConflictingName.A
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
     public func setupMock(file: StaticString = #file, line: UInt = #line) {
@@ -15861,6 +16498,8 @@ open class ComposedServiceMock: ComposedService, Mock {
     var matcher: Matcher = Matcher.default
     var stubbingPolicy: StubbingPolicy = .wrap
     var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+
+    private var queue = DispatchQueue(label: "com.swiftymocky.invocations", qos: .userInteractive)
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
@@ -15971,12 +16610,12 @@ open class ComposedServiceMock: ComposedService, Mock {
     }
 
     open func methodWithClosures(success function: LinearFunction) -> ClosureFabric {
-        addInvocation(.m_methodWithClosures__success_function_1(Parameter<LinearFunction>.value(`function`)))
-		let perform = methodPerformValue(.m_methodWithClosures__success_function_1(Parameter<LinearFunction>.value(`function`))) as? (LinearFunction) -> Void
+        addInvocation(.m_methodWithClosures__success_function_1(Parameter<LinearFunction>.any))
+		let perform = methodPerformValue(.m_methodWithClosures__success_function_1(Parameter<LinearFunction>.any)) as? (LinearFunction) -> Void
 		perform?(`function`)
 		var __value: ClosureFabric
 		do {
-		    __value = try methodReturnValue(.m_methodWithClosures__success_function_1(Parameter<LinearFunction>.value(`function`))).casted()
+		    __value = try methodReturnValue(.m_methodWithClosures__success_function_1(Parameter<LinearFunction>.any)).casted()
 		} catch {
 			onFatalFailure("Stub return value not specified for methodWithClosures(success function: LinearFunction). Use given")
 			Failure("Stub return value not specified for methodWithClosures(success function: LinearFunction). Use given")
@@ -15984,16 +16623,16 @@ open class ComposedServiceMock: ComposedService, Mock {
 		return __value
     }
 
-    open func methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?) -> ((Int) -> Void) {
-        addInvocation(.m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.any))
-		let perform = methodPerformValue(.m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.any)) as? (((Scalar,Scalar) -> Scalar)?) -> Void
+    open func methodWithClosures(success function: ((Scalar, Scalar) -> Scalar)?) -> (Int) -> Void {
+        addInvocation(.m_methodWithClosures__success_function_2(Parameter<((Scalar, Scalar) -> Scalar)?>.value(`function`)))
+		let perform = methodPerformValue(.m_methodWithClosures__success_function_2(Parameter<((Scalar, Scalar) -> Scalar)?>.value(`function`))) as? (((Scalar, Scalar) -> Scalar)?) -> Void
 		perform?(`function`)
 		var __value: (Int) -> Void
 		do {
-		    __value = try methodReturnValue(.m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>.any)).casted()
+		    __value = try methodReturnValue(.m_methodWithClosures__success_function_2(Parameter<((Scalar, Scalar) -> Scalar)?>.value(`function`))).casted()
 		} catch {
-			onFatalFailure("Stub return value not specified for methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?). Use given")
-			Failure("Stub return value not specified for methodWithClosures(success function: ((Scalar,Scalar) -> Scalar)?). Use given")
+			onFatalFailure("Stub return value not specified for methodWithClosures(success function: ((Scalar, Scalar) -> Scalar)?). Use given")
+			Failure("Stub return value not specified for methodWithClosures(success function: ((Scalar, Scalar) -> Scalar)?). Use given")
 		}
 		return __value
     }
@@ -16007,7 +16646,7 @@ open class ComposedServiceMock: ComposedService, Mock {
         case m_similarMethodThatDiffersOnType__value_2(Parameter<Point>)
         case m_methodWithTypedef__scalar(Parameter<Scalar>)
         case m_methodWithClosures__success_function_1(Parameter<LinearFunction>)
-        case m_methodWithClosures__success_function_2(Parameter<((Scalar,Scalar) -> Scalar)?>)
+        case m_methodWithClosures__success_function_2(Parameter<((Scalar, Scalar) -> Scalar)?>)
         case p_youCouldOnlyGetThis_get
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
@@ -16111,7 +16750,7 @@ open class ComposedServiceMock: ComposedService, Mock {
         public static func methodWithClosures(success function: Parameter<LinearFunction>, willReturn: ClosureFabric...) -> MethodStub {
             return Given(method: .m_methodWithClosures__success_function_1(`function`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>, willReturn: (Int) -> Void...) -> MethodStub {
+        public static func methodWithClosures(success function: Parameter<((Scalar, Scalar) -> Scalar)?>, willReturn: (Int) -> Void...) -> MethodStub {
             return Given(method: .m_methodWithClosures__success_function_2(`function`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func serviceName(willProduce: (Stubber<String>) -> Void) -> MethodStub {
@@ -16156,7 +16795,7 @@ open class ComposedServiceMock: ComposedService, Mock {
 			willProduce(stubber)
 			return given
         }
-        public static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>, willProduce: (Stubber<(Int) -> Void>) -> Void) -> MethodStub {
+        public static func methodWithClosures(success function: Parameter<((Scalar, Scalar) -> Scalar)?>, willProduce: (Stubber<(Int) -> Void>) -> Void) -> MethodStub {
             let willReturn: [(Int) -> Void] = []
 			let given: Given = { return Given(method: .m_methodWithClosures__success_function_2(`function`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
 			let stubber = given.stub(for: ((Int) -> Void).self)
@@ -16175,7 +16814,7 @@ open class ComposedServiceMock: ComposedService, Mock {
         public static func similarMethodThatDiffersOnType(_ value: Parameter<Point>) -> Verify { return Verify(method: .m_similarMethodThatDiffersOnType__value_2(`value`))}
         public static func methodWithTypedef(_ scalar: Parameter<Scalar>) -> Verify { return Verify(method: .m_methodWithTypedef__scalar(`scalar`))}
         public static func methodWithClosures(success function: Parameter<LinearFunction>) -> Verify { return Verify(method: .m_methodWithClosures__success_function_1(`function`))}
-        public static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>) -> Verify { return Verify(method: .m_methodWithClosures__success_function_2(`function`))}
+        public static func methodWithClosures(success function: Parameter<((Scalar, Scalar) -> Scalar)?>) -> Verify { return Verify(method: .m_methodWithClosures__success_function_2(`function`))}
         public static var youCouldOnlyGetThis: Verify { return Verify(method: .p_youCouldOnlyGetThis_get) }
     }
 
@@ -16204,7 +16843,7 @@ open class ComposedServiceMock: ComposedService, Mock {
         public static func methodWithClosures(success function: Parameter<LinearFunction>, perform: @escaping (LinearFunction) -> Void) -> Perform {
             return Perform(method: .m_methodWithClosures__success_function_1(`function`), performs: perform)
         }
-        public static func methodWithClosures(success function: Parameter<((Scalar,Scalar) -> Scalar)?>, perform: @escaping (((Scalar,Scalar) -> Scalar)?) -> Void) -> Perform {
+        public static func methodWithClosures(success function: Parameter<((Scalar, Scalar) -> Scalar)?>, perform: @escaping (((Scalar, Scalar) -> Scalar)?) -> Void) -> Perform {
             return Perform(method: .m_methodWithClosures__success_function_2(`function`), performs: perform)
         }
     }
@@ -16237,7 +16876,7 @@ open class ComposedServiceMock: ComposedService, Mock {
     }
 
     private func addInvocation(_ call: MethodType) {
-        invocations.append(call)
+        self.queue.sync { invocations.append(call) }
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
         matcher.set(file: self.file, line: self.line)
