@@ -2165,7 +2165,7 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\"";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mocky_Example_iOS.app/Mocky_Example_iOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mocky_Example_iOS.app/Contents/MacOS/Mocky_Example_iOS";
 			};
 			name = Debug;
 		};
@@ -2186,7 +2186,7 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\"";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mocky_Example_iOS.app/Mocky_Example_iOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mocky_Example_iOS.app/Contents/MacOS/Mocky_Example_iOS";
 			};
 			name = Release;
 		};
