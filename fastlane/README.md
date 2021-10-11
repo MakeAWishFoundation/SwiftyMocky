@@ -15,11 +15,35 @@ Install _fastlane_ using
 or alternatively using `brew install fastlane`
 
 # Available Actions
-### test
+## iOS
+### ios test
 ```
-fastlane test
+fastlane ios test
 ```
+Runs all the tests
 
+----
+
+## tvos
+### tvos test
+```
+fastlane tvos test
+```
+Runs all the tests
+### tvos test_13
+```
+fastlane tvos test_13
+```
+Runs all the tests on tvOS 13.x
+
+----
+
+## Mac
+### mac test
+```
+fastlane mac test
+```
+Runs all the tests
 
 ----
 

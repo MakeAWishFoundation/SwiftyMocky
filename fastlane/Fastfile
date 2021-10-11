@@ -5,7 +5,11 @@ default_platform :ios
 platform :ios do
     desc "Runs all the tests"
     lane :test do
-        scan(scheme: "Mocky_Tests_iOS")
+        scan(
+            scheme: "Mocky_Tests_iOS",
+            workspace: "./SwiftyMocky.xcworkspace",
+            devices: ["iPhone 8"]
+        )
     end
 end
 

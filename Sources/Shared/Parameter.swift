@@ -76,8 +76,14 @@ public extension Parameter {
     ///
     /// - Parameter matching: List of parameter constraints
     static func all(_ matching: Parameter<ValueType>...) -> Parameter<ValueType> {
-        return .matching { value -> Bool in
-            return matching.contains { !Parameter<ValueType>.compare(lhs: $0, rhs: .value(value), with: .default) }
+        return .matching { (value: ValueType) -> Bool in
+            return matching.contains { (element: Parameter<ValueType>) -> Bool in
+                return !Parameter<ValueType>.compare(
+                    lhs: element,
+                    rhs: .value(value),
+                    with: Matcher.default
+                )
+            }
         }
     }
 }

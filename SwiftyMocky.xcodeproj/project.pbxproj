@@ -68,9 +68,6 @@
 		CC0BA3F4271375910087C9B4 /* ThrowingVarProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0BA3F3271375910087C9B4 /* ThrowingVarProtocol.swift */; };
 		CC0BA3F5271375910087C9B4 /* ThrowingVarProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0BA3F3271375910087C9B4 /* ThrowingVarProtocol.swift */; };
 		CC0BA3F6271375910087C9B4 /* ThrowingVarProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0BA3F3271375910087C9B4 /* ThrowingVarProtocol.swift */; };
-		CC0BA3FB271375F10087C9B4 /* ThrowingVarProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0BA3F7271375CA0087C9B4 /* ThrowingVarProtocolTests.swift */; };
-		CC0BA3FC271375F20087C9B4 /* ThrowingVarProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0BA3F7271375CA0087C9B4 /* ThrowingVarProtocolTests.swift */; };
-		CC0BA3FD271375F30087C9B4 /* ThrowingVarProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0BA3F7271375CA0087C9B4 /* ThrowingVarProtocolTests.swift */; };
 		CC16ADBC249BE9F7003FC808 /* Parameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC16ADB2249BE9F7003FC808 /* Parameter.swift */; };
 		CC16ADBD249BE9F7003FC808 /* Parameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC16ADB2249BE9F7003FC808 /* Parameter.swift */; };
 		CC16ADBE249BE9F7003FC808 /* Countable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC16ADB3249BE9F7003FC808 /* Countable.swift */; };
@@ -159,9 +156,10 @@
 		CC66EF07270DD0E800D9B424 /* AsyncMethodsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC66EF06270DD0E800D9B424 /* AsyncMethodsProtocol.swift */; };
 		CC66EF08270DD0E800D9B424 /* AsyncMethodsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC66EF06270DD0E800D9B424 /* AsyncMethodsProtocol.swift */; };
 		CC66EF09270DD0E800D9B424 /* AsyncMethodsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC66EF06270DD0E800D9B424 /* AsyncMethodsProtocol.swift */; };
-		CC66EF0F270DD31300D9B424 /* AsyncMethodsProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC66EF0B270DD2CA00D9B424 /* AsyncMethodsProtocolTests.swift */; };
-		CC66EF10270E07FB00D9B424 /* AsyncMethodsProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC66EF0B270DD2CA00D9B424 /* AsyncMethodsProtocolTests.swift */; };
-		CC66EF11270E07FD00D9B424 /* AsyncMethodsProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC66EF0B270DD2CA00D9B424 /* AsyncMethodsProtocolTests.swift */; };
+		CC89CC052714E0DF0020A0F8 /* Parameter+Compare.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89CC032714E0DE0020A0F8 /* Parameter+Compare.swift */; };
+		CC89CC062714E0DF0020A0F8 /* Parameter+Compare.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89CC032714E0DE0020A0F8 /* Parameter+Compare.swift */; };
+		CC89CC072714E0DF0020A0F8 /* Parameter+Optionals.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89CC042714E0DE0020A0F8 /* Parameter+Optionals.swift */; };
+		CC89CC082714E0DF0020A0F8 /* Parameter+Optionals.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89CC042714E0DE0020A0F8 /* Parameter+Optionals.swift */; };
 		CCA9F81B21566B1300F2880B /* SimpleSequencingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA9F81921566AC500F2880B /* SimpleSequencingTests.swift */; };
 		CCA9F81C21566B1400F2880B /* SimpleSequencingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA9F81921566AC500F2880B /* SimpleSequencingTests.swift */; };
 		CCA9F81D21566B1500F2880B /* SimpleSequencingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA9F81921566AC500F2880B /* SimpleSequencingTests.swift */; };
@@ -379,6 +377,8 @@
 		CC5B61CA1FCC188D007FB209 /* ItemsRepositoryMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemsRepositoryMock.swift; sourceTree = "<group>"; };
 		CC66EF06270DD0E800D9B424 /* AsyncMethodsProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncMethodsProtocol.swift; sourceTree = "<group>"; };
 		CC66EF0B270DD2CA00D9B424 /* AsyncMethodsProtocolTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncMethodsProtocolTests.swift; sourceTree = "<group>"; };
+		CC89CC032714E0DE0020A0F8 /* Parameter+Compare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Parameter+Compare.swift"; sourceTree = "<group>"; };
+		CC89CC042714E0DE0020A0F8 /* Parameter+Optionals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Parameter+Optionals.swift"; sourceTree = "<group>"; };
 		CCA9F81921566AC500F2880B /* SimpleSequencingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleSequencingTests.swift; sourceTree = "<group>"; };
 		CCAFC9EF1FAF244D003F776A /* SwiftyMocky.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyMocky.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCAFC9F11FAF244D003F776A /* SwiftyMocky.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftyMocky.h; sourceTree = "<group>"; };
@@ -674,6 +674,8 @@
 				CC16ADB8249BE9F7003FC808 /* Mock+Assertions.swift */,
 				CCE83A04270C80CE00B3D038 /* MockyAssert.swift */,
 				CC16ADB2249BE9F7003FC808 /* Parameter.swift */,
+				CC89CC032714E0DE0020A0F8 /* Parameter+Compare.swift */,
+				CC89CC042714E0DE0020A0F8 /* Parameter+Optionals.swift */,
 				CC16ADB6249BE9F7003FC808 /* Policies.swift */,
 				CC16ADBA249BE9F7003FC808 /* Stubbing.swift */,
 				CCE83A05270C80CE00B3D038 /* SwiftyMockyTestObserver.swift */,
@@ -1611,7 +1613,6 @@
 				CCE351451FCC0B8200A76C4C /* ComplicatedServiceTests.swift in Sources */,
 				CCCB8A9E249C0B47003CA85F /* UnnamedAttributesTests.swift in Sources */,
 				CC491A261FDAB587001CAB8A /* ProtocolWithPropertiesTests.swift in Sources */,
-				CC0BA3FC271375F20087C9B4 /* ThrowingVarProtocolTests.swift in Sources */,
 				CCE351681FCC0B9700A76C4C /* Mocky_tvOS_Tests.swift in Sources */,
 				C8B87414215A54B1002CF376 /* PropertiesHandlingTests.swift in Sources */,
 				CC32521C2004C217009AD6C2 /* GenericProtocolsTests.swift in Sources */,
@@ -1619,7 +1620,6 @@
 				6C3186F322DF67D800746DCC /* ProtocolWithGenericConstraintsTests.swift in Sources */,
 				CCCB8AAC249F64EB003CA85F /* VerifyMessagesTests.swift in Sources */,
 				CC32522420061574009AD6C2 /* SelfConstrainedProtocolTests.swift in Sources */,
-				CC66EF10270E07FB00D9B424 /* AsyncMethodsProtocolTests.swift in Sources */,
 				C81D094E22C0C59800A0427F /* CustomAssertionsTests.swift in Sources */,
 				C87B4F832153EF0700DD8AE3 /* ExpressibleByLiteralsTests.swift in Sources */,
 				CCE351671FCC0B9700A76C4C /* ItemsRepositoryMock.swift in Sources */,
@@ -1687,7 +1687,6 @@
 				CCE351561FCC0B8200A76C4C /* ProtocolWithClosuresTests.swift in Sources */,
 				CCA9F81B21566B1300F2880B /* SimpleSequencingTests.swift in Sources */,
 				CC07B60820221B6700F51534 /* ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift in Sources */,
-				CC0BA3FB271375F10087C9B4 /* ThrowingVarProtocolTests.swift in Sources */,
 				CCCB8AA1249C1024003CA85F /* ProtocolWithAttributesTests.swift in Sources */,
 				CCE351521FCC0B8200A76C4C /* ProtocolsWithCustomAttributesTests.swift in Sources */,
 				CC491A251FDAB587001CAB8A /* ProtocolWithPropertiesTests.swift in Sources */,
@@ -1712,7 +1711,6 @@
 				C87B4F822153EF0700DD8AE3 /* ExpressibleByLiteralsTests.swift in Sources */,
 				CC32521B2004C217009AD6C2 /* GenericProtocolsTests.swift in Sources */,
 				CCCB8A9D249C0B47003CA85F /* UnnamedAttributesTests.swift in Sources */,
-				CC66EF0F270DD31300D9B424 /* AsyncMethodsProtocolTests.swift in Sources */,
 				C81D094D22C0C59800A0427F /* CustomAssertionsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1722,9 +1720,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				CC16ADCD249BE9F7003FC808 /* Stubbing.swift in Sources */,
+				CC89CC062714E0DF0020A0F8 /* Parameter+Compare.swift in Sources */,
 				CC16ADC3249BE9F7003FC808 /* Matcher.swift in Sources */,
 				CC16ADBD249BE9F7003FC808 /* Parameter.swift in Sources */,
 				CC16ADBF249BE9F7003FC808 /* Countable.swift in Sources */,
+				CC89CC082714E0DF0020A0F8 /* Parameter+Optionals.swift in Sources */,
 				CC16ADCF249BE9F7003FC808 /* GenericAttribute.swift in Sources */,
 				CC16ADC1249BE9F7003FC808 /* Mock.swift in Sources */,
 				CC16ADC5249BE9F7003FC808 /* Policies.swift in Sources */,
@@ -1799,7 +1799,6 @@
 				CC5B61DE1FCC18D0007FB209 /* ProtocolWithThrowingMehtodsTests.swift in Sources */,
 				CCCB8A9F249C0B47003CA85F /* UnnamedAttributesTests.swift in Sources */,
 				CC491A271FDAB588001CAB8A /* ProtocolWithPropertiesTests.swift in Sources */,
-				CC0BA3FD271375F30087C9B4 /* ThrowingVarProtocolTests.swift in Sources */,
 				CC5B61E61FCC18D0007FB209 /* ComplicatedServiceTests.swift in Sources */,
 				C8B87415215A54B1002CF376 /* PropertiesHandlingTests.swift in Sources */,
 				CC32521D2004C217009AD6C2 /* GenericProtocolsTests.swift in Sources */,
@@ -1807,7 +1806,6 @@
 				6C3186F422DF67D800746DCC /* ProtocolWithGenericConstraintsTests.swift in Sources */,
 				CCCB8AAD249F64EB003CA85F /* VerifyMessagesTests.swift in Sources */,
 				CC32522520061574009AD6C2 /* SelfConstrainedProtocolTests.swift in Sources */,
-				CC66EF11270E07FD00D9B424 /* AsyncMethodsProtocolTests.swift in Sources */,
 				C81D094F22C0C59800A0427F /* CustomAssertionsTests.swift in Sources */,
 				C87B4F842153EF0700DD8AE3 /* ExpressibleByLiteralsTests.swift in Sources */,
 				CC5B61DF1FCC18D0007FB209 /* ProtocolsWithCustomAttributesTests.swift in Sources */,
@@ -1827,9 +1825,11 @@
 			files = (
 				CC16ADCC249BE9F7003FC808 /* Stubbing.swift in Sources */,
 				CCE83A06270C80CE00B3D038 /* MockyAssert.swift in Sources */,
+				CC89CC072714E0DF0020A0F8 /* Parameter+Optionals.swift in Sources */,
 				CCE83A08270C80CE00B3D038 /* SwiftyMockyTestObserver.swift in Sources */,
 				CC16ADC2249BE9F7003FC808 /* Matcher.swift in Sources */,
 				CC16ADBC249BE9F7003FC808 /* Parameter.swift in Sources */,
+				CC89CC052714E0DF0020A0F8 /* Parameter+Compare.swift in Sources */,
 				CC16ADBE249BE9F7003FC808 /* Countable.swift in Sources */,
 				CCD6C0AF24A15F3C000B52A1 /* Utils.swift in Sources */,
 				CC16ADCE249BE9F7003FC808 /* GenericAttribute.swift in Sources */,
