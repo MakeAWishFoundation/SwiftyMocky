@@ -393,7 +393,7 @@ SwiftyMocky is available under the MIT license. See the [LICENSE][link-license] 
 
 <!-- Assets -->
 
-[logo]: https://raw.githubusercontent.com/MakeAWishFoundation/SwiftyMocky/1.0.0/icon.png
+[logo]: https://raw.githubusercontent.com/MakeAWishFoundation/SwiftyMocky/4.1.0-pre/icon.png
 [example-watcher]: https://raw.githubusercontent.com/MakeAWishFoundation/SwiftyMocky/1.0.0/guides/assets/example-watcher.gif "Example - generation"
 [example-given]: https://raw.githubusercontent.com/MakeAWishFoundation/SwiftyMocky/1.0.0/guides/assets/example-given.gif "Example - given"
 [example-verify]: https://raw.githubusercontent.com/MakeAWishFoundation/SwiftyMocky/1.0.0/guides/assets/example-verify.gif "Example - verify"
