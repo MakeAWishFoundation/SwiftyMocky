@@ -6,9 +6,10 @@ import Yams
 
 class WorkingDirectory {
 
-    var path: Path { return root + Path(".mocky") }
-    var template: Path { return root + Path(".mocky/.template.swifttemplate") }
-    var config: Path { return root + Path(".mocky/.config.yml.tmp") }
+    let identifier = UUID().uuidString
+    var path: Path { return root + Path(".mocky\(identifier)") }
+    var template: Path { return root + Path(".mocky\(identifier)/.template.swifttemplate") }
+    var config: Path { return root + Path(".mocky\(identifier)/.config.yml.tmp") }
 
     private let root: Path
 
