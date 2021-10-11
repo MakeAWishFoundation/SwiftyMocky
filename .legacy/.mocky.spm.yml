@@ -1,14 +1,16 @@
 sources:
   include:
-    - ./SwiftyMocky-Example/Shared
+    - ../SwiftyMocky-Example/Shared
   exclude:
-    - ./SwiftyMocky-Example/Shared/Other/Excluded.generated.swift
+    - ../SwiftyMocky-Example/Shared/Other/Excluded.generated.swift
 templates:
-  - ./Sources/SwiftyMocky
+  - ../Sources/SwiftyMocky
 output:
-  ./Tests/SwiftyMockyTests/
+  ../Tests/SwiftyMockyTests/
 args:
   swiftyMocky:
+    import:
+      - Foundation
     testable:
       - Mocky_Example_macOS
     excludedSwiftLintRules:

@@ -7,13 +7,13 @@ end
 
 task :mock_legacy do
     print_info "Generating mocks - iOS"
-    sh "Pods/Sourcery/bin/sourcery --config .mocky.iOS.yml"
+    sh "Pods/Sourcery/bin/sourcery --config .legacy/.mocky.iOS.yml"
     print_info "Generating mocks - tvOS"
-    sh "Pods/Sourcery/bin/sourcery --config .mocky.tvOS.yml"
+    sh "Pods/Sourcery/bin/sourcery --config .legacy/.mocky.tvOS.yml"
     print_info "Generating mocks - macOS"
-    sh "Pods/Sourcery/bin/sourcery --config .mocky.macOS.yml"
+    sh "Pods/Sourcery/bin/sourcery --config .legacy/.mocky.macOS.yml"
     print_info "Generating mocks - SPM"
-    sh "Pods/Sourcery/bin/sourcery --config .mocky.spm.yml"
+    sh "Pods/Sourcery/bin/sourcery --config .legacy/.mocky.spm.yml"
 end
 
 task :debug do

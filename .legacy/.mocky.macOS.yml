@@ -1,0 +1,22 @@
+sources:
+  include:
+    - ../SwiftyMocky-Example/Shared
+    - ../SwiftyMocky-Example/macOS
+    - ../SwiftyMocky-Tests/macOS
+  exclude:
+    - ../SwiftyMocky-Example/Shared/Other/Excluded.generated.swift
+templates:
+  - ../Sources/SwiftyMocky
+output:
+  ../SwiftyMocky-Tests/macOS/Mocks
+args:
+  swiftyMocky:
+    import:
+      - Foundation
+    testable:
+      - Mocky_Example_macOS
+    excludedSwiftLintRules:
+      - force_cast
+      - function_body_length
+      - line_length
+      - vertical_whitespace
