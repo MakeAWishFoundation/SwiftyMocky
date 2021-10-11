@@ -109,10 +109,10 @@ class VerifyMessagesTests: XCTestCase {
         Given(mock, .decode(.value(DecodableType.self), from: .any, willReturn: DecodableType(id: 1)))
         Given(mock, .decode(.value(OtherType.self), from: .any, willReturn: OtherType(id: 2)))
 
-        let data1 = Data(bytes: [1,1,1,1])
-        let data2 = Data(bytes: [2,2,2,2])
-        let data3 = Data(bytes: [3,3,3,3])
-        let data4 = Data(bytes: [4,4,4,4])
+        let data1 = Data([1,1,1,1])
+        let data2 = Data([2,2,2,2])
+        let data3 = Data([3,3,3,3])
+        let data4 = Data([4,4,4,4])
 
         _ = mock.decode(DecodableType.self, from: data1)
         _ = mock.decode(DecodableType.self, from: data2)

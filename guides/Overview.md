@@ -1,4 +1,4 @@
-# SwiftyMocky 4.1.0
+# SwiftyMocky 4.1.0-pre
 
 # ![logo][logo]
 
@@ -115,7 +115,7 @@ Add **SwiftyMocky** to you **Package.swift** dependencies:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/MakeAWishFoundation/SwiftyMocky", from: "4.1.0"),
+    .package(url: "https://github.com/MakeAWishFoundation/SwiftyMocky", from: "4.1.0-pre"),
 ]
 ```
 
@@ -334,24 +334,24 @@ SwiftyMocky is available under the MIT license. See the [LICENSE][link-license] 
 
 <!-- Links -->
 
-[link-guides-installation]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0/docs/setup-in-project.html
-[link-guides-contents]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0/docs/contents.html
-[link-guides-examples]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0/docs/examples.html
-[link-changelog]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0/docs/changelog.html
+[link-guides-installation]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0-pre/docs/setup-in-project.html
+[link-guides-contents]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0-pre/docs/contents.html
+[link-guides-examples]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0-pre/docs/examples.html
+[link-changelog]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0-pre/docs/changelog.html
 
-[link-guides-cli]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0/docs/command-line-interface.html
-[link-guides-cli-migration]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0/docs/command-line-interface.html#migration
-[link-guides-cli-legacy]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0/docs/legacy.html
-[link-guides-cli-generate]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0/docs/command-line-interface.html#generate
-[link-guides-mockfile]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0/docs/mockfile.html
+[link-guides-cli]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0-pre/docs/command-line-interface.html
+[link-guides-cli-migration]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0-pre/docs/command-line-interface.html#migration
+[link-guides-cli-legacy]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0-pre/docs/legacy.html
+[link-guides-cli-generate]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0-pre/docs/command-line-interface.html#generate
+[link-guides-mockfile]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0-pre/docs/mockfile.html
 
 <!-- Links based on tag -->
 
-[link-docs]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0/docs/index.html
-[link-docs-features]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0/docs/supported-features.html
-[link-docs-installation]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0/docs/installation.html
-[link-docs-installation-carthage]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0/docs/installation.html#installation-carthage
-[link-docs-setup]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0/docs/setup-in-project.html
+[link-docs]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0-pre/docs/index.html
+[link-docs-features]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0-pre/docs/supported-features.html
+[link-docs-installation]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0-pre/docs/installation.html
+[link-docs-installation-carthage]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0-pre/docs/installation.html#installation-carthage
+[link-docs-setup]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0-pre/docs/setup-in-project.html
 
 <!-- Assets -->
 

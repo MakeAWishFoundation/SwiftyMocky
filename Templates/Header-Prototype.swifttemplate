@@ -1,4 +1,4 @@
-// Generated with SwiftyPrototype 4.1.0
+// Generated with SwiftyPrototype 4.1.0-pre
 // Required Sourcery: 1.6.0
 
 <%_ for rule in swiftLintRules(argument) { -%>

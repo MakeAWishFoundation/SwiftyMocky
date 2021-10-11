@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'SwiftyPrototype'
-  s.version          = '4.1.0'
+  s.version          = '4.1.0-pre'
   s.summary          = 'Prototyping/Faking library for Swift, with code generation. Auto-generates fakes/prototypes based on protocol definitions.'
   s.description      = <<-DESC
 Library that uses metaprogramming technique to generate fakes/prototypes based on sources, makin it easier to prototype app.
@@ -12,7 +12,7 @@ Library that uses metaprogramming technique to generate fakes/prototypes based o
   s.author           = { 'Przemysław Wośko' => 'przemyslaw.wosko@intive.com', 'Andrzej Michnia' => 'amichnia@gmail.com' }
   s.source           = { :git => 'https://github.com/MakeAWishFoundation/SwiftyMocky.git', :tag => s.version.to_s }
 
-  s.swift_versions    = ['4.1', '4.2', '5.0', '5.1.2']
+  s.swift_versions    = ['5.0', '5.1.2', '5.5']
   s.ios.deployment_target = '9.0'
   s.tvos.deployment_target = '9.0'
   s.macos.deployment_target = '10.10'

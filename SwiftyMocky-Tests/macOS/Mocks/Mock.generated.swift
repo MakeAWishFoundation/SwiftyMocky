@@ -2,7 +2,7 @@
 // DO NOT EDIT
 
 
-// Generated with SwiftyMocky 4.1.0
+// Generated with SwiftyMocky 4.1.0-pre
 // Required Sourcery: 1.6.0
 
 
