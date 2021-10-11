@@ -7,8 +7,7 @@ platform :ios do
     lane :test do
         scan(
             scheme: "Mocky_Tests_iOS",
-            workspace: "./SwiftyMocky.xcworkspace",
-            devices: ["iPhone 11"]
+            workspace: "./SwiftyMocky.xcworkspace"
         )
     end
 end
