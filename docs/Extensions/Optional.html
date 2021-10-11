@@ -8,22 +8,14 @@
     <script src="../js/jquery.min.js" defer></script>
     <script src="../js/jazzy.js" defer></script>
     
-    <script src="../js/lunr.min.js" defer></script>
-    <script src="../js/typeahead.jquery.js" defer></script>
-    <script src="../js/jazzy.search.js" defer></script>
   </head>
   <body>
     <a name="//apple_ref/swift/Extension/Optional" class="dashAnchor"></a>
     <a title="Optional Extension Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">SwiftyMocky 4.0.4 Docs</a> (85% documented)</p>
+        <p><a href="../index.html">SwiftyMocky 4.1.0 Docs</a> (86% documented)</p>
         <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="../img/gh.png"/>View on GitHub</a></p>
-        <p class="header-right">
-          <form role="search" action="../search.json">
-            <input type="text" placeholder="Search documentation" data-typeahead>
-          </form>
-        </p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -169,9 +161,6 @@
               <li class="nav-group-task">
                 <a href="../Structs/GenericAttribute.html">GenericAttribute</a>
               </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/GenericAttributeType.html">GenericAttributeType</a>
-              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -199,9 +188,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Structs/FatalErrorUtil.html">FatalErrorUtil</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/OptionalType.html">OptionalType</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Protocols/WithSequencingPolicy.html">WithSequencingPolicy</a>
@@ -265,6 +251,22 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Protocols.html">Other Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/TypeErasedValue.html">TypeErasedValue</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Structs.html">Other Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/TypeErasedAttribute.html">TypeErasedAttribute</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
@@ -273,19 +275,8 @@
             <h1>Optional</h1>
               <div class="declaration">
                 <div class="language">
-                  
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">extension</span> <span class="kt">Optional</span></code></pre>
-<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Optional</span><span class="p">:</span> <span class="kt"><a href="../Protocols/OptionalType.html">OptionalType</a></span></code></pre>
-<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Optional</span><span class="p">:</span>
-    <span class="kt">ExpressibleByStringLiteral</span><span class="p">,</span>
-    <span class="kt">ExpressibleByExtendedGraphemeClusterLiteral</span><span class="p">,</span>
-    <span class="kt">ExpressibleByUnicodeScalarLiteral</span>
-    <span class="k">where</span> <span class="kt">Wrapped</span><span class="p">:</span> <span class="kt">ExpressibleByStringLiteral</span></code></pre>
-<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Optional</span><span class="p">:</span> <span class="kt">ExpressibleByIntegerLiteral</span> <span class="k">where</span> <span class="kt">Wrapped</span><span class="p">:</span> <span class="kt">ExpressibleByIntegerLiteral</span></code></pre>
-<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Optional</span><span class="p">:</span> <span class="kt">ExpressibleByBooleanLiteral</span> <span class="k">where</span> <span class="kt">Wrapped</span><span class="p">:</span> <span class="kt">ExpressibleByBooleanLiteral</span></code></pre>
-<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Optional</span><span class="p">:</span> <span class="kt">ExpressibleByFloatLiteral</span> <span class="k">where</span> <span class="kt">Wrapped</span><span class="p">:</span> <span class="kt">ExpressibleByFloatLiteral</span></code></pre>
-<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Optional</span><span class="p">:</span> <span class="kt">ExpressibleByArrayLiteral</span> <span class="k">where</span> <span class="kt">Wrapped</span><span class="p">:</span> <span class="kt">ExpressibleByArrayLiteral</span></code></pre>
-<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Optional</span><span class="p">:</span> <span class="kt">ExpressibleByDictionaryLiteral</span> <span class="k">where</span> <span class="kt">Wrapped</span><span class="p">:</span> <span class="kt">ExpressibleByDictionaryLiteral</span><span class="p">,</span> <span class="kt">Wrapped</span><span class="o">.</span><span class="kt">Key</span><span class="p">:</span> <span class="kt">Hashable</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">@frozen</span>
+<span class="kd">public</span> <span class="kd">extension</span> <span class="kt">Optional</span></code></pre>
 
                 </div>
               </div>
@@ -299,7 +290,7 @@
                     <code>
                     <a name="/s:Sq11SwiftyMockyE6orFailyxSSF"></a>
                     <a name="//apple_ref/swift/Method/orFail(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:Sq11SwiftyMockyE6orFailyxSSF">orFail(_:<wbr>)</a>
+                    <a class="token" href="#/s:Sq11SwiftyMockyE6orFailyxSSF">orFail(_:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -347,55 +338,6 @@
               </ul>
             </div>
             <div class="task-group">
-              <div class="task-name-container">
-                <a name="/Optionality%20checks"></a>
-                <a name="//apple_ref/swift/Section/Optionality checks" class="dashAnchor"></a>
-                <div class="section-name-container">
-                  <a class="section-name-link" href="#/Optionality%20checks"></a>
-                  <h3 class="section-name"><p>Optionality checks</p>
-</h3>
-                </div>
-              </div>
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:Sq11SwiftyMockyE8isNotNilSbvp"></a>
-                    <a name="//apple_ref/swift/Property/isNotNil" class="dashAnchor"></a>
-                    <a class="token" href="#/s:Sq11SwiftyMockyE8isNotNilSbvp">isNotNil</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Undocumented</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">isNotNil</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <div class="task-name-container">
-                <a name="/Available%20where%20%60Wrapped%60%3A%20%60ExpressibleByStringLiteral%60"></a>
-                <a name="//apple_ref/swift/Section/Available where `Wrapped`: `ExpressibleByStringLiteral`" class="dashAnchor"></a>
-                <div class="section-name-container">
-                  <a class="section-name-link" href="#/Available%20where%20%60Wrapped%60%3A%20%60ExpressibleByStringLiteral%60"></a>
-                  <h3 class="section-name"><p>Available where <code>Wrapped</code>: <code>ExpressibleByStringLiteral</code></p>
-</h3>
-                </div>
-              </div>
               <ul>
                 <li class="item">
                   <div>
@@ -480,7 +422,7 @@
                     <code>
                     <a name="/s:s26ExpressibleByStringLiteralP06stringD0x0cD4TypeQz_tcfc"></a>
                     <a name="//apple_ref/swift/Method/init(stringLiteral:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:s26ExpressibleByStringLiteralP06stringD0x0cD4TypeQz_tcfc">init(stringLiteral:<wbr>)</a>
+                    <a class="token" href="#/s:s26ExpressibleByStringLiteralP06stringD0x0cD4TypeQz_tcfc">init(stringLiteral:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -506,7 +448,7 @@
                     <code>
                     <a name="/s:s43ExpressibleByExtendedGraphemeClusterLiteralP08extendeddeF0x0cdeF4TypeQz_tcfc"></a>
                     <a name="//apple_ref/swift/Method/init(extendedGraphemeClusterLiteral:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:s43ExpressibleByExtendedGraphemeClusterLiteralP08extendeddeF0x0cdeF4TypeQz_tcfc">init(extendedGraphemeClusterLiteral:<wbr>)</a>
+                    <a class="token" href="#/s:s43ExpressibleByExtendedGraphemeClusterLiteralP08extendeddeF0x0cdeF4TypeQz_tcfc">init(extendedGraphemeClusterLiteral:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -532,7 +474,7 @@
                     <code>
                     <a name="/s:s33ExpressibleByUnicodeScalarLiteralP07unicodedE0x0cdE4TypeQz_tcfc"></a>
                     <a name="//apple_ref/swift/Method/init(unicodeScalarLiteral:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:s33ExpressibleByUnicodeScalarLiteralP07unicodedE0x0cdE4TypeQz_tcfc">init(unicodeScalarLiteral:<wbr>)</a>
+                    <a class="token" href="#/s:s33ExpressibleByUnicodeScalarLiteralP07unicodedE0x0cdE4TypeQz_tcfc">init(unicodeScalarLiteral:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -556,15 +498,6 @@
               </ul>
             </div>
             <div class="task-group">
-              <div class="task-name-container">
-                <a name="/Available%20where%20%60Wrapped%60%3A%20%60ExpressibleByIntegerLiteral%60"></a>
-                <a name="//apple_ref/swift/Section/Available where `Wrapped`: `ExpressibleByIntegerLiteral`" class="dashAnchor"></a>
-                <div class="section-name-container">
-                  <a class="section-name-link" href="#/Available%20where%20%60Wrapped%60%3A%20%60ExpressibleByIntegerLiteral%60"></a>
-                  <h3 class="section-name"><p>Available where <code>Wrapped</code>: <code>ExpressibleByIntegerLiteral</code></p>
-</h3>
-                </div>
-              </div>
               <ul>
                 <li class="item">
                   <div>
@@ -597,7 +530,7 @@
                     <code>
                     <a name="/s:s27ExpressibleByIntegerLiteralP07integerD0x0cD4TypeQz_tcfc"></a>
                     <a name="//apple_ref/swift/Method/init(integerLiteral:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:s27ExpressibleByIntegerLiteralP07integerD0x0cD4TypeQz_tcfc">init(integerLiteral:<wbr>)</a>
+                    <a class="token" href="#/s:s27ExpressibleByIntegerLiteralP07integerD0x0cD4TypeQz_tcfc">init(integerLiteral:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -621,15 +554,6 @@
               </ul>
             </div>
             <div class="task-group">
-              <div class="task-name-container">
-                <a name="/Available%20where%20%60Wrapped%60%3A%20%60ExpressibleByBooleanLiteral%60"></a>
-                <a name="//apple_ref/swift/Section/Available where `Wrapped`: `ExpressibleByBooleanLiteral`" class="dashAnchor"></a>
-                <div class="section-name-container">
-                  <a class="section-name-link" href="#/Available%20where%20%60Wrapped%60%3A%20%60ExpressibleByBooleanLiteral%60"></a>
-                  <h3 class="section-name"><p>Available where <code>Wrapped</code>: <code>ExpressibleByBooleanLiteral</code></p>
-</h3>
-                </div>
-              </div>
               <ul>
                 <li class="item">
                   <div>
@@ -662,7 +586,7 @@
                     <code>
                     <a name="/s:s27ExpressibleByBooleanLiteralP07booleanD0x0cD4TypeQz_tcfc"></a>
                     <a name="//apple_ref/swift/Method/init(booleanLiteral:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:s27ExpressibleByBooleanLiteralP07booleanD0x0cD4TypeQz_tcfc">init(booleanLiteral:<wbr>)</a>
+                    <a class="token" href="#/s:s27ExpressibleByBooleanLiteralP07booleanD0x0cD4TypeQz_tcfc">init(booleanLiteral:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -686,15 +610,6 @@
               </ul>
             </div>
             <div class="task-group">
-              <div class="task-name-container">
-                <a name="/Available%20where%20%60Wrapped%60%3A%20%60ExpressibleByFloatLiteral%60"></a>
-                <a name="//apple_ref/swift/Section/Available where `Wrapped`: `ExpressibleByFloatLiteral`" class="dashAnchor"></a>
-                <div class="section-name-container">
-                  <a class="section-name-link" href="#/Available%20where%20%60Wrapped%60%3A%20%60ExpressibleByFloatLiteral%60"></a>
-                  <h3 class="section-name"><p>Available where <code>Wrapped</code>: <code>ExpressibleByFloatLiteral</code></p>
-</h3>
-                </div>
-              </div>
               <ul>
                 <li class="item">
                   <div>
@@ -727,7 +642,7 @@
                     <code>
                     <a name="/s:s25ExpressibleByFloatLiteralP05floatD0x0cD4TypeQz_tcfc"></a>
                     <a name="//apple_ref/swift/Method/init(floatLiteral:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:s25ExpressibleByFloatLiteralP05floatD0x0cD4TypeQz_tcfc">init(floatLiteral:<wbr>)</a>
+                    <a class="token" href="#/s:s25ExpressibleByFloatLiteralP05floatD0x0cD4TypeQz_tcfc">init(floatLiteral:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -751,15 +666,6 @@
               </ul>
             </div>
             <div class="task-group">
-              <div class="task-name-container">
-                <a name="/Available%20where%20%60Wrapped%60%3A%20%60ExpressibleByArrayLiteral%60"></a>
-                <a name="//apple_ref/swift/Section/Available where `Wrapped`: `ExpressibleByArrayLiteral`" class="dashAnchor"></a>
-                <div class="section-name-container">
-                  <a class="section-name-link" href="#/Available%20where%20%60Wrapped%60%3A%20%60ExpressibleByArrayLiteral%60"></a>
-                  <h3 class="section-name"><p>Available where <code>Wrapped</code>: <code>ExpressibleByArrayLiteral</code></p>
-</h3>
-                </div>
-              </div>
               <ul>
                 <li class="item">
                   <div>
@@ -792,7 +698,7 @@
                     <code>
                     <a name="/s:s25ExpressibleByArrayLiteralP05arrayD0x0cD7ElementQzd_tcfc"></a>
                     <a name="//apple_ref/swift/Method/init(arrayLiteral:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:s25ExpressibleByArrayLiteralP05arrayD0x0cD7ElementQzd_tcfc">init(arrayLiteral:<wbr>)</a>
+                    <a class="token" href="#/s:s25ExpressibleByArrayLiteralP05arrayD0x0cD7ElementQzd_tcfc">init(arrayLiteral:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -816,15 +722,6 @@
               </ul>
             </div>
             <div class="task-group">
-              <div class="task-name-container">
-                <a name="/Available%20where%20%60Wrapped%60%3A%20%60ExpressibleByDictionaryLiteral%60%2C%20%60Wrapped.Key%60%3A%20%60Hashable%60"></a>
-                <a name="//apple_ref/swift/Section/Available where `Wrapped`: `ExpressibleByDictionaryLiteral`, `Wrapped.Key`: `Hashable`" class="dashAnchor"></a>
-                <div class="section-name-container">
-                  <a class="section-name-link" href="#/Available%20where%20%60Wrapped%60%3A%20%60ExpressibleByDictionaryLiteral%60%2C%20%60Wrapped.Key%60%3A%20%60Hashable%60"></a>
-                  <h3 class="section-name"><p>Available where <code>Wrapped</code>: <code>ExpressibleByDictionaryLiteral</code>, <code>Wrapped.Key</code>: <code>Hashable</code></p>
-</h3>
-                </div>
-              </div>
               <ul>
                 <li class="item">
                   <div>
@@ -883,7 +780,7 @@
                     <code>
                     <a name="/s:s30ExpressibleByDictionaryLiteralP010dictionaryD0x3KeyQz_5ValueQztd_tcfc"></a>
                     <a name="//apple_ref/swift/Method/init(dictionaryLiteral:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:s30ExpressibleByDictionaryLiteralP010dictionaryD0x3KeyQz_5ValueQztd_tcfc">init(dictionaryLiteral:<wbr>)</a>
+                    <a class="token" href="#/s:s30ExpressibleByDictionaryLiteralP010dictionaryD0x3KeyQz_5ValueQztd_tcfc">init(dictionaryLiteral:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -910,7 +807,7 @@
         </section>
         <section id="footer">
           <p>Copyright © 2017 MakeAWishFoundation. All rights reserved.</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.11.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>

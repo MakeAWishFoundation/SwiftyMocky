@@ -8,22 +8,14 @@
     <script src="../js/jquery.min.js" defer></script>
     <script src="../js/jazzy.js" defer></script>
     
-    <script src="../js/lunr.min.js" defer></script>
-    <script src="../js/typeahead.jquery.js" defer></script>
-    <script src="../js/jazzy.search.js" defer></script>
   </head>
   <body>
     <a name="//apple_ref/swift/Protocol/Mock" class="dashAnchor"></a>
     <a title="Mock Protocol Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">SwiftyMocky 4.0.4 Docs</a> (85% documented)</p>
+        <p><a href="../index.html">SwiftyMocky 4.1.0 Docs</a> (86% documented)</p>
         <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="../img/gh.png"/>View on GitHub</a></p>
-        <p class="header-right">
-          <form role="search" action="../search.json">
-            <input type="text" placeholder="Search documentation" data-typeahead>
-          </form>
-        </p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -169,9 +161,6 @@
               <li class="nav-group-task">
                 <a href="../Structs/GenericAttribute.html">GenericAttribute</a>
               </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/GenericAttributeType.html">GenericAttributeType</a>
-              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -199,9 +188,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Structs/FatalErrorUtil.html">FatalErrorUtil</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/OptionalType.html">OptionalType</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Protocols/WithSequencingPolicy.html">WithSequencingPolicy</a>
@@ -265,6 +251,22 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Protocols.html">Other Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/TypeErasedValue.html">TypeErasedValue</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Structs.html">Other Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/TypeErasedAttribute.html">TypeErasedAttribute</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
@@ -273,7 +275,6 @@
             <h1>Mock</h1>
               <div class="declaration">
                 <div class="language">
-                  
                   <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Mock</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
 
                 </div>
@@ -371,7 +372,7 @@ It defines base Mock structure and features.</p>
                     <code>
                     <a name="/s:11SwiftyMocky4MockP5givenyy5GivenQzF"></a>
                     <a name="//apple_ref/swift/Method/given(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:11SwiftyMocky4MockP5givenyy5GivenQzF">given(_:<wbr>)</a>
+                    <a class="token" href="#/s:11SwiftyMocky4MockP5givenyy5GivenQzF">given(_:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -430,7 +431,7 @@ Method stub will return most recent one.</li>
                     <code>
                     <a name="/s:11SwiftyMocky4MockP7performyy7PerformQzF"></a>
                     <a name="//apple_ref/swift/Method/perform(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:11SwiftyMocky4MockP7performyy7PerformQzF">perform(_:<wbr>)</a>
+                    <a class="token" href="#/s:11SwiftyMocky4MockP7performyy7PerformQzF">perform(_:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -490,7 +491,7 @@ Method stub will return most recent one.</li>
                     <code>
                     <a name="/s:11SwiftyMocky4MockP6verify_5count4file4liney6VerifyQz_AA5CountOs12StaticStringVSutF"></a>
                     <a name="//apple_ref/swift/Method/verify(_:count:file:line:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:11SwiftyMocky4MockP6verify_5count4file4liney6VerifyQz_AA5CountOs12StaticStringVSutF">verify(_:<wbr>count:<wbr>file:<wbr>line:<wbr>)</a>
+                    <a class="token" href="#/s:11SwiftyMocky4MockP6verify_5count4file4liney6VerifyQz_AA5CountOs12StaticStringVSutF">verify(_:count:file:line:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -572,7 +573,7 @@ Method stub will return most recent one.</li>
                     <code>
                     <a name="/s:11SwiftyMocky4MockP05resetC0yyAA0C5ScopeOd_tF"></a>
                     <a name="//apple_ref/swift/Method/resetMock(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:11SwiftyMocky4MockP05resetC0yyAA0C5ScopeOd_tF">resetMock(_:<wbr>)</a>
+                    <a class="token" href="#/s:11SwiftyMocky4MockP05resetC0yyAA0C5ScopeOd_tF">resetMock(_:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -607,7 +608,7 @@ or leave it empty to clear all mock internals.</p>
         </section>
         <section id="footer">
           <p>Copyright © 2017 MakeAWishFoundation. All rights reserved.</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.11.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>
