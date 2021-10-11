@@ -21,5 +21,4 @@ jobs:
           rake mock
           swift test
           fastlane ios test
-          fastlane tvos test
       - run: echo "This job's status is ${{ job.status }}."

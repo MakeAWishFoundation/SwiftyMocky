@@ -37,9 +37,6 @@ class CombinedFetcher {
         }
 
         group.notify(queue: DispatchQueue.main) {
-            if self.count % 10 == 0 {
-                print("completed \(self.count / 10)")
-            }
             self.count += 1
             completion()
         }
