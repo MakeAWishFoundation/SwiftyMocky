@@ -8,7 +8,7 @@ platform :ios do
         scan(
             scheme: "Mocky_Tests_iOS",
             workspace: "./SwiftyMocky.xcworkspace",
-            devices: ["iPhone 8"]
+            devices: ["iPhone 11"]
         )
     end
 end
