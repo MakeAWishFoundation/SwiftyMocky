@@ -5,7 +5,7 @@ public enum Instance {
     public internal(set) static var factory: InstanceFactory = InstanceFactoryConcrete()
 }
 
-public protocol InstanceFactory: class, AutoMockable {
+public protocol InstanceFactory: AnyObject, AutoMockable {
 
     // MARK: - Generation
     func resolveGenerationCommand(root: Path) throws -> GenerationCommand
@@ -13,7 +13,7 @@ public protocol InstanceFactory: class, AutoMockable {
 }
 
 public class InstanceFactoryConcrete: InstanceFactory {
-    
+
     fileprivate init() { }
 
     // MARK: - Generation

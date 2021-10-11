@@ -85,7 +85,7 @@ protocol FailsWithAutoClosureOnSwift5 {
 // MARK: - Generics with Self
 
 //sourcery: AutoMockable
-protocol FailsWithReturnedTypeBeingGenericOfSelf: class {
+protocol FailsWithReturnedTypeBeingGenericOfSelf: AnyObject {
     func methodWillReturnSelfTypedArray() -> Array<Self>
     func methodWillReturnSelfTypedArray2() -> [Self]
     func methodWillReturnSelfTypedCustom() -> CustomGeneric<Self>

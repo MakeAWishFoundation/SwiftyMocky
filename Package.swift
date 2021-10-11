@@ -1,4 +1,4 @@
-// swift-tools-version:4.1
+// swift-tools-version:5.2
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -13,12 +13,12 @@ let package = Package(
         .executable(name: "swiftymocky", targets: ["SwiftyMockyCLI"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/JohnSundell/ShellOut.git", from: "2.3.0"),
-        .package(url: "https://github.com/tuist/xcodeproj.git", from: "8.3.1"),
-        .package(url: "https://github.com/luoxiu/Chalk", .exact("0.0.7")),
-        .package(url: "https://github.com/kylef/Commander", .exact("0.9.1")),
-        .package(url: "https://github.com/kylef/PathKit", from: "1.0.0"),
-        .package(url: "https://github.com/jpsim/Yams.git", from: "3.0.1"),
+        .package(url: "https://github.com/JohnSundell/ShellOut", .upToNextMajor(from: "2.3.0")),
+        .package(url: "https://github.com/tuist/xcodeproj", .upToNextMajor(from: "8.3.1")),
+        .package(url: "https://github.com/luoxiu/Chalk", .exact("0.2.1")),
+        .package(url: "https://github.com/kylef/Commander", .upToNextMajor(from: "0.9.1")),
+        .package(url: "https://github.com/kylef/PathKit", .upToNextMajor(from: "1.0.1")),
+        .package(url: "https://github.com/jpsim/Yams", .exact("3.0.1")),
     ],
     targets: [
         // XCTest Runtime libraries
@@ -64,7 +64,7 @@ let package = Package(
             dependencies: [
                 "ShellOut",
                 "Chalk",
-                "XcodeProj",
+                .product(name: "XcodeProj", package: "xcodeproj"),
                 "PathKit",
                 "Yams",
             ],

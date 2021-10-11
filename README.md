@@ -20,8 +20,8 @@ Check out [guides][link-guides-contents], or full [documentation][link-docs]
 1. [Overview](#overview)
 1. [Current Version](#current-version)
 1. [Getting started:](#getting-started)
-    1. [Installing SwiftyMocky CLI](#installation)
     1. [Integrating SwiftyMocky runtime into test target](#integration)
+    1. [Installation SwiftyMocky CLI](#installation)
     1. [Generate mocks](#generation)
 1. [Usage:](#usage)
     1. [Marking protocols to be mocked](#mock-annotate)
@@ -39,7 +39,7 @@ Check out [guides][link-guides-contents], or full [documentation][link-docs]
 
 ## Overview
 
-**SwiftyMocky** is Lightweight, strongly typed framework for Mockito-like unit testing experience. As Swift doesn't support reflections well enough to allow building mocks in runtime, library depends on [Sourcery](https://github.com/krzysztofzablocki/Sourcery), that scans your source code and **generates Mocks Swift code for you!**
+**SwiftyMocky** is a strongly typed framework for Mockito-like unit testing experience. Library depends on [Sourcery](https://github.com/krzysztofzablocki/Sourcery), that scans your source code and **generates Mocks Swift code for you!**
 
 The idea of **SwiftyMocky** is to automatically mock Swift protocols and protocol compositions. The main features are:
 
@@ -55,9 +55,13 @@ The idea of **SwiftyMocky** is to automatically mock Swift protocols and protoco
 
 <a name="current-version"></a>
 
-## **Important!!!** Version 4.x.x
+## **Important!!!** Version 4.1.x
 
-Current version has several significant changes. It removes deprecated methods (which might be breaking) and moves CLI to the new [repository](https://github.com/MakeAWishFoundation/SwiftyMockyCLI).
+CLI was moved bask to the main (this) repo. CLI in this [repository](https://github.com/MakeAWishFoundation/SwiftyMockyCLI) will be supported at least until version 5.0.0.
+
+## Version 4.0.x
+
+Current version has several significant changes. It removes deprecated methods (which might be breaking) and deprecates having CLI in the new [repository](https://github.com/MakeAWishFoundation/SwiftyMockyCLI).
 
 **SwiftyPrototype** was also extracted to separate library. There are no more compilation flags, so if you were relying on **SwiftyMocky** with `-DMockyCustom`, you will have to switch to `SwiftyPrototype`.
 
@@ -79,15 +83,58 @@ Still, we would encourage to try new **CLI** and share a feedback. We believe it
 
 ## Getting started
 
-To start working with **SwiftyMocky** you need to:
+<a name="integration"></a>
 
-1. Install **CLI**
-2. Integrate **SwiftyMocky** runtime library
-3. Generate Mocks and add to your test target
+### 1. Integrating SwiftyMocky:
+
+**[CocoaPods](http://cocoapods.org)**:
+
+SwiftyMocky is available through [CocoaPods](http://cocoapods.org). To install it, simply add the following line to your Podfile:
+
+```ruby
+pod "SwiftyMocky"
+```
+
+Use CLI tool from your project directory:
+
+```zsh
+# To setup initial Mockfile
+% ./Pods/SwiftyMocky/bin/swiftymocky init
+# To generate mocks
+% ./Pods/SwiftyMocky/bin/swiftymocky generate
+```
+
+**[Carthage](https://github.com/Carthage/Carthage)**:
+
+To install, add following to you Cartfile:
+
+```ruby
+github "MakeAWishFoundation/SwiftyMocky"
+```
+
+Then execute `carthage update`
+
+For [Carthage](https://github.com/Carthage/Carthage), few additional steps are required ⚠️. For detailed install instructions, see full [documentation][link-docs-installation-carthage] or consult [Carthage documentation][carthage-adding-framework].
+
+You need to install CLI to generate mocks - see [installation][#installation]
+
+**[Swift Package Manager](https://swift.org/package-manager/)**:
+
+Add **SwiftyMocky** to you **Package.swift** dependencies:
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/MakeAWishFoundation/SwiftyMocky", from: "4.1.0"),
+]
+```
+
+You need to install CLI to generate mocks - see [installation][#installation]
+
+> **Note:** Examples of **SwiftyMocky** integration as a tool for Unit tests, as well as a Prototyping framework, are here: [https://github.com/MakeAWishFoundation/SM-Integration-Tests](https://github.com/MakeAWishFoundation/SM-Integration-Tests)
 
 <a name="installation"></a>
 
-### 1. Installing SwiftyMocky CLI:
+### 2. Installing SwiftyMocky CLI:
 
 **[Mint 🌱](https://github.com/yonaskolb/Mint)**:
 
@@ -106,42 +153,6 @@ To start working with **SwiftyMocky** you need to:
 
 Clone from https://github.com/MakeAWishFoundation/SwiftyMockyCLI and run `make` in the root directory.
 
-<a name="integration"></a>
-
-### 2. Integrating SwiftyMocky runtime into test target:
-
-**[CocoaPods](http://cocoapods.org)**:
-
-SwiftyMocky is available through [CocoaPods](http://cocoapods.org). To install it, simply add the following line to your Podfile:
-
-```ruby
-pod "SwiftyMocky"
-```
-
-**[Carthage](https://github.com/Carthage/Carthage)**:
-
-To install, add following to you Cartfile:
-
-```ruby
-github "MakeAWishFoundation/SwiftyMocky"
-```
-
-Then execute `carthage update`
-
-For [Carthage](https://github.com/Carthage/Carthage), few additional steps are required ⚠️. For detailed install instructions, see full [documentation][link-docs-installation-carthage] or consult [Carthage documentation][carthage-adding-framework].
-
-**[Swift Package Manager](https://swift.org/package-manager/)**:
-
-Add **SwiftyMocky** to you **Package.swift** dependencies:
-
-```swift
-dependencies: [
-    .package(url: "https://github.com/MakeAWishFoundation/SwiftyMocky", from: "4.1.0"),
-]
-```
-
-> **Note:** Examples of **SwiftyMocky** integration as a tool for Unit tests, as well as a Prototyping framework, are here: [https://github.com/MakeAWishFoundation/SM-Integration-Tests](https://github.com/MakeAWishFoundation/SM-Integration-Tests)
-
 <a name="generation"></a>
 
 ### 3. Generate mocks
@@ -151,9 +162,9 @@ dependencies: [
 Mocks are generated from your project root directory, based on configuration inside [Mockfile][link-guides-mockfile].
 
 ```bash
-> swiftymocky setup     # if you don't have a Mockfile yet
-> swiftymocky doctor    # validate your setup
-> swiftymocky generate  # generate mocks
+> path/to/swiftymocky setup     # if you don't have a Mockfile yet
+> path/to/swiftymocky doctor    # validate your setup
+> path/to/swiftymocky generate  # generate mocks
 ```
 
 More informations about [CLI][link-guides-cli] and [mock generation][link-guides-cli-generate]
