@@ -23,6 +23,8 @@ task :debug do
     sh "Pods/Sourcery/bin/sourcery --config .mocky.tvOS.yml --disableCache --verbose"
     print_info "Generating mocks - macOS - debug"
     sh "Pods/Sourcery/bin/sourcery --config .mocky.macOS.yml --disableCache --verbose"
+    print_info "Generating mocks - SPM - debug"
+    sh "Pods/Sourcery/bin/sourcery --config .mocky.spm.yml --disableCache --verbose"
 end
 
 ## [ Tools ] ###################################################################
@@ -84,11 +86,6 @@ task :xcode do
     sh "open SwiftyMocky.xcworkspace"
 end
 
-desc "Assetizes templates for specified version of a SwiftyMocky into CLI"
-task :assetize do
-    sh "swift run swiftymocky assetize"
-end
-
 ## [ Deploy ] ##################################################################
 
 desc "Sets new version"
@@ -97,7 +94,7 @@ task :version do
     version_from = ARGV[1].to_s.strip
     version_to = ARGV[2].to_s.strip
     if version_from && !version_from.empty? && version_to && !version_to.empty?
-        print("Changing version from #{version_from} -> #{version_to} !\n")
+        print_info "Changing version from #{version_from} -> #{version_to} !\n"
         sh("sed -i '' 's|#{version_from}|#{version_to}|g' ./.jazzy.yaml")
         sh("sed -i '' 's|#{version_from}|#{version_to}|g' ./README.md")
         sh("sed -i '' 's|#{version_from}|#{version_to}|g' ./guides/Installation.md")
@@ -112,6 +109,20 @@ task :version do
     else
         print("Missing versions!\n")
         exit(1)
+    end
+end
+
+namespace :cli do
+    desc "Assetizes templates for specified version of a SwiftyMocky into CLI"
+    task :assetize do
+        sh "swift run swiftymocky assetize"
+    end
+
+    task :build do
+        print_info "Building CLI release version binary"
+        # sh "swift build -c release --disable-sandbox"
+        sh "swift build -c release"
+        sh "cp ./.build/release/swiftymocky ./bin/swiftymocky"
     end
 end
 
