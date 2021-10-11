@@ -19,28 +19,37 @@ public protocol GenerationCommand: AutoMockable {
 final class GenerationController: GenerationCommand {
 
     private let root: Path
-    private let sourcery: String
     private let temp: WorkingDirectory
     private var mockfile: Mockfile
     private let mockfilePath: Path
     private let outputHandle = ProxyFileHandle()
 
+    private var templatePath: String?
+    private lazy var sourceryCommand: String = { resolveSourceryBinPath() ?? kDefaultSourceryCommand(sourceryVersion) }()
+    private lazy var sourceryVersion: String = { resolveSourceryVersion() ?? kSourceryVersion }()
+
     // MARK: - Lifecycle
 
-    init(root: Path, sourcery: Path = kDefaultSourceryCommand) throws {
+    init(root: Path) throws {
         self.root = root
         self.temp = WorkingDirectory(root: root)
         self.mockfilePath = root + "Mockfile"
         self.mockfile = try Mockfile(path: mockfilePath)
-        self.sourcery = mockfile.sourceryCommand ?? sourcery.string
+        self.templatePath = mockfile.sourceryTemplate
+        if let overrideSourcery = mockfile.sourceryCommand {
+            self.sourceryCommand = overrideSourcery
+        }
     }
 
-    init(root: Path, mockfile: Mockfile, sourcery: Path = kDefaultSourceryCommand) {
+    init(root: Path, mockfile: Mockfile) {
         self.root = root
         self.temp = WorkingDirectory(root: root)
         self.mockfilePath = root + "Mockfile"
         self.mockfile = mockfile
-        self.sourcery = mockfile.sourceryCommand ?? sourcery.string
+        self.templatePath = mockfile.sourceryTemplate
+        if let overrideSourcery = mockfile.sourceryCommand {
+            self.sourceryCommand = overrideSourcery
+        }
     }
 
     // MARK: - Generation
@@ -107,16 +116,18 @@ final class GenerationController: GenerationCommand {
             arguments += ["--watch"]
         }
 
+        Message.info("Using sourcery command: \(sourceryCommand)")
+
         #if os(macOS)
         try shellOut(
-            to: sourcery,
+            to: sourceryCommand,
             arguments: arguments,
             at: root.string,
             outputHandle: outputHandle
         )
         #else
         let resultString = try shellOut(
-            to: sourcery,
+            to: sourceryCommand,
             arguments: arguments,
             at: root.string
         )
@@ -160,14 +171,14 @@ final class GenerationController: GenerationCommand {
 
             #if os(macOS)
             try shellOut(
-                to: sourcery,
+                to: sourceryCommand,
                 arguments: arguments,
                 at: root.string,
                 outputHandle: outputHandle
             )
             #else
             let resultString = try shellOut(
-                to: sourcery,
+                to: sourceryCommand,
                 arguments: arguments,
                 at: root.string
             )
@@ -252,14 +263,14 @@ final class GenerationController: GenerationCommand {
 
         #if os(macOS)
         try shellOut(
-            to: sourcery,
+            to: sourceryCommand,
             arguments: arguments,
             at: root.string,
             outputHandle: outputHandle
         )
         #else
         let resultString = try shellOut(
-            to: sourcery,
+            to: sourceryCommand,
             arguments: arguments,
             at: root.string
         )
@@ -367,6 +378,60 @@ final class GenerationController: GenerationCommand {
             try Assets.swifttemplate.prototype.write(to: temp.template)
         }
     }
+
+    private func resolveTemplatePath(for type: TemplateType) -> Path? {
+        if let templatePath = templatePath {
+            return Path(templatePath)
+        }
+
+        let swiftPM: Path = root + Path(".build/checkouts/SwiftyMocky/Sources/\(type.libName)/\(type.templateName)")
+        let cocoapods: Path = root + Path("Pods/SwiftyMocky/Sources/\(type.libName)/\(type.templateName)")
+        let carthage: Path = root + Path("Carthage/Checkouts/SwiftyMocky/Sources/\(type.libName)/\(type.templateName)")
+
+        if cocoapods.exists {
+            return cocoapods
+        } else if swiftPM.exists {
+            return swiftPM
+        } else if carthage.exists {
+            return carthage
+        } else {
+            return nil
+        }
+    }
+
+    func resolveSourceryVersion() -> String? {
+        guard let path = resolveTemplatePath(for: .mock) ?? resolveTemplatePath(for: .prototype) else { return nil }
+        guard let template: String = try? path.read() else { return nil }
+        return template.firstCapturedGroup(for: #"Required Sourcery: ([0-9]+\.[0-9]+\.[0-9]+)"#)
+    }
+
+    func resolveSourceryBinPath() -> String? {
+        let swiftPM: Path = root + ".build/checkouts/Sourcery/bin/sourcery"
+        let cocoapods: Path = root + "Pods/Sourcery/bin/sourcery"
+        if cocoapods.exists {
+            return cocoapods.string
+        } else if swiftPM.exists {
+            return swiftPM.string
+        } else {
+            return nil
+        }
+    }
+
+    enum TemplateType: String {
+        case mock = "Mock"
+        case prototype = "Prototype"
+        var templateName: String { switch self {
+            case .mock: return "Mock.swifttemplate"
+            case .prototype: return "Prototype.swifttemplate"
+            }
+        }
+        var libName: String {
+            switch self {
+            case .mock: return "SwiftyMocky"
+            case .prototype: return "SwiftyPrototype"
+            }
+        }
+    }
 }
 
 // MARK: - Path + MockConfiguration sources
@@ -430,6 +495,22 @@ private extension String {
         } catch let error {
             Message.failure("invalid regex: \(error.localizedDescription)")
             return []
+        }
+    }
+
+    func firstCapturedGroup(for regex: String, group: Int = 1) -> String? {
+        let text = self
+        do {
+            let regex = try NSRegularExpression(pattern: regex)
+            let result = regex.firstMatch(in: text, range: NSRange(text.startIndex..., in: text))
+            guard let range = result?.range(at: group) else {
+                return nil
+            }
+
+            return String(text[Range(range, in: text)!])
+        } catch let error {
+            Message.failure("invalid regex: \(error.localizedDescription)")
+            return nil
         }
     }
 }
