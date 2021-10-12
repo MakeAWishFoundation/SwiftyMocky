@@ -1,7 +1,8 @@
 [![Platform](https://img.shields.io/cocoapods/p/SwiftyMocky.svg?style=flat)](http://cocoapods.org/pods/SwiftyMocky)
 [![Docs](https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/master/docs/badge.svg)](https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/master/docs/index.html)
 [![License](https://img.shields.io/cocoapods/l/SwiftyMocky.svg?style=flat)](http://cocoapods.org/pods/SwiftyMocky)
-[![example workflow](https://github.com/MakeAWishFoundation/SwiftyMocky/actions/workflows/master.yml/badge.svg?branch=master)](https://github.com/MakeAWishFoundation/SwiftyMocky/actions?query=branch%3Amaster)
+
+[![Build & Test](https://github.com/MakeAWishFoundation/SwiftyMocky/actions/workflows/master.yml/badge.svg?branch=master)](https://github.com/MakeAWishFoundation/SwiftyMocky/actions?query=branch%3Amaster)
 
 [![Version](https://img.shields.io/cocoapods/v/SwiftyMocky.svg?style=flat)](http://cocoapods.org/pods/SwiftyMocky)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)

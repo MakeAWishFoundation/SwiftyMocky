@@ -12,7 +12,7 @@ Library that uses metaprogramming technique to generate fakes/prototypes based o
   s.author           = { 'Przemysław Wośko' => 'przemyslaw.wosko@intive.com', 'Andrzej Michnia' => 'amichnia@gmail.com' }
   s.source           = { :git => 'https://github.com/MakeAWishFoundation/SwiftyMocky.git', :tag => s.version.to_s }
 
-  s.swift_versions    = ['5.0', '5.1.2', '5.5']
+  s.swift_versions    = ['4.2', '5.0', '5.1', '5.1.2', '5.2', '5.3', '5.4', '5.5']
   s.ios.deployment_target = '9.0'
   s.tvos.deployment_target = '9.0'
   s.macos.deployment_target = '10.10'
