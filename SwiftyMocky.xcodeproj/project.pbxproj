@@ -12,7 +12,7 @@
 		023E5B0B25ECD4B400B975CD /* ComposedServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023E5B0825ECD4B400B975CD /* ComposedServiceTests.swift */; };
 		1D5310CA3DE7147ACC9E7E26 /* Pods_Mocky_Tests_tvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64EF60CBE53D81700C87FB82 /* Pods_Mocky_Tests_tvOS.framework */; };
 		5CB0B098232DC176CC9CACD8 /* Pods_Mocky_Example_tvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9C9BECF310A1D4EDD384137 /* Pods_Mocky_Example_tvOS.framework */; };
-		66087FEBDA538F4C138743F2 /* Pods_Mocky_Example_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A4B259245C7FB13CDFFCEC0 /* Pods_Mocky_Example_iOS.framework */; };
+		66087FEBDA538F4C138743F2 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		6C3186ED22DF613C00746DCC /* ProtocolWithGenericConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C3186EC22DF613C00746DCC /* ProtocolWithGenericConstraints.swift */; };
 		6C3186EE22DF613C00746DCC /* ProtocolWithGenericConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C3186EC22DF613C00746DCC /* ProtocolWithGenericConstraints.swift */; };
 		6C3186EF22DF613C00746DCC /* ProtocolWithGenericConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C3186EC22DF613C00746DCC /* ProtocolWithGenericConstraints.swift */; };
@@ -20,7 +20,7 @@
 		6C3186F322DF67D800746DCC /* ProtocolWithGenericConstraintsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C3186F122DF67D800746DCC /* ProtocolWithGenericConstraintsTests.swift */; };
 		6C3186F422DF67D800746DCC /* ProtocolWithGenericConstraintsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C3186F122DF67D800746DCC /* ProtocolWithGenericConstraintsTests.swift */; };
 		7C10E4406673B3B3B7474E2C /* Pods_Mocky_Tests_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94B5EFCCD4E35E7C80D1E560 /* Pods_Mocky_Tests_macOS.framework */; };
-		BB4F9E470E0BD27A959C97EB /* Pods_Mocky_Tests_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9592625386F952AE07781D57 /* Pods_Mocky_Tests_iOS.framework */; };
+		BB4F9E470E0BD27A959C97EB /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		C81D094D22C0C59800A0427F /* CustomAssertionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81D094C22C0C59800A0427F /* CustomAssertionsTests.swift */; };
 		C81D094E22C0C59800A0427F /* CustomAssertionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81D094C22C0C59800A0427F /* CustomAssertionsTests.swift */; };
 		C81D094F22C0C59800A0427F /* CustomAssertionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81D094C22C0C59800A0427F /* CustomAssertionsTests.swift */; };
@@ -65,9 +65,6 @@
 		CC0955662379BE4D00891A47 /* SuggestionRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0955652379BE4D00891A47 /* SuggestionRepositoryTests.swift */; };
 		CC0955672379BE4D00891A47 /* SuggestionRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0955652379BE4D00891A47 /* SuggestionRepositoryTests.swift */; };
 		CC0955682379BE4D00891A47 /* SuggestionRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0955652379BE4D00891A47 /* SuggestionRepositoryTests.swift */; };
-		CC0BA3F4271375910087C9B4 /* ThrowingVarProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0BA3F3271375910087C9B4 /* ThrowingVarProtocol.swift */; };
-		CC0BA3F5271375910087C9B4 /* ThrowingVarProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0BA3F3271375910087C9B4 /* ThrowingVarProtocol.swift */; };
-		CC0BA3F6271375910087C9B4 /* ThrowingVarProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0BA3F3271375910087C9B4 /* ThrowingVarProtocol.swift */; };
 		CC16ADBC249BE9F7003FC808 /* Parameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC16ADB2249BE9F7003FC808 /* Parameter.swift */; };
 		CC16ADBD249BE9F7003FC808 /* Parameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC16ADB2249BE9F7003FC808 /* Parameter.swift */; };
 		CC16ADBE249BE9F7003FC808 /* Countable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC16ADB3249BE9F7003FC808 /* Countable.swift */; };
@@ -153,9 +150,79 @@
 		CC5B61E41FCC18D0007FB209 /* ExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE351321FCC0B8200A76C4C /* ExampleTests.swift */; };
 		CC5B61E51FCC18D0007FB209 /* SampleServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE351301FCC0B8200A76C4C /* SampleServiceTests.swift */; };
 		CC5B61E61FCC18D0007FB209 /* ComplicatedServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE351311FCC0B8200A76C4C /* ComplicatedServiceTests.swift */; };
-		CC66EF07270DD0E800D9B424 /* AsyncMethodsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC66EF06270DD0E800D9B424 /* AsyncMethodsProtocol.swift */; };
-		CC66EF08270DD0E800D9B424 /* AsyncMethodsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC66EF06270DD0E800D9B424 /* AsyncMethodsProtocol.swift */; };
-		CC66EF09270DD0E800D9B424 /* AsyncMethodsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC66EF06270DD0E800D9B424 /* AsyncMethodsProtocol.swift */; };
+		CC6DE67E2715F0D900502AEE /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE350E01FCC0A9400A76C4C /* Models.swift */; };
+		CC6DE67F2715F0D900502AEE /* VariadicParametersProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC52E7C224CA52380018084B /* VariadicParametersProtocol.swift */; };
+		CC6DE6802715F0D900502AEE /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE350DF1FCC0A9400A76C4C /* Item.swift */; };
+		CC6DE6812715F0D900502AEE /* SelfConstrainedProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC32521E20051AC9009AD6C2 /* SelfConstrainedProtocol.swift */; };
+		CC6DE6822715F0D900502AEE /* AsyncMethodsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC66EF06270DD0E800D9B424 /* AsyncMethodsProtocol.swift */; };
+		CC6DE6832715F0D900502AEE /* Excluded.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3252162003CC22009AD6C2 /* Excluded.generated.swift */; };
+		CC6DE6842715F0D900502AEE /* ItemsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE350D41FCC0A9400A76C4C /* ItemsRepository.swift */; };
+		CC6DE6852715F0D900502AEE /* ProtocolWithSubscripts.swift in Sources */ = {isa = PBXBuildFile; fileRef = C83B2421215BDA870032BCF3 /* ProtocolWithSubscripts.swift */; };
+		CC6DE6862715F0D900502AEE /* MultiThreadAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0935DB25F1A1920097469F /* MultiThreadAccess.swift */; };
+		CC6DE6872715F0D900502AEE /* ProtocolWithMethodWithManyParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD6C0B124A1D94C000B52A1 /* ProtocolWithMethodWithManyParameters.swift */; };
+		CC6DE6882715F0D900502AEE /* ProtocolsWithCustomAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE350E41FCC0A9400A76C4C /* ProtocolsWithCustomAttributes.swift */; };
+		CC6DE6892715F0D900502AEE /* ProtocolsWithCollections.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE350DC1FCC0A9400A76C4C /* ProtocolsWithCollections.swift */; };
+		CC6DE68A2715F0D900502AEE /* AllLiteralsContainerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87B4F7C2153ED0300DD8AE3 /* AllLiteralsContainerProtocol.swift */; };
+		CC6DE68B2715F0D900502AEE /* SimpleProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE350DD1FCC0A9400A76C4C /* SimpleProtocols.swift */; };
+		CC6DE68C2715F0D900502AEE /* ProtocolWithGenericConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C3186EC22DF613C00746DCC /* ProtocolWithGenericConstraints.swift */; };
+		CC6DE68D2715F0D900502AEE /* ExampleProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE350D31FCC0A9400A76C4C /* ExampleProtocols.swift */; };
+		CC6DE68E2715F0D900502AEE /* ProtocolWithInitializers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE350DA1FCC0A9400A76C4C /* ProtocolWithInitializers.swift */; };
+		CC6DE68F2715F0D900502AEE /* ThrowingVarProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0BA3F3271375910087C9B4 /* ThrowingVarProtocol.swift */; };
+		CC6DE6902715F0D900502AEE /* NonSwiftProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE350D21FCC0A9400A76C4C /* NonSwiftProtocol.swift */; };
+		CC6DE6912715F0D900502AEE /* EdgeCasesProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC5CAB8215EB24400D29291 /* EdgeCasesProtocols.swift */; };
+		CC6DE6922715F0D900502AEE /* UnnamedAttributesProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCB8A98249C02BE003CA85F /* UnnamedAttributesProtocol.swift */; };
+		CC6DE6932715F0D900502AEE /* SuggestionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0955602379902500891A47 /* SuggestionRepository.swift */; };
+		CC6DE6942715F0D900502AEE /* ProtocolsWithClosures.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE350E81FCC0A9400A76C4C /* ProtocolsWithClosures.swift */; };
+		CC6DE6952715F0D900502AEE /* ProtocolMethodsThatDifferOnlyInReturnType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC07B601202215D500F51534 /* ProtocolMethodsThatDifferOnlyInReturnType.swift */; };
+		CC6DE6962715F0D900502AEE /* GenericProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE350D51FCC0A9400A76C4C /* GenericProtocols.swift */; };
+		CC6DE6972715F0D900502AEE /* ProtocolWithThrowingMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE350E61FCC0A9400A76C4C /* ProtocolWithThrowingMethods.swift */; };
+		CC6DE6982715F0D900502AEE /* SampleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE350D61FCC0A9400A76C4C /* SampleService.swift */; };
+		CC6DE6992715F0D900502AEE /* ProtocolsWithGenerics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE350D81FCC0A9400A76C4C /* ProtocolsWithGenerics.swift */; };
+		CC6DE69A2715F0D900502AEE /* ProtocolWithProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC491A1D1FDAB4AB001CAB8A /* ProtocolWithProperties.swift */; };
+		CC6DE69B2715F0D900502AEE /* ProtocolWithAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCB8AA4249C1049003CA85F /* ProtocolWithAttributes.swift */; };
+		CC6DE69C2715F0D900502AEE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE351081FCC0A9F00A76C4C /* ViewController.swift */; };
+		CC6DE69D2715F0D900502AEE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE3510E1FCC0A9F00A76C4C /* AppDelegate.swift */; };
+		CC6DE69E2715F0D900502AEE /* InoutParameterProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC542E5E22198E7F00691F24 /* InoutParameterProtocols.swift */; };
+		CC6DE69F2715F0D900502AEE /* ProtocolWithStaticMembers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE350E21FCC0A9400A76C4C /* ProtocolWithStaticMembers.swift */; };
+		CC6DE6A32715F0D900502AEE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CCE3510D1FCC0A9F00A76C4C /* Images.xcassets */; };
+		CC6DE6A42715F0D900502AEE /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCE351091FCC0A9F00A76C4C /* LaunchScreen.xib */; };
+		CC6DE6A52715F0D900502AEE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CCE3510B1FCC0A9F00A76C4C /* Main.storyboard */; };
+		CC6DE6B02715F23600502AEE /* ProtocolWithGenericConstraintsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C3186F122DF67D800746DCC /* ProtocolWithGenericConstraintsTests.swift */; };
+		CC6DE6B12715F23600502AEE /* SuggestionRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0955652379BE4D00891A47 /* SuggestionRepositoryTests.swift */; };
+		CC6DE6B22715F23600502AEE /* VariadicParametersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC52E7C624CA52490018084B /* VariadicParametersTests.swift */; };
+		CC6DE6B32715F23600502AEE /* SubscriptsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C870665A215E5ACB00EC852B /* SubscriptsTests.swift */; };
+		CC6DE6B42715F23600502AEE /* SimpleProtocolsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE351391FCC0B8200A76C4C /* SimpleProtocolsTests.swift */; };
+		CC6DE6B52715F23600502AEE /* SampleServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE351301FCC0B8200A76C4C /* SampleServiceTests.swift */; };
+		CC6DE6B62715F23600502AEE /* ProtocolWithClosuresTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE351411FCC0B8200A76C4C /* ProtocolWithClosuresTests.swift */; };
+		CC6DE6B72715F23600502AEE /* SimpleSequencingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA9F81921566AC500F2880B /* SimpleSequencingTests.swift */; };
+		CC6DE6B82715F23600502AEE /* ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC07B60720221B6700F51534 /* ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift */; };
+		CC6DE6B92715F23600502AEE /* ProtocolWithAttributesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCB8AA0249C1024003CA85F /* ProtocolWithAttributesTests.swift */; };
+		CC6DE6BA2715F23600502AEE /* ProtocolsWithCustomAttributesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE3513D1FCC0B8200A76C4C /* ProtocolsWithCustomAttributesTests.swift */; };
+		CC6DE6BB2715F23600502AEE /* ProtocolWithPropertiesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC491A231FDAB583001CAB8A /* ProtocolWithPropertiesTests.swift */; };
+		CC6DE6BC2715F23600502AEE /* MockClearTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC09555B2379771F00891A47 /* MockClearTests.swift */; };
+		CC6DE6BD2715F23600502AEE /* EdgeCasesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC5CABC215F8A6F00D29291 /* EdgeCasesTests.swift */; };
+		CC6DE6BE2715F23600502AEE /* ProtocolWithInitializersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE351361FCC0B8200A76C4C /* ProtocolWithInitializersTests.swift */; };
+		CC6DE6BF2715F23600502AEE /* ProtocolWithThrowingMehtodsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE3513F1FCC0B8200A76C4C /* ProtocolWithThrowingMehtodsTests.swift */; };
+		CC6DE6C02715F23600502AEE /* PropertiesHandlingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B87412215A54B1002CF376 /* PropertiesHandlingTests.swift */; };
+		CC6DE6C22715F23600502AEE /* ProtocolWithStaticMembersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE3513B1FCC0B8200A76C4C /* ProtocolWithStaticMembersTests.swift */; };
+		CC6DE6C32715F23600502AEE /* VerifyMessagesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCB8AAA249F64EB003CA85F /* VerifyMessagesTests.swift */; };
+		CC6DE6C42715F23600502AEE /* ComplicatedServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE351311FCC0B8200A76C4C /* ComplicatedServiceTests.swift */; };
+		CC6DE6C52715F23600502AEE /* ProtocolsWithCollectionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE351381FCC0B8200A76C4C /* ProtocolsWithCollectionsTests.swift */; };
+		CC6DE6C62715F23600502AEE /* ItemsRepositoryMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE3515B1FCC0B8F00A76C4C /* ItemsRepositoryMock.swift */; };
+		CC6DE6C72715F23600502AEE /* ProtocolsWithGenericsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE351341FCC0B8200A76C4C /* ProtocolsWithGenericsTests.swift */; };
+		CC6DE6C82715F23600502AEE /* ComposedServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023E5B0825ECD4B400B975CD /* ComposedServiceTests.swift */; };
+		CC6DE6C92715F23600502AEE /* MatcherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC07C93522C372D0007F4162 /* MatcherTests.swift */; };
+		CC6DE6CA2715F23600502AEE /* ExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE351321FCC0B8200A76C4C /* ExampleTests.swift */; };
+		CC6DE6CB2715F23600502AEE /* MultiThreadAccessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0935E725F1A21A0097469F /* MultiThreadAccessTests.swift */; };
+		CC6DE6CC2715F23600502AEE /* InoutParameterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC542E6322198EB900691F24 /* InoutParameterTests.swift */; };
+		CC6DE6CD2715F23600502AEE /* SelfConstrainedProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC32522220061574009AD6C2 /* SelfConstrainedProtocolTests.swift */; };
+		CC6DE6CE2715F23600502AEE /* ExpressibleByLiteralsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87B4F812153EF0700DD8AE3 /* ExpressibleByLiteralsTests.swift */; };
+		CC6DE6CF2715F23600502AEE /* GenericProtocolsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC32521A2004C217009AD6C2 /* GenericProtocolsTests.swift */; };
+		CC6DE6D02715F23600502AEE /* UnnamedAttributesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCB8A9C249C0B46003CA85F /* UnnamedAttributesTests.swift */; };
+		CC6DE6D12715F23600502AEE /* CustomAssertionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81D094C22C0C59800A0427F /* CustomAssertionsTests.swift */; };
+		CC6DE6DD2715F4CF00502AEE /* ThrowingVarProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0BA3F7271375CA0087C9B4 /* ThrowingVarProtocolTests.swift */; };
+		CC6DE6DE2715F4CF00502AEE /* AsyncMethodsProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC66EF0B270DD2CA00D9B424 /* AsyncMethodsProtocolTests.swift */; };
+		CC6DE6E02715F51500502AEE /* Mock.15.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6DE6DF2715F51500502AEE /* Mock.15.generated.swift */; };
 		CC89CC052714E0DF0020A0F8 /* Parameter+Compare.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89CC032714E0DE0020A0F8 /* Parameter+Compare.swift */; };
 		CC89CC062714E0DF0020A0F8 /* Parameter+Compare.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89CC032714E0DE0020A0F8 /* Parameter+Compare.swift */; };
 		CC89CC072714E0DF0020A0F8 /* Parameter+Optionals.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89CC042714E0DE0020A0F8 /* Parameter+Optionals.swift */; };
@@ -261,6 +328,8 @@
 		CCE83A07270C80CE00B3D038 /* MockyAssert.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE83A04270C80CE00B3D038 /* MockyAssert.swift */; };
 		CCE83A08270C80CE00B3D038 /* SwiftyMockyTestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE83A05270C80CE00B3D038 /* SwiftyMockyTestObserver.swift */; };
 		CCE83A09270C80CE00B3D038 /* SwiftyMockyTestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE83A05270C80CE00B3D038 /* SwiftyMockyTestObserver.swift */; };
+		D5A3B8E663F5C1E93005417D /* Pods_Mocky_Example_iOS_15.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 804A136FF4426600B9404159 /* Pods_Mocky_Example_iOS_15.framework */; };
+		DCD9D935A62C7590C4267FFF /* Pods_Mocky_Tests_iOS_15.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0183EA4DB760A37EE1C5C98 /* Pods_Mocky_Tests_iOS_15.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -285,12 +354,32 @@
 			remoteGlobalIDString = CC5B61971FCC16F7007FB209;
 			remoteInfo = Mocky_Example_macOS;
 		};
+		CC6DE6AD2715F23600502AEE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 607FACC81AFB9204008FA782 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 607FACCF1AFB9204008FA782;
+			remoteInfo = Mocky;
+		};
+		CC6DE6DB2715F44100502AEE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 607FACC81AFB9204008FA782 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CC6DE67B2715F0D900502AEE;
+			remoteInfo = Mocky_Example_iOS_15;
+		};
+		CC6DE6E12715FAB200502AEE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 607FACC81AFB9204008FA782 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CC5B61971FCC16F7007FB209;
+			remoteInfo = Mocky_Example_macOS;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		023E5B0825ECD4B400B975CD /* ComposedServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposedServiceTests.swift; sourceTree = "<group>"; };
 		246A92EED69C0F4A7DB30FEC /* Pods-Mocky_Example_macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Example_macOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Example_macOS/Pods-Mocky_Example_macOS.release.xcconfig"; sourceTree = "<group>"; };
-		2A4B259245C7FB13CDFFCEC0 /* Pods_Mocky_Example_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mocky_Example_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		44584DB014A47595C33FBF7B /* Pods-Mocky_Tests_macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Tests_macOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Tests_macOS/Pods-Mocky_Tests_macOS.debug.xcconfig"; sourceTree = "<group>"; };
 		47EB3B0E1FC3562B00905329 /* Mocky_Example_tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mocky_Example_tvOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		47EB3B211FC356B000905329 /* Mocky_Tests_tvOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Mocky_Tests_tvOS.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -304,12 +393,13 @@
 		6C3186F122DF67D800746DCC /* ProtocolWithGenericConstraintsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolWithGenericConstraintsTests.swift; sourceTree = "<group>"; };
 		7194340B3CD91B825FCB78FB /* Pods-Mocky_Example_iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Example_iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Example_iOS/Pods-Mocky_Example_iOS.release.xcconfig"; sourceTree = "<group>"; };
 		7A9B02B1C24E9AC79ABF999C /* Pods-Mocky_Example_iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Example_iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Example_iOS/Pods-Mocky_Example_iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		804A136FF4426600B9404159 /* Pods_Mocky_Example_iOS_15.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mocky_Example_iOS_15.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DDEF4635180A969B16362F7 /* Pods-Mocky_Tests_iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Tests_iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Tests_iOS/Pods-Mocky_Tests_iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		94B5EFCCD4E35E7C80D1E560 /* Pods_Mocky_Tests_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mocky_Tests_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9592625386F952AE07781D57 /* Pods_Mocky_Tests_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mocky_Tests_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9C9BECF310A1D4EDD384137 /* Pods_Mocky_Example_tvOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mocky_Example_tvOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAEE52510F67C7DF13FF8AF2 /* Pods-Mocky_Example_tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Example_tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Example_tvOS/Pods-Mocky_Example_tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		BCB5C12EDA17046011396E79 /* Pods-Mocky_Tests_tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Tests_tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Tests_tvOS/Pods-Mocky_Tests_tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		C5FAF6F747D4D4252AECA670 /* Pods-Mocky_Example_iOS_15.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Example_iOS_15.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Example_iOS_15/Pods-Mocky_Example_iOS_15.debug.xcconfig"; sourceTree = "<group>"; };
 		C81D094C22C0C59800A0427F /* CustomAssertionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAssertionsTests.swift; sourceTree = "<group>"; };
 		C8294EAA2299345C0036BC94 /* SwiftyPrototype.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyPrototype.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8294EAC2299345C0036BC94 /* Prototyping.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Prototyping.h; sourceTree = "<group>"; };
@@ -377,6 +467,11 @@
 		CC5B61CA1FCC188D007FB209 /* ItemsRepositoryMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemsRepositoryMock.swift; sourceTree = "<group>"; };
 		CC66EF06270DD0E800D9B424 /* AsyncMethodsProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncMethodsProtocol.swift; sourceTree = "<group>"; };
 		CC66EF0B270DD2CA00D9B424 /* AsyncMethodsProtocolTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncMethodsProtocolTests.swift; sourceTree = "<group>"; };
+		CC6DE6A92715F0D900502AEE /* Mocky_Example_iOS_15.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mocky_Example_iOS_15.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC6DE6AA2715F0DA00502AEE /* Mocky_Example_iOS_15-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Mocky_Example_iOS_15-Info.plist"; path = "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Mocky_Example_iOS_15-Info.plist"; sourceTree = "<absolute>"; };
+		CC6DE6D92715F23600502AEE /* Mocky_Tests_iOS_15.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Mocky_Tests_iOS_15.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC6DE6DA2715F23600502AEE /* Mocky_Tests_iOS_15-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Mocky_Tests_iOS_15-Info.plist"; path = "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Mocky_Tests_iOS_15-Info.plist"; sourceTree = "<absolute>"; };
+		CC6DE6DF2715F51500502AEE /* Mock.15.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mock.15.generated.swift; sourceTree = "<group>"; };
 		CC89CC032714E0DE0020A0F8 /* Parameter+Compare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Parameter+Compare.swift"; sourceTree = "<group>"; };
 		CC89CC042714E0DE0020A0F8 /* Parameter+Optionals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Parameter+Optionals.swift"; sourceTree = "<group>"; };
 		CCA9F81921566AC500F2880B /* SimpleSequencingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleSequencingTests.swift; sourceTree = "<group>"; };
@@ -439,7 +534,11 @@
 		CCE351651FCC0B9700A76C4C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CCE83A04270C80CE00B3D038 /* MockyAssert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockyAssert.swift; sourceTree = "<group>"; };
 		CCE83A05270C80CE00B3D038 /* SwiftyMockyTestObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyMockyTestObserver.swift; sourceTree = "<group>"; };
+		D0183EA4DB760A37EE1C5C98 /* Pods_Mocky_Tests_iOS_15.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mocky_Tests_iOS_15.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D0DC19016F4652E71732B830 /* Pods-Mocky_Tests_iOS_15.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Tests_iOS_15.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Tests_iOS_15/Pods-Mocky_Tests_iOS_15.release.xcconfig"; sourceTree = "<group>"; };
+		D290CFFDAAD79EDAC911BB4A /* Pods-Mocky_Example_iOS_15.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Example_iOS_15.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Example_iOS_15/Pods-Mocky_Example_iOS_15.release.xcconfig"; sourceTree = "<group>"; };
 		D4CF1AC7A6F257BB2904DA55 /* Pods-Mocky_Tests_tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Tests_tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Tests_tvOS/Pods-Mocky_Tests_tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		D8800E89CF0FDD37D5C97682 /* Pods-Mocky_Tests_iOS_15.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Tests_iOS_15.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Tests_iOS_15/Pods-Mocky_Tests_iOS_15.debug.xcconfig"; sourceTree = "<group>"; };
 		E0F0B024E7EFDB2727CEE125 /* Pods-Mocky_Tests_macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Tests_macOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Tests_macOS/Pods-Mocky_Tests_macOS.release.xcconfig"; sourceTree = "<group>"; };
 		E467147D1ECEF4D600C7DAB3 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		E671CB0D6255BBBB2FADDA17 /* Pods-Mocky_Example_macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Example_macOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Example_macOS/Pods-Mocky_Example_macOS.debug.xcconfig"; sourceTree = "<group>"; };
@@ -466,7 +565,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				66087FEBDA538F4C138743F2 /* Pods_Mocky_Example_iOS.framework in Frameworks */,
+				66087FEBDA538F4C138743F2 /* (null) in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -474,7 +573,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BB4F9E470E0BD27A959C97EB /* Pods_Mocky_Tests_iOS.framework in Frameworks */,
+				BB4F9E470E0BD27A959C97EB /* (null) in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -501,6 +600,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CC6DE6A02715F0D900502AEE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D5A3B8E663F5C1E93005417D /* Pods_Mocky_Example_iOS_15.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CC6DE6D22715F23600502AEE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DCD9D935A62C7590C4267FFF /* Pods_Mocky_Tests_iOS_15.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CCAFC9EB1FAF244D003F776A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -522,6 +637,8 @@
 				607FACD11AFB9204008FA782 /* Products */,
 				7FCC8434BB6BB8DECC81772A /* Frameworks */,
 				C28303449AB54C13301D7738 /* Pods */,
+				CC6DE6AA2715F0DA00502AEE /* Mocky_Example_iOS_15-Info.plist */,
+				CC6DE6DA2715F23600502AEE /* Mocky_Tests_iOS_15-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -536,6 +653,8 @@
 				CC5B61981FCC16F7007FB209 /* Mocky_Example_macOS.app */,
 				CC5B61A91FCC16F8007FB209 /* Mocky_Tests_macOS.xctest */,
 				C8294EAA2299345C0036BC94 /* SwiftyPrototype.framework */,
+				CC6DE6A92715F0D900502AEE /* Mocky_Example_iOS_15.app */,
+				CC6DE6D92715F23600502AEE /* Mocky_Tests_iOS_15.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -584,12 +703,12 @@
 			isa = PBXGroup;
 			children = (
 				E467147D1ECEF4D600C7DAB3 /* XCTest.framework */,
-				2A4B259245C7FB13CDFFCEC0 /* Pods_Mocky_Example_iOS.framework */,
 				4960EAA67C2E0980248C6B94 /* Pods_Mocky_Example_macOS.framework */,
 				A9C9BECF310A1D4EDD384137 /* Pods_Mocky_Example_tvOS.framework */,
-				9592625386F952AE07781D57 /* Pods_Mocky_Tests_iOS.framework */,
 				94B5EFCCD4E35E7C80D1E560 /* Pods_Mocky_Tests_macOS.framework */,
 				64EF60CBE53D81700C87FB82 /* Pods_Mocky_Tests_tvOS.framework */,
+				804A136FF4426600B9404159 /* Pods_Mocky_Example_iOS_15.framework */,
+				D0183EA4DB760A37EE1C5C98 /* Pods_Mocky_Tests_iOS_15.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -609,6 +728,10 @@
 				246A92EED69C0F4A7DB30FEC /* Pods-Mocky_Example_macOS.release.xcconfig */,
 				44584DB014A47595C33FBF7B /* Pods-Mocky_Tests_macOS.debug.xcconfig */,
 				E0F0B024E7EFDB2727CEE125 /* Pods-Mocky_Tests_macOS.release.xcconfig */,
+				C5FAF6F747D4D4252AECA670 /* Pods-Mocky_Example_iOS_15.debug.xcconfig */,
+				D290CFFDAAD79EDAC911BB4A /* Pods-Mocky_Example_iOS_15.release.xcconfig */,
+				D8800E89CF0FDD37D5C97682 /* Pods-Mocky_Tests_iOS_15.debug.xcconfig */,
+				D0DC19016F4652E71732B830 /* Pods-Mocky_Tests_iOS_15.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -1038,6 +1161,7 @@
 			children = (
 				CCE3515A1FCC0B8F00A76C4C /* Mock.generated.swift */,
 				CCE3515B1FCC0B8F00A76C4C /* ItemsRepositoryMock.swift */,
+				CC6DE6DF2715F51500502AEE /* Mock.15.generated.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -1215,6 +1339,46 @@
 			productReference = CC5B61A91FCC16F8007FB209 /* Mocky_Tests_macOS.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		CC6DE67B2715F0D900502AEE /* Mocky_Example_iOS_15 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CC6DE6A62715F0D900502AEE /* Build configuration list for PBXNativeTarget "Mocky_Example_iOS_15" */;
+			buildPhases = (
+				CC6DE67C2715F0D900502AEE /* [CP] Check Pods Manifest.lock */,
+				CC6DE67D2715F0D900502AEE /* Sources */,
+				CC6DE6A02715F0D900502AEE /* Frameworks */,
+				CC6DE6A22715F0D900502AEE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Mocky_Example_iOS_15;
+			productName = Mocky;
+			productReference = CC6DE6A92715F0D900502AEE /* Mocky_Example_iOS_15.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CC6DE6AB2715F23600502AEE /* Mocky_Tests_iOS_15 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CC6DE6D62715F23600502AEE /* Build configuration list for PBXNativeTarget "Mocky_Tests_iOS_15" */;
+			buildPhases = (
+				CC6DE6AE2715F23600502AEE /* [CP] Check Pods Manifest.lock */,
+				CC6DE6AF2715F23600502AEE /* Sources */,
+				CC6DE6D22715F23600502AEE /* Frameworks */,
+				CC6DE6D42715F23600502AEE /* Resources */,
+				CC6DE6D52715F23600502AEE /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CC6DE6AC2715F23600502AEE /* PBXTargetDependency */,
+				CC6DE6DC2715F44100502AEE /* PBXTargetDependency */,
+				CC6DE6E22715FAB200502AEE /* PBXTargetDependency */,
+			);
+			name = Mocky_Tests_iOS_15;
+			productName = Tests;
+			productReference = CC6DE6D92715F23600502AEE /* Mocky_Tests_iOS_15.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		CCAFC9EE1FAF244D003F776A /* SwiftyMocky */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CCAFC9F41FAF244D003F776A /* Build configuration list for PBXNativeTarget "SwiftyMocky" */;
@@ -1283,6 +1447,13 @@
 						ProvisioningStyle = Automatic;
 						TestTargetID = CC5B61971FCC16F7007FB209;
 					};
+					CC6DE67B2715F0D900502AEE = {
+						DevelopmentTeam = YYAKJ5SR76;
+					};
+					CC6DE6AB2715F23600502AEE = {
+						DevelopmentTeam = YYAKJ5SR76;
+						TestTargetID = CC6DE67B2715F0D900502AEE;
+					};
 					CCAFC9EE1FAF244D003F776A = {
 						CreatedOnToolsVersion = 9.1;
 						LastSwiftMigration = 1000;
@@ -1311,6 +1482,8 @@
 				47EB3B201FC356B000905329 /* Mocky_Tests_tvOS */,
 				CC5B61971FCC16F7007FB209 /* Mocky_Example_macOS */,
 				CC5B61A81FCC16F8007FB209 /* Mocky_Tests_macOS */,
+				CC6DE67B2715F0D900502AEE /* Mocky_Example_iOS_15 */,
+				CC6DE6AB2715F23600502AEE /* Mocky_Tests_iOS_15 */,
 			);
 		};
 /* End PBXProject section */
@@ -1373,6 +1546,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CC6DE6A22715F0D900502AEE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC6DE6A32715F0D900502AEE /* Images.xcassets in Resources */,
+				CC6DE6A42715F0D900502AEE /* LaunchScreen.xib in Resources */,
+				CC6DE6A52715F0D900502AEE /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CC6DE6D42715F23600502AEE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CCAFC9ED1FAF244D003F776A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1409,7 +1599,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_macOS/Pods-Mocky_Tests_macOS-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/SwiftyMocky-macOS/SwiftyMocky.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyMocky-macOS10.13/SwiftyMocky.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -1481,7 +1671,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_tvOS/Pods-Mocky_Tests_tvOS-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/SwiftyMocky-tvOS/SwiftyMocky.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyMocky-tvOS9.0/SwiftyMocky.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -1510,6 +1700,60 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		CC6DE67C2715F0D900502AEE /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Mocky_Example_iOS_15-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CC6DE6AE2715F23600502AEE /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Mocky_Tests_iOS_15-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CC6DE6D52715F23600502AEE /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_iOS_15/Pods-Mocky_Tests_iOS_15-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/SwiftyMocky-iOS15.0/SwiftyMocky.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyMocky.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_iOS_15/Pods-Mocky_Tests_iOS_15-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		DE3AD6663F4906C8FE24B15A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1535,7 +1779,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Mocky_Tests_iOS/Pods-Mocky_Tests_iOS-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/SwiftyMocky-iOS/SwiftyMocky.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyMocky-iOS9.0/SwiftyMocky.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -1557,7 +1801,6 @@
 				CC52E7C424CA52380018084B /* VariadicParametersProtocol.swift in Sources */,
 				CCE350FC1FCC0A9400A76C4C /* Item.swift in Sources */,
 				CC32522020051AC9009AD6C2 /* SelfConstrainedProtocol.swift in Sources */,
-				CC66EF08270DD0E800D9B424 /* AsyncMethodsProtocol.swift in Sources */,
 				CC3252182003CC22009AD6C2 /* Excluded.generated.swift in Sources */,
 				CCE350EE1FCC0A9400A76C4C /* ItemsRepository.swift in Sources */,
 				C83B2423215BDA870032BCF3 /* ProtocolWithSubscripts.swift in Sources */,
@@ -1570,7 +1813,6 @@
 				6C3186EE22DF613C00746DCC /* ProtocolWithGenericConstraints.swift in Sources */,
 				CCE350EC1FCC0A9400A76C4C /* ExampleProtocols.swift in Sources */,
 				CCE350F61FCC0A9400A76C4C /* ProtocolWithInitializers.swift in Sources */,
-				CC0BA3F5271375910087C9B4 /* ThrowingVarProtocol.swift in Sources */,
 				CCE350EA1FCC0A9400A76C4C /* NonSwiftProtocol.swift in Sources */,
 				CCC5CABA215EB24400D29291 /* EdgeCasesProtocols.swift in Sources */,
 				CCCB8A9A249C02BE003CA85F /* UnnamedAttributesProtocol.swift in Sources */,
@@ -1640,7 +1882,6 @@
 				CC52E7C324CA52380018084B /* VariadicParametersProtocol.swift in Sources */,
 				CCE350FB1FCC0A9400A76C4C /* Item.swift in Sources */,
 				CC32521F20051AC9009AD6C2 /* SelfConstrainedProtocol.swift in Sources */,
-				CC66EF07270DD0E800D9B424 /* AsyncMethodsProtocol.swift in Sources */,
 				CC3252172003CC22009AD6C2 /* Excluded.generated.swift in Sources */,
 				CCE350ED1FCC0A9400A76C4C /* ItemsRepository.swift in Sources */,
 				C83B2422215BDA870032BCF3 /* ProtocolWithSubscripts.swift in Sources */,
@@ -1653,7 +1894,6 @@
 				6C3186ED22DF613C00746DCC /* ProtocolWithGenericConstraints.swift in Sources */,
 				CCE350EB1FCC0A9400A76C4C /* ExampleProtocols.swift in Sources */,
 				CCE350F51FCC0A9400A76C4C /* ProtocolWithInitializers.swift in Sources */,
-				CC0BA3F4271375910087C9B4 /* ThrowingVarProtocol.swift in Sources */,
 				CCE350E91FCC0A9400A76C4C /* NonSwiftProtocol.swift in Sources */,
 				CCC5CAB9215EB24400D29291 /* EdgeCasesProtocols.swift in Sources */,
 				CCCB8A99249C02BE003CA85F /* UnnamedAttributesProtocol.swift in Sources */,
@@ -1743,7 +1983,6 @@
 				CC52E7C524CA52380018084B /* VariadicParametersProtocol.swift in Sources */,
 				CC5B61D11FCC18C4007FB209 /* ProtocolWithStaticMembers.swift in Sources */,
 				CC32522120051AC9009AD6C2 /* SelfConstrainedProtocol.swift in Sources */,
-				CC66EF09270DD0E800D9B424 /* AsyncMethodsProtocol.swift in Sources */,
 				CC3252192003CC22009AD6C2 /* Excluded.generated.swift in Sources */,
 				CC5B61C11FCC1764007FB209 /* AppDelegate.swift in Sources */,
 				C83B2424215BDA870032BCF3 /* ProtocolWithSubscripts.swift in Sources */,
@@ -1756,7 +1995,6 @@
 				6C3186EF22DF613C00746DCC /* ProtocolWithGenericConstraints.swift in Sources */,
 				CC5B61D41FCC18C4007FB209 /* ProtocolsWithGenerics.swift in Sources */,
 				CC5B61DB1FCC18C4007FB209 /* SampleService.swift in Sources */,
-				CC0BA3F6271375910087C9B4 /* ThrowingVarProtocol.swift in Sources */,
 				CC5B61D91FCC18C4007FB209 /* ItemsRepository.swift in Sources */,
 				CCC5CABB215EB24400D29291 /* EdgeCasesProtocols.swift in Sources */,
 				CCCB8A9B249C02BE003CA85F /* UnnamedAttributesProtocol.swift in Sources */,
@@ -1818,6 +2056,90 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CC6DE67D2715F0D900502AEE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC6DE67E2715F0D900502AEE /* Models.swift in Sources */,
+				CC6DE67F2715F0D900502AEE /* VariadicParametersProtocol.swift in Sources */,
+				CC6DE6802715F0D900502AEE /* Item.swift in Sources */,
+				CC6DE6812715F0D900502AEE /* SelfConstrainedProtocol.swift in Sources */,
+				CC6DE6822715F0D900502AEE /* AsyncMethodsProtocol.swift in Sources */,
+				CC6DE6832715F0D900502AEE /* Excluded.generated.swift in Sources */,
+				CC6DE6842715F0D900502AEE /* ItemsRepository.swift in Sources */,
+				CC6DE6852715F0D900502AEE /* ProtocolWithSubscripts.swift in Sources */,
+				CC6DE6862715F0D900502AEE /* MultiThreadAccess.swift in Sources */,
+				CC6DE6872715F0D900502AEE /* ProtocolWithMethodWithManyParameters.swift in Sources */,
+				CC6DE6882715F0D900502AEE /* ProtocolsWithCustomAttributes.swift in Sources */,
+				CC6DE6892715F0D900502AEE /* ProtocolsWithCollections.swift in Sources */,
+				CC6DE68A2715F0D900502AEE /* AllLiteralsContainerProtocol.swift in Sources */,
+				CC6DE68B2715F0D900502AEE /* SimpleProtocols.swift in Sources */,
+				CC6DE68C2715F0D900502AEE /* ProtocolWithGenericConstraints.swift in Sources */,
+				CC6DE68D2715F0D900502AEE /* ExampleProtocols.swift in Sources */,
+				CC6DE68E2715F0D900502AEE /* ProtocolWithInitializers.swift in Sources */,
+				CC6DE68F2715F0D900502AEE /* ThrowingVarProtocol.swift in Sources */,
+				CC6DE6902715F0D900502AEE /* NonSwiftProtocol.swift in Sources */,
+				CC6DE6912715F0D900502AEE /* EdgeCasesProtocols.swift in Sources */,
+				CC6DE6922715F0D900502AEE /* UnnamedAttributesProtocol.swift in Sources */,
+				CC6DE6932715F0D900502AEE /* SuggestionRepository.swift in Sources */,
+				CC6DE6942715F0D900502AEE /* ProtocolsWithClosures.swift in Sources */,
+				CC6DE6952715F0D900502AEE /* ProtocolMethodsThatDifferOnlyInReturnType.swift in Sources */,
+				CC6DE6962715F0D900502AEE /* GenericProtocols.swift in Sources */,
+				CC6DE6972715F0D900502AEE /* ProtocolWithThrowingMethods.swift in Sources */,
+				CC6DE6982715F0D900502AEE /* SampleService.swift in Sources */,
+				CC6DE6992715F0D900502AEE /* ProtocolsWithGenerics.swift in Sources */,
+				CC6DE69A2715F0D900502AEE /* ProtocolWithProperties.swift in Sources */,
+				CC6DE69B2715F0D900502AEE /* ProtocolWithAttributes.swift in Sources */,
+				CC6DE69C2715F0D900502AEE /* ViewController.swift in Sources */,
+				CC6DE69D2715F0D900502AEE /* AppDelegate.swift in Sources */,
+				CC6DE69E2715F0D900502AEE /* InoutParameterProtocols.swift in Sources */,
+				CC6DE69F2715F0D900502AEE /* ProtocolWithStaticMembers.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CC6DE6AF2715F23600502AEE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC6DE6B02715F23600502AEE /* ProtocolWithGenericConstraintsTests.swift in Sources */,
+				CC6DE6B12715F23600502AEE /* SuggestionRepositoryTests.swift in Sources */,
+				CC6DE6B22715F23600502AEE /* VariadicParametersTests.swift in Sources */,
+				CC6DE6B32715F23600502AEE /* SubscriptsTests.swift in Sources */,
+				CC6DE6B42715F23600502AEE /* SimpleProtocolsTests.swift in Sources */,
+				CC6DE6B52715F23600502AEE /* SampleServiceTests.swift in Sources */,
+				CC6DE6B62715F23600502AEE /* ProtocolWithClosuresTests.swift in Sources */,
+				CC6DE6B72715F23600502AEE /* SimpleSequencingTests.swift in Sources */,
+				CC6DE6B82715F23600502AEE /* ProtocolMethodsThatDifferOnlyInReturnTypeTests.swift in Sources */,
+				CC6DE6B92715F23600502AEE /* ProtocolWithAttributesTests.swift in Sources */,
+				CC6DE6BA2715F23600502AEE /* ProtocolsWithCustomAttributesTests.swift in Sources */,
+				CC6DE6BB2715F23600502AEE /* ProtocolWithPropertiesTests.swift in Sources */,
+				CC6DE6BC2715F23600502AEE /* MockClearTests.swift in Sources */,
+				CC6DE6BD2715F23600502AEE /* EdgeCasesTests.swift in Sources */,
+				CC6DE6BE2715F23600502AEE /* ProtocolWithInitializersTests.swift in Sources */,
+				CC6DE6BF2715F23600502AEE /* ProtocolWithThrowingMehtodsTests.swift in Sources */,
+				CC6DE6C02715F23600502AEE /* PropertiesHandlingTests.swift in Sources */,
+				CC6DE6C22715F23600502AEE /* ProtocolWithStaticMembersTests.swift in Sources */,
+				CC6DE6C32715F23600502AEE /* VerifyMessagesTests.swift in Sources */,
+				CC6DE6C42715F23600502AEE /* ComplicatedServiceTests.swift in Sources */,
+				CC6DE6C52715F23600502AEE /* ProtocolsWithCollectionsTests.swift in Sources */,
+				CC6DE6C62715F23600502AEE /* ItemsRepositoryMock.swift in Sources */,
+				CC6DE6C72715F23600502AEE /* ProtocolsWithGenericsTests.swift in Sources */,
+				CC6DE6C82715F23600502AEE /* ComposedServiceTests.swift in Sources */,
+				CC6DE6C92715F23600502AEE /* MatcherTests.swift in Sources */,
+				CC6DE6E02715F51500502AEE /* Mock.15.generated.swift in Sources */,
+				CC6DE6CA2715F23600502AEE /* ExampleTests.swift in Sources */,
+				CC6DE6CB2715F23600502AEE /* MultiThreadAccessTests.swift in Sources */,
+				CC6DE6CC2715F23600502AEE /* InoutParameterTests.swift in Sources */,
+				CC6DE6CD2715F23600502AEE /* SelfConstrainedProtocolTests.swift in Sources */,
+				CC6DE6CE2715F23600502AEE /* ExpressibleByLiteralsTests.swift in Sources */,
+				CC6DE6CF2715F23600502AEE /* GenericProtocolsTests.swift in Sources */,
+				CC6DE6DD2715F4CF00502AEE /* ThrowingVarProtocolTests.swift in Sources */,
+				CC6DE6D02715F23600502AEE /* UnnamedAttributesTests.swift in Sources */,
+				CC6DE6DE2715F4CF00502AEE /* AsyncMethodsProtocolTests.swift in Sources */,
+				CC6DE6D12715F23600502AEE /* CustomAssertionsTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CCAFC9EA1FAF244D003F776A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1859,6 +2181,21 @@
 			isa = PBXTargetDependency;
 			target = CC5B61971FCC16F7007FB209 /* Mocky_Example_macOS */;
 			targetProxy = CC5B61AA1FCC16F8007FB209 /* PBXContainerItemProxy */;
+		};
+		CC6DE6AC2715F23600502AEE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 607FACCF1AFB9204008FA782 /* Mocky_Example_iOS */;
+			targetProxy = CC6DE6AD2715F23600502AEE /* PBXContainerItemProxy */;
+		};
+		CC6DE6DC2715F44100502AEE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CC6DE67B2715F0D900502AEE /* Mocky_Example_iOS_15 */;
+			targetProxy = CC6DE6DB2715F44100502AEE /* PBXContainerItemProxy */;
+		};
+		CC6DE6E22715FAB200502AEE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CC5B61971FCC16F7007FB209 /* Mocky_Example_macOS */;
+			targetProxy = CC6DE6E12715FAB200502AEE /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -2123,7 +2460,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = YYAKJ5SR76;
 				INFOPLIST_FILE = "$(SRCROOT)/SwiftyMocky-Example/iOS/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
@@ -2141,7 +2477,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = YYAKJ5SR76;
 				INFOPLIST_FILE = "$(SRCROOT)/SwiftyMocky-Example/iOS/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
@@ -2167,7 +2502,6 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "SwiftyMocky-Tests/iOS/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\"";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
@@ -2189,7 +2523,6 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "SwiftyMocky-Tests/iOS/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\"";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
@@ -2376,6 +2709,90 @@
 			};
 			name = Release;
 		};
+		CC6DE6A72715F0D900502AEE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C5FAF6F747D4D4252AECA670 /* Pods-Mocky_Example_iOS_15.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = YYAKJ5SR76;
+				INFOPLIST_FILE = "Mocky_Example_iOS_15-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+			};
+			name = Debug;
+		};
+		CC6DE6A82715F0D900502AEE /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D290CFFDAAD79EDAC911BB4A /* Pods-Mocky_Example_iOS_15.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = YYAKJ5SR76;
+				INFOPLIST_FILE = "Mocky_Example_iOS_15-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+			};
+			name = Release;
+		};
+		CC6DE6D72715F23600502AEE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D8800E89CF0FDD37D5C97682 /* Pods-Mocky_Tests_iOS_15.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = YYAKJ5SR76;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "Mocky_Tests_iOS_15-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -D IOS15";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mocky_Example_iOS_15.app/Mocky_Example_iOS_15";
+			};
+			name = Debug;
+		};
+		CC6DE6D82715F23600502AEE /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D0DC19016F4652E71732B830 /* Pods-Mocky_Tests_iOS_15.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = YYAKJ5SR76;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "Mocky_Tests_iOS_15-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -D IOS15";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mocky_Example_iOS_15.app/Mocky_Example_iOS_15";
+			};
+			name = Release;
+		};
 		CCAFC9F51FAF244D003F776A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2533,6 +2950,24 @@
 			buildConfigurations = (
 				CC5B61B41FCC16F8007FB209 /* Debug */,
 				CC5B61B51FCC16F8007FB209 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CC6DE6A62715F0D900502AEE /* Build configuration list for PBXNativeTarget "Mocky_Example_iOS_15" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CC6DE6A72715F0D900502AEE /* Debug */,
+				CC6DE6A82715F0D900502AEE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CC6DE6D62715F23600502AEE /* Build configuration list for PBXNativeTarget "Mocky_Tests_iOS_15" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CC6DE6D72715F23600502AEE /* Debug */,
+				CC6DE6D82715F23600502AEE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

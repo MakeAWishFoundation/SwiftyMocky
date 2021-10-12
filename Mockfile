@@ -9,11 +9,30 @@ mocky.iOS:
     - ./SwiftyMocky-Tests/iOS
     exclude:
     - ./SwiftyMocky-Example/Shared/Other/Excluded.generated.swift
+    - ./SwiftyMocky-Example/Shared/Swift5.5
   output: ./SwiftyMocky-Tests/iOS/Mocks/Mock.generated.swift
   targets:
   - Mocky_Tests_iOS
   testable:
   - Mocky_Example_iOS
+  import:
+  - CoreGraphics
+  - Foundation
+  - UIKit
+
+mocky.iOS.15:
+  sources:
+    include:
+    - ./SwiftyMocky-Example/Shared
+    - ./SwiftyMocky-Example/iOS
+    - ./SwiftyMocky-Tests/iOS
+    exclude:
+    - ./SwiftyMocky-Example/Shared/Other/Excluded.generated.swift
+  output: ./SwiftyMocky-Tests/iOS/Mocks/Mock.15.generated.swift
+  targets:
+  - Mocky_Tests_iOS_15
+  testable:
+  - Mocky_Example_iOS_15
   import:
   - CoreGraphics
   - Foundation
@@ -27,6 +46,7 @@ mocky.macOS:
     - ./SwiftyMocky-Tests/macOS
     exclude:
     - ./SwiftyMocky-Example/Shared/Other/Excluded.generated.swift
+    - ./SwiftyMocky-Example/Shared/Swift5.5
   output: ./SwiftyMocky-Tests/macOS/Mocks/Mock.generated.swift
   targets:
   - Mocky_Tests_macOS
@@ -43,6 +63,7 @@ mocky.tvOS:
     - ./SwiftyMocky-Tests/tvOS
     exclude:
     - ./SwiftyMocky-Example/Shared/Other/Excluded.generated.swift
+    - ./SwiftyMocky-Example/Shared/Swift5.5
   output: ./SwiftyMocky-Tests/tvOS/Mocks/Mock.generated.swift
   targets:
   - Mocky_Tests_tvOS
@@ -57,6 +78,7 @@ mocky.spm:
     - "./SwiftyMocky-Example/Shared"
     exclude:
     - ./SwiftyMocky-Example/Shared/Other/Excluded.generated.swift
+    - ./SwiftyMocky-Example/Shared/Swift5.5
   output: ./Tests/SwiftyMockyTests/Mock.generated.swift
   targets:
   - SwiftyMockyTests

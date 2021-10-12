@@ -1,7 +1,5 @@
 name: Master test
 on:
-  # Trigger the workflow on push or pull request,
-  # but only for the main branch
   push:
     branches:
       - master
@@ -10,8 +8,8 @@ on:
     branches:
       - master
 jobs:
-  Explore-GitHub-Actions:
-    runs-on: macos-latest
+  SwiftyMocky-Tests:
+    runs-on: macos-11
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
@@ -26,8 +24,10 @@ jobs:
           rake mock
       - name: Run tests iOS
         run: |
-          xcrun xctrace list devices
+          fastlane ios test
+      - name: Run tests tvOS
+        run: |
+          fastlane tvos test
       - name: Run tests SwiftPM
         run: |
           swift test
-      - run: echo "This job's status is ${{ job.status }}."
