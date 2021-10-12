@@ -20,10 +20,14 @@ jobs:
         with:
           xcode-version: '12.4.0'
       - run: xcode-select -p
-      - name: Run tests
+      - name: Prepare for tests
         run: |
           rake pods
           rake mock
+      - name: Run tests iOS
+        run: |
+          xcodebuild clean test  -workspace ./SwiftyMocky.xcworkspace -scheme Mocky_Tests_iOS -destination "platform=iOS Simulator,name=iPhone 11 Pro"
+      - name: Run tests SwiftPM
+        run: |
           swift test
-          fastlane ios test
       - run: echo "This job's status is ${{ job.status }}."
