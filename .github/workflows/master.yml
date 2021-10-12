@@ -26,7 +26,7 @@ jobs:
           rake mock
       - name: Run tests iOS
         run: |
-          xcodebuild clean test  -workspace ./SwiftyMocky.xcworkspace -scheme Mocky_Tests_iOS -destination "platform=iOS Simulator,name=iPhone 11 Pro"
+          xcrun xctrace list devices
       - name: Run tests SwiftPM
         run: |
           swift test
