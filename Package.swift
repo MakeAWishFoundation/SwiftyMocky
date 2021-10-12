@@ -1,4 +1,4 @@
-// swift-tools-version:5.2
+// swift-tools-version:5.0
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -39,11 +39,13 @@ let package = Package(
         // Example and tests
         .target(
             name: "Mocky_Example_macOS",
-            path: "./SwiftyMocky-Example/Shared"
+            path: "./SwiftyMocky-Example/Shared",
+            exclude: ["Swift5.5"] // TODO: remove when macOS 12 released
         ),
         .testTarget(
             name: "SwiftyMockyTests",
             dependencies: ["Mocky_Example_macOS", "SwiftyMocky"],
+            path: "./Tests/SwiftyMockyTests",
             exclude: ["Shared/Swift5.5"] // TODO: remove when macOS 12 released
         ),
         .testTarget(
@@ -64,7 +66,7 @@ let package = Package(
             dependencies: [
                 "ShellOut",
                 "Chalk",
-                .product(name: "XcodeProj", package: "xcodeproj"),
+                "XcodeProj",
                 "PathKit",
                 "Yams",
             ],

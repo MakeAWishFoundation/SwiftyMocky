@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1140"
+   LastUpgradeVersion = "1300"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -9,14 +9,14 @@
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "607FACE41AFB9204008FA782"
-               BuildableName = "Mocky_Tests_iOS.xctest"
-               BlueprintName = "Mocky_Tests_iOS"
+               BlueprintIdentifier = "CC6DE67B2715F0D900502AEE"
+               BuildableName = "Mocky_Example_iOS_15.app"
+               BlueprintName = "Mocky_Example_iOS_15"
                ReferencedContainer = "container:SwiftyMocky.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -27,23 +27,14 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "607FACE41AFB9204008FA782"
-            BuildableName = "Mocky_Tests_iOS.xctest"
-            BlueprintName = "Mocky_Tests_iOS"
-            ReferencedContainer = "container:SwiftyMocky.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <Testables>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "607FACE41AFB9204008FA782"
-               BuildableName = "Mocky_Tests_iOS.xctest"
-               BlueprintName = "Mocky_Tests_iOS"
+               BlueprintIdentifier = "CC6DE6AB2715F23600502AEE"
+               BuildableName = "Mocky_Tests_iOS_15.xctest"
+               BlueprintName = "Mocky_Tests_iOS_15"
                ReferencedContainer = "container:SwiftyMocky.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -59,15 +50,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "607FACE41AFB9204008FA782"
-            BuildableName = "Mocky_Tests_iOS.xctest"
-            BlueprintName = "Mocky_Tests_iOS"
+            BlueprintIdentifier = "CC6DE67B2715F0D900502AEE"
+            BuildableName = "Mocky_Example_iOS_15.app"
+            BlueprintName = "Mocky_Example_iOS_15"
             ReferencedContainer = "container:SwiftyMocky.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -75,15 +67,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "607FACE41AFB9204008FA782"
-            BuildableName = "Mocky_Tests_iOS.xctest"
-            BlueprintName = "Mocky_Tests_iOS"
+            BlueprintIdentifier = "CC6DE67B2715F0D900502AEE"
+            BuildableName = "Mocky_Example_iOS_15.app"
+            BlueprintName = "Mocky_Example_iOS_15"
             ReferencedContainer = "container:SwiftyMocky.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

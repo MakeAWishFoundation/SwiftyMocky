@@ -12,6 +12,14 @@ target 'Mocky_Example_iOS' do
     end
 end
 
+target 'Mocky_Example_iOS_15' do
+    platform :ios, '15.0'
+    target 'Mocky_Tests_iOS_15' do
+        inherit! :search_paths
+        tests
+    end
+end
+
 target 'Mocky_Example_tvOS' do
     platform :tvos, '9.0'
     target 'Mocky_Tests_tvOS' do

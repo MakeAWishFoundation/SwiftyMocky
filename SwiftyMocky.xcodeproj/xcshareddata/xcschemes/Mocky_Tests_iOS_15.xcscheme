@@ -14,9 +14,23 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "607FACE41AFB9204008FA782"
-               BuildableName = "Mocky_Tests_iOS.xctest"
-               BlueprintName = "Mocky_Tests_iOS"
+               BlueprintIdentifier = "CC6DE6AB2715F23600502AEE"
+               BuildableName = "Mocky_Tests_iOS_15.xctest"
+               BlueprintName = "Mocky_Tests_iOS_15"
+               ReferencedContainer = "container:SwiftyMocky.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "CC6DE67B2715F0D900502AEE"
+               BuildableName = "Mocky_Example_iOS_15.app"
+               BlueprintName = "Mocky_Example_iOS_15"
                ReferencedContainer = "container:SwiftyMocky.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -26,24 +40,16 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "607FACE41AFB9204008FA782"
-            BuildableName = "Mocky_Tests_iOS.xctest"
-            BlueprintName = "Mocky_Tests_iOS"
-            ReferencedContainer = "container:SwiftyMocky.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      onlyGenerateCoverageForSpecifiedTargets = "YES">
       <Testables>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "607FACE41AFB9204008FA782"
-               BuildableName = "Mocky_Tests_iOS.xctest"
-               BlueprintName = "Mocky_Tests_iOS"
+               BlueprintIdentifier = "CC6DE6AB2715F23600502AEE"
+               BuildableName = "Mocky_Tests_iOS_15.xctest"
+               BlueprintName = "Mocky_Tests_iOS_15"
                ReferencedContainer = "container:SwiftyMocky.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -59,15 +65,6 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "607FACE41AFB9204008FA782"
-            BuildableName = "Mocky_Tests_iOS.xctest"
-            BlueprintName = "Mocky_Tests_iOS"
-            ReferencedContainer = "container:SwiftyMocky.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -75,15 +72,6 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "607FACE41AFB9204008FA782"
-            BuildableName = "Mocky_Tests_iOS.xctest"
-            BlueprintName = "Mocky_Tests_iOS"
-            ReferencedContainer = "container:SwiftyMocky.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

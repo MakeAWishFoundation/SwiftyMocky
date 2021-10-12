@@ -12,7 +12,7 @@ Install _fastlane_ using
 ```
 [sudo] gem install fastlane -NV
 ```
-or alternatively using `brew cask install fastlane`
+or alternatively using `brew install fastlane`
 
 # Available Actions
 ## iOS
@@ -30,11 +30,6 @@ Runs all the tests
 fastlane tvos test
 ```
 Runs all the tests
-### tvos test_13
-```
-fastlane tvos test_13
-```
-Runs all the tests on tvOS 13.x
 
 ----
 
