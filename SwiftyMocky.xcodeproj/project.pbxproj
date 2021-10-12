@@ -223,6 +223,10 @@
 		CC6DE6DD2715F4CF00502AEE /* ThrowingVarProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0BA3F7271375CA0087C9B4 /* ThrowingVarProtocolTests.swift */; };
 		CC6DE6DE2715F4CF00502AEE /* AsyncMethodsProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC66EF0B270DD2CA00D9B424 /* AsyncMethodsProtocolTests.swift */; };
 		CC6DE6E02715F51500502AEE /* Mock.15.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6DE6DF2715F51500502AEE /* Mock.15.generated.swift */; };
+		CC7AC87C27162C88008E5753 /* MockyAssert.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC7AC87A27162C88008E5753 /* MockyAssert.swift */; };
+		CC7AC87D27162C88008E5753 /* SwiftyMockyTestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC7AC87B27162C88008E5753 /* SwiftyMockyTestObserver.swift */; };
+		CC7AC88027162C94008E5753 /* MockyAssert.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC7AC87E27162C94008E5753 /* MockyAssert.swift */; };
+		CC7AC88127162C94008E5753 /* SwiftyMockyTestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC7AC87F27162C94008E5753 /* SwiftyMockyTestObserver.swift */; };
 		CC89CC052714E0DF0020A0F8 /* Parameter+Compare.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89CC032714E0DE0020A0F8 /* Parameter+Compare.swift */; };
 		CC89CC062714E0DF0020A0F8 /* Parameter+Compare.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89CC032714E0DE0020A0F8 /* Parameter+Compare.swift */; };
 		CC89CC072714E0DF0020A0F8 /* Parameter+Optionals.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89CC042714E0DE0020A0F8 /* Parameter+Optionals.swift */; };
@@ -324,10 +328,6 @@
 		CCE351661FCC0B9700A76C4C /* Mock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE351621FCC0B9700A76C4C /* Mock.generated.swift */; };
 		CCE351671FCC0B9700A76C4C /* ItemsRepositoryMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE351631FCC0B9700A76C4C /* ItemsRepositoryMock.swift */; };
 		CCE351681FCC0B9700A76C4C /* Mocky_tvOS_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE351641FCC0B9700A76C4C /* Mocky_tvOS_Tests.swift */; };
-		CCE83A06270C80CE00B3D038 /* MockyAssert.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE83A04270C80CE00B3D038 /* MockyAssert.swift */; };
-		CCE83A07270C80CE00B3D038 /* MockyAssert.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE83A04270C80CE00B3D038 /* MockyAssert.swift */; };
-		CCE83A08270C80CE00B3D038 /* SwiftyMockyTestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE83A05270C80CE00B3D038 /* SwiftyMockyTestObserver.swift */; };
-		CCE83A09270C80CE00B3D038 /* SwiftyMockyTestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE83A05270C80CE00B3D038 /* SwiftyMockyTestObserver.swift */; };
 		D5A3B8E663F5C1E93005417D /* Pods_Mocky_Example_iOS_15.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 804A136FF4426600B9404159 /* Pods_Mocky_Example_iOS_15.framework */; };
 		DCD9D935A62C7590C4267FFF /* Pods_Mocky_Tests_iOS_15.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0183EA4DB760A37EE1C5C98 /* Pods_Mocky_Tests_iOS_15.framework */; };
 /* End PBXBuildFile section */
@@ -472,6 +472,10 @@
 		CC6DE6D92715F23600502AEE /* Mocky_Tests_iOS_15.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Mocky_Tests_iOS_15.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC6DE6DA2715F23600502AEE /* Mocky_Tests_iOS_15-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Mocky_Tests_iOS_15-Info.plist"; path = "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Mocky_Tests_iOS_15-Info.plist"; sourceTree = "<absolute>"; };
 		CC6DE6DF2715F51500502AEE /* Mock.15.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mock.15.generated.swift; sourceTree = "<group>"; };
+		CC7AC87A27162C88008E5753 /* MockyAssert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockyAssert.swift; sourceTree = "<group>"; };
+		CC7AC87B27162C88008E5753 /* SwiftyMockyTestObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyMockyTestObserver.swift; sourceTree = "<group>"; };
+		CC7AC87E27162C94008E5753 /* MockyAssert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockyAssert.swift; sourceTree = "<group>"; };
+		CC7AC87F27162C94008E5753 /* SwiftyMockyTestObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyMockyTestObserver.swift; sourceTree = "<group>"; };
 		CC89CC032714E0DE0020A0F8 /* Parameter+Compare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Parameter+Compare.swift"; sourceTree = "<group>"; };
 		CC89CC042714E0DE0020A0F8 /* Parameter+Optionals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Parameter+Optionals.swift"; sourceTree = "<group>"; };
 		CCA9F81921566AC500F2880B /* SimpleSequencingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleSequencingTests.swift; sourceTree = "<group>"; };
@@ -532,8 +536,6 @@
 		CCE351631FCC0B9700A76C4C /* ItemsRepositoryMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemsRepositoryMock.swift; sourceTree = "<group>"; };
 		CCE351641FCC0B9700A76C4C /* Mocky_tvOS_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mocky_tvOS_Tests.swift; sourceTree = "<group>"; };
 		CCE351651FCC0B9700A76C4C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CCE83A04270C80CE00B3D038 /* MockyAssert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockyAssert.swift; sourceTree = "<group>"; };
-		CCE83A05270C80CE00B3D038 /* SwiftyMockyTestObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyMockyTestObserver.swift; sourceTree = "<group>"; };
 		D0183EA4DB760A37EE1C5C98 /* Pods_Mocky_Tests_iOS_15.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mocky_Tests_iOS_15.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0DC19016F4652E71732B830 /* Pods-Mocky_Tests_iOS_15.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Tests_iOS_15.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Tests_iOS_15/Pods-Mocky_Tests_iOS_15.release.xcconfig"; sourceTree = "<group>"; };
 		D290CFFDAAD79EDAC911BB4A /* Pods-Mocky_Example_iOS_15.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Example_iOS_15.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Example_iOS_15/Pods-Mocky_Example_iOS_15.release.xcconfig"; sourceTree = "<group>"; };
@@ -795,13 +797,11 @@
 				CC16ADB5249BE9F7003FC808 /* Matcher.swift */,
 				CC16ADB4249BE9F7003FC808 /* Mock.swift */,
 				CC16ADB8249BE9F7003FC808 /* Mock+Assertions.swift */,
-				CCE83A04270C80CE00B3D038 /* MockyAssert.swift */,
 				CC16ADB2249BE9F7003FC808 /* Parameter.swift */,
 				CC89CC032714E0DE0020A0F8 /* Parameter+Compare.swift */,
 				CC89CC042714E0DE0020A0F8 /* Parameter+Optionals.swift */,
 				CC16ADB6249BE9F7003FC808 /* Policies.swift */,
 				CC16ADBA249BE9F7003FC808 /* Stubbing.swift */,
-				CCE83A05270C80CE00B3D038 /* SwiftyMockyTestObserver.swift */,
 				CCD6C0AE24A15F3C000B52A1 /* Utils.swift */,
 			);
 			name = Shared;
@@ -815,6 +815,8 @@
 				CC16ADDD249BEA09003FC808 /* Mock.swifttemplate */,
 				CC16ADDE249BEA09003FC808 /* ArgumentCaptor.swift */,
 				CC16ADE0249BEA09003FC808 /* CustomAssertions.swift */,
+				CC7AC87A27162C88008E5753 /* MockyAssert.swift */,
+				CC7AC87B27162C88008E5753 /* SwiftyMockyTestObserver.swift */,
 			);
 			name = SwiftyMocky;
 			path = Sources/SwiftyMocky;
@@ -824,6 +826,8 @@
 			isa = PBXGroup;
 			children = (
 				CC16ADFE249BEA23003FC808 /* Prototype.swifttemplate */,
+				CC7AC87E27162C94008E5753 /* MockyAssert.swift */,
+				CC7AC87F27162C94008E5753 /* SwiftyMockyTestObserver.swift */,
 			);
 			name = SwiftyPrototype;
 			path = Sources/SwiftyPrototype;
@@ -1969,9 +1973,9 @@
 				CC16ADC5249BE9F7003FC808 /* Policies.swift in Sources */,
 				CC16ADC7249BE9F7003FC808 /* Count.swift in Sources */,
 				CC16ADC9249BE9F7003FC808 /* Mock+Assertions.swift in Sources */,
-				CCE83A09270C80CE00B3D038 /* SwiftyMockyTestObserver.swift in Sources */,
+				CC7AC88127162C94008E5753 /* SwiftyMockyTestObserver.swift in Sources */,
 				CCD6C0B024A15F3C000B52A1 /* Utils.swift in Sources */,
-				CCE83A07270C80CE00B3D038 /* MockyAssert.swift in Sources */,
+				CC7AC88027162C94008E5753 /* MockyAssert.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2145,9 +2149,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				CC16ADCC249BE9F7003FC808 /* Stubbing.swift in Sources */,
-				CCE83A06270C80CE00B3D038 /* MockyAssert.swift in Sources */,
+				CC7AC87C27162C88008E5753 /* MockyAssert.swift in Sources */,
+				CC7AC87D27162C88008E5753 /* SwiftyMockyTestObserver.swift in Sources */,
 				CC89CC072714E0DF0020A0F8 /* Parameter+Optionals.swift in Sources */,
-				CCE83A08270C80CE00B3D038 /* SwiftyMockyTestObserver.swift in Sources */,
 				CC16ADC2249BE9F7003FC808 /* Matcher.swift in Sources */,
 				CC16ADBC249BE9F7003FC808 /* Parameter.swift in Sources */,
 				CC89CC052714E0DF0020A0F8 /* Parameter+Compare.swift in Sources */,
