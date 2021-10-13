@@ -2,8 +2,6 @@
 
 # ![logo][logo]
 
-Join our community on Slack! -> [invitation link here][link-slack]
-
 Check out [guides][link-guides-contents], or full [documentation][link-docs]
 
 ## Table of contents

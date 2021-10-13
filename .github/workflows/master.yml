@@ -16,7 +16,6 @@ jobs:
         uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: '12.4.0'
-      - run: xcode-select -p
       - name: Prepare for tests
         run: |
           rake pods

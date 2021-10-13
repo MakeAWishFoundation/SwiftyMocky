@@ -2,12 +2,12 @@
 [![Docs](https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/master/docs/badge.svg)](https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/master/docs/index.html)
 [![License](https://img.shields.io/cocoapods/l/SwiftyMocky.svg?style=flat)](http://cocoapods.org/pods/SwiftyMocky)
 
-[![Build & Test](https://github.com/MakeAWishFoundation/SwiftyMocky/actions/workflows/master.yml/badge.svg?branch=master)](https://github.com/MakeAWishFoundation/SwiftyMocky/actions?query=branch%3Amaster)
+[![Pods compatible](https://img.shields.io/cocoapods/v/SwiftyMocky.svg?style=flat&color=green)](http://cocoapods.org/pods/SwiftyMocky)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-green.svg?style=flat)](https://github.com/Carthage/Carthage)
+![Mint compatible](https://img.shields.io/badge/🌱%20Mint-compatible-green.svg)
+![SPM compatible](https://img.shields.io/badge/SPM-compatible-green.svg?style=flat&logo=swift)
 
-[![Version](https://img.shields.io/cocoapods/v/SwiftyMocky.svg?style=flat)](http://cocoapods.org/pods/SwiftyMocky)
-[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
-![Mint compatible](https://img.shields.io/badge/🌱%20Mint-compatible-brightgreen.svg)
-![SPM compatible](https://img.shields.io/badge/SPM-compatible-orange.svg?style=flat&logo=swift)
+[![Build & Test](https://github.com/MakeAWishFoundation/SwiftyMocky/actions/workflows/master.yml/badge.svg?branch=master)](https://github.com/MakeAWishFoundation/SwiftyMocky/actions?query=branch%3Amaster) [![CocoaPods Integration](https://github.com/MakeAWishFoundation/SM-Integration-Tests/actions/workflows/cocoapods.yml/badge.svg?branch=master)](https://github.com/MakeAWishFoundation/SM-Integration-Tests/actions/workflows/cocoapods.yml) [![SwiftPM Integration](https://github.com/MakeAWishFoundation/SM-Integration-Tests/actions/workflows/swiftpm.yml/badge.svg?branch=master)](https://github.com/MakeAWishFoundation/SM-Integration-Tests/actions/workflows/swiftpm.yml) [![Carthage Integration](https://github.com/MakeAWishFoundation/SM-Integration-Tests/actions/workflows/carthage.yml/badge.svg?branch=master)](https://github.com/MakeAWishFoundation/SM-Integration-Tests/actions/workflows/carthage.yml)
 
 # ![logo][logo]
 
