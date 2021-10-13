@@ -1,5 +1,5 @@
 [![Platform](https://img.shields.io/cocoapods/p/SwiftyMocky.svg?style=flat)](http://cocoapods.org/pods/SwiftyMocky)
-[![Docs](https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/master/docs/badge.svg)](https://rawcdn.githack.com/MakeAWishFoundation/SwiftyMocky/master/docs/index.html)
+[![Docs](https://raw.githubusercontent.com/MakeAWishFoundation/SwiftyMocky/master/docs/badge.svg)](https://rawcdn.githack.com/MakeAWishFoundation/SwiftyMocky/master/docs/index.html)
 [![License](https://img.shields.io/cocoapods/l/SwiftyMocky.svg?style=flat)](http://cocoapods.org/pods/SwiftyMocky)
 
 [![Pods compatible](https://img.shields.io/cocoapods/v/SwiftyMocky.svg?style=flat&color=green)](http://cocoapods.org/pods/SwiftyMocky)
