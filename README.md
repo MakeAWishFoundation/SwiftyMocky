@@ -1,5 +1,5 @@
 [![Platform](https://img.shields.io/cocoapods/p/SwiftyMocky.svg?style=flat)](http://cocoapods.org/pods/SwiftyMocky)
-[![Docs](https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/master/docs/badge.svg)](https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/master/docs/index.html)
+[![Docs](https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/master/docs/badge.svg)](https://rawcdn.githack.com/MakeAWishFoundation/SwiftyMocky/master/docs/index.html)
 [![License](https://img.shields.io/cocoapods/l/SwiftyMocky.svg?style=flat)](http://cocoapods.org/pods/SwiftyMocky)
 
 [![Pods compatible](https://img.shields.io/cocoapods/v/SwiftyMocky.svg?style=flat&color=green)](http://cocoapods.org/pods/SwiftyMocky)
@@ -385,11 +385,11 @@ SwiftyMocky is available under the MIT license. See the [LICENSE][link-license] 
 
 <!-- Links based on tag -->
 
-[link-docs]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0/docs/index.html
-[link-docs-features]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0/docs/supported-features.html
-[link-docs-installation]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0/docs/installation.html
-[link-docs-installation-carthage]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0/docs/installation.html#installation-carthage
-[link-docs-setup]: https://cdn.rawgit.com/MakeAWishFoundation/SwiftyMocky/4.1.0/docs/setup-in-project.html
+[link-docs]: https://rawcdn.githack.com/MakeAWishFoundation/SwiftyMocky/4.1.0/docs/index.html
+[link-docs-features]: https://rawcdn.githack.com/MakeAWishFoundation/SwiftyMocky/4.1.0/docs/supported-features.html
+[link-docs-installation]: https://rawcdn.githack.com/MakeAWishFoundation/SwiftyMocky/4.1.0/docs/installation.html
+[link-docs-installation-carthage]: https://rawcdn.githack.com/MakeAWishFoundation/SwiftyMocky/4.1.0/docs/installation.html#installation-carthage
+[link-docs-setup]: https://rawcdn.githack.com/MakeAWishFoundation/SwiftyMocky/4.1.0/docs/setup-in-project.html
 
 <!-- Assets -->
 
