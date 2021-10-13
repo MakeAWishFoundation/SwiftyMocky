@@ -8,18 +8,18 @@ All changes to SwiftyMocky project will be documented in this file.
 
 #### Added:
 + moved CLI to main repo (old will be deprecated)
-+ protocol compositions (Ernesto Cambuston)
-+ SwiftLint rules support (Mikhail Igonin)
-+ cli binary in repo
-+ cli: resolving proper Sourcery version and binary path (mint is no longer default, if Pods used)
++ protocol compositions (@erneestoc  Ernesto Cambuston)
++ SwiftLint rules support (@migonin Mikhail Igonin)
++ cli binary in the repo
++ cli: resolving proper Sourcery version and binary path (mint is no longer default if Pods used)
 
 #### Fixed:
 * Fixed some concurrency issues
 * Fixed several matcher and compare issues
-* Fixed @availability for Swift 5.5
+* Fixed availability for Swift 5.5
 * Fixed other basic issues and changes for Sourcery 1.6.0
-* Fixed observer setup when test is marked as async
-* Fixed CLI dependencies (Sergey Kovalenko)
+* Fixed observer setup when the test is marked as async
+* Fixed CLI dependencies (@SergeyKovalenko Sergey Kovalenko)
 * Moved tests from travis to github actions
 
 -----
