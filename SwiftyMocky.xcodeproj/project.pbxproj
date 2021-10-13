@@ -10,9 +10,11 @@
 		023E5B0925ECD4B400B975CD /* ComposedServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023E5B0825ECD4B400B975CD /* ComposedServiceTests.swift */; };
 		023E5B0A25ECD4B400B975CD /* ComposedServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023E5B0825ECD4B400B975CD /* ComposedServiceTests.swift */; };
 		023E5B0B25ECD4B400B975CD /* ComposedServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023E5B0825ECD4B400B975CD /* ComposedServiceTests.swift */; };
+		136D1FD5B90F87009EDDF350 /* Pods_Mocky_Tests_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E649ECF55738052FFD6D124 /* Pods_Mocky_Tests_iOS.framework */; };
 		1D5310CA3DE7147ACC9E7E26 /* Pods_Mocky_Tests_tvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64EF60CBE53D81700C87FB82 /* Pods_Mocky_Tests_tvOS.framework */; };
 		5CB0B098232DC176CC9CACD8 /* Pods_Mocky_Example_tvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9C9BECF310A1D4EDD384137 /* Pods_Mocky_Example_tvOS.framework */; };
-		66087FEBDA538F4C138743F2 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		66087FEBDA538F4C138743F2 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
+		6921396CE20C5E332DE41D60 /* Pods_Mocky_Example_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5568CBB5C310F46C201A252 /* Pods_Mocky_Example_iOS.framework */; };
 		6C3186ED22DF613C00746DCC /* ProtocolWithGenericConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C3186EC22DF613C00746DCC /* ProtocolWithGenericConstraints.swift */; };
 		6C3186EE22DF613C00746DCC /* ProtocolWithGenericConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C3186EC22DF613C00746DCC /* ProtocolWithGenericConstraints.swift */; };
 		6C3186EF22DF613C00746DCC /* ProtocolWithGenericConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C3186EC22DF613C00746DCC /* ProtocolWithGenericConstraints.swift */; };
@@ -20,7 +22,7 @@
 		6C3186F322DF67D800746DCC /* ProtocolWithGenericConstraintsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C3186F122DF67D800746DCC /* ProtocolWithGenericConstraintsTests.swift */; };
 		6C3186F422DF67D800746DCC /* ProtocolWithGenericConstraintsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C3186F122DF67D800746DCC /* ProtocolWithGenericConstraintsTests.swift */; };
 		7C10E4406673B3B3B7474E2C /* Pods_Mocky_Tests_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94B5EFCCD4E35E7C80D1E560 /* Pods_Mocky_Tests_macOS.framework */; };
-		BB4F9E470E0BD27A959C97EB /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		BB4F9E470E0BD27A959C97EB /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
 		C81D094D22C0C59800A0427F /* CustomAssertionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81D094C22C0C59800A0427F /* CustomAssertionsTests.swift */; };
 		C81D094E22C0C59800A0427F /* CustomAssertionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81D094C22C0C59800A0427F /* CustomAssertionsTests.swift */; };
 		C81D094F22C0C59800A0427F /* CustomAssertionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81D094C22C0C59800A0427F /* CustomAssertionsTests.swift */; };
@@ -386,6 +388,7 @@
 		4960EAA67C2E0980248C6B94 /* Pods_Mocky_Example_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mocky_Example_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A18BEE608FDDA6D1B72681A /* Pods-Mocky_Example_tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Example_tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Example_tvOS/Pods-Mocky_Example_tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		5ABA0D357F98DC923C090E09 /* Pods-Mocky_Tests_iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Tests_iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Tests_iOS/Pods-Mocky_Tests_iOS.release.xcconfig"; sourceTree = "<group>"; };
+		5E649ECF55738052FFD6D124 /* Pods_Mocky_Tests_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mocky_Tests_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD01AFB9204008FA782 /* Mocky_Example_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mocky_Example_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACE51AFB9204008FA782 /* Mocky_Tests_iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Mocky_Tests_iOS.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		64EF60CBE53D81700C87FB82 /* Pods_Mocky_Tests_tvOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mocky_Tests_tvOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -543,6 +546,7 @@
 		D8800E89CF0FDD37D5C97682 /* Pods-Mocky_Tests_iOS_15.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Tests_iOS_15.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Tests_iOS_15/Pods-Mocky_Tests_iOS_15.debug.xcconfig"; sourceTree = "<group>"; };
 		E0F0B024E7EFDB2727CEE125 /* Pods-Mocky_Tests_macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Tests_macOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Tests_macOS/Pods-Mocky_Tests_macOS.release.xcconfig"; sourceTree = "<group>"; };
 		E467147D1ECEF4D600C7DAB3 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		E5568CBB5C310F46C201A252 /* Pods_Mocky_Example_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mocky_Example_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E671CB0D6255BBBB2FADDA17 /* Pods-Mocky_Example_macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mocky_Example_macOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mocky_Example_macOS/Pods-Mocky_Example_macOS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -567,7 +571,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				66087FEBDA538F4C138743F2 /* (null) in Frameworks */,
+				66087FEBDA538F4C138743F2 /* BuildFile in Frameworks */,
+				6921396CE20C5E332DE41D60 /* Pods_Mocky_Example_iOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -575,7 +580,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BB4F9E470E0BD27A959C97EB /* (null) in Frameworks */,
+				BB4F9E470E0BD27A959C97EB /* BuildFile in Frameworks */,
+				136D1FD5B90F87009EDDF350 /* Pods_Mocky_Tests_iOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -711,6 +717,8 @@
 				64EF60CBE53D81700C87FB82 /* Pods_Mocky_Tests_tvOS.framework */,
 				804A136FF4426600B9404159 /* Pods_Mocky_Example_iOS_15.framework */,
 				D0183EA4DB760A37EE1C5C98 /* Pods_Mocky_Tests_iOS_15.framework */,
+				E5568CBB5C310F46C201A252 /* Pods_Mocky_Example_iOS.framework */,
+				5E649ECF55738052FFD6D124 /* Pods_Mocky_Tests_iOS.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

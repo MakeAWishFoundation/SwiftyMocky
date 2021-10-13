@@ -20,6 +20,7 @@ All changes to SwiftyMocky project will be documented in this file.
 * Fixed other basic issues and changes for Sourcery 1.6.0
 * Fixed observer setup when test is marked as async
 * Fixed CLI dependencies (Sergey Kovalenko)
+* Moved tests from travis to github actions
 
 -----
 

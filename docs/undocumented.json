@@ -57,6 +57,27 @@
       "warning": "undocumented"
     },
     {
+      "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Shared/Parameter+Optionals.swift",
+      "line": 7,
+      "symbol": "OptionalType.isNotNil",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Shared/Parameter+Optionals.swift",
+      "line": 11,
+      "symbol": "Optional.isNotNil",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Shared/Parameter+Optionals.swift",
+      "line": 20,
+      "symbol": "Parameter.notNil",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
       "file": "/Users/andrzejmichnia/Projekty/Private/SwiftyMocky/Sources/Shared/Parameter.swift",
       "line": 41,
       "symbol": "Parameter.shortDescription",

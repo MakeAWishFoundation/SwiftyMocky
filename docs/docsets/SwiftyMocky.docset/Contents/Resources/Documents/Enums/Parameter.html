@@ -14,7 +14,7 @@
     <a title="Parameter Enumeration Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">SwiftyMocky 4.1.0-pre Docs</a> (86% documented)</p>
+        <p><a href="../index.html">SwiftyMocky 4.1.0 Docs</a> (86% documented)</p>
         <p class="header-right"><a href="https://github.com/MakeAWishFoundation/SwiftyMocky"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -188,6 +188,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Structs/FatalErrorUtil.html">FatalErrorUtil</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/OptionalType.html">OptionalType</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Protocols/WithSequencingPolicy.html">WithSequencingPolicy</a>
@@ -485,6 +488,1057 @@ wrapped <em>ValueType</em> type, to resolve ambiguity between methods with same 
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">shortDescription</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky9ParameterO7compare3lhs3rhs4withSbACyxG_AhA7MatcherCtFZ"></a>
+                    <a name="//apple_ref/swift/Method/compare(lhs:rhs:with:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky9ParameterO7compare3lhs3rhs4withSbACyxG_AhA7MatcherCtFZ">compare(lhs:rhs:with:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns whether given two parameters are matching each other, with following rules:</p>
+
+<ol>
+<li>if parameter is .any - it is equal to any other parameter</li>
+<li>if both are .value - then compare wrapped ValueType instances.</li>
+<li>if they are not Equatable (or not a Sequences of Equatable), use provided matcher instance</li>
+</ol>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">static</span> <span class="kd">func</span> <span class="nf">compare</span><span class="p">(</span><span class="nv">lhs</span><span class="p">:</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt">ValueType</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">rhs</span><span class="p">:</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt">ValueType</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">with</span> <span class="nv">matcher</span><span class="p">:</span> <span class="kt"><a href="../Classes/Matcher.html">Matcher</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>lhs</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>First parameter</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>rhs</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Second parameter</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>matcher</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Matcher instance</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>true, if first is matching second</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky9ParameterO13wrapAsGenericACyAA0F9AttributeVGyF"></a>
+                    <a name="//apple_ref/swift/Method/wrapAsGeneric()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky9ParameterO13wrapAsGenericACyAA0F9AttributeVGyF">wrapAsGeneric()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[Internal] Wraps as generic Parameter instance. Should not be ever called directly.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">wrapAsGeneric</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/GenericAttribute.html">GenericAttribute</a></span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Wrapped parameter</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky9ParameterO19typeErasedAttributeACyAA04TypeeF0VGyF"></a>
+                    <a name="//apple_ref/swift/Method/typeErasedAttribute()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky9ParameterO19typeErasedAttributeACyAA04TypeeF0VGyF">typeErasedAttribute()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[Internal] Wraps as generic Parameter instance. Should not be ever called directly.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">typeErasedAttribute</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/TypeErasedAttribute.html">TypeErasedAttribute</a></span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Wrapped parameter</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky9ParameterO19noComparatorFailure2ins5NeverOAA7MatcherC_tFZ"></a>
+                    <a name="//apple_ref/swift/Method/noComparatorFailure(in:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky9ParameterO19noComparatorFailure2ins5NeverOAA7MatcherC_tFZ">noComparatorFailure(in:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[Internal] Fatal error raised when no comparator or default comparator found for <code>ValueType</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">static</span> <span class="kd">func</span> <span class="nf">noComparatorFailure</span><span class="p">(</span><span class="k">in</span> <span class="nv">matcher</span><span class="p">:</span> <span class="kt"><a href="../Classes/Matcher.html">Matcher</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Never</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky9ParameterOA2A15TypeErasedValueRzlE7compare3lhs3rhs4withSbACyxG_AiA7MatcherCtFZ"></a>
+                    <a name="//apple_ref/swift/Method/compare(lhs:rhs:with:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky9ParameterOA2A15TypeErasedValueRzlE7compare3lhs3rhs4withSbACyxG_AiA7MatcherCtFZ">compare(lhs:rhs:with:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[Internal] Compare two parameters</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">static</span> <span class="kd">func</span> <span class="nf">compare</span><span class="p">(</span><span class="nv">lhs</span><span class="p">:</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt">ValueType</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">rhs</span><span class="p">:</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt">ValueType</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">with</span> <span class="nv">matcher</span><span class="p">:</span> <span class="kt"><a href="../Classes/Matcher.html">Matcher</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>lhs</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>one</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>rhs</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>other</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>matcher</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Matcher instance used for comparison</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>true if they are matching, false otherwise</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Compare%20using%20default%20comparators"></a>
+                <a name="//apple_ref/swift/Section/Compare using default comparators" class="dashAnchor"></a>
+                <a href="#/Compare%20using%20default%20comparators">
+                  <h3 class="section-name">Compare using default comparators</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky9ParameterOAASQRzSTRzlE7compare3lhs3rhs4withSbACyxG_AhA7MatcherCtFZ"></a>
+                    <a name="//apple_ref/swift/Method/compare(lhs:rhs:with:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky9ParameterOAASQRzSTRzlE7compare3lhs3rhs4withSbACyxG_AhA7MatcherCtFZ">compare(lhs:rhs:with:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[Internal] Compare two parameters</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">static</span> <span class="kd">func</span> <span class="nf">compare</span><span class="p">(</span><span class="nv">lhs</span><span class="p">:</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt">ValueType</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">rhs</span><span class="p">:</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt">ValueType</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">with</span> <span class="nv">matcher</span><span class="p">:</span> <span class="kt"><a href="../Classes/Matcher.html">Matcher</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>lhs</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>one</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>rhs</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>other</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>matcher</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Matcher instance used for comparison</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>true if they are matching, false otherwise</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky9ParameterOAASQRzSTRzlE13wrapAsGenericACyAA0F9AttributeVGyF"></a>
+                    <a name="//apple_ref/swift/Method/wrapAsGeneric()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky9ParameterOAASQRzSTRzlE13wrapAsGenericACyAA0F9AttributeVGyF">wrapAsGeneric()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[Internal] Wraps as generic Parameter instance. Should not be ever called directly.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">wrapAsGeneric</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/GenericAttribute.html">GenericAttribute</a></span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Wrapped parameter</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky9ParameterOAASQRzSTRzlE19typeErasedAttributeACyAA04TypeeF0VGyF"></a>
+                    <a name="//apple_ref/swift/Method/typeErasedAttribute()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky9ParameterOAASQRzSTRzlE19typeErasedAttributeACyAA04TypeeF0VGyF">typeErasedAttribute()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[Internal] Wraps as generic Parameter instance. Should not be ever called directly.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">typeErasedAttribute</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/TypeErasedAttribute.html">TypeErasedAttribute</a></span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Wrapped parameter</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Compare%20using%20default%20comparators2"></a>
+                <a name="//apple_ref/swift/Section/Compare using default comparators" class="dashAnchor"></a>
+                <a href="#/Compare%20using%20default%20comparators2">
+                  <h3 class="section-name">Compare using default comparators</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky9ParameterOAASTRzSQ7ElementRpzlE7compare3lhs3rhs4withSbACyxG_AjA7MatcherCtFZ"></a>
+                    <a name="//apple_ref/swift/Method/compare(lhs:rhs:with:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky9ParameterOAASTRzSQ7ElementRpzlE7compare3lhs3rhs4withSbACyxG_AjA7MatcherCtFZ">compare(lhs:rhs:with:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[Internal] Compare two parameters</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">static</span> <span class="kd">func</span> <span class="nf">compare</span><span class="p">(</span><span class="nv">lhs</span><span class="p">:</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt">ValueType</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">rhs</span><span class="p">:</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt">ValueType</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">with</span> <span class="nv">matcher</span><span class="p">:</span> <span class="kt"><a href="../Classes/Matcher.html">Matcher</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>lhs</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>one</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>rhs</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>other</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>matcher</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Matcher instance used for comparison</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>true if they are matching, false otherwise</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky9ParameterOAASTRzSQ7ElementRpzlE13wrapAsGenericACyAA0G9AttributeVGyF"></a>
+                    <a name="//apple_ref/swift/Method/wrapAsGeneric()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky9ParameterOAASTRzSQ7ElementRpzlE13wrapAsGenericACyAA0G9AttributeVGyF">wrapAsGeneric()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[Internal] Wraps as generic Parameter instance. Should not be ever called directly.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">wrapAsGeneric</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/GenericAttribute.html">GenericAttribute</a></span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Wrapped parameter</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky9ParameterOAASTRzSQ7ElementRpzlE19typeErasedAttributeACyAA04TypefG0VGyF"></a>
+                    <a name="//apple_ref/swift/Method/typeErasedAttribute()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky9ParameterOAASTRzSQ7ElementRpzlE19typeErasedAttributeACyAA04TypefG0VGyF">typeErasedAttribute()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[Internal] Wraps as generic Parameter instance. Should not be ever called directly.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">typeErasedAttribute</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/TypeErasedAttribute.html">TypeErasedAttribute</a></span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Wrapped parameter</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Compare%20using%20default%20comparators3"></a>
+                <a name="//apple_ref/swift/Section/Compare using default comparators" class="dashAnchor"></a>
+                <a href="#/Compare%20using%20default%20comparators3">
+                  <h3 class="section-name">Compare using default comparators</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky9ParameterOAASQRzSTRzSQ7ElementSTRpzlE7compare3lhs3rhs4withSbACyxG_AjA7MatcherCtFZ"></a>
+                    <a name="//apple_ref/swift/Method/compare(lhs:rhs:with:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky9ParameterOAASQRzSTRzSQ7ElementSTRpzlE7compare3lhs3rhs4withSbACyxG_AjA7MatcherCtFZ">compare(lhs:rhs:with:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[Internal] Compare two parameters</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">static</span> <span class="kd">func</span> <span class="nf">compare</span><span class="p">(</span><span class="nv">lhs</span><span class="p">:</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt">ValueType</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">rhs</span><span class="p">:</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt">ValueType</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">with</span> <span class="nv">matcher</span><span class="p">:</span> <span class="kt"><a href="../Classes/Matcher.html">Matcher</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>lhs</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>one</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>rhs</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>other</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>matcher</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Matcher instance used for comparison</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>true if they are matching, false otherwise</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky9ParameterOAASQRzSTRzSQ7ElementSTRpzlE13wrapAsGenericACyAA0G9AttributeVGyF"></a>
+                    <a name="//apple_ref/swift/Method/wrapAsGeneric()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky9ParameterOAASQRzSTRzSQ7ElementSTRpzlE13wrapAsGenericACyAA0G9AttributeVGyF">wrapAsGeneric()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[Internal] Wraps as generic Parameter instance. Should not be ever called directly.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">wrapAsGeneric</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/GenericAttribute.html">GenericAttribute</a></span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Wrapped parameter</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky9ParameterOAASQRzSTRzSQ7ElementSTRpzlE19typeErasedAttributeACyAA04TypefG0VGyF"></a>
+                    <a name="//apple_ref/swift/Method/typeErasedAttribute()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky9ParameterOAASQRzSTRzSQ7ElementSTRpzlE19typeErasedAttributeACyAA04TypefG0VGyF">typeErasedAttribute()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[Internal] Wraps as generic Parameter instance. Should not be ever called directly.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">typeErasedAttribute</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/TypeErasedAttribute.html">TypeErasedAttribute</a></span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Wrapped parameter</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Compare%20using%20default%20comparators4"></a>
+                <a name="//apple_ref/swift/Section/Compare using default comparators" class="dashAnchor"></a>
+                <a href="#/Compare%20using%20default%20comparators4">
+                  <h3 class="section-name">Compare using default comparators</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky9ParameterOAASTRzlE7Elementa"></a>
+                    <a name="//apple_ref/swift/Alias/Element" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky9ParameterOAASTRzlE7Elementa">Element</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Element</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">typealias</span> <span class="kt">Element</span> <span class="o">=</span> <span class="kt">ValueType</span><span class="o">.</span><span class="kt">Element</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky9ParameterOAASTRzlE7compare3lhs3rhs4withSbACyxG_AhA7MatcherCtFZ"></a>
+                    <a name="//apple_ref/swift/Method/compare(lhs:rhs:with:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky9ParameterOAASTRzlE7compare3lhs3rhs4withSbACyxG_AhA7MatcherCtFZ">compare(lhs:rhs:with:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[Internal] Compare two parameters</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">static</span> <span class="kd">func</span> <span class="nf">compare</span><span class="p">(</span><span class="nv">lhs</span><span class="p">:</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt">ValueType</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">rhs</span><span class="p">:</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt">ValueType</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">with</span> <span class="nv">matcher</span><span class="p">:</span> <span class="kt"><a href="../Classes/Matcher.html">Matcher</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>lhs</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>one</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>rhs</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>other</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>matcher</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Matcher instance used for comparison</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>true if they are matching, false otherwise</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky9ParameterOAASTRzlE13wrapAsGenericACyAA0F9AttributeVGyF"></a>
+                    <a name="//apple_ref/swift/Method/wrapAsGeneric()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky9ParameterOAASTRzlE13wrapAsGenericACyAA0F9AttributeVGyF">wrapAsGeneric()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[Internal] Wraps as generic Parameter instance. Should not be ever called directly.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">wrapAsGeneric</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/GenericAttribute.html">GenericAttribute</a></span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Wrapped parameter</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky9ParameterOAASTRzlE19typeErasedAttributeACyAA04TypeeF0VGyF"></a>
+                    <a name="//apple_ref/swift/Method/typeErasedAttribute()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky9ParameterOAASTRzlE19typeErasedAttributeACyAA04TypeeF0VGyF">typeErasedAttribute()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[Internal] Wraps as generic Parameter instance. Should not be ever called directly.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">typeErasedAttribute</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/TypeErasedAttribute.html">TypeErasedAttribute</a></span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Wrapped parameter</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Compare%20using%20default%20comparators5"></a>
+                <a name="//apple_ref/swift/Section/Compare using default comparators" class="dashAnchor"></a>
+                <a href="#/Compare%20using%20default%20comparators5">
+                  <h3 class="section-name">Compare using default comparators</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky9ParameterOAASQRzlE7compare3lhs3rhs4withSbACyxG_AhA7MatcherCtFZ"></a>
+                    <a name="//apple_ref/swift/Method/compare(lhs:rhs:with:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky9ParameterOAASQRzlE7compare3lhs3rhs4withSbACyxG_AhA7MatcherCtFZ">compare(lhs:rhs:with:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[Internal] Compare two parameters</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">static</span> <span class="kd">func</span> <span class="nf">compare</span><span class="p">(</span><span class="nv">lhs</span><span class="p">:</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt">ValueType</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">rhs</span><span class="p">:</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt">ValueType</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">with</span> <span class="nv">matcher</span><span class="p">:</span> <span class="kt"><a href="../Classes/Matcher.html">Matcher</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>lhs</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>one</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>rhs</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>other</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>matcher</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Matcher instance used for comparison</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>true if they are matching, false otherwise</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky9ParameterOAASQRzlE13wrapAsGenericACyAA0F9AttributeVGyF"></a>
+                    <a name="//apple_ref/swift/Method/wrapAsGeneric()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky9ParameterOAASQRzlE13wrapAsGenericACyAA0F9AttributeVGyF">wrapAsGeneric()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[Internal] Wraps as generic Parameter instance. Should not be ever called directly.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">wrapAsGeneric</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/GenericAttribute.html">GenericAttribute</a></span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Wrapped parameter</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky9ParameterOAASQRzlE19typeErasedAttributeACyAA04TypeeF0VGyF"></a>
+                    <a name="//apple_ref/swift/Method/typeErasedAttribute()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky9ParameterOAASQRzlE19typeErasedAttributeACyAA04TypeeF0VGyF">typeErasedAttribute()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>[Internal] Wraps as generic Parameter instance. Should not be ever called directly.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">typeErasedAttribute</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/TypeErasedAttribute.html">TypeErasedAttribute</a></span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Wrapped parameter</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Optionality%20checks"></a>
+                <a name="//apple_ref/swift/Section/Optionality checks" class="dashAnchor"></a>
+                <a href="#/Optionality%20checks">
+                  <h3 class="section-name">Optionality checks</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11SwiftyMocky9ParameterOA2A12OptionalTypeRzlE6notNilACyxGvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/notNil" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11SwiftyMocky9ParameterOA2A12OptionalTypeRzlE6notNilACyxGvpZ">notNil</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">static</span> <span class="k">var</span> <span class="nv">notNil</span><span class="p">:</span> <span class="kt">Parameter</span><span class="o">&lt;</span><span class="kt">ValueType</span><span class="o">&gt;</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
