@@ -10,7 +10,7 @@ There are some best practices that will be followed during the development of th
 
 So what does this mean in practice:
 
-* Please target your PR to **develop** branch
+* Please target your PR against the **master** branch
 * If you want to make a bigger contribution to the project, please [open an issue first](https://github.com/MakeAWishFoundation/SwiftyMocky/issues/new) so we can plan that work, discuss the architecture and brainstorm around that idea first.
 * Whenever possible - link your PR with issue if possible (by adding `Referencing: #<issue number>` in your PR description). That will allow us to handle issues more easily.
 
