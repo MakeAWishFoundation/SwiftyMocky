@@ -38,7 +38,7 @@ func stringArray(fromArguments arguments: [String: Any], forKey key: String) -> 
 }
 _%>
 // Generated with SwiftyPrototype 4.1.0
-// Required Sourcery: 1.6.0
+// Required Sourcery: 1.8.0
 
 <%_ for rule in swiftLintRules(argument) { -%>
     <%_ %><%= rule %>

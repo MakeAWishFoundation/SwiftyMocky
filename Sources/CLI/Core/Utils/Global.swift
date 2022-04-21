@@ -2,7 +2,7 @@ import Foundation
 import PathKit
 
 public var kSwiftyMockyCommand = Path("mocky")
-public var kSourceryVersion = "1.6.0"
+public var kSourceryVersion = "1.8.0"
 public var kDefaultSourceryCommand: (String) -> String = { version in "mint run krzysztofzablocki/Sourcery@\(version) sourcery"}
 
 public protocol AutoMockable {}
