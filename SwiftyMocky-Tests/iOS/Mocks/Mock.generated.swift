@@ -4895,17 +4895,17 @@ open class InoutProtocolMock: InoutProtocol, Mock {
 		return __value
     }
 
-    open func genericInOutClosure<T>(closure: (inout T) -> Void) {
-        addInvocation(.m_genericInOutClosure__closure_closure(Parameter<(inout T) -> Void>.any.wrapAsGeneric()))
-		let perform = methodPerformValue(.m_genericInOutClosure__closure_closure(Parameter<(inout T) -> Void>.any.wrapAsGeneric())) as? ((inout T) -> Void) -> Void
-		perform?(`closure`)
+    open func genericInOutClosure<T>(value: inout T, closure: (inout T) -> Void) {
+        addInvocation(.m_genericInOutClosure__value_valueclosure_closure(Parameter<T>.value(`value`).wrapAsGeneric(), Parameter<(inout T) -> Void>.any.wrapAsGeneric()))
+		let perform = methodPerformValue(.m_genericInOutClosure__value_valueclosure_closure(Parameter<T>.value(`value`).wrapAsGeneric(), Parameter<(inout T) -> Void>.any.wrapAsGeneric())) as? (inout T, (inout T) -> Void) -> Void
+		perform?(&`value`, `closure`)
     }
 
 
     fileprivate enum MethodType {
         case m_passThisAsInOut__value_value(Parameter<URLRequest>)
         case m_returnAndInOut__value_value(Parameter<Int>)
-        case m_genericInOutClosure__closure_closure(Parameter<GenericAttribute>)
+        case m_genericInOutClosure__value_valueclosure_closure(Parameter<GenericAttribute>, Parameter<GenericAttribute>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
@@ -4919,8 +4919,9 @@ open class InoutProtocolMock: InoutProtocol, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsValue, rhs: rhsValue, with: matcher), lhsValue, rhsValue, "value"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_genericInOutClosure__closure_closure(let lhsClosure), .m_genericInOutClosure__closure_closure(let rhsClosure)):
+            case (.m_genericInOutClosure__value_valueclosure_closure(let lhsValue, let lhsClosure), .m_genericInOutClosure__value_valueclosure_closure(let rhsValue, let rhsClosure)):
 				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsValue, rhs: rhsValue, with: matcher), lhsValue, rhsValue, "value"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsClosure, rhs: rhsClosure, with: matcher), lhsClosure, rhsClosure, "closure"))
 				return Matcher.ComparisonResult(results)
             default: return .none
@@ -4931,14 +4932,14 @@ open class InoutProtocolMock: InoutProtocol, Mock {
             switch self {
             case let .m_passThisAsInOut__value_value(p0): return p0.intValue
             case let .m_returnAndInOut__value_value(p0): return p0.intValue
-            case let .m_genericInOutClosure__closure_closure(p0): return p0.intValue
+            case let .m_genericInOutClosure__value_valueclosure_closure(p0, p1): return p0.intValue + p1.intValue
             }
         }
         func assertionName() -> String {
             switch self {
             case .m_passThisAsInOut__value_value: return ".passThisAsInOut(value:)"
             case .m_returnAndInOut__value_value: return ".returnAndInOut(value:)"
-            case .m_genericInOutClosure__closure_closure: return ".genericInOutClosure(closure:)"
+            case .m_genericInOutClosure__value_valueclosure_closure: return ".genericInOutClosure(value:closure:)"
             }
         }
     }
@@ -4969,7 +4970,7 @@ open class InoutProtocolMock: InoutProtocol, Mock {
 
         public static func passThisAsInOut(value: Parameter<URLRequest>) -> Verify { return Verify(method: .m_passThisAsInOut__value_value(`value`))}
         public static func returnAndInOut(value: Parameter<Int>) -> Verify { return Verify(method: .m_returnAndInOut__value_value(`value`))}
-        public static func genericInOutClosure<T>(closure: Parameter<(inout T) -> Void>) -> Verify { return Verify(method: .m_genericInOutClosure__closure_closure(`closure`.wrapAsGeneric()))}
+        public static func genericInOutClosure<T>(value: Parameter<T>, closure: Parameter<(inout T) -> Void>) -> Verify { return Verify(method: .m_genericInOutClosure__value_valueclosure_closure(`value`.wrapAsGeneric(), `closure`.wrapAsGeneric()))}
     }
 
     public struct Perform {
@@ -4982,8 +4983,8 @@ open class InoutProtocolMock: InoutProtocol, Mock {
         public static func returnAndInOut(value: Parameter<Int>, perform: @escaping (inout Int) -> Void) -> Perform {
             return Perform(method: .m_returnAndInOut__value_value(`value`), performs: perform)
         }
-        public static func genericInOutClosure<T>(closure: Parameter<(inout T) -> Void>, perform: @escaping ((inout T) -> Void) -> Void) -> Perform {
-            return Perform(method: .m_genericInOutClosure__closure_closure(`closure`.wrapAsGeneric()), performs: perform)
+        public static func genericInOutClosure<T>(value: Parameter<T>, closure: Parameter<(inout T) -> Void>, perform: @escaping (inout T, (inout T) -> Void) -> Void) -> Perform {
+            return Perform(method: .m_genericInOutClosure__value_valueclosure_closure(`value`.wrapAsGeneric(), `closure`.wrapAsGeneric()), performs: perform)
         }
     }
 
