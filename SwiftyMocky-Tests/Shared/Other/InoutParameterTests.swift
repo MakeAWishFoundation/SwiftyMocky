@@ -63,19 +63,21 @@ class InoutParameterTests: XCTestCase {
         XCTAssertEqual(value, 3)
     }
     
+    typealias IntClosure = (inout Int) -> Void
+    
     func testPerformWithGenericInoutClosure() {
         let mock = InoutProtocolMock()
 
-        Perform(mock, .genericInOutClosure(value: .any(Int.self), closure: .any, perform: { value, closure in
+        var value = 0
+        Perform(mock, .genericInOutClosure(closure: .any(IntClosure.self), perform: { closure in
             closure(&value)
         }))
         
-        var value = 0
-        mock.genericInOutClosure(value: &value) { value in
+        mock.genericInOutClosure { value in
             value += 1
         }
         XCTAssertEqual(value, 1)
-        mock.genericInOutClosure(value: &value) { value in
+        mock.genericInOutClosure { value in
             value += 10
         }
         XCTAssertEqual(value, 11)
