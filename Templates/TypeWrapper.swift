@@ -70,7 +70,7 @@ class TypeWrapper {
             let wrapped = "([\\(]\(generic)\(modifiers)[\\)\\.])"
             let constraint = "([<,]\(generic)\(modifiers)[>,\\.])"
             let arrays = "([\\[:]\(generic)\(modifiers)[\\],\\.:])"
-            let tuples = "([\\(,]\(generic)\(modifiers)[,\\.\\)])"
+            let tuples = "([\\(,](inout)*\(generic)\(modifiers)[,\\.\\)])"
             let closures = "((\\-\\>)\(generic)\(modifiers)[,\\.\\)])"
             let pattern = "\(wrapped)|\(constraint)|\(arrays)|\(tuples)|\(closures)"
             guard let regex = try? NSRegularExpression(pattern: pattern) else { return false }
