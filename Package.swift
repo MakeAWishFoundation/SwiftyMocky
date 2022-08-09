@@ -18,7 +18,7 @@ let package = Package(
         .package(url: "https://github.com/luoxiu/Chalk", .exact("0.2.1")),
         .package(url: "https://github.com/kylef/Commander", .upToNextMajor(from: "0.9.1")),
         .package(url: "https://github.com/kylef/PathKit", .upToNextMajor(from: "1.0.1")),
-        .package(url: "https://github.com/jpsim/Yams", .upToNextMajor(from: "4.0.6")),
+        .package(url: "https://github.com/jpsim/Yams", .upToNextMajor(from: "5.0.1")),
     ],
     targets: [
         // XCTest Runtime libraries
