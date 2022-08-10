@@ -134,14 +134,21 @@ You need to install CLI to generate mocks - see [installation](#installation)
 
 ### 2. Installing SwiftyMocky CLI:
 
-**[Mint 🌱](https://github.com/yonaskolb/Mint)**:
+**[Homebrew 🍺](https://brew.sh/)**:
+
+```bash
+> brew tap MakeAWishFoundation/homebrew-swiftymocky
+> brew install swiftymocky
+```
+
+**DEPRECATED** ~~**[Mint 🌱](https://github.com/yonaskolb/Mint)**~~:
 
 ```bash
 > brew install mint
 > mint install MakeAWishFoundation/SwiftyMocky
 ```
 
-**[Marathon 🏃](https://github.com/JohnSundell/Marathon)**:
+**DEPRECATED** ~~**[Marathon 🏃](https://github.com/JohnSundell/Marathon)**~~:
 
 ```bash
 > marathon install MakeAWishFoundation/SwiftyMocky
