@@ -71,27 +71,27 @@ open class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
     }
 
     public var nonOptionalClosure: () -> Void {
-		get {	invocations.append(.p_nonOptionalClosure_get); return __p_nonOptionalClosure ?? givenGetterValue(.p_nonOptionalClosure_get, "AMassiveTestProtocolMock - stub value for nonOptionalClosure was not defined") }
-		set {	invocations.append(.p_nonOptionalClosure_set(.value(newValue))); __p_nonOptionalClosure = newValue }
+		get {	self.queue.sync { invocations.append(.p_nonOptionalClosure_get) }; return __p_nonOptionalClosure ?? givenGetterValue(.p_nonOptionalClosure_get, "AMassiveTestProtocolMock - stub value for nonOptionalClosure was not defined") }
+		set {	self.queue.sync { invocations.append(.p_nonOptionalClosure_set(.value(newValue))) }; __p_nonOptionalClosure = newValue }
 	}
 	private var __p_nonOptionalClosure: (() -> Void)?
 
     public var optionalClosure: (() -> Int)? {
-		get {	invocations.append(.p_optionalClosure_get); return __p_optionalClosure ?? optionalGivenGetterValue(.p_optionalClosure_get, "AMassiveTestProtocolMock - stub value for optionalClosure was not defined") }
-		set {	invocations.append(.p_optionalClosure_set(.value(newValue))); __p_optionalClosure = newValue }
+		get {	self.queue.sync { invocations.append(.p_optionalClosure_get) }; return __p_optionalClosure ?? optionalGivenGetterValue(.p_optionalClosure_get, "AMassiveTestProtocolMock - stub value for optionalClosure was not defined") }
+		set {	self.queue.sync { invocations.append(.p_optionalClosure_set(.value(newValue))) }; __p_optionalClosure = newValue }
 	}
 	private var __p_optionalClosure: (() -> Int)?
 
     public var implicitelyUnwrappedClosure: (() -> Void)! {
-		get {	invocations.append(.p_implicitelyUnwrappedClosure_get); return __p_implicitelyUnwrappedClosure ?? optionalGivenGetterValue(.p_implicitelyUnwrappedClosure_get, "AMassiveTestProtocolMock - stub value for implicitelyUnwrappedClosure was not defined") }
-		set {	invocations.append(.p_implicitelyUnwrappedClosure_set(.value(newValue))); __p_implicitelyUnwrappedClosure = newValue }
+		get {	self.queue.sync { invocations.append(.p_implicitelyUnwrappedClosure_get) }; return __p_implicitelyUnwrappedClosure ?? optionalGivenGetterValue(.p_implicitelyUnwrappedClosure_get, "AMassiveTestProtocolMock - stub value for implicitelyUnwrappedClosure was not defined") }
+		set {	self.queue.sync { invocations.append(.p_implicitelyUnwrappedClosure_set(.value(newValue))) }; __p_implicitelyUnwrappedClosure = newValue }
 	}
 	private var __p_implicitelyUnwrappedClosure: (() -> Void)?
 
 
     public static var optionalClosure: (() -> Int)? {
-		get {	AMassiveTestProtocolMock.invocations.append(.p_optionalClosure_get); return AMassiveTestProtocolMock.__p_optionalClosure ?? optionalGivenGetterValue(.p_optionalClosure_get, "AMassiveTestProtocolMock - stub value for optionalClosure was not defined") }
-		set {	AMassiveTestProtocolMock.invocations.append(.p_optionalClosure_set(.value(newValue))); AMassiveTestProtocolMock.__p_optionalClosure = newValue }
+		get {	AMassiveTestProtocolMock.self.queue.sync { invocations.append(.p_optionalClosure_get) }; return AMassiveTestProtocolMock.__p_optionalClosure ?? optionalGivenGetterValue(.p_optionalClosure_get, "AMassiveTestProtocolMock - stub value for optionalClosure was not defined") }
+		set {	AMassiveTestProtocolMock.self.queue.sync { invocations.append(.p_optionalClosure_set(.value(newValue))) }; AMassiveTestProtocolMock.__p_optionalClosure = newValue }
 	}
 	private static var __p_optionalClosure: (() -> Int)?
 
@@ -2277,7 +2277,7 @@ open class ComplicatedServiceTypeMock: ComplicatedServiceType, Mock {
     }
 
     public var youCouldOnlyGetThis: String {
-		get {	invocations.append(.p_youCouldOnlyGetThis_get); return __p_youCouldOnlyGetThis ?? givenGetterValue(.p_youCouldOnlyGetThis_get, "ComplicatedServiceTypeMock - stub value for youCouldOnlyGetThis was not defined") }
+		get {	self.queue.sync { invocations.append(.p_youCouldOnlyGetThis_get) }; return __p_youCouldOnlyGetThis ?? givenGetterValue(.p_youCouldOnlyGetThis_get, "ComplicatedServiceTypeMock - stub value for youCouldOnlyGetThis was not defined") }
 	}
 	private var __p_youCouldOnlyGetThis: (String)?
 
@@ -2729,7 +2729,7 @@ open class DateSortableMock: DateSortable, Mock {
     }
 
     public var date: Date {
-		get {	invocations.append(.p_date_get); return __p_date ?? givenGetterValue(.p_date_get, "DateSortableMock - stub value for date was not defined") }
+		get {	self.queue.sync { invocations.append(.p_date_get) }; return __p_date ?? givenGetterValue(.p_date_get, "DateSortableMock - stub value for date was not defined") }
 	}
 	private var __p_date: (Date)?
 
@@ -3447,8 +3447,8 @@ open class FailsWithKeywordArgumentsMock: FailsWithKeywordArguments, Mock {
     }
 
     public var `throw`: Error {
-		get {	invocations.append(.p_throw_get); return __p_throw ?? givenGetterValue(.p_throw_get, "FailsWithKeywordArgumentsMock - stub value for `throw` was not defined") }
-		set {	invocations.append(.p_throw_set(.value(newValue))); __p_throw = newValue }
+		get {	self.queue.sync { invocations.append(.p_throw_get) }; return __p_throw ?? givenGetterValue(.p_throw_get, "FailsWithKeywordArgumentsMock - stub value for `throw` was not defined") }
+		set {	self.queue.sync { invocations.append(.p_throw_set(.value(newValue))) }; __p_throw = newValue }
 	}
 	private var __p_throw: (Error)?
 
@@ -6149,7 +6149,7 @@ open class ProtocolWithAssociatedTypeMock<T>: ProtocolWithAssociatedType, Mock w
     }
 
     public var sequence: T {
-		get {	invocations.append(.p_sequence_get); return __p_sequence ?? givenGetterValue(.p_sequence_get, "ProtocolWithAssociatedTypeMock - stub value for sequence was not defined") }
+		get {	self.queue.sync { invocations.append(.p_sequence_get) }; return __p_sequence ?? givenGetterValue(.p_sequence_get, "ProtocolWithAssociatedTypeMock - stub value for sequence was not defined") }
 	}
 	private var __p_sequence: (T)?
 
@@ -6355,7 +6355,7 @@ open class ProtocolWithAssociatedType2Mock<ValueType>: ProtocolWithAssociatedTyp
     }
 
     public var property: String {
-		get {	invocations.append(.p_property_get); return __p_property ?? givenGetterValue(.p_property_get, "ProtocolWithAssociatedType2Mock - stub value for property was not defined") }
+		get {	self.queue.sync { invocations.append(.p_property_get) }; return __p_property ?? givenGetterValue(.p_property_get, "ProtocolWithAssociatedType2Mock - stub value for property was not defined") }
 	}
 	private var __p_property: (String)?
 
@@ -7927,7 +7927,7 @@ open class ProtocolWithGenericConstraintsMock<ContainedType>: ProtocolWithGeneri
     }
 
     public var value: ContainedType {
-		get {	invocations.append(.p_value_get); return __p_value ?? givenGetterValue(.p_value_get, "ProtocolWithGenericConstraintsMock - stub value for value was not defined") }
+		get {	self.queue.sync { invocations.append(.p_value_get) }; return __p_value ?? givenGetterValue(.p_value_get, "ProtocolWithGenericConstraintsMock - stub value for value was not defined") }
 	}
 	private var __p_value: (ContainedType)?
 
@@ -8551,12 +8551,12 @@ open class ProtocolWithInitializersMock: ProtocolWithInitializers, Mock {
     }
 
     public var param: Int {
-		get {	invocations.append(.p_param_get); return __p_param ?? givenGetterValue(.p_param_get, "ProtocolWithInitializersMock - stub value for param was not defined") }
+		get {	self.queue.sync { invocations.append(.p_param_get) }; return __p_param ?? givenGetterValue(.p_param_get, "ProtocolWithInitializersMock - stub value for param was not defined") }
 	}
 	private var __p_param: (Int)?
 
     public var other: String {
-		get {	invocations.append(.p_other_get); return __p_other ?? givenGetterValue(.p_other_get, "ProtocolWithInitializersMock - stub value for other was not defined") }
+		get {	self.queue.sync { invocations.append(.p_other_get) }; return __p_other ?? givenGetterValue(.p_other_get, "ProtocolWithInitializersMock - stub value for other was not defined") }
 	}
 	private var __p_other: (String)?
 
@@ -9447,33 +9447,33 @@ open class ProtocolWithPropertiesMock: ProtocolWithProperties, Mock, StaticMock 
     }
 
     public var name: String {
-		get {	invocations.append(.p_name_get); return __p_name ?? givenGetterValue(.p_name_get, "ProtocolWithPropertiesMock - stub value for name was not defined") }
-		set {	invocations.append(.p_name_set(.value(newValue))); __p_name = newValue }
+		get {	self.queue.sync { invocations.append(.p_name_get) }; return __p_name ?? givenGetterValue(.p_name_get, "ProtocolWithPropertiesMock - stub value for name was not defined") }
+		set {	self.queue.sync { invocations.append(.p_name_set(.value(newValue))) }; __p_name = newValue }
 	}
 	private var __p_name: (String)?
 
     public var email: String? {
-		get {	invocations.append(.p_email_get); return __p_email ?? optionalGivenGetterValue(.p_email_get, "ProtocolWithPropertiesMock - stub value for email was not defined") }
-		set {	invocations.append(.p_email_set(.value(newValue))); __p_email = newValue }
+		get {	self.queue.sync { invocations.append(.p_email_get) }; return __p_email ?? optionalGivenGetterValue(.p_email_get, "ProtocolWithPropertiesMock - stub value for email was not defined") }
+		set {	self.queue.sync { invocations.append(.p_email_set(.value(newValue))) }; __p_email = newValue }
 	}
 	private var __p_email: (String)?
 
     public var internalProperty: InternalType {
-		get {	invocations.append(.p_internalProperty_get); return __p_internalProperty ?? givenGetterValue(.p_internalProperty_get, "ProtocolWithPropertiesMock - stub value for internalProperty was not defined") }
-		set {	invocations.append(.p_internalProperty_set(.value(newValue))); __p_internalProperty = newValue }
+		get {	self.queue.sync { invocations.append(.p_internalProperty_get) }; return __p_internalProperty ?? givenGetterValue(.p_internalProperty_get, "ProtocolWithPropertiesMock - stub value for internalProperty was not defined") }
+		set {	self.queue.sync { invocations.append(.p_internalProperty_set(.value(newValue))) }; __p_internalProperty = newValue }
 	}
 	private var __p_internalProperty: (InternalType)?
 
 
     public static var name: String {
-		get {	ProtocolWithPropertiesMock.invocations.append(.p_name_get); return ProtocolWithPropertiesMock.__p_name ?? givenGetterValue(.p_name_get, "ProtocolWithPropertiesMock - stub value for name was not defined") }
-		set {	ProtocolWithPropertiesMock.invocations.append(.p_name_set(.value(newValue))); ProtocolWithPropertiesMock.__p_name = newValue }
+		get {	ProtocolWithPropertiesMock.self.queue.sync { invocations.append(.p_name_get) }; return ProtocolWithPropertiesMock.__p_name ?? givenGetterValue(.p_name_get, "ProtocolWithPropertiesMock - stub value for name was not defined") }
+		set {	ProtocolWithPropertiesMock.self.queue.sync { invocations.append(.p_name_set(.value(newValue))) }; ProtocolWithPropertiesMock.__p_name = newValue }
 	}
 	private static var __p_name: (String)?
 
     public static var defaultEmail: String? {
-		get {	ProtocolWithPropertiesMock.invocations.append(.p_defaultEmail_get); return ProtocolWithPropertiesMock.__p_defaultEmail ?? optionalGivenGetterValue(.p_defaultEmail_get, "ProtocolWithPropertiesMock - stub value for defaultEmail was not defined") }
-		set {	ProtocolWithPropertiesMock.invocations.append(.p_defaultEmail_set(.value(newValue))); ProtocolWithPropertiesMock.__p_defaultEmail = newValue }
+		get {	ProtocolWithPropertiesMock.self.queue.sync { invocations.append(.p_defaultEmail_get) }; return ProtocolWithPropertiesMock.__p_defaultEmail ?? optionalGivenGetterValue(.p_defaultEmail_get, "ProtocolWithPropertiesMock - stub value for defaultEmail was not defined") }
+		set {	ProtocolWithPropertiesMock.self.queue.sync { invocations.append(.p_defaultEmail_set(.value(newValue))) }; ProtocolWithPropertiesMock.__p_defaultEmail = newValue }
 	}
 	private static var __p_defaultEmail: (String)?
 
@@ -9874,7 +9874,7 @@ open class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, Stati
 
 
     public static var staticProperty: String {
-		get {	ProtocolWithStaticMembersMock.invocations.append(.p_staticProperty_get); return ProtocolWithStaticMembersMock.__p_staticProperty ?? givenGetterValue(.p_staticProperty_get, "ProtocolWithStaticMembersMock - stub value for staticProperty was not defined") }
+		get {	ProtocolWithStaticMembersMock.self.queue.sync { invocations.append(.p_staticProperty_get) }; return ProtocolWithStaticMembersMock.__p_staticProperty ?? givenGetterValue(.p_staticProperty_get, "ProtocolWithStaticMembersMock - stub value for staticProperty was not defined") }
 	}
 	private static var __p_staticProperty: (String)?
 
@@ -10175,8 +10175,8 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
     }
 
     public var something: Any {
-		get {	invocations.append(.p_something_get); return __p_something ?? givenGetterValue(.p_something_get, "ProtocolWithSubscriptsMock - stub value for something was not defined") }
-		set {	invocations.append(.p_something_set(.value(newValue))); __p_something = newValue }
+		get {	self.queue.sync { invocations.append(.p_something_get) }; return __p_something ?? givenGetterValue(.p_something_get, "ProtocolWithSubscriptsMock - stub value for something was not defined") }
+		set {	self.queue.sync { invocations.append(.p_something_set(.value(newValue))) }; __p_something = newValue }
 	}
 	private var __p_something: (Any)?
 
@@ -11175,7 +11175,7 @@ open class ProtocolWithWhereAfterDefinitionMock<T>: ProtocolWithWhereAfterDefini
     }
 
     public var sequence: T {
-		get {	invocations.append(.p_sequence_get); return __p_sequence ?? givenGetterValue(.p_sequence_get, "ProtocolWithWhereAfterDefinitionMock - stub value for sequence was not defined") }
+		get {	self.queue.sync { invocations.append(.p_sequence_get) }; return __p_sequence ?? givenGetterValue(.p_sequence_get, "ProtocolWithWhereAfterDefinitionMock - stub value for sequence was not defined") }
 	}
 	private var __p_sequence: (T)?
 
@@ -12293,13 +12293,13 @@ open class ShouldAllowNoStubDefinedMock: ShouldAllowNoStubDefined, Mock, StaticM
     }
 
     public var property: Int? {
-		get {	invocations.append(.p_property_get); return __p_property ?? optionalGivenGetterValue(.p_property_get, "ShouldAllowNoStubDefinedMock - stub value for property was not defined") }
+		get {	self.queue.sync { invocations.append(.p_property_get) }; return __p_property ?? optionalGivenGetterValue(.p_property_get, "ShouldAllowNoStubDefinedMock - stub value for property was not defined") }
 	}
 	private var __p_property: (Int)?
 
 
     public static var property: Int? {
-		get {	ShouldAllowNoStubDefinedMock.invocations.append(.p_property_get); return ShouldAllowNoStubDefinedMock.__p_property ?? optionalGivenGetterValue(.p_property_get, "ShouldAllowNoStubDefinedMock - stub value for property was not defined") }
+		get {	ShouldAllowNoStubDefinedMock.self.queue.sync { invocations.append(.p_property_get) }; return ShouldAllowNoStubDefinedMock.__p_property ?? optionalGivenGetterValue(.p_property_get, "ShouldAllowNoStubDefinedMock - stub value for property was not defined") }
 	}
 	private static var __p_property: (Int)?
 
@@ -12847,31 +12847,31 @@ open class SimpleProtocolThatInheritsOtherProtocolsMock: SimpleProtocolThatInher
     }
 
     public var property: String {
-		get {	invocations.append(.p_property_get); return __p_property ?? givenGetterValue(.p_property_get, "SimpleProtocolThatInheritsOtherProtocolsMock - stub value for property was not defined") }
-		set {	invocations.append(.p_property_set(.value(newValue))); __p_property = newValue }
+		get {	self.queue.sync { invocations.append(.p_property_get) }; return __p_property ?? givenGetterValue(.p_property_get, "SimpleProtocolThatInheritsOtherProtocolsMock - stub value for property was not defined") }
+		set {	self.queue.sync { invocations.append(.p_property_set(.value(newValue))) }; __p_property = newValue }
 	}
 	private var __p_property: (String)?
 
     public var weakProperty: AnyObject! {
-		get {	invocations.append(.p_weakProperty_get); return __p_weakProperty ?? optionalGivenGetterValue(.p_weakProperty_get, "SimpleProtocolThatInheritsOtherProtocolsMock - stub value for weakProperty was not defined") }
-		set {	invocations.append(.p_weakProperty_set(.value(newValue))); __p_weakProperty = newValue }
+		get {	self.queue.sync { invocations.append(.p_weakProperty_get) }; return __p_weakProperty ?? optionalGivenGetterValue(.p_weakProperty_get, "SimpleProtocolThatInheritsOtherProtocolsMock - stub value for weakProperty was not defined") }
+		set {	self.queue.sync { invocations.append(.p_weakProperty_set(.value(newValue))) }; __p_weakProperty = newValue }
 	}
 	private var __p_weakProperty: (AnyObject)?
 
     public var propertyGetOnly: String {
-		get {	invocations.append(.p_propertyGetOnly_get); return __p_propertyGetOnly ?? givenGetterValue(.p_propertyGetOnly_get, "SimpleProtocolThatInheritsOtherProtocolsMock - stub value for propertyGetOnly was not defined") }
+		get {	self.queue.sync { invocations.append(.p_propertyGetOnly_get) }; return __p_propertyGetOnly ?? givenGetterValue(.p_propertyGetOnly_get, "SimpleProtocolThatInheritsOtherProtocolsMock - stub value for propertyGetOnly was not defined") }
 	}
 	private var __p_propertyGetOnly: (String)?
 
     public var propertyOptional: Int? {
-		get {	invocations.append(.p_propertyOptional_get); return __p_propertyOptional ?? optionalGivenGetterValue(.p_propertyOptional_get, "SimpleProtocolThatInheritsOtherProtocolsMock - stub value for propertyOptional was not defined") }
-		set {	invocations.append(.p_propertyOptional_set(.value(newValue))); __p_propertyOptional = newValue }
+		get {	self.queue.sync { invocations.append(.p_propertyOptional_get) }; return __p_propertyOptional ?? optionalGivenGetterValue(.p_propertyOptional_get, "SimpleProtocolThatInheritsOtherProtocolsMock - stub value for propertyOptional was not defined") }
+		set {	self.queue.sync { invocations.append(.p_propertyOptional_set(.value(newValue))) }; __p_propertyOptional = newValue }
 	}
 	private var __p_propertyOptional: (Int)?
 
     public var propertyImplicit: Int! {
-		get {	invocations.append(.p_propertyImplicit_get); return __p_propertyImplicit ?? optionalGivenGetterValue(.p_propertyImplicit_get, "SimpleProtocolThatInheritsOtherProtocolsMock - stub value for propertyImplicit was not defined") }
-		set {	invocations.append(.p_propertyImplicit_set(.value(newValue))); __p_propertyImplicit = newValue }
+		get {	self.queue.sync { invocations.append(.p_propertyImplicit_get) }; return __p_propertyImplicit ?? optionalGivenGetterValue(.p_propertyImplicit_get, "SimpleProtocolThatInheritsOtherProtocolsMock - stub value for propertyImplicit was not defined") }
+		set {	self.queue.sync { invocations.append(.p_propertyImplicit_set(.value(newValue))) }; __p_propertyImplicit = newValue }
 	}
 	private var __p_propertyImplicit: (Int)?
 
@@ -13511,7 +13511,7 @@ open class SimpleProtocolWithBothMethodsAndPropertiesMock: SimpleProtocolWithBot
     }
 
     public var property: String {
-		get {	invocations.append(.p_property_get); return __p_property ?? givenGetterValue(.p_property_get, "SimpleProtocolWithBothMethodsAndPropertiesMock - stub value for property was not defined") }
+		get {	self.queue.sync { invocations.append(.p_property_get) }; return __p_property ?? givenGetterValue(.p_property_get, "SimpleProtocolWithBothMethodsAndPropertiesMock - stub value for property was not defined") }
 	}
 	private var __p_property: (String)?
 
@@ -13990,31 +13990,31 @@ open class SimpleProtocolWithPropertiesMock: SimpleProtocolWithProperties, Mock 
     }
 
     public var property: String {
-		get {	invocations.append(.p_property_get); return __p_property ?? givenGetterValue(.p_property_get, "SimpleProtocolWithPropertiesMock - stub value for property was not defined") }
-		set {	invocations.append(.p_property_set(.value(newValue))); __p_property = newValue }
+		get {	self.queue.sync { invocations.append(.p_property_get) }; return __p_property ?? givenGetterValue(.p_property_get, "SimpleProtocolWithPropertiesMock - stub value for property was not defined") }
+		set {	self.queue.sync { invocations.append(.p_property_set(.value(newValue))) }; __p_property = newValue }
 	}
 	private var __p_property: (String)?
 
     public var weakProperty: AnyObject! {
-		get {	invocations.append(.p_weakProperty_get); return __p_weakProperty ?? optionalGivenGetterValue(.p_weakProperty_get, "SimpleProtocolWithPropertiesMock - stub value for weakProperty was not defined") }
-		set {	invocations.append(.p_weakProperty_set(.value(newValue))); __p_weakProperty = newValue }
+		get {	self.queue.sync { invocations.append(.p_weakProperty_get) }; return __p_weakProperty ?? optionalGivenGetterValue(.p_weakProperty_get, "SimpleProtocolWithPropertiesMock - stub value for weakProperty was not defined") }
+		set {	self.queue.sync { invocations.append(.p_weakProperty_set(.value(newValue))) }; __p_weakProperty = newValue }
 	}
 	private var __p_weakProperty: (AnyObject)?
 
     public var propertyGetOnly: String {
-		get {	invocations.append(.p_propertyGetOnly_get); return __p_propertyGetOnly ?? givenGetterValue(.p_propertyGetOnly_get, "SimpleProtocolWithPropertiesMock - stub value for propertyGetOnly was not defined") }
+		get {	self.queue.sync { invocations.append(.p_propertyGetOnly_get) }; return __p_propertyGetOnly ?? givenGetterValue(.p_propertyGetOnly_get, "SimpleProtocolWithPropertiesMock - stub value for propertyGetOnly was not defined") }
 	}
 	private var __p_propertyGetOnly: (String)?
 
     public var propertyOptional: Int? {
-		get {	invocations.append(.p_propertyOptional_get); return __p_propertyOptional ?? optionalGivenGetterValue(.p_propertyOptional_get, "SimpleProtocolWithPropertiesMock - stub value for propertyOptional was not defined") }
-		set {	invocations.append(.p_propertyOptional_set(.value(newValue))); __p_propertyOptional = newValue }
+		get {	self.queue.sync { invocations.append(.p_propertyOptional_get) }; return __p_propertyOptional ?? optionalGivenGetterValue(.p_propertyOptional_get, "SimpleProtocolWithPropertiesMock - stub value for propertyOptional was not defined") }
+		set {	self.queue.sync { invocations.append(.p_propertyOptional_set(.value(newValue))) }; __p_propertyOptional = newValue }
 	}
 	private var __p_propertyOptional: (Int)?
 
     public var propertyImplicit: Int! {
-		get {	invocations.append(.p_propertyImplicit_get); return __p_propertyImplicit ?? optionalGivenGetterValue(.p_propertyImplicit_get, "SimpleProtocolWithPropertiesMock - stub value for propertyImplicit was not defined") }
-		set {	invocations.append(.p_propertyImplicit_set(.value(newValue))); __p_propertyImplicit = newValue }
+		get {	self.queue.sync { invocations.append(.p_propertyImplicit_get) }; return __p_propertyImplicit ?? optionalGivenGetterValue(.p_propertyImplicit_get, "SimpleProtocolWithPropertiesMock - stub value for propertyImplicit was not defined") }
+		set {	self.queue.sync { invocations.append(.p_propertyImplicit_set(.value(newValue))) }; __p_propertyImplicit = newValue }
 	}
 	private var __p_propertyImplicit: (Int)?
 
@@ -15278,7 +15278,7 @@ open class ThrowingVarProtocolMock: ThrowingVarProtocol, Mock {
 
     @available(iOS 15.0.0, macOS 12.0.0, tvOS 15.0.0, *)
 		public var testVariableThatThrow: Bool {
-		get {	invocations.append(.p_testVariableThatThrow_get); return __p_testVariableThatThrow ?? givenGetterValue(.p_testVariableThatThrow_get, "ThrowingVarProtocolMock - stub value for testVariableThatThrow was not defined") }
+		get {	self.queue.sync { invocations.append(.p_testVariableThatThrow_get) }; return __p_testVariableThatThrow ?? givenGetterValue(.p_testVariableThatThrow_get, "ThrowingVarProtocolMock - stub value for testVariableThatThrow was not defined") }
 	}
 	private var __p_testVariableThatThrow: (Bool)?
 
@@ -16543,7 +16543,7 @@ open class ComposedServiceMock: ComposedService, Mock {
     }
 
     public var youCouldOnlyGetThis: String {
-		get {	invocations.append(.p_youCouldOnlyGetThis_get); return __p_youCouldOnlyGetThis ?? givenGetterValue(.p_youCouldOnlyGetThis_get, "ComposedServiceMock - stub value for youCouldOnlyGetThis was not defined") }
+		get {	self.queue.sync { invocations.append(.p_youCouldOnlyGetThis_get) }; return __p_youCouldOnlyGetThis ?? givenGetterValue(.p_youCouldOnlyGetThis_get, "ComposedServiceMock - stub value for youCouldOnlyGetThis was not defined") }
 	}
 	private var __p_youCouldOnlyGetThis: (String)?
 
