@@ -162,6 +162,30 @@ class SimpleProtocolsTests: XCTestCase {
         XCTAssertEqual(mock.propertyImplicit, 7)
     }
 
+    func test_simpleProtocol_with_properties_threadSafe() {
+        let mock = SimpleProtocolWithPropertiesMock()
+
+        // Can use explicit values, or Count convenience static members as Count
+        // Check property getters invocations
+        Verify(mock, 0, .property)
+
+        Verify(mock, .never, .property)
+        // Check property setters invocations
+        Verify(mock, .never, .property(set: .any))
+
+        // We should set all initial values for non optional parameters and implicitly unwrapped optional parameters
+        mock.property = "test"
+        Given(mock, .propertyGetOnly(getter: "get only ;)"))
+        Given(mock, .propertyOptional(getter: nil))
+        mock.propertyImplicit = 1
+
+        // Try accessing the property on many threads simultaneously.
+        DispatchQueue.concurrentPerform(iterations: 10_000) { i in
+          let _ = mock.property
+        }
+
+    }
+
     func test_simpleProtocol_with_both() {
         let mock = SimpleProtocolWithBothMethodsAndPropertiesMock()
 
