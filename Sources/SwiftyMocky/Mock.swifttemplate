@@ -239,6 +239,16 @@ class Helpers {
             return []
         }
     }
+    /// Extract all root typealiases from "annotations"
+    static func extractRootTypealiases(from annotated: SourceryRuntime.Annotated) -> [String] {
+        if let types = annotated.annotations["roottypealias"] as? [String] {
+            return types.reversed()
+        } else if let type = annotated.annotations["root-typealias"] as? String {
+            return [type]
+        } else {
+            return []
+        }
+    }
     static func extractGenericsList(_ associatedTypes: [String]?) -> [String] {
         return associatedTypes?.flatMap {
             split($0, byFirstOccurenceOf: " where ").0.replacingOccurrences(of: " ", with: "").characters.split(separator: ":").map(String.init).first
@@ -1613,6 +1623,7 @@ _%>
     let associatedTypes: [String]? = Helpers.extractAssociatedTypes(from: aProtocol)
     let attributes: String = Helpers.extractAttributes(from: type.attributes)
     let typeAliases: [String] = Helpers.extractTypealiases(from: aProtocol)
+    let rootTypeAliases: [String] = Helpers.extractRootTypealiases(from: aProtocol)
     let genericTypesModifier: String = Helpers.extractGenericTypesModifier(associatedTypes)
     let genericTypesConstraints: String = Helpers.extractGenericTypesConstraints(associatedTypes)
     let allSubscripts = aProtocol.allSubscripts
@@ -1632,6 +1643,9 @@ _%>
     let conformsToMock = !allMethods.isEmpty || !allVariables.isEmpty -%><%_ -%><%_ -%>
 <%_ if autoMockable { -%>
 // MARK: - <%= type.name %>
+<%_ for rootTypeAlias in rootTypeAliases { -%>
+public typealias <%= rootTypeAlias %>
+<%_ } %> <%_ -%>
 <%= attributes %>
 <%= accessModifier %> class <%= type.name %><%= mockTypeName %><%= genericTypesModifier %>:<%= inheritFromNSObject ? " NSObject," : "" %> <%= type.name %>, Mock<%= conformsToStaticMock ? ", StaticMock" : "" %><%= genericTypesConstraints %> {
     public init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
