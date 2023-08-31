@@ -36,7 +36,7 @@ class Helpers {
     }
     static func extractGenericsList(_ associatedTypes: [String]?) -> [String] {
         return associatedTypes?.flatMap {
-            split($0, byFirstOccurenceOf: " where ").0.replacingOccurrences(of: " ", with: "").characters.split(separator: ":").map(String.init).first
+            split($0, byFirstOccurenceOf: " where ").0.replacingOccurrences(of: " ", with: "").split(separator: ":").map(String.init).first
         }.map { "\($0)" } ?? []
     }
     static func extractGenericTypesModifier(_ associatedTypes: [String]?) -> String {
@@ -48,9 +48,9 @@ class Helpers {
         guard let all = associatedTypes else { return "" }
         let constraints = all.flatMap { t -> String? in
             let splitted = split(t, byFirstOccurenceOf: " where ")
-            let constraint = splitted.0.replacingOccurrences(of: " ", with: "").characters.split(separator: ":").map(String.init)
+            let constraint = splitted.0.replacingOccurrences(of: " ", with: "").split(separator: ":").map(String.init)
             guard constraint.count == 2 else { return nil }
-            let adopts = constraint[1].characters.split(separator: ",").map(String.init)
+            let adopts = constraint[1].split(separator: ",").map(String.init)
             var mapped = adopts.map { "\(constraint[0]): \($0)" }
             if !splitted.1.isEmpty {
                 mapped.append(splitted.1)
