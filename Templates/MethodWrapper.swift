@@ -641,7 +641,7 @@ class MethodWrapper {
         genPart.removeFirst()
         genPart.removeLast()
 
-        let parts = genPart.replacingOccurrences(of: " ", with: "").characters.split(separator: ",").map(String.init)
+        let parts = genPart.replacingOccurrences(of: " ", with: "").split(separator: ",").map(String.init)
         return parts.map { stripGenPart(part: $0) }
     }
 
@@ -656,7 +656,7 @@ class MethodWrapper {
         genPart.removeFirst()
         genPart.removeLast()
 
-        let parts = genPart.replacingOccurrences(of: " ", with: "").characters.split(separator: ",").map(String.init)
+        let parts = genPart.replacingOccurrences(of: " ", with: "").split(separator: ",").map(String.init)
         return parts.filter {
             let components = $0.components(separatedBy: ":")
             return (components.count == 2 || !filterSingle) && generics.contains(components[0])
@@ -678,7 +678,7 @@ class MethodWrapper {
     }
 
     private func stripGenPart(part: String) -> String {
-        return part.characters.split(separator: ":").map(String.init).first!
+        return part.split(separator: ":").map(String.init).first!
     }
 
     private func returnTypeStripped(_ method: SourceryRuntime.Method, type: Bool = false) -> String {
