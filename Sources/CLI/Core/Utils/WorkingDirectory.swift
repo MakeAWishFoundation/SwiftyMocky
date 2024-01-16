@@ -6,10 +6,10 @@ import Yams
 
 class WorkingDirectory {
 
-    let identifier = UUID().uuidString
+    var identifier = ""
     var path: Path { return root + Path(".mocky\(identifier)") }
     var template: Path { return root + Path(".mocky\(identifier)/.template.swifttemplate") }
-    var config: Path { return root + Path(".mocky\(identifier)/.config.yml.tmp") }
+    var config: Path { return root + Path(".mocky\(identifier)/.sourcery.yml") }
 
     private let root: Path
 
@@ -21,7 +21,8 @@ class WorkingDirectory {
 
     // MARK: - Actions
 
-    func createDirIfNeeded() throws {
+    func createDirIfNeeded(identifier: String = "") throws {
+        self.identifier = identifier
         guard !path.exists else { return }
         try path.mkdir()
     }

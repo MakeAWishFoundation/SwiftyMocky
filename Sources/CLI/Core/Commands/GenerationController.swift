@@ -55,15 +55,11 @@ final class GenerationController: GenerationCommand {
     // MARK: - Generation
 
     func generate(disableCache: Bool = false, verbose: Bool = false) throws {
-        // Create temporary build directory
-        try temp.createDirIfNeeded()
-
-        // Cleanup
-        defer { try? cleanup() }
-
         // Generate mocks for every MockConfiguration
         try mockfile.allMembers.forEach { key in
             guard let mock = mockfile[dynamicMember: key] else { return }
+            // Create temporary build directory
+            try temp.createDirIfNeeded(identifier: key)
             try writeTemplete(for: mock)
             Message.actionHeader("Processing mock: \(key) ...")
             try generate(mock, disableCache, verbose, false)
@@ -72,7 +68,7 @@ final class GenerationController: GenerationCommand {
 
     func generate(mockName: String, disableCache: Bool, verbose: Bool, watch: Bool) throws {
         // Create temporary build directory
-        try temp.createDirIfNeeded()
+        try temp.createDirIfNeeded(identifier: mockName)
 
         // Cleanup
         defer { try? cleanup() }
@@ -102,38 +98,9 @@ final class GenerationController: GenerationCommand {
     func generate(_ mock: MockConfiguration, _ disableCache: Bool, _ verbose: Bool, _ watch: Bool) throws {
         let generateMocks = mock.configuration(template: temp.template)
         try temp.create(config: generateMocks)
-        var arguments = [String]()
-
-        arguments += ["--config", "\"\(temp.config.string)\""]
-
-        if disableCache {
-            arguments += ["--disableCache"]
-        }
-        if verbose {
-            arguments += ["--verbose"]
-        }
-        if watch {
-            arguments += ["--watch"]
-        }
-
-        Message.info("Using sourcery command: \(sourceryCommand)")
-
-        #if os(macOS)
-        try shellOut(
-            to: sourceryCommand,
-            arguments: arguments,
-            at: root.string,
-            outputHandle: outputHandle
-        )
-        #else
-        let resultString = try shellOut(
-            to: sourceryCommand,
-            arguments: arguments,
-            at: root.string
-        )
-        print(resultString)
-        #endif
-
+        
+        print(temp.config.string)
+        
         if missingAutoMockable(for: mock) {
             Message.warning("No mocks generated, haven't found any \'AutoMockable\' protocols.")
             let resolutions = [
@@ -145,7 +112,7 @@ final class GenerationController: GenerationCommand {
             Message.success("Generation done.")
         }
 
-        try processCustomSourceryConfigurations(mock, disableCache, verbose, watch)
+        //try processCustomSourceryConfigurations(mock, disableCache, verbose, watch)
     }
 
     func processCustomSourceryConfigurations(
