@@ -4,6 +4,7 @@ class VariableWrapper {
     var readonly: Bool { return variable.writeAccess.isEmpty }
     var privatePrototypeName: String { return "__p_\(variable.name)".replacingOccurrences(of: "`", with: "") }
     var casesCount: Int { return readonly ? 1 : 2 }
+    let current: Current
 
     var accessModifier: String {
         // TODO: Fix access levels for SwiftyPrototype
@@ -54,11 +55,12 @@ class VariableWrapper {
         }
         return "private \(staticModifier)var \(privatePrototypeName): \(typeName)?"
     }
-    var nestedType: String { return "\(TypeWrapper(variable.typeName).nestedParameter)" }
+    var nestedType: String { return "\(TypeWrapper(variable.typeName, current: current).nestedParameter)" }
 
-    init(_ variable: SourceryRuntime.Variable, scope: String) {
+    init(_ variable: SourceryRuntime.Variable, scope: String, current: Current) {
         self.variable = variable
         self.scope = scope
+        self.current = current
     }
 
     func compareCases() -> String {
@@ -107,7 +109,7 @@ class VariableWrapper {
 
     // Given
     func givenConstructorName(prefix: String = "") -> String {
-        return "\(attributes)static func \(variable.name)(getter defaultValue: \(TypeWrapper(variable.typeName).stripped)...) -> \(prefix)PropertyStub"
+        return "\(attributes)static func \(variable.name)(getter defaultValue: \(TypeWrapper(variable.typeName, current: current).stripped)...) -> \(prefix)PropertyStub"
     }
 
     func givenConstructor(prefix: String = "") -> String {
