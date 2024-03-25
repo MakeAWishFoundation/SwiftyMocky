@@ -40,6 +40,33 @@ func replacingSelf(_ value: String, current: Current) -> String {
         .replacingOccurrences(of: ",Self?", with: ",\(current.selfType)?")
 }
 
+class MethodRegistrar {
+    var registered: [String: Int] = [:]
+    var suffixes: [String: Int] = [:]
+    var suffixesWithoutReturnType: [String: Int] = [:]
+
+    func register(_ name: String, _ uniqueName: String, _ uniqueNameWithReturnType: String) {
+        if let count = registered[name] {
+            registered[name] = count + 1
+            suffixes[uniqueNameWithReturnType] = count + 1
+        } else {
+            registered[name] = 1
+            suffixes[uniqueNameWithReturnType] = 1
+        }
+
+        if let count = suffixesWithoutReturnType[uniqueName] {
+            suffixesWithoutReturnType[uniqueName] = count + 1
+        } else {
+            suffixesWithoutReturnType[uniqueName] = 1
+        }
+    }
+
+    func returnTypeMatters(uniqueName: String) -> Bool {
+        let count = suffixesWithoutReturnType[uniqueName] ?? 0
+        return count > 1
+    }
+}
+
 class MethodWrapper {
     private var noStubDefinedMessage: String {
         let methodName = method.name.condenseWhitespace()
