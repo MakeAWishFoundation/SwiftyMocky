@@ -1,14 +1,32 @@
+class SubscriptRegistrar {
+    var registered: [String: Int] = [:]
+    var namesWithoutReturnType: [String: Int] = [:]
+    var suffixes: [String: Int] = [:]
+
+    func register(_ name: String, _ uniqueName: String) {
+        let count = registered[name] ?? 0
+        registered[name] = count + 1
+        suffixes[uniqueName] = count + 1
+    }
+    func register(short name: String) {
+        let count = namesWithoutReturnType[name] ?? 0
+        namesWithoutReturnType[name] = count + 1
+    }
+}
+
 class SubscriptWrapper {
     let wrapped: SourceryRuntime.Subscript
     var readonly: Bool { return !wrapped.isMutable }
-    var wrappedParameters: [ParameterWrapper] { return wrapped.parameters.map { ParameterWrapper($0) } }
+    var wrappedParameters: [ParameterWrapper] { return wrapped.parameters.map { ParameterWrapper($0, current: current) } }
     var casesCount: Int { return readonly ? 1 : 2 }
-    var nestedType: String { return "\(TypeWrapper(wrapped.returnTypeName).nestedParameter)" }
+    var nestedType: String { return "\(TypeWrapper(wrapped.returnTypeName, current: current).nestedParameter)" }
     let associatedTypes: [String]?
     let genericTypesList: [String]
     let genericTypesModifier: String?
     let whereClause: String
     var hasAvailability: Bool { wrapped.attributes["available"]?.isEmpty == false }
+    let current: Current
+    let subscriptRegistrar: SubscriptRegistrar
 
     private var methodAttributes: String {
         return Helpers.extractAttributes(from: self.wrapped.attributes, filterOutStartingWith: ["mutating", "@inlinable"])
@@ -19,34 +37,17 @@ class SubscriptWrapper {
 
     private let noStubDefinedMessage = "Stub return value not specified for subscript. Use given first."
 
-    private static var registered: [String: Int] = [:]
-    private static var namesWithoutReturnType: [String: Int] = [:]
-    private static var suffixes: [String: Int] = [:]
-    public static func clear() -> String {
-        SubscriptWrapper.registered = [:]
-        SubscriptWrapper.suffixes = [:]
-        namesWithoutReturnType = [:]
-        return ""
-    }
-    static func register(_ name: String, _ uniqueName: String) {
-        let count = SubscriptWrapper.registered[name] ?? 0
-        SubscriptWrapper.registered[name] = count + 1
-        SubscriptWrapper.suffixes[uniqueName] = count + 1
-    }
-    static func register(short name: String) {
-        let count = SubscriptWrapper.namesWithoutReturnType[name] ?? 0
-        SubscriptWrapper.namesWithoutReturnType[name] = count + 1
-    }
-
     func register() {
-        SubscriptWrapper.register(registrationName("get"),uniqueName)
-        SubscriptWrapper.register(short: shortName)
+        subscriptRegistrar.register(registrationName("get"),uniqueName)
+        subscriptRegistrar.register(short: shortName)
         guard !readonly else { return }
-        SubscriptWrapper.register(registrationName("set"),uniqueName)
+        subscriptRegistrar.register(registrationName("set"),uniqueName)
     }
 
-    init(_ wrapped: SourceryRuntime.Subscript) {
+    init(_ wrapped: SourceryRuntime.Subscript, current: Current, subscriptRegistrar: SubscriptRegistrar) {
         self.wrapped = wrapped
+        self.current = current
+        self.subscriptRegistrar = subscriptRegistrar
         associatedTypes = Helpers.extractAssociatedTypes(from: wrapped)
         genericTypesList = Helpers.extractGenericsList(associatedTypes)
         whereClause = Helpers.extractWhereClause(from: wrapped) ?? ""
@@ -64,9 +65,9 @@ class SubscriptWrapper {
     var uniqueName: String { return "\(shortName) -> \(wrapped.returnTypeName)\(self.whereClause)" }
 
     private func nameSuffix(_ accessor: String) -> String {
-        guard let count = SubscriptWrapper.registered[registrationName(accessor)] else { return "" }
+        guard let count = subscriptRegistrar.registered[registrationName(accessor)] else { return "" }
         guard count > 1 else { return "" }
-        guard let index = SubscriptWrapper.suffixes[uniqueName] else { return "" }
+        guard let index = subscriptRegistrar.suffixes[uniqueName] else { return "" }
         return "_\(index)"
     }
 
@@ -151,7 +152,7 @@ class SubscriptWrapper {
 
     // Given
     func givenConstructorName() -> String {
-        let returnTypeString = returnsSelf ? replaceSelf : TypeWrapper(wrapped.returnTypeName).stripped
+        let returnTypeString = returnsSelf ? replaceSelf : TypeWrapper(wrapped.returnTypeName, current: current).stripped
         var attributes = self.methodAttributesNonObjc
         attributes = attributes.isEmpty ? "" : "\(attributes)\n\t\t"
         return "\(attributes)public static func `subscript`\(genericTypesModifier ?? "")(\(parametersForProxySignature()), willReturn: \(returnTypeString)...) -> SubscriptStub"
@@ -178,8 +179,8 @@ class SubscriptWrapper {
     }
 
     // Helpers
-    private var returnsSelf: Bool { return TypeWrapper(wrapped.returnTypeName).isSelfType }
-    private var replaceSelf: String { return Current.selfType }
+    private var returnsSelf: Bool { return TypeWrapper(wrapped.returnTypeName, current: current).isSelfType }
+    private var replaceSelf: String { return current.selfType }
     private func returnTypeStripped(type: Bool = false) -> String {
         let returnTypeRaw = "\(wrapped.returnTypeName)"
         var stripped: String = {
@@ -193,7 +194,7 @@ class SubscriptWrapper {
         return "(\(stripped)).Type"
     }
     private func returnTypeMatters() -> Bool {
-        let count = SubscriptWrapper.namesWithoutReturnType[shortName] ?? 0
+        let count = subscriptRegistrar.namesWithoutReturnType[shortName] ?? 0
         return count > 1
     }
 
@@ -212,12 +213,12 @@ class SubscriptWrapper {
             return param.nestedType
         }.joined(separator: ", ")
         guard set else { return params }
-        let newValue = TypeWrapper(wrapped.returnTypeName).isGeneric(generics) ? "Parameter<GenericAttribute>" : nestedType
+        let newValue = TypeWrapper(wrapped.returnTypeName, current: current).isGeneric(generics) ? "Parameter<GenericAttribute>" : nestedType
         return "\(params), \(newValue)"
     }
     private func parametersForProxyInit(set: Bool = false) -> String {
         let generics = getGenerics()
-        let newValue = TypeWrapper(wrapped.returnTypeName).isGeneric(generics) ? "newValue.wrapAsGeneric()" : "newValue"
+        let newValue = TypeWrapper(wrapped.returnTypeName, current: current).isGeneric(generics) ? "newValue.wrapAsGeneric()" : "newValue"
         return wrappedParameters.map { "\($0.wrappedForProxy(generics, hasAvailability))" }.joined(separator: ", ") + (set ? ", \(newValue)" : "")
     }
     private func parametersForProxySignature(set: Bool = false) -> String {
@@ -229,7 +230,7 @@ class SubscriptWrapper {
     private func parametersForMethodCall(set: Bool = false) -> String {
         let generics = getGenerics()
         let params = wrappedParameters.map { $0.wrappedForCalls(generics, hasAvailability) }.joined(separator: ", ")
-        let postfix = TypeWrapper(wrapped.returnTypeName).isGeneric(generics) ? ".wrapAsGeneric()" : ""
+        let postfix = TypeWrapper(wrapped.returnTypeName, current: current).isGeneric(generics) ? ".wrapAsGeneric()" : ""
         return !set ? params : "\(params), \(nestedType).value(newValue)\(postfix)"
     }
 }

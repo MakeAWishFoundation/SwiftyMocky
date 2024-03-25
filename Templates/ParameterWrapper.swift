@@ -2,6 +2,7 @@ class ParameterWrapper {
     let parameter: MethodParameter
 
     var isVariadic = false
+    let current: Current
 
     var wrappedForCall: String {
         let typeString = "\(type.actualTypeName ?? type)"
@@ -14,13 +15,13 @@ class ParameterWrapper {
         }
     }
     var nestedType: String {
-        return "\(TypeWrapper(type, isVariadic).nestedParameter)"
+        return "\(TypeWrapper(type, isVariadic, current: current).nestedParameter)"
     }
     var justType: String {
-        return "\(TypeWrapper(type, isVariadic).replacingSelf())"
+        return "\(TypeWrapper(type, isVariadic, current: current).replacingSelf())"
     }
     var justPerformType: String {
-        return "\(TypeWrapper(type, isVariadic).replacingSelfRespectingVariadic())".replacingOccurrences(of: "!", with: "?")
+        return "\(TypeWrapper(type, isVariadic, current: current).replacingSelfRespectingVariadic())".replacingOccurrences(of: "!", with: "?")
     }
     var genericType: String {
         return isVariadic ? "Parameter<[GenericAttribute]>" : "Parameter<GenericAttribute>"
@@ -46,13 +47,14 @@ class ParameterWrapper {
         return "results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: \(lhsName), rhs: \(rhsName), with: matcher), \(lhsName), \(rhsName), \"\(labelAndName())\"))"
     }
 
-    init(_ parameter: SourceryRuntime.MethodParameter, _ variadics: [String] = []) {
+    init(_ parameter: SourceryRuntime.MethodParameter, _ variadics: [String] = [], current: Current) {
         self.parameter = parameter
         self.isVariadic = !variadics.isEmpty && variadics.contains(parameter.name)
+        self.current = current
     }
 
     func isGeneric(_ types: [String]) -> Bool {
-        return TypeWrapper(type).isGeneric(types)
+        return TypeWrapper(type, current: current).isGeneric(types)
     }
 
     func wrappedForProxy(_ generics: [String], _ availability: Bool = false) -> String {
