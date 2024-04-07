@@ -1,43 +1,70 @@
-func replacingSelf(_ value: String) -> String {
+func replacingSelf(_ value: String, current: Current) -> String {
     return value
         // TODO: proper regex here
         // default < case >
-        .replacingOccurrences(of: "<Self>", with: "<\(Current.selfType)>")
-        .replacingOccurrences(of: "<Self ", with: "<\(Current.selfType) ")
-        .replacingOccurrences(of: "<Self.", with: "<\(Current.selfType).")
-        .replacingOccurrences(of: "<Self,", with: "<\(Current.selfType),")
-        .replacingOccurrences(of: "<Self?", with: "<\(Current.selfType)?")
-        .replacingOccurrences(of: " Self>", with: " \(Current.selfType)>")
-        .replacingOccurrences(of: ",Self>", with: ",\(Current.selfType)>")
+        .replacingOccurrences(of: "<Self>", with: "<\(current.selfType)>")
+        .replacingOccurrences(of: "<Self ", with: "<\(current.selfType) ")
+        .replacingOccurrences(of: "<Self.", with: "<\(current.selfType).")
+        .replacingOccurrences(of: "<Self,", with: "<\(current.selfType),")
+        .replacingOccurrences(of: "<Self?", with: "<\(current.selfType)?")
+        .replacingOccurrences(of: " Self>", with: " \(current.selfType)>")
+        .replacingOccurrences(of: ",Self>", with: ",\(current.selfType)>")
         // (Self) -> Case
-        .replacingOccurrences(of: "(Self)", with: "(\(Current.selfType))")
-        .replacingOccurrences(of: "(Self ", with: "(\(Current.selfType) ")
-        .replacingOccurrences(of: "(Self.", with: "(\(Current.selfType).")
-        .replacingOccurrences(of: "(Self,", with: "(\(Current.selfType),")
-        .replacingOccurrences(of: "(Self?", with: "(\(Current.selfType)?")
-        .replacingOccurrences(of: " Self)", with: " \(Current.selfType))")
-        .replacingOccurrences(of: ",Self)", with: ",\(Current.selfType))")
+        .replacingOccurrences(of: "(Self)", with: "(\(current.selfType))")
+        .replacingOccurrences(of: "(Self ", with: "(\(current.selfType) ")
+        .replacingOccurrences(of: "(Self.", with: "(\(current.selfType).")
+        .replacingOccurrences(of: "(Self,", with: "(\(current.selfType),")
+        .replacingOccurrences(of: "(Self?", with: "(\(current.selfType)?")
+        .replacingOccurrences(of: " Self)", with: " \(current.selfType))")
+        .replacingOccurrences(of: ",Self)", with: ",\(current.selfType))")
         // literals
-        .replacingOccurrences(of: "[Self]", with: "[\(Current.selfType)]")
+        .replacingOccurrences(of: "[Self]", with: "[\(current.selfType)]")
         // right
-        .replacingOccurrences(of: "[Self ", with: "[\(Current.selfType) ")
-        .replacingOccurrences(of: "[Self.", with: "[\(Current.selfType).")
-        .replacingOccurrences(of: "[Self,", with: "[\(Current.selfType),")
-        .replacingOccurrences(of: "[Self:", with: "[\(Current.selfType):")
-        .replacingOccurrences(of: "[Self?", with: "[\(Current.selfType)?")
+        .replacingOccurrences(of: "[Self ", with: "[\(current.selfType) ")
+        .replacingOccurrences(of: "[Self.", with: "[\(current.selfType).")
+        .replacingOccurrences(of: "[Self,", with: "[\(current.selfType),")
+        .replacingOccurrences(of: "[Self:", with: "[\(current.selfType):")
+        .replacingOccurrences(of: "[Self?", with: "[\(current.selfType)?")
         // left
-        .replacingOccurrences(of: " Self]", with: " \(Current.selfType)]")
-        .replacingOccurrences(of: ",Self]", with: ",\(Current.selfType)]")
-        .replacingOccurrences(of: ":Self]", with: ":\(Current.selfType)]")
+        .replacingOccurrences(of: " Self]", with: " \(current.selfType)]")
+        .replacingOccurrences(of: ",Self]", with: ",\(current.selfType)]")
+        .replacingOccurrences(of: ":Self]", with: ":\(current.selfType)]")
         // unknown
-        .replacingOccurrences(of: " Self ", with: " \(Current.selfType) ")
-        .replacingOccurrences(of: " Self.", with: " \(Current.selfType).")
-        .replacingOccurrences(of: " Self,", with: " \(Current.selfType),")
-        .replacingOccurrences(of: " Self:", with: " \(Current.selfType):")
-        .replacingOccurrences(of: " Self?", with: " \(Current.selfType)?")
-        .replacingOccurrences(of: ",Self ", with: ",\(Current.selfType) ")
-        .replacingOccurrences(of: ",Self,", with: ",\(Current.selfType),")
-        .replacingOccurrences(of: ",Self?", with: ",\(Current.selfType)?")
+        .replacingOccurrences(of: " Self ", with: " \(current.selfType) ")
+        .replacingOccurrences(of: " Self.", with: " \(current.selfType).")
+        .replacingOccurrences(of: " Self,", with: " \(current.selfType),")
+        .replacingOccurrences(of: " Self:", with: " \(current.selfType):")
+        .replacingOccurrences(of: " Self?", with: " \(current.selfType)?")
+        .replacingOccurrences(of: ",Self ", with: ",\(current.selfType) ")
+        .replacingOccurrences(of: ",Self,", with: ",\(current.selfType),")
+        .replacingOccurrences(of: ",Self?", with: ",\(current.selfType)?")
+}
+
+class MethodRegistrar {
+    var registered: [String: Int] = [:]
+    var suffixes: [String: Int] = [:]
+    var suffixesWithoutReturnType: [String: Int] = [:]
+
+    func register(_ name: String, _ uniqueName: String, _ uniqueNameWithReturnType: String) {
+        if let count = registered[name] {
+            registered[name] = count + 1
+            suffixes[uniqueNameWithReturnType] = count + 1
+        } else {
+            registered[name] = 1
+            suffixes[uniqueNameWithReturnType] = 1
+        }
+
+        if let count = suffixesWithoutReturnType[uniqueName] {
+            suffixesWithoutReturnType[uniqueName] = count + 1
+        } else {
+            suffixesWithoutReturnType[uniqueName] = 1
+        }
+    }
+
+    func returnTypeMatters(uniqueName: String) -> Bool {
+        let count = suffixesWithoutReturnType[uniqueName] ?? 0
+        return count > 1
+    }
 }
 
 class MethodWrapper {
@@ -47,16 +74,13 @@ class MethodWrapper {
             .replacingOccurrences(of: " )", with: ")")
         return "Stub return value not specified for \(methodName). Use given"
     }
-    private static var registered: [String: Int] = [:]
-    private static var suffixes: [String: Int] = [:]
-    private static var suffixesWithoutReturnType: [String: Int] = [:]
 
     let method: SourceryRuntime.Method
     var accessModifier: String {
         guard !method.isStatic else { return "public static" }
         guard !returnsGenericConstrainedToSelf else { return "public" }
         guard !parametersContainsSelf else { return "public" }
-        return Current.accessModifier
+        return current.accessModifier
     }
     var hasAvailability: Bool { method.attributes["available"]?.isEmpty == false }
     var isAsync: Bool {
@@ -106,9 +130,9 @@ class MethodWrapper {
         return "\(uniqueName)->\(returnTypeStripped)"
     }
     private var nameSuffix: String {
-        guard let count = MethodWrapper.registered[registrationName] else { return "" }
+        guard let count = methodRegistrar.registered[registrationName] else { return "" }
         guard count > 1 else { return "" }
-        guard let index = MethodWrapper.suffixes[uniqueNameWithReturnType] else { return "" }
+        guard let index = methodRegistrar.suffixes[uniqueNameWithReturnType] else { return "" }
         return "_\(index)"
     }
     private var methodAttributes: String {
@@ -122,7 +146,7 @@ class MethodWrapper {
         return "\(registrationName)\(nameSuffix)".replacingOccurrences(of: "`", with: "")
     }
     var parameters: [ParameterWrapper] {
-        return filteredParameters.map { ParameterWrapper($0, self.getVariadicParametersNames()) }
+        return filteredParameters.map { ParameterWrapper($0, self.getVariadicParametersNames(), current: current) }
     }
     var filteredParameters: [MethodParameter] {
         return method.parameters.filter { $0.name != "" }
@@ -139,7 +163,7 @@ class MethodWrapper {
         }()
 
         let staticModifier: String = "\(accessModifier) "
-        let params = replacingSelf(parametersForStubSignature())
+        let params = replacingSelf(parametersForStubSignature(), current: current)
         var attributes = self.methodAttributes
         attributes = attributes.isEmpty ? "" : "\(attributes)\n\t"
         var asyncModifier = self.isAsync ? "async " : ""
@@ -175,7 +199,7 @@ class MethodWrapper {
         guard method.throws || !method.returnTypeName.isVoid else { return "" }
 
         let methodType = filteredParameters.isEmpty ? ".\(prototype)" : ".\(prototype)(\(parametersForMethodCall()))"
-        let returnType: String = returnsSelf ? "__Self__" : "\(TypeWrapper(method.returnTypeName).stripped)"
+        let returnType: String = returnsSelf ? "__Self__" : "\(TypeWrapper(method.returnTypeName, current: current).stripped)"
 
         if method.returnTypeName.isVoid {
             return """
@@ -263,57 +287,34 @@ class MethodWrapper {
 
     var returnsSelf: Bool {
         guard !returnsGenericConstrainedToSelf else { return true }
-        return !method.returnTypeName.isVoid && TypeWrapper(method.returnTypeName).isSelfType
+        return !method.returnTypeName.isVoid && TypeWrapper(method.returnTypeName, current: current).isSelfType
     }
     var returnsGenericConstrainedToSelf: Bool {
         let defaultReturnType = "\(method.returnTypeName.name) "
         return defaultReturnType != returnTypeReplacingSelf
     }
     var returnTypeReplacingSelf: String {
-        return replacingSelf("\(method.returnTypeName.name) ")
+        return replacingSelf("\(method.returnTypeName.name) ", current: current)
     }
     var parametersContainsSelf: Bool {
-        return replacingSelf(parametersForStubSignature()) != parametersForStubSignature()
+        return replacingSelf(parametersForStubSignature(), current: current) != parametersForStubSignature()
     }
+
+    let current: Current
+    let methodRegistrar: MethodRegistrar
 
     var replaceSelf: String {
-        return Current.selfType
+        return current.selfType
     }
 
-    init(_ method: SourceryRuntime.Method) {
+    init(_ method: SourceryRuntime.Method, current: Current, methodRegistrar: MethodRegistrar) {
         self.method = method
-    }
-
-    public static func clear() -> String {
-        MethodWrapper.registered = [:]
-        MethodWrapper.suffixes = [:]
-        MethodWrapper.suffixesWithoutReturnType = [:]
-        return ""
+        self.current = current
+        self.methodRegistrar = methodRegistrar
     }
 
     func register() {
-        MethodWrapper.register(registrationName,uniqueName,uniqueNameWithReturnType)
-    }
-
-    static func register(_ name: String, _ uniqueName: String, _ uniqueNameWithReturnType: String) {
-        if let count = MethodWrapper.registered[name] {
-            MethodWrapper.registered[name] = count + 1
-            MethodWrapper.suffixes[uniqueNameWithReturnType] = count + 1
-        } else {
-            MethodWrapper.registered[name] = 1
-            MethodWrapper.suffixes[uniqueNameWithReturnType] = 1
-        }
-
-        if let count = MethodWrapper.suffixesWithoutReturnType[uniqueName] {
-            MethodWrapper.suffixesWithoutReturnType[uniqueName] = count + 1
-        } else {
-            MethodWrapper.suffixesWithoutReturnType[uniqueName] = 1
-        }
-    }
-
-    func returnTypeMatters() -> Bool {
-        let count = MethodWrapper.suffixesWithoutReturnType[uniqueName] ?? 0
-        return count > 1
+        methodRegistrar.register(registrationName,uniqueName,uniqueNameWithReturnType)
     }
 
     func wrappedInMethodType() -> Bool {
@@ -321,7 +322,7 @@ class MethodWrapper {
     }
 
     func returningParameter(_ multiple: Bool, _ front: Bool) -> String {
-        guard returnTypeMatters() else { return "" }
+        guard methodRegistrar.returnTypeMatters(uniqueName: uniqueName) else { return "" }
         let returning: String = "returning: \(returnTypeStripped(method, type: true))"
         guard multiple else { return returning }
 
@@ -343,7 +344,7 @@ class MethodWrapper {
                     + wrappedStubPostfix()
             }
         }()
-        return replacingSelf(body)
+        return replacingSelf(body, current: current)
     }
 
     func wrappedStubPrefix() -> String {
@@ -393,7 +394,7 @@ class MethodWrapper {
         let returnTypeString: String = {
             guard !returnsGenericConstrainedToSelf else { return returnTypeReplacingSelf }
             guard !returnsSelf else { return replaceSelf }
-            return TypeWrapper(method.returnTypeName).stripped
+            return TypeWrapper(method.returnTypeName, current: current).stripped
         }()
         return returnTypeString
     }
@@ -519,7 +520,7 @@ class MethodWrapper {
                 return "\(annotation)public static func \(methodName)(\(parametersForProxySignature()), \(returningParameter(true,false))perform: @escaping \(performProxyClosureType())) -> \(prefix)Perform\(genericConstrains)"
             }
         }()
-        return replacingSelf(body)
+        return replacingSelf(body, current: current)
     }
 
     func performProxyConstructor(prefix: String = "") -> String {
@@ -547,7 +548,7 @@ class MethodWrapper {
         } else {
             let parameters = filteredParameters
                 .map { p in
-                    let wrapped = ParameterWrapper(p, self.getVariadicParametersNames())
+                    let wrapped = ParameterWrapper(p, self.getVariadicParametersNames(), current: current)
                     let isAutolosure = wrapped.justType.hasPrefix("@autoclosure")
                     return "\(p.inout ? "&" : "")`\(p.name)`\(isAutolosure ? "()" : "")"
                 }
@@ -578,13 +579,13 @@ class MethodWrapper {
         return parameters.map { param in
             if param.isGeneric(generics) { return param.genericType }
             if availability { return param.typeErasedType }
-            return replacingSelf(param.nestedType)
+            return replacingSelf(param.nestedType, current: current)
         }.joined(separator: ", ")
     }
 
     private func parametersForProxySignature() -> String {
         return parameters.map { p in
-            return "\(p.labelAndName()): \(replacingSelf(p.nestedType))"
+            return "\(p.labelAndName()): \(replacingSelf(p.nestedType, current: current))"
         }.joined(separator: ", ")
     }
 
@@ -635,13 +636,13 @@ class MethodWrapper {
     /// - Returns: Array of strings, where each strings represent generic name
     private func getGenericsWithoutConstraints() -> [String] {
         let name = method.shortName
-        guard let start = name.index(of: "<"), let end = name.index(of: ">") else { return [] }
+        guard let start = name.firstIndex(of: "<"), let end = name.firstIndex(of: ">") else { return [] }
 
         var genPart = name[start...end]
         genPart.removeFirst()
         genPart.removeLast()
 
-        let parts = genPart.replacingOccurrences(of: " ", with: "").characters.split(separator: ",").map(String.init)
+        let parts = genPart.replacingOccurrences(of: " ", with: "").split(separator: ",").map(String.init)
         return parts.map { stripGenPart(part: $0) }
     }
 
@@ -650,13 +651,13 @@ class MethodWrapper {
     /// - Returns: Array of strings, like ["T: Codable", "U: Whatever"]
     private func getGenericsConstraints(_ generics: [String], filterSingle: Bool = true) -> [String] {
         let name = method.shortName
-        guard let start = name.index(of: "<"), let end = name.index(of: ">") else { return [] }
+        guard let start = name.firstIndex(of: "<"), let end = name.firstIndex(of: ">") else { return [] }
 
         var genPart = name[start...end]
         genPart.removeFirst()
         genPart.removeLast()
 
-        let parts = genPart.replacingOccurrences(of: " ", with: "").characters.split(separator: ",").map(String.init)
+        let parts = genPart.replacingOccurrences(of: " ", with: "").split(separator: ",").map(String.init)
         return parts.filter {
             let components = $0.components(separatedBy: ":")
             return (components.count == 2 || !filterSingle) && generics.contains(components[0])
@@ -678,7 +679,7 @@ class MethodWrapper {
     }
 
     private func stripGenPart(part: String) -> String {
-        return part.characters.split(separator: ":").map(String.init).first!
+        return part.split(separator: ":").map(String.init).first!
     }
 
     private func returnTypeStripped(_ method: SourceryRuntime.Method, type: Bool = false) -> String {
@@ -714,10 +715,10 @@ class MethodWrapper {
 
     private func methodInfo() -> (annotation: String, methodName: String, genericConstrains: String) {
         let generics = getGenericsAmongParameters()
-        let methodName = returnTypeMatters() ? method.shortName : "\(method.callName)\(wrapGenerics(generics))"
+        let methodName = methodRegistrar.returnTypeMatters(uniqueName: uniqueName) ? method.shortName : "\(method.callName)\(wrapGenerics(generics))"
         let constraints: String = {
             let constraints: [String]
-            if returnTypeMatters() {
+            if methodRegistrar.returnTypeMatters(uniqueName: uniqueName) {
                 constraints = whereClauseConstraints()
             } else {
                 constraints = getGenericsConstraints(generics)

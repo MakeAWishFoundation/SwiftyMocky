@@ -1,3 +1,7 @@
+struct Current {
+    var selfType: String = "Self"
+    var accessModifier: String = "open"
+}
 // Collision management
 func areThereCollisions(between methods: [MethodWrapper]) -> Bool {
     let givenSet = Set<String>(methods.map({ $0.givenConstructorName(prefix: "") }))
@@ -101,42 +105,42 @@ func uniques(variables: [SourceryRuntime.Variable]) -> [SourceryRuntime.Variable
     })
 }
 
-func wrapMethod(_ method: SourceryRuntime.Method) -> MethodWrapper {
-    return MethodWrapper(method)
+func wrapMethod(_ method: SourceryRuntime.Method, current: Current, methodRegistrar: MethodRegistrar) -> MethodWrapper {
+    return MethodWrapper(method, current: current, methodRegistrar: methodRegistrar)
 }
 
-func wrapSubscript(_ wrapped: SourceryRuntime.Subscript) -> SubscriptWrapper {
-    return SubscriptWrapper(wrapped)
+func wrapSubscript(_ wrapped: SourceryRuntime.Subscript, current: Current, subscriptRegistrar: SubscriptRegistrar) -> SubscriptWrapper {
+    return SubscriptWrapper(wrapped, current: current, subscriptRegistrar: subscriptRegistrar)
 }
 
-func justWrap(_ variable: SourceryRuntime.Variable) -> VariableWrapper { return wrapProperty(variable) }
-func wrapProperty(_ variable: SourceryRuntime.Variable, _ scope: String = "") -> VariableWrapper {
-    return VariableWrapper(variable, scope: scope)
+func justWrap(_ variable: SourceryRuntime.Variable, current: Current) -> VariableWrapper { return wrapProperty(variable, current: current) }
+func wrapProperty(_ variable: SourceryRuntime.Variable, _ scope: String = "", current: Current) -> VariableWrapper {
+    return VariableWrapper(variable, scope: scope, current: current)
 }
 
-func stubProperty(_ variable: SourceryRuntime.Variable, _ scope: String) -> String {
-    let wrapper = VariableWrapper(variable, scope: scope)
+func stubProperty(_ variable: SourceryRuntime.Variable, _ scope: String, current: Current) -> String {
+    let wrapper = VariableWrapper(variable, scope: scope, current: current)
     return "\(wrapper.prototype)\n\t\(wrapper.privatePrototype)"
 }
 
-func propertyTypes(_ variable: SourceryRuntime.Variable) -> String {
-    let wrapper = VariableWrapper(variable, scope: "scope")
+func propertyTypes(_ variable: SourceryRuntime.Variable, current: Current) -> String {
+    let wrapper = VariableWrapper(variable, scope: "scope", current: current)
     return "\(wrapper.propertyGet())" + (wrapper.readonly ? "" : "\n\t\t\(wrapper.propertySet())")
 }
 
-func propertyMethodTypes(_ variable: SourceryRuntime.Variable) -> String {
-    let wrapper = VariableWrapper(variable, scope: "")
+func propertyMethodTypes(_ variable: SourceryRuntime.Variable, current: Current) -> String {
+    let wrapper = VariableWrapper(variable, scope: "", current: current)
     return "\(wrapper.propertyCaseGet())" + (wrapper.readonly ? "" : "\n\t\t\(wrapper.propertyCaseSet())")
 }
 
-func propertyMethodTypesIntValue(_ variable: SourceryRuntime.Variable) -> String {
-    let wrapper = VariableWrapper(variable, scope: "")
+func propertyMethodTypesIntValue(_ variable: SourceryRuntime.Variable, current: Current) -> String {
+    let wrapper = VariableWrapper(variable, scope: "", current: current)
     return "\(wrapper.propertyCaseGetIntValue())" + (wrapper.readonly ? "" : "\n\t\t\t\(wrapper.propertyCaseSetIntValue())")
 }
 
-func propertyRegister(_ variable: SourceryRuntime.Variable) {
-    let wrapper = VariableWrapper(variable, scope: "")
-    MethodWrapper.register(wrapper.propertyCaseGetName,wrapper.propertyCaseGetName,wrapper.propertyCaseGetName)
+func propertyRegister(_ variable: SourceryRuntime.Variable, methodRegistrar: MethodRegistrar, current: Current) {
+    let wrapper = VariableWrapper(variable, scope: "", current: current)
+    methodRegistrar.register(wrapper.propertyCaseGetName,wrapper.propertyCaseGetName,wrapper.propertyCaseGetName)
     guard !wrapper.readonly else { return }
-    MethodWrapper.register(wrapper.propertyCaseSetName,wrapper.propertyCaseSetName,wrapper.propertyCaseGetName)
+    methodRegistrar.register(wrapper.propertyCaseSetName,wrapper.propertyCaseSetName,wrapper.propertyCaseGetName)
 }

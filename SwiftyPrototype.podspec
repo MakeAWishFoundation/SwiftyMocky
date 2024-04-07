@@ -12,14 +12,15 @@ Library that uses metaprogramming technique to generate fakes/prototypes based o
   s.author           = { 'Przemysław Wośko' => 'przemyslaw.wosko@intive.com', 'Andrzej Michnia' => 'amichnia@gmail.com' }
   s.source           = { :git => 'https://github.com/MakeAWishFoundation/SwiftyMocky.git', :tag => s.version.to_s }
 
-  s.swift_versions    = ['4.2', '5.0', '5.1', '5.1.2', '5.2', '5.3', '5.4', '5.5']
-  s.ios.deployment_target = '9.0'
-  s.tvos.deployment_target = '9.0'
-  s.macos.deployment_target = '10.10'
+  s.swift_versions    = ['5.0', '5.1', '5.1.2', '5.2', '5.3', '5.4', '5.5', '5.6', '5.7', '5.8', '5.9']
+  s.ios.deployment_target = '12.0'
+  s.tvos.deployment_target = '12.0'
+  s.macos.deployment_target = '10.15'
+  s.watchos.deployment_target = '4'
   s.preserve_paths = '*'
 
   s.source_files = 'Sources/{SwiftyPrototype,Shared}/**/*.swift'
   s.resources = '{Sources/SwiftyPrototype/Prototype.swifttemplate}'
   s.frameworks = 'Foundation'
-  s.dependency 'Sourcery', '~> 1.8.0'
+  s.dependency 'Sourcery', '~> 2.2.2'
 end

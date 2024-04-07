@@ -1,17 +1,12 @@
-<%# ================================================== SETUP -%><%_ -%>
-<%_ var all = types.all
-    all += types.protocols.map { $0 }
-    all += types.protocolCompositions.map { $0 }
+<%_
+func generate(type: Type, idx: Int, methodRegistrar: MethodRegistrar, subscriptRegistrar: SubscriptRegistrar) async -> (Int, String) {
+    var sourceryBuffer: String = ""
     var mockedCount = 0
--%>
-
-<%_ for type in all { -%><%_ -%>
-<%_ let autoMockable: Bool = type.inheritedTypes.contains("AutoMockable") || type.annotations["AutoMockable"] != nil
+    let autoMockable: Bool = type.inheritedTypes.contains("AutoMockable") || type.annotations["AutoMockable"] != nil
     let protocolToDecorate = types.protocols.first(where: { $0.name == (type.annotations["mock"] as? String) })
-    let inlineMockable = protocolToDecorate != nil
-    guard let aProtocol = autoMockable ? type : protocolToDecorate else { continue }
+    guard let aProtocol = autoMockable ? type : protocolToDecorate else { return (idx, sourceryBuffer) }
     mockedCount += 1
-
+    var current = Current()
     let associatedTypes: [String]? = Helpers.extractAssociatedTypes(from: aProtocol)
     let attributes: String = Helpers.extractAttributes(from: type.attributes)
     let typeAliases: [String] = Helpers.extractTypealiases(from: aProtocol)
@@ -19,19 +14,16 @@
     let genericTypesConstraints: String = Helpers.extractGenericTypesConstraints(associatedTypes)
     let allSubscripts = aProtocol.allSubscripts
     let allVariables = uniques(variables: aProtocol.allVariables.filter({ !$0.isStatic }))
-    let containsVariables = !allVariables.isEmpty
     let allStaticVariables = uniques(variables: aProtocol.allVariables.filter({ $0.isStatic }))
-    let containsStaticVariables = !allStaticVariables.isEmpty
     let allMethods = uniques(methods: aProtocol.allMethods.filter({ !$0.isStatic || $0.isInitializer }))
-    let selfConstrained = allMethods.map(wrapMethod).contains(where: { $0.returnsGenericConstrainedToSelf || $0.parametersContainsSelf })
+    let selfConstrained = allMethods.map { wrapMethod($0, current: current, methodRegistrar: methodRegistrar) }.contains(where: { $0.returnsGenericConstrainedToSelf || $0.parametersContainsSelf })
     let accessModifier: String = selfConstrained ? "public final" : "open"
-    Current.accessModifier = accessModifier // TODO: Temporary workaround for access modifiers
+    current.accessModifier = accessModifier // TODO: Temporary workaround for access modifiers
     let inheritFromNSObject = type.annotations["ObjcProtocol"] != nil || attributes.contains("@objc")
     let allMethodsForMethodType = uniquesWithoutGenericConstraints(methods: aProtocol.allMethods.filter({ !$0.isStatic }))
     let allStaticMethods = uniques(methods: aProtocol.allMethods.filter({ $0.isStatic && !$0.isInitializer }))
     let allStaticMethodsForMethodType = uniquesWithoutGenericConstraints(methods: aProtocol.allMethods.filter({ $0.isStatic }))
-    let conformsToStaticMock = !allStaticMethods.isEmpty || !allStaticVariables.isEmpty
-    let conformsToMock = !allMethods.isEmpty || !allVariables.isEmpty -%><%_ -%><%_ -%>
+    let conformsToStaticMock = !allStaticMethods.isEmpty || !allStaticVariables.isEmpty-%><%_ -%><%_ -%>
 <%_ if autoMockable { -%>
 // MARK: - <%= type.name %>
 <%= attributes %>
@@ -105,39 +97,37 @@
   <%# ================================================== VARIABLES -%><%_ -%>
     <%_ for variable in allVariables { -%>
     <%_ if autoMockable { -%>
-    <%= stubProperty(variable,"\(type.name)\(mockTypeName)") %>
+    <%= stubProperty(variable,"\(type.name)\(mockTypeName)", current: current) %>
     <%_ } else { %>
-    <%= stubProperty(variable,"\(type.name)") %>
+    <%= stubProperty(variable,"\(type.name)", current: current) %>
     <%_ } %>
     <%_ } %> <%_ -%>
 
   <%# ================================================== STATIC VARIABLES -%><%_ -%>
     <%_ for variable in allStaticVariables { -%>
     <%_ if autoMockable { -%>
-    <%= stubProperty(variable,"\(type.name)\(mockTypeName)") %>
+    <%= stubProperty(variable,"\(type.name)\(mockTypeName)", current: current) %>
     <%_ } else { %>
-    <%= stubProperty(variable,"\(type.name)") %>
+    <%= stubProperty(variable,"\(type.name)", current: current) %>
     <%_ } %>
     <%_ } %> <%_ -%>
 
   <%# ================================================== METHOD REGISTRATIONS -%><%_ -%>
-    <%_ MethodWrapper.clear() -%>
-    <%_ SubscriptWrapper.clear() -%>
     <%_ if autoMockable { -%>
-    <%_ Current.selfType = "\(type.name)\(mockTypeName)\(genericTypesModifier)" -%>
+    <%_ current.selfType = "\(type.name)\(mockTypeName)\(genericTypesModifier)" -%>
     <%_ } else { %>
-    <%_ Current.selfType = "\(type.name)\(mockTypeName)\(genericTypesModifier)" -%>
+    <%_ current.selfType = "\(type.name)\(mockTypeName)\(genericTypesModifier)" -%>
     <%_ } %>
-    <%_ let wrappedSubscripts = allSubscripts.map(wrapSubscript) -%>
-    <%_ let wrappedMethods = allMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) -%>
-    <%_ let wrappedVariables = allVariables.map(justWrap) -%>
-    <%_ let wrappedMethodsForMethodType = allMethodsForMethodType.map(wrapMethod).filter({ $0.wrappedInMethodType() }) -%>
-    <%_ let wrappedInitializers = allMethods.map(wrapMethod).filter({ $0.method.isInitializer }) -%>
-    <%_ let wrappedStaticMethods = allStaticMethods.map(wrapMethod).filter({ $0.wrappedInMethodType() }) -%>
-    <%_ let wrappedStaticVariables = allStaticVariables.map(justWrap) -%>
-    <%_ let wrappedStaticMethodsForMethodType = allStaticMethodsForMethodType.map(wrapMethod).filter({ $0.wrappedInMethodType() }) -%>
-    <%_ for variable in allVariables { propertyRegister(variable) } -%>
-    <%_ for variable in allStaticVariables { propertyRegister(variable) } -%>
+    <%_ let wrappedSubscripts = allSubscripts.map { wrapSubscript($0, current: current, subscriptRegistrar: subscriptRegistrar) } -%>
+    <%_ let wrappedMethods = allMethods.map { wrapMethod($0, current: current, methodRegistrar: methodRegistrar) }.filter({ $0.wrappedInMethodType() }) -%>
+    <%_ let wrappedVariables = allVariables.map { justWrap($0, current: current) } -%>
+    <%_ let wrappedMethodsForMethodType = allMethodsForMethodType.map { wrapMethod($0, current: current, methodRegistrar: methodRegistrar) }.filter({ $0.wrappedInMethodType() }) -%>
+    <%_ let wrappedInitializers = allMethods.map { wrapMethod($0, current: current, methodRegistrar: methodRegistrar) }.filter({ $0.method.isInitializer }) -%>
+    <%_ let wrappedStaticMethods = allStaticMethods.map { wrapMethod($0, current: current, methodRegistrar: methodRegistrar) }.filter({ $0.wrappedInMethodType() }) -%>
+    <%_ let wrappedStaticVariables = allStaticVariables.map { justWrap($0, current: current) } -%>
+    <%_ let wrappedStaticMethodsForMethodType = allStaticMethodsForMethodType.map { wrapMethod($0, current: current, methodRegistrar: methodRegistrar) }.filter({ $0.wrappedInMethodType() }) -%>
+    <%_ for variable in allVariables { propertyRegister(variable, methodRegistrar: methodRegistrar, current: current) } -%>
+    <%_ for variable in allStaticVariables { propertyRegister(variable, methodRegistrar: methodRegistrar, current: current) } -%>
     <%_ for method in wrappedMethods { method.register() } -%>
     <%_ for wrapped in wrappedSubscripts { wrapped.register() } -%>
     <%_ for method in wrappedStaticMethods { method.register() } -%><%_ -%>
@@ -176,7 +166,7 @@
     <%_ for method in wrappedStaticMethodsForMethodType { -%>
         <%= method.methodTypeDeclarationWithParameters() _%>
     <%_  } %> <%_ for variable in allStaticVariables { -%>
-        <%= propertyMethodTypes(variable) %>
+        <%= propertyMethodTypes(variable, current: current) %>
     <%_ } %> <%_ %>
     <%_ -%>
         static func compareParameters(lhs: StaticMethodType, rhs: StaticMethodType, matcher: Matcher) -> Matcher.ComparisonResult {
@@ -194,7 +184,7 @@
             switch self { <%_ for method in wrappedStaticMethodsForMethodType { %>
                 <%= method.intValueCase -%><% } %>
                 <%_ for variable in allStaticVariables { -%>
-                <%= propertyMethodTypesIntValue(variable) %>
+                <%= propertyMethodTypesIntValue(variable, current: current) %>
                 <%_ } %> <%_ -%>
             }
         }
@@ -217,8 +207,8 @@
         }
 
         <%_ for variable in allStaticVariables { -%>
-        <%= wrapProperty(variable).givenConstructorName(prefix: "Static") -%> {
-            <%= wrapProperty(variable).givenConstructor(prefix: "Static") _%>
+        <%= wrapProperty(variable, current: current).givenConstructorName(prefix: "Static") -%> {
+            <%= wrapProperty(variable, current: current).givenConstructor(prefix: "Static") _%>
         }
         <%_ } %> <%_ %>
         <%_ for method in wrappedStaticMethodsForMethodType.filter({ !$0.method.returnTypeName.isVoid && !$0.method.isInitializer }) { -%>
@@ -248,7 +238,7 @@
         <%= method.verificationProxyConstructorName(prefix: "Static") -%> { <%= method.verificationProxyConstructor(prefix: "Static") _%> }
         <%_ } %> <%_ -%>
         <%_ for variable in allStaticVariables { -%>
-        <%= propertyTypes(variable) %>
+        <%= propertyTypes(variable, current: current) %>
         <%_ } %> <%_ -%>
     }
 
@@ -271,7 +261,7 @@
     <%_ for method in wrappedMethodsForMethodType { -%>
         <%= method.methodTypeDeclarationWithParameters() _%>
     <%_  } -%> <%_ for variable in allVariables { -%>
-        <%= propertyMethodTypes(variable) %>
+        <%= propertyMethodTypes(variable, current: current) %>
     <%_ } %> <%_ %> <%_ for wrapped in wrappedSubscripts { -%>
         <%= wrapped.subscriptCases() _%>
     <%_ } %> <%_ %>
@@ -293,7 +283,7 @@
             switch self { <%_ for method in wrappedMethodsForMethodType { %>
             <%= method.intValueCase -%><% } %>
             <%_ for variable in allVariables { -%>
-            <%= propertyMethodTypesIntValue(variable) %>
+            <%= propertyMethodTypesIntValue(variable, current: current) %>
             <%_ } %> <%_ for wrapped in wrappedSubscripts { -%>
             <%= wrapped.intValueCase() %>
             <%_ } -%>
@@ -327,8 +317,8 @@
         }
 
         <%_ for variable in allVariables { -%>
-        <%= wrapProperty(variable).givenConstructorName() -%> {
-            <%= wrapProperty(variable).givenConstructor() _%>
+        <%= wrapProperty(variable, current: current).givenConstructorName() -%> {
+            <%= wrapProperty(variable, current: current).givenConstructor() _%>
         }
         <%_ } %> <%_ %>
         <%_ for method in wrappedMethodsForMethodType.filter({ !$0.method.returnTypeName.isVoid && !$0.method.isInitializer }) { -%>
@@ -363,7 +353,7 @@
         <%= method.verificationProxyConstructorName() -%> { <%= method.verificationProxyConstructor() _%> }
         <%_ } %> <%_ -%>
         <%_ for variable in allVariables { -%>
-        <%= propertyTypes(variable) %>
+        <%= propertyTypes(variable, current: current) %>
         <%_ } %> <%_ -%>
         <%_ for wrapped in wrappedSubscripts { -%>
         <%= wrapped.verifyConstructorName() -%> { <%= wrapped.verifyConstructor() _%> }
@@ -526,10 +516,39 @@
 }
 
 <%_ } else { -%>
-// sourcery:end
 <%_ } -%>
-<% } -%>
-<%_ if mockedCount == 0 { -%>
+// sourcery:end
+<%_ return (idx, sourceryBuffer) -%>
+<%_ } -%>
+
+<%# ================================================== SETUP -%><%_ -%>
+<%_ var all = types.all
+    all += types.protocols.map { $0 }
+    all += types.protocolCompositions.map { $0 }
+-%>
+
+<%_
+
+let content = try await withThrowingTaskGroup(of: (Int, String).self) { group in
+    for (idx, type) in all.enumerated() {
+        group.addTask {
+            await generate(type: type, idx: idx, methodRegistrar: MethodRegistrar(), subscriptRegistrar: SubscriptRegistrar())
+        }
+    }
+    var fullContent = [String](repeating: "", count: all.count)
+    for try await (idx, content) in group {
+        fullContent.insert(content, at: idx)
+    }
+    return fullContent.joined(separator: "")
+}
+if content.isEmpty {
+-%>
 // SwiftyMocky: no AutoMockable found.
 // Please define and inherit from AutoMockable, or annotate protocols to be mocked
-<%_ } -%>
+<%_
+} else {
+-%>
+<%= content -%>
+<%_
+}
+-%>
