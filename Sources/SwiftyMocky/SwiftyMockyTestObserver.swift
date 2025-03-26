@@ -1,22 +1,19 @@
 import Foundation
 #if canImport(XCTest)
 import XCTest
+#endif
+#if canImport(Testing)
+import Testing
+#endif
 
 /// Used for observing tests and handling internal library errors.
-public class SwiftyMockyTestObserver: NSObject, XCTestObservation {
-    /// [Internal] Current test case
-    private static var currentTestCase: XCTestCase?
+public class SwiftyMockyTestObserver: NSObject {
     /// [Internal] Setup observing once
     private static let setupBlock: (() -> Void) = {
         Matcher.fatalErrorHandler = SwiftyMockyTestObserver.handleFatalError
-        let addObserver = { XCTestObservationCenter.shared.addTestObserver(SwiftyMockyTestObserver()) }
-        if Thread.isMainThread {
-            addObserver()
-        } else {
-            DispatchQueue.main.async {
-                addObserver()
-            }
-        }
+#if canImport(XCTest)
+        addXCTestObserver()
+#endif
         return {}
     }()
 
@@ -26,6 +23,63 @@ public class SwiftyMockyTestObserver: NSObject, XCTestObservation {
         setupBlock()
     }
 
+    /// [Internal] used to notify about internal error. Do not call it directly.
+    ///
+    /// - Parameters:
+    ///   - message: Message
+    ///   - fileId: File id
+    ///   - filePath: File path
+    ///   - file: File
+    ///   - line: Line
+    ///   - column: Column
+    public static func handleFatalError(
+        message: String,
+        fileId: StaticString,
+        filePath: StaticString,
+        file: StaticString,
+        line: UInt,
+        column: UInt
+    ) {
+#if canImport(Testing)
+        if Test.current != nil {
+            handleSwiftTestingFatalError(
+                message: message,
+                fileId: fileId,
+                filePath: filePath,
+                line: line,
+                column: column
+            )
+            // Return so we do not record XCTest issue if we are in a Swift Testing test.
+            return
+        }
+#endif
+
+#if canImport(XCTest)
+        handleXCTestFatalError(
+            message: message,
+            file: file,
+            line: line
+        )
+#endif
+    }
+}
+
+#if canImport(XCTest)
+extension SwiftyMockyTestObserver: XCTestObservation {
+    /// [Internal] Current test case
+    private static var currentTestCase: XCTestCase?
+    
+    private static func addXCTestObserver() {
+        let addObserver = { XCTestObservationCenter.shared.addTestObserver(SwiftyMockyTestObserver()) }
+        if Thread.isMainThread {
+            addObserver()
+        } else {
+            DispatchQueue.main.async {
+                addObserver()
+            }
+        }
+    }
+    
     /// [Internal] Observer for test start
     ///
     /// - Parameter testCase: current test
@@ -39,14 +93,12 @@ public class SwiftyMockyTestObserver: NSObject, XCTestObservation {
     public func testCaseDidFinish(_ testCase: XCTestCase) {
         SwiftyMockyTestObserver.currentTestCase = nil
     }
-
-    /// [Internal] used to notify about internal error. Do not call it directly.
-    ///
-    /// - Parameters:
-    ///   - message: Message
-    ///   - file: File
-    ///   - line: Line
-    public static func handleFatalError(message: String, file: StaticString, line: UInt) {
+    
+    private static func handleXCTestFatalError(
+        message: String,
+        file: StaticString,
+        line: UInt
+    ) {
         guard let testCase = SwiftyMockyTestObserver.currentTestCase else {
             return XCTFail(message, file: file, line: line)
         }
@@ -55,7 +107,7 @@ public class SwiftyMockyTestObserver: NSObject, XCTestObservation {
         defer { testCase.continueAfterFailure = continueAfterFailure }
         testCase.continueAfterFailure = false
         let methodName = getNameOfExtecutedTestCase(testCase)
-        if let name = methodName, let failingLine = FilesExlorer().findTestCaseLine(for: name, file: file) {
+        if let name = methodName, let failingLine = FilesExplorer().findTestCaseLine(for: name, file: file) {
             testCase.record(XCTIssue(
                 type: .system,
                 compactDescription: message,
@@ -79,9 +131,32 @@ public class SwiftyMockyTestObserver: NSObject, XCTestObservation {
         return testCase.name.components(separatedBy: " ")[1].components(separatedBy: "]").first
     }
 }
+#endif
+
+#if canImport(XCTest)
+extension SwiftyMockyTestObserver {
+    private static func handleSwiftTestingFatalError(
+        message: String,
+        fileId: StaticString,
+        filePath: StaticString,
+        line: UInt,
+        column: UInt
+    ) {
+        Issue.record(
+            Comment(rawValue: message),
+            sourceLocation: .init(
+                fileID: fileId.description,
+                filePath: filePath.description,
+                line: Int(line),
+                column: Int(column)
+            )
+        )
+    }
+}
+#endif
 
 /// [Internal] Internal dependency that looks for line of test case, that caused test failure.
-private class FilesExlorer {
+private class FilesExplorer {
     /// Parses test case file to get line number assigned with test
     ///
     /// - Parameter testCase: Test case
@@ -106,17 +181,3 @@ private class FilesExlorer {
         return String(data: fileData, encoding: .utf8) ?? String(data: fileData, encoding: .utf16)
     }
 }
-
-#else
-
-public class SwiftyMockyTestObserver: NSObject {
-    /// [Internal] No setup whatsoever
-    @objc public static func setup() {
-        // Empty on purpose
-    }
-
-    public static func handleFatalError(message: String, file: StaticString, line: UInt) {
-        // Empty on purpose
-    }
-}
-#endif

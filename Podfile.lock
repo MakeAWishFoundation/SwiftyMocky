@@ -2,7 +2,7 @@ PODS:
   - Sourcery (1.8.0):
     - Sourcery/CLI-Only (= 1.8.0)
   - Sourcery/CLI-Only (1.8.0)
-  - SwiftyMocky (4.1.0):
+  - SwiftyMocky (4.2.0):
     - Sourcery (= 1.8.0)
 
 DEPENDENCIES:
@@ -18,8 +18,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Sourcery: 6f5fe49b82b7e02e8c65560cbd52e1be67a1af2e
-  SwiftyMocky: 308ec8314ed9a2f72e5b16537ffff046fec8779f
+  SwiftyMocky: c5e96e4ff76ec6dbf5a5941aeb039b5a546954a0
 
 PODFILE CHECKSUM: bdcefa827bbd4d82b3bb801ca8e42fd57d9afed5
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.16.2

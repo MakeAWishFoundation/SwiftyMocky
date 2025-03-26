@@ -16,13 +16,19 @@ public final class MockyAssertion {
 /// - Parameters:
 ///   - expression: Expression to assert on
 ///   - message: Message
-///   - file: File name (levae default)
-///   - line: Line (levae default)
+///   - fileId: File id (leave default)
+///   - filePath: File path (leave default)
+///   - file: File name (leave default)
+///   - line: Line (leave default)
+///   - column: Column (leave default)
 public func MockyAssert(
     _ expression: @autoclosure () -> Bool,
     _ message: @autoclosure () -> String = "Verify failed",
+    fileId: StaticString = #fileID,
+    filePath: StaticString = #filePath,
     file: StaticString = #file,
-    line: UInt = #line
+    line: UInt = #line,
+    column: UInt = #column
 ) {
     guard let handler = MockyAssertion.handler else {
         return assert(expression(), message(), file: file, line: line)

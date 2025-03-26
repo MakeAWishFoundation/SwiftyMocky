@@ -6,12 +6,18 @@ public class Matcher {
     public static var `default` = Matcher()
     /// [Internal] Matchers storage
     private var matchers: [(Mirror,Any)] = []
+    /// [Internal] fileId where comparison faiure should be recorded
+    private var fileId: StaticString?
+    /// [Internal] filePath where comparison faiure should be recorded
+    private var filePath: StaticString?
     /// [Internal] file where comparison faiure should be recorded
     private var file: StaticString?
     /// [Internal] line where comparison faiure should be recorded
     private var line: UInt?
+    /// [Internal] column where comparison faiure should be recorded
+    private var column: UInt?
     /// [Internal] matcher fatal error handler
-    public static var fatalErrorHandler: (String, StaticString, UInt) -> Void = { _,_,_ in}
+    public static var fatalErrorHandler: (_ message: String, _ fileId: StaticString, _ filePath: StaticString, _ file: StaticString, _ line: UInt, _ column: UInt) -> Void = { _, _, _, _, _, _ in}
 
     /// Create new clean matcher instance.
     public init() {
@@ -192,22 +198,60 @@ public class Matcher {
         register(Data?.Type.self)
     }
 
-    public func set(file: StaticString?, line: UInt?) {
+    public func set(
+        fileId: StaticString?,
+        filePath: StaticString?,
+        file: StaticString?,
+        line: UInt?,
+        column: UInt?
+    ) {
+        self.fileId = fileId
+        self.filePath = filePath
         self.file = file
         self.line = line
+        self.column = column
     }
 
-    public func setupCorrentFileAndLine(file: StaticString = #file, line: UInt = #line) {
-        self.set(file: file, line: line)
+    public func setupCurrentSourceLocation(
+        fileId: StaticString = #fileID,
+        filePath: StaticString = #filePath,
+        file: StaticString = #file,
+        line: UInt = #line,
+        column: UInt = #column
+    ) {
+        self.set(
+            fileId: fileId,
+            filePath: filePath,
+            file: file,
+            line: line,
+            column: column
+        )
     }
 
-    public func clearFileAndLine() {
-        self.set(file: nil, line: nil)
+    public func clearSourceLocation() {
+        self.set(
+            fileId: nil,
+            filePath: nil,
+            file: nil,
+            line: nil,
+            column: nil
+        )
     }
 
     public func onFatalFailure(_ message: String) {
-        guard let file = self.file, let line = self.line else { return }
-        Matcher.fatalErrorHandler(message, file, line)
+        guard let fileId,
+              let filePath,
+              let file,
+              let line,
+              let column else { return }
+        Matcher.fatalErrorHandler(
+            message,
+            fileId,
+            filePath,
+            file,
+            line,
+            column
+        )
     }
 
     /// Registers comparator for given type **T**.

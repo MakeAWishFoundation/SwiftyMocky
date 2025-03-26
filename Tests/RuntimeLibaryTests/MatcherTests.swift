@@ -10,7 +10,7 @@ class MatcherTests: XCTestCase {
 
     func testMatchDictionariesWrappedAsParameters() {
         let matcher = Matcher()
-        matcher.setupCorrentFileAndLine()
+        matcher.setupCurrentSourceLocation()
         matcher.register((key: String, value: Any).self) { lhs, rhs in
             guard let lhs1 = lhs.value as? String else { return false }
             guard let rhs1 = rhs.value as? String else { return false }
@@ -57,7 +57,7 @@ class MatcherTests: XCTestCase {
             case aaa, bbb
         }
         let matcher = Matcher()
-        matcher.setupCorrentFileAndLine()
+        matcher.setupCurrentSourceLocation()
 
         let param1a = Parameter<TestEnum>.value(.aaa)
         let param1b = Parameter<TestEnum>.value(.bbb)
@@ -86,7 +86,7 @@ class MatcherTests: XCTestCase {
             static var bbb: TestEnum { TestEnum("bbb") }
         }
         let matcher = Matcher()
-        matcher.setupCorrentFileAndLine()
+        matcher.setupCurrentSourceLocation()
         matcher.register(TestEnum.self, match: { $0.value == $1.value })
 
         let param1 = Parameter<[TestEnum]>.value([.aaa, .bbb])
@@ -107,7 +107,7 @@ class MatcherTests: XCTestCase {
 
     func testCompareWhenGenericClosure() {
         let matcher = Matcher()
-        matcher.setupCorrentFileAndLine()
+        matcher.setupCurrentSourceLocation()
 
         let param1 = Parameter<(String) -> Void>.value({ _ in })
         let param2 = Parameter<(String) -> Void>.any

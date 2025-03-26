@@ -26,17 +26,23 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
     private var invocations: [MethodType] = []
     private var methodReturnValues: [Given] = []
     private var methodPerformValues: [Perform] = []
+    private var fileId: StaticString?
+    private var filePath: StaticString?
     private var file: StaticString?
     private var line: UInt?
+    private var column: UInt?
 
     public typealias PropertyStub = Given
     public typealias MethodStub = Given
     public typealias SubscriptStub = Given
 
     /// Convenience method - call setupMock() to extend debug information when failure occurs
-    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+    public func setupMock(fileId: StaticString = #fileID, filePath: StaticString = #filePath, file: StaticString = #file, line: UInt = #line, column: UInt = #column) {
+        self.fileId = fileId
+        self.filePath = filePath
         self.file = file
         self.line = line
+        self.column = column
     }
 
     /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
@@ -204,48 +210,48 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
     }
 
-    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
-        let fullMatches = matchingCalls(method, file: file, line: line)
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), fileId: StaticString = #fileID, filePath: StaticString = #filePath, file: StaticString = #file, line: UInt = #line, column: UInt = #column) {
+        let fullMatches = matchingCalls(method, fileId: fileId, filePath: filePath, file: file, line: line, column: column)
         let success = count.matches(fullMatches)
         let assertionName = method.method.assertionName()
         let feedback: String = {
             guard !success else { return "" }
             return Utils.closestCallsMessage(
                 for: self.invocations.map { invocation in
-                    matcher.set(file: file, line: line)
-                    defer { matcher.clearFileAndLine() }
+                    matcher.set(fileId: fileId, filePath: filePath, file: file, line: line, column: column)
+                    defer { matcher.clearSourceLocation() }
                     return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
                 },
                 name: assertionName
             )
         }()
-        MockyAssert(success, "Expected: \(count) invocations of `\(assertionName)`, but was: \(fullMatches).\(feedback)", file: file, line: line)
+        MockyAssert(success, "Expected: \(count) invocations of `\(assertionName)`, but was: \(fullMatches).\(feedback)", fileId: fileId, filePath: filePath, file: file, line: line, column: column)
     }
 
     private func addInvocation(_ call: MethodType) {
         self.queue.sync { invocations.append(call) }
     }
     private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
-        matcher.set(file: self.file, line: self.line)
-        defer { matcher.clearFileAndLine() }
+        matcher.set(fileId: fileId, filePath: filePath, file: file, line: line, column: column)
+        defer { matcher.clearSourceLocation() }
         let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
         let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
         guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
         return product
     }
     private func methodPerformValue(_ method: MethodType) -> Any? {
-        matcher.set(file: self.file, line: self.line)
-        defer { matcher.clearFileAndLine() }
+        matcher.set(fileId: fileId, filePath: filePath, file: file, line: line, column: column)
+        defer { matcher.clearSourceLocation() }
         let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
         return matched?.performs
     }
-    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
-        matcher.set(file: file ?? self.file, line: line ?? self.line)
-        defer { matcher.clearFileAndLine() }
+    private func matchingCalls(_ method: MethodType, fileId: StaticString?, filePath: StaticString?, file: StaticString?, line: UInt?, column: UInt?) -> [MethodType] {
+        matcher.set(fileId: fileId ?? self.fileId, filePath: filePath ?? self.filePath, file: file ?? self.file, line: line ?? self.line, column: column ?? self.column)
+        defer { matcher.clearSourceLocation() }
         return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
     }
-    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
-        return matchingCalls(method.method, file: file, line: line).count
+    private func matchingCalls(_ method: Verify, fileId: StaticString?, filePath: StaticString?, file: StaticString?, line: UInt?, column: UInt?) -> Int {
+        return matchingCalls(method.method, fileId: fileId, filePath: filePath, file: file, line: line, column: column).count
     }
     private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
         do {
@@ -263,8 +269,8 @@ class ItemsRepositoryMock: ItemsRepository, Mock {
         }
     }
     private func onFatalFailure(_ message: String) {
-        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
-        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
+        guard let fileId, let filePath, let file, let line, let column else { return } // Let if fail if cannot handle gratefully
+        SwiftyMockyTestObserver.handleFatalError(message: message, fileId: fileId, filePath: filePath, file: file, line: line, column: column)
     }
     
 // sourcery:end
