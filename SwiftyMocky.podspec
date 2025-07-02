@@ -22,7 +22,7 @@ Library that uses metaprogramming technique to generate mocks based on sources, 
   s.resources = '{Sources/SwiftyMocky/Mock.swifttemplate}'
   s.frameworks = 'Foundation'
   s.weak_framework = "XCTest"
-  s.dependency 'Sourcery', '1.8.0'
+  s.dependency 'Sourcery', '1.9.1'
   s.pod_target_xcconfig = {
       'APPLICATION_EXTENSION_API_ONLY' => 'YES',
       'ENABLE_BITCODE' => 'NO',

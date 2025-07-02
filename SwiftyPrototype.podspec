@@ -21,5 +21,5 @@ Library that uses metaprogramming technique to generate fakes/prototypes based o
   s.source_files = 'Sources/{SwiftyPrototype,Shared}/**/*.swift'
   s.resources = '{Sources/SwiftyPrototype/Prototype.swifttemplate}'
   s.frameworks = 'Foundation'
-  s.dependency 'Sourcery', '~> 1.8.0'
+  s.dependency 'Sourcery', '~> 1.9.1'
 end
