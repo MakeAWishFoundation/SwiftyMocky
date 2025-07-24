@@ -55,7 +55,7 @@ The idea of **SwiftyMocky** is to automatically mock Swift protocols and protoco
 
 ## **Important!!!** Version 4.1.x
 
-CLI was moved bask to the main (this) repo. CLI in this [repository](https://github.com/MakeAWishFoundation/SwiftyMockyCLI) will be supported at least until version 5.0.0.
+CLI was moved back to the main (this) repo. CLI in this [repository](https://github.com/MakeAWishFoundation/SwiftyMockyCLI) will be supported at least until version 5.0.0.
 
 ## Version 4.0.x
 
