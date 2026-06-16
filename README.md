@@ -96,7 +96,7 @@ Add **SwiftyMocky** to you **Package.swift** dependencies:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/HubSpot/SwiftyMocky", from: "4.3.0"),
+    .package(url: "https://github.com/HubSpot/SwiftyMocky", from: "4.3.1"),
 ]
 ```
 
@@ -355,15 +355,15 @@ SwiftyMocky is available under the MIT license. See the [LICENSE][link-license] 
 
 <!-- Links based on tag -->
 
-[link-docs]: https://rawcdn.githack.com/HubSpot/SwiftyMocky/v4.3.0/docs/index.html
-[link-docs-features]: https://rawcdn.githack.com/HubSpot/SwiftyMocky/v4.3.0/docs/supported-features.html
-[link-docs-installation]: https://rawcdn.githack.com/HubSpot/SwiftyMocky/v4.3.0/docs/installation.html
-[link-docs-installation-carthage]: https://rawcdn.githack.com/HubSpot/SwiftyMocky/v4.3.0/docs/installation.html#installation-carthage
-[link-docs-setup]: https://rawcdn.githack.com/HubSpot/SwiftyMocky/v4.3.0/docs/setup-in-project.html
+[link-docs]: https://rawcdn.githack.com/HubSpot/SwiftyMocky/v4.3.1/docs/index.html
+[link-docs-features]: https://rawcdn.githack.com/HubSpot/SwiftyMocky/v4.3.1/docs/supported-features.html
+[link-docs-installation]: https://rawcdn.githack.com/HubSpot/SwiftyMocky/v4.3.1/docs/installation.html
+[link-docs-installation-carthage]: https://rawcdn.githack.com/HubSpot/SwiftyMocky/v4.3.1/docs/installation.html#installation-carthage
+[link-docs-setup]: https://rawcdn.githack.com/HubSpot/SwiftyMocky/v4.3.1/docs/setup-in-project.html
 
 <!-- Assets -->
 
-[logo]: https://raw.githubusercontent.com/HubSpot/SwiftyMocky/v4.3.0/icon.png
+[logo]: https://raw.githubusercontent.com/HubSpot/SwiftyMocky/v4.3.1/icon.png
 [example-watcher]: https://raw.githubusercontent.com/HubSpot/SwiftyMocky/1.0.0/guides/assets/example-watcher.gif "Example - generation"
 [example-given]: https://raw.githubusercontent.com/HubSpot/SwiftyMocky/1.0.0/guides/assets/example-given.gif "Example - given"
 [example-verify]: https://raw.githubusercontent.com/HubSpot/SwiftyMocky/1.0.0/guides/assets/example-verify.gif "Example - verify"
