@@ -2,14 +2,28 @@ import Foundation
 #if canImport(XCTest)
 import XCTest
 
+// Internal XCTest observer. Kept internal so that XCTestObservation and
+// XCTestCase do not appear in the generated .swiftinterface — those types
+// cause a Swift compiler bug (SR-14195) when library evolution is enabled,
+// because the XCTest module contains a class also named XCTest, making the
+// module-qualified name XCTest.XCTestCase ambiguous at interface-import time.
+internal class _SwiftyMockyTestObserver: NSObject, XCTestObservation {
+    static var currentTestCase: XCTestCase?
+
+    func testCaseWillStart(_ testCase: XCTestCase) {
+        _SwiftyMockyTestObserver.currentTestCase = testCase
+    }
+
+    func testCaseDidFinish(_ testCase: XCTestCase) {
+        _SwiftyMockyTestObserver.currentTestCase = nil
+    }
+}
+
 /// Used for observing tests and handling internal library errors.
-public class SwiftyMockyTestObserver: NSObject, XCTestObservation {
-    /// [Internal] Current test case
-    private static var currentTestCase: XCTestCase?
-    /// [Internal] Setup observing once
+public enum SwiftyMockyTestObserver {
     private static let setupBlock: (() -> Void) = {
         Matcher.fatalErrorHandler = SwiftyMockyTestObserver.handleFatalError
-        let addObserver = { XCTestObservationCenter.shared.addTestObserver(SwiftyMockyTestObserver()) }
+        let addObserver = { XCTestObservationCenter.shared.addTestObserver(_SwiftyMockyTestObserver()) }
         if Thread.isMainThread {
             addObserver()
         } else {
@@ -26,20 +40,6 @@ public class SwiftyMockyTestObserver: NSObject, XCTestObservation {
         setupBlock()
     }
 
-    /// [Internal] Observer for test start
-    ///
-    /// - Parameter testCase: current test
-    public func testCaseWillStart(_ testCase: XCTestCase) {
-        SwiftyMockyTestObserver.currentTestCase = testCase
-    }
-
-    /// [Internal] Observer for test finished
-    ///
-    /// - Parameter testCase: current test
-    public func testCaseDidFinish(_ testCase: XCTestCase) {
-        SwiftyMockyTestObserver.currentTestCase = nil
-    }
-
     /// [Internal] used to notify about internal error. Do not call it directly.
     ///
     /// - Parameters:
@@ -47,14 +47,14 @@ public class SwiftyMockyTestObserver: NSObject, XCTestObservation {
     ///   - file: File
     ///   - line: Line
     public static func handleFatalError(message: String, file: StaticString, line: UInt) {
-        guard let testCase = SwiftyMockyTestObserver.currentTestCase else {
+        guard let testCase = _SwiftyMockyTestObserver.currentTestCase else {
             return XCTFail(message, file: file, line: line)
         }
 
         let continueAfterFailure = testCase.continueAfterFailure
         defer { testCase.continueAfterFailure = continueAfterFailure }
         testCase.continueAfterFailure = false
-        let methodName = getNameOfExtecutedTestCase(testCase)
+        let methodName = getNameOfExecutedTestCase(testCase)
         if let name = methodName, let failingLine = FilesExlorer().findTestCaseLine(for: name, file: file) {
             testCase.record(XCTIssue(
                 type: .system,
@@ -71,11 +71,7 @@ public class SwiftyMockyTestObserver: NSObject, XCTestObservation {
         }
     }
 
-    /// [Internal] Geting name of current test
-    ///
-    /// - Parameter testCase: Test case
-    /// - Returns: Name
-    private static func getNameOfExtecutedTestCase(_ testCase: XCTestCase) -> String? {
+    private static func getNameOfExecutedTestCase(_ testCase: XCTestCase) -> String? {
         return testCase.name.components(separatedBy: " ")[1].components(separatedBy: "]").first
     }
 }
@@ -109,9 +105,8 @@ private class FilesExlorer {
 
 #else
 
-public class SwiftyMockyTestObserver: NSObject {
-    /// [Internal] No setup whatsoever
-    @objc public static func setup() {
+public enum SwiftyMockyTestObserver {
+    public static func setup() {
         // Empty on purpose
     }
 

@@ -1,8 +1,7 @@
 import Foundation
 
-public class SwiftyMockyTestObserver: NSObject {
-    /// [Internal] No setup whatsoever
-    @objc public static func setup() {
+public enum SwiftyMockyTestObserver {
+    public static func setup() {
         // Empty on purpose
     }
 
