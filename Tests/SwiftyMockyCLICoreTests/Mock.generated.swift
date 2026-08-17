@@ -6,8 +6,15 @@
 // Required Sourcery: 1.8.0
 
 
+// SwiftyMockyTesting reports a failure to whichever test framework is running, XCTest or Swift
+// Testing. It is picked up whenever the target links it, and targets that link SwiftyMocky alone
+// keep reporting to XCTest exactly as before.
+#if canImport(SwiftyMockyTesting)
+import SwiftyMockyTesting
+#else
 import SwiftyMocky
 import XCTest
+#endif
 import Foundation
 import PathKit
 @testable import SwiftyMockyCLICore

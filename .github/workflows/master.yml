@@ -28,4 +28,4 @@ jobs:
           fastlane tvos test
       - name: Run tests SwiftPM
         run: |
-          swift test
+          swift test --enable-swift-testing

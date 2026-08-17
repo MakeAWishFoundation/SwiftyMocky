@@ -6,6 +6,13 @@ import XCTest
 public class SwiftyMockyTestObserver: NSObject, XCTestObservation {
     /// [Internal] Current test case
     nonisolated(unsafe) private static var currentTestCase: XCTestCase?
+
+    /// Whether XCTest is executing a test case right now, so a failure can be attributed to it.
+    /// Read by `SwiftyMockyTesting` to pick the framework a mock failure is reported to.
+    public static var isTestCaseRunning: Bool {
+        currentTestCase != nil
+    }
+
     /// [Internal] Setup observing once
     private static let setupBlock: (() -> Void) = {
         Matcher.fatalErrorHandler = SwiftyMockyTestObserver.handleFatalError
@@ -110,6 +117,11 @@ private class FilesExlorer {
 #else
 
 public class SwiftyMockyTestObserver: NSObject {
+    /// Without XCTest there is no test case to attribute a failure to.
+    public static var isTestCaseRunning: Bool {
+        false
+    }
+
     /// [Internal] No setup whatsoever
     @objc public static func setup() {
         // Empty on purpose
