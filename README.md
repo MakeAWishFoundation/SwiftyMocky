@@ -315,6 +315,9 @@ Full documentation is available [here][link-docs], as well as through *docs* dir
 
 Guides - [Table of contents][link-guides-contents]
 
+Using Swift Testing? See [Swift Testing][link-guides-swift-testing] - mock failures are reported
+to whichever framework runs the test.
+
 Changelog is available [here][link-changelog]
 
 <a name="features"></a>
@@ -372,6 +375,7 @@ SwiftyMocky is available under the MIT license. See the [LICENSE][link-license] 
 [link-guides-setup]: ./guides/Installation.md
 [link-guides-contents]: ./guides/Contents.md
 [link-guides-features]: ./guides/Supported%20features.md
+[link-guides-swift-testing]: ./guides/Swift%20Testing.md
 [link-guides-examples]: ./guides/Examples.md
 [link-changelog]: ./guides/CHANGELOG.md
 

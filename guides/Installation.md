@@ -92,6 +92,10 @@ dependencies: [
 
 And add `SwiftyMocky` to your test target dependencies.
 
+To have mock failures reported to Swift Testing as well as to XCTest, add `SwiftyMockyTesting`
+instead - it re-exports `SwiftyMocky`, so it replaces it rather than joining it. See
+[Swift Testing](./Swift%20Testing.md).
+
 ## Support for other swift versions
 
 Download/build Sourcery binary manually, or use prebuilt sourcery versions from: `https://github.com/MakeAWishFoundation/SwiftyMocky.wiki.git`
