@@ -708,7 +708,9 @@ class MethodWrapper {
     var throwValue: String {
         guard !method.isInitializer else { return "" }
         guard method.throws || !method.returnTypeName.isVoid else { return "" }
-        let safeFailure = method.isStatic ? "" : "\t\t\tonFatalFailure(\"\(noStubDefinedMessage)\")\n"
+        // Static members report too: leaving them out used to make a missing stub on a static
+        // mock terminate the run without a single word about the reason.
+        let safeFailure = "\t\t\tonFatalFailure(\"\(noStubDefinedMessage)\")\n"
         // For Void and Returning optionals - we allow not stubbed case to happen, as we are still able to return
         let noStubHandling = method.returnTypeName.isVoid || method.returnTypeName.isOptional ? "\t\t\t// do nothing" : "\(safeFailure)\t\t\tFailure(\"\(noStubDefinedMessage)\")"
         guard method.throws else {
@@ -1334,7 +1336,7 @@ class SubscriptWrapper {
     private func getter() -> String {
         let method = ".\(subscriptCasePrefix("get"))(\(parametersForMethodCall()))"
         let optionalReturnWorkaround = "\(wrapped.returnTypeName)".hasSuffix("?")
-        let noStubDefined = (optionalReturnWorkaround || wrapped.returnTypeName.isOptional) ? "return nil" : "onFatalFailure(\"\(noStubDefinedMessage)\"); Failure(\"noStubDefinedMessage\")"
+        let noStubDefined = (optionalReturnWorkaround || wrapped.returnTypeName.isOptional) ? "return nil" : "onFatalFailure(\"\(noStubDefinedMessage)\"); Failure(\"\(noStubDefinedMessage)\")"
         return
             "\n\t\t\taddInvocation(\(method))" +
                 "\n\t\t\tdo {" +
@@ -1694,6 +1696,7 @@ _%>
     nonisolated(unsafe) static private var invocations: [StaticMethodType] = []
     nonisolated(unsafe) static private var methodReturnValues: [StaticGiven] = []
     nonisolated(unsafe) static private var methodPerformValues: [StaticPerform] = []
+    nonisolated(unsafe) static private var location: MockyLocation?
     public typealias StaticPropertyStub = StaticGiven
     public typealias StaticMethodStub = StaticGiven
 
@@ -2103,6 +2106,11 @@ _%>
         verify(method, count: count, at: MockyLocation(fileID: fileID, filePath: filePath, line: line, column: column))
     }
 
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public static func setupMock(fileID: StaticString = #fileID, filePath: StaticString = #filePath, line: UInt = #line, column: UInt = #column) {
+        location = MockyLocation(fileID: fileID, filePath: filePath, line: line, column: column)
+    }
+
     static private func addInvocation(_ call: StaticMethodType) {
         self.queue.sync { invocations.append(call) }
     }
@@ -2124,10 +2132,17 @@ _%>
     static private func matchingCalls(_ method: StaticVerify, at location: MockyLocation?) -> Int {
         return matchingCalls(method.method, at: location).count
     }
+    /// A static mock has no initializer to capture a location in, so when setupMock() was not
+    /// called the fallback points at the generated line that discovered the missing stub. That is
+    /// still informative, and staying silent here is what used to hide the reason entirely.
+    static private func onFatalFailure(_ message: String, at fallback: MockyLocation = MockyLocation()) {
+        MockyFatalFailure(message, at: location ?? fallback)
+    }
     static private func givenGetterValue<T>(_ method: StaticMethodType, _ message: String) -> T {
         do {
             return try methodReturnValue(method).casted()
         } catch {
+            onFatalFailure(message)
             Failure(message)
         }
     }

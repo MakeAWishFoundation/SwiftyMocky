@@ -65,6 +65,7 @@ open class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
     nonisolated(unsafe) static private var invocations: [StaticMethodType] = []
     nonisolated(unsafe) static private var methodReturnValues: [StaticGiven] = []
     nonisolated(unsafe) static private var methodPerformValues: [StaticPerform] = []
+    nonisolated(unsafe) static private var location: MockyLocation?
     public typealias StaticPropertyStub = StaticGiven
     public typealias StaticMethodStub = StaticGiven
 
@@ -125,6 +126,7 @@ open class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
 		do {
 		    __value = try methodReturnValue(.sm_methodThatReturnsAndThrows__param_param(Parameter<String>.value(`param`))).casted()
 		} catch MockError.notStubed {
+			onFatalFailure("Stub return value not specified for methodThatReturnsAndThrows(param: String). Use given")
 			Failure("Stub return value not specified for methodThatReturnsAndThrows(param: String). Use given")
 		} catch {
 		    throw error
@@ -140,6 +142,7 @@ open class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
 		do {
 		    __value = try methodReturnValue(.sm_methodThatRethrows__param_param(Parameter<(String) throws -> Int>.any)).casted()
 		} catch {
+			onFatalFailure("Stub return value not specified for methodThatRethrows(param: (String) throws -> Int). Use given")
 			Failure("Stub return value not specified for methodThatRethrows(param: (String) throws -> Int). Use given")
 		}
 		return __value
@@ -574,6 +577,11 @@ open class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
         verify(method, count: count, at: MockyLocation(fileID: fileID, filePath: filePath, line: line, column: column))
     }
 
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public static func setupMock(fileID: StaticString = #fileID, filePath: StaticString = #filePath, line: UInt = #line, column: UInt = #column) {
+        location = MockyLocation(fileID: fileID, filePath: filePath, line: line, column: column)
+    }
+
     static private func addInvocation(_ call: StaticMethodType) {
         self.queue.sync { invocations.append(call) }
     }
@@ -595,10 +603,17 @@ open class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
     static private func matchingCalls(_ method: StaticVerify, at location: MockyLocation?) -> Int {
         return matchingCalls(method.method, at: location).count
     }
+    /// A static mock has no initializer to capture a location in, so when setupMock() was not
+    /// called the fallback points at the generated line that discovered the missing stub. That is
+    /// still informative, and staying silent here is what used to hide the reason entirely.
+    static private func onFatalFailure(_ message: String, at fallback: MockyLocation = MockyLocation()) {
+        MockyFatalFailure(message, at: location ?? fallback)
+    }
     static private func givenGetterValue<T>(_ method: StaticMethodType, _ message: String) -> T {
         do {
             return try methodReturnValue(method).casted()
         } catch {
+            onFatalFailure(message)
             Failure(message)
         }
     }
@@ -853,6 +868,7 @@ open class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
     nonisolated(unsafe) static private var invocations: [StaticMethodType] = []
     nonisolated(unsafe) static private var methodReturnValues: [StaticGiven] = []
     nonisolated(unsafe) static private var methodPerformValues: [StaticPerform] = []
+    nonisolated(unsafe) static private var location: MockyLocation?
     public typealias StaticPropertyStub = StaticGiven
     public typealias StaticMethodStub = StaticGiven
 
@@ -876,6 +892,7 @@ open class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
 		do {
 		    __value = try methodReturnValue(.sm_generic__lhs_lhsrhs_rhs(Parameter<Q>.value(`lhs`).wrapAsGeneric(), Parameter<Q>.value(`rhs`).wrapAsGeneric())).casted()
 		} catch {
+			onFatalFailure("Stub return value not specified for generic<Q>(lhs: Q, rhs: Q). Use given")
 			Failure("Stub return value not specified for generic<Q>(lhs: Q, rhs: Q). Use given")
 		}
 		return __value
@@ -889,6 +906,7 @@ open class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
 		do {
 		    __value = try methodReturnValue(.sm_veryConstrained__lhs_lhsrhs_rhs(Parameter<Q>.value(`lhs`).wrapAsGeneric(), Parameter<Q>.value(`rhs`).wrapAsGeneric())).casted()
 		} catch {
+			onFatalFailure("Stub return value not specified for veryConstrained<Q: Sequence>(lhs: Q, rhs: Q). Use given")
 			Failure("Stub return value not specified for veryConstrained<Q: Sequence>(lhs: Q, rhs: Q). Use given")
 		}
 		return __value
@@ -1169,6 +1187,11 @@ open class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
         verify(method, count: count, at: MockyLocation(fileID: fileID, filePath: filePath, line: line, column: column))
     }
 
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public static func setupMock(fileID: StaticString = #fileID, filePath: StaticString = #filePath, line: UInt = #line, column: UInt = #column) {
+        location = MockyLocation(fileID: fileID, filePath: filePath, line: line, column: column)
+    }
+
     static private func addInvocation(_ call: StaticMethodType) {
         self.queue.sync { invocations.append(call) }
     }
@@ -1190,10 +1213,17 @@ open class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
     static private func matchingCalls(_ method: StaticVerify, at location: MockyLocation?) -> Int {
         return matchingCalls(method.method, at: location).count
     }
+    /// A static mock has no initializer to capture a location in, so when setupMock() was not
+    /// called the fallback points at the generated line that discovered the missing stub. That is
+    /// still informative, and staying silent here is what used to hide the reason entirely.
+    static private func onFatalFailure(_ message: String, at fallback: MockyLocation = MockyLocation()) {
+        MockyFatalFailure(message, at: location ?? fallback)
+    }
     static private func givenGetterValue<T>(_ method: StaticMethodType, _ message: String) -> T {
         do {
             return try methodReturnValue(method).casted()
         } catch {
+            onFatalFailure(message)
             Failure(message)
         }
     }
@@ -3569,7 +3599,7 @@ open class FailsWithKeywordArgumentsMock: FailsWithKeywordArguments, Mock {
 			do {
 				return try methodReturnValue(.subscript_get_return(Parameter<Int>.value(`return`))).casted()
 			} catch {
-				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubDefinedMessage")
+				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("Stub return value not specified for subscript. Use given first.")
 			}
 		}
 		set {
@@ -6899,7 +6929,7 @@ open class ProtocolWithAttributesBMock: ProtocolWithAttributesB, Mock {
 			do {
 				return try methodReturnValue(.subscript_get_x_y(Parameter<Int>.value(`x`).typeErasedAttribute(), Parameter<Int>.value(`y`).typeErasedAttribute())).casted()
 			} catch {
-				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubDefinedMessage")
+				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("Stub return value not specified for subscript. Use given first.")
 			}
 		}
 		set {
@@ -9320,6 +9350,7 @@ open class ProtocolWithObjcMock: NSObject, ProtocolWithObjc, Mock, StaticMock {
     nonisolated(unsafe) static private var invocations: [StaticMethodType] = []
     nonisolated(unsafe) static private var methodReturnValues: [StaticGiven] = []
     nonisolated(unsafe) static private var methodPerformValues: [StaticPerform] = []
+    nonisolated(unsafe) static private var location: MockyLocation?
     public typealias StaticPropertyStub = StaticGiven
     public typealias StaticMethodStub = StaticGiven
 
@@ -9565,6 +9596,11 @@ open class ProtocolWithObjcMock: NSObject, ProtocolWithObjc, Mock, StaticMock {
         verify(method, count: count, at: MockyLocation(fileID: fileID, filePath: filePath, line: line, column: column))
     }
 
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public static func setupMock(fileID: StaticString = #fileID, filePath: StaticString = #filePath, line: UInt = #line, column: UInt = #column) {
+        location = MockyLocation(fileID: fileID, filePath: filePath, line: line, column: column)
+    }
+
     static private func addInvocation(_ call: StaticMethodType) {
         self.queue.sync { invocations.append(call) }
     }
@@ -9586,10 +9622,17 @@ open class ProtocolWithObjcMock: NSObject, ProtocolWithObjc, Mock, StaticMock {
     static private func matchingCalls(_ method: StaticVerify, at location: MockyLocation?) -> Int {
         return matchingCalls(method.method, at: location).count
     }
+    /// A static mock has no initializer to capture a location in, so when setupMock() was not
+    /// called the fallback points at the generated line that discovered the missing stub. That is
+    /// still informative, and staying silent here is what used to hide the reason entirely.
+    static private func onFatalFailure(_ message: String, at fallback: MockyLocation = MockyLocation()) {
+        MockyFatalFailure(message, at: location ?? fallback)
+    }
     static private func givenGetterValue<T>(_ method: StaticMethodType, _ message: String) -> T {
         do {
             return try methodReturnValue(method).casted()
         } catch {
+            onFatalFailure(message)
             Failure(message)
         }
     }
@@ -9647,6 +9690,7 @@ open class ProtocolWithPropertiesMock: ProtocolWithProperties, Mock, StaticMock 
     nonisolated(unsafe) static private var invocations: [StaticMethodType] = []
     nonisolated(unsafe) static private var methodReturnValues: [StaticGiven] = []
     nonisolated(unsafe) static private var methodPerformValues: [StaticPerform] = []
+    nonisolated(unsafe) static private var location: MockyLocation?
     public typealias StaticPropertyStub = StaticGiven
     public typealias StaticMethodStub = StaticGiven
 
@@ -10003,6 +10047,11 @@ open class ProtocolWithPropertiesMock: ProtocolWithProperties, Mock, StaticMock 
         verify(method, count: count, at: MockyLocation(fileID: fileID, filePath: filePath, line: line, column: column))
     }
 
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public static func setupMock(fileID: StaticString = #fileID, filePath: StaticString = #filePath, line: UInt = #line, column: UInt = #column) {
+        location = MockyLocation(fileID: fileID, filePath: filePath, line: line, column: column)
+    }
+
     static private func addInvocation(_ call: StaticMethodType) {
         self.queue.sync { invocations.append(call) }
     }
@@ -10024,10 +10073,17 @@ open class ProtocolWithPropertiesMock: ProtocolWithProperties, Mock, StaticMock 
     static private func matchingCalls(_ method: StaticVerify, at location: MockyLocation?) -> Int {
         return matchingCalls(method.method, at: location).count
     }
+    /// A static mock has no initializer to capture a location in, so when setupMock() was not
+    /// called the fallback points at the generated line that discovered the missing stub. That is
+    /// still informative, and staying silent here is what used to hide the reason entirely.
+    static private func onFatalFailure(_ message: String, at fallback: MockyLocation = MockyLocation()) {
+        MockyFatalFailure(message, at: location ?? fallback)
+    }
     static private func givenGetterValue<T>(_ method: StaticMethodType, _ message: String) -> T {
         do {
             return try methodReturnValue(method).casted()
         } catch {
+            onFatalFailure(message)
             Failure(message)
         }
     }
@@ -10085,6 +10141,7 @@ open class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, Stati
     nonisolated(unsafe) static private var invocations: [StaticMethodType] = []
     nonisolated(unsafe) static private var methodReturnValues: [StaticGiven] = []
     nonisolated(unsafe) static private var methodPerformValues: [StaticPerform] = []
+    nonisolated(unsafe) static private var location: MockyLocation?
     public typealias StaticPropertyStub = StaticGiven
     public typealias StaticMethodStub = StaticGiven
 
@@ -10113,6 +10170,7 @@ open class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, Stati
 		do {
 		    __value = try methodReturnValue(.sm_staticMethod__param_param(Parameter<Int>.value(`param`))).casted()
 		} catch MockError.notStubed {
+			onFatalFailure("Stub return value not specified for staticMethod(param: Int). Use given")
 			Failure("Stub return value not specified for staticMethod(param: Int). Use given")
 		} catch {
 		    throw error
@@ -10334,6 +10392,11 @@ open class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, Stati
         verify(method, count: count, at: MockyLocation(fileID: fileID, filePath: filePath, line: line, column: column))
     }
 
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public static func setupMock(fileID: StaticString = #fileID, filePath: StaticString = #filePath, line: UInt = #line, column: UInt = #column) {
+        location = MockyLocation(fileID: fileID, filePath: filePath, line: line, column: column)
+    }
+
     static private func addInvocation(_ call: StaticMethodType) {
         self.queue.sync { invocations.append(call) }
     }
@@ -10355,10 +10418,17 @@ open class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, Stati
     static private func matchingCalls(_ method: StaticVerify, at location: MockyLocation?) -> Int {
         return matchingCalls(method.method, at: location).count
     }
+    /// A static mock has no initializer to capture a location in, so when setupMock() was not
+    /// called the fallback points at the generated line that discovered the missing stub. That is
+    /// still informative, and staying silent here is what used to hide the reason entirely.
+    static private func onFatalFailure(_ message: String, at fallback: MockyLocation = MockyLocation()) {
+        MockyFatalFailure(message, at: location ?? fallback)
+    }
     static private func givenGetterValue<T>(_ method: StaticMethodType, _ message: String) -> T {
         do {
             return try methodReturnValue(method).casted()
         } catch {
+            onFatalFailure(message)
             Failure(message)
         }
     }
@@ -10438,7 +10508,7 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 			do {
 				return try methodReturnValue(.subscript_get_index_1(Parameter<Int>.value(`index`))).casted()
 			} catch {
-				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubDefinedMessage")
+				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("Stub return value not specified for subscript. Use given first.")
 			}
 		}
 		set {
@@ -10452,7 +10522,7 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 			do {
 				return try methodReturnValue(.subscript_get_labeled_index(Parameter<Int>.value(`index`))).casted()
 			} catch {
-				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubDefinedMessage")
+				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("Stub return value not specified for subscript. Use given first.")
 			}
 		}
 		set {
@@ -10466,7 +10536,7 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 			do {
 				return try methodReturnValue(.subscript_get_x_y(Parameter<Int>.value(`x`), Parameter<Int>.value(`y`))).casted()
 			} catch {
-				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubDefinedMessage")
+				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("Stub return value not specified for subscript. Use given first.")
 			}
 		}
 		set {
@@ -10480,7 +10550,7 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 			do {
 				return try methodReturnValue(.subscript_get_index_2(Parameter<String>.value(`index`))).casted()
 			} catch {
-				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubDefinedMessage")
+				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("Stub return value not specified for subscript. Use given first.")
 			}
 		}
 		set {
@@ -10494,7 +10564,7 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 			do {
 				return try methodReturnValue(.subscript_get_label_name(Parameter<String>.value(`name`))).casted()
 			} catch {
-				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubDefinedMessage")
+				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("Stub return value not specified for subscript. Use given first.")
 			}
 		}
 	}
@@ -10505,7 +10575,7 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 			do {
 				return try methodReturnValue(.subscript_get_with_generic_1(Parameter<T>.value(`generic`).wrapAsGeneric())).casted()
 			} catch {
-				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubDefinedMessage")
+				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("Stub return value not specified for subscript. Use given first.")
 			}
 		}
 		set {
@@ -10519,7 +10589,7 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 			do {
 				return try methodReturnValue(.subscript_get_with_generic_2(Parameter<T>.value(`generic`).wrapAsGeneric())).casted()
 			} catch {
-				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubDefinedMessage")
+				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("Stub return value not specified for subscript. Use given first.")
 			}
 		}
 		set {
@@ -10533,7 +10603,7 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 			do {
 				return try methodReturnValue(.subscript_get_i_type(Parameter<Int>.value(`i`), Parameter<T.Type>.value(`type`).wrapAsGeneric())).casted()
 			} catch {
-				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubDefinedMessage")
+				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("Stub return value not specified for subscript. Use given first.")
 			}
 		}
 		set {
@@ -10547,7 +10617,7 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 			do {
 				return try methodReturnValue(.subscript_get_closure_c(Parameter<(Int) -> Void>.value(`c`))).casted()
 			} catch {
-				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubDefinedMessage")
+				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("Stub return value not specified for subscript. Use given first.")
 			}
 		}
 		set {
@@ -10561,7 +10631,7 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 			do {
 				return try methodReturnValue(.subscript_get_same_1(Parameter<Int>.value(`same`))).casted()
 			} catch {
-				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubDefinedMessage")
+				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("Stub return value not specified for subscript. Use given first.")
 			}
 		}
 		set {
@@ -10575,7 +10645,7 @@ open class ProtocolWithSubscriptsMock: ProtocolWithSubscripts, Mock {
 			do {
 				return try methodReturnValue(.subscript_get_same_2(Parameter<Int>.value(`same`))).casted()
 			} catch {
-				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("noStubDefinedMessage")
+				onFatalFailure("Stub return value not specified for subscript. Use given first."); Failure("Stub return value not specified for subscript. Use given first.")
 			}
 		}
 		set {
@@ -12071,6 +12141,7 @@ public final class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, S
     nonisolated(unsafe) static private var invocations: [StaticMethodType] = []
     nonisolated(unsafe) static private var methodReturnValues: [StaticGiven] = []
     nonisolated(unsafe) static private var methodPerformValues: [StaticPerform] = []
+    nonisolated(unsafe) static private var location: MockyLocation?
     public typealias StaticPropertyStub = StaticGiven
     public typealias StaticMethodStub = StaticGiven
 
@@ -12095,6 +12166,7 @@ public final class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, S
 		do {
 		    __value = try methodReturnValue(.sm_construct__param_value(Parameter<Int>.value(`value`))).casted()
 		} catch {
+			onFatalFailure("Stub return value not specified for construct(param value: Int). Use given")
 			Failure("Stub return value not specified for construct(param value: Int). Use given")
 		}
 		return __value
@@ -12472,6 +12544,11 @@ public final class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, S
         verify(method, count: count, at: MockyLocation(fileID: fileID, filePath: filePath, line: line, column: column))
     }
 
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public static func setupMock(fileID: StaticString = #fileID, filePath: StaticString = #filePath, line: UInt = #line, column: UInt = #column) {
+        location = MockyLocation(fileID: fileID, filePath: filePath, line: line, column: column)
+    }
+
     static private func addInvocation(_ call: StaticMethodType) {
         self.queue.sync { invocations.append(call) }
     }
@@ -12493,10 +12570,17 @@ public final class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, S
     static private func matchingCalls(_ method: StaticVerify, at location: MockyLocation?) -> Int {
         return matchingCalls(method.method, at: location).count
     }
+    /// A static mock has no initializer to capture a location in, so when setupMock() was not
+    /// called the fallback points at the generated line that discovered the missing stub. That is
+    /// still informative, and staying silent here is what used to hide the reason entirely.
+    static private func onFatalFailure(_ message: String, at fallback: MockyLocation = MockyLocation()) {
+        MockyFatalFailure(message, at: location ?? fallback)
+    }
     static private func givenGetterValue<T>(_ method: StaticMethodType, _ message: String) -> T {
         do {
             return try methodReturnValue(method).casted()
         } catch {
+            onFatalFailure(message)
             Failure(message)
         }
     }
@@ -12554,6 +12638,7 @@ open class ShouldAllowNoStubDefinedMock: ShouldAllowNoStubDefined, Mock, StaticM
     nonisolated(unsafe) static private var invocations: [StaticMethodType] = []
     nonisolated(unsafe) static private var methodReturnValues: [StaticGiven] = []
     nonisolated(unsafe) static private var methodPerformValues: [StaticPerform] = []
+    nonisolated(unsafe) static private var location: MockyLocation?
     public typealias StaticPropertyStub = StaticGiven
     public typealias StaticMethodStub = StaticGiven
 
@@ -13055,6 +13140,11 @@ open class ShouldAllowNoStubDefinedMock: ShouldAllowNoStubDefined, Mock, StaticM
         verify(method, count: count, at: MockyLocation(fileID: fileID, filePath: filePath, line: line, column: column))
     }
 
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public static func setupMock(fileID: StaticString = #fileID, filePath: StaticString = #filePath, line: UInt = #line, column: UInt = #column) {
+        location = MockyLocation(fileID: fileID, filePath: filePath, line: line, column: column)
+    }
+
     static private func addInvocation(_ call: StaticMethodType) {
         self.queue.sync { invocations.append(call) }
     }
@@ -13076,10 +13166,17 @@ open class ShouldAllowNoStubDefinedMock: ShouldAllowNoStubDefined, Mock, StaticM
     static private func matchingCalls(_ method: StaticVerify, at location: MockyLocation?) -> Int {
         return matchingCalls(method.method, at: location).count
     }
+    /// A static mock has no initializer to capture a location in, so when setupMock() was not
+    /// called the fallback points at the generated line that discovered the missing stub. That is
+    /// still informative, and staying silent here is what used to hide the reason entirely.
+    static private func onFatalFailure(_ message: String, at fallback: MockyLocation = MockyLocation()) {
+        MockyFatalFailure(message, at: location ?? fallback)
+    }
     static private func givenGetterValue<T>(_ method: StaticMethodType, _ message: String) -> T {
         do {
             return try methodReturnValue(method).casted()
         } catch {
+            onFatalFailure(message)
             Failure(message)
         }
     }

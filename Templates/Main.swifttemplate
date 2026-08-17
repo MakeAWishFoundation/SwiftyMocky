@@ -89,6 +89,7 @@
     nonisolated(unsafe) static private var invocations: [StaticMethodType] = []
     nonisolated(unsafe) static private var methodReturnValues: [StaticGiven] = []
     nonisolated(unsafe) static private var methodPerformValues: [StaticPerform] = []
+    nonisolated(unsafe) static private var location: MockyLocation?
     public typealias StaticPropertyStub = StaticGiven
     public typealias StaticMethodStub = StaticGiven
 
@@ -498,6 +499,11 @@
         verify(method, count: count, at: MockyLocation(fileID: fileID, filePath: filePath, line: line, column: column))
     }
 
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public static func setupMock(fileID: StaticString = #fileID, filePath: StaticString = #filePath, line: UInt = #line, column: UInt = #column) {
+        location = MockyLocation(fileID: fileID, filePath: filePath, line: line, column: column)
+    }
+
     static private func addInvocation(_ call: StaticMethodType) {
         self.queue.sync { invocations.append(call) }
     }
@@ -519,10 +525,17 @@
     static private func matchingCalls(_ method: StaticVerify, at location: MockyLocation?) -> Int {
         return matchingCalls(method.method, at: location).count
     }
+    /// A static mock has no initializer to capture a location in, so when setupMock() was not
+    /// called the fallback points at the generated line that discovered the missing stub. That is
+    /// still informative, and staying silent here is what used to hide the reason entirely.
+    static private func onFatalFailure(_ message: String, at fallback: MockyLocation = MockyLocation()) {
+        MockyFatalFailure(message, at: location ?? fallback)
+    }
     static private func givenGetterValue<T>(_ method: StaticMethodType, _ message: String) -> T {
         do {
             return try methodReturnValue(method).casted()
         } catch {
+            onFatalFailure(message)
             Failure(message)
         }
     }
