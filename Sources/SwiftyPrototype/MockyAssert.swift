@@ -30,3 +30,17 @@ public func MockyAssert(
 
     handler(expression(), message(), file, line)
 }
+
+/// [internal] Assertion used by generated prototypes
+///
+/// - Parameters:
+///   - expression: Expression to assert on
+///   - message: Message
+///   - location: Call site the failure is attributed to
+public func MockyAssert(
+    _ expression: @autoclosure () -> Bool,
+    _ message: @autoclosure () -> String = "Verify failed",
+    at location: MockyLocation
+) {
+    MockyAssert(expression(), message(), file: location.filePath, line: location.line)
+}
