@@ -3,7 +3,12 @@ import Foundation
 /// Matcher is container class, responsible for storing and resolving comparators for given types.
 public class Matcher {
     /// Shared **Matcher** instance
-    public static var `default` = Matcher()
+    ///
+    /// `nonisolated(unsafe)` is required rather than cosmetic: generated mocks read this
+    /// property from test targets that compile in the Swift 6 language mode, where SE-0412
+    /// rejects shared mutable state at the point of use. Generated code only copies the
+    /// registered comparators out of it (`Matcher(matcher:)`) and never mutates it.
+    nonisolated(unsafe) public static var `default` = Matcher()
     /// [Internal] Matchers storage
     private var matchers: [(Mirror,Any)] = []
     /// [Internal] file where comparison faiure should be recorded
@@ -11,7 +16,8 @@ public class Matcher {
     /// [Internal] line where comparison faiure should be recorded
     private var line: UInt?
     /// [Internal] matcher fatal error handler
-    public static var fatalErrorHandler: (String, StaticString, UInt) -> Void = { _,_,_ in}
+    /// Written once from `SwiftyMockyTestObserver.setup()`, read afterwards.
+    nonisolated(unsafe) public static var fatalErrorHandler: (String, StaticString, UInt) -> Void = { _,_,_ in}
 
     /// Create new clean matcher instance.
     public init() {

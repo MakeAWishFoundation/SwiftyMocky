@@ -194,11 +194,11 @@ public func Failure(_ message: String) -> Swift.Never {
 /// a stack trace and a debugger stop at the offending call.
 public struct FatalErrorUtil {
     /// [Internal] Handler
-    private static var handler: (String) -> Never = {
+    nonisolated(unsafe) private static var handler: (String) -> Never = {
         fatalError($0)
     }
     /// [Internal] Default handler
-    private static var defalutHandler: (String) -> Never = {
+    nonisolated(unsafe) private static var defalutHandler: (String) -> Never = {
         fatalError($0)
     }
 

@@ -5,7 +5,7 @@ import XCTest
 /// Used for observing tests and handling internal library errors.
 public class SwiftyMockyTestObserver: NSObject, XCTestObservation {
     /// [Internal] Current test case
-    private static var currentTestCase: XCTestCase?
+    nonisolated(unsafe) private static var currentTestCase: XCTestCase?
     /// [Internal] Setup observing once
     private static let setupBlock: (() -> Void) = {
         Matcher.fatalErrorHandler = SwiftyMockyTestObserver.handleFatalError

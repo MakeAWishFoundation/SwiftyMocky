@@ -11,7 +11,8 @@ import Foundation
 public final class MockyAssertion {
     /// You can use it to define assertion behaviour.
     /// Leave blank to not assert at all.
-    public static var handler: ((Bool, String, StaticString, UInt) -> Void)?
+    /// Public API, so it stays reachable from test targets compiled in the Swift 6 mode.
+    nonisolated(unsafe) public static var handler: ((Bool, String, StaticString, UInt) -> Void)?
 }
 
 /// [internal] Assertion used by mocks and Verify methods

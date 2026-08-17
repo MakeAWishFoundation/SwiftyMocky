@@ -47,13 +47,15 @@ open class AMassiveTestProtocolMock: AMassiveTestProtocol, Mock, StaticMock {
         if scopes.contains(.given) { methodReturnValues = [] }
         if scopes.contains(.perform) { methodPerformValues = [] }
     }
-    static var matcher: Matcher = Matcher.default
-    static var stubbingPolicy: StubbingPolicy = .wrap
-    static var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
-    static private var queue = DispatchQueue(label: "com.swiftymocky.invocations.static", qos: .userInteractive)
-    static private var invocations: [StaticMethodType] = []
-    static private var methodReturnValues: [StaticGiven] = []
-    static private var methodPerformValues: [StaticPerform] = []
+    // These statics are declared in generated code, which compiles in the language mode of the
+    // test target. In the Swift 6 mode SE-0412 rejects them at the declaration, hence the marker.
+    nonisolated(unsafe) static var matcher: Matcher = Matcher.default
+    nonisolated(unsafe) static var stubbingPolicy: StubbingPolicy = .wrap
+    nonisolated(unsafe) static var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+    nonisolated(unsafe) static private var queue = DispatchQueue(label: "com.swiftymocky.invocations.static", qos: .userInteractive)
+    nonisolated(unsafe) static private var invocations: [StaticMethodType] = []
+    nonisolated(unsafe) static private var methodReturnValues: [StaticGiven] = []
+    nonisolated(unsafe) static private var methodPerformValues: [StaticPerform] = []
     public typealias StaticPropertyStub = StaticGiven
     public typealias StaticMethodStub = StaticGiven
 
@@ -833,13 +835,15 @@ open class AVeryGenericProtocolMock: AVeryGenericProtocol, Mock, StaticMock {
         if scopes.contains(.given) { methodReturnValues = [] }
         if scopes.contains(.perform) { methodPerformValues = [] }
     }
-    static var matcher: Matcher = Matcher.default
-    static var stubbingPolicy: StubbingPolicy = .wrap
-    static var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
-    static private var queue = DispatchQueue(label: "com.swiftymocky.invocations.static", qos: .userInteractive)
-    static private var invocations: [StaticMethodType] = []
-    static private var methodReturnValues: [StaticGiven] = []
-    static private var methodPerformValues: [StaticPerform] = []
+    // These statics are declared in generated code, which compiles in the language mode of the
+    // test target. In the Swift 6 mode SE-0412 rejects them at the declaration, hence the marker.
+    nonisolated(unsafe) static var matcher: Matcher = Matcher.default
+    nonisolated(unsafe) static var stubbingPolicy: StubbingPolicy = .wrap
+    nonisolated(unsafe) static var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+    nonisolated(unsafe) static private var queue = DispatchQueue(label: "com.swiftymocky.invocations.static", qos: .userInteractive)
+    nonisolated(unsafe) static private var invocations: [StaticMethodType] = []
+    nonisolated(unsafe) static private var methodReturnValues: [StaticGiven] = []
+    nonisolated(unsafe) static private var methodPerformValues: [StaticPerform] = []
     public typealias StaticPropertyStub = StaticGiven
     public typealias StaticMethodStub = StaticGiven
 
@@ -9099,13 +9103,15 @@ open class ProtocolWithObjcMock: NSObject, ProtocolWithObjc, Mock, StaticMock {
         if scopes.contains(.given) { methodReturnValues = [] }
         if scopes.contains(.perform) { methodPerformValues = [] }
     }
-    static var matcher: Matcher = Matcher.default
-    static var stubbingPolicy: StubbingPolicy = .wrap
-    static var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
-    static private var queue = DispatchQueue(label: "com.swiftymocky.invocations.static", qos: .userInteractive)
-    static private var invocations: [StaticMethodType] = []
-    static private var methodReturnValues: [StaticGiven] = []
-    static private var methodPerformValues: [StaticPerform] = []
+    // These statics are declared in generated code, which compiles in the language mode of the
+    // test target. In the Swift 6 mode SE-0412 rejects them at the declaration, hence the marker.
+    nonisolated(unsafe) static var matcher: Matcher = Matcher.default
+    nonisolated(unsafe) static var stubbingPolicy: StubbingPolicy = .wrap
+    nonisolated(unsafe) static var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+    nonisolated(unsafe) static private var queue = DispatchQueue(label: "com.swiftymocky.invocations.static", qos: .userInteractive)
+    nonisolated(unsafe) static private var invocations: [StaticMethodType] = []
+    nonisolated(unsafe) static private var methodReturnValues: [StaticGiven] = []
+    nonisolated(unsafe) static private var methodPerformValues: [StaticPerform] = []
     public typealias StaticPropertyStub = StaticGiven
     public typealias StaticMethodStub = StaticGiven
 
@@ -9424,13 +9430,15 @@ open class ProtocolWithPropertiesMock: ProtocolWithProperties, Mock, StaticMock 
         if scopes.contains(.given) { methodReturnValues = [] }
         if scopes.contains(.perform) { methodPerformValues = [] }
     }
-    static var matcher: Matcher = Matcher.default
-    static var stubbingPolicy: StubbingPolicy = .wrap
-    static var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
-    static private var queue = DispatchQueue(label: "com.swiftymocky.invocations.static", qos: .userInteractive)
-    static private var invocations: [StaticMethodType] = []
-    static private var methodReturnValues: [StaticGiven] = []
-    static private var methodPerformValues: [StaticPerform] = []
+    // These statics are declared in generated code, which compiles in the language mode of the
+    // test target. In the Swift 6 mode SE-0412 rejects them at the declaration, hence the marker.
+    nonisolated(unsafe) static var matcher: Matcher = Matcher.default
+    nonisolated(unsafe) static var stubbingPolicy: StubbingPolicy = .wrap
+    nonisolated(unsafe) static var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+    nonisolated(unsafe) static private var queue = DispatchQueue(label: "com.swiftymocky.invocations.static", qos: .userInteractive)
+    nonisolated(unsafe) static private var invocations: [StaticMethodType] = []
+    nonisolated(unsafe) static private var methodReturnValues: [StaticGiven] = []
+    nonisolated(unsafe) static private var methodPerformValues: [StaticPerform] = []
     public typealias StaticPropertyStub = StaticGiven
     public typealias StaticMethodStub = StaticGiven
 
@@ -9860,13 +9868,15 @@ open class ProtocolWithStaticMembersMock: ProtocolWithStaticMembers, Mock, Stati
         if scopes.contains(.given) { methodReturnValues = [] }
         if scopes.contains(.perform) { methodPerformValues = [] }
     }
-    static var matcher: Matcher = Matcher.default
-    static var stubbingPolicy: StubbingPolicy = .wrap
-    static var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
-    static private var queue = DispatchQueue(label: "com.swiftymocky.invocations.static", qos: .userInteractive)
-    static private var invocations: [StaticMethodType] = []
-    static private var methodReturnValues: [StaticGiven] = []
-    static private var methodPerformValues: [StaticPerform] = []
+    // These statics are declared in generated code, which compiles in the language mode of the
+    // test target. In the Swift 6 mode SE-0412 rejects them at the declaration, hence the marker.
+    nonisolated(unsafe) static var matcher: Matcher = Matcher.default
+    nonisolated(unsafe) static var stubbingPolicy: StubbingPolicy = .wrap
+    nonisolated(unsafe) static var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+    nonisolated(unsafe) static private var queue = DispatchQueue(label: "com.swiftymocky.invocations.static", qos: .userInteractive)
+    nonisolated(unsafe) static private var invocations: [StaticMethodType] = []
+    nonisolated(unsafe) static private var methodReturnValues: [StaticGiven] = []
+    nonisolated(unsafe) static private var methodPerformValues: [StaticPerform] = []
     public typealias StaticPropertyStub = StaticGiven
     public typealias StaticMethodStub = StaticGiven
 
@@ -11844,13 +11854,15 @@ public final class SelfConstrainedProtocolMock: SelfConstrainedProtocol, Mock, S
         if scopes.contains(.given) { methodReturnValues = [] }
         if scopes.contains(.perform) { methodPerformValues = [] }
     }
-    static var matcher: Matcher = Matcher.default
-    static var stubbingPolicy: StubbingPolicy = .wrap
-    static var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
-    static private var queue = DispatchQueue(label: "com.swiftymocky.invocations.static", qos: .userInteractive)
-    static private var invocations: [StaticMethodType] = []
-    static private var methodReturnValues: [StaticGiven] = []
-    static private var methodPerformValues: [StaticPerform] = []
+    // These statics are declared in generated code, which compiles in the language mode of the
+    // test target. In the Swift 6 mode SE-0412 rejects them at the declaration, hence the marker.
+    nonisolated(unsafe) static var matcher: Matcher = Matcher.default
+    nonisolated(unsafe) static var stubbingPolicy: StubbingPolicy = .wrap
+    nonisolated(unsafe) static var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+    nonisolated(unsafe) static private var queue = DispatchQueue(label: "com.swiftymocky.invocations.static", qos: .userInteractive)
+    nonisolated(unsafe) static private var invocations: [StaticMethodType] = []
+    nonisolated(unsafe) static private var methodReturnValues: [StaticGiven] = []
+    nonisolated(unsafe) static private var methodPerformValues: [StaticPerform] = []
     public typealias StaticPropertyStub = StaticGiven
     public typealias StaticMethodStub = StaticGiven
 
@@ -12325,13 +12337,15 @@ open class ShouldAllowNoStubDefinedMock: ShouldAllowNoStubDefined, Mock, StaticM
         if scopes.contains(.given) { methodReturnValues = [] }
         if scopes.contains(.perform) { methodPerformValues = [] }
     }
-    static var matcher: Matcher = Matcher.default
-    static var stubbingPolicy: StubbingPolicy = .wrap
-    static var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
-    static private var queue = DispatchQueue(label: "com.swiftymocky.invocations.static", qos: .userInteractive)
-    static private var invocations: [StaticMethodType] = []
-    static private var methodReturnValues: [StaticGiven] = []
-    static private var methodPerformValues: [StaticPerform] = []
+    // These statics are declared in generated code, which compiles in the language mode of the
+    // test target. In the Swift 6 mode SE-0412 rejects them at the declaration, hence the marker.
+    nonisolated(unsafe) static var matcher: Matcher = Matcher.default
+    nonisolated(unsafe) static var stubbingPolicy: StubbingPolicy = .wrap
+    nonisolated(unsafe) static var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+    nonisolated(unsafe) static private var queue = DispatchQueue(label: "com.swiftymocky.invocations.static", qos: .userInteractive)
+    nonisolated(unsafe) static private var invocations: [StaticMethodType] = []
+    nonisolated(unsafe) static private var methodReturnValues: [StaticGiven] = []
+    nonisolated(unsafe) static private var methodPerformValues: [StaticPerform] = []
     public typealias StaticPropertyStub = StaticGiven
     public typealias StaticMethodStub = StaticGiven
 
