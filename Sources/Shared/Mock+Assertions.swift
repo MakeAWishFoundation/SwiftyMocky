@@ -187,16 +187,19 @@ public func Failure(_ message: String) -> Swift.Never {
 }
 
 /// [Internal] Used for handling fatal errors inside library.
+///
+/// Both handlers crash instead of calling `exit(0)`, which used to leave the process with a
+/// success status right after a failure had been reported. A missing stub is a defect in the
+/// test, so it must be impossible to mistake for a passing run: `fatalError` gives a message,
+/// a stack trace and a debugger stop at the offending call.
 public struct FatalErrorUtil {
     /// [Internal] Handler
     private static var handler: (String) -> Never = {
-        print($0)
-        exit(0)
+        fatalError($0)
     }
     /// [Internal] Default handler
     private static var defalutHandler: (String) -> Never = {
-        print($0)
-        exit(0)
+        fatalError($0)
     }
 
     /// [Internal] Override handling error handler
