@@ -4,6 +4,24 @@ All changes to SwiftyMocky project will be documented in this file.
 
 -----
 
+## __unreleased__
+
+#### Added:
++ `SwiftyMockyTesting` library, reporting mock failures to Swift Testing or XCTest, whichever runs the test
++ generated mocks compile in the Swift 6 language mode
+
+#### Fixed:
+* a missing stub crashes instead of exiting with a success status
+* a missing stub on a static member is reported instead of terminating the run silently
+* the subscript getter reported the name of its message variable instead of the message
+* CI asked for an Xcode version no runner image carries anymore
+
+#### Changed:
+* `Mock.verify` and `StaticMock.verify` take a `MockyLocation` instead of a file and a line, so mocks have to be regenerated
+* requires Swift 5.10, which is where `nonisolated(unsafe)` was introduced
+
+-----
+
 ## __4.1.0__ / 2021
 
 #### Added:

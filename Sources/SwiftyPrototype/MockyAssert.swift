@@ -8,7 +8,8 @@ import Foundation
 public final class MockyAssertion {
     /// You can use it to define assertion behaviour.
     /// Leave blank to not assert at all.
-    public static var handler: ((Bool, String, StaticString, UInt) -> Void)?
+    /// Public API, so it stays reachable from test targets compiled in the Swift 6 mode.
+    nonisolated(unsafe) public static var handler: ((Bool, String, StaticString, UInt) -> Void)?
 }
 
 /// [internal] Assertion used by mocks and Verify methods
@@ -29,4 +30,18 @@ public func MockyAssert(
     }
 
     handler(expression(), message(), file, line)
+}
+
+/// [internal] Assertion used by generated prototypes
+///
+/// - Parameters:
+///   - expression: Expression to assert on
+///   - message: Message
+///   - location: Call site the failure is attributed to
+public func MockyAssert(
+    _ expression: @autoclosure () -> Bool,
+    _ message: @autoclosure () -> String = "Verify failed",
+    at location: MockyLocation
+) {
+    MockyAssert(expression(), message(), file: location.filePath, line: location.line)
 }

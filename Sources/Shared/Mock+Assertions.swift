@@ -4,13 +4,27 @@ import Foundation
 
 /// Verify that given method was called on mock object **at least once**.
 ///
+/// The magic literals are spelled out here rather than hidden behind a
+/// `MockyLocation` default argument on purpose: a default argument expands at the call site of
+/// the expression it belongs to, so `location: MockyLocation = MockyLocation()` would capture
+/// this file instead of the test that called `Verify`.
+///
 /// - Parameters:
 ///   - object: Mock instance
 ///   - method: Method signature with wrapped parameters (`Parameter`)
-///   - file: for XCTest print purposes
-///   - line: for XCTest print purposes
-public func Verify<T: Mock>(_ object: T, _ method: T.Verify, file: StaticString = #file, line: UInt = #line) {
-    object.verify(method, count: .moreOrEqual(to: 1), file: file, line: line)
+public func Verify<T: Mock>(
+    _ object: T,
+    _ method: T.Verify,
+    fileID: StaticString = #fileID,
+    filePath: StaticString = #filePath,
+    line: UInt = #line,
+    column: UInt = #column
+) {
+    object.verify(
+        method,
+        count: .moreOrEqual(to: 1),
+        at: MockyLocation(fileID: fileID, filePath: filePath, line: line, column: column)
+    )
 }
 
 // MARK: - At least once static member called
@@ -20,10 +34,19 @@ public func Verify<T: Mock>(_ object: T, _ method: T.Verify, file: StaticString 
 /// - Parameters:
 ///   - object: Mock type
 ///   - method: Method signature with wrapped parameters (`Parameter`)
-///   - file: for XCTest print purposes
-///   - line: for XCTest print purposes
-public func Verify<T: StaticMock>(_ type: T.Type, _ method: T.StaticVerify, file: StaticString = #file, line: UInt = #line) {
-    T.verify(method, count: .moreOrEqual(to: 1), file: file, line: line)
+public func Verify<T: StaticMock>(
+    _ type: T.Type,
+    _ method: T.StaticVerify,
+    fileID: StaticString = #fileID,
+    filePath: StaticString = #filePath,
+    line: UInt = #line,
+    column: UInt = #column
+) {
+    T.verify(
+        method,
+        count: .moreOrEqual(to: 1),
+        at: MockyLocation(fileID: fileID, filePath: filePath, line: line, column: column)
+    )
 }
 
 // MARK: - Instance member called with explicit count
@@ -34,10 +57,20 @@ public func Verify<T: StaticMock>(_ type: T.Type, _ method: T.StaticVerify, file
 ///   - object: Mock instance
 ///   - count: Number of invocations
 ///   - method: Method signature with wrapped parameters (`Parameter`)
-///   - file: for XCTest print purposes
-///   - line: for XCTest print purposes
-public func Verify<T: Mock>(_ object: T, _ count: Count, _ method: T.Verify, file: StaticString = #file, line: UInt = #line) {
-    object.verify(method, count: count, file: file, line: line)
+public func Verify<T: Mock>(
+    _ object: T,
+    _ count: Count,
+    _ method: T.Verify,
+    fileID: StaticString = #fileID,
+    filePath: StaticString = #filePath,
+    line: UInt = #line,
+    column: UInt = #column
+) {
+    object.verify(
+        method,
+        count: count,
+        at: MockyLocation(fileID: fileID, filePath: filePath, line: line, column: column)
+    )
 }
 
 // MARK: - Static member called with explicit count
@@ -48,10 +81,20 @@ public func Verify<T: Mock>(_ object: T, _ count: Count, _ method: T.Verify, fil
 ///   - object: Mock type
 ///   - count: Number of invocations
 ///   - method: Static method signature with wrapped parameters (`Parameter`)
-///   - file: for XCTest print purposes
-///   - line: for XCTest print purposes
-public func Verify<T: StaticMock>(_ type: T.Type, _ count: Count, _ method: T.StaticVerify, file: StaticString = #file, line: UInt = #line) {
-    T.verify(method, count: count, file: file, line: line)
+public func Verify<T: StaticMock>(
+    _ type: T.Type,
+    _ count: Count,
+    _ method: T.StaticVerify,
+    fileID: StaticString = #fileID,
+    filePath: StaticString = #filePath,
+    line: UInt = #line,
+    column: UInt = #column
+) {
+    T.verify(
+        method,
+        count: count,
+        at: MockyLocation(fileID: fileID, filePath: filePath, line: line, column: column)
+    )
 }
 
 // MARK: - Given
@@ -144,16 +187,19 @@ public func Failure(_ message: String) -> Swift.Never {
 }
 
 /// [Internal] Used for handling fatal errors inside library.
+///
+/// Both handlers crash instead of calling `exit(0)`, which used to leave the process with a
+/// success status right after a failure had been reported. A missing stub is a defect in the
+/// test, so it must be impossible to mistake for a passing run: `fatalError` gives a message,
+/// a stack trace and a debugger stop at the offending call.
 public struct FatalErrorUtil {
     /// [Internal] Handler
-    private static var handler: (String) -> Never = {
-        print($0)
-        exit(0)
+    nonisolated(unsafe) private static var handler: (String) -> Never = {
+        fatalError($0)
     }
     /// [Internal] Default handler
-    private static var defalutHandler: (String) -> Never = {
-        print($0)
-        exit(0)
+    nonisolated(unsafe) private static var defalutHandler: (String) -> Never = {
+        fatalError($0)
     }
 
     /// [Internal] Override handling error handler

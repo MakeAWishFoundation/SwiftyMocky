@@ -53,9 +53,8 @@ public protocol Mock: AnyObject {
     /// - Parameters:
     ///   - method: Method signature with wrapped parameters (Parameter<ValueType>)
     ///   - count: Number of invocations
-    ///   - file: for XCTest print purposes
-    ///   - line: for XCTest print purposes
-    func verify(_ method: Verify, count: Count, file: StaticString, line: UInt)
+    ///   - location: Call site the failure is attributed to
+    func verify(_ method: Verify, count: Count, at location: MockyLocation)
 
     /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs)
     /// or leave it empty to clear all mock internals.
@@ -116,9 +115,8 @@ public protocol StaticMock: AnyObject {
     /// - Parameters:
     ///   - method: Method signature with wrapped parameters (Parameter<ValueType>)
     ///   - count: Number of invocations
-    ///   - file: for XCTest print purposes
-    ///   - line: for XCTest print purposes
-    static func verify(_ method: StaticVerify, count: Count, file: StaticString, line: UInt)
+    ///   - location: Call site the failure is attributed to
+    static func verify(_ method: StaticVerify, count: Count, at location: MockyLocation)
 
     /// Clear mock internals. You can specify what to clear (invocations aka verify, givens or performs)
     /// or leave it empty to clear all mock internals.

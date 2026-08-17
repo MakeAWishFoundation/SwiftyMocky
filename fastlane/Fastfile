@@ -5,10 +5,11 @@ default_platform :ios
 platform :ios do
     desc "Runs all the tests"
     lane :test do
+        # No device is pinned on purpose: a hardcoded model is what rots first, and the runner
+        # image only ever carries the simulators of its own Xcode.
         scan(
             scheme: "Mocky_Tests_iOS",
-            workspace: "./SwiftyMocky.xcworkspace",
-            devices: ["iPhone 11 Pro"]
+            workspace: "./SwiftyMocky.xcworkspace"
         )
     end
 end
@@ -18,8 +19,7 @@ platform :tvos do
     lane :test do
         scan(
             scheme: "Mocky_Tests_tvOS",
-            workspace: "./SwiftyMocky.xcworkspace",
-            devices: ["Apple TV"]
+            workspace: "./SwiftyMocky.xcworkspace"
         )
     end
 end

@@ -196,7 +196,9 @@ class MethodWrapper {
     var throwValue: String {
         guard !method.isInitializer else { return "" }
         guard method.throws || !method.returnTypeName.isVoid else { return "" }
-        let safeFailure = method.isStatic ? "" : "\t\t\tonFatalFailure(\"\(noStubDefinedMessage)\")\n"
+        // Static members report too: leaving them out used to make a missing stub on a static
+        // mock terminate the run without a single word about the reason.
+        let safeFailure = "\t\t\tonFatalFailure(\"\(noStubDefinedMessage)\")\n"
         // For Void and Returning optionals - we allow not stubbed case to happen, as we are still able to return
         let noStubHandling = method.returnTypeName.isVoid || method.returnTypeName.isOptional ? "\t\t\t// do nothing" : "\(safeFailure)\t\t\tFailure(\"\(noStubDefinedMessage)\")"
         guard method.throws else {

@@ -81,7 +81,7 @@ class SubscriptWrapper {
     private func getter() -> String {
         let method = ".\(subscriptCasePrefix("get"))(\(parametersForMethodCall()))"
         let optionalReturnWorkaround = "\(wrapped.returnTypeName)".hasSuffix("?")
-        let noStubDefined = (optionalReturnWorkaround || wrapped.returnTypeName.isOptional) ? "return nil" : "onFatalFailure(\"\(noStubDefinedMessage)\"); Failure(\"noStubDefinedMessage\")"
+        let noStubDefined = (optionalReturnWorkaround || wrapped.returnTypeName.isOptional) ? "return nil" : "onFatalFailure(\"\(noStubDefinedMessage)\"); Failure(\"\(noStubDefinedMessage)\")"
         return
             "\n\t\t\taddInvocation(\(method))" +
                 "\n\t\t\tdo {" +

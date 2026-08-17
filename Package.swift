@@ -8,6 +8,8 @@ let package = Package(
     products: [
         // XCTest Runtime libraries
         .library(name: "SwiftyMocky", targets: ["SwiftyMocky"]),
+        // XCTest and Swift Testing runtime library
+        .library(name: "SwiftyMockyTesting", targets: ["SwiftyMockyTesting"]),
         .library(name: "SwiftyPrototype", targets: ["SwiftyPrototype"]),
         // CLI Executable
         .executable(name: "swiftymocky", targets: ["SwiftyMockyCLI"]),
@@ -28,6 +30,11 @@ let package = Package(
             exclude: ["Mock.swifttemplate"]
         ),
         .target(
+            name: "SwiftyMockyTesting",
+            dependencies: ["SwiftyMocky"],
+            path: "./Sources/SwiftyMockyTesting"
+        ),
+        .target(
             name: "SwiftyPrototype",
             path: "./Sources/SwiftyPrototype",
             exclude: ["Prototype.swifttemplate"]
@@ -44,7 +51,7 @@ let package = Package(
         ),
         .testTarget(
             name: "SwiftyMockyTests",
-            dependencies: ["Mocky_Example_macOS", "SwiftyMocky"],
+            dependencies: ["Mocky_Example_macOS", "SwiftyMockyTesting"],
             path: "./Tests/SwiftyMockyTests",
             exclude: ["Shared/Swift5.5"] // TODO: remove when macOS 12 released
         ),
@@ -76,7 +83,7 @@ let package = Package(
            name: "SwiftyMockyCLICoreTests",
            dependencies: [
                "SwiftyMockyCLICore",
-               "SwiftyMocky",
+               "SwiftyMockyTesting",
            ]
         ),
     ]
